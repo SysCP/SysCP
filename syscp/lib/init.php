@@ -50,7 +50,8 @@
 	/**
 	 * Selects settings from MySQL-Table
 	 */
-	$result = $db->query("SELECT `settinggroup`, `varname`, `value` FROM `".TABLE_PANEL_SETTINGS."`");
+	$result = $db->query(	'SELECT `settinggroup`, `varname`, `value` ' .
+							'FROM `'.TABLE_PANEL_SETTINGS.'`');
 	while($row = $db->fetch_array($result))
 	{
 		$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $row['value'];
@@ -95,18 +96,38 @@
 	}
 
 	$timediff = time()-$settings['session']['sessiontimeout'];
-	$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `lastactivity` < '$timediff'");
+	$db->query(	'DELETE FROM `'.TABLE_PANEL_SESSIONS.'` ' .
+				'WHERE `lastactivity` < "'.$timediff.'"');
 
 	if(isset($s) && $s != "" && $nosession != 1)
 	{
-		$userinfo = $db->query_first("SELECT `s`.*, `u`.* ".
-		"FROM `".TABLE_PANEL_SESSIONS."` `s` LEFT JOIN ".( AREA == 'admin' ? '`'.TABLE_PANEL_ADMINS.'` `u` ON (`s`.`userid` = `u`.`adminid`)' : '`'.TABLE_PANEL_CUSTOMERS.'` `u` ON (`s`.`userid` = `u`.`customerid`)' )."".
-		"WHERE `s`.`hash`='".addslashes($s)."' ".
-		"AND `s`.`ipaddress`='".addslashes($remote_addr)."' ".
-		"AND `s`.`useragent`='".addslashes($http_user_agent)."' ".
-		"AND `s`.`lastactivity` > '$timediff'".
-		"AND `s`.`adminsession` = '".( AREA == 'admin' ? '1' : '0' )."'");
-		
+		$query = 	'SELECT `s`.*, `u`.* ' .
+					'FROM `'.TABLE_PANEL_SESSIONS.'` `s` ' .
+					'LEFT JOIN `';
+		if (AREA == 'admin')
+		{
+			$query .= TABLE_PANEL_ADMINS.'` `u` ON (`s`.`userid` = `u`.`adminid`)';
+		}
+		else
+		{
+			$query .= TABLE_PANEL_CUSTOMERS.'` `u` ON (`s`.`userid` = `u`.`customerid`)';			
+		}
+		$query .= 	'WHERE `s`.`hash`="'.addslashes($s).'" ' .
+					'AND `s`.`ipaddress`="'.addslashes($remote_addr).'" ' .
+					'AND `s`.`useragent`="'.addslashes($http_user_agent).'" ' .
+					'AND `s`.`lastactivity` > "'.$timediff.'" ' .
+					'AND `s`.`adminsession` = "';
+		if (AREA == 'admin')
+		{
+			$query .= '1';
+		}
+		else 
+		{
+			$query .= '0';
+		}
+		$query .= '"';
+		$userinfo = $db->query_first($query);
+
 		if(
 		   (
 		    ( $userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid']) ) ||
@@ -115,7 +136,21 @@
 		   (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1')
 		  )
 		{
-			$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `lastactivity`='".time()."' WHERE `hash`='".addslashes($s)."' AND `adminsession` = '".( AREA == 'admin' ? '1' : '0' )."'");
+			$query =	'UPDATE `'.TABLE_PANEL_SESSIONS.'` ' .
+						'SET `lastactivity`="'.time().'" ' .
+						'WHERE `hash`="'.addslashes($s).'" ' .
+						'AND `adminsession` = "';
+			if (AREA == 'admin') 
+			{
+				$query .= '1';
+			}
+			else
+			{
+				$query .= '0';
+			}
+			$query .= '"';
+			$db->query($query);
+			
 			$nosession = 0;
 		}
 		else

@@ -23,6 +23,7 @@
 	 * @param string Templatename
 	 * @param string noarea If area should be used to get template
 	 * @return string The Template
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function getTemplate($template, $noarea = 0)
 	{
@@ -53,6 +54,7 @@
 	 * Prints errormessage on screen
 	 *
 	 * @param string Errormessage
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function standard_error($error='')
 	{
@@ -77,6 +79,7 @@
 	 * @param string Value which will be returned if user chooses no
 	 * @param string Value which is chosen by default
 	 * @return string HTML Code
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function makeyesno($name,$yesvalue,$novalue="",$yesselected="")
 	{
@@ -101,6 +104,7 @@
 	 * @param string The question
 	 * @param string File which will be called with POST if user clicks yes
 	 * @param string Values which will be given to $yesfile. Format: 'variable1=value1;variable2=value2;variable3=value3'
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function ask_yesno($text,$yesfile,$params='')
 	{
@@ -129,6 +133,7 @@
 	 * @param string The Value which will be returned
 	 * @param string Values which will be selected by default.
 	 * @return string HTML Code
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function makeoption($title,$value,$selvalue="")
 	{
@@ -149,6 +154,7 @@
 	 *
 	 * @param array The array to stripslashes
 	 * @return array The stripslash'ed array
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function stripslashes_array($source)
 	{
@@ -171,6 +177,7 @@
 	 *
 	 * @param array The array to trim
 	 * @return array The trim'med array
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function array_trim($source)
 	{
@@ -196,6 +203,7 @@
 	 * @param array The subject array
 	 * @param string The fields which should be checked for, seperated by spaces
 	 * @return array The str_replace'd array
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	 function str_replace_array($search, $replace, $subject, $fields = '')
 	 {
@@ -229,6 +237,7 @@
 	 *
 	 * @param string The email address to check
 	 * @return bool Correct or not
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function verify_email($email)
 	{
@@ -251,6 +260,7 @@
 	 * @param string Parameter 1
 	 * @param string Parameter 2
 	 * @param string Parameter 3
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function inserttask($type,$param1='',$param2='',$param3='')
 	{
@@ -258,10 +268,15 @@
 
 		if($type=='1')
 		{
-			$result=$db->query_first("SELECT `type` FROM `".TABLE_PANEL_TASKS."` WHERE `type`='1'");
+			$result=$db->query_first(	'SELECT `type` ' .
+										'FROM `' . TABLE_PANEL_TASKS . '` ' .
+										'WHERE `type`="1"');
 			if($result['type']=='')
 			{
-				$db->query("INSERT INTO `".TABLE_PANEL_TASKS."` (`type`) VALUES ('1');");
+				$db->query(	'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
+							'(`type`) ' .
+							'VALUES ' .
+							'("1")');
 			}
 		}
 		elseif($type=='2' && $param1!='' && $param2!='' && $param3!='')
@@ -271,25 +286,39 @@
 			$data['uid']=$param2;
 			$data['gid']=$param3;
 			$data=serialize($data);
-			$db->query("INSERT INTO `".TABLE_PANEL_TASKS."` (`type`, `data`) VALUES ('2', '".addslashes($data)."');");
+			$db->query(	'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
+						'(`type`, `data`) ' .
+						'VALUES ' .
+						'("2", "' . addslashes($data) . '")');
 		}
 		elseif($type=='3' && $param1!='')
 		{
 			$data=Array();
 			$data['path']=$param1;
 			$data=serialize($data);
-			$result=$db->query_first("SELECT `type` FROM `".TABLE_PANEL_TASKS."` WHERE `type`='3' AND `data`='".addslashes($data)."'");
+			$result=$db->query_first(	'SELECT `type` ' .
+										'FROM `' . TABLE_PANEL_TASKS . '` ' .
+										'WHERE `type`="3" ' .
+										'AND `data`="' . addslashes($data) .'"');
 			if($result['type']=='')
 			{
-				$db->query("INSERT INTO `".TABLE_PANEL_TASKS."` (`type`, `data`) VALUES ('3', '".addslashes($data)."');");
+				$db->query(	'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
+							'(`type`, `data`) ' .
+							'VALUES ' .
+							'("3", "' . addslashes($data) . '")');
 			}
 		}
 		elseif($type=='4')
 		{
-			$result=$db->query_first("SELECT `type` FROM `".TABLE_PANEL_TASKS."` WHERE `type`='4'");
+			$result=$db->query_first(	'SELECT `type` ' .
+										'FROM `' . TABLE_PANEL_TASKS . '` ' .
+										'WHERE `type`="4"');
 			if($result['type']=='')
 			{
-				$db->query("INSERT INTO `".TABLE_PANEL_TASKS."` (`type`) VALUES ('4');");
+				$db->query(	'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
+							'(`type`) ' .
+							'VALUES ' .
+							'("4")');
 			}
 		}
 	}
@@ -303,6 +332,7 @@
 	 * @param int Month
 	 * @param int Year
 	 * @return int Used traffic
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function webalizer_hist($logfile, $outputdir, $caption, $month = 0, $year = 0)
 	{
@@ -356,6 +386,7 @@
 	 *
 	 * @param string The dirname
 	 * @return string The corrected dirname
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function makeCorrectDir($dir)
 	{
@@ -377,67 +408,82 @@
 
 	/**
 	 * Function which updates all counters of used ressources in panel_admins and panel_customers
+	 * 
+	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function updateCounters ()
 	{
 		global $db;
 
 		// Customers
-		$customers = $db->query("SELECT `customerid` FROM `".TABLE_PANEL_CUSTOMERS."` ORDER BY `customerid`");
+		$customers = $db->query('SELECT `customerid` ' .
+								'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' .
+								'ORDER BY `customerid`');
 		while($customer = $db->fetch_array($customers))
 		{
-			$customer_mysqls = $db->query_first("SELECT COUNT(*) AS `number_mysqls`
-				FROM `".TABLE_PANEL_DATABASES."` WHERE `customerid` = '".$customer['customerid']."'");
+			$customer_mysqls = $db->query_first('SELECT COUNT(*) AS `number_mysqls`' .
+												'FROM `'.TABLE_PANEL_DATABASES.'` ' .
+												'WHERE `customerid` = "'.$customer['customerid'].'"');
 
-			$customer_emails = $db->query_first("SELECT COUNT(*) AS `number_emails`
-				FROM `".TABLE_MAIL_USERS."` WHERE `customerid` = '".$customer['customerid']."'");
+			$customer_emails = $db->query_first('SELECT COUNT(*) AS `number_emails`' .
+												'FROM `'.TABLE_MAIL_USERS.'` ' .
+												'WHERE `customerid` = "'.$customer['customerid'].'"');
 
-			$customer_email_forwarders = $db->query_first("SELECT COUNT(*) AS `number_email_forwarders`
-				FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid` = '".$customer['customerid']."' AND `popaccountid` = '0'");
+			$customer_email_forwarders = $db->query_first(	'SELECT COUNT(*) AS `number_email_forwarders`' .
+															'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
+															'WHERE `customerid` = "'.$customer['customerid'].'" ' .
+															'AND `popaccountid` = "0"');
 
-			$customer_ftps = $db->query_first("SELECT COUNT(*) AS `number_ftps`
-				FROM `".TABLE_FTP_USERS."` WHERE `customerid` = '".$customer['customerid']."'");
+			$customer_ftps = $db->query_first(	'SELECT COUNT(*) AS `number_ftps` ' .
+												'FROM `'.TABLE_FTP_USERS.'` ' .
+												'WHERE `customerid` = "'.$customer['customerid'].'"');
 
-			$customer_subdomains = $db->query_first("SELECT COUNT(*) AS `number_subdomains`
-				FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".$customer['customerid']."' AND `isemaildomain` = '0'");
+			$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` ' .
+													'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
+													'WHERE `customerid` = "'.$customer['customerid'].'" ' .
+													'AND `isemaildomain` = "0"');
 
-			$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET
-				`mysqls_used` = '".$customer_mysqls['number_mysqls']."', 
-				`emails_used` = '".$customer_emails['number_emails']."', 
-				`email_forwarders_used` = '".$customer_email_forwarders['number_email_forwarders']."', 
-				`ftps_used` = '".($customer_ftps['number_ftps']-1)."', 
-				`subdomains_used` = '".$customer_subdomains['number_subdomains']."' 
-				WHERE `customerid` = '".$customer['customerid']."'");
+			$db->query(	'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
+						'SET `mysqls_used` = "'.$customer_mysqls['number_mysqls'].'", ' .
+						'    `emails_used` = "'.$customer_emails['number_emails'].'", ' .
+						'    `email_forwarders_used` = "'.$customer_email_forwarders['number_email_forwarders'].'", ' .
+						'    `ftps_used` = "'.($customer_ftps['number_ftps']-1).'", ' .
+						'    `subdomains_used` = "'.$customer_subdomains['number_subdomains'].'" ' .
+						'WHERE `customerid` = "'.$customer['customerid'].'"');
 		}
 
 		// Admins
-		$admins = $db->query("SELECT `adminid` FROM `".TABLE_PANEL_ADMINS."` ORDER BY `adminid`");
+		$admins = $db->query(	'SELECT `adminid` ' .
+								'FROM `'.TABLE_PANEL_ADMINS.'` ' .
+								'ORDER BY `adminid`');
 		while($admin = $db->fetch_array($admins))
 		{
-			$admin_customers = $db->query_first("SELECT COUNT(*) AS `number_customers`,
-				SUM(`diskspace`) AS `diskspace`,
-				SUM(`mysqls`) AS `mysqls`,
-				SUM(`emails`) AS `emails`,
-				SUM(`email_forwarders`) AS `email_forwarders`,
-				SUM(`ftps`) AS `ftps`,
-				SUM(`subdomains`) AS `subdomains`,
-				SUM(`traffic`) AS `traffic`
-				FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `adminid` = '".$admin['adminid']."'");
+			$admin_customers = $db->query_first('SELECT COUNT(*) AS `number_customers`, ' .
+												'SUM(`diskspace`) AS `diskspace`, ' .
+												'SUM(`mysqls`) AS `mysqls`, ' .
+												'SUM(`emails`) AS `emails`, ' .
+												'SUM(`email_forwarders`) AS `email_forwarders`, ' .
+												'SUM(`ftps`) AS `ftps`, ' .
+												'SUM(`subdomains`) AS `subdomains`, ' .
+												'SUM(`traffic`) AS `traffic` ' .
+												'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
+												'WHERE `adminid` = "'.$admin['adminid'].'"');
 
-			$admin_domains = $db->query_first("SELECT COUNT(*) AS `number_domains`
-				FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `adminid` = '".$admin['adminid']."'");
+			$admin_domains = $db->query_first(	'SELECT COUNT(*) AS `number_domains` ' .
+												'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
+												'WHERE `adminid` = "'.$admin['adminid'].'"');
 
-			$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET
-				`customers_used` = '".$admin_customers['number_customers']."', 
-				`diskspace_used` = '".$admin_customers['diskspace']."', 
-				`mysqls_used` = '".$admin_customers['mysqls']."', 
-				`emails_used` = '".$admin_customers['emails']."', 
-				`email_forwarders_used` = '".$admin_customers['email_forwarders']."', 
-				`ftps_used` = '".$admin_customers['ftps']."', 
-				`subdomains_used` = '".$admin_customers['subdomains']."', 
-				`traffic_used` = '".$admin_customers['traffic']."',
-				`domains_used` = '".$admin_domains['number_domains']."'
-				WHERE `adminid` = '".$admin['adminid']."'");
+			$db->query(	'UPDATE `'.TABLE_PANEL_ADMINS.'` ' .
+						'SET `customers_used` = "'.$admin_customers['number_customers'].'", ' .
+						'    `diskspace_used` = "'.$admin_customers['diskspace'].'", ' .
+						'    `mysqls_used` = "'.$admin_customers['mysqls'].'", ' .
+						'    `emails_used` = "'.$admin_customers['emails'].'", ' .
+						'    `email_forwarders_used` = "'.$admin_customers['email_forwarders'].'", ' .
+						'    `ftps_used` = "'.$admin_customers['ftps'].'", ' .
+						'    `subdomains_used` = "'.$admin_customers['subdomains'].'", ' .
+						'    `traffic_used` = "'.$admin_customers['traffic'].'", ' .
+						'    `domains_used` = "'.$admin_domains['number_domains'].'" ' .
+						'WHERE `adminid` = "'.$admin['adminid'].'"');
 		}
 	}
 
