@@ -46,7 +46,7 @@
 			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				$debugMsg[] = '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain'];
@@ -92,10 +92,12 @@
 						if($domain['parentdomainid'] == '0')
 						{
 							$speciallogfile = '-'.$domain['domain'];
+							$vhosts_file .= '   Alias /webalizer '.$domain['customerroot'].'/webalizer/'.$domain['domain']."\n";
 						}
 						else
 						{
 							$speciallogfile = '-'.$domain['parentdomain'];
+							$vhosts_file .= '   Alias /webalizer '.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\n";
 						}
 					}
 					else
