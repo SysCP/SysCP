@@ -449,5 +449,49 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.6-cvs1';
 	}
+	if($settings['panel']['version'] == '1.2.6-cvs1')
+	{
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_NAVIGATION.'` ADD `order` INT( 4 ) NOT NULL AFTER `url`' );
+		
+		$areas = array('login','admin','customer');
+		foreach($areas as $area)
+		{
+			$result = $db->query(
+				'SELECT * ' .
+				'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+				'WHERE `area`=\''.$area.'\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 
+				'ORDER BY `order`, `id` ASC'
+			);
+			$i=0;
+			while ($row = $db->fetch_array($result))
+			{
+				$i++;
+				$db->query(
+					'UPDATE `'.TABLE_PANEL_NAVIGATION.'` '.
+					'SET `order`=\''.($i*10).'\' '.
+					'WHERE `id`=\''.$row['id'].'\''
+				);
+				$subResult = $db->query(
+					'SELECT * '.
+					'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
+					'WHERE `area`=\''.$area.'\' AND `parent_url`=\''.$row['url'].'\' ' . 
+					'ORDER BY `order`, `id` ASC'
+				);
+				$j=0;
+				while($subRow = $db->fetch_array($subResult))
+				{
+					$j++;
+					$db->query(
+						'UPDATE `'.TABLE_PANEL_NAVIGATION.'` '.
+						'SET `order`=\''.($j*10).'\' '.
+						'WHERE `id`=\''.$subRow['id'].'\''
+					);
+				}
+			}
+		}
+		
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.6-cvs2';
+	}
 
 ?>
