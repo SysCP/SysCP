@@ -424,40 +424,45 @@ DROP TABLE IF EXISTS `panel_navigation`;
 CREATE TABLE `panel_navigation` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `area` varchar(20) NOT NULL default '',
-  `parent_id` int(11) unsigned NOT NULL default '0',
+  `parent_url` varchar(255) NOT NULL default '',
   `lang` varchar(255) NOT NULL default '',
   `url` varchar(255) NOT NULL default '',
+  `required_resources` varchar(255) NOT NULL default '',
+  `new_window` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=25 ;
+) TYPE=MyISAM ;
 
-# 
+#
 # Dumping data for table `panel_navigation`
-# 
+#
 
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (1, 'login', 0, 'login;login', '');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (2, 'customer', 0, 'menue;main;main', 'customer_index.php');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (3, 'customer', 2, 'menue;main;changepassword', 'customer_index.php?page=change_password');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (4, 'customer', 2, 'login;logout', 'customer_index.php?action=logout');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (5, 'customer', 0, 'menue;email;email', 'customer_email.php');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (6, 'customer', 5, 'menue;email;pop', 'customer_email.php?page=pop');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (7, 'customer', 5, 'menue;email;forwarders', 'customer_email.php?page=forwarders');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (8, 'customer', 0, 'menue;mysql;mysql', 'customer_mysql.php');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (9, 'customer', 8, 'menue;mysql;databases', 'customer_mysql.php?page=mysqls');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (10, 'customer', 0, 'menue;domains;domains', 'customer_domains.php');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (11, 'customer', 10, 'menue;domains;settings', 'customer_domains.php?page=domains');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (12, 'customer', 0, 'menue;ftp;ftp', 'customer_ftp.php');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (13, 'customer', 12, 'menue;ftp;accounts', 'customer_ftp.php?page=accounts');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (14, 'customer', 0, 'menue;extras;extras', 'customer_extras.php');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (15, 'customer', 14, 'menue;extras;directoryprotection', 'customer_extras.php?page=htpasswds');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (16, 'customer', 14, 'menue;extras;pathoptions', 'customer_extras.php?page=htaccess');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (17, 'admin', 0, 'admin;overview', 'admin_index.php?page=overview');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (18, 'admin', 0, 'menue;main;changepassword', 'admin_index.php?page=change_password');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (19, 'admin', 0, 'admin;customers', 'admin_customers.php?page=customers');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (20, 'admin', 0, 'admin;domains', 'admin_domains.php?page=domains');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (21, 'admin', 0, 'admin;admins', 'admin_admins.php?page=admins');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (22, 'admin', 0, 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (23, 'admin', 0, 'admin;serversettings', 'admin_settings.php?page=settings');
-INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (24, 'admin', 0, 'login;logout', 'admin_index.php?action=logout');
+INSERT INTO `panel_navigation` VALUES (1, 'login', '', 'login;login', '', '', 0);
+INSERT INTO `panel_navigation` VALUES (2, 'customer', '', 'menue;main;main', 'customer_index.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (3, 'customer', 'customer_index.php', 'menue;main;changepassword', 'customer_index.php?page=change_password', '', 0);
+INSERT INTO `panel_navigation` VALUES (4, 'customer', 'customer_index.php', 'login;logout', 'customer_index.php?action=logout', '', 0);
+INSERT INTO `panel_navigation` VALUES (5, 'customer', '', 'menue;email;email', 'customer_email.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (6, 'customer', 'customer_email.php', 'menue;email;pop', 'customer_email.php?page=pop', 'emails', 0);
+INSERT INTO `panel_navigation` VALUES (7, 'customer', 'customer_email.php', 'menue;email;forwarders', 'customer_email.php?page=forwarders', 'email_forwarders', 0);
+INSERT INTO `panel_navigation` VALUES (8, 'customer', '', 'menue;mysql;mysql', 'customer_mysql.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (9, 'customer', 'customer_mysql.php', 'menue;mysql;databases', 'customer_mysql.php?page=mysqls', 'mysqls', 0);
+INSERT INTO `panel_navigation` VALUES (10, 'customer', '', 'menue;domains;domains', 'customer_domains.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (11, 'customer', 'customer_domains.php', 'menue;domains;settings', 'customer_domains.php?page=domains', '', 0);
+INSERT INTO `panel_navigation` VALUES (12, 'customer', '', 'menue;ftp;ftp', 'customer_ftp.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (13, 'customer', 'customer_ftp.php', 'menue;ftp;accounts', 'customer_ftp.php?page=accounts', '', 0);
+INSERT INTO `panel_navigation` VALUES (14, 'customer', '', 'menue;extras;extras', 'customer_extras.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (15, 'customer', 'customer_extras.php', 'menue;extras;directoryprotection', 'customer_extras.php?page=htpasswds', '', 0);
+INSERT INTO `panel_navigation` VALUES (16, 'customer', 'customer_extras.php', 'menue;extras;pathoptions', 'customer_extras.php?page=htaccess', '', 0);
+INSERT INTO `panel_navigation` VALUES (17, 'admin', '', 'admin;overview', 'admin_index.php?page=overview', '', 0);
+INSERT INTO `panel_navigation` VALUES (18, 'admin', '', 'menue;main;changepassword', 'admin_index.php?page=change_password', '', 0);
+INSERT INTO `panel_navigation` VALUES (19, 'admin', '', 'admin;customers', 'admin_customers.php?page=customers', 'customers', 0);
+INSERT INTO `panel_navigation` VALUES (20, 'admin', '', 'admin;domains', 'admin_domains.php?page=domains', 'domains', 0);
+INSERT INTO `panel_navigation` VALUES (21, 'admin', '', 'admin;admins', 'admin_admins.php?page=admins', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (22, 'admin', '', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (23, 'admin', '', 'admin;serversettings', 'admin_settings.php?page=settings', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (24, 'admin', '', 'login;logout', 'admin_index.php?action=logout', '', 0);
+
+
+# --------------------------------------------------------
 
 #
 # Table structure for table `panel_languages`
@@ -479,6 +484,9 @@ INSERT INTO `panel_languages` VALUES (1, 'Deutsch', 'lng/german.lng.php');
 INSERT INTO `panel_languages` VALUES (2, 'English', 'lng/english.lng.php');
 INSERT INTO `panel_languages` VALUES (3, 'Francais', 'lng/french.lng.php');
 INSERT INTO `panel_languages` VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');
+
+
+# --------------------------------------------------------
 
 # 
 # Table structure for table `panel_cronscript`
