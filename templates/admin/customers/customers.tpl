@@ -10,6 +10,7 @@ $header
      <td class="maintable">ID&nbsp;&nbsp;<a href="admin_customers.php?page=customers&sortby=loginname&sortorder=desc&s=$s"><img src="images/order_desc.gif" border="0"/></a><a href="admin_customers.php?page=customers&sortby=loginname&sortorder=asc&s=$s"><img src="images/order_asc.gif" border="0"/></a></td>
      <if $userinfo['customers_see_all']><td class="maintable">{$lng['admin']['admin']}&nbsp;&nbsp;<a href="admin_customers.php?page=customers&sortby=adminid&sortorder=desc&s=$s"><img src="images/order_desc.gif" border="0"/></a><a href="admin_customers.php?page=customers&sortby=adminid&sortorder=asc&s=$s"><img src="images/order_asc.gif" border="0"/></a></td></if>
      <td class="maintable">{$lng['customer']['name']}</td>
+     <td class="maintable">Domains</td>
      <td class="maintable">Space<br />Traffic</td>
      <td class="maintable">MySQL<br />FTP</td>
      <td class="maintable">eMails<br />Subdomains</td>
