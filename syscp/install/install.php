@@ -50,7 +50,7 @@
 	/**
 	 * Language Managament
 	 */
-	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' ) ;
+	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' , 'french' => 'Francais' ) ;
 	$standardlanguage = 'english';
 	if(isset($_GET['language']) && isset($languages[$_GET['language']]))
 	{

@@ -131,7 +131,7 @@
 	/**
 	 * Language Managament
 	 */
-	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' ) ;
+	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' , 'french' => 'Francais' ) ;
 	if(!isset($userinfo['language']) || !isset($languages[$userinfo['language']]))
 	{
 		if(isset($_GET['language']) && isset($languages[$_GET['language']]))
