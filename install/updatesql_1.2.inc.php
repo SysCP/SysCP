@@ -218,7 +218,7 @@
 	}
 	if($settings['panel']['version'] == '1.2.3-cvs3')
 	{
-		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `url`=`index.php` WHERE `id`='1'");
+		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `url`='index.php' WHERE `id`='1'");
 		
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.3-cvs4';

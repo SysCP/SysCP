@@ -75,6 +75,8 @@
 
 	updateCounters ();
 
+	@chmod ( '../lib/userdata.inc.php' , 0440 ) ;
+
 	header('Location: ../index.php');
  
 ?>
