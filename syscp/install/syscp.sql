@@ -544,6 +544,8 @@ INSERT INTO `panel_navigation` VALUES (25, 'admin', 'admin_resources.nourl', 'ad
 INSERT INTO `panel_navigation` VALUES (26, 'admin', '', 'admin;server', 'admin_server.nourl', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (27, 'admin', 'admin_server.nourl', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (28, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (29, 'admin', 'admin;templates;templates', 'admin_templates.nourl', 0);
+INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_templates.nourl', 'admin;templates;email', 'admin_templates.php?page=email', 0);
 
 
 # --------------------------------------------------------
