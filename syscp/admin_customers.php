@@ -152,7 +152,7 @@
 					{
 						$admin_update_query .= ", `diskspace_used` = `diskspace_used` - 0".$result['diskspace'];
 					}
-					$admin_update_query .= " WHERE `adminid` = '{$userinfo['adminid']}'";
+					$admin_update_query .= " WHERE `adminid` = '{$result['adminid']}'";
 					$db->query( $admin_update_query );
 
 					inserttask('1');
@@ -298,6 +298,11 @@
 
 						inserttask('2',$loginname,$guid,$guid);
 						inserttask('1');
+
+						// Add htpasswd for the webalizer stats
+						$path = $documentroot . '/webalizer/' ;
+						$db->query("INSERT INTO `".TABLE_PANEL_HTPASSWDS."` (`customerid`, `username`, `password`, `path`) VALUES ('$customerid', '$loginname', '".crypt($password)."', '$path')");
+						inserttask('3',$path);
 
 						$result=$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('$customerid', '$loginname', ENCRYPT('$password'), '$documentroot/', 'y', '$guid', '$guid')");
 						$result=$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('$customerid', '$loginname', '$guid', '$loginname')");
@@ -494,7 +499,7 @@
 								$admin_update_query .= " - 0".($result['diskspace'])." ";
 							}
 						}
-						$admin_update_query .= " WHERE `adminid` = '{$userinfo['adminid']}'";
+						$admin_update_query .= " WHERE `adminid` = '{$result['adminid']}'";
 						$db->query( $admin_update_query );
 
 						header("Location: $filename?page=$page&s=$s");
