@@ -56,9 +56,15 @@
 
 			$domains='';
 			$result=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `c`.`loginname`, `c`.`name`, `c`.`firstname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."ORDER BY `$sortby` $sortorder");
+			$domain_array=array();
 			while($row=$db->fetch_array($result))
 			{
 				$row['domain'] = $idna_convert->decode($row['domain']);
+				$domain_array[$row['domain']] = $row;
+			}
+			ksort($domain_array);
+			foreach($domain_array as $row)
+			{
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 			}
 			eval("echo \"".getTemplate("domains/domains")."\";");
