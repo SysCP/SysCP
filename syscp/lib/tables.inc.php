@@ -27,11 +27,10 @@ define('TABLE_PANEL_SESSIONS','panel_sessions');
 define('TABLE_PANEL_SETTINGS','panel_settings');
 define('TABLE_PANEL_TASKS','panel_tasks');
 define('TABLE_PANEL_TRAFFIC','panel_traffic');
-define('TABLE_POSTFIX_TRANSPORT','postfix_transport');
-define('TABLE_POSTFIX_USERS','postfix_users');
-define('TABLE_POSTFIX_VIRTUAL','postfix_virtual');
-define('TABLE_PROFTPD_GROUPS','proftpd_groups');
-define('TABLE_PROFTPD_USERS','proftpd_users');
+define('TABLE_MAIL_USERS','mail_users');
+define('TABLE_MAIL_VIRTUAL','mail_virtual');
+define('TABLE_FTP_GROUPS','ftp_groups');
+define('TABLE_FTP_USERS','ftp_users');
 
 $version = '1.1-cvs';
 

@@ -316,7 +316,7 @@
 			 */
 			$mailtraffic=0;
 			$ftptraffic=Array();
-			$ftptraffic=$db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `".TABLE_PROFTPD_USERS."` WHERE `customerid`='".$row['customerid']."'");
+			$ftptraffic=$db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$row['customerid']."'");
 
 			/**
 			 * Total Traffic
@@ -342,7 +342,7 @@
 
 			if(date('d')=='01')
 			{
-				$db->query("UPDATE `".TABLE_PROFTPD_USERS."` SET `up_bytes`='0', `down_bytes`='0' WHERE `customerid`='".$row['customerid']."'");
+				$db->query("UPDATE `".TABLE_FTP_USERS."` SET `up_bytes`='0', `down_bytes`='0' WHERE `customerid`='".$row['customerid']."'");
 			}
 
 			/**

@@ -41,7 +41,7 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `username`, `homedir` FROM `".TABLE_PROFTPD_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `username` ASC");
+			$result=$db->query("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `username` ASC");
 			$accounts='';
 			while($row=$db->fetch_array($result))
 			{
@@ -61,14 +61,14 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `username`, `homedir`, `up_count`, `up_bytes`, `down_count`, `down_bytes` FROM `".TABLE_PROFTPD_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `username`, `homedir`, `up_count`, `up_bytes`, `down_count`, `down_bytes` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['username']) && $result['username']!=$userinfo['loginname'])
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("UPDATE `".TABLE_PROFTPD_USERS."` SET `up_count`=`up_count`+'".$result['up_count']."', `up_bytes`=`up_bytes`+'".$result['up_bytes']."', `down_count`=`down_count`+'".$result['down_count']."', `down_bytes`=`down_bytes`+'".$result['down_bytes']."' WHERE `username`='".$userinfo['loginname']."' ");
-					$db->query("DELETE FROM `".TABLE_PROFTPD_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
-//					$db->query("DELETE FROM `".TABLE_PROFTPD_GROUPS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `up_count`=`up_count`+'".$result['up_count']."', `up_bytes`=`up_bytes`+'".$result['up_bytes']."', `down_count`=`down_count`+'".$result['down_count']."', `down_bytes`=`down_bytes`+'".$result['down_bytes']."' WHERE `username`='".$userinfo['loginname']."' ");
+					$db->query("DELETE FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+//					$db->query("DELETE FROM `".TABLE_FTP_GROUPS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					if($userinfo['ftps_used']=='1')
 					{
 						$resetaccnumber=" , `ftp_lastaccountnumber`='0'";
@@ -107,7 +107,7 @@
 						$path='/'.$path;
 					}
 					$path=$userinfo['documentroot'].$path;
-					$path_check=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_PROFTPD_USERS."` WHERE `homedir`='$path' AND `customerid`='".$userinfo['customerid']."'");
+					$path_check=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `homedir`='$path' AND `customerid`='".$userinfo['customerid']."'");
 					$password=addslashes($_POST['password']);
 					if($path=='' || $password=='' || /*$path_check['homedir']==$path ||*/ !is_dir($path))
 					{
@@ -124,8 +124,8 @@
 					else
 					{
 						$username=$userinfo['loginname'].$settings['customer']['ftpprefix'].(intval($userinfo['ftp_lastaccountnumber'])+1);
-						$db->query("INSERT INTO `".TABLE_PROFTPD_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('".$userinfo['customerid']."', '$username', '$password', '$path', 'y', '".$userinfo['guid']."', '".$userinfo['guid']."')");
-//						$db->query("INSERT INTO `".TABLE_PROFTPD_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
+						$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('".$userinfo['customerid']."', '$username', '$password', '$path', 'y', '".$userinfo['guid']."', '".$userinfo['guid']."')");
+//						$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`+1, `ftp_lastaccountnumber`=`ftp_lastaccountnumber`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 //						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$uid' WHERE settinggroup='ftp' AND varname='lastguid'");
 						header("Location: $filename?page=$page&s=$s");
@@ -139,7 +139,7 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_PROFTPD_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['username']) && $result['username']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
@@ -152,7 +152,7 @@
 					}
 					else
 					{
-						$db->query("UPDATE `".TABLE_PROFTPD_USERS."` SET `password`='$password' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+						$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`='$password' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						header("Location: $filename?page=$page&s=$s");
 					}
 				}

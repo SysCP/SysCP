@@ -100,12 +100,12 @@
 					$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='$id' AND `adminsession` = '0'");
 					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC."` WHERE `customerid`='$id'");
 
-					$db->query("DELETE FROM `".TABLE_POSTFIX_TRANSPORT."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_POSTFIX_USERS."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_TRANSPORT."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='$id'");
 
-					$db->query("DELETE FROM `".TABLE_PROFTPD_GROUPS."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_PROFTPD_USERS."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_FTP_GROUPS."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_FTP_USERS."` WHERE `customerid`='$id'");
 
 					$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` - 1,".
 						" `domains_used` = `domains_used` - 0".($domains_deleted - $result['subdomains_used']).",".
@@ -226,8 +226,8 @@
 
 						inserttask('2',$loginname,$guid,$guid);
 
-						$result=$db->query("INSERT INTO `".TABLE_PROFTPD_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('$customerid', '$loginname', '$password', '$documentroot/', 'y', '$guid', '$guid')");
-						$result=$db->query("INSERT INTO `".TABLE_PROFTPD_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('$customerid', '$loginname', '$guid', '$loginname')");
+						$result=$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('$customerid', '$loginname', '$password', '$documentroot/', 'y', '$guid', '$guid')");
+						$result=$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('$customerid', '$loginname', '$guid', '$loginname')");
 
 						if($sendpassword == '1')
 						{
@@ -320,8 +320,8 @@
 						}
 						if($deactivated != $result['deactivated'])
 						{
-							$db->query("UPDATE `".TABLE_POSTFIX_USERS."` SET `postfix`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='$id'");
-							$db->query("UPDATE `".TABLE_PROFTPD_USERS."` SET `login_enabled`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='$id'");
+							$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `postfix`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='$id'");
+							$db->query("UPDATE `".TABLE_FTP_USERS."` SET `login_enabled`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='$id'");
 							$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `deactivated`='$deactivated' WHERE `customerid`='$id'");
 							inserttask('1');
 						}
