@@ -39,6 +39,32 @@
 	 * Include the MySQL-Table-Definitions
 	 */
 	require('../lib/tables.inc.php');
+	
+	/**
+	 * Language Managament
+	 */
+	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' ) ;
+	$standardlanguage = 'english';
+	if(isset($_GET['language']) && isset($languages[$_GET['language']]))
+	{
+		$language = addslashes($_GET['language']);
+	}
+	elseif(isset($_POST['language']) && isset($languages[$_POST['language']]))
+	{
+		$language = addslashes($_POST['language']);
+	}
+	else
+	{
+		$language = $standardlanguage;
+	}
+
+	if(file_exists('./lng/'.$language.'.lng.php'))
+	{
+		/**
+		 * Includes file /lng/$language.lng.php if it exists
+		 */
+		require('./lng/'.$language.'.lng.php');
+	}
 
 	/**
 	 * BEGIN FUNCTIONS -----------------------------------------------
@@ -377,13 +403,13 @@
 		</tr>
 <?php
 		//first test if we can access the database server with the given root user and password
-		status_message('begin', 'Teste, ob die MySQL-Root-Benutzerdaten richtig sind...');
+		status_message('begin', $lng['install']['testing_mysql']);
 		$db_root = new db($mysql_host, $mysql_root_user, $mysql_root_pass, '');
 		//ok, if we are here, the database class is build up (otherwise it would have already die'd this script)
 		status_message('green', 'OK');
 
 		//so first we have to delete the database and the user given for the unpriv-user if they exit
-		status_message('begin', 'Entferne alte Datenbank...');
+		status_message('begin', $lng['install']['erasing_old_db']);
 		$db_root->query("DELETE FROM `mysql`.`user` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_host';");
 		$db_root->query("DELETE FROM `mysql`.`db` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_host';");
 		$db_root->query("DELETE FROM `mysql`.`tables_priv` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_host';");
@@ -393,7 +419,7 @@
 		status_message('green', 'OK');
 
 		//then we have to create a new user and database for the syscp unprivileged mysql access
-		status_message('begin', 'Erstelle Datenbank und Benutzer...');
+		status_message('begin', $lng['install']['create_mysqluser_and_db']);
 		$db_root->query("CREATE DATABASE `$mysql_database`;");
 		$db_root->query("GRANT ALL PRIVILEGES ON `$mysql_database`.* TO $mysql_unpriv_user@$mysql_host IDENTIFIED BY 'password';");
 		$db_root->query("SET PASSWORD FOR $mysql_unpriv_user@$mysql_host = PASSWORD('$mysql_unpriv_pass');");
@@ -401,11 +427,11 @@
 		status_message('green', 'OK');
 
 		//now a new database and the new syscp-unprivileged-mysql-account have been created and we can fill it now with the data.
-		status_message('begin', 'Teste, ob die Datenbank und Passwort korrekt angelegt wurden...');
+		status_message('begin', $lng['install']['testing_new_db']);
 		$db = new db($mysql_host, $mysql_unpriv_user, $mysql_unpriv_pass, $mysql_database);
 		status_message('green', 'OK');
 
-		status_message('begin', 'Importiere Daten in die MySQL-Datenbank...');
+		status_message('begin', $lng['install']['importing_data']);
 		$db_schema = './syscp.sql';
 		$sql_query = @fread(@fopen($db_schema, 'r'), @filesize($db_schema));
 		$sql_query = remove_remarks($sql_query);
@@ -421,7 +447,7 @@
 		status_message('green', 'OK');
 
 		//now let's chenage the settings in our settings-table
-		status_message('begin', 'Passe importierten die Daten an...');
+		status_message('begin', $lng['install']['changing_data']);
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = 'admin@$servername' WHERE `settinggroup` = 'panel' AND `varname` = 'adminmail'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = 'http://$servername/phpmyadmin' WHERE `settinggroup` = 'panel' AND `varname` = 'phpmyadmin_url'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$serverip' WHERE `settinggroup` = 'system' AND `varname` = 'ipaddress'");
@@ -430,12 +456,12 @@
 		status_message('green', 'OK');
 
 		//last but not least create the main admin
-		status_message('begin', 'F&uuml;ge den Admin-Benutzer hinzu...');
+		status_message('begin', $lng['install']['adding_admin_user']);
 		$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `customers`, `customers_used`, `customers_see_all`, `domains`, `domains_used`, `domains_see_all`, `change_serversettings`, `diskspace`, `diskspace_used`, `mysqls`, `mysqls_used`, `emails`, `emails_used`, `email_forwarders`, `email_forwarders_used`, `ftps`, `ftps_used`, `subdomains`, `subdomains_used`, `traffic`, `traffic_used`, `deactivated`) VALUES ('admin', '".md5($admin_pass1)."', 'Siteadmin', 'admin@$servername', -1, 0, 1, -1, 0, 1, 1, -1024, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1048576, 0, 0);");
 		status_message('green', 'OK');
 
 		//now we create the userdata.inc.php with the mysql-accounts
-		status_message('begin', 'Erstelle Konfigurationsdatei...');
+		status_message('begin', $lng['install']['creating_configfile']);
 		$userdata="<?php\n";
 		$userdata.="//automatically generated userdata.inc.php for SysCP\n";
 		$userdata.="\$sql['host']='$mysql_host';\n";
@@ -451,24 +477,24 @@
 		{
 			$result = @fputs($fp, $userdata, strlen($userdata));
 			@fclose($fp);
-			status_message('green', 'OK, userdata.inc.php wurde in lib/ gespeichert.');
+			status_message('green', $lng['install']['creating_configfile_succ']);
 			chmod('../lib/userdata.inc.php', 0440);
 		}
 		elseif($fp = @fopen('/tmp/userdata.inc.php', 'w'))
 		{
 			$result = @fputs($fp, $userdata, strlen($userdata));
 			@fclose($fp);
-			status_message('orange', 'Datei wurde in /tmp/userdata.inc.php gespeichert, bitte nach lib/ verschieben.');
+			status_message('orange', $lng['install']['creating_configfile_temp']);
 			chmod('/tmp/userdata.inc.php', 0440);
 		}
 		else
 		{
-			status_message('red', 'Konnte lib/userdata.inc.php nicht erstellen, bitte manuell mit folgendem Inhalt anlegen:');
+			status_message('red', $lng['install']['creating_configfile_failed']);
 			echo "\t\t<tr>\n\t\t\t<td class=\"maintable\"><p style=\" margin-left:150px;  margin-right:150px; padding: 9px; border:1px solid #999;\">".nl2br(htmlspecialchars($userdata))."</p></td>\n\t\t</tr>\n";
 		}
 ?>
 		<tr>
-			<td class="maintable" align="center"><br />SysCP wurde erfolgreich installiert.<br /><a href="../index.php">Hier geht es weiter zum Login-Fenster.</a></td>
+			<td class="maintable" align="center"><br /><?php echo $lng['install']['syscp_succ_installed']; ?><br /><a href="../index.php"><?php echo $lng['install']['click_here_to_login']; ?></a></td>
 		</tr>
 	</table><br />
 <?php
@@ -480,69 +506,77 @@
 ?>
 	<table celllpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 		<tr>
-			<td class="maintable" align="center" style="font-size: 18pt;">Willkommen zur SysCP Installation</td>
+			<td class="maintable" align="left"><form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="get"><select name="language"><?php
+				$language_options = '';
+				while(list($language_file, $language_name) = each($languages))
+				{
+					$language_options .= makeoption($language_name, $language_file, $language);
+				}
+				echo $language_options;
+			?></select> <input type="submit" name="choselang" value="Go" /></form></td>
+			<td class="maintable" align="left" style="font-size: 18pt;"><?php echo $lng['install']['welcome']; ?></td>
 		</tr>
 		<tr>
-			<td class="maintable">Vielen Dank dass Sie sich f&uuml;r SysCP entschieden haben. Um Ihre Installation von SysCP zu starten, f&uuml;llen Sie bitte alle Felder unten mit den geforderten Angaben. <b>Hinweis:</b> Eine eventuell bereits existierende Datenbank, die den selben Namen hat wie den, den Sie unten eingeben werden, wird mit allen enthaltenen Daten gel&ouml;scht!</td>
+			<td class="maintable" colspan="2"><?php echo $lng['install']['welcometext']; ?></td>
 		</tr>
 	</table><br />
 	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 	<table celllpadding="3" cellspacing="1" border="0" align="center" class="maintable">
 		<tr>
-		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 3px;"><b>Datenbank</b></td>
+		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 3px;"><b><?php echo $lng['install']['database']; ?></b></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right">MySQL-Hostname:</td>
+		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_hostname']; ?>:</td>
 		 <td class="maintable"><input type="text" name="mysql_host" value="<?php echo $mysql_host; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right">MySQL-Datenbank:</td>
+		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_database']; ?>:</td>
 		 <td class="maintable"><input type="text" name="mysql_database" value="<?php echo $mysql_database; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right">Benutzername f&uuml;r den unpreviligierten MySQL-Account:</td>
+		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_unpriv_user']; ?>:</td>
 		 <td class="maintable"><input type="text" name="mysql_unpriv_user" value="<?php echo $mysql_unpriv_user; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $mysql_unpriv_pass == '') ? ' style="color:red;"' : ''); ?>>Passwort f&uuml;r den unpreviligierten MySQL-Account:</td>
+		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $mysql_unpriv_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_pass']; ?>:</td>
 		 <td class="maintable"><input type="password" name="mysql_unpriv_pass" value="<?php echo $mysql_unpriv_pass; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right">Benutzername f&uuml;r den MySQL-Root-Account:</td>
+		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_root_user']; ?>:</td>
 		 <td class="maintable"><input type="text" name="mysql_root_user" value="<?php echo $mysql_root_user; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $mysql_root_pass == '') ? ' style="color:red;"' : ''); ?>>Passwort f&uuml;r den MySQL-Root-Account:</td>
+		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $mysql_root_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_root_pass']; ?>:</td>
 		 <td class="maintable"><input type="password" name="mysql_root_pass" value="<?php echo $mysql_root_pass; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 7px;"><b>Admin-Zugang</b></td>
+		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 7px;"><b><?php echo $lng['install']['admin_account']; ?></b></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right">Administrator-Benutzername:</td>
+		 <td class="maintable" align="right"><?php echo $lng['install']['admin_user']; ?>:</td>
 		 <td class="maintable"><input type="text" name="admin_user" value="<?php echo $admin_user; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && ($admin_pass1 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>>Administrator-Passwort:</td>
+		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && ($admin_pass1 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass']; ?>:</td>
 		 <td class="maintable"><input type="password" name="admin_pass1" value="<?php echo $admin_pass1; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && ($admin_pass2 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>>Administrator-Passwort (Best&auml;tigung):</td>
+		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && ($admin_pass2 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass_confirm']; ?>:</td>
 		 <td class="maintable"><input type="password" name="admin_pass2" value="<?php echo $admin_pass2; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 7px;"><b>Servereinstellungen</b></td>
+		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 7px;"><b><?php echo $lng['install']['serversettings']; ?></b></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $servername == '') ? ' style="color:red;"' : ''); ?>>Servername (FQDN):</td>
+		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $servername == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['servername']; ?>:</td>
 		 <td class="maintable"><input type="text" name="servername" value="<?php echo $servername; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>>Serverip:</td>
+		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['serverip']; ?>:</td>
 		 <td class="maintable"><input type="text" name="serverip" value="<?php echo $serverip; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right" colspan="2" style=" padding-top: 10px;"><input type="hidden" name="installstep" value="1"><input type="submit" name="submitbutton" value="Fortfahren"></td>
+		 <td class="maintable" align="right" colspan="2" style=" padding-top: 10px;"><input type="hidden" name="language" value="<?php echo $language; ?>"><input type="hidden" name="installstep" value="1"><input type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"></td>
 		</tr>
 	</table>
 	</form><br />
