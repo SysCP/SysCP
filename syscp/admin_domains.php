@@ -133,7 +133,7 @@
 					{
 						$documentroot.='/';
 					}
-					if(substr($documentroot, 0, 1) != '/')
+					if ( ( substr($documentroot, 0, 1) != '/') && ( substr($documentroot,0 ,7) != 'http://') )
 					{
 						$documentroot='/'.$documentroot;
 					}
@@ -157,7 +157,7 @@
 						exit;
 					}
 					else
-					{
+					{ 
 						if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
 						{
 							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=".urlencode($specialsettings).";speciallogfile=$speciallogfile;reallydoit=reallydoit");
