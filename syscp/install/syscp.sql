@@ -438,7 +438,7 @@ CREATE TABLE `panel_navigation` (
 # Dumping data for table `panel_navigation`
 #
 
-INSERT INTO `panel_navigation` VALUES (1, 'login', '', 'login;login', '', '', 0);
+INSERT INTO `panel_navigation` VALUES (1, 'login', '', 'login;login', 'index.php', '', 0);
 INSERT INTO `panel_navigation` VALUES (2, 'customer', '', 'menue;main;main', 'customer_index.php', '', 0);
 INSERT INTO `panel_navigation` VALUES (3, 'customer', 'customer_index.php', 'menue;main;changepassword', 'customer_index.php?page=change_password', '', 0);
 INSERT INTO `panel_navigation` VALUES (4, 'customer', 'customer_index.php', 'login;logout', 'customer_index.php?action=logout', '', 0);
