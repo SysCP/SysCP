@@ -32,4 +32,6 @@ define('TABLE_POSTFIX_VIRTUAL','postfix_virtual');
 define('TABLE_PROFTPD_GROUPS','proftpd_groups');
 define('TABLE_PROFTPD_USERS','proftpd_users');
 
+$version = '1.1-cvs';
+
 ?>

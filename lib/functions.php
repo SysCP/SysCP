@@ -344,4 +344,24 @@
 		return $httptraffic;
 	}
 
+	/**
+	 * Function which returns a correct dirname, means to add slashes at the beginning and at the end if none there and to remove all ..'s
+	 *
+	 * @param string The dirname
+	 * @return string The corrected dirname
+	 */
+	function makeCorrectDir($dir)
+	{
+		$dir = str_replace('..', '', $dir);
+		if(substr($dir, -1, 1) != '/')
+		{
+			$dir .= '/';
+		}
+		if(substr($dir, 0, 1) != '/')
+		{
+			$dir = '/'.$dir;
+		}
+		return $dir;
+	}
+
 ?>
