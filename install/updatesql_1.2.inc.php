@@ -136,11 +136,11 @@
 			'WHERE `lang` = "menue;mysql;phpmyadmin" OR `lang` = "menue;email;webmail" OR `lang` = "menue;ftp;webftp"'
 		);
 
-		$db->query("
-			ALTER TABLE `".TABLE_PANEL_NAVIGATION."` ADD `parent_url` VARCHAR( 255 ) NOT NULL AFTER `parent_id`,
-			ADD `required_resources` VARCHAR( 255 ) NOT NULL ,
-			ADD `new_window` TINYINT( 1 ) UNSIGNED NOT NULL ;
-		");
+		$db->query(
+			'ALTER TABLE `'.TABLE_PANEL_NAVIGATION.'` ADD `parent_url` VARCHAR( 255 ) NOT NULL AFTER `parent_id`, ' . 
+			'ADD `required_resources` VARCHAR( 255 ) NOT NULL , ' . 
+			'ADD `new_window` TINYINT( 1 ) UNSIGNED NOT NULL '
+		);
 
 		$updateNavigationResult = $db->query("SELECT `id`, `url` FROM `".TABLE_PANEL_NAVIGATION."` WHERE `parent_id` = '0'");
 		while ($updateNavigationRow = $db->fetch_array($updateNavigationResult))
@@ -148,7 +148,7 @@
 			$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `parent_url` = '".$updateNavigationRow['url']."' WHERE `parent_id` = '".$updateNavigationRow['id']."'");
 		}
 
-		$db->query("ALTER TABLE `".TABLE_PANEL_NAVIGATION."` DROP `parent_id`");
+		$db->query('ALTER TABLE `'.TABLE_PANEL_NAVIGATION.'` DROP `parent_id`');
 
 		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'emails' WHERE `lang` = 'menue;email;pop'");
 		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'email_forwarders' WHERE `lang` = 'menue;email;forwarders'");
@@ -165,6 +165,7 @@
 				'    `url`        = "'.$settings['panel']['phpmyadmin_url'].'", ' .
 				'    `area`       = "customer", ' .
 				'    `new_window` = "1", ' .
+				'    `required_resources` = "mysqls_used", ' .
 				'    `parent_url` = "customer_mysql.php"'
 			);
 		}
@@ -177,6 +178,7 @@
 				'    `url`        = "'.$settings['panel']['webmail_url'].'", ' .
 				'    `area`       = "customer", ' .
 				'    `new_window` = "1", ' .
+				'    `required_resources` = "emails_used", ' .
 				'    `parent_url` = "customer_email.php"'
 			);
 		}

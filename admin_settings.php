@@ -214,6 +214,7 @@
 						'    `url`        = "'.$value.'", ' .
 						'    `area`       = "customer", ' .
 						'    `new_window` = "1", ' .
+						'    `required_resources` = "mysqls_used", ' .
 						'    `parent_url` = "customer_mysql.php"';
 				}
 				$db->query($query);
@@ -252,6 +253,7 @@
 						'    `url`        = "'.$value.'", ' .
 						'    `area`       = "customer", ' .
 						'    `new_window` = "1", ' .
+						'    `required_resources` = "emails_used", ' .
 						'    `parent_url` = "customer_email.php"';
 				}
 				$db->query($query);
