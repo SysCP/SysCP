@@ -6,7 +6,7 @@ $header
      <tr>
       <td class="maintable">{$lng['login']['username']}</td><td class="maintable">{$lng['panel']['path']}</td><td class="maintable" colspan="2">&nbsp;</td>
      </tr>
-     <if ($userinfo['ftps_used'] < $userinfo['ftps'] || $userinfo['ftps'] == '-1') && 0 < $ftps_count ><tr>
+     <if ($userinfo['ftps_used'] < $userinfo['ftps'] || $userinfo['ftps'] == '-1') && 15 < $ftps_count ><tr>
       <td class="maintable" colspan="4"><a href="$filename?page=accounts&action=add&s=$s">{$lng['ftp']['account_add']}</a></td>
      </tr></if>
      $accounts

@@ -21,6 +21,10 @@
       </tr>
       <tr>
         <td width="3"></td>
+        <td width="123">&raquo; <a href="admin_configfiles.php?page=configfiles&s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></td>
+      </tr>
+      <tr>
+        <td width="3"></td>
         <td width="123">&raquo; <a href="admin_settings.php?page=settings&s=$s">{$lng['admin']['serversettings']}</a></td>
       </tr></if>
       <tr>
