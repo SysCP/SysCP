@@ -265,6 +265,10 @@ CREATE TABLE `panel_htaccess` (
   `customerid` int(11) unsigned NOT NULL default '0',
   `path` varchar(255) NOT NULL default '',
   `options_indexes` tinyint(1) NOT NULL default '0',
+  `error404path` varchar(255) NOT NULL default '',
+  `error403path` varchar(255) NOT NULL default '',
+  `error500path` varchar(255) NOT NULL default '',
+  `error401path` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 

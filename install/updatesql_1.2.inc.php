@@ -256,5 +256,16 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.4-2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.4-2';
 	}
-
+	if($settings['panel']['version'] == '1.2.4-2')
+	{
+		$db->query(
+			'ALTER TABLE `panel_htaccess` ADD `error404path` VARCHAR( 255 ) NOT NULL ,
+				ADD `error403path` VARCHAR( 255 ) NOT NULL ,
+				ADD `error500path` VARCHAR( 255 ) NOT NULL ,
+				ADD `error401path` VARCHAR( 255 ) NOT NULL
+		');
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.4-2cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.4-2cvs1';
+	}
+	
 ?>

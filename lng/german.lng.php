@@ -144,12 +144,22 @@ $lng['extras']['view_directory'] = 'Verzeichnis anzeigen';
 $lng['extras']['pathoptions_add'] = 'Pfadoptionen hinzuf&uuml;gen';
 $lng['extras']['directory_browsing'] = 'Verzeichnisinhalt anzeigen';
 $lng['extras']['pathoptions_edit'] = 'Pfadoptionen bearbeiten';
+$lng['extras']['error404path'] = '404';
+$lng['extras']['error403path'] = '403';
+$lng['extras']['error500path'] = '500';
+$lng['extras']['error401path'] = '401';
+$lng['extras']['errordocument404path'] = 'Pfad zum Fehlerdokoument 404';
+$lng['extras']['errordocument403path'] = 'Pfad zum Fehlerdokoument 403';
+$lng['extras']['errordocument500path'] = 'Pfad zum Fehlerdokoument 500';
+$lng['extras']['errordocument401path'] = 'Pfad zum Fehlerdokoument 401';
+
 
 /**
  * Errors
  */
 $lng['error']['error'] = 'Fehlermeldung';
 $lng['error']['directorymustexist'] = 'Das Verzeichnis, das Sie eingegeben haben muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
+$lng['error']['filemustexist'] = 'Die Datei, welche Sie eingegeben haben muss existieren.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als eMail-Domain verwendet wird l&ouml;schen. ';
 $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomains l&ouml;schen, bevor Sie eine Wildcarddomain anlegen k&ouml;nnen.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
