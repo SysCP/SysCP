@@ -407,13 +407,14 @@ CREATE TABLE `panel_tasks` (
 # Table structure for table `panel_templates`
 #
 
-CREATE TABLE panel_templates (
-  id int(11) NOT NULL auto_increment,
-  adminid int(11) NOT NULL default '0',
-  language varchar(255) NOT NULL default '',
-  templategroup varchar(255) NOT NULL default '',
-  varname varchar(255) NOT NULL default '',
-  value longtext NOT NULL,
+DROP TABLE IF EXISTS `panel_templates`;
+CREATE TABLE `panel_templates` (
+  `id` int(11) NOT NULL auto_increment,
+  `adminid` int(11) NOT NULL default '0',
+  `language` varchar(255) NOT NULL default '',
+  `templategroup` varchar(255) NOT NULL default '',
+  `varname` varchar(255) NOT NULL default '',
+  `value` longtext NOT NULL,
   PRIMARY KEY  (id),
   KEY adminid (adminid)
 ) TYPE=MyISAM;
@@ -507,6 +508,7 @@ CREATE TABLE `panel_navigation` (
   `parent_url` varchar(255) NOT NULL default '',
   `lang` varchar(255) NOT NULL default '',
   `url` varchar(255) NOT NULL default '',
+  `order` int(4) NOT NULL default '0',
   `required_resources` varchar(255) NOT NULL default '',
   `new_window` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
@@ -533,7 +535,7 @@ INSERT INTO `panel_navigation` VALUES (14, 'customer', 'customer_ftp.php', 'menu
 INSERT INTO `panel_navigation` VALUES (15, 'customer', '', 'menue;extras;extras', 'customer_extras.php', '60', '', 0);
 INSERT INTO `panel_navigation` VALUES (16, 'customer', 'customer_extras.php', 'menue;extras;directoryprotection', 'customer_extras.php?page=htpasswds', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (17, 'customer', 'customer_extras.php', 'menue;extras;pathoptions', 'customer_extras.php?page=htaccess', '20', '', 0);
-INSERT INTO `panel_navigation` VALUES (18, 'admin', '', 'admin;overview', 'admin_index.php?page=overview', '10', '', 0);
+INSERT INTO `panel_navigation` VALUES (18, 'admin', '', 'admin;overview', 'admin_index.php', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (19, 'admin', 'admin_index.php', 'menue;main;changepassword', 'admin_index.php?page=change_password', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (20, 'admin', 'admin_index.php', 'menue;main;changelanguage', 'admin_index.php?page=change_language', '20', '', 0);
 INSERT INTO `panel_navigation` VALUES (21, 'admin', 'admin_index.php', 'login;logout', 'admin_index.php?action=logout', '30', '', 0);
@@ -544,7 +546,7 @@ INSERT INTO `panel_navigation` VALUES (25, 'admin', 'admin_resources.nourl', 'ad
 INSERT INTO `panel_navigation` VALUES (26, 'admin', '', 'admin;server', 'admin_server.nourl', '30', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (27, 'admin', 'admin_server.nourl', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', '10', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (28, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', '20', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (29, 'admin', 'admin;templates;templates', 'admin_templates.nourl', '40', '', 0);
+INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;templates;templates', 'admin_templates.nourl', '40', '', 0);
 INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_templates.nourl', 'admin;templates;email', 'admin_templates.php?page=email', '10', '', 0);
 
 
@@ -578,6 +580,7 @@ INSERT INTO `panel_languages` VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');
 # Table structure for table `panel_cronscript`
 # 
 
+DROP TABLE IF EXISTS `panel_cronscript`;
 CREATE TABLE `panel_cronscript` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `file` varchar(255) NOT NULL default '',
