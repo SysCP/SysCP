@@ -101,7 +101,7 @@
 					while($row_database=$db->fetch_array($databases))
 					{
 						$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $row_database['databasename'] . '`@localhost' );
-						$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . $row_database['databasename'] . '` . * FROM `' . $row_database['databasename'] . '`@localhost;' );
+						$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $row_database['databasename'] ) . '` . * FROM `' . $row_database['databasename'] . '`@localhost;' );
 						$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $row_database['databasename'] . '" AND `Host` = "localhost"' );
 						$db_root->query( 'DROP DATABASE IF EXISTS `' . $row_database['databasename'] . '`' );
 					}
