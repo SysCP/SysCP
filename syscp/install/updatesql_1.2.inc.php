@@ -451,6 +451,12 @@
 	}
 	if($settings['panel']['version'] == '1.2.6-cvs1')
 	{
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` '.
+			'SET `parent_url`=\'admin_index.php?page=overview\' '.
+			'WHERE `parent_url`=\'admin_index.php\''
+		);
+		
 		$db->query( 'ALTER TABLE `'.TABLE_PANEL_NAVIGATION.'` ADD `order` INT( 4 ) NOT NULL AFTER `url`' );
 		
 		$areas = array('login','admin','customer');
@@ -489,12 +495,6 @@
 				}
 			}
 		}
-		
-		$db->query(
-			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` '.
-			'SET `parent_url`=\'admin_index.php?page=overview\' '.
-			'WHERE `paren_url`=\'admin_index.php\''
-		);
 		
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.6-cvs2';
