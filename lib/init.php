@@ -55,7 +55,8 @@
 
 	if(!isset($settings['panel']['version']) || $settings['panel']['version'] != $version)
 	{
-		die('Error: Version of File doesnt match Version of Database.');
+		header('Location: ./install/updatesql.php');
+		exit;
 	}
 
 	/**
