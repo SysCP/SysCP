@@ -94,7 +94,7 @@
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."'");
 
 					$path=addslashes($_POST['path']);
-					if(substr($path, 0, 7) != 'http://')
+					if(!preg_match('/^https?\:\/\//', $path))
 					{
 						$path=makeCorrectDir($path);
 						$path=$userinfo['documentroot'].$path;
@@ -139,7 +139,7 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$path=addslashes($_POST['path']);
-					if(substr($path, 0, 7) != 'http://')
+					if(!preg_match('/^https?\:\/\//', $path))
 					{
 						$path=makeCorrectDir($path);
 						$path=$userinfo['documentroot'].$path;
