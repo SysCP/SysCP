@@ -194,7 +194,7 @@
 						//delete
 						$query = 
 							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-							'WHERE `url`="'.$settings['panel']['phpmyadmin_url'].'"';
+							'WHERE `lang` = "menue;mysql;phpmyadmin"';
 					}
 					else
 					{
@@ -202,7 +202,7 @@
 						$query =
 							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'SET `url`="'.$value.'" ' .
-							'WHERE `url`="'.$settings['panel']['phpmyadmin_url'].'"';
+							'WHERE `lang` = "menue;mysql;phpmyadmin"';
 					} 
 				}
 				else
@@ -239,7 +239,7 @@
 						//delete
 						$query = 
 							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-							'WHERE `url`="'.$settings['panel']['webmail_url'].'"';
+							'WHERE `lang` = "menue;email;webmail"';
 					}
 					else
 					{
@@ -247,7 +247,7 @@
 						$query =
 							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'SET `url`="'.$value.'" ' .
-							'WHERE `url`="'.$settings['panel']['webmail_url'].'"';
+							'WHERE `lang` = "menue;email;webmail"';
 					} 
 				}
 				else
@@ -284,7 +284,7 @@
 						//delete
 						$query = 
 							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-							'WHERE `url`="'.$settings['panel']['webftp_url'].'"';
+							'WHERE `lang` = "menue;ftp;webftp"';
 					}
 					else
 					{
@@ -292,7 +292,7 @@
 						$query =
 							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'SET `url`="'.$value.'" ' .
-							'WHERE `url`="'.$settings['panel']['webftp_url'].'"';
+							'WHERE `lang` = "menue;ftp;webftp"';
 					} 
 				}
 				else
