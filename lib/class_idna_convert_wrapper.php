@@ -51,7 +51,8 @@ require('./lib/idna_convert.class.php');
 		 * @return string Returns either a single domain name, a single email address or a list of one of 
 		 * both seperated by the same string as the input.
 		 */
-		function encode($to_encode) {
+		function encode($to_encode)
+		{
 			return $this->_do_action('encode',$to_encode);
 		}
 		
@@ -64,7 +65,8 @@ require('./lib/idna_convert.class.php');
 		 * @return string Returns either a single domain name, a single email address or a list of one of 
 		 * both seperated by the same string as the input.
 		 */
-		function decode($to_decode) {
+		function decode($to_decode)
+		{
 			return $this->_do_action('decode',$to_decode);
 		}
 		
@@ -77,41 +79,51 @@ require('./lib/idna_convert.class.php');
 		 * 
 		 * @return string The input string after being processed. 
 		 */
-		function _do_action($action, $string) {
+		function _do_action($action, $string)
+		{
 			$string = trim($string);
-			if(strpos($string,',') !== false) {
+			if(strpos($string,',') !== false)
+			{
 				$strings = explode(',',$string);
 				$sepchar = ',';
 			}
-			elseif(strpos($string,';') !== false) {
+			elseif(strpos($string,';') !== false)
+			{
 				$strings = explode(';',$string);
 				$sepchar = ';';
 			}
-			elseif(strpos($string,' ') !== false) {
+			elseif(strpos($string,' ') !== false)
+			{
 				$strings = explode(' ',$string);
 				$sepchar = ' ';
 			}
-			else {
+			else
+			{
 				$strings = array($string);
 				$sepchar = '';
 			}
 			
-			for($i = 0; $i < count($strings); $i++) {
-				if(strpos($strings[$i],'@') !== false) {
+			for($i = 0; $i < count($strings); $i++)
+			{
+				if(strpos($strings[$i],'@') !== false)
+				{
 					$split = explode('@',$strings[$i]);
 					$localpart = $split[0];
 					$domain = $split[1];
 					$email = true;
 				}
-				else {
+				else
+				{
 					$domain = $strings[$i];
 					$email = false;
 				}
 				$domain = utf8_decode($this->idna_converter->$action(utf8_encode($domain)));
-				if($email) {
+				if($email)
+				{
 					$strings[$i] = $localpart . '@' . $domain;
 				}
-				else {
+				else
+				{
 					$strings[$i] = $domain;
 				}
 			}
