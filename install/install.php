@@ -380,6 +380,15 @@
 		$admin_pass2 = '';
 	}
 
+	if($mysql_host == 'localhost')
+	{
+		$mysql_access_host = 'localhost';
+	}
+	else
+	{
+		$mysql_access_host = $serverip;
+	}
+
 	/**
 	 * END VARIABLES ---------------------------------------------------
 	 */
@@ -408,10 +417,10 @@
 
 		//so first we have to delete the database and the user given for the unpriv-user if they exit
 		status_message('begin', $lng['install']['erasing_old_db']);
-		$db_root->query("DELETE FROM `mysql`.`user` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_host';");
-		$db_root->query("DELETE FROM `mysql`.`db` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_host';");
-		$db_root->query("DELETE FROM `mysql`.`tables_priv` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_host';");
-		$db_root->query("DELETE FROM `mysql`.`columns_priv` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_host';");
+		$db_root->query("DELETE FROM `mysql`.`user` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
+		$db_root->query("DELETE FROM `mysql`.`db` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
+		$db_root->query("DELETE FROM `mysql`.`tables_priv` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
+		$db_root->query("DELETE FROM `mysql`.`columns_priv` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
 		$db_root->query("DROP DATABASE IF EXISTS `$mysql_database` ;");
 		$db_root->query("FLUSH PRIVILEGES;");
 		status_message('green', 'OK');
@@ -419,8 +428,8 @@
 		//then we have to create a new user and database for the syscp unprivileged mysql access
 		status_message('begin', $lng['install']['create_mysqluser_and_db']);
 		$db_root->query("CREATE DATABASE `$mysql_database`;");
-		$db_root->query("GRANT ALL PRIVILEGES ON `$mysql_database`.* TO $mysql_unpriv_user@$mysql_host IDENTIFIED BY 'password';");
-		$db_root->query("SET PASSWORD FOR $mysql_unpriv_user@$mysql_host = PASSWORD('$mysql_unpriv_pass');");
+		$db_root->query("GRANT ALL PRIVILEGES ON `$mysql_database`.* TO $mysql_unpriv_user@$mysql_access_host IDENTIFIED BY 'password';");
+		$db_root->query("SET PASSWORD FOR $mysql_unpriv_user@$mysql_access_host = PASSWORD('$mysql_unpriv_pass');");
 		$db_root->query("FLUSH PRIVILEGES;");
 		status_message('green', 'OK');
 
@@ -451,6 +460,7 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$servername' WHERE `settinggroup` = 'system' AND `varname` = 'hostname'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$version' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$languages[$language]."' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$mysql_access_host."' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
 		status_message('green', 'OK');
 
 		//last but not least create the main admin

@@ -268,6 +268,7 @@
 				'<SQL_UNPRIVILEGED_USER>' => $sql['user'],
 				'<SQL_UNPRIVILEGED_PASSWORD>' => 'MYSQL_PASSWORD',
 				'<SQL_DB>' => $sql['db'], 
+				'<SQL_HOST>' => $sql['host'],
 				'<SERVERNAME>' => $settings['system']['hostname'],
 				'<SERVERIP>' => $settings['system']['ipaddress'],
 				'<VIRTUAL_MAILBOX_BASE>' => $settings['system']['vmail_homedir'],

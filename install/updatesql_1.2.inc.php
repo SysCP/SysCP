@@ -499,5 +499,20 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.6-cvs2';
 	}
+	if($settings['panel']['version'] == '1.2.6-cvs2')
+	{
+		if($sql['host'] == 'localhost')
+		{
+			$mysql_access_host = 'localhost';
+		}
+		else
+		{
+			$mysql_access_host = $serverip;
+		}
+		$db->query("INSERT INTO `".TABLE_PANEL_SETTINGS."` (`settinggroup`,`varname`,`value`) VALUES ('system','mysql_access_host','$mysql_access_host')");
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.6-cvs3';
+	}
 
 ?>

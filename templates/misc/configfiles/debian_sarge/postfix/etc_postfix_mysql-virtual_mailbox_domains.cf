@@ -4,4 +4,4 @@ dbname = <SQL_DB>
 table = panel_domains
 select_field = domain
 where_field = domain
-hosts = localhost 
+hosts = <SQL_HOST> 
