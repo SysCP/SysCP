@@ -49,7 +49,7 @@ $lng['login']['profile_lng'] = 'Profilsprache';
 $lng['customer']['login'] = 'Benutzername';
 $lng['customer']['documentroot'] = 'Heimverzeichnis';
 $lng['customer']['name'] = 'Name';
-$lng['customer']['surname'] = 'Vorname';
+$lng['customer']['firstname'] = 'Vorname';
 $lng['customer']['company'] = 'Firma';
 $lng['customer']['street'] = 'Strasse';
 $lng['customer']['zipcode'] = 'PLZ';
@@ -182,6 +182,7 @@ $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressource verteilen als Sie noch frei haben.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie den Hauptadmin nicht l&ouml;schen oder bearbeiten.';
 $lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine URL angeben.';
+
 /**
  * Questions
  */
@@ -205,7 +206,7 @@ $lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l
  */
 $lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr eMail-Konto {USERNAME}\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'eMail-Konto erfolgreich eingerichtet';
-$lng['mails']['createcustomer']['mailbody'] = 'Hallo {SURNAME} {NAME},\n\nhier ihre Accountinformationen:\n\nBenutzername: {USERNAME}\nPassword: {PASSWORD}\n\nVielen Dank,\nIhr SysCP-Team';
+$lng['mails']['createcustomer']['mailbody'] = 'Hallo {FIRSTNAME} {NAME},\n\nhier ihre Accountinformationen:\n\nBenutzername: {USERNAME}\nPassword: {PASSWORD}\n\nVielen Dank,\nIhr SysCP-Team';
 $lng['mails']['createcustomer']['subject'] = 'Accountinformationen';
 
 /**
@@ -256,7 +257,7 @@ $lng['admin']['templates']['mailbody'] = 'Mailtext';
 $lng['admin']['templates']['createcustomer'] = 'Willkommensmail f&uuml;r neue Kunden';
 $lng['admin']['templates']['pop_success'] = 'Willkommensmail f&uuml;r neue E-Mail Konten';
 $lng['admin']['templates']['template_replace_vars'] = 'Variablen die in den Vorlagen ersetzt werden:';
-$lng['admin']['templates']['SURNAME'] = 'Wird mit dem Vornamen des Kunden ersetzt.';
+$lng['admin']['templates']['FIRSTNAME'] = 'Wird mit dem Vornamen des Kunden ersetzt.';
 $lng['admin']['templates']['NAME'] = 'Wird mit dem Namen des Kunden ersetzt.';
 $lng['admin']['templates']['USERNAME'] = 'Wird mit dem Benutzernamen des neunen Kundenaccounts ersetzt.';
 $lng['admin']['templates']['PASSWORD'] = 'Wird mit dem Passwort des neunen Kundenaccounts ersetzt.';

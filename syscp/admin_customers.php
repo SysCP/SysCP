@@ -173,7 +173,7 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$name = addslashes ( $_POST['name'] ) ;
-					$surname = addslashes ( $_POST['surname'] ) ;
+					$firstname = addslashes ( $_POST['firstname'] ) ;
 					$company = addslashes ( $_POST['company'] ) ;
 					$street = addslashes ( $_POST['street'] ) ;
 					$zipcode = addslashes($_POST['zipcode'] ) ;
@@ -218,7 +218,7 @@
 						exit;
 					}
 
-					if($name=='' || $surname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
+					if($name=='' || $firstname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
 					{
 						standard_error('notallreqfieldsorerrors');
 						exit;
@@ -257,8 +257,8 @@
 
 						$result=$db->query(
 							"INSERT INTO `".TABLE_PANEL_CUSTOMERS."` ".
-							"(`adminid`, `loginname`, `password`, `name`, `surname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `createstdsubdomain`) ".
-							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$surname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber','$def_language', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '$createstdsubdomain')"
+							"(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `createstdsubdomain`) ".
+							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$firstname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber','$def_language', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '$createstdsubdomain')"
 							);
 						$customerid=$db->insert_id();
 
@@ -311,7 +311,7 @@
 						if($sendpassword == '1')
 						{
 							$replace_arr = array(
-								'SURNAME' => $surname,
+								'FIRSTNAME' => $firstname,
 								'NAME' => $name,
 								'USERNAME' => $loginname,
 								'PASSWORD' => $password
@@ -323,7 +323,7 @@
 							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
 							$admin_result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\'1\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
 							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $admin_result['value']),$replace_arr));
-							mail("$surname $name <$email>",$mail_subject,$mail_body,"From: {$userinfo['name']} <{$userinfo['email']}>\r\n");
+							mail("$firstname $name <$email>",$mail_subject,$mail_body,"From: {$userinfo['name']} <{$userinfo['email']}>\r\n");
 						}
 
 						header("Location: $filename?page=$page&s=$s");
@@ -351,7 +351,7 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$name = addslashes ( $_POST['name'] ) ;
-					$surname = addslashes ( $_POST['surname'] ) ;
+					$firstname = addslashes ( $_POST['firstname'] ) ;
 					$company = addslashes ( $_POST['company'] ) ;
 					$street = addslashes ( $_POST['street'] ) ;
 					$zipcode = addslashes ( $_POST['zipcode'] ) ;
@@ -396,7 +396,7 @@
 						exit;
 					}
 
-					if($name=='' || $surname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
+					if($name=='' || $firstname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
 					{
 						standard_error('notallreqfieldsorerrors');
 						exit;
@@ -430,7 +430,7 @@
 							inserttask('1');
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `surname`='$surname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', `def_language`='$def_language', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `createstdsubdomain`='$createstdsubdomain', `deactivated`='$deactivated' WHERE `customerid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `firstname`='$firstname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', `def_language`='$def_language', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `createstdsubdomain`='$createstdsubdomain', `deactivated`='$deactivated' WHERE `customerid`='$id'");
 
 						$admin_update_query = "UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` ";
 						if ( $mysqls != '-1' || $result['mysqls'] != '-1' )

@@ -36,8 +36,8 @@ $header
        <td class="maintable" colspan="2"><b>{$lng['admin']['templates']['createcustomer']}</b></td>
       </tr>
       <tr>
-       <td class="maintable"><i>{SURNAME}</i>:</td>
-       <td class="maintable">{$lng['admin']['templates']['SURNAME']}</td>
+       <td class="maintable"><i>{FIRSTNAME}</i>:</td>
+       <td class="maintable">{$lng['admin']['templates']['FIRSTNAME']}</td>
       </tr>
       <tr>
        <td class="maintable"><i>{NAME}</i>:</td>
