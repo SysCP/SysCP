@@ -184,6 +184,7 @@
 					$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
 				}
 				
+				$htpasswd_files = array();
 				foreach($diroptions as $row_diroptions)
 				{
 					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
@@ -218,6 +219,7 @@
 							if($htpasswd_filename == '')
 							{
 								$htpasswd_filename = $settings['system']['apacheconf_directory'].'htpasswd/'.$row_diroptions['customerid'].'-'.$row_htpasswd['id'].'-'.md5($row_diroptions['path']).'.htpasswd';
+								$htpasswd_files[] = $htpasswd_filename;
 							}
 							$htpasswd_file .= $row_htpasswd['username'].':'.$row_htpasswd['password']."\n";
 						}
@@ -234,19 +236,19 @@
 						fwrite($htpasswd_file_handler, $htpasswd_file);
 						fclose($htpasswd_file_handler);
 					}
-					else {
-						if( file_exists($row_diroptions['path'].'.htpasswd') )
-						{
-							unlink($row_diroptions['path'].'.htpasswd');
-								$debugMsg[] = '  cron_tasks: Task3 - htpasswd deleted';
-						}
-					}
 					$diroptions_file .= '</Directory>'."\n\n";
 				}
 				$diroptions_file_handler = fopen($settings['system']['apacheconf_directory'].'diroptions.conf', 'w');
 				fwrite($diroptions_file_handler, $diroptions_file);
 				fclose($diroptions_file_handler);
 				safe_exec($settings['system']['apachereload_command']);
+				
+				$htpassswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
+				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle))) {
+					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files)) {
+						unlink($htpasswd_filename);
+					}
+				}
 			}
 		}
 
