@@ -123,26 +123,13 @@
 				{
 					$vhosts_file.='  php_admin_flag safe_mode On '."\n";
 				}
-				if($settings['system']['documentrootstyle'] == 'domain')
+				if (!file_exists($domain['documentroot']))
 				{
-					$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-'.$domain['domain'].'-error.log'."\n";
-					$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-'.$domain['domain'].'-access.log combined'."\n";
-					if (!file_exists($domain['documentroot']))
-					{
-						exec('mkdir -p '.$domain['documentroot']);
-						exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
-					}
-					if (!file_exists($domain['documentroot'].'/webalizer'))
-					{
-						exec('mkdir -p '.$domain['documentroot'].'/webalizer');
-						exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot'].'/webalizer');
-					}
+					exec('mkdir -p '.$domain['documentroot']);
+					exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
 				}
-				else
-				{
-					$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-error.log'."\n";
-					$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-access.log combined'."\n";
-				}
+				$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-error.log'."\n";
+				$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-access.log combined'."\n";
 				$vhosts_file.=$domain['specialsettings']."\n";
 				$vhosts_file.='</VirtualHost>'."\n";
 				$vhosts_file.="\n";
@@ -285,18 +272,7 @@
 			 * HTTP-Traffic
 			 */
 			$httptraffic = 0;
-			if($settings['system']['documentrootstyle'] == 'domain')
-			{
-				$domain_result = $db->query("SELECT `domain`, `documentroot` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".$row['customerid']."'");
-				while($domain_row = $db->fetch_array($domain_result))
-				{
-					$httptraffic += webalizer_hist($row['loginname'].'-'.$domain_row['domain'], $domain_row['documentroot'], $domain_row['domain']);
-				}
-			}
-			else
-			{
-				$httptraffic = webalizer_hist($row['loginname'], $row['documentroot'], $row['loginname']);
-			}
+			$httptraffic = webalizer_hist($row['loginname'], $row['documentroot'], $row['loginname']);
 
 			/**
 			 * FTP-Traffic

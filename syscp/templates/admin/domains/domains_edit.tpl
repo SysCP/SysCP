@@ -16,11 +16,11 @@ $header
        <td class="maintable">Domain:</td>
        <td class="maintable" nowrap>{$result['domain']}</td>
       </tr>
-      <if $settings['system']['documentrootstyle'] == 'customer' && $userinfo['change_serversettings'] == '1'><tr>
+      <if $userinfo['change_serversettings'] == '1'><tr>
        <td class="maintable" nowrap>DocumentRoot:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="documentroot" value="{$result['documentroot']}"></td>
-      </tr></if>
-      <if $userinfo['change_serversettings'] == '1'><tr>
+      </tr>
+      <tr>
        <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="zonefile" value="{$result['zonefile']}"></td>
       </tr>

@@ -172,7 +172,7 @@
 						exit;
 					}
 
-					if($name=='' || $surname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) || ($settings['customer']['loginnamestyle'] == 'dynamic' && $_POST['loginname'] == '') )
+					if($name=='' || $surname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
 					{
 						standard_error('notallreqfieldsorerrors');
 						exit;
