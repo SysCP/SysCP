@@ -1,5 +1,5 @@
      <tr>
-      <td class="maintable"><font size="-1">{$row['loginname']}</font></td>
+      <td class="maintable"><a href="$filename?s=$s&page=$page&action=su&id={$row['customerid']}" target="_blank">{$row['loginname']}</a></td>
       <td class="maintable"><font size="-1">{$row['name']} {$row['surname']}</font></td>
       <td class="maintable"><font size="-1"<if $row['diskspace'] < $row['diskspace_used'] && $row['diskspace'] != 'UL'> color="red"</if>>{$row['diskspace_used']}/{$row['diskspace']}</font></td>
       <td class="maintable"><font size="-1"<if $row['traffic'] < $row['traffic_used'] && $row['traffic'] != 'UL'> color="red"</if>>{$row['traffic_used']}/{$row['traffic']}</font></td>
