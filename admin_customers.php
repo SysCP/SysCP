@@ -74,9 +74,8 @@
 
 		elseif($action=='su' && $id!=0)
 		{
-			$result = $db->query("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
-			$count = $db->num_rows($result);
-			if($count == 1)
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
+			if($result['loginname']!='')
 			{
 				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`={$userinfo['userid']}");
 				$s = md5(uniqid(microtime(),1));
@@ -180,8 +179,7 @@
 					    ( ( ($userinfo['emails_used'] + $emails) > $userinfo['emails']) && $userinfo['emails'] != '-1') || 
 					    ( ( ($userinfo['email_forwarders_used'] + $email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1') || 
 					    ( ( ($userinfo['ftps_used'] + $ftps) > $userinfo['ftps']) && $userinfo['ftps'] != '-1') || 
-					    ( ( ($userinfo['subdomains_used'] + $subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1') || 
-					    ( ( ($userinfo['traffic_used'] + $traffic) > $userinfo['traffic']) && ($userinfo['traffic']/(1024*1024)) != '-1')
+					    ( ( ($userinfo['subdomains_used'] + $subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
 					  )
 					{
 						standard_error('youcantallocatemorethanyouhave');
@@ -234,7 +232,6 @@
 							" `email_forwarders_used` = `email_forwarders_used` + 0".$email_forwarders.",".
 							" `subdomains_used` = `subdomains_used` + 0".$subdomains.",".
 							" `ftps_used` = `ftps_used` + 0".$ftps.",".
-							" `traffic_used` = `traffic_used` + 0".$traffic.",".
 							" `diskspace_used` = `diskspace_used` + 0".$diskspace.
 							" WHERE `adminid` = '{$userinfo['adminid']}'");
 
@@ -352,7 +349,6 @@
 							" `email_forwarders_used` = `email_forwarders_used` + 0".($email_forwarders)." - 0".($result['email_forwarders']).",".
 							" `subdomains_used` = `subdomains_used` + 0".($subdomains)." - 0".($result['subdomains']).",".
 							" `ftps_used` = `ftps_used` + 0".($ftps)." - 0".($result['ftps']).",".
-							" `traffic_used` = `traffic_used` + 0".($traffic)." - 0".($result['traffic']).",".
 							" `diskspace_used` = `diskspace_used` + 0".($diskspace)." - 0".($result['diskspace']).
 							" WHERE `adminid` = '{$userinfo['adminid']}'");
 

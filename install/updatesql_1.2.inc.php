@@ -200,10 +200,10 @@
 	}
 	if($settings['panel']['version'] == '1.2.3-cvs1')
 	{
-        $db->query(
-        	'ALTER TABLE `panel_databases` ' .
-        	'ADD `description` VARCHAR( 255 ) NOT NULL'
-        );
+		$db->query(
+			'ALTER TABLE `panel_databases` ' .
+			'ADD `description` VARCHAR( 255 ) NOT NULL'
+		);
 		
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.3-cvs2';
@@ -223,4 +223,28 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.3-cvs4';
 	}
+	if($settings['panel']['version'] == '1.2.3-cvs4')
+	{
+		$db->query("ALTER TABLE `".TABLE_PANEL_TRAFFIC."` ADD UNIQUE `date` ( `customerid` , `year` , `month` , `day` )");
+		$db->query("
+			CREATE TABLE `".TABLE_PANEL_TRAFFIC_ADMINS."` (
+			  `id` int(11) unsigned NOT NULL auto_increment,
+			  `adminid` int(11) unsigned NOT NULL default '0',
+			  `year` int(4) unsigned zerofill NOT NULL default '0000',
+			  `month` int(2) unsigned zerofill NOT NULL default '00',
+			  `day` int(2) unsigned zerofill NOT NULL default '00',
+			  `http` bigint(30) unsigned NOT NULL default '0',
+			  `ftp_up` bigint(30) unsigned NOT NULL default '0',
+			  `ftp_down` bigint(30) unsigned NOT NULL default '0',
+			  `mail` bigint(30) unsigned NOT NULL default '0',
+			  PRIMARY KEY  (`id`),
+			  KEY `adminid` (`adminid`),
+			  UNIQUE `date` (`adminid` , `year` , `month` , `day`)
+			) TYPE=MyISAM
+		");
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs5' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.3-cvs5';	
+	}
+
 ?>

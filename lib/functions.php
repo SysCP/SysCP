@@ -504,7 +504,7 @@
 				'SUM(`email_forwarders`) AS `email_forwarders`, ' .
 				'SUM(`ftps`) AS `ftps`, ' .
 				'SUM(`subdomains`) AS `subdomains`, ' .
-				'SUM(`traffic`) AS `traffic` ' .
+				'SUM(`traffic_used`) AS `traffic_used` ' .
 				'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
 				'WHERE `adminid` = "'.$admin['adminid'].'"'
 			);
@@ -524,7 +524,7 @@
 				'    `email_forwarders_used` = "'.$admin_customers['email_forwarders'].'", ' .
 				'    `ftps_used` = "'.$admin_customers['ftps'].'", ' .
 				'    `subdomains_used` = "'.$admin_customers['subdomains'].'", ' .
-				'    `traffic_used` = "'.$admin_customers['traffic'].'", ' .
+				'    `traffic_used` = "'.$admin_customers['traffic_used'].'", ' .
 				'    `domains_used` = "'.$admin_domains['number_domains'].'" ' .
 				'WHERE `adminid` = "'.$admin['adminid'].'"'
 			);
