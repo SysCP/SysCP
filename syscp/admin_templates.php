@@ -82,7 +82,7 @@
 			eval("echo \"".getTemplate("templates/templates")."\";");
 		}
 
-		elseif($action=='delete' && $subjectid!=0 && $mailbodyid!=0)
+		elseif($action=='delete' && $subjectid!=0 && $mailbodyid!=0 && $userinfo['adminid'] != '1')
 		{
 			$result=$db->query_first("SELECT `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `id`='$subjectid'");
 			if($result['varname']!='')
@@ -92,7 +92,8 @@
 					$db->query("DELETE FROM `".TABLE_PANEL_TEMPLATES."` WHERE `id`='$subjectid' OR `id`='$mailbodyid'");
 					header("Location: $filename?page=$page&s=$s");
 				}
-				else {
+				else
+				{
 					ask_yesno('admin_template_reallydelete', $filename, "subjectid=$subjectid;mailbodyid=$mailbodyid;page=$page;action=$action", $result['language'].' - '.$lng['admin']['templates'][str_replace('_subject','',$result['varname'])]);
 				}
 			}
