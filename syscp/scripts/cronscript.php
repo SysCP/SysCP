@@ -21,10 +21,15 @@
 	{
 		die('This script will only work in the shell.');
 	}
-
+	
+	$cronscriptDebug = false;
 	$lockfile='/var/run/syscp_cron.lock';
+	$debugMsg[] = 'Setting Lockfile to '.$lockfile;
+	
 	$pathtophpfiles='/var/www/syscp';
+	$debugMsg[] = 'Setting SysCP installation path to '.$pathtophpfiles;
 
+	
 	$filename = 'cronscript.php';
 	if(file_exists($lockfile))
 	{
@@ -36,22 +41,26 @@
 	else
 	{
 		exec('touch '.$lockfile);
+		$debugMsg[] = 'Creating Lockfile';
 	}
 	
 	/**
 	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
 	require("$pathtophpfiles/lib/userdata.inc.php");
+	$debugMsg[] = 'Userdatas included';
 
 	/**
 	 * Includes the MySQL-Tabledefinitions etc.
 	 */
 	require("$pathtophpfiles/lib/tables.inc.php");
+	$debugMsg[] = 'Table definitions included';
 
 	/**
 	 * Includes the MySQL-Connection-Class
 	 */
 	require("$pathtophpfiles/lib/class_mysqldb.php");
+	$debugMsg[] = 'Database Class has been loaded';
 	$db      = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
 	$db_root = new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 	if($db->link_id == 0 || $db_root->link_id == 0)
@@ -62,7 +71,8 @@
 		unlink($lockfile);
 		die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 	}
-
+	$debugMsg[] = 'Database Connection established';
+	
 	unset($sql['password']);
 	unset($db->password);
 
@@ -73,6 +83,8 @@
 	}
 	unset($row);
 	unset($result);
+	$debugMsg[] = 'SysCP Settings has been loaded from the datbase';
+	
 	
 	if(!isset($settings['panel']['version']) || $settings['panel']['version'] != $version)
 	{
@@ -82,11 +94,13 @@
 		unlink($lockfile);
 		die('Version of File doesnt match Version of Database. Exiting...');
 	}
-
+	$debugMsg[] = 'SysCP Version and Database Version are correct';
+	
 	/**
 	 * Includes the Functions
 	 */
 	require("$pathtophpfiles/lib/functions.php");
+	$debugMsg[] = 'Functions has been included';
 
 	/**
 	 * Backend Wrapper
@@ -94,13 +108,27 @@
 	$query = 
 		'SELECT * ' .
 		'FROM `'.TABLE_PANEL_CRONSCRIPT.'` ';
-	$result = $db->query($query);
-	while ($cronFileIncludeRow = $db->fetch_array($result))
+	$cronFileIncludeResult = $db->query($query);
+	while ($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
 	{
+		$debugMsg[] = 'Processing ...'.$$pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
 		include_once $pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
+		$debugMsg[] = 'Processing done!';
+		
 	}
 
 	unlink($lockfile);
-
+	$debugMsg[] = 'Deleting Lockfile!';
+	
 	$db->close();
+	$debugMsg[] = 'Closing DB Connection!';
+	
+	if ($cronscriptDebug)
+	{
+		foreach ($debugMsg as $k => $v)
+		{
+			print $v."\n";
+		}
+	}
+	
 ?>
