@@ -722,4 +722,40 @@
 	function check_username_prefix($username_prefix) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_\.]*$/",$username_prefix);
 	}
+	
+	/**
+	 * Returns an integer of the given value which isn't negative.
+	 * Returns -1 if the given value was -1.
+	 *
+	 * @param any The value
+	 * @return int The positive value
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function intval_ressource ( $the_value )
+	{
+		$the_value = intval ( $the_value ) ;
+		if ( $the_value < 0 && $the_value != '-1')
+		{
+			$the_value *= -1 ;
+		}
+		return $the_value ;
+	}
+	/**
+	 * Returns a double of the given value which isn't negative.
+	 * Returns -1 if the given value was -1.
+	 *
+	 * @param any The value
+	 * @return double The positive value
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function doubleval_ressource ( $the_value )
+	{
+		$the_value = doubleval ( $the_value ) ;
+		if ( $the_value < 0 && $the_value != '-1')
+		{
+			$the_value *= -1 ;
+		}
+		return $the_value ;
+	}
+
 ?>
