@@ -52,8 +52,8 @@
 	 * Includes the MySQL-Connection-Class
 	 */
 	require("$pathtophpfiles/lib/class_mysqldb.php");
-	$db=new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
-	$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
+	$db      = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
+	$db_root = new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 	if($db->link_id == 0 || $db_root->link_id == 0)
 	{
 		/**
@@ -95,11 +95,12 @@
 		'SELECT * ' .
 		'FROM `'.TABLE_PANEL_CRONSCRIPT.'` ';
 	$result = $db->query($query);
-	while ($row = $db->fetch_array($result))
+	while ($cronFileIncludeRow = $db->fetch_array($result))
 	{
-		include_once $pathtophpfiles.'/scripts/'.$row['file'];
+		include_once $pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
 	}
 
 	unlink($lockfile);
 
+	$db->close();
 ?>
