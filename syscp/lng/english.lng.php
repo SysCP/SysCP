@@ -214,6 +214,10 @@ $lng['admin']['deactivated'] = 'Deactivated';
 $lng['admin']['deactivated_user'] = 'Deactivate User';
 $lng['admin']['sendpassword'] = 'Send password';
 $lng['admin']['ownvhostsettings'] = 'Own vHost-Settings';
+$lng['admin']['configfiles']['serverconfiguration'] = 'Serverconfiguration';
+$lng['admin']['configfiles']['files'] = '<b>Configfiles:</b> Please change the following files or create them with<br />the following content if they do not exist.<br /><b>Please Note:</b> The MySQL-password has not been replaced for security reasons.<br />Please replace &quot;MYSQL_PASSWORD&quot; on your own. If you forgot your MySQL-password<br />you\'ll find it in &quot;lib/userdata.inc.php&quot;.';
+$lng['admin']['configfiles']['commands'] = '<b>Commands:</b> Please execute the following commands in a shell.';
+$lng['admin']['configfiles']['restart'] = '<b>Restart:</b> Please execute the following commands in a shell in order to reload the new configuration.';
 
 /**
  * Serversettings

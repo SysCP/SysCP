@@ -1,0 +1,7 @@
+user = <SQL_UNPRIVILEGED_USER>
+password = <SQL_UNPRIVILEGED_PASSWORD>
+dbname = <SQL_DB>
+table = panel_domains
+select_field = 'virtual'
+where_field = domain
+hosts = localhost

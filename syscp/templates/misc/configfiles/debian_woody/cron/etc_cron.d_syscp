@@ -1,0 +1,4 @@
+#
+# Regular cron jobs for the syscp package
+#
+*/5 * * * *	root	/usr/bin/php4 -q -c /etc/php4/syscpcron /usr/local/syscp/cronscript.php
