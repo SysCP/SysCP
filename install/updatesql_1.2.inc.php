@@ -521,5 +521,10 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.6-cvs4';
 	}
+	if($settings['panel']['version'] == '1.2.6-cvs4')
+	{
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.7';
+	}
 
 ?>
