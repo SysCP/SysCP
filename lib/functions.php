@@ -796,7 +796,8 @@
 		$query  = 
 			'SELECT * ' .
 			'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-			'WHERE `area`="'.AREA.'"';
+			'WHERE `area`="'.AREA.'"' . 
+			'ORDER BY `id` ASC' ;
 		$result = $db->query($query);
 		//
 		// presort in multidimensional array
