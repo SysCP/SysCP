@@ -208,20 +208,13 @@
 				else
 				{
 					// insert into menu
-						// get parent_id
-					$query =
-						'SELECT `id` ' .
-						'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-						'WHERE `lang` = "menue;mysql;mysql"';
-					$parent_id = $db->query_first($query);
-					$parent_id = $parent_id['id'];
-						// generate insert
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
-						'SET `lang`      = "menue;mysql;phpmyadmin", ' .
-						'    `url`       = "'.$value.'", ' .
-						'    `area`      = "customer", ' .
-						'    `parent_id` = "'.$parent_id.'"';
+						'SET `lang`       = "menue;mysql;phpmyadmin", ' .
+						'    `url`        = "'.$value.'", ' .
+						'    `area`       = "customer", ' .
+						'    `new_window` = "1", ' .
+						'    `parent_url` = "customer_mysql.php"';
 				}
 				$db->query($query);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='phpmyadmin_url'");
@@ -253,20 +246,13 @@
 				else
 				{
 					// insert into menu
-						// get parent_id
-					$query =
-						'SELECT `id` ' .
-						'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-						'WHERE `lang` = "menue;email;email"';
-					$parent_id = $db->query_first($query);
-					$parent_id = $parent_id['id'];
-						// generate insert
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
-						'SET `lang`      = "menue;email;webmail", ' .
-						'    `url`       = "'.$value.'", ' .
-						'    `area`      = "customer", ' .
-						'    `parent_id` = "'.$parent_id.'"';
+						'SET `lang`       = "menue;email;webmail", ' .
+						'    `url`        = "'.$value.'", ' .
+						'    `area`       = "customer", ' .
+						'    `new_window` = "1", ' .
+						'    `parent_url` = "customer_email.php"';
 				}
 				$db->query($query);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='webmail_url'");
@@ -298,20 +284,13 @@
 				else
 				{
 					// insert into menu
-						// get parent_id
-					$query =
-						'SELECT `id` ' .
-						'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-						'WHERE `lang` = "menue;ftp;ftp"';
-					$parent_id = $db->query_first($query);
-					$parent_id = $parent_id['id'];
-						// generate insert
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
-						'SET `lang`      = "menue;ftp;webftp", ' .
-						'    `url`       = "'.$value.'", ' .
-						'    `area`      = "customer", ' .
-						'    `parent_id` = "'.$parent_id.'"';
+						'SET `lang`       = "menue;ftp;webftp", ' .
+						'    `url`        = "'.$value.'", ' .
+						'    `area`       = "customer", ' .
+						'    `new_window` = "1", ' .
+						'    `parent_url` = "customer_ftp.php"';
 				}
 				$db->query($query);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");

@@ -606,7 +606,7 @@
 	 ******************************************************/
 	function getNavigation($s)
 	{
-		global $db, $lng;
+		global $db, $lng, $userinfo;
 		
 		$return = '';
 		//
@@ -622,13 +622,13 @@
 		//
 		while ($row = $db->fetch_array($result))
 		{
-			if ($row['parent_id'] == 0)
+			if ($row['parent_url'] == '' || $row['parent_url'] == ' ')
 			{
-				$nav[$row['id']][0] = $row;
+				$nav[$row['url']][0] = $row;
 			}
 			else
 			{
-				$nav[$row['parent_id']][] = $row;
+				$nav[$row['parent_url']][] = $row;
 			}
 		}
 		//
@@ -636,44 +636,59 @@
 		//
 		if ( (isset($nav)) && (sizeof($nav) > 0))
 		{
-			foreach ($nav as $parent_id => $row) 
+			foreach ($nav as $parent_url => $row) 
 			{
 				foreach ($row as $id => $navElem )
 				{
-					$url = '';
-					// get corect lang string
-					$lngArr = split(';',$navElem['lang']);
-					$text = $lng;
-					foreach ($lngArr as $lKey => $lValue)
+					if ( $navElem['required_resources'] == '' || $userinfo[$navElem['required_resources']] > 0 || $userinfo[$navElem['required_resources']] == '-1' )
 					{
-						$text = $text[$lValue];
-					}
-					if ($navElem['parent_id'] != '0')
-					{
-						$indent = '&nbsp;&nbsp;&nbsp;&raquo; ';
-					}
-					else
-					{
-						$indent = '&raquo; ';
-					}
-					$sid = '';
-					// append sid only to local
-					if ( !preg_match('/^https?\:\/\//', $navElem['url'] ) && (isset($s)) )
-					{
-						// generate sid with ? oder &
-						if (preg_match('/\?/',$navElem['url']))
+						// get corect lang string
+						$lngArr = split(';',$navElem['lang']);
+						$text = $lng;
+						foreach ($lngArr as $lKey => $lValue)
 						{
-							$sid = '&s='.$s;
+							$text = $text[$lValue];
+						}
+						if ($navElem['parent_url'] != '' && $navElem['parent_url'] != ' ')
+						{
+							$indent = '&nbsp;&nbsp;&nbsp;&raquo; ';
 						}
 						else
 						{
-							$sid = '?s='.$s;
+							$indent = '&raquo; ';
 						}
+						$sid = '';
+						// append sid only to local
+						if ( !preg_match('/^https?\:\/\//', $navElem['url'] ) && (isset($s)) )
+						{
+							// generate sid with ? oder &
+							if (preg_match('/\?/',$navElem['url']))
+							{
+								$sid = '&s='.$s;
+							}
+							else
+							{
+								$sid = '?s='.$s;
+							}
+						}
+						// see if link should be opened in a new window
+						$target = '';
+						if ( $navElem['new_window'] == '1' )
+						{
+							$target = ' target="_blank"';
+						}
+						// assign url
+						if ( $navElem['url'] != '' && $navElem['url'] != ' ' )
+						{
+							$completeLink = '<a href="' . $navElem['url'] . $sid . '"' . $target . '>' . $text . '</a>' ;
+						}
+						else
+						{
+							$completeLink = $text ;
+						}
+						// read template
+						eval("\$return .= \"".getTemplate("navigation",1)."\";");
 					}
-					// assign url
-					$url = '<a href="'.$navElem['url'].$sid.'">';
-					// read template
-					eval("\$return .= \"".getTemplate("navigation",1)."\";");
 				}
 			}
 		}
