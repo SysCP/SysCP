@@ -73,7 +73,7 @@
 					header("Location: $filename?page=$page&s=$s");
 				}
 				else {
-					ask_yesno('domains_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['domain']);
+					ask_yesno('domains_reallydelete', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['domain']));
 				}
 			}
 			else
