@@ -141,10 +141,6 @@
 				$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
 				$row['options_indexes'] = str_replace('1', $lng['panel']['yes'], $row['options_indexes']);
 				$row['options_indexes'] = str_replace('0', $lng['panel']['no'], $row['options_indexes']);
-				$row['error404path']    = str_replace($userinfo['documentroot'],'',$row['error404path']);
-				$row['error401path']    = str_replace($userinfo['documentroot'],'',$row['error401path']);
-				$row['error403path']    = str_replace($userinfo['documentroot'],'',$row['error403path']);
-				$row['error500path']    = str_replace($userinfo['documentroot'],'',$row['error500path']);
 				eval("\$htaccess.=\"".getTemplate("extras/htaccess_htaccess")."\";");
 			}
 			eval("echo \"".getTemplate("extras/htaccess")."\";");
@@ -173,51 +169,52 @@
 				$path            = makeCorrectDir(addslashes($_POST['path']));
 				$path            = $userinfo['documentroot'].$path;
 				$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
-				if ($_POST['error404path'] != '')
-				{
-					$error404path = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error404path']);
-				}
-				else
-				{
-					$error404path = '';
-				}
-				if ($_POST['error403path'] != '')
-				{
-					$error403path    = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error403path']);
-				}
-				else
-				{
-					$error403path = '';
-				}
-				if ($_POST['error401path'] != '')
-				{
-					$error401path    = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error401path']);
-				}
-				else
-				{
-					$error401path = '';
-				}
-				if ($_POST['error500path'] != '')
-				{
-					$error500path    = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error500path']);
-				}
-				else
-				{
-					$error500path = '';
-				}
+					if (    ($_POST['error404path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error404path']) )
+					   )
+					{
+						$error404path = $_POST['error404path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+					if (    ($_POST['error403path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error403path']) )
+					   )
+					{
+						$error403path = $_POST['error403path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+					if (    ($_POST['error500path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error500path']) )
+					   )
+					{
+						$error500path = $_POST['error500path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+					if (    ($_POST['error401path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+					   )
+					{
+						$error401path = $_POST['error401path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+
 				
-				if (    ( ($error404path != '') && (!file_exists($error404path)) )
-				     || ( ($error403path != '') && (!file_exists($error403path)) ) 
-				     || ( ($error401path != '') && (!file_exists($error401path)) ) 
-				     || ( ($error500path != '') && (!file_exists($error500path)) ) 
-				   )
-				{
-					standard_error('filemustexist');
-				}
-				elseif (    ($path == '') 
-				         || ($path_dupe_check['path'] == $path) 
-				         || (!is_dir($path)) 
-				       )
+				if (    ($path == '') 
+			         || ($path_dupe_check['path'] == $path) 
+			         || (!is_dir($path)) 
+			       )
 				{
 					if (!is_dir($path))
 					{
@@ -281,46 +278,45 @@
 					{
 						$option_indexes = '0';
 					}
-					if ($_POST['error404path'] != '')
-					{
-						$error404path = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error404path']);
-					}
-					else
-					{
-						$error404path = '';
-					}
-					if ($_POST['error403path'] != '')
-					{
-						$error403path    = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error403path']);
-					}
-					else
-					{
-						$error403path = '';
-					}
-					if ($_POST['error401path'] != '')
-					{
-						$error401path    = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error401path']);
-					}
-					else
-					{
-						$error401path = '';
-					}
-					if ($_POST['error500path'] != '')
-					{
-						$error500path    = makeCorrectFile($userinfo['documentroot'] . '/' . $_POST['error500path']);
-					}
-					else
-					{
-						$error500path = '';
-					}
-					
-					if (    ( ($error404path != '') && (!file_exists($error404path)) )
-					     || ( ($error403path != '') && (!file_exists($error403path)) ) 
-					     || ( ($error401path != '') && (!file_exists($error401path)) ) 
-					     || ( ($error500path != '') && (!file_exists($error500path)) ) 
+					if (    ($_POST['error404path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error404path']) )
 					   )
 					{
-						standard_error('filemustexist');
+						$error404path = $_POST['error404path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+					if (    ($_POST['error403path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error403path']) )
+					   )
+					{
+						$error403path = $_POST['error403path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+					if (    ($_POST['error500path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error500path']) )
+					   )
+					{
+						$error500path = $_POST['error500path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+					if (    ($_POST['error401path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+					   )
+					{
+						$error401path = $_POST['error401path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
 					}
 
 					if (    ($option_indexes != $result['options_indexes'])
@@ -331,27 +327,26 @@
 					   )
 					{
 						inserttask('3', $result['path']);
+						$db->query(
+							'UPDATE `'.TABLE_PANEL_HTACCESS.'` ' .
+							'SET `options_indexes` = "'.$option_indexes.'",' .
+							'    `error404path`    = "'.$error404path.'", ' .
+							'    `error403path`    = "'.$error403path.'", ' .
+							'    `error401path`    = "'.$error401path.'", ' .
+							'    `error500path`    = "'.$error500path.'" ' .
+							'WHERE `customerid` = "'.$userinfo['customerid'].'" ' .
+							'  AND `id` = "'.$id.'"'
+						);
 					}
-					$db->query(
-						'UPDATE `'.TABLE_PANEL_HTACCESS.'` ' .
-						'SET `options_indexes` = "'.$option_indexes.'",' .
-						'    `error404path`    = "'.$error404path.'", ' .
-						'    `error403path`    = "'.$error403path.'", ' .
-						'    `error401path`    = "'.$error401path.'", ' .
-						'    `error500path`    = "'.$error500path.'" ' .
-						'WHERE `customerid` = "'.$userinfo['customerid'].'" ' .
-						'  AND `id` = "'.$id.'"'
-					);
-					inserttask('3',$result['path']);
 					header("Location: $filename?page=$page&s=$s");
 				}
 				else
 				{
 					$result['path']         = str_replace($userinfo['documentroot'], '', $result['path']);
-					$result['error404path'] = str_replace($userinfo['documentroot'], '', $result['error404path']);
-					$result['error403path'] = str_replace($userinfo['documentroot'], '', $result['error403path']);
-					$result['error401path'] = str_replace($userinfo['documentroot'], '', $result['error401path']);
-					$result['error500path'] = str_replace($userinfo['documentroot'], '', $result['error500path']);
+					$result['error404path'] = $result['error404path'];
+					$result['error403path'] = $result['error403path'];
+					$result['error401path'] = $result['error401path'];
+					$result['error500path'] = $result['error500path'];
 					$options_indexes = makeyesno('options_indexes', '1', '0', $result['options_indexes']);
 					eval("echo \"".getTemplate("extras/htaccess_edit")."\";");
 				}

@@ -156,10 +156,10 @@ $lng['extras']['error404path'] = '404';
 $lng['extras']['error403path'] = '403';
 $lng['extras']['error500path'] = '500';
 $lng['extras']['error401path'] = '401';
-$lng['extras']['errordocument404path'] = 'Path to ErrorDocument 404';
-$lng['extras']['errordocument403path'] = 'Path to ErrorDocument 403';
-$lng['extras']['errordocument500path'] = 'Path to ErrorDocument 500';
-$lng['extras']['errordocument401path'] = 'Path to ErrorDocument 401';
+$lng['extras']['errordocument404path'] = 'URL to ErrorDocument 404';
+$lng['extras']['errordocument403path'] = 'URL to ErrorDocument 403';
+$lng['extras']['errordocument500path'] = 'URL to ErrorDocument 500';
+$lng['extras']['errordocument401path'] = 'URL to ErrorDocument 401';
 
 /**
  * Errors
@@ -178,7 +178,7 @@ $lng['error']['notallreqfieldsorerrors'] = 'You have not filled in all or filled
 $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more resources than you own for yourself.';
 $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
-
+$lng['error']['mustbeurl'] = 'You have not typed a valid url';
 /**
  * Questions
  */
