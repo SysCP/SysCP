@@ -26,6 +26,7 @@
 
 	if($page=='overview')
 	{
+		$domains = '';
 		$result=$db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1'");
 		while($row=$db->fetch_array($result))
 		{
