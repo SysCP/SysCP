@@ -37,6 +37,6 @@ define('TABLE_PANEL_NAVIGATION','panel_navigation');
 define('TABLE_PANEL_LANGUAGE','panel_languages');
 define('TABLE_PANEL_CRONSCRIPT','panel_cronscript');
 
-$version = '1.2.6-cvs2';
+$version = '1.2.6-cvs3';
 
 ?>

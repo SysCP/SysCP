@@ -51,10 +51,8 @@
 			{
 //				echo 'customer_accountprefix<br />';
 				$value=addslashes($_POST['customer_accountprefix']);
-				if(!check_username_prefix($value)) {
-					
-				}
-				else {
+				if(check_username_prefix($value))
+				{
 					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='accountprefix'");
 				}
 			}
@@ -63,14 +61,20 @@
 			{
 //				echo 'customer_mysqlprefix<br />';
 				$value=addslashes($_POST['customer_mysqlprefix']);
-				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='mysqlprefix'");
+				if(check_username_prefix($value))
+				{
+					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='mysqlprefix'");
+				}
 			}
 
 			if($_POST['customer_ftpprefix']!=$settings['customer']['ftpprefix'])
 			{
 //				echo 'customer_ftpprefix<br />';
 				$value=addslashes($_POST['customer_ftpprefix']);
-				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='ftpprefix'");
+				if(check_username_prefix($value))
+				{
+					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='ftpprefix'");
+				}
 			}
 
 			if($_POST['system_documentroot_prefix']!=$settings['system']['documentroot_prefix'])
@@ -95,6 +99,37 @@
 				$value=addslashes($_POST['system_ipaddress']);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
 				inserttask('1');
+
+				if($sql['host'] != 'localhost')
+				{
+					$mysql_access_host = $value;
+
+					// Connect as root to change hostnames from where the server will be accessed to new ip
+					$db_root = new db($sql['host'],$sql['root_user'],$sql['root_password']);
+
+					// Update our sql unprivileged and privileged (root) user
+					$update_users = '"' . $sql['user'] . '", "' . $sql['root_user'] . '"' ;
+
+					// Update all customer databases
+					$databases = $db->query('SELECT `databasename` FROM `' . TABLE_PANEL_DATABASES . '`;');
+					while ( $database = $db->fetch_array ( $databases ) )
+					{
+						$update_users .= ', "' . $database['databasename'] .'"' ;
+					}
+
+					// Do the update
+					$db_root->query("UPDATE `mysql`.`user` SET `HOST` = '$mysql_access_host' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $settings['system']['mysql_access_host'] . "';");
+					$db_root->query("UPDATE `mysql`.`db` SET `HOST` = '$mysql_access_host' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $settings['system']['mysql_access_host'] . "';");
+					$db_root->query("UPDATE `mysql`.`tables_priv` SET `HOST` = '$mysql_access_host' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $settings['system']['mysql_access_host'] . "';");
+					$db_root->query("UPDATE `mysql`.`columns_priv` SET `HOST` = '$mysql_access_host' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $settings['system']['mysql_access_host'] . "';");
+	
+					// Clean up and disconnect
+					$db_root->query("FLUSH PRIVILEGES;");
+					$db_root->close();
+					unset($db_root);
+
+					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$mysql_access_host' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
+				}
 			}
 
 			if($_POST['system_hostname']!=$settings['system']['hostname'])

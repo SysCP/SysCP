@@ -4,4 +4,5 @@ dbname = <SQL_DB>
 table = mail_virtual
 select_field = destination
 where_field = email
-hosts = localhost 
+additional_conditions = and destination <> '' and destination <> ' '
+hosts = <SQL_HOST> 

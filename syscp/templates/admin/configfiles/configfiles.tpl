@@ -4,13 +4,13 @@ $header
        <td class="title">{$configfiles[$distribution]['daemons'][$daemon]['label']}</td>
       </tr>
       <if $commands != ''><tr>
-       <td class="maintable">{$lng['admin']['configfiles']['commands']}<br /><p align="center"><textarea rows="6" cols="70" readonly="readonly">$commands</textarea></p></td>
+       <td class="maintable">{$lng['admin']['configfiles']['commands']}<br /><textarea rows="6" cols="70" readonly="readonly">$commands</textarea></td>
       </tr></if>
       <if $files != ''><tr>
        <td class="maintable">{$lng['admin']['configfiles']['files']}<br />{$files}</td>
       </tr></if>
       <if $restart != ''><tr>
-       <td class="maintable">{$lng['admin']['configfiles']['restart']}<br /><p align="center"><textarea rows="1" cols="70" readonly="readonly">$restart</textarea></p></td>
+       <td class="maintable">{$lng['admin']['configfiles']['restart']}<br /><textarea rows="1" cols="70" readonly="readonly">$restart</textarea></td>
       </tr></if>
      </table>
 $footer 

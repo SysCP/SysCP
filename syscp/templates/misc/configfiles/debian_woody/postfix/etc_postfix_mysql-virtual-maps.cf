@@ -5,4 +5,4 @@ table = mail_users
 select_field = maildir
 where_field = email
 additional_conditions = and postfix = 'y'
-hosts = localhost 
+hosts = <SQL_HOST> 

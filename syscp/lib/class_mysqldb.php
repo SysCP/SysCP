@@ -72,7 +72,7 @@
 		 * @param string Password
 		 * @param string Database
 		 */
-		function db($server,$user,$password,$database)
+		function db($server,$user,$password,$database='')
 		{
 			// check for mysql extension
 			if (!extension_loaded('mysql'))

@@ -64,9 +64,9 @@
 					$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 					unset($db_root->password);
 
-					$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $result['databasename'] . '`@localhost' );
-					$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $result['databasename'] ) . '` . * FROM `' . $result['databasename'] . '`@localhost;' );
-					$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $result['databasename'] . '" AND `Host` = "localhost"' );
+					$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $result['databasename'] . '`@' . $settings['system']['mysql_access_host'] . ';' );
+					$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $result['databasename'] ) . '` . * FROM `' . $result['databasename'] . '`@' . $settings['system']['mysql_access_host'] . ';' );
+					$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $result['databasename'] . '" AND `Host` = "' . $settings['system']['mysql_access_host'] . '"' );
 					$db_root->query( 'DROP DATABASE IF EXISTS `' . $result['databasename'] . '`' );
 					$db_root->query( 'FLUSH PRIVILEGES' );
 
@@ -116,8 +116,8 @@
 						unset($db_root->password);
 
 						$db_root->query( 'CREATE DATABASE `' . $username . '`' );
-						$db_root->query( 'GRANT ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $username ) . '`.* TO `' . $username . '`@localhost IDENTIFIED BY \'password\'' );
-						$db_root->query( 'SET PASSWORD FOR `' . $username .'`@localhost = PASSWORD(\'' . $password . '\')' );
+						$db_root->query( 'GRANT ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $username ) . '`.* TO `' . $username . '`@' . $settings['system']['mysql_access_host'] . ' IDENTIFIED BY \'password\'' );
+						$db_root->query( 'SET PASSWORD FOR `' . $username .'`@' . $settings['system']['mysql_access_host'] . ' = PASSWORD(\'' . $password . '\')' );
 						$db_root->query( 'FLUSH PRIVILEGES' );
 
 						$db_root->close();
@@ -153,7 +153,7 @@
 						$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 						unset($db_root->password);
 
-						$db_root->query('SET PASSWORD FOR `'.$result['databasename'].'`@localhost = PASSWORD(\'' . $password .'\')');
+						$db_root->query('SET PASSWORD FOR `'.$result['databasename'].'`@' . $settings['system']['mysql_access_host'] . ' = PASSWORD(\'' . $password .'\')');
 						$db_root->query('FLUSH PRIVILEGES');
 
 						$db_root->close();
