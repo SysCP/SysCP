@@ -112,6 +112,7 @@
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
 				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
+
 				if($domain['iswildcarddomain'] == '1')
 				{
 					$alias = '*';
@@ -122,37 +123,46 @@
 				}
 				$vhosts_file.='  ServerAlias '.$alias.'.'.$domain['domain']."\n";
 				$vhosts_file.='  ServerAdmin webmaster@'.$domain['domain']."\n";
-				$vhosts_file.='  DocumentRoot '.$domain['documentroot']."\n";
-				if($domain['openbasedir'] == '1')
+
+				if(substr($domain['documentroot'], 0, 7) == 'http://')
 				{
-					$vhosts_file.='  php_admin_value open_basedir '.$domain['documentroot']."\n";
-				}
-				if($domain['safemode'] == '1')
-				{
-					$vhosts_file.='  php_admin_flag safe_mode On '."\n";
-				}
-				if(!file_exists($domain['documentroot']))
-				{
-					exec('mkdir -p '.$domain['documentroot']);
-					exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
-				}
-				if($domain['speciallogfile'] == '1')
-				{
-					if($domain['parentdomainid'] == '0')
-					{
-						$speciallogfile = '-'.$domain['domain'];
-					}
-					else
-					{
-						$speciallogfile = '-'.$domain['parentdomain'];
-					}
+					$vhosts_file.='  Redirect / '.$domain['documentroot']."\n";
 				}
 				else
 				{
-					$speciallogfile = '';
+					$vhosts_file.='  DocumentRoot '.$domain['documentroot']."\n";
+					if($domain['openbasedir'] == '1')
+					{
+						$vhosts_file.='  php_admin_value open_basedir '.$domain['documentroot']."\n";
+					}
+					if($domain['safemode'] == '1')
+					{
+						$vhosts_file.='  php_admin_flag safe_mode On '."\n";
+					}
+
+					if(!file_exists($domain['documentroot']))
+					{
+						exec('mkdir -p '.$domain['documentroot']);
+						exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
+					}
+					if($domain['speciallogfile'] == '1')
+					{
+						if($domain['parentdomainid'] == '0')
+						{
+							$speciallogfile = '-'.$domain['domain'];
+						}
+						else
+						{
+							$speciallogfile = '-'.$domain['parentdomain'];
+						}
+					}
+					else
+					{
+						$speciallogfile = '';
+					}
+					$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\n";
+					$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log combined'."\n";
 				}
-				$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\n";
-				$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log combined'."\n";
 				$vhosts_file.=$domain['specialsettings']."\n";
 				$vhosts_file.='</VirtualHost>'."\n";
 				$vhosts_file.="\n";
@@ -234,16 +244,14 @@
 					fwrite($htpasswd_file_handler, $htpasswd_file);
 					fclose($htpasswd_file_handler);
 				}
-				if ($htaccess_file == '' && $htpasswd_file == '')
+
+				if($htaccess_file == '' && file_exists($row['data']['path']).'.htaccess')
 				{
-					if (file_exists($row['data']['path']).'.htaccess')
-					{
-						unlink($row['data']['path'].'.htaccess');
-					}
-					if (file_exists($row['data']['path']).'.htpasswd')
-					{
-						unlink($row['data']['path'].'.htpasswd');
-					}
+					unlink($row['data']['path'].'.htaccess');
+				}
+				if($htpasswd_file == '' && file_exists($row['data']['path']).'.htpasswd')
+				{
+					unlink($row['data']['path'].'.htpasswd');
 				}
 			}
 		}

@@ -92,13 +92,17 @@
 					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' AND `iswildcarddomain`='0' ");
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."'");
-					
-					$path = makeCorrectDir(addslashes($_POST['path']));
-					$path = $userinfo['documentroot'].$path;
-					if(!is_dir($path))
+
+					$path=addslashes($_POST['path']);
+					if(substr($path, 0, 7) != 'http://')
 					{
-						standard_error('directorymustexist');
-						exit;
+						$path=makeCorrectDir($path);
+						$path=$userinfo['documentroot'].$path;
+						if(!is_dir($path))
+						{
+							standard_error('directorymustexist');
+							exit;
+						}
 					}
 
 					if($path=='' || $subdomain=='' ||  $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain)
@@ -135,20 +139,15 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$path=addslashes($_POST['path']);
-					$path=str_replace('..','',$path);
-					if(substr($path, -1, 1) != '/')
+					if(substr($path, 0, 7) != 'http://')
 					{
-						$path.='/';
-					}
-					if(substr($path, 0, 1) != '/')
-					{
-						$path='/'.$path;
-					}
-					$path=$userinfo['documentroot'].$path;
-					if(!is_dir($path))
-					{
-						standard_error('directorymustexist');
-						exit;
+						$path=makeCorrectDir($path);
+						$path=$userinfo['documentroot'].$path;
+						if(!is_dir($path))
+						{
+							standard_error('directorymustexist');
+							exit;
+						}
 					}
 
 					if(isset($_POST['iswildcarddomain']) && $_POST['iswildcarddomain'] == '1')
