@@ -139,7 +139,7 @@ $lng['mysql']['database_create'] = 'Datenbank anlegen';
 $lng['extras']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche Extras einrichten, wie zum Beispiel Verzeichnisschutz.<br />Die &Auml;nderungen sind erst nach einer bestimmten Zeit wirksam.';
 $lng['extras']['directoryprotection_add'] = 'Verzeichnisschutz anlegen';
 $lng['extras']['view_directory'] = 'Verzeichnis anzeigen';
-$lng['extras']['pathoptions_add'] = 'Pfadoptionen hinzufügen';
+$lng['extras']['pathoptions_add'] = 'Pfadoptionen hinzuf&uuml;gen';
 $lng['extras']['directory_browsing'] = 'Verzeichnisinhalt anzeigen';
 $lng['extras']['pathoptions_edit'] = 'Pfadoptionen bearbeiten';
 
@@ -152,7 +152,7 @@ $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, d
 $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomains l&ouml;schen, bevor Sie eine Wildcarddomain anlegen k&ouml;nnen.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
 $lng['error']['login'] = 'Der angegebene Benutzernamen/Passwort ist falsch.';
-$lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zuvieler Fehlversuche vorrübergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';
+$lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zuvieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';
 $lng['error']['notallreqfieldsorerrors'] = 'Sie haben nicht alle Felder oder ein Feld mit fehlerhaften Angaben ausgef&uuml;llt.';
 $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressource verteilen als Sie noch frei haben.';
@@ -170,7 +170,7 @@ $lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&
 $lng['question']['email_reallydelete_forwarders'] = 'Wollen Sie die Weiterleitung %s wirklich l&ouml;schen?';
 $lng['question']['email_reallydelete_pop'] = 'Wollen Sie die eMail-Adresse %s wirklich l&ouml;schen?';
 $lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz f&uuml;r %s wirklich l&ouml;schen?';
-$lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen für den Pfad %s wirklich löschen?';
+$lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen f&uuml;r den Pfad %s wirklich l&ouml;schen?';
 $lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account %s wirklich l&ouml;schen?';
 $lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren!';
 
@@ -259,10 +259,15 @@ $lng['serversettings']['vmail_homedir']['description'] = 'Wo sollen die Mails li
 $lng['serversettings']['adminmail']['title'] = 'Absenderadresse';
 $lng['serversettings']['adminmail']['description'] = 'Wie ist die Absenderadresse f&uuml;r eMails aus dem Panel?';
 $lng['serversettings']['phpmyadmin_url']['title'] = 'phpMyAdmin-URL';
-$lng['serversettings']['phpmyadmin_url']['description'] = 'Wo liegt der phpMyAdmin?';
+$lng['serversettings']['phpmyadmin_url']['description'] = 'Wo liegt der phpMyAdmin? (muss mit http:// beginnen)';
 $lng['serversettings']['webmail_url']['title'] = 'WebMail-URL';
-$lng['serversettings']['webmail_url']['description'] = 'Wo liegt das WebMail?';
+$lng['serversettings']['webmail_url']['description'] = 'Wo liegt das WebMail? (muss mit http:// beginnen)';
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP-URL';
-$lng['serversettings']['webftp_url']['description'] = 'Wo liegt das WebFTP?';
+$lng['serversettings']['webftp_url']['description'] = 'Wo liegt das WebFTP? (muss mit http:// beginnen)';
+$lng['serversettings']['language']['description'] = 'Welche Sprache ist ihre Standardsprache?';
+$lng['serversettings']['maxloginattempts']['title']       = 'Max Loginversuche';
+$lng['serversettings']['maxloginattempts']['description'] = 'Maximale Anzahl an Loginversuchen bis der Account deaktiviert wird.';
+$lng['serversettings']['deactivatetime']['title']       = 'L&auml;nge der Deaktivierung';
+$lng['serversettings']['deactivatetime']['description'] = 'Zeitraum (in sek.) f&uuml;r den der Account deaktiviert ist.';
 
 ?>

@@ -34,6 +34,6 @@ define('TABLE_PANEL_TRAFFIC','panel_traffic');
 define('TABLE_PANEL_NAVIGATION','panel_navigation');
 define('TABLE_PANEL_LANGUAGE','panel_languages');
 
-$version = '1.2.2-cvs2';
+$version = '1.2.2-cvs3';
 
 ?>
