@@ -249,6 +249,7 @@
 				}
 				else
 				{
+					$result['specialsettings'] = stripslashes($result['specialsettings']);
 					$openbasedir=makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 					$safemode=makeyesno('safemode', '1', '0', $result['safemode']);
 					$speciallogfile=($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
