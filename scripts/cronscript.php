@@ -111,10 +111,9 @@
 	$cronFileIncludeResult = $db->query($query);
 	while ($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
 	{
-		$debugMsg[] = 'Processing ...'.$$pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
+		$debugMsg[] = 'Processing ...'.$pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
 		include_once $pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
 		$debugMsg[] = 'Processing done!';
-		
 	}
 
 	unlink($lockfile);
