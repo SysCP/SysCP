@@ -179,7 +179,7 @@
 					}
 					else
 					{
-						if($settings['customer']['loginnamestyle'] == 'dynamic')
+						if(isset($_POST['loginname']) && $_POST['loginname'] != '')
 						{
 							$loginname = addslashes($_POST['loginname']);
 							$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='".$loginname."'");
