@@ -37,7 +37,7 @@
 	{
 		exec('touch '.$lockfile);
 	}
-
+	
 	/**
 	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
@@ -148,8 +148,8 @@
 
 					if(!is_dir($domain['documentroot']))
 					{
-						exec('mkdir -p '.$domain['documentroot']);
-						exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
+						safe_exec('mkdir -p '.$domain['documentroot']);
+						safe_exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
 					}
 					if($domain['speciallogfile'] == '1')
 					{
@@ -192,7 +192,7 @@
 			$vhosts_file_handler = fopen($settings['system']['apacheconf_directory'].'vhosts.conf', 'w');
 			fwrite($vhosts_file_handler, $vhosts_file);
 			fclose($vhosts_file_handler);
-			exec($settings['system']['apachereload_command']);
+			safe_exec($settings['system']['apachereload_command']);
 		}
 
 		/**
@@ -202,11 +202,11 @@
 		{
 			if(is_array($row['data']))
 			{
-				exec('mkdir -p '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer');
-				exec('mkdir -p '.$settings['system']['vmail_homedir'].$row['data']['loginname']);
-				exec('cp -a '.$pathtophpfiles.'/templates/misc/standardcustomer/* '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/');
-				exec('chown -R '.$row['data']['uid'].':'.$row['data']['gid'].' '.$settings['system']['documentroot_prefix'].$row['data']['loginname']);
-				exec('chown -R '.$settings['system']['vmail_uid'].':'.$settings['system']['vmail_gid'].' '.$settings['system']['vmail_homedir'].$row['data']['loginname']);
+				safe_exec('mkdir -p '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer');
+				safe_exec('mkdir -p '.$settings['system']['vmail_homedir'].$row['data']['loginname']);
+				safe_exec('cp -a '.$pathtophpfiles.'/templates/misc/standardcustomer/* '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/');
+				safe_exec('chown -R '.$row['data']['uid'].':'.$row['data']['gid'].' '.$settings['system']['documentroot_prefix'].$row['data']['loginname']);
+				safe_exec('chown -R '.$settings['system']['vmail_uid'].':'.$settings['system']['vmail_gid'].' '.$settings['system']['vmail_homedir'].$row['data']['loginname']);
 			}
 		}
 
@@ -287,7 +287,7 @@
 			$bindconf_file_handler = fopen($settings['system']['bindconf_directory'].'syscp_bind.conf', 'w');
 			fwrite($bindconf_file_handler, $bindconf_file);
 			fclose($bindconf_file_handler);
-			exec($settings['system']['bindreload_command']);
+			safe_exec($settings['system']['bindreload_command']);
 		}
 	}
 	if($db->num_rows($result) != 0)
@@ -355,7 +355,7 @@
 			 * WebSpace-Usage
 			 */
 			$webspaceusage=0;
-			exec('du -s '.$row['documentroot'], $back);
+			$back = safe_exec('du -s '.$row['documentroot']);
 			foreach($back as $backrow)
 			{
 				$webspaceusage=explode(' ',$backrow);
@@ -367,7 +367,7 @@
 			 * MailSpace-Usage
 			 */
 			$emailusage=0;
-			exec('du -s '.$settings['system']['vmail_homedir'].$row['loginname'], $back);
+			$back = safe_exec('du -s '.$settings['system']['vmail_homedir'].$row['loginname']);
 			foreach($back as $backrow)
 			{
 				$emailusage=explode(' ',$backrow);

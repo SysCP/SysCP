@@ -323,9 +323,9 @@
 		$outputdir = makeCorrectDir ($outputdir);
 		if(!file_exists($outputdir))
 		{
-			exec('mkdir -p '.$outputdir);
+			safe_exec('mkdir -p '.$outputdir);
 		}
-		exec('webalizer -n '.$caption.' -o '.$outputdir.' '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
+		safe_exec('webalizer -n '.$caption.' -o '.$outputdir.' '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
 
 		$webalizer_hist_size=@filesize($outputdir.'webalizer.hist');
 		$webalizer_hist_num=@fopen($outputdir.'webalizer.hist','r');
@@ -441,4 +441,50 @@
 		}
 	}
 
+	/**
+	 * Wrapper around the exec command.
+	 * 
+	 * @author Martin Burchert
+	 * @version 1.0
+	 * @param string exec_string String to be executed
+	 * @return string The result of the exec()
+	 */
+	function safe_exec($exec_string)
+	{
+		global $settings;
+		//
+		// define allowed system commands 
+		//
+		$allowed_commands = array(
+			'touch','chown', 'mkdir', 'webalizer', 'cp', 'du', 'touch',
+			$settings['system']['apachereload_command'],
+			$settings['system']['bindreload_command']);
+		//
+		// check for ; in execute command
+		//
+		if (stristr($exec_string,';'))
+		{ 
+			die ("SECURITY CHECK FAILED!\n';' not allowed in $exec_string!\nPlease check your whole server for security problems by hand!\n");
+		}
+		//
+		// check if command is allowed here 
+		//	
+		$allowed = false;
+		foreach ($allowed_commands as $key => $value)
+		{
+			if ($allowed == false)
+			{
+				$allowed = stristr($exec_string, $value);
+			}
+		}
+		if ($allowed == false)
+		{
+			die("SECURITY CHECK FAILED!\nYour command '$exec_string' is not allowed!\nPlease check your whole server for security problems by hand!\n");
+		}
+		//
+		// execute the command and return output
+		//
+		exec($exec_string, $return);
+		return $return;
+	}
 ?>
