@@ -29,6 +29,11 @@
 	 */
 	require('./lib/userdata.inc.php');
 
+	if( !isset ($sql) || !is_array($sql) )
+	{
+		die('You have to <a href="./install/install.php">configure</a> SysCP first!');
+	}
+
 	/**
 	 * Includes the MySQL-Tabledefinitions etc.
 	 */

@@ -22,7 +22,14 @@
 
 	if(file_exists('../lib/userdata.inc.php'))
 	{
-		die('Sorry, SysCP is already configured...');
+		/**
+		 * Includes the Usersettings eg. MySQL-Username/Passwort etc. to test if SysCP is already installed
+		 */
+		require('../lib/userdata.inc.php');
+		if( isset ($sql) && is_array ($sql) )
+		{
+			die('Sorry, SysCP is already configured...');
+		}
 	}
 
 	/**
