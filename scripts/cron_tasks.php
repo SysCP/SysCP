@@ -160,79 +160,93 @@
 				$path = $row['data']['path'];
 						$debugMsg[] = '  cron_tasks: Task3 - Path: '.$path;
 				
-				$htpasswd_file = '';
-				$htaccess_file = '';
-				$row_htaccess  = $db->query_first(
-					'SELECT * ' .
-					'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
-					'WHERE `path` = "'.$row['data']['path'].'"'
-				);
-				
-				if ( $row_htaccess['options_indexes'] == '1' )
+				if (!is_dir($path))
 				{
-					$htaccess_file .= 'Options Indexes'."\n";
-							$debugMsg[] = '  cron_tasks: Task3 - Setting Options Indexes';
+					$db->query(
+						'DELETE FROM `'.TABLE_PANEL_HTACCESS.'` ' .
+						'WHERE `path` = "'.$path.'"'
+					);
+					$db->query(
+						'DELETE FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
+						'WHERE `path` = "'.$path.'"'
+					);
 				}
-				if ( $row_htaccess['error404path'] != '')
+				else
 				{
-					$htaccess_file .= 'ErrorDocument 404 '.$row_htaccess['error404path']."\n";
-				}
-				if ( $row_htaccess['error403path'] != '')
-				{
-					$htaccess_file .= 'ErrorDocument 403 '.$row_htaccess['error403path']."\n";
-				}
-				if ( $row_htaccess['error401path'] != '')
-				{
-					$htaccess_file .= 'ErrorDocument 401 '.$row_htaccess['error401path']."\n";
-				}
-				if ( $row_htaccess['error500path'] != '')
-				{
-					$htaccess_file .= 'ErrorDocument 500 '.$row_htaccess['error500path']."\n";
-				}
-			
-				
-				$result_htpasswd = $db->query(
-					'SELECT `username`, `password` ' .
-					'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
-					'WHERE `path` = "'.$row['data']['path'].'"'
-				);
-				if ( $db->num_rows($result_htpasswd) != 0 )
-				{
-							$debugMsg[] = '  cron_tasks: Task3 - Setting Password';
-					$htaccess_file .= 'AuthType Basic'."\n";
-					$htaccess_file .= 'AuthName "Restricted Area"'."\n";
-					$htaccess_file .= 'AuthUserFile '.$row['data']['path'].'.htpasswd'."\n";
-					$htaccess_file .= 'require valid-user'."\n";
-	
-					while ($row_htpasswd = $db->fetch_array($result_htpasswd))
+					$htpasswd_file = '';
+					$htaccess_file = '';
+					$row_htaccess  = $db->query_first(
+						'SELECT * ' .
+						'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
+						'WHERE `path` = "'.$row['data']['path'].'"'
+					);
+					
+					if ( $row_htaccess['options_indexes'] == '1' )
 					{
-						$htpasswd_file .= $row_htpasswd['username'].':'.$row_htpasswd['password']."\n";
+						$htaccess_file .= 'Options Indexes'."\n";
+								$debugMsg[] = '  cron_tasks: Task3 - Setting Options Indexes';
 					}
-				}
-				if ($htaccess_file != '')
-				{
-					$htaccess_file_handler = fopen($row['data']['path'].'.htaccess', 'w');
-					fwrite($htaccess_file_handler, $htaccess_file);
-					fclose($htaccess_file_handler);
-					$debugMsg[] = '  cron_tasks: Task3 - htaccess written';
-				}
-				if ($htpasswd_file != '')
-				{
-					$htpasswd_file_handler = fopen($row['data']['path'].'.htpasswd', 'w');
-					fwrite($htpasswd_file_handler, $htpasswd_file);
-					fclose($htpasswd_file_handler);
-					$debugMsg[] = '  cron_tasks: Task3 - htpasswd written';
-				}
+					if ( $row_htaccess['error404path'] != '')
+					{
+						$htaccess_file .= 'ErrorDocument 404 '.$row_htaccess['error404path']."\n";
+					}
+					if ( $row_htaccess['error403path'] != '')
+					{
+						$htaccess_file .= 'ErrorDocument 403 '.$row_htaccess['error403path']."\n";
+					}
+					if ( $row_htaccess['error401path'] != '')
+					{
+						$htaccess_file .= 'ErrorDocument 401 '.$row_htaccess['error401path']."\n";
+					}
+					if ( $row_htaccess['error500path'] != '')
+					{
+						$htaccess_file .= 'ErrorDocument 500 '.$row_htaccess['error500path']."\n";
+					}
+				
+					
+					$result_htpasswd = $db->query(
+						'SELECT `username`, `password` ' .
+						'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
+						'WHERE `path` = "'.$row['data']['path'].'"'
+					);
+					if ( $db->num_rows($result_htpasswd) != 0 )
+					{
+								$debugMsg[] = '  cron_tasks: Task3 - Setting Password';
+						$htaccess_file .= 'AuthType Basic'."\n";
+						$htaccess_file .= 'AuthName "Restricted Area"'."\n";
+						$htaccess_file .= 'AuthUserFile '.$row['data']['path'].'.htpasswd'."\n";
+						$htaccess_file .= 'require valid-user'."\n";
+		
+						while ($row_htpasswd = $db->fetch_array($result_htpasswd))
+						{
+							$htpasswd_file .= $row_htpasswd['username'].':'.$row_htpasswd['password']."\n";
+						}
+					}
+					if ($htaccess_file != '')
+					{
+						$htaccess_file_handler = fopen($row['data']['path'].'.htaccess', 'w');
+						fwrite($htaccess_file_handler, $htaccess_file);
+						fclose($htaccess_file_handler);
+						$debugMsg[] = '  cron_tasks: Task3 - htaccess written';
+					}
+					if ($htpasswd_file != '')
+					{
+						$htpasswd_file_handler = fopen($row['data']['path'].'.htpasswd', 'w');
+						fwrite($htpasswd_file_handler, $htpasswd_file);
+						fclose($htpasswd_file_handler);
+						$debugMsg[] = '  cron_tasks: Task3 - htpasswd written';
+					}
 
-				if($htaccess_file == '' && file_exists($row['data']['path'].'.htaccess') )
-				{
-					unlink($row['data']['path'].'.htaccess');
-					$debugMsg[] = '  cron_tasks: Task3 - htaccess deleted';
-				}
-				if($htpasswd_file == '' && file_exists($row['data']['path'].'.htpasswd') )
-				{
-					unlink($row['data']['path'].'.htpasswd');
-					$debugMsg[] = '  cron_tasks: Task3 - htpasswd deleted';
+					if($htaccess_file == '' && file_exists($row['data']['path'].'.htaccess') )
+					{
+						unlink($row['data']['path'].'.htaccess');
+						$debugMsg[] = '  cron_tasks: Task3 - htaccess deleted';
+					}
+					if($htpasswd_file == '' && file_exists($row['data']['path'].'.htpasswd') )
+					{
+						unlink($row['data']['path'].'.htpasswd');
+						$debugMsg[] = '  cron_tasks: Task3 - htpasswd deleted';
+					}
 				}
 			}
 		}

@@ -373,5 +373,27 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.5-cvs3';
 	}
+	if($settings['panel']['version'] == '1.2.5-cvs3')
+	{
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_HTACCESS.'` ' .
+			'SET `error404path` = "", ' .
+			'    `error403path` = "", ' .
+			'    `error401path` = "", ' .
+			'    `error500path` = "" '
+		);
+		
+		$result = $db->query(
+			'SELECT `path` ' .
+			'FROM `'.TABLE_PANEL_HTACCESS.'` '
+		);
+		while ($row = $db->fetch_array($result))
+		{
+			inserttask('3', $row['path']);
+		}
+		
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.5-cvs4';
+	}
 
 ?>

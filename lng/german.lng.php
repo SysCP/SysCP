@@ -156,10 +156,10 @@ $lng['extras']['error404path'] = '404';
 $lng['extras']['error403path'] = '403';
 $lng['extras']['error500path'] = '500';
 $lng['extras']['error401path'] = '401';
-$lng['extras']['errordocument404path'] = 'Pfad zum Fehlerdokoument 404';
-$lng['extras']['errordocument403path'] = 'Pfad zum Fehlerdokoument 403';
-$lng['extras']['errordocument500path'] = 'Pfad zum Fehlerdokoument 500';
-$lng['extras']['errordocument401path'] = 'Pfad zum Fehlerdokoument 401';
+$lng['extras']['errordocument404path'] = 'URL zum Fehlerdokoument 404';
+$lng['extras']['errordocument403path'] = 'URL zum Fehlerdokoument 403';
+$lng['extras']['errordocument500path'] = 'URL zum Fehlerdokoument 500';
+$lng['extras']['errordocument401path'] = 'URL zum Fehlerdokoument 401';
 
 /**
  * Errors
@@ -167,7 +167,7 @@ $lng['extras']['errordocument401path'] = 'Pfad zum Fehlerdokoument 401';
 $lng['error']['error'] = 'Fehlermeldung';
 $lng['error']['directorymustexist'] = 'Das Verzeichnis, das Sie eingegeben haben muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
 $lng['error']['filemustexist'] = 'Die Datei, welche Sie eingegeben haben muss existieren.';
-$lng['error']['allresourcesused'] = 'Sie haben bereits alle Ihnen zur Verfügung stehenden Ressourcen verbraucht.';
+$lng['error']['allresourcesused'] = 'Sie haben bereits alle Ihnen zur Verf?gung stehenden Ressourcen verbraucht.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als eMail-Domain verwendet wird l&ouml;schen. ';
 $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomains l&ouml;schen, bevor Sie eine Wildcarddomain anlegen k&ouml;nnen.';
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Sie haben bereits eine Adresse als Catchall f&uuml;r diese Domain definiert.';
@@ -178,7 +178,7 @@ $lng['error']['notallreqfieldsorerrors'] = 'Sie haben nicht alle Felder oder ein
 $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressource verteilen als Sie noch frei haben.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie den Hauptadmin nicht l&ouml;schen oder bearbeiten.';
-
+$lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine URL angeben.';
 /**
  * Questions
  */
