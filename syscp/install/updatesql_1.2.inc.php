@@ -391,9 +391,14 @@
 		{
 			inserttask('3', $row['path']);
 		}
-		
+
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.5-cvs4';
+	}
+	if($settings['panel']['version'] == '1.2.5-cvs4')
+	{
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.6';
 	}
 
 ?>

@@ -74,6 +74,7 @@
 	}
 
 	updateCounters ();
+	inserttask ('1');
 
 	@chmod ( '../lib/userdata.inc.php' , 0440 ) ;
 
