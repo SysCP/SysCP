@@ -100,7 +100,7 @@ $lng['changepassword']['also_change_ftp'] = ' Auch Passwort vom Haupt-FTP-Zugang
 /**
  * Domains
  */
-$lng['domains']['description'] = 'Hier können Sie (Sub-)Domains erstellen und deren Pfade ändern.<br />Nach jeder &Auml;nderung braucht das System etwas Zeit um die Konfiguration neu einzulesen.';
+$lng['domains']['description'] = 'Hier k&ouml;nnen Sie (Sub-)Domains erstellen und deren Pfade &auml;ndern.<br />Nach jeder &Auml;nderung braucht das System etwas Zeit um die Konfiguration neu einzulesen.';
 $lng['domains']['domainsettings'] = 'Domaineinstellungen';
 $lng['domains']['domainname'] = 'Domainname';
 $lng['domains']['subdomain_add'] = 'Subdomain anlegen';
@@ -109,7 +109,7 @@ $lng['domains']['subdomain_edit'] = 'Subdomain bearbeiten';
 /**
  * eMails
  */
-$lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre eMail Adressen einrichten.<br />Ein POP-Konto ist wie Ihr Briefkasten vor der Haustüre. Wenn jemand eine email an Sie schreibt, dann wird diese in dieses POP-Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / eMail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
+$lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre eMail Adressen einrichten.<br />Ein POP-Konto ist wie Ihr Briefkasten vor der Haust&uuml;re. Wenn jemand eine email an Sie schreibt, dann wird diese in dieses POP-Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / eMail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
 $lng['emails']['forwarders_add'] = 'Weiterleitung anlegen';
 $lng['emails']['from'] = 'Von';
 $lng['emails']['to'] = 'Nach';
@@ -119,20 +119,20 @@ $lng['emails']['emailaddress'] = 'Konto/Adresse';
 /**
  * FTP
  */
-$lng['ftp']['description'] = 'Hier k&ouml;nnen Sie zusätzliche FTP-Accounts einrichten.<br />Die &Auml;nderungen sind sofort wirksam und die FTP-Accounts sofort benutzbar.';
+$lng['ftp']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche FTP-Accounts einrichten.<br />Die &Auml;nderungen sind sofort wirksam und die FTP-Accounts sofort benutzbar.';
 $lng['ftp']['account_add'] = 'Account anlegen';
 
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Hier können Sie MySQL-Datenbanken anlegen und l&ouml;schen.<br>Die &Auml;nderungen werden sofort wirksam und die Datenbanken sofort benutzbar.<br>Im Men&uuml; finden Sie einen Link zum phpMyAdmin, mit dem Sie Ihre Datenbankeninhalte einfach bearbeiten k&ouml;nnen.<br><br>Die Zugangsdaten von php-Skripten sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b>localhost</b><br>Benutzername: <b><i>Datenbankname</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b><br>Datenbank: <b><i>Datenbankname';
+$lng['mysql']['description'] = 'Hier k&ouml;nnen Sie MySQL-Datenbanken anlegen und l&ouml;schen.<br>Die &Auml;nderungen werden sofort wirksam und die Datenbanken sofort benutzbar.<br>Im Men&uuml; finden Sie einen Link zum phpMyAdmin, mit dem Sie Ihre Datenbankeninhalte einfach bearbeiten k&ouml;nnen.<br><br>Die Zugangsdaten von php-Skripten sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b>localhost</b><br>Benutzername: <b><i>Datenbankname</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b><br>Datenbank: <b><i>Datenbankname';
 $lng['mysql']['databasename'] = 'Benutzer-/Datenbankname';
 $lng['mysql']['database_create'] = 'Datenbank anlegen';
 
 /**
  * Extras
  */
-$lng['extras']['description'] = 'Hier k&ouml;nnen Sie zusätzliche Extras einrichten, wie zum Beispiel Verzeichnisschutz.<br />Die &Auml;nderungen sind erst nach einer bestimmten Zeit wirksam.';
+$lng['extras']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche Extras einrichten, wie zum Beispiel Verzeichnisschutz.<br />Die &Auml;nderungen sind erst nach einer bestimmten Zeit wirksam.';
 $lng['extras']['directoryprotection_add'] = 'Verzeichnisschutz anlegen';
 
 /**
@@ -145,6 +145,8 @@ $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount
 $lng['error']['login'] = 'Der angegebene Benuternamen/Passwort ist falsch.';
 $lng['error']['notallreqfieldsorerrors'] = 'Sie haben nicht alle Felder oder ein Feld mit fehlerhaften Angaben ausgef&uuml;llt.';
 $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
+$lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressource verteilen als Sie noch frei haben.';
+$lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie den Hauptadmin nicht l&ouml;schen oder bearbeiten.';
 
 /**
  * Questions
@@ -153,6 +155,7 @@ $lng['question']['question'] = 'Sicherheitsfrage';
 $lng['question']['admin_customer_reallydelete'] = 'Wollen Sie diesen Kunden wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
 $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie diese Domain wirklich l&ouml;schen?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';
+$lng['question']['admin_admin_reallydelete'] = 'Wollen Sie diesen Admin wirklich l&ouml;schen? Alle Kunden und Domains werden dem Hauptadmin zugeteilt.';
 $lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain wirklich l&ouml;schen?';
 $lng['question']['email_reallydelete_forwarders'] = 'Wollen Sie die Weiterleitung wirklich l&ouml;schen?';
 $lng['question']['email_reallydelete_pop'] = 'Wollen Sie die eMail-Adresse wirklich l&ouml;schen?';
@@ -186,6 +189,13 @@ $lng['admin']['customer_edit'] = 'Kunden bearbeiten';
 $lng['admin']['domains'] = 'Domains';
 $lng['admin']['domain_add'] = 'Domain anlegen';
 $lng['admin']['domain_edit'] = 'Domain bearbeiten';
+$lng['admin']['admin'] = 'Admin';
+$lng['admin']['admins'] = 'Admins';
+$lng['admin']['admin_add'] = 'Admin anlegen';
+$lng['admin']['admin_edit'] = 'Admin bearbeiten';
+$lng['admin']['customers_see_all'] = 'Kann alle Kunden sehen?';
+$lng['admin']['domains_see_all'] = 'Kann alle Domains sehen?';
+$lng['admin']['change_serversettings'] = 'Kann Servereinstellungen bearbeiten?';
 $lng['admin']['serversettings'] = 'Servereinstellungen';
 $lng['admin']['stdsubdomain'] = 'Standardsubdomain';
 $lng['admin']['stdsubdomain_add'] = 'Standardsubdomain anlegen';

@@ -3,9 +3,9 @@ $header
     <tr>
      <td colspan="20" class="title">{$lng['admin']['domains']}</td>
     </tr>
-    <tr>
+    <if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 15 < $userinfo['domains_used']><tr>
      <td class="maintable" colspan="20"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['domain_add']}</a></td>
-    </tr>
+    </tr></if>
     <tr>
      <td class="maintable">ID</td>
      <td class="maintable">Domain</td>
@@ -13,8 +13,8 @@ $header
      <td class="maintable" colspan="2">&nbsp;</td>
     </tr>
     $domains
-    <tr>
+    <if $userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1'><tr>
      <td class="maintable" colspan="20"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['domain_add']}</a></td>
-    </tr>
+    </tr></if>
    </table>
 $footer

@@ -24,7 +24,7 @@
 	 */
 	require("./lib/init.php");
 
-	if($page == 'settings' || $page == 'overview')
+	if( ($page == 'settings' || $page == 'overview') && $userinfo['change_serversettings'] == '1')
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
 		{

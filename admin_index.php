@@ -43,10 +43,10 @@
 				SUM(`ftps_used`) AS `ftps_used`,
 				SUM(`subdomains_used`) AS `subdomains_used`,
 				SUM(`traffic_used`) AS `traffic_used`
-				FROM `".TABLE_PANEL_CUSTOMERS."`");
+				FROM `".TABLE_PANEL_CUSTOMERS."`".( $userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '{$userinfo['adminid']}' "));
 		$overview['traffic_used']=round($overview['traffic_used']/(1024*1024),4);
 		$overview['diskspace_used']=round($overview['diskspace_used']/1024,2);
-		$number_domains = $db->query_first("SELECT COUNT(*) AS `number_domains` FROM `".TABLE_PANEL_DOMAINS."` WHERE `parentdomainid`='0'");
+		$number_domains = $db->query_first("SELECT COUNT(*) AS `number_domains` FROM `".TABLE_PANEL_DOMAINS."` WHERE `parentdomainid`='0'".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
 		$overview['number_domains'] = $number_domains['number_domains'];
 
 		$phpversion = phpversion();
@@ -57,7 +57,7 @@
 		
 		if( (isset($_GET['lookfornewversion']) && $_GET['lookfornewversion'] == 'yes') || (isset($lookfornewversion) && $lookfornewversion == 'yes') )
 		{
-			$latestversion = @file('http://syscp.redenswert.de/version/version.php');
+			$latestversion = @file('http://syscp.de/version/version.php');
 			if(is_array($latestversion))
 			{
 				$lookfornewversion_lable = $latestversion[0];
@@ -76,6 +76,34 @@
 		}
 
 		eval("echo \"".getTemplate("index/index")."\";");
+	}
+	
+	elseif($page=='change_password')
+	{
+		if(isset($_POST['send']) && $_POST['send']=='send')
+		{
+			$old_password=addslashes($_POST['old_password']);
+			if(md5($old_password) != $userinfo['password'])
+			{
+				standard_error('oldpasswordnotcorrect');
+				exit;
+			}
+			$new_password=addslashes($_POST['new_password']);
+			$new_password_confirm=addslashes($_POST['new_password_confirm']);
+			if($old_password=='' || $new_password=='' || $new_password_confirm=='' || $new_password!=$new_password_confirm)
+			{
+				standard_error('notallreqfieldsorerrors');
+				exit;
+			}
+			else
+			{
+				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `password`='".md5($new_password)."' WHERE `adminid`='".$userinfo['adminid']."' AND `password`='".md5($old_password)."'");
+				header("Location: $filename?s=$s");
+			}
+		}
+		else {
+			eval("echo \"".getTemplate("index/change_password")."\";");
+		}
 	}
 
 ?>
