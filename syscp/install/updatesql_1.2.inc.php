@@ -490,6 +490,12 @@
 			}
 		}
 		
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` '.
+			'SET `parent_url`=\'admin_index.php?page=overview\' '.
+			'WHERE `paren_url`=\'admin_index.php\''
+		);
+		
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.6-cvs2';
 	}
