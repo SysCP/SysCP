@@ -241,13 +241,17 @@
 		{
 			global $filename;
 			$this->geterrdescno();
-			$errormsg.='<br />';
-			$errormsg.='mysql error number: '.$this->errno.' <br />';
-			$errormsg.='mysql error desc: '.$this->errdesc.' <br />';
-			$errormsg.='Script: '.getenv('REQUEST_URI').' <br />';
-			$errormsg.='Referer: '.getenv('HTTP_REFERER').' <br />';
-			$errormsg.='Time/date: '.date('d/m/Y h:i A').' <br>';
-			if($filename != 'cronscript.php')
+			$errormsg .= "\n";
+			$errormsg .= 'mysql error number: '.$this->errno."\n";
+			$errormsg .= 'mysql error desc: '.$this->errdesc."\n";
+			$errormsg .= 'Script: '.getenv('REQUEST_URI')   ."\n";
+			$errormsg .= 'Referer: '.getenv('HTTP_REFERER') ."\n";
+			$errormsg .= 'Time/date: '.date('d/m/Y h:i A')  ."\n";
+			if( (@php_sapi_name() != 'cli') && (@php_sapi_name() != 'cgi') )
+			{
+				die(nl2br($errormsg));
+			}
+			else
 			{
 				die($errormsg);
 			}
