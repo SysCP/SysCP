@@ -62,6 +62,12 @@
 				"ORDER BY `c`.`$sortby` $sortorder");
 			while($row=$db->fetch_array($result))
 			{
+				$domains=$db->query_first(
+					'SELECT COUNT(`id`) AS `domains` ' .
+					'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
+					'WHERE `customerid`=\''.$row['customerid'].'\' AND `parentdomainid`=\'0\''
+				);
+				$row['domains']=$domains['domains'];
 				$row['traffic_used']=round($row['traffic_used']/(1024*1024),4);
 				$row['traffic']=round($row['traffic']/(1024*1024),4);
 				$row['diskspace_used']=round($row['diskspace_used']/1024,2);
