@@ -72,6 +72,23 @@
 			eval("echo \"".getTemplate("customers/customers")."\";");
 		}
 
+		elseif($action=='su' && $id!=0)
+		{
+			$result = $db->query("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
+			$count = $db->num_rows($result);
+			if($count == 1)
+			{
+				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`={$userinfo['userid']}");
+				$s = md5(uniqid(microtime(),1));
+				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('$s', '$id', '{$result['ipaddress']}', '{$result['useragent']}', '" . time() . "', '{$result['language']}', '0')");
+				header("Location: ./customer_index.php?s=$s");
+			}
+			else
+			{
+				header("Location: ./index.php?action=login");
+			}
+		}
+
 		elseif($action=='delete' && $id!=0)
 		{
 			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
