@@ -138,7 +138,7 @@
 				}
 				$templates=array_diff($available_templates,$templates);
 
-				if($subject == '' || $mailbody == '' || (array_search($template,$templates) === false))
+				if($language == '' || $subject == '' || $mailbody == '' || (array_search($template,$templates) === false))
 				{
 					standard_error('notallreqfieldsorerrors');
 					exit;
@@ -155,6 +155,7 @@
 			}
 			else
 			{
+				$add = false;
 				$language_options = '';
 				while(list($language_file, $language_name) = each($languages))
 				{
@@ -166,10 +167,19 @@
 					}
 					if(count(array_diff($available_templates,$templates))>0)
 					{
+						$add = true;
 						$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
 					}
 				}
-				eval("echo \"".getTemplate("templates/templates_add_1")."\";");
+				if($add)
+				{
+					eval("echo \"".getTemplate("templates/templates_add_1")."\";");
+				}
+				else
+				{
+					standard_error('notallreqfieldsorerrors');
+					exit;
+				}
 			}
 		}
 
