@@ -297,17 +297,18 @@
 	/**
 	 * Function which make webalizer statistics and returns used traffic of a month and year
 	 *
-	 * @param string Loginname of Customer
+	 * @param string Name of logfile
 	 * @param string Documentroot of Domain
+	 * @param string Caption for webalizer output
 	 * @param int Month
 	 * @param int Year
 	 * @return int Used traffic
 	 */
-	function webalizer_hist($loginname, $documentroot, $month = 0, $year = 0)
+	function webalizer_hist($logfile, $documentroot, $caption, $month = 0, $year = 0)
 	{
 		global $settings;
 
-		$yesterday=time()-(60*60*24);
+		$yesterday = time()-(60*60*24);
 		if($month == 0)
 		{
 			$month = date('n',$yesterday);
@@ -317,7 +318,7 @@
 			$year = date('Y',$yesterday);
 		}
 
-		exec('webalizer -n '.$loginname.' -o '.$documentroot.'/webalizer/ '.$settings['system']['logfiles_directory'].$loginname.'-access.log');
+		exec('webalizer -n '.$caption.' -o '.$documentroot.'/webalizer/ '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
 
 		$webalizer_hist_size=@filesize($documentroot.'/webalizer/webalizer.hist');
 		$webalizer_hist_num=@fopen($documentroot.'/webalizer/webalizer.hist','r');

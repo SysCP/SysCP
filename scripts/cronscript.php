@@ -275,12 +275,12 @@
 				$domain_result = $db->query("SELECT `domain`, `documentroot` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".$row['customerid']."'");
 				while($domain_row = $db->fetch_array($domain_result))
 				{
-					$httptraffic += webalizer_hist($domain_row['domain'], $domain_row['documentroot']);
+					$httptraffic += webalizer_hist($row['loginname'].'-'.$domain_row['domain'], $domain_row['documentroot'], $domain_row['domain']);
 				}
 			}
 			else
 			{
-				$httptraffic = webalizer_hist($row['loginname'], $row['documentroot']);
+				$httptraffic = webalizer_hist($row['loginname'], $row['documentroot'], $row['loginname']);
 			}
 
 			/**
