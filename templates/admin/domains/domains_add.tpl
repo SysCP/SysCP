@@ -5,7 +5,7 @@ $header
      <input type="hidden" name="action" value="$action">
      <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
       <tr>
-       <td colspan="20" class="title">{$lng['admin']['domain_add']}</td>
+       <td colspan="2" class="title">{$lng['admin']['domain_add']}</td>
       </tr>
       <tr>
        <td class="maintable">{$lng['admin']['customer']}:</td>
@@ -15,10 +15,10 @@ $header
        <td class="maintable">Domain:</td>
        <td class="maintable" nowrap><input type="text" name="domain" value=""></td>
       </tr>
-      <tr>
+      <if $settings['system']['documentrootstyle'] == 'customer'><tr>
        <td class="maintable" nowrap>DocumentRoot:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="documentroot" value=""></td>
-      </tr>
+      </tr></if>
       <tr>
        <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="zonefile" value=""></td>

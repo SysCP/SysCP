@@ -4,7 +4,7 @@ $header
       <td colspan="4" class="title">{$lng['domains']['domainsettings']}</td>
      </tr>
      <tr>
-      <td class="maintable">{$lng['domains']['domainname']}</td><td class="maintable">{$lng['panel']['path']}</td><td class="maintable">&nbsp;</td><td class="maintable">&nbsp;</td>
+      <td class="maintable">{$lng['domains']['domainname']}</td><td class="maintable">{$lng['panel']['path']}</td><td class="maintable" colspan="2">&nbsp;</td>
      </tr>
      $domains
     </table>

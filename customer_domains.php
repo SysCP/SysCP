@@ -91,29 +91,35 @@
 					$domain=addslashes($_POST['domain']);
 					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."'");
 					$completedomain=$subdomain.'.'.$domain;
-					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM ".TABLE_PANEL_DOMAINS." WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."'");
-					$path=addslashes($_POST['path']);
-					$path=str_replace('..','',$path);
-					if(substr($path, -1, 1) != '/')
+					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."'");
+					
+					if($settings['system']['documentrootstyle'] == 'domain')
 					{
-						$path.='/';
+						$path = $userinfo['documentroot'].'/'.$domain.'-'.$subdomain.'/';
 					}
-					if(substr($path, 0, 1) != '/')
+					else
 					{
-						$path='/'.$path;
-					}
-					$path=$userinfo['documentroot'].$path;
-//					$path_check=$db->query_first("SELECT `id`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `documentroot`='$path' AND `customerid`='".$userinfo['customerid']."'");
-					if($path=='' || $subdomain=='' || /*$path_check['homedir']==$path ||*/ $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain || !is_dir($path))
-					{
+						$path = addslashes($_POST['path']);
+						$path = str_replace('..','',$path);
+						if(substr($path, -1, 1) != '/')
+						{
+							$path .= '/';
+							}
+						if(substr($path, 0, 1) != '/')
+						{
+							$path = '/'.$path;
+						}
+						$path = $userinfo['documentroot'].$path;
 						if(!is_dir($path))
 						{
 							standard_error('directorymustexist');
+							exit;
 						}
-						else
-						{
-							standard_error('notallreqfieldsorerrors');
-						}
+					}
+
+					if($path=='' || $subdomain=='' ||  $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain)
+					{
+						standard_error('notallreqfieldsorerrors');
 						exit;
 					}
 					else
@@ -124,7 +130,8 @@
 						header("Location: $filename?page=$page&s=$s");
 					}
 				}
-				else {
+				else
+				{
 					$result=$db->query("SELECT `id`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
 					$domains='';
 					while($row=$db->fetch_array($result))
@@ -136,7 +143,7 @@
 			}
 		}
 
-		elseif($action=='edit' && $id!=0)
+		elseif($action=='edit' && $id!=0 && $settings['system']['documentrootstyle'] == 'customer')
 		{
 			$result=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['customerid']) && $result['customerid']==$userinfo['customerid'])
@@ -154,8 +161,8 @@
 						$path='/'.$path;
 					}
 					$path=$userinfo['documentroot'].$path;
-//					$path_check=$db->query_first("SELECT `id`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `documentroot`='$path' AND `customerid`='".$userinfo['customerid']."'");
-					if($path=='' || /*$path_check['homedir']==$path ||*/ !is_dir($path))
+
+					if($path=='' || !is_dir($path))
 					{
 						if(!is_dir($path))
 						{
@@ -170,7 +177,7 @@
 					else
 					{
 						inserttask('1');
-						$result=$db->query("UPDATE ".TABLE_PANEL_DOMAINS." SET documentroot='$path' WHERE customerid='".$userinfo['customerid']."' AND id='$id'");
+						$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$path' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						header("Location: $filename?page=$page&s=$s");
 					}
 				}

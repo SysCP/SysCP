@@ -91,7 +91,6 @@
 			if(isset($_POST['send']) && $_POST['send']=='send')
 			{
 				$domain=addslashes($_POST['domain']);
-				$documentroot=addslashes($_POST['documentroot']);
 				$zonefile=addslashes($_POST['zonefile']);
 				$customerid=intval($_POST['customerid']);
 				$openbasedir=intval($_POST['openbasedir']);
@@ -100,10 +99,19 @@
 
 				$domain_check = $db->query_first("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '$domain'");
 
-				if($documentroot=='')
+				if($settings['system']['documentrootstyle'] == 'domain')
 				{
-					$customer=$db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
-					$documentroot=$customer['documentroot'];
+					$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
+					$documentroot = $customer['documentroot'].'/'.$domain;
+				}
+				elseif($_POST['documentroot'] == '')
+				{
+					$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
+					$documentroot = $customer['documentroot'];
+				}
+				else
+				{
+					$documentroot=addslashes($_POST['documentroot']);
 				}
 
 				$documentroot=str_replace('..','',$documentroot);
@@ -169,26 +177,33 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$documentroot=addslashes($_POST['documentroot']);
 					$zonefile=addslashes($_POST['zonefile']);
 					$openbasedir=intval($_POST['openbasedir']);
 					$safemode=intval($_POST['safemode']);
 					$specialsettings=str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
 
-					if($documentroot=='')
+					if($settings['system']['documentrootstyle'] == 'customer')
 					{
-						$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
-						$documentroot=$customer['documentroot'];
-					}
+						$documentroot = addslashes($_POST['documentroot']);
+						if($documentroot=='')
+						{
+							$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
+							$documentroot=$customer['documentroot'];
+						}
 
-					$documentroot=str_replace('..','',$documentroot);
-					if(substr($documentroot, -1, 1) != '/')
-					{
-						$documentroot.='/';
+						$documentroot = str_replace('..', '' ,$documentroot);
+						if(substr($documentroot, -1, 1) != '/')
+						{
+							$documentroot .= '/';
+						}
+						if(substr($documentroot, 0, 1) != '/')
+						{
+							$documentroot = '/'.$documentroot;
+						}
 					}
-					if(substr($documentroot, 0, 1) != '/')
+					else
 					{
-						$documentroot='/'.$documentroot;
+						$documentroot = $result['documentroot'];
 					}
 
 					if($openbasedir != '1')
