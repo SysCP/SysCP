@@ -259,7 +259,7 @@
 	if($settings['panel']['version'] == '1.2.4-2')
 	{
 		$db->query(
-			'ALTER TABLE `panel_htaccess` ADD `error404path` VARCHAR( 255 ) NOT NULL ,
+			'ALTER TABLE `'.TABLE_PANEL_HTACCESS.'` ADD `error404path` VARCHAR( 255 ) NOT NULL ,
 				ADD `error403path` VARCHAR( 255 ) NOT NULL ,
 				ADD `error500path` VARCHAR( 255 ) NOT NULL ,
 				ADD `error401path` VARCHAR( 255 ) NOT NULL
@@ -267,5 +267,28 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.4-2cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.4-2cvs1';
 	}
+	if($settings['panel']['version'] == '1.2.4-2cvs1')
+	{
+		$db->query(
+			'ALTER TABLE `'.TABLE_PANEL_CUSTOMERS.'`
+				ADD `email_accounts` INT( 15 ) NOT NULL AFTER `emails_used` ,
+				ADD `email_accounts_used` INT( 15 ) NOT NULL AFTER `email_accounts` ;
+		');
+		$db->query(
+			'ALTER TABLE `'.TABLE_PANEL_ADMINS.'`
+				ADD `email_accounts` INT( 15 ) NOT NULL AFTER `emails_used` ,
+				ADD `email_accounts_used` INT( 15 ) NOT NULL AFTER `email_accounts` ;
+		');
+
+		$db->query ( 'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` SET `email_accounts` = `emails` ');
+		$db->query ( 'UPDATE `'.TABLE_PANEL_ADMINS.'` SET `email_accounts` = `emails` ');
+
+		$db->query ( 'UPDATE `'.TABLE_PANEL_NAVIGATION.'` SET `url` = "customer_email.php?page=emails", `lang` = "menue;email;emails" WHERE `id` = "6" ');
+		$db->query ( 'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` WHERE `id` = "7" ');
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.4-2cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.4-2cvs2';
+	}
 	
+
 ?>

@@ -132,6 +132,8 @@ CREATE TABLE `panel_admins` (
   `mysqls_used` int(15) NOT NULL default '0',
   `emails` int(15) NOT NULL default '0',
   `emails_used` int(15) NOT NULL default '0',
+  `email_accounts` int(15) NOT NULL default '0',
+  `email_accounts_used` int(15) NOT NULL default '0',
   `email_forwarders` int(15) NOT NULL default '0',
   `email_forwarders_used` int(15) NOT NULL default '0',
   `ftps` int(15) NOT NULL default '0',
@@ -176,6 +178,8 @@ CREATE TABLE `panel_customers` (
   `mysqls_used` int(15) NOT NULL default '0',
   `emails` int(15) NOT NULL default '0',
   `emails_used` int(15) NOT NULL default '0',
+  `email_accounts` int(15) NOT NULL default '0',
+  `email_accounts_used` int(15) NOT NULL default '0',
   `email_forwarders` int(15) NOT NULL default '0',
   `email_forwarders_used` int(15) NOT NULL default '0',
   `ftps` int(15) NOT NULL default '0',
@@ -366,7 +370,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.4-2');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.4-2cvs2');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -475,8 +479,7 @@ INSERT INTO `panel_navigation` VALUES (2, 'customer', '', 'menue;main;main', 'cu
 INSERT INTO `panel_navigation` VALUES (3, 'customer', 'customer_index.php', 'menue;main;changepassword', 'customer_index.php?page=change_password', '', 0);
 INSERT INTO `panel_navigation` VALUES (4, 'customer', 'customer_index.php', 'login;logout', 'customer_index.php?action=logout', '', 0);
 INSERT INTO `panel_navigation` VALUES (5, 'customer', '', 'menue;email;email', 'customer_email.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (6, 'customer', 'customer_email.php', 'menue;email;pop', 'customer_email.php?page=pop', 'emails', 0);
-INSERT INTO `panel_navigation` VALUES (7, 'customer', 'customer_email.php', 'menue;email;forwarders', 'customer_email.php?page=forwarders', 'email_forwarders', 0);
+INSERT INTO `panel_navigation` VALUES (6, 'customer', 'customer_email.php', 'menue;email;emails', 'customer_email.php?page=emails', 'emails', 0);
 INSERT INTO `panel_navigation` VALUES (8, 'customer', '', 'menue;mysql;mysql', 'customer_mysql.php', '', 0);
 INSERT INTO `panel_navigation` VALUES (9, 'customer', 'customer_mysql.php', 'menue;mysql;databases', 'customer_mysql.php?page=mysqls', 'mysqls', 0);
 INSERT INTO `panel_navigation` VALUES (10, 'customer', '', 'menue;domains;domains', 'customer_domains.php', '', 0);

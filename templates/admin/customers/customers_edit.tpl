@@ -73,6 +73,10 @@ $header
        <td class="maintable" nowrap><input type="text" name="emails" value="{$result['emails']}" maxlength="9"></td>
       </tr>
       <tr>
+       <td class="maintable">{$lng['customer']['accounts']}: *</td>
+       <td class="maintable" nowrap><input type="text" name="email_accounts" value="{$result['email_accounts']}" maxlength="9"></td>
+      </tr>
+      <tr>
        <td class="maintable">{$lng['customer']['forwarders']}: *</td>
        <td class="maintable" nowrap><input type="text" name="email_forwarders" value="{$result['email_forwarders']}" maxlength="9"></td>
       </tr>

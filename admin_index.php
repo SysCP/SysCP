@@ -46,6 +46,7 @@
 				SUM(`diskspace_used`) AS `diskspace_used`,
 				SUM(`mysqls_used`) AS `mysqls_used`,
 				SUM(`emails_used`) AS `emails_used`,
+				SUM(`email_accounts_used`) AS `email_accounts_used`,
 				SUM(`email_forwarders_used`) AS `email_forwarders_used`,
 				SUM(`ftps_used`) AS `ftps_used`,
 				SUM(`subdomains_used`) AS `subdomains_used`,
