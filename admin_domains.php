@@ -77,13 +77,15 @@
 					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `domainid`='$id'");
 					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '{$userinfo['adminid']}'");
+					updateCounters () ;
 
 					inserttask('1');
 					inserttask('4');
 
 					header("Location: $filename?page=$page&s=$s");
 				}
-				else {
+				else
+				{
 					ask_yesno('admin_domain_reallydelete', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['domain']));
 				}
 			}

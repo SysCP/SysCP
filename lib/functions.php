@@ -489,16 +489,92 @@
 	function updateCounters ()
 	{
 		global $db;
+		$admin_resources = Array () ;
 
 		// Customers
 		$customers = $db->query(
-			'SELECT `customerid` ' .
+			'SELECT `customerid`, `adminid`, ' .
+			' `diskspace`, `traffic_used`, `mysqls`, `ftps`, `emails`, `email_accounts`, `email_forwarders`, `subdomains` ' .
 			'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' .
 			'ORDER BY `customerid`'
 		);
 
 		while($customer = $db->fetch_array($customers))
 		{
+			if ( ! isset ( $admin_resources[$customer['adminid']] ) )
+			{
+				$admin_resources[$customer['adminid']] = Array () ;
+			}
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['diskspace_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['diskspace_used'] = 0 ;
+			}
+			if ( ($customer['diskspace']/1024) != '-1' )
+			{
+				$admin_resources[$customer['adminid']]['diskspace_used'] += intval_ressource ( $customer['diskspace'] ) ;
+			}
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['traffic_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['traffic_used'] = 0 ;
+			}
+			$admin_resources[$customer['adminid']]['traffic_used'] += $customer['traffic_used'] ;
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['mysqls_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['mysqls_used'] = 0 ;
+			}
+			if ( $customer['mysqls'] != '-1' )
+			{
+				$admin_resources[$customer['adminid']]['mysqls_used'] += intval_ressource ( $customer['mysqls'] ) ;
+			}
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['ftps_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['ftps_used'] = 0 ;
+			}
+			if ( $customer['ftps'] != '-1' )
+			{
+				$admin_resources[$customer['adminid']]['ftps_used'] += intval_ressource ( $customer['ftps'] ) ;
+			}
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['emails_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['emails_used'] = 0 ;
+			}
+			if ( $customer['emails'] != '-1' )
+			{
+				$admin_resources[$customer['adminid']]['emails_used'] += intval_ressource ( $customer['emails'] ) ;
+			}
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['email_accounts_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['email_accounts_used'] = 0 ;
+			}
+			if ( $customer['email_accounts'] != '-1' )
+			{
+				$admin_resources[$customer['adminid']]['email_accounts_used'] += intval_ressource ( $customer['email_accounts'] ) ;
+			}
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['email_forwarders_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['email_forwarders_used'] = 0 ;
+			}
+			if ( $customer['email_forwarders'] != '-1' )
+			{
+				$admin_resources[$customer['adminid']]['email_forwarders_used'] += intval_ressource ( $customer['email_forwarders'] ) ;
+			}
+
+			if ( ! isset ( $admin_resources[$customer['adminid']]['subdomains_used'] ) )
+			{
+				$admin_resources[$customer['adminid']]['subdomains_used'] = 0 ;
+			}
+			if ( $customer['subdomains'] != '-1' )
+			{
+				$admin_resources[$customer['adminid']]['subdomains_used'] += intval_ressource ( $customer['subdomains'] ) ;
+			}
+
 			$customer_mysqls = $db->query_first(
 				'SELECT COUNT(*) AS `number_mysqls` ' .
 				'FROM `'.TABLE_PANEL_DATABASES.'` ' .
@@ -568,36 +644,29 @@
 		while($admin = $db->fetch_array($admins))
 		{
 			$admin_customers = $db->query_first(
-				'SELECT COUNT(*) AS `number_customers`, ' .
-				'SUM(`diskspace`) AS `diskspace`, ' .
-				'SUM(`mysqls`) AS `mysqls`, ' .
-				'SUM(`emails`) AS `emails`, ' .
-				'SUM(`email_accounts`) AS `email_accounts`, ' .
-				'SUM(`email_forwarders`) AS `email_forwarders`, ' .
-				'SUM(`ftps`) AS `ftps`, ' .
-				'SUM(`subdomains`) AS `subdomains`, ' .
-				'SUM(`traffic_used`) AS `traffic_used` ' .
+				'SELECT COUNT(*) AS `number_customers` ' .
 				'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
 				'WHERE `adminid` = "'.$admin['adminid'].'"'
 			);
 
 			$admin_domains = $db->query_first(
 				'SELECT COUNT(*) AS `number_domains` ' .
-				'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
-				'WHERE `adminid` = "'.$admin['adminid'].'"'
+				'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
+				'WHERE `adminid` = "'.$admin['adminid'].'" ' . 
+				'AND `isemaildomain` = "1"'
 			);
 
 			$db->query(
 				'UPDATE `'.TABLE_PANEL_ADMINS.'` ' .
 				'SET `customers_used` = "'.$admin_customers['number_customers'].'", ' .
-				'    `diskspace_used` = "'.$admin_customers['diskspace'].'", ' .
-				'    `mysqls_used` = "'.$admin_customers['mysqls'].'", ' .
-				'    `emails_used` = "'.$admin_customers['emails'].'", ' .
-				'    `email_accounts_used` = "'.$admin_customers['email_accounts'].'", ' .
-				'    `email_forwarders_used` = "'.$admin_customers['email_forwarders'].'", ' .
-				'    `ftps_used` = "'.$admin_customers['ftps'].'", ' .
-				'    `subdomains_used` = "'.$admin_customers['subdomains'].'", ' .
-				'    `traffic_used` = "'.$admin_customers['traffic_used'].'", ' .
+				'    `diskspace_used` = "'.$admin_resources[$admin['adminid']]['diskspace_used'].'", ' .
+				'    `mysqls_used` = "'.$admin_resources[$admin['adminid']]['mysqls_used'].'", ' .
+				'    `emails_used` = "'.$admin_resources[$admin['adminid']]['emails_used'].'", ' .
+				'    `email_accounts_used` = "'.$admin_resources[$admin['adminid']]['email_accounts_used'].'", ' .
+				'    `email_forwarders_used` = "'.$admin_resources[$admin['adminid']]['email_forwarders_used'].'", ' .
+				'    `ftps_used` = "'.$admin_resources[$admin['adminid']]['ftps_used'].'", ' .
+				'    `subdomains_used` = "'.$admin_resources[$admin['adminid']]['subdomains_used'].'", ' .
+				'    `traffic_used` = "'.$admin_resources[$admin['adminid']]['traffic_used'].'", ' .
 				'    `domains_used` = "'.$admin_domains['number_domains'].'" ' .
 				'WHERE `adminid` = "'.$admin['adminid'].'"'
 			);
