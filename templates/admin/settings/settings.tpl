@@ -12,6 +12,14 @@ $header
        <td class="maintable" nowrap><input type="text" name="session_sessiontimeout" value="{$settings['session']['sessiontimeout']}"></td>
       </tr>
       <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['maxloginattempts']['title']}:</b><br />{$lng['serversettings']['maxloginattempts']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="login_maxloginattempts" value="{$settings['login']['maxloginattempts']}"></td>
+      </tr>
+      <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['deactivatetime']['title']}:</b><br />{$lng['serversettings']['deactivatetime']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="login_deactivatetime" value="{$settings['login']['deactivatetime']}"></td>
+      </tr>
+      <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['catachallkeyword']['title']}:</b><br />{$lng['serversettings']['catachallkeyword']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="email_catachallkeyword" value="{$settings['email']['catchallkeyword']}"></td>
       </tr>
@@ -78,6 +86,10 @@ $header
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['adminmail']['title']}:</b><br />{$lng['serversettings']['adminmail']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}"></td>
+      </tr>
+      <tr>
+       <td class="maintable" align="right"><b>{$lng['login']['language']}:</b><br />{$lng['serversettings']['language']['description']}</td>
+       <td class="maintable" nowrap><select name="panel_standardlanguage">$languages</select></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['phpmyadmin_url']['title']}:</b><br />{$lng['serversettings']['phpmyadmin_url']['description']}</td>

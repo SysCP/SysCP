@@ -259,10 +259,16 @@ $lng['serversettings']['vmail_homedir']['description'] = 'Where should all mails
 $lng['serversettings']['adminmail']['title'] = 'Sender';
 $lng['serversettings']['adminmail']['description'] = 'What\'s the senderaddress for emails sent from the Panel?';
 $lng['serversettings']['phpmyadmin_url']['title'] = 'phpMyAdmin URL';
-$lng['serversettings']['phpmyadmin_url']['description'] = 'What\'s the URL to phpMyAdmin?';
+$lng['serversettings']['phpmyadmin_url']['description'] = 'What\'s the URL to phpMyAdmin? (have to start with http://)';
 $lng['serversettings']['webmail_url']['title'] = 'WebMail URL';
-$lng['serversettings']['webmail_url']['description'] = 'What\'s the URL to WebMail?';
+$lng['serversettings']['webmail_url']['description'] = 'What\'s the URL to WebMail? (have to start with http://)';
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP URL';
-$lng['serversettings']['webftp_url']['description'] = 'What\'s the URL to  WebFTP?';
+$lng['serversettings']['webftp_url']['description'] = 'What\'s the URL to  WebFTP? (have to start with http://)';
+$lng['serversettings']['language']['description'] = 'What\'s your standard server language?';
+$lng['serversettings']['maxloginattempts']['title']       = 'Max Login Attempts';
+$lng['serversettings']['maxloginattempts']['description'] = 'Maximum login attempts after which the account gets deactivated.';
+$lng['serversettings']['deactivatetime']['title']       = 'Deactivate Time';
+$lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
+
 
 ?>

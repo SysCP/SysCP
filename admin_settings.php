@@ -35,6 +35,18 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='session' AND `varname`='sessiontimeout'");
 			}
 
+			if($_POST['login_maxloginattempts']!=$settings['login']['maxloginattempts'])
+			{
+				$value=addslashes($_POST['login_maxloginattempts']);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='login' AND `varname`='maxloginattempts'");
+			}
+
+			if($_POST['login_deactivatetime']!=$settings['login']['deactivatetime'])
+			{
+				$value=addslashes($_POST['login_deactivatetime']);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='login' AND `varname`='deactivatetime'");
+			}
+
 			if($_POST['email_catachallkeyword']!=$settings['email']['catchallkeyword'])
 			{
 //				echo 'email_catachallkeyword<br />';
@@ -162,6 +174,12 @@
 //				echo 'panel_adminmail<br />';
 				$value=addslashes($_POST['panel_adminmail']);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
+			}
+
+			if($_POST['panel_standardlanguage']!=$settings['panel']['standardlanguage'])
+			{
+				$value=addslashes($_POST['panel_standardlanguage']);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='standardlanguage'");
 			}
 
 			if($_POST['panel_phpmyadmin_url']!=$settings['panel']['phpmyadmin_url'])
@@ -303,6 +321,22 @@
 		}
 		else
 		{
+			// query the whole table
+			$query =
+				'SELECT * ' .
+				'FROM `'.TABLE_PANEL_LANGUAGE.'` ';
+			$result = $db->query($query);
+			// presort languages
+			while ($row = $db->fetch_array($result))
+			{
+				$langs[$row['language']] = $row['language'];
+			} 
+			// buildup $languages for the login screen
+			foreach ($langs as $key => $value)
+			{
+				$languages .= makeoption($key,$value,$settings['panel']['standardlanguage']);
+			}
+			
 			eval("echo \"".getTemplate("settings/settings")."\";");
 		}
 	}

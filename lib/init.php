@@ -234,6 +234,10 @@
 	/**
 	 * Fills variables for navigation, header and footer
 	 */
+	if (!isset($s))
+	{
+		$s = '';
+	}
 	$navigation = getNavigation($s);
 	eval("\$header = \"".getTemplate('header', '1')."\";");
 	eval("\$footer = \"".getTemplate('footer', '1')."\";");
