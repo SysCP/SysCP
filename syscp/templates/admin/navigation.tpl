@@ -25,6 +25,6 @@
       </tr></if>
       <tr>
         <td width="3"></td>
-        <td width="123">&raquo; <a href="index.php?action=logout&s=$s">{$lng['login']['logout']}</a></td>
+        <td width="123">&raquo; <a href="admin_index.php?action=logout&s=$s">{$lng['login']['logout']}</a></td>
       </tr>
     </table>

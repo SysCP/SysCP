@@ -24,6 +24,13 @@
 	 */
 	require("./lib/init.php");
 
+	if($action == 'logout')
+	{
+		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['customerid']}' AND `adminsession` = '0'");
+		header("Location: ./index.php");
+		exit;
+	}
+
 	if($page=='overview')
 	{
 		$domains = '';

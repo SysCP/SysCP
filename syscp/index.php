@@ -29,13 +29,6 @@
 		$action = 'login';
 	}
 
-	if($action == 'logout')
-	{
-		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['customerid']}' AND `adminsession` = '{$userinfo['adminsession']}'");
-		header("Location: ./index.php");
-		exit;
-	}
-
 	if($action=='login')
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')

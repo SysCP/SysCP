@@ -9,7 +9,7 @@
       </tr>
       <tr>
         <td width="3"></td>
-        <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="index.php?action=logout&s=$s">{$lng['login']['logout']}</a></td>
+        <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="customer_index.php?action=logout&s=$s">{$lng['login']['logout']}</a></td>
       </tr>
       <tr>
         <td width="3"></td>
