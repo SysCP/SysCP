@@ -76,7 +76,11 @@
 			}
 
 			$new['all']=$httptraffic+($ftptraffic['up_bytes_sum']/1024)+($ftptraffic['down_bytes_sum']/1024)+$mailtraffic;
-			$db->query("INSERT INTO `".TABLE_PANEL_TRAFFIC."` (`customerid`, `year`, `month`, `day`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('$row[customerid]', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '$new[http]', '$new[ftp_up]', '$new[ftp_down]', '$new[mail]');");
+			$db->query("REPLACE INTO `".TABLE_PANEL_TRAFFIC."` (`customerid`, `year`, `month`, `day`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('$row[customerid]', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '$new[http]', '$new[ftp_up]', '$new[ftp_down]', '$new[mail]');");
+			$admin_traffic[$row['adminid']]['http'] += $httptraffic;
+			$admin_traffic[$row['adminid']]['ftp_up'] += $ftptraffic['up_bytes_sum']/1024;
+			$admin_traffic[$row['adminid']]['ftp_down'] += $ftptraffic['down_bytes_sum']/1024;
+			$admin_traffic[$row['adminid']]['mail'] += $mailtraffic;
 
 			if(date('d')=='01')
 			{
@@ -132,6 +136,18 @@
 			$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `diskspace_used`='$diskusage', `traffic_used`='".$new['all']."' WHERE `customerid`='".$row['customerid']."'");
 
 		}
+
+		/**
+		 * Admin Usage
+		 */
+		$result=$db->query("SELECT `adminid` FROM `".TABLE_PANEL_ADMINS."` ORDER BY `adminid` ASC");
+		while($row=$db->fetch_array($result))
+		{
+			$admin_traffic[$row['adminid']]['all'] = $admin_traffic[$row['adminid']]['http'] + $admin_traffic[$row['adminid']]['ftp_up'] + $admin_traffic[$row['adminid']]['ftp_down'] + $admin_traffic[$row['adminid']]['mail'];
+			$db->query("REPLACE INTO `".TABLE_PANEL_TRAFFIC_ADMINS."` (`adminid`, `year`, `month`, `day`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('$row[adminid]', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".$admin_traffic[$row['adminid']]['http']."', '".$admin_traffic[$row['adminid']]['ftp_up']."', '".$admin_traffic[$row['adminid']]['ftp_down']."', '".$admin_traffic[$row['adminid']]['mail']."')");
+			$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `traffic_used`='".$admin_traffic[$row['adminid']]['all']."' WHERE `adminid`='".$row['adminid']."'");
+		}
+
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".date('dmy')."' WHERE `settinggroup`='system' AND `varname`='last_traffic_run'");
 	}
 

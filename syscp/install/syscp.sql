@@ -362,7 +362,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.3-cvs2');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.3-cvs5');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -408,11 +408,39 @@ CREATE TABLE `panel_traffic` (
   `ftp_down` bigint(30) unsigned NOT NULL default '0',
   `mail` bigint(30) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `customerid` (`customerid`)
+  KEY `customerid` (`customerid`),
+  UNIQUE `date` (`customerid` , `year` , `month` , `day`)
 ) TYPE=MyISAM ;
 
 #
 # Dumping data for table `panel_traffic`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_traffic_admins`
+#
+
+DROP TABLE IF EXISTS `panel_traffic_admins`;
+CREATE TABLE `panel_traffic_admins` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `adminid` int(11) unsigned NOT NULL default '0',
+  `year` int(4) unsigned zerofill NOT NULL default '0000',
+  `month` int(2) unsigned zerofill NOT NULL default '00',
+  `day` int(2) unsigned zerofill NOT NULL default '00',
+  `http` bigint(30) unsigned NOT NULL default '0',
+  `ftp_up` bigint(30) unsigned NOT NULL default '0',
+  `ftp_down` bigint(30) unsigned NOT NULL default '0',
+  `mail` bigint(30) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `adminid` (`adminid`),
+  UNIQUE `date` (`adminid` , `year` , `month` , `day`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `panel_traffic_admins`
 #
 
 

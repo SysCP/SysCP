@@ -85,6 +85,7 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='$id'");
+					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC_ADMINS."` WHERE `adminid`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `adminid` = '1' WHERE `adminid` = '$id'");
 					$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `adminid` = '1' WHERE `adminid` = '$id'");
 
