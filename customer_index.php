@@ -87,7 +87,7 @@
 				$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `password`='".md5($new_password)."' WHERE `customerid`='".$userinfo['customerid']."' AND `password`='".md5($old_password)."'");
 				if(isset($_POST['change_main_ftp']) && $_POST['change_main_ftp']=='true')
 				{
-					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`='$new_password' WHERE `customerid`='".$userinfo['customerid']."' AND `username`='".$userinfo['loginname']."'");
+					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('$new_password') WHERE `customerid`='".$userinfo['customerid']."' AND `username`='".$userinfo['loginname']."'");
 				}
 				header("Location: $filename?s=$s");
 			}

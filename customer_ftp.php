@@ -109,7 +109,7 @@
 					else
 					{
 						$username=$userinfo['loginname'].$settings['customer']['ftpprefix'].(intval($userinfo['ftp_lastaccountnumber'])+1);
-						$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('".$userinfo['customerid']."', '$username', '$password', '$path', 'y', '".$userinfo['guid']."', '".$userinfo['guid']."')");
+						$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('".$userinfo['customerid']."', '$username', ENCRYPT('$password'), '$path', 'y', '".$userinfo['guid']."', '".$userinfo['guid']."')");
 //						$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`+1, `ftp_lastaccountnumber`=`ftp_lastaccountnumber`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 //						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$uid' WHERE settinggroup='ftp' AND varname='lastguid'");
@@ -137,7 +137,7 @@
 					}
 					else
 					{
-						$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`='$password' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+						$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						header("Location: $filename?page=$page&s=$s");
 					}
 				}
