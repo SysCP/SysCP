@@ -20,8 +20,24 @@ $header
        <td class="maintable" nowrap><input type="text" name="documentroot" value=""></td>
       </tr>
       <tr>
+       <td class="maintable" nowrap>Nameserver:</td>
+       <td class="maintable" nowrap>$isbinddomain</td>
+      </tr></if>
+      <tr>
        <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="zonefile" value=""></td>
+      </tr></if>
+      <tr>
+       <td class="maintable" nowrap>Emaildomain:</td>
+       <td class="maintable" nowrap>$isemaildomain</td>
+      </tr>
+      <tr>
+       <td class="maintable" nowrap>{$lng['admin']['subdomainforemail']}:</td>
+       <td class="maintable" nowrap>$subcanemaildomain</td>
+      </tr>
+      <if $userinfo['change_serversettings'] == '1'><tr>
+       <td class="maintable" nowrap>{$lng['admin']['domain_edit']}:</td>
+       <td class="maintable" nowrap>$caneditdomain</td>
       </tr>
       <tr>
        <td class="maintable" nowrap>OpenBasedir:</td>

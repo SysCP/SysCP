@@ -16,9 +16,14 @@ $header
        <td class="maintable">{$lng['panel']['path']}:</td>
        <td class="maintable"><input type="text" name="path" value="{$result['documentroot']}" maxlength="50"></td>
       </tr>
-      <if $result['isemaildomain'] == '1'><tr>
+      <tr>
        <td class="maintable">{$lng['domains']['wildcarddomain']}</td>
        <td class="maintable">$iswildcarddomain</td>
+      </tr>
+      <if $result['subcanemaildomain'] == '1'><tr>
+      <tr>
+       <td class="maintable" nowrap>Emaildomain:</td>
+       <td class="maintable" nowrap>$isemaildomain</td>
       </tr></if>
       <tr>
        <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['panel']['save']}"></td>
