@@ -44,18 +44,15 @@
 		{
 			$result=$db->query("SELECT `id`, `email`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
 			$accounts='';
+			$emails_count=0;
 			while($row=$db->fetch_array($result))
 			{
 				eval("\$accounts.=\"".getTemplate("email/pop_account")."\";");
+				$emails_count++;
 			}
-			if($userinfo['emails_used'] < $userinfo['emails'] || $userinfo['emails'] == '-1')
-			{
-				if($db->num_rows($result) > 15)
-				{
-					eval("\$accounts=\"".getTemplate("email/pop_addaccount")."\".\$accounts;");
-				}
-				eval("\$accounts.=\"".getTemplate("email/pop_addaccount")."\";");
-			}
+			$emaildomains_count=$db->query_first("SELECT COUNT(`id`) AS `count` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
+			$emaildomains_count=$emaildomains_count['count'];
+
 			eval("echo \"".getTemplate("email/pop")."\";");
 		}
 
@@ -94,7 +91,7 @@
 					}
 					$email_check=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
 					$password=addslashes($_POST['password']);
-					if($email=='' || $email_part=='' || $password=='' || $domain_check['domain']!=$domain || $email_check['email']==$email)
+					if($email=='' || $email_part=='' || $domain== '' || $password=='' || $domain_check['domain']!=$domain || $email_check['email']==$email)
 					{
 						standard_error('notallreqfieldsorerrors');
 						exit;
@@ -157,22 +154,19 @@
 		{
 			$result=$db->query("SELECT `id`, `email`, `destination`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `popaccountid` = '0' ORDER BY `email` ASC");
 			$accounts='';
+			$forwarders_count=0;
 			while($row=$db->fetch_array($result))
 			{
 				if($row['email']{0} == '@')
 				{
 					$row['email'] = $settings['email']['catchallkeyword'].$row['email'];
 				}
+				$forwarders_count++;
 				eval("\$accounts.=\"".getTemplate("email/forwarders_forwarder")."\";");
 			}
-			if($userinfo['email_forwarders_used'] < $userinfo['email_forwarders'] || $userinfo['email_forwarders'] == '-1')
-			{
-				if($db->num_rows($result) > 15)
-				{
-					eval("\$accounts=\"".getTemplate("email/forwarders_addforwarder")."\".\$accounts;");
-				}
-				eval("\$accounts.=\"".getTemplate("email/forwarders_addforwarder")."\";");
-			}
+			$emaildomains_count=$db->query_first("SELECT COUNT(`id`) AS `count` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
+			$emaildomains_count=$emaildomains_count['count'];
+
 			eval("echo \"".getTemplate("email/forwarders")."\";");
 		}
 
@@ -209,7 +203,7 @@
 						$email = str_replace($settings['email']['catchallkeyword'], '', $email);
 					}
 					$email_check=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
-					if($email=='' || $email_part =='' || $destination=='' || !verify_email($destination) || $domain_check['domain']!=$domain || $email_check['email'] == $email)
+					if($email=='' || $email_part=='' || $domain=='' || $destination=='' || !verify_email($destination) || $domain_check['domain']!=$domain || $email_check['email'] == $email)
 					{
 						standard_error('notallreqfieldsorerrors');
 						exit;

@@ -22,11 +22,11 @@
       <tr>
         <td width="3"></td>
         <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="customer_email.php?page=forwarders&s=$s">{$lng['menue']['email']['forwarders']}</a></td>
+      </tr>
       <if $settings['panel']['webmail_url'] != ''><tr>
         <td width="3"></td>
         <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="{$settings['panel']['webmail_url']}" target="_blank">{$lng['menue']['email']['webmail']}</a></td>
       </tr></if>
-      </tr>
       <tr>
         <td width="3"></td>
         <td>&raquo; <a href="customer_mysql.php?s=$s">{$lng['menue']['mysql']['mysql']}</a></td>

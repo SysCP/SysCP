@@ -48,14 +48,8 @@
 			{
 				eval("\$mysqls.=\"".getTemplate("mysql/mysqls_database")."\";");
 			}
-			if($userinfo['mysqls_used'] < $userinfo['mysqls'] || $userinfo['mysqls'] == '-1')
-			{
-				if($db->num_rows($result) > 15)
-				{
-					eval("\$mysqls=\"".getTemplate("mysql/mysqls_adddatabase")."\".\$mysqls;");
-				}
-				eval("\$mysqls.=\"".getTemplate("mysql/mysqls_adddatabase")."\";");
-			}
+			$mysqls_count = $db->num_rows($result);
+
 			eval("echo \"".getTemplate("mysql/mysqls")."\";");
 		}
 

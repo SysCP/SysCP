@@ -126,7 +126,6 @@
 	 * Language Managament
 	 */
 	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' ) ;
-	$standardlanguage = 'german';
 	if(!isset($userinfo['language']) || !isset($languages[$userinfo['language']]))
 	{
 		if(isset($_GET['language']) && isset($languages[$_GET['language']]))
@@ -135,7 +134,7 @@
 		}
 		else
 		{
-			$language = $standardlanguage;
+			$language = $settings['panel']['standardlanguage'];
 		}
 	}
 	else
