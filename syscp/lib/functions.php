@@ -26,21 +26,27 @@
 	 */
 	function getTemplate($template, $noarea = 0)
 	{
+		global $templatecache;
 		if($noarea != 1)
 		{
 			$template = AREA.'/'.$template;
 		}
 
-		$filename = './templates/'.$template.'.tpl';
-		if(file_exists($filename))
+		if(!isset($templatecache[$template]))
 		{
-			$templatefile=str_replace("\"","\\\"",implode(file($filename),''));
+			$filename = './templates/'.$template.'.tpl';
+			if(file_exists($filename))
+			{
+				$templatefile=str_replace("\"","\\\"",implode(file($filename),''));
+			}
+			else
+			{
+				$templatefile='<!-- TEMPLATE NOT FOUND: '.$filename.' -->';
+			}
+			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
+			$templatecache[$template] = $templatefile;
 		}
-		else
-		{
-			$templatefile='<!-- TEMPLATE NOT FOUND: '.$filename.' -->';
-		}
-		return $templatefile;
+		return $templatecache[$template];
 	}
 
 	/**
@@ -286,6 +292,55 @@
 				$db->query("INSERT INTO `".TABLE_PANEL_TASKS."` (`type`) VALUES ('4');");
 			}
 		}
+	}
+
+	/**
+	 * Function which make webalizer statistics and returns used traffic of a month and year
+	 *
+	 * @param string Loginname of Customer
+	 * @param string Documentroot of Domain
+	 * @param int Month
+	 * @param int Year
+	 * @return int Used traffic
+	 */
+	function webalizer_hist($loginname, $documentroot, $month = 0, $year = 0)
+	{
+		global $settings;
+
+		$yesterday=time()-(60*60*24);
+		if($month == 0)
+		{
+			$month = date('n',$yesterday);
+		}
+		if($year == 0)
+		{
+			$year = date('Y',$yesterday);
+		}
+
+		exec('webalizer -n '.$loginname.' -o '.$documentroot.'/webalizer/ '.$settings['system']['logfiles_directory'].$loginname.'-access.log');
+
+		$webalizer_hist_size=@filesize($documentroot.'/webalizer/webalizer.hist');
+		$webalizer_hist_num=@fopen($documentroot.'/webalizer/webalizer.hist','r');
+		$webalizer_hist=@fread($webalizer_hist_num,$webalizer_hist_size);
+		@fclose($webalizer_hist_num);
+		$webalizer_hist_rows=explode("\n",$webalizer_hist);
+		while(list(,$webalizer_hist_row)=each($webalizer_hist_rows))
+		{
+			if($webalizer_hist_row != '')
+			{
+				/**
+				 * Month: $webalizer_hist_row['0']
+				 * Year:  $webalizer_hist_row['1']
+				 * KB:    $webalizer_hist_row['5']
+				 */
+				$webalizer_hist_row=explode(' ',$webalizer_hist_row);
+				if($webalizer_hist_row['0'] == $month && $webalizer_hist_row['1'] == $year)
+				{
+					$httptraffic = $webalizer_hist_row['5'];
+				}
+			}
+		}
+		return $httptraffic;
 	}
 
 ?>

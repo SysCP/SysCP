@@ -11,10 +11,10 @@ $header
        <td class="maintable">{$lng['domains']['domainname']}:</td>
        <td class="maintable" nowrap><input type="text" name="subdomain" value="" size="15" maxlength="50"> <b>.</b> <select name="domain">$domains</select></td>
       </tr>
-      <tr>
+      <if $settings['system']['documentrootstyle'] == 'customer'><tr>
        <td class="maintable">{$lng['panel']['path']}:</td>
        <td class="maintable"><input type="text" name="path" value="/" maxlength="50"></td>
-      </tr>
+      </tr></if>
       <tr>
        <td class="maintable" colspan=2 align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['domains']['subdomain_add']}"></td>
       </tr>

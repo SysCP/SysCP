@@ -113,7 +113,7 @@
 					$db->query("DELETE FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id'");
 					$db->query("DELETE FROM `".TABLE_PANEL_DATABASES."` WHERE `customerid`='$id'");
 					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='$id' AND `adminsession` = '0'");
 					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC."` WHERE `customerid`='$id'");
 
 					$db->query("DELETE FROM `".TABLE_POSTFIX_TRANSPORT."` WHERE `customerid`='$id'");

@@ -35,12 +35,17 @@
 	}
 
 	/**
-	 * Inlcudes the Usersettings eg. MySQL-Username/Passwort etc.
+	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
 	require("$pathtophpfiles/lib/userdata.inc.php");
 
 	/**
-	 * Inlcudes the MySQL-Connection-Class
+	 * Includes the MySQL-Tabledefinitions etc.
+	 */
+	require("$pathtophpfiles/lib/tables.inc.php");
+
+	/**
+	 * Includes the MySQL-Connection-Class
 	 */
 	require("$pathtophpfiles/lib/class_mysqldb.php");
 	$db=new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
@@ -75,7 +80,7 @@
 	}
 
 	/**
-	 * Inlcudes the Functions
+	 * Includes the Functions
 	 */
 	require("$pathtophpfiles/lib/functions.php");
 
@@ -119,8 +124,26 @@
 				{
 					$vhosts_file.='  php_admin_flag safe_mode On '."\n";
 				}
-				$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-error.log'."\n";
-				$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-access.log combined'."\n";
+				if($settings['system']['documentrootstyle'] == 'domain')
+				{
+					$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-'.$domain['domain'].'-error.log'."\n";
+					$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-'.$domain['domain'].'-access.log combined'."\n";
+					if (!file_exists($domain['documentroot']))
+					{
+						exec('mkdir -p '.$domain['documentroot']);
+						exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
+					}
+					if (!file_exists($domain['documentroot'].'/webalizer'))
+					{
+						exec('mkdir -p '.$domain['documentroot'].'/webalizer');
+						exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot'].'/webalizer');
+					}
+				}
+				else
+				{
+					$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-error.log'."\n";
+					$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-access.log combined'."\n";
+				}
 				$vhosts_file.=$domain['specialsettings']."\n";
 				$vhosts_file.='</VirtualHost>'."\n";
 				$vhosts_file.="\n";
@@ -246,28 +269,18 @@
 			/**
 			 * HTTP-Traffic
 			 */
-			$httptraffic=0;
-			exec('webalizer -n '.$row['loginname'].' -o '.$row['documentroot'].'/webalizer/ '.$settings['system']['logfiles_directory'].$row['loginname'].'-access.log');
-			$webalizer_hist_size=@filesize($row['documentroot'].'/webalizer/webalizer.hist');
-			$webalizer_hist_num=@fopen($row['documentroot'].'/webalizer/webalizer.hist','r');
-			$webalizer_hist=@fread($webalizer_hist_num,$webalizer_hist_size);
-			@fclose($webalizer_hist_num);
-			$webalizer_hist_rows=explode("\n",$webalizer_hist);
-			while(list(,$webalizer_hist_row)=each($webalizer_hist_rows))
+			$httptraffic = 0;
+			if($settings['system']['documentrootstyle'] == 'domain')
 			{
-				if($webalizer_hist_row != '')
+				$domain_result = $db->query("SELECT `domain`, `documentroot` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".$row['customerid']."'");
+				while($domain_row = $db->fetch_array($domain_result))
 				{
-					/**
-					 * Month: $webalizer_hist_row['0']
-					 * Year:  $webalizer_hist_row['1']
-					 * KB:    $webalizer_hist_row['5']
-					 */
-					$webalizer_hist_row=explode(' ',$webalizer_hist_row);
-					if($webalizer_hist_row['0']==date('n',$yesterday) && $webalizer_hist_row['1']==date('Y',$yesterday))
-					{
-						$httptraffic=$webalizer_hist_row['5'];
-					}
+					$httptraffic += webalizer_hist($domain_row['domain'], $domain_row['documentroot']);
 				}
+			}
+			else
+			{
+				$httptraffic = webalizer_hist($row['loginname'], $row['documentroot']);
 			}
 
 			/**
