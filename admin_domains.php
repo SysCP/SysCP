@@ -102,7 +102,7 @@
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
 						$speciallogfile = intval($_POST['speciallogfile']);
-						$specialsettings = str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
+						$specialsettings = str_replace("\r\n", "\n", $_POST['specialsettings']);
 					}
 					else
 					{
@@ -157,8 +157,12 @@
 					{
 						if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
 						{
-							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=$specialsettings;reallydoit=reallydoit");
+							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=".urlencode($specialsettings).";speciallogfile=$speciallogfile;reallydoit=reallydoit");
 							exit;
+						}
+						if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
+						{
+							$specialsettings = urldecode($specialsettings);
 						}
 
 						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$zonefile', '1', '$openbasedir', '$safemode', '$speciallogfile', '$specialsettings')");
@@ -199,7 +203,7 @@
 						$zonefile = addslashes($_POST['zonefile']);
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
-						$specialsettings = str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
+						$specialsettings = str_replace("\r\n", "\n", $_POST['specialsettings']);
 
 						$documentroot = addslashes($_POST['documentroot']);
 						if($documentroot=='')
@@ -229,8 +233,12 @@
 					
 					if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit') && $userinfo['change_serversettings'] == '1')
 					{
-						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=$specialsettings;reallydoit=reallydoit");
+						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
 						exit;
+					}
+					if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
+					{
+						$specialsettings = urldecode($specialsettings);
 					}
 
 					if($documentroot != $result['documentroot'] || $openbasedir != $result['openbasedir'] || $safemode != $result['safemode'] || $specialsettings != $result['specialsettings'])
