@@ -91,7 +91,7 @@
 					}
 					$result=$db->query(	'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' .
 										'SET `mysqls_used`=`mysqls_used`-1 ' .
-										'$resetaccnumber ' .
+										$resetaccnumber  .
 										'WHERE `customerid`="' . $userinfo['customerid'] .'"');
 					header("Location: $filename?page=$page&s=$s");
 				}
