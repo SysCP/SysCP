@@ -17,11 +17,10 @@
  * @version $Id$
  */
 
-	if($settings['panel']['version'] == '1.2-beta1')
+	if($settings['panel']['version'] == '1.2-beta1' || $settings['panel']['version'] == '1.2-rc1')
 	{
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `varname`='ipaddress' WHERE `settinggroup`='system' AND `varname`='ipadress'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2-rc1' WHERE `settinggroup`='panel' AND `varname`='version'");
-		$settings['panel']['version'] = '1.2-rc1';
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.0' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.0';
 	}
 
 ?>
