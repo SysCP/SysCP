@@ -101,26 +101,26 @@
 		{
 			if(isset($_POST['send']) && $_POST['send']=='send')
 			{
-				$name=addslashes($_POST['name']);
-				$loginname=addslashes($_POST['loginname']);
+				$name = addslashes ( $_POST['name'] ) ;
+				$loginname = addslashes ( $_POST['loginname'] ) ;
 				$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
-				$password=addslashes($_POST['password']);
-				$email=$idna_convert->encode(addslashes($_POST['email']));
-				$customers=intval($_POST['customers']);
-				$domains=intval($_POST['domains']);
-				$subdomains=intval($_POST['subdomains']);
-				$emails=intval($_POST['emails']);
-				$email_forwarders=intval($_POST['email_forwarders']);
-				$ftps=intval($_POST['ftps']);
-				$mysqls=intval($_POST['mysqls']);
-				$customers_see_all=intval($_POST['customers_see_all']);
-				$domains_see_all=intval($_POST['domains_see_all']);
-				$change_serversettings=intval($_POST['change_serversettings']);
+				$password = addslashes ( $_POST['password'] ) ;
+				$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
+				$customers = intval_ressource ( $_POST['customers'] ) ;
+				$domains = intval_ressource ( $_POST['domains'] ) ;
+				$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
+				$emails = intval_ressource ( $_POST['emails'] ) ;
+				$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
+				$ftps = intval_ressource ( $_POST['ftps'] ) ;
+				$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
+				$customers_see_all = intval ( $_POST['customers_see_all'] ) ;
+				$domains_see_all = intval ( $_POST['domains_see_all'] ) ;
+				$change_serversettings = intval ( $_POST['change_serversettings'] ) ;
 
-				$diskspace=intval($_POST['diskspace']);
-				$traffic=doubleval($_POST['traffic']);
-				$diskspace=$diskspace*1024;
-				$traffic=$traffic*1024*1024;
+				$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
+				$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
+				$diskspace = $diskspace * 1024 ;
+				$traffic = $traffic * 1024 * 1024 ;
 
 				if($name == '' || $loginname == '' || $loginname_check['loginname'] == $loginname || $password == '' || $email == '' || !verify_email($email) || !check_username($loginname))
 				{
@@ -142,8 +142,8 @@
 						$change_serversettings = '0';
 					}
 
-					$result=$db->query("INSERT INTO ".TABLE_PANEL_ADMINS."(`loginname`, `password`, `name`, `email`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_forwarders`, `ftps`, `mysqls`)
-					                   VALUES('$loginname', '".md5($password)."', '$name', '$email', '$change_serversettings', '$customers', '$customers_see_all', '$domains', '$domains_see_all', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_forwarders', '$ftps', '$mysqls')");
+					$result=$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_forwarders`, `ftps`, `mysqls`)
+					                   VALUES ('$loginname', '".md5($password)."', '$name', '$email', '$change_serversettings', '$customers', '$customers_see_all', '$domains', '$domains_see_all', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_forwarders', '$ftps', '$mysqls')");
 					$adminid=$db->insert_id();
 					header("Location: $filename?page=$page&s=$s");
 				}
@@ -169,25 +169,25 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$name=addslashes($_POST['name']);
-					$newpassword=addslashes($_POST['newpassword']);
-					$email=$idna_convert->encode(addslashes($_POST['email']));
-					$deactivated=intval($_POST['deactivated']);
-					$customers=intval($_POST['customers']);
-					$domains=intval($_POST['domains']);
-					$subdomains=intval($_POST['subdomains']);
-					$emails=intval($_POST['emails']);
-					$email_forwarders=intval($_POST['email_forwarders']);
-					$ftps=intval($_POST['ftps']);
-					$mysqls=intval($_POST['mysqls']);
-					$customers_see_all=intval($_POST['customers_see_all']);
-					$domains_see_all=intval($_POST['domains_see_all']);
-					$change_serversettings=intval($_POST['change_serversettings']);
+					$name = addslashes ( $_POST['name'] ) ;
+					$newpassword = addslashes ( $_POST['newpassword'] ) ;
+					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
+					$deactivated = intval ( $_POST['deactivated'] ) ;
+					$customers = intval_ressource ( $_POST['customers'] ) ;
+					$domains = intval_ressource ( $_POST['domains'] ) ;
+					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
+					$emails = intval_ressource ( $_POST['emails'] ) ;
+					$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
+					$ftps = intval_ressource ( $_POST['ftps'] ) ;
+					$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
+					$customers_see_all = intval ( $_POST['customers_see_all'] ) ;
+					$domains_see_all = intval ( $_POST['domains_see_all'] ) ;
+					$change_serversettings = intval ( $_POST['change_serversettings'] ) ;
 
-					$diskspace=intval($_POST['diskspace']);
-					$traffic=doubleval($_POST['traffic']);
-					$diskspace=$diskspace*1024;
-					$traffic=$traffic*1024*1024;
+					$diskspace = intval ( $_POST['diskspace'] ) ;
+					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
+					$diskspace = $diskspace * 1024 ;
+					$traffic = $traffic * 1024 * 1024 ;
 
 					if($name=='' || $email=='' || !verify_email($email) )
 					{
