@@ -92,6 +92,7 @@
 	}
 	else
 	{
+		$s = '';
 		$nosession = 1;
 	}
 
@@ -197,31 +198,6 @@
 		}
 	}
 	
-	
-/*	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' , 'french' => 'Francais' , 'zh-cn' => 'Chinese' ) ;
-	if(!isset($userinfo['language']) || !isset($languages[$userinfo['language']]))
-	{
-		if(isset($_GET['language']) && isset($languages[$_GET['language']]))
-		{
-			$language = addslashes($_GET['language']);
-		}
-		else
-		{
-			$language = $settings['panel']['standardlanguage'];
-		}
-	}
-	else
-	{
-		$language = $userinfo['language'];
-	}
-
-	if(file_exists('./lng/'.$language.'.lng.php'))
-	{
-*/		/**		 Includes file /lng/$language.lng.php if it exists
-		 */
-/*		require('./lng/'.$language.'.lng.php');
-	}
-*/
 	/**
 	 * Redirects to index.php (login page) if no session exists
 	 */
@@ -234,10 +210,6 @@
 	/**
 	 * Fills variables for navigation, header and footer
 	 */
-	if (!isset($s))
-	{
-		$s = '';
-	}
 	$navigation = getNavigation($s);
 	eval("\$header = \"".getTemplate('header', '1')."\";");
 	eval("\$footer = \"".getTemplate('footer', '1')."\";");

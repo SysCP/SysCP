@@ -35,7 +35,6 @@
 	}
 	if($settings['panel']['version'] == '1.2.2')
 	{
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$db->query("
 			CREATE TABLE `".TABLE_PANEL_NAVIGATION."` (
   				`id`        int(11)     unsigned NOT NULL auto_increment,
@@ -70,11 +69,12 @@
 		$db->query("INSERT INTO `".TABLE_PANEL_NAVIGATION."` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (22, 'admin', 0, 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles');");
 		$db->query("INSERT INTO `".TABLE_PANEL_NAVIGATION."` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (23, 'admin', 0, 'admin;serversettings', 'admin_settings.php?page=settings');");
 		$db->query("INSERT INTO `".TABLE_PANEL_NAVIGATION."` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (24, 'admin', 0, 'login;logout', 'admin_index.php?action=logout');");
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.2-cvs1';
 	}	
 	if($settings['panel']['version'] == '1.2.2-cvs1')
 	{
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$db->query("
 			CREATE TABLE `".TABLE_PANEL_LANGUAGE."` (
   				`id`       int(11)      unsigned NOT NULL auto_increment,
@@ -87,12 +87,27 @@
 		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`id`, `language`, `file`) VALUES (2, 'English', 'lng/english.lng.php');");
 		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`id`, `language`, `file`) VALUES (3, 'Francais', 'lng/french.lng.php');");
 		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`id`, `language`, `file`) VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');");
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.2-cvs2';
 	}
 	if($settings['panel']['version'] == '1.2.2-cvs2')
 	{
+		if ( $settings['panel']['standardlanguage'] == 'german' )
+		{
+			$standardlanguage_new = 'Deutsch' ;
+		}
+		elseif ( $settings['panel']['standardlanguage'] == 'french' )
+		{
+			$standardlanguage_new = 'Francais' ;
+		}
+		else
+		{
+			$standardlanguage_new = 'English' ;
+		}
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$standardlanguage_new' WHERE `settinggroup`='panel' AND `varname`='standardlanguage'");
+
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='English'    WHERE `settinggroup`='panel' AND `varname`='standardlanguage'");
 		$settings['panel']['version'] = '1.2.2-cvs3';
 	}
 ?>
