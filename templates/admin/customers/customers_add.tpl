@@ -7,6 +7,10 @@ $header
       <tr>
        <td colspan="20" class="title">{$lng['admin']['customer_add']}</td>
       </tr>
+      <if $settings['customer']['loginnamestyle'] == 'dynamic'><tr>
+       <td class="maintable">{$lng['customer']['login']}: *</td>
+       <td class="maintable" nowrap><input type="text" name="loginname" value=""></td>
+      </tr></if>
       <tr>
        <td class="maintable">{$lng['customer']['name']}: *</td>
        <td class="maintable" nowrap><input type="text" name="name" value=""></td>

@@ -21,17 +21,17 @@
 	$version = '1.1-cvs';
 
 	/**
-	 * Inlcudes the Usersettings eg. MySQL-Username/Passwort etc.
+	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
 	require('./lib/userdata.inc.php');
 
 	/**
-	 * Inlcudes the MySQL-Tabledefinitions etc.
+	 * Includes the MySQL-Tabledefinitions etc.
 	 */
 	require('./lib/tables.inc.php');
 
 	/**
-	 * Inlcudes the MySQL-Connection-Class
+	 * Includes the MySQL-Connection-Class
 	 */
 	require('./lib/class_mysqldb.php');
 	$db = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);

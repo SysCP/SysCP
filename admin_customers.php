@@ -159,7 +159,7 @@
 				$password=addslashes($_POST['password']);
 				$sendpassword=intval($_POST['sendpassword']);
 
-				if($name=='' || $surname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
+				if($name=='' || $surname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) || ($settings['customer']['loginnamestyle'] == 'dynamic' && $_POST['loginname'] == '') )
 				{
 					standard_error('notallreqfieldsorerrors');
 					exit;
@@ -169,10 +169,24 @@
 					$diskspace=$diskspace*1024;
 					$traffic=$traffic*1024*1024;
 
-					$accountnumber=intval($settings['system']['lastaccountnumber'])+1;
+					if($settings['customer']['loginnamestyle'] == 'dynamic')
+					{
+						$loginname = addslashes($_POST['loginname']);
+						$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='".$loginname."'");
+						if($loginname_check['loginname'] == $loginname)
+						{
+							standard_error('notallreqfieldsorerrors');
+						}
+						$accountnumber=intval($settings['system']['lastaccountnumber']);
+					}
+					else
+					{
+						$accountnumber=intval($settings['system']['lastaccountnumber'])+1;
+						$loginname = $settings['customer']['accountprefix'].$accountnumber;
+					}
+
 					$guid=intval($settings['system']['lastguid'])+1;
-					$documentroot=$settings['system']['documentroot_prefix'].$settings['customer']['accountprefix'].$accountnumber;
-					$loginname=$settings['customer']['accountprefix'].$accountnumber;
+					$documentroot = $settings['system']['documentroot_prefix'].$loginname;
 
 					if($createstdsubdomain != '1')
 					{

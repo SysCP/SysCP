@@ -43,15 +43,21 @@
 			$loginname = addslashes($_POST['loginname']);
 			$password = addslashes($_POST['password']);
 
-			if( substr($loginname, 0, strlen($settings['customer']['accountprefix'])) == $settings['customer']['accountprefix'])
+			$result = $db->query("SELECT `customerid` AS `userid` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '$loginname' AND `password` = '".md5($password)."' AND `deactivated` <> '1'");
+			if ($db->num_rows($result) > 0) 
 			{
-				$userinfo = $db->query_first("SELECT `customerid` AS `userid` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '$loginname' AND `password` = '".md5($password)."' AND `deactivated` <> '1'");
+				$userinfo = $db->fetch_array($result);
 				$userinfo['adminsession'] = '0';
 			}
-			else/*if( substr($loginname, 0, strlen($settings['admin']['accountprefix'])) == $settings['admin']['accountprefix'])*/
+			else
 			{
-				$userinfo = $db->query_first("SELECT `adminid` AS `userid` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '$loginname' AND `password` = '".md5($password)."' AND `deactivated` <> '1'");
-				$userinfo['adminsession'] = '1';
+				// wenn user nicht vorhanden auf admin testen
+				$result = $db->query("SELECT `adminid` AS `userid` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '$loginname' AND `password` = '".md5($password)."' AND `deactivated` <> '1'");
+				if ($db->num_rows($result) > 0)
+				{
+					$userinfo = $db->fetch_array($result);
+					$userinfo['adminsession'] = '1';
+				}
 			}
 
 			if(isset($userinfo['userid']) && $userinfo['userid'] != '')
