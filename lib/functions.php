@@ -658,7 +658,7 @@
 					}
 					$sid = '';
 					// append sid only to local
-					if (substr($navElem['url'],0,7) != 'http://')
+					if ( (substr($navElem['url'],0,7) != 'http://') && (isset($s)) )
 					{
 						// generate sid with ? oder &
 						if (preg_match('/\?/',$navElem['url']))

@@ -360,7 +360,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.2-cvs1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.2-cvs2');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -458,4 +458,25 @@ INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES
 INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (22, 'admin', 0, 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles');
 INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (23, 'admin', 0, 'admin;serversettings', 'admin_settings.php?page=settings');
 INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (24, 'admin', 0, 'login;logout', 'admin_index.php?action=logout');
-        
+
+#
+# Table structure for table `panel_languages`
+# 
+
+DROP TABLE IF EXISTS `panel_languages`;
+CREATE TABLE `panel_languages` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `language` varchar(30) NOT NULL default '',
+  `file` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM ;
+
+# 
+# Dumping data for table `panel_languages`
+# 
+
+INSERT INTO `panel_languages` VALUES (1, 'Deutsch', 'lng/german.lng.php');
+INSERT INTO `panel_languages` VALUES (2, 'English', 'lng/english.lng.php');
+INSERT INTO `panel_languages` VALUES (3, 'Francais', 'lng/french.lng.php');
+INSERT INTO `panel_languages` VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');
+               
