@@ -42,22 +42,19 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `email`, `destination`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
+			$result=$db->query("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
 			$accounts='';
 			$emails_count=0;
 			while($row=$db->fetch_array($result))
 			{
-				if($row['email']{0} == '@')
-				{
-					$row['email'] = $settings['email']['catchallkeyword'].$row['email'];
-				}
 				$emails_count++;
 				$row['email'] = $idna_convert->decode($row['email']);
+				$row['email_full'] = $idna_convert->decode($row['email_full']);
 				$row['destination'] = explode ( ' ', $row['destination'] ) ;
 				while ( list ( $dest_id , $destination ) = each ( $row['destination'] ) )
 				{
 					$row['destination'][$dest_id] = $idna_convert->decode($row['destination'][$dest_id]);
-					if ( $row['destination'][$dest_id] == $row['email'] )
+					if ( $row['destination'][$dest_id] == $row['email_full'] )
 					{
 						unset ( $row['destination'][$dest_id] ) ;
 					}
@@ -78,14 +75,9 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['email']) && $result['email']!='')
 			{
-				if($result['email']{0} == '@')
-				{
-					$result['email'] = $settings['email']['catchallkeyword'].$result['email'];
-				}
-
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$update_users_query_addon = '';
@@ -110,7 +102,7 @@
 				}
 				else
 				{
-					ask_yesno('email_reallydelete', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['email']));
+					ask_yesno('email_reallydelete', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['email_full']));
 				}
 			}
 		}
@@ -124,23 +116,32 @@
 					$email_part = addslashes($_POST['email_part']);
 					$domain = $idna_convert->encode(addslashes($_POST['domain']));
 					$domain_check = $db->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."'");
-					if($email_part == $settings['email']['catchallkeyword'])
+					if ( isset ( $_POST['iscatchall'] ) && $_POST['iscatchall'] == '1' )
 					{
+						$iscatchall = '1' ;
 						$email = '@' . $domain ;
 					}
 					else
 					{
+						$iscatchall = '0' ;
 						$email = $email_part . '@' . $domain ;
 					}
-					$email_check=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
-					if($email=='' || $email_part=='' || $domain=='' || $domain_check['domain']!=$domain || $email_check['email'] == $email || !verify_email($email_part . '@' . $domain))
+					$email_full = $email_part . '@' . $domain ;
+
+					$email_check=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE ( `email`='$email' OR `email_full` = '$email_full' ) AND `customerid`='".$userinfo['customerid']."'");
+					if($email=='' || $email_full == '' || $email_part=='' || $domain=='' || $domain_check['domain']!=$domain || $email_check['email_full'] == $email_full || !verify_email($email_part . '@' . $domain))
 					{
 						standard_error('notallreqfieldsorerrors');
 						exit;
 					}
+					elseif ( $email_check['email'] == $email )
+					{
+						standard_error('youhavealreadyacatchallforthisdomain');
+						exit;
+					}
 					else
 					{
-						$db->query("INSERT INTO `".TABLE_MAIL_VIRTUAL."` (`customerid`, `email`, `domainid`) VALUES ('".$userinfo['customerid']."', '$email', '".$domain_check['id']."')");
+						$db->query("INSERT INTO `".TABLE_MAIL_VIRTUAL."` (`customerid`, `email`, `email_full`, `iscatchall`, `domainid`) VALUES ('".$userinfo['customerid']."', '$email', '$email_full', '$iscatchall', '".$domain_check['id']."')");
 						$address_id = $db->insert_id();
 						$db->query("UPDATE ".TABLE_PANEL_CUSTOMERS." SET `emails_used` = `emails_used` + 1 WHERE `customerid`='".$userinfo['customerid']."'");
 						header("Location: $filename?page=$page&action=edit&id=$address_id&s=$s");
@@ -154,6 +155,7 @@
 					{
 						$domains.=makeoption($idna_convert->decode($row['domain']),$row['domain']);
 					}
+					$iscatchall = makeyesno ( 'iscatchall' , '1' , '0' , '0');
 					eval("echo \"".getTemplate("email/emails_add")."\";");
 				}
 			}
@@ -165,15 +167,11 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['email']) && $result['email']!='')
 			{
-				if($result['email']{0} == '@')
-				{
-					$result['email'] = $settings['email']['catchallkeyword'].$result['email'];
-				}
-
 				$result['email'] = $idna_convert->decode($result['email']);
+				$result['email_full'] = $idna_convert->decode($result['email_full']);
 				$result['destination'] = explode ( ' ', $result['destination'] ) ;
 				$forwarders = '';
 				$forwarderid = 0;
@@ -182,7 +180,7 @@
 				{
 					$forwarderid++;
 					$destination = $idna_convert->decode($destination);
-					if ( $destination != $result['email'] && $destination != '')
+					if ( $destination != $result['email_full'] && $destination != '')
 					{
 						eval("\$forwarders.=\"".getTemplate("email/emails_edit_forwarder")."\";");
 						$forwarders_count++;
@@ -193,6 +191,34 @@
 				eval("echo \"".getTemplate("email/emails_edit")."\";");
 			}
 		}
+
+		elseif($action=='togglecatchall' && $id!=0)
+		{
+			$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			if(isset($result['email']) && $result['email']!='')
+			{
+				if ( $result['iscatchall'] == '1' )
+				{
+					$db->query ( "UPDATE `".TABLE_MAIL_VIRTUAL."` SET `email` = '" . $result['email_full'] . "', `iscatchall` = '0' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='".$result['id']."'" );
+				}
+				else
+				{
+					$email_parts = explode ( '@' , $result['email_full'] ) ;
+					$email = '@' . $email_parts[1] ;
+					$email_check=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
+					if ( $email_check['email'] == $email )
+					{
+						standard_error('youhavealreadyacatchallforthisdomain');
+						exit;
+					}
+					else
+					{
+						$db->query ( "UPDATE `".TABLE_MAIL_VIRTUAL."` SET `email` = '$email' , `iscatchall` = '1' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='".$result['id']."'" );
+					}
+				}
+				header("Location: $filename?page=$page&action=edit&id=$id&s=$s");
+			}
+		}
 	}
 
 	elseif($page=='accounts')
@@ -201,47 +227,37 @@
 		{
 			if($userinfo['email_accounts_used'] < $userinfo['email_accounts'] || $userinfo['email_accounts'] == '-1')
 			{
-				$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid`, `popaccountid`, `domainid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+				$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid`, `domainid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 				if(isset($result['email']) && $result['email']!='' && $result['popaccountid'] == '0')
 				{
-					if($result['email']{0} == '@')
-					{
-						$result['email'] = $settings['email']['catchallkeyword'].$result['email'];
-					}
-
 					if(isset($_POST['send']) && $_POST['send']=='send')
 					{
-						$email = $result['email'];
-						$username = $idna_convert->decode($email);
-						$destination = $email;
-						if(substr($email, 0, strlen($settings['email']['catchallkeyword']) + 1) == $settings['email']['catchallkeyword'].'@')
-						{
-							$email = str_replace($settings['email']['catchallkeyword'], '', $email);
-						}
+						$email_full = $result['email_full'];
+						$username = $idna_convert->decode($email_full);
 						$password=addslashes($_POST['password']);
-						if($email=='' || $password=='')
+						if($email_full == '' || $password == '')
 						{
 							standard_error('notallreqfieldsorerrors');
 							exit;
 						}
 						else
 						{
-							$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `username`, `password`, `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".$userinfo['customerid']."', '$destination', '$username', '$password', ENCRYPT('$password'), '".$settings['system']['vmail_homedir']."', '".$userinfo['loginname']."/$username/', '".$settings['system']['vmail_uid']."', '".$settings['system']['vmail_gid']."', '".$result['domainid']."', 'y')");
+							$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `username`, `password`, `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".$userinfo['customerid']."', '$email_full', '$username', '$password', ENCRYPT('$password'), '".$settings['system']['vmail_homedir']."', '".$userinfo['loginname']."/$username/', '".$settings['system']['vmail_uid']."', '".$settings['system']['vmail_gid']."', '".$result['domainid']."', 'y')");
 							$popaccountid = $db->insert_id();
-							$result['destination'] .= ' ' . $destination;
+							$result['destination'] .= ' ' . $email_full;
 							$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."', `popaccountid` = '$popaccountid' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 							$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_accounts_used`=`email_accounts_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
-	
+
 							eval("\$mail_subject=\"".$lng['mails']['pop_success']['subject']."\";");
 							eval("\$mail_body=\"".$lng['mails']['pop_success']['mailbody']."\";");
-							mail("$destination <$destination>",$mail_subject,$mail_body,"From: {$settings['panel']['adminmail']} <{$settings['panel']['adminmail']}>\r\n");
+							mail("$email_full <$email_full>",$mail_subject,$mail_body,"From: {$settings['panel']['adminmail']} <{$settings['panel']['adminmail']}>\r\n");
 	
 							header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
 						}
 					}
 					else
 					{
-						$result['email'] = $idna_convert->decode($result['email']);
+						$result['email_full'] = $idna_convert->decode($result['email_full']);
 						eval("echo \"".getTemplate("email/account_add")."\";");
 					}
 				}
@@ -254,14 +270,9 @@
 
 		elseif($action=='changepw' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['popaccountid']) && $result['popaccountid']!='')
 			{
-				if($result['email']{0} == '@')
-				{
-					$result['email'] = $settings['email']['catchallkeyword'].$result['email'];
-				}
-
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$password=addslashes($_POST['password']);
@@ -278,7 +289,7 @@
 				}
 				else
 				{
-					$result['email'] = $idna_convert->decode($result['email']);
+					$result['email_full'] = $idna_convert->decode($result['email_full']);
 					eval("echo \"".getTemplate("email/account_changepw")."\";");
 				}
 			}
@@ -286,25 +297,20 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['popaccountid']) && $result['popaccountid']!='')
 			{
-				if($result['email']{0} == '@')
-				{
-					$result['email'] = $settings['email']['catchallkeyword'].$result['email'];
-				}
-
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='".$result['popaccountid']."'");
-					$result['destination'] = str_replace ( $result['email'] , '' , $result['destination'] ) ;
+					$result['destination'] = str_replace ( $result['email_full'] , '' , $result['destination'] ) ;
 					$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."', `popaccountid` = '0' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_accounts_used` = `email_accounts_used` - 1 WHERE `customerid`='".$userinfo['customerid']."'");
 					header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
 				}
 				else
 				{
-					ask_yesno('email_reallydelete_account', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['email']));
+					ask_yesno('email_reallydelete_account', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['email_full']));
 				}
 			}
 		}
@@ -316,14 +322,9 @@
 		{
 			if($userinfo['email_forwarders_used'] < $userinfo['email_forwarders'] || $userinfo['email_forwarders'] == '-1')
 			{
-				$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid`, `popaccountid`, `domainid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+				$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid`, `domainid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 				if(isset($result['email']) && $result['email']!='')
 				{
-					if($result['email']{0} == '@')
-					{
-						$result['email'] = $settings['email']['catchallkeyword'].$result['email'];
-					}
-
 					if(isset($_POST['send']) && $_POST['send']=='send')
 					{
 						$destination = $idna_convert->encode(addslashes($_POST['destination']));
@@ -344,7 +345,7 @@
 					}
 					else
 					{
-						$result['email'] = $idna_convert->decode($result['email']);
+						$result['email_full'] = $idna_convert->decode($result['email_full']);
 						eval("echo \"".getTemplate("email/forwarder_add")."\";");
 					}
 				}
@@ -357,14 +358,9 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['destination']) && $result['destination']!='')
 			{
-				if($result['email']{0} == '@')
-				{
-					$result['email'] = $settings['email']['catchallkeyword'].$result['email'];
-				}
-
 				if(isset($_POST['forwarderid']))
 				{
 					$forwarderid = intval($_POST['forwarderid']) ;
@@ -396,7 +392,7 @@
 					}
 					else
 					{
-						ask_yesno('email_reallydelete_forwarder', $filename, "id=$id;forwarderid=$forwarderid;page=$page;action=$action", $idna_convert->decode($result['email']) . ' -> ' . $idna_convert->decode($forwarder));
+						ask_yesno('email_reallydelete_forwarder', $filename, "id=$id;forwarderid=$forwarderid;page=$page;action=$action", $idna_convert->decode($result['email_full']) . ' -> ' . $idna_convert->decode($forwarder));
 					}
 				}
 			}

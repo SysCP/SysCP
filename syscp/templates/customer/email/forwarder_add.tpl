@@ -10,7 +10,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['emails']['from']}:</td>
-       <td class="maintable" nowrap>{$result['email']}</td>
+       <td class="maintable" nowrap>{$result['email_full']}</td>
       </tr>
       <tr>
        <td class="maintable">{$lng['emails']['to']}:</td>

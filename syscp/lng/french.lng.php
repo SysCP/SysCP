@@ -30,6 +30,7 @@ $lng['panel']['no'] = 'Non';
 $lng['panel']['emptyfornochanges'] = 'Veuillez laisser vide pour aucun changement';
 $lng['panel']['emptyfordefault'] = 'Veuillez laisser vide pour l´option standard';
 $lng['panel']['path'] = 'Chemin';
+$lng['panel']['toggle'] = 'Permuter';
 
 /**
  * Login
@@ -118,6 +119,8 @@ $lng['emails']['description'] = 'Ici vous pouvez appliquer vos boites &agrave; e
 $lng['emails']['emailaddress'] = 'Adresse';
 $lng['emails']['emails_add'] = 'Appliquer une Adresse';
 $lng['emails']['emails_edit'] = 'Changer une adresse';
+$lng['emails']['catchall'] = 'Catchall';
+$lng['emails']['iscatchall'] = 'D&eacute;finer comme adresse catchall?';
 $lng['emails']['account'] = 'Acc&egrave;s';
 $lng['emails']['account_add'] = 'Appliquer un acc&egrave;s';
 $lng['emails']['account_delete'] = 'Effacer acc&egrave;s';
@@ -167,6 +170,7 @@ $lng['error']['filemustexist'] = 'Le fichier que vous avez choisi n´existe pas.'
 $lng['error']['allresourcesused'] = 'Vous avez d&eacute;j&agrave; us&eacute;s tous ressources.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Vous ne pouvez pas effacer une domain qui est utilis&eacute; pour des adresses e-mail. ';
 $lng['error']['firstdeleteallsubdomains'] = 'Il faut effacer toutes les subdomains avant d´appliquer un domain Wildcard.';
+$lng['error']['youhavealreadyacatchallforthisdomain'] = 'Vous avez d&eacute;j&agrave; defin&eacute; une adresse catchall pour ce domaine.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Vous ne pouvez pas effacer votre acc&egrave;s principal.';
 $lng['error']['login'] = 'Identifiant / mot de passe invalide.';
 $lng['error']['login_blocked'] = 'Cet acc&egrave;s &eacute;tait bloqu&eacute; &agrave; cause de trop des login fautes.<br />S´il vous-plait l´essayer encore dans '.$settings['login']['deactivatetime'].' secondes.';
@@ -195,7 +199,7 @@ $lng['question']['mysql_reallydelete'] = 'Voulez-vous vraiment effacer la banque
 /**
  * Mails
  */
-$lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 $email\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
+$lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 $username\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
 $lng['mails']['pop_success']['subject'] = 'Acc&egrave;s POP3 install&eacute;';
 $lng['mails']['createcustomer']['mailbody'] = 'Bonjour $surname $name,\n\nici vos informations d´acc&egrave;s:\n\nIdentifiant: $loginname\nMot de passe: $password\n\nNous vous remercions,\nVotre Webmaster';
 $lng['mails']['createcustomer']['subject'] = 'Informations de votre acc&egrave;s';
@@ -211,6 +215,7 @@ $lng['admin']['installedversion'] = 'Version install&eacute;e';
 $lng['admin']['latestversion'] = 'La plus nouvelle version';
 $lng['admin']['lookfornewversion']['clickhere'] = 'Interroger par internet';
 $lng['admin']['lookfornewversion']['error'] = 'Erreur en triant';
+$lng['admin']['resources'] = 'R&eacute;ssources';
 $lng['admin']['customer'] = 'Compte';
 $lng['admin']['customers'] = 'Comptes';
 $lng['admin']['customer_add'] = 'Appliquer un compte';
@@ -225,14 +230,15 @@ $lng['admin']['admin_edit'] = 'Modifier un administrateur';
 $lng['admin']['customers_see_all'] = 'Peut voir tous les comptes?';
 $lng['admin']['domains_see_all'] = 'Peut voir tous les Domains?';
 $lng['admin']['change_serversettings'] = 'Peut modifier la configuration du server?';
-$lng['admin']['serversettings'] = 'Configuration du server';
+$lng['admin']['server'] = 'Server';
+$lng['admin']['serversettings'] = 'R&eacute;glage';
 $lng['admin']['stdsubdomain'] = 'Subdomain-type';
 $lng['admin']['stdsubdomain_add'] = 'Appliquer un subdomain-type';
 $lng['admin']['deactivated'] = 'Bloqu&eacute;';
 $lng['admin']['deactivated_user'] = 'Bloquer utilisateur';
 $lng['admin']['sendpassword'] = 'Envoyer mot de passe';
 $lng['admin']['ownvhostsettings'] = 'Configuration sp&eacute;ciale du vHost';
-$lng['admin']['configfiles']['serverconfiguration'] = 'Configuration du server';
+$lng['admin']['configfiles']['serverconfiguration'] = 'Configuration';
 $lng['admin']['configfiles']['files'] = '<b>Fichiers de configuration:</b> S´il vous-plait modifiez les fichiers correspondants<br />ou cr&eacute;ez les avec les contenu ci-dessous.<br /><b>IMPORTANT:</b> Le mot de passe MySQL n´est pas donn&eacute;s dans les dates ci-dessus<br />&agrave; cause des raisons de s&eacute;curit&eacute;. S´il vous-plait substituez les &quot;MYSQL_PASSWORD&quot;<br />manuellement avec le mot de passe. En cas de l´avoir oubli&eacute;, vous le trouvez dans<br />le fichier &quot;lib/userdata.inc.php&quot;.';
 $lng['admin']['configfiles']['commands'] = '<b>Commandes:</b> S´il vous-plait ex&eacute;cuter les commandes ci-dessous sur le shell.';
 $lng['admin']['configfiles']['restart'] = '<b>R&eacute;demarrer:</b> S´il vous-plait ex&eacute;cuter les commandes ci-dessous pour<br />r&eacute;initialiser les fichiers de configuration.';
@@ -242,8 +248,6 @@ $lng['admin']['configfiles']['restart'] = '<b>R&eacute;demarrer:</b> S´il vous-p
  */
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'Combien de temps faut-il etre inactif pour que votre session se ferme automatiquement (secondes)';
-$lng['serversettings']['catachallkeyword']['title'] = 'Catchall-Keyword';
-$lng['serversettings']['catachallkeyword']['description'] = 'Quelle est l´adresse e-mail qui capture tous e-mails?';
 $lng['serversettings']['accountprefix']['title'] = 'Pr&eacute;fix des comptes';
 $lng['serversettings']['accountprefix']['description'] = 'Quel pr&eacute;fix doivent avoir les comptes?';
 $lng['serversettings']['mysqlprefix']['title'] = 'Pr&eacute;fix SQL';
@@ -282,5 +286,10 @@ $lng['serversettings']['webmail_url']['title'] = 'URL WebMail';
 $lng['serversettings']['webmail_url']['description'] = '&Agrave; quelle adresse se trouve le WebMail?';
 $lng['serversettings']['webftp_url']['title'] = 'URL WebFTP';
 $lng['serversettings']['webftp_url']['description'] = '&Agrave; quelle adresse se trouve le WebFTP?';
+$lng['serversettings']['language']['description'] = 'Quelle langue est la langue pr&eacute;d&eacute;finie?';
+$lng['serversettings']['maxloginattempts']['title'] = 'Nombre d´essais maximal';
+$lng['serversettings']['maxloginattempts']['description'] = 'Nombre d´essais de se connecter maximal jusqu´&agrave; la d&eacute;activation de l´acc&egrave;s.';
+$lng['serversettings']['deactivatetime']['title'] = 'Dur&eacute;e de la d&eacute;activation';
+$lng['serversettings']['deactivatetime']['description'] = 'Dur&eacute;e (en secondes) pendant laquelle l´acc&egrave;s reste d&eacute;activ&eacute;.';
 
 ?>

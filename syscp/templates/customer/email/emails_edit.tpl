@@ -5,7 +5,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['emails']['emailaddress']}:</td>
-       <td class="maintable" nowrap>{$result['email']}</td>
+       <td class="maintable" nowrap>{$result['email_full']}</td>
       </tr>
       <tr>
        <td class="maintable">{$lng['emails']['account']}:</td>
@@ -13,6 +13,10 @@ $header
         <if $result['popaccountid'] != 0>{$lng['panel']['yes']} [<a href="$filename?page=accounts&action=changepw&id={$result['id']}&s=$s">{$lng['menue']['main']['changepassword']}</a>] [<a href="$filename?page=accounts&action=delete&id={$result['id']}&s=$s">{$lng['emails']['account_delete']}</a>]</if>
         <if $result['popaccountid'] == 0>{$lng['panel']['no']} [<a href="$filename?page=accounts&action=add&id={$result['id']}&s=$s">{$lng['emails']['account_add']}</a>]</if>
        </td>
+      </tr>
+      <tr>
+       <td class="maintable">{$lng['emails']['catchall']}:</td>
+       <td class="maintable"><if $result['iscatchall'] != 0>{$lng['panel']['yes']}</if><if $result['iscatchall'] == 0>{$lng['panel']['no']}</if> [<a href="$filename?page=$page&action=togglecatchall&id={$result['id']}&s=$s">{$lng['panel']['toggle']}</a>]</td>
       </tr>
       <tr>
        <td class="maintable">{$lng['emails']['forwarders']} ({$forwarders_count}):</td>

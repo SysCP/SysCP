@@ -30,6 +30,7 @@ $lng['panel']['no'] = 'no';
 $lng['panel']['emptyfornochanges'] = 'empty for no changes';
 $lng['panel']['emptyfordefault'] = 'empty for defaults';
 $lng['panel']['path'] = 'Path';
+$lng['panel']['toggle'] = 'Toggle';
 
 /**
  * Login
@@ -118,6 +119,8 @@ $lng['emails']['description'] = 'Here you can create and change your eMail addre
 $lng['emails']['emailaddress'] = 'eMail-address';
 $lng['emails']['emails_add'] = 'Create eMail-address';
 $lng['emails']['emails_edit'] = 'Edit eMail-address';
+$lng['emails']['catchall'] = 'Catchall';
+$lng['emails']['iscatchall'] = 'Define as catchall-address?';
 $lng['emails']['account'] = 'Account';
 $lng['emails']['account_add'] = 'Create account';
 $lng['emails']['account_delete'] = 'Delete account';
@@ -167,6 +170,7 @@ $lng['error']['filemustexist'] = 'The file you typed in has to exist.';
 $lng['error']['allresourcesused'] = 'You have already used all of your resources.';
 $lng['error']['domains_cantdeletemaindomain'] = 'You cannot delete a domain which is used as an email-domain.';
 $lng['error']['firstdeleteallsubdomains'] = 'You have to delete all Subdomains first before you can create a wildcard domain.';
+$lng['error']['youhavealreadyacatchallforthisdomain'] = 'You have already defined a catchall for this domain.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'You cannot delete your main FTP account';
 $lng['error']['login'] = 'The username or password you typed in is wrong. Please try it again!';
 $lng['error']['login_blocked'] = 'This account has been suspended because of too many login errors. <br />Please try again in '.$settings['login']['deactivatetime'].' seconds.';
@@ -195,7 +199,7 @@ $lng['question']['mysql_reallydelete'] = 'Do you really want to delete the datab
 /**
  * Mails
  */
-$lng['mails']['pop_success']['mailbody'] = 'Hello,\n\nyour Mail account $destination\nwas set up successfully.\n\nThis is an automatically created\neMail, please do not answer!\n\nYours sincerely, the SysCP-Team';
+$lng['mails']['pop_success']['mailbody'] = 'Hello,\n\nyour Mail account $username\nwas set up successfully.\n\nThis is an automatically created\neMail, please do not answer!\n\nYours sincerely, the SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'Mail account set up successfully';
 $lng['mails']['createcustomer']['mailbody'] = 'Hello $surname $name,\n\nhere is your account information:\n\nUsername: $loginname\nPassword: $password\n\nThank you,\nthe SysCP-Team';
 $lng['mails']['createcustomer']['subject'] = 'Account informationen';
@@ -244,8 +248,6 @@ $lng['admin']['configfiles']['restart'] = '<b>Restart:</b> Please execute the fo
  */
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'How long does a user have to be inactive before a session gets invalid (seconds)?';
-$lng['serversettings']['catachallkeyword']['title'] = 'Catchall Keyword';
-$lng['serversettings']['catachallkeyword']['description'] = 'Which email-address should automatically be a catchall account?';
 $lng['serversettings']['accountprefix']['title'] = 'Customerprefix';
 $lng['serversettings']['accountprefix']['description'] = 'Which prefix should customeraccounts have?';
 $lng['serversettings']['mysqlprefix']['title'] = 'SQL Prefix';
