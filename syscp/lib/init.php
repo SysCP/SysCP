@@ -18,7 +18,6 @@
  */
 
 	$filename = basename($_SERVER['PHP_SELF']);
-	$version = '1.1-cvs';
 
 	/**
 	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.

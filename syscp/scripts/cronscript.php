@@ -17,7 +17,6 @@
  * @version $Id$
  */
  
-	$version = '1.1-cvs';
 	$lockfile='/tmp/syscp_cron.lock';
 	$pathtophpfiles='/var/www/syscp';
 
@@ -101,17 +100,17 @@
 		if($row['type'] == '1')
 		{
 			$vhosts_file='# '.$settings['system']['apacheconf_directory'].'vhosts.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.'."\n"."\n";
-			$vhosts_file.='NameVirtualHost '.$settings['system']['ipadress']."\n"."\n";
+			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress']."\n"."\n";
 
 			$vhosts_file.='# DummyHost for DefaultSite'."\n";
-			$vhosts_file.='<VirtualHost '.$settings['system']['ipadress'].'>'."\n";
+			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
 			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`specialsettings`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
-				$vhosts_file.='<VirtualHost '.$settings['system']['ipadress'].'>'."\n";
+				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
 				$vhosts_file.='  ServerAlias www.'.$domain['domain']."\n";
 				$vhosts_file.='  ServerAdmin webmaster@'.$domain['domain']."\n";
@@ -153,7 +152,7 @@
 			while($customer=$db->fetch_array($result_customers))
 			{
 				$vhosts_file.='# Standardsubdomain - CustomerID: '.$customer['customerid'].' - CustomerLogin: '.$customer['loginname']."\n";
-				$vhosts_file.='<VirtualHost '.$settings['system']['ipadress'].'>'."\n";
+				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 				$vhosts_file.='  ServerName '.$customer['loginname'].'.'.$settings['system']['hostname']."\n";
 				$vhosts_file.='  DocumentRoot '.$customer['documentroot'].'/'."\n";
 				$vhosts_file.='  php_admin_value open_basedir '.$customer['documentroot'].'/'."\n";
