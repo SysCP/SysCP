@@ -129,5 +129,72 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.3';
 	}
+	if($settings['panel']['version'] == '1.2.3')
+	{
+		$db->query(
+			'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'WHERE `lang` = "menue;mysql;phpmyadmin" OR `lang` = "menue;email;webmail" OR `lang` = "menue;ftp;webftp"'
+		);
+
+		$db->query("
+			ALTER TABLE `".TABLE_PANEL_NAVIGATION."` ADD `parent_url` VARCHAR( 255 ) NOT NULL AFTER `parent_id`,
+			ADD `required_resources` VARCHAR( 255 ) NOT NULL ,
+			ADD `new_window` TINYINT( 1 ) UNSIGNED NOT NULL ;
+		");
+
+		$updateNavigationResult = $db->query("SELECT `id`, `url` FROM `".TABLE_PANEL_NAVIGATION."` WHERE `parent_id` = '0'");
+		while ($updateNavigationRow = $db->fetch_array($updateNavigationResult))
+		{
+			$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `parent_url` = '".$updateNavigationRow['url']."' WHERE `parent_id` = '".$updateNavigationRow['id']."'");
+		}
+
+		$db->query("ALTER TABLE `".TABLE_PANEL_NAVIGATION."` DROP `parent_id`");
+
+		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'emails' WHERE `lang` = 'menue;email;pop'");
+		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'email_forwarders' WHERE `lang` = 'menue;email;forwarders'");
+		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'mysqls' WHERE `lang` = 'menue;mysql;databases'");
+		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'customers' WHERE `lang` = 'admin;customers'");
+		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'domains' WHERE `lang` = 'admin;domains'");
+		$db->query("UPDATE `".TABLE_PANEL_NAVIGATION."` SET `required_resources` = 'change_serversettings' WHERE `lang` = 'admin;admins' OR `lang` = 'admin;configfiles;serverconfiguration' OR `lang` = 'admin;serversettings'");
+
+		if( $settings['panel']['phpmyadmin_url'] != '' )
+		{
+			$db->query(
+				'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+				'SET `lang`       = "menue;mysql;phpmyadmin", ' .
+				'    `url`        = "'.$settings['panel']['phpmyadmin_url'].'", ' .
+				'    `area`       = "customer", ' .
+				'    `new_window` = "1", ' .
+				'    `parent_url` = "customer_mysql.php"'
+			);
+		}
+
+		if( $settings['panel']['webmail_url'] != '' )
+		{
+			$db->query(
+				'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+				'SET `lang`       = "menue;email;webmail", ' .
+				'    `url`        = "'.$settings['panel']['webmail_url'].'", ' .
+				'    `area`       = "customer", ' .
+				'    `new_window` = "1", ' .
+				'    `parent_url` = "customer_email.php"'
+			);
+		}
+
+		if( $settings['panel']['webftp_url'] != '' )
+		{
+			$db->query(
+				'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+				'SET `lang`       = "menue;ftp;webftp", ' .
+				'    `url`        = "'.$settings['panel']['webftp_url'].'", ' .
+				'    `area`       = "customer", ' .
+				'    `new_window` = "1", ' .
+				'    `parent_url` = "customer_ftp.php"'
+			);
+		}
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.3-cvs1';
+	}
         
 ?>
