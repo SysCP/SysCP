@@ -71,7 +71,7 @@ $lng['customer']['unlimited'] = 'unendlich';
 $lng['menue']['main']['main'] = 'Allgemein';
 $lng['menue']['main']['changepassword'] = 'Passwort &auml;ndern';
 $lng['menue']['email']['email'] = 'eMail';
-$lng['menue']['email']['pop'] = 'POP3-Konten';
+$lng['menue']['email']['pop'] = 'Konten';
 $lng['menue']['email']['forwarders'] = 'Weiterleitungen';
 $lng['menue']['email']['webmail'] = 'WebMail';
 $lng['menue']['mysql']['mysql'] = 'MySQL';
@@ -113,11 +113,11 @@ $lng['domains']['wildcarddomain'] = 'Als Wildcarddomain eintragen?';
 /**
  * eMails
  */
-$lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre eMail Adressen einrichten.<br />Ein POP-Konto ist wie Ihr Briefkasten vor der Haust&uuml;re. Wenn jemand eine email an Sie schreibt, dann wird diese in dieses POP-Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / eMail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
+$lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre eMail Adressen einrichten.<br />Ein Konto ist wie Ihr Briefkasten vor der Haust&uuml;re. Wenn jemand eine email an Sie schreibt, dann wird diese in dieses Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / eMail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
 $lng['emails']['forwarders_add'] = 'Weiterleitung anlegen';
 $lng['emails']['from'] = 'Von';
 $lng['emails']['to'] = 'Nach';
-$lng['emails']['pop3_add'] = 'POP3-Konto anlegen';
+$lng['emails']['pop3_add'] = 'Konto anlegen';
 $lng['emails']['emailaddress'] = 'Konto/Adresse';
 
 /**

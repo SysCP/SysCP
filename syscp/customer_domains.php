@@ -43,19 +43,19 @@
 		{
 			$result=$db->query("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `domain` ASC");
 			$domains='';
+			$emaildomains_count=0;
+			$domains_count=0;
 			while($row=$db->fetch_array($result))
 			{
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
-			}
-			if($userinfo['subdomains_used'] < $userinfo['subdomains'] || $userinfo['subdomains'] == '-1')
-			{
-				if($db->num_rows($result) > 15)
+				if($row['isemaildomain'])
 				{
-					eval("\$domains=\"".getTemplate("domains/domains_adddomain")."\".\$domains;");
+					$emaildomains_count++;
 				}
-				eval("\$domains.=\"".getTemplate("domains/domains_adddomain")."\";");
+				$domains_count++;
 			}
+
 			eval("echo \"".getTemplate("domains/domainlist")."\";");
 		}
 

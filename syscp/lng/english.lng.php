@@ -71,7 +71,7 @@ $lng['customer']['unlimited'] = 'unlimited';
 $lng['menue']['main']['main'] = 'Main';
 $lng['menue']['main']['changepassword'] = 'Change password';
 $lng['menue']['email']['email'] = 'eMail';
-$lng['menue']['email']['pop'] = 'POP3-Accounts';
+$lng['menue']['email']['pop'] = 'Accounts';
 $lng['menue']['email']['forwarders'] = 'Forwarders';
 $lng['menue']['email']['webmail'] = 'WebMail';
 $lng['menue']['mysql']['mysql'] = 'MySQL';
@@ -113,11 +113,11 @@ $lng['domains']['wildcarddomain'] = 'Create as wildcarddomain?';
 /**
  * eMails
  */
-$lng['emails']['description'] = 'Here you can create and change your Mailboxes.<br />A POP-Account is like your letterbox in front of your house. If someone sends you an email, it will be dropped into the POP-Account.<br><br>To download your emails use the following settings in your mailprogram: (The data in <i>italics</i> have to be changed into the equivalents you typed in!)<br>Hostname: <b><i>Domainname</i></b><br>Username: <b><i>Accountname / eMail-address</i></b><br>Password: <b><i>the password you\'ve chosen</i></b>';
+$lng['emails']['description'] = 'Here you can create and change your Mailboxes.<br />An account is like your letterbox in front of your house. If someone sends you an email, it will be dropped into the account.<br><br>To download your emails use the following settings in your mailprogram: (The data in <i>italics</i> have to be changed into the equivalents you typed in!)<br>Hostname: <b><i>Domainname</i></b><br>Username: <b><i>Accountname / eMail-address</i></b><br>Password: <b><i>the password you\'ve chosen</i></b>';
 $lng['emails']['forwarders_add'] = 'Create forwarder';
 $lng['emails']['from'] = 'Source';
 $lng['emails']['to'] = 'Destination';
-$lng['emails']['pop3_add'] = 'Create POP3-account';
+$lng['emails']['pop3_add'] = 'Create account';
 $lng['emails']['emailaddress'] = 'Accountname/eMail-address';
 
 /**

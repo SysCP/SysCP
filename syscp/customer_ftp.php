@@ -48,14 +48,8 @@
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['homedir']);
 				eval("\$accounts.=\"".getTemplate("ftp/accounts_account")."\";");
 			}
-			if($userinfo['ftps_used'] < $userinfo['ftps'] || $userinfo['ftps'] == '-1')
-			{
-				if($db->num_rows($result) > 15)
-				{
-					eval("\$accounts=\"".getTemplate("ftp/accounts_addaccount")."\".\$accounts;");
-				}
-				eval("\$accounts.=\"".getTemplate("ftp/accounts_addaccount")."\";");
-			}
+			$ftps_count = $db->num_rows($result);
+
 			eval("echo \"".getTemplate("ftp/accounts")."\";");
 		}
 
