@@ -22,7 +22,7 @@
 		die('This script will only work in the shell.');
 	}
 
-	$lockfile='/tmp/syscp_cron.lock';
+	$lockfile='/var/run/syscp_cron.lock';
 	$pathtophpfiles='/var/www/syscp';
 
 	$filename = 'cronscript.php';
