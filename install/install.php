@@ -449,7 +449,6 @@
 		//now let's chenage the settings in our settings-table
 		status_message('begin', $lng['install']['changing_data']);
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = 'admin@$servername' WHERE `settinggroup` = 'panel' AND `varname` = 'adminmail'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = 'http://$servername/phpmyadmin' WHERE `settinggroup` = 'panel' AND `varname` = 'phpmyadmin_url'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$serverip' WHERE `settinggroup` = 'system' AND `varname` = 'ipaddress'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$servername' WHERE `settinggroup` = 'system' AND `varname` = 'hostname'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$version' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");

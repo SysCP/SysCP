@@ -67,15 +67,7 @@
 			{
 //				echo 'system_documentroot_prefix<br />';
 				$value=addslashes($_POST['system_documentroot_prefix']);
-				$value=str_replace('..','',$value);
-				if(substr($value, -1, 1) != '/')
-				{
-					$value.='/';
-				}
-				if(substr($value, 0, 1) != '/')
-				{
-					$value='/'.$value;
-				}
+				$value=makeCorrectDir($value);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='documentroot_prefix'");
 			}
 
@@ -83,15 +75,7 @@
 			{
 //				echo 'system_logfiles_directory<br />';
 				$value=addslashes($_POST['system_logfiles_directory']);
-				$value=str_replace('..','',$value);
-				if(substr($value, -1, 1) != '/')
-				{
-					$value.='/';
-				}
-				if(substr($value, 0, 1) != '/')
-				{
-					$value='/'.$value;
-				}
+				$value=makeCorrectDir($value);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='logfiles_directory'");
 			}
 
@@ -100,6 +84,7 @@
 //				echo 'system_ipaddress<br />';
 				$value=addslashes($_POST['system_ipaddress']);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
+				inserttask('1');
 			}
 
 			if($_POST['system_hostname']!=$settings['system']['hostname'])
@@ -114,16 +99,9 @@
 			{
 //				echo 'system_apacheconf_directory<br />';
 				$value=addslashes($_POST['system_apacheconf_directory']);
-				$value=str_replace('..','',$value);
-				if(substr($value, -1, 1) != '/')
-				{
-					$value.='/';
-				}
-				if(substr($value, 0, 1) != '/')
-				{
-					$value='/'.$value;
-				}
+				$value=makeCorrectDir($value);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='apacheconf_directory'");
+				inserttask('1');
 			}
 
 			if($_POST['system_apachereload_command']!=$settings['system']['apachereload_command'])
@@ -131,21 +109,14 @@
 //				echo 'system_apachereload_command<br />';
 				$value=addslashes($_POST['system_apachereload_command']);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='apachereload_command'");
+				inserttask('1');
 			}
 
 			if($_POST['system_bindconf_directory']!=$settings['system']['bindconf_directory'])
 			{
 //				echo 'system_bindconf_directory<br />';
 				$value=addslashes($_POST['system_bindconf_directory']);
-				$value=str_replace('..','',$value);
-				if(substr($value, -1, 1) != '/')
-				{
-					$value.='/';
-				}
-				if(substr($value, 0, 1) != '/')
-				{
-					$value='/'.$value;
-				}
+				$value=makeCorrectDir($value);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='bindconf_directory'");
 			}
 
@@ -182,16 +153,15 @@
 			{
 //				echo 'system_vmail_homedir<br />';
 				$value=addslashes($_POST['system_vmail_homedir']);
-				$value=str_replace('..','',$value);
-				if(substr($value, -1, 1) != '/')
-				{
-					$value.='/';
-				}
-				if(substr($value, 0, 1) != '/')
-				{
-					$value='/'.$value;
-				}
+				$value=makeCorrectDir($value);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='vmail_homedir'");
+			}
+
+			if($_POST['panel_adminmail']!=$settings['panel']['adminmail'])
+			{
+//				echo 'panel_adminmail<br />';
+				$value=addslashes($_POST['panel_adminmail']);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
 			}
 
 			if($_POST['panel_phpmyadmin_url']!=$settings['panel']['phpmyadmin_url'])
@@ -201,11 +171,18 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='phpmyadmin_url'");
 			}
 
-			if($_POST['panel_adminmail']!=$settings['panel']['adminmail'])
+			if($_POST['panel_webmail_url']!=$settings['panel']['webmail_url'])
 			{
-//				echo 'panel_adminmail<br />';
-				$value=addslashes($_POST['panel_adminmail']);
-				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
+//				echo 'panel_webmail_url<br />';
+				$value=addslashes($_POST['panel_webmail_url']);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='webmail_url'");
+			}
+
+			if($_POST['panel_webftp_url']!=$settings['panel']['webftp_url'])
+			{
+//				echo 'panel_webftp_url<br />';
+				$value=addslashes($_POST['panel_webftp_url']);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 			}
 
 			header("Location: $filename?page=$page&s=$s");

@@ -22,6 +22,10 @@
       <tr>
         <td width="3"></td>
         <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="customer_email.php?page=forwarders&s=$s">{$lng['menue']['email']['forwarders']}</a></td>
+      <if $settings['panel']['webmail_url'] != ''><tr>
+        <td width="3"></td>
+        <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="{$settings['panel']['webmail_url']}" target="_blank">{$lng['menue']['email']['webmail']}</a></td>
+      </tr></if>
       </tr>
       <tr>
         <td width="3"></td>
@@ -31,10 +35,10 @@
         <td width="3"></td>
         <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="customer_mysql.php?page=mysqls&s=$s">{$lng['menue']['mysql']['databases']}</a></td>
       </tr>
-      <tr>
+      <if $settings['panel']['phpmyadmin_url'] != ''><tr>
         <td width="3"></td>
         <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="{$settings['panel']['phpmyadmin_url']}" target="_blank">{$lng['menue']['mysql']['phpmyadmin']}</a></td>
-      </tr>
+      </tr></if>
       <tr>
         <td width="3"></td>
         <td>&raquo; <a href="customer_domains.php?s=$s">{$lng['menue']['domains']['domains']}</a></td>
@@ -51,6 +55,10 @@
         <td width="3"></td>
         <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="customer_ftp.php?page=accounts&s=$s">{$lng['menue']['ftp']['accounts']}</a></td>
       </tr>
+      <if $settings['panel']['webftp_url'] != ''><tr>
+        <td width="3"></td>
+        <td>&nbsp;&nbsp;&nbsp;&raquo; <a href="{$settings['panel']['webftp_url']}" target="_blank">{$lng['menue']['ftp']['webftp']}</a></td>
+      </tr></if>
       <tr>
         <td width="3"></td>
         <td>&raquo; <a href="customer_extras.php?s=$s">{$lng['menue']['extras']['extras']}</a></td>

@@ -76,12 +76,20 @@ $header
        <td class="maintable" nowrap><input type="text" name="system_vmail_homedir" value="{$settings['system']['vmail_homedir']}"></td>
       </tr>
       <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['adminmail']['title']}:</b><br />{$lng['serversettings']['adminmail']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}"></td>
+      </tr>
+      <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['phpmyadmin_url']['title']}:</b><br />{$lng['serversettings']['phpmyadmin_url']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="panel_phpmyadmin_url" value="{$settings['panel']['phpmyadmin_url']}"></td>
       </tr>
       <tr>
-       <td class="maintable" align="right"><b>{$lng['serversettings']['adminmail']['title']}:</b><br />{$lng['serversettings']['adminmail']['description']}</td>
-       <td class="maintable" nowrap><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}"></td>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['webmail_url']['title']}:</b><br />{$lng['serversettings']['webmail_url']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="panel_webmail_url" value="{$settings['panel']['webmail_url']}"></td>
+      </tr>
+      <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['webftp_url']['title']}:</b><br />{$lng['serversettings']['webftp_url']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="panel_webftp_url" value="{$settings['panel']['webftp_url']}"></td>
       </tr>
       <tr>
        <td class="maintable" colspan=2 align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['panel']['save']}"></td>
