@@ -206,10 +206,18 @@
 				else
 				{
 					// insert into menu
+					$query=
+						'SELECT MAX(`order`) AS `max` '.
+						'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
+						'WHERE `area`=\'customer\' AND `parent_url`=\'customer_mysql.php\'';
+					$max=$db->query_first($query);
+					$new=floor($max['max']/10)+10;
+					
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
 						'SET `lang`       = "menue;mysql;phpmyadmin", ' .
 						'    `url`        = "'.$value.'", ' .
+						'    `order`      = "'.$new.'", ' .
 						'    `area`       = "customer", ' .
 						'    `new_window` = "1", ' .
 						'    `required_resources` = "mysqls_used", ' .
@@ -245,10 +253,18 @@
 				else
 				{
 					// insert into menu
+					$query=
+						'SELECT MAX(`order`) AS `max` '.
+						'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
+						'WHERE `area`=\'customer\' AND `parent_url`=\'customer_email.php\'';
+					$max=$db->query_first($query);
+					$new=floor($max['max']/10)+10;
+					
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
 						'SET `lang`       = "menue;email;webmail", ' .
 						'    `url`        = "'.$value.'", ' .
+						'    `order`      = "'.$new.'", ' .
 						'    `area`       = "customer", ' .
 						'    `new_window` = "1", ' .
 						'    `required_resources` = "emails_used", ' .
@@ -284,10 +300,18 @@
 				else
 				{
 					// insert into menu
+					$query=
+						'SELECT MAX(`order`) AS `max` '.
+						'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
+						'WHERE `area`=\'customer\' AND `parent_url`=\'customer_ftp.php\'';
+					$max=$db->query_first($query);
+					$new=floor($max['max']/10)+10;
+					
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
 						'SET `lang`       = "menue;ftp;webftp", ' .
 						'    `url`        = "'.$value.'", ' .
+						'    `order`      = "'.$new.'", ' .
 						'    `area`       = "customer", ' .
 						'    `new_window` = "1", ' .
 						'    `parent_url` = "customer_ftp.php"';

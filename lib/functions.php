@@ -796,8 +796,8 @@
 		$query  = 
 			'SELECT * ' .
 			'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-			'WHERE `area`="'.AREA.'"' . 
-			'ORDER BY `id` ASC' ;
+			'WHERE `area`=\''.AREA.'\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 
+			'ORDER BY `order`, `id` ASC' ;
 		$result = $db->query($query);
 		//
 		// presort in multidimensional array
@@ -806,50 +806,25 @@
 		{
 			if ( $row['required_resources'] == '' || $userinfo[$row['required_resources']] > 0 || $userinfo[$row['required_resources']] == '-1' )
 			{
-				$row['isparent'] = 0;
-				if ($row['parent_url'] == '' || $row['parent_url'] == ' ')
+				$row['parent_url'] = $row['url'] ;
+				$row['isparent'] = 1;
+				
+				$nav[$row['parent_url']][] = _createNavigationEntry($s,$row);
+				
+				$subQuery = 
+					'SELECT * '.
+					'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
+					'WHERE `area`=\''.AREA.'\' AND `parent_url`=\''.$row['url'].'\' ' . 
+					'ORDER BY `order`, `id` ASC' ;
+				$subResult = $db->query($subQuery);
+				while($subRow = $db->fetch_array($subResult))
 				{
-					$row['parent_url'] = $row['url'] ;
-					$row['isparent'] = 1;
-				}
-
-				// get corect lang string
-				$lngArr = split ( ';' , $row['lang'] ) ;
-				$row['text'] = $lng;
-				foreach ($lngArr as $lKey => $lValue)
-				{
-					$row['text'] = $row['text'][$lValue] ;
-				}
-
-				if ( str_replace( ' ' , '' , $row['url'] ) != '' && !stristr($row['url'], 'nourl' ))
-				{
-					// append sid only to local
-					if ( !preg_match('/^https?\:\/\//', $row['url'] ) && ( isset($s) && $s != '' ) )
+					if ( $subRow['required_resources'] == '' || $userinfo[$subRow['required_resources']] > 0 || $userinfo[$subRow['required_resources']] == '-1' )
 					{
-						// generate sid with ? oder &
-						if ( preg_match('/\?/' , $row['url'] ) )
-						{
-							$row['url'] .= '&s='.$s;
-						}
-						else
-						{
-							$row['url'] .= '?s='.$s;
-						}
+						$subRow['isparent'] = 0;
+						$nav[$row['parent_url']][] = _createNavigationEntry($s,$subRow);
 					}
-
-					$target = '';
-					if ( $row['new_window'] == '1' )
-					{
-						$target = ' target="_blank"';
-					}
-					$row['completeLink'] = '<a href="' . $row['url'] . '"' . $target . ' class="menu">' . $row['text'] . '</a>' ;
 				}
-				else
-				{
-					$row['completeLink'] = $row['text'];
-				}
-
-				$nav[$row['parent_url']][] = $row;
 			}
 		}
 		//
@@ -881,7 +856,56 @@
 			}
 		}
 		return $return;
-	}	
+	}
+	
+	/**
+	 * Processes a navigation entry in the database. It generates the correct
+	 * link and language.
+	 * 
+	 * @param string The sessionid.
+	 * @param array The data recieved during the mysql query.
+	 * @return array The processed data.
+	 */
+	function _createNavigationEntry($s, $data)
+	{
+		global $db, $lng;
+		
+		// get corect lang string
+		$lngArr = split ( ';' , $data['lang'] ) ;
+		$data['text'] = $lng;
+		foreach ($lngArr as $lKey => $lValue)
+		{
+			$data['text'] = $data['text'][$lValue] ;
+		}
+		if ( str_replace( ' ' , '' , $data['url'] ) != '' && !stristr($data['url'], 'nourl' ))
+		{
+			// append sid only to local
+			if ( !preg_match('/^https?\:\/\//', $data['url'] ) && ( isset($s) && $s != '' ) )
+			{
+				// generate sid with ? oder &
+				if ( preg_match('/\?/' , $data['url'] ) )
+				{
+					$data['url'] .= '&s='.$s;
+				}
+				else
+				{
+					$data['url'] .= '?s='.$s;
+				}
+			}
+			$target = '';
+			if ( $data['new_window'] == '1' )
+			{
+				$target = ' target="_blank"';
+			}
+			$data['completeLink'] = '<a href="' . $data['url'] . '"' . $target . ' class="menu">' . $data['text'] . '</a>' ;
+		}
+		else
+		{
+			$data['completeLink'] = $data['text'];
+		}
+		
+		return $data;
+	}
 	
 	/**
 	 * Returns if an username is in correct format or not.
