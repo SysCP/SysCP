@@ -16,8 +16,8 @@ $header
        <td class="maintable" nowrap><input type="text" name="name" value=""></td>
       </tr>
       <tr>
-       <td class="maintable">{$lng['customer']['surname']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="surname" value=""></td>
+       <td class="maintable">{$lng['customer']['firstname']}: *</td>
+       <td class="maintable" nowrap><input type="text" name="firstname" value=""></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['company']}:</td>

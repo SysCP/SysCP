@@ -5,7 +5,7 @@ $header
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['name']}:</td>
-      <td class="maintable">{$userinfo['surname']} {$userinfo['name']}</td>
+      <td class="maintable">{$userinfo['firstname']} {$userinfo['name']}</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['company']}:</td>

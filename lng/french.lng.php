@@ -49,7 +49,7 @@ $lng['login']['profile_lng'] = 'Langue du profil';
 $lng['customer']['login'] = 'Identifiant';
 $lng['customer']['documentroot'] = 'Chemin';
 $lng['customer']['name'] = 'Nom';
-$lng['customer']['surname'] = 'Pr&eacute;nom';
+$lng['customer']['firstname'] = 'Pr&eacute;nom';
 $lng['customer']['company'] = 'Entreprise';
 $lng['customer']['street'] = 'Rue';
 $lng['customer']['zipcode'] = 'Code postal';
@@ -206,7 +206,7 @@ $lng['question']['mysql_reallydelete'] = 'Voulez-vous vraiment effacer la banque
  */
 $lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 {EMAIL}\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
 $lng['mails']['pop_success']['subject'] = 'Acc&egrave;s POP3 install&eacute;';
-$lng['mails']['createcustomer']['mailbody'] = 'Bonjour {SURNAME} {NAME},\n\nici vos informations d´acc&egrave;s:\n\nIdentifiant: {USERNAME}\nMot de passe: {PASSWORD}\n\nNous vous remercions,\nVotre Webmaster';
+$lng['mails']['createcustomer']['mailbody'] = 'Bonjour {FIRSTNAME} {NAME},\n\nici vos informations d´acc&egrave;s:\n\nIdentifiant: {USERNAME}\nMot de passe: {PASSWORD}\n\nNous vous remercions,\nVotre Webmaster';
 $lng['mails']['createcustomer']['subject'] = 'Informations de votre acc&egrave;s';
 
 /**
@@ -257,7 +257,7 @@ $lng['admin']['templates']['mailbody'] = 'Texte du mail';
 $lng['admin']['templates']['createcustomer'] = 'Mail de bienvenu pour des nouveaux clients';
 $lng['admin']['templates']['pop_success'] = 'Mail de bienvenu pour des nouveaux acc&egrave;s e-mail';
 $lng['admin']['templates']['template_replace_vars'] = 'Les variables qui vont &ecirc;tre remplacées dans le template:';
-$lng['admin']['templates']['SURNAME'] = 'Va &ecirc;tre remplac&eacute; par le pr&eacute;nom.';
+$lng['admin']['templates']['FIRSTNAME'] = 'Va &ecirc;tre remplac&eacute; par le pr&eacute;nom.';
 $lng['admin']['templates']['NAME'] = 'Va &ecirc;tre remplac&eacute; par le nom.';
 $lng['admin']['templates']['USERNAME'] = 'Va &ecirc;tre remplacé par le login.';
 $lng['admin']['templates']['PASSWORD'] = 'Va &ecirc;tre remplacé par le mot de passe du client.';

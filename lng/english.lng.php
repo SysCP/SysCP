@@ -49,7 +49,7 @@ $lng['login']['profile_lng'] = 'Profile language';
 $lng['customer']['login'] = 'Username';
 $lng['customer']['documentroot'] = 'Home directory';
 $lng['customer']['name'] = 'Name';
-$lng['customer']['surname'] = 'Surname';
+$lng['customer']['firstname'] = 'Surname';
 $lng['customer']['company'] = 'Company';
 $lng['customer']['street'] = 'Street';
 $lng['customer']['zipcode'] = 'Zipcode';
@@ -182,6 +182,7 @@ $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more resources than you own for yourself.';
 $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
 $lng['error']['mustbeurl'] = 'You have not typed a valid url';
+
 /**
  * Questions
  */
@@ -205,7 +206,7 @@ $lng['question']['mysql_reallydelete'] = 'Do you really want to delete the datab
  */
 $lng['mails']['pop_success']['mailbody'] = 'Hello,\n\nyour Mail account {EMAIL}\nwas set up successfully.\n\nThis is an automatically created\neMail, please do not answer!\n\nYours sincerely, the SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'Mail account set up successfully';
-$lng['mails']['createcustomer']['mailbody'] = 'Hello {SURNAME} {NAME},\n\nhere is your account information:\n\nUsername: {USERNAME}\nPassword: {PASSWORD}\n\nThank you,\nthe SysCP-Team';
+$lng['mails']['createcustomer']['mailbody'] = 'Hello {FIRSTNAME} {NAME},\n\nhere is your account information:\n\nUsername: {USERNAME}\nPassword: {PASSWORD}\n\nThank you,\nthe SysCP-Team';
 $lng['mails']['createcustomer']['subject'] = 'Account informationen';
 
 /**
@@ -256,7 +257,7 @@ $lng['admin']['templates']['mailbody'] = 'Mailbody';
 $lng['admin']['templates']['createcustomer'] = 'Welcome mail for new customers';
 $lng['admin']['templates']['pop_success'] = 'Welcome mail for new email accounts';
 $lng['admin']['templates']['template_replace_vars'] = 'Variables to be replaced in the template:';
-$lng['admin']['templates']['SURNAME'] = 'Replaced with the customers surname.';
+$lng['admin']['templates']['FIRSTNAME'] = 'Replaced with the customers firstname.';
 $lng['admin']['templates']['NAME'] = 'Replaced with the customers name.';
 $lng['admin']['templates']['USERNAME'] = 'Replaced with the customers account username.';
 $lng['admin']['templates']['PASSWORD'] = 'Replaced with the customers account password.';
