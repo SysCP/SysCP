@@ -31,6 +31,7 @@ $lng['panel']['emptyfornochanges'] = 'leer f&uuml;r keine &Auml;nderung';
 $lng['panel']['emptyfordefault'] = 'leer f&uuml;r Standardeinstellung';
 $lng['panel']['path'] = 'Pfad';
 $lng['panel']['toggle'] = 'Umschalten';
+$lng['panel']['next'] = 'weiter';
 
 /**
  * Login
@@ -40,6 +41,7 @@ $lng['login']['password'] = 'Passwort';
 $lng['login']['language'] = 'Sprache';
 $lng['login']['login'] = 'Anmelden';
 $lng['login']['logout'] = 'Abmelden';
+$lng['login']['profile_lng'] = 'Profilsprache';
 
 /**
  * Customer
@@ -72,6 +74,7 @@ $lng['customer']['unlimited'] = 'unendlich';
  */
 $lng['menue']['main']['main'] = 'Allgemein';
 $lng['menue']['main']['changepassword'] = 'Passwort &auml;ndern';
+$lng['menue']['main']['changelanguage'] = 'Sprache &auml;ndern';
 $lng['menue']['email']['email'] = 'eMail';
 $lng['menue']['email']['emails'] = 'Adressen';
 $lng['menue']['email']['webmail'] = 'WebMail';
@@ -187,6 +190,7 @@ $lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirk
 $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';
 $lng['question']['admin_admin_reallydelete'] = 'Wollen Sie den Admin %s wirklich l&ouml;schen?<br />Alle Kunden und Domains werden dem Hauptadmin zugeteilt.';
+$lng['question']['admin_template_reallydelete'] = 'Wollen Sie die Vorlage \'%s\' wirklich l&ouml;schen?';
 $lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
 $lng['question']['email_reallydelete'] = 'Wollen Sie die eMail-Adresse %s wirklich l&ouml;schen?';
 $lng['question']['email_reallydelete_account'] = 'Wollen Sie das Konto von %s wirklich l&ouml;schen?';
@@ -199,9 +203,9 @@ $lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l
 /**
  * Mails
  */
-$lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr eMail-Konto $username\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
+$lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr eMail-Konto {USERNAME}\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'eMail-Konto erfolgreich eingerichtet';
-$lng['mails']['createcustomer']['mailbody'] = 'Hallo $surname $name,\n\nhier ihre Accountinformationen:\n\nBenutzername: $loginname\nPassword: $password\n\nVielen Dank,\nIhr SysCP-Team';
+$lng['mails']['createcustomer']['mailbody'] = 'Hallo {SURNAME} {NAME},\n\nhier ihre Accountinformationen:\n\nBenutzername: {USERNAME}\nPassword: {PASSWORD}\n\nVielen Dank,\nIhr SysCP-Team';
 $lng['mails']['createcustomer']['subject'] = 'Accountinformationen';
 
 /**
@@ -242,6 +246,20 @@ $lng['admin']['configfiles']['serverconfiguration'] = 'Konfiguration';
 $lng['admin']['configfiles']['files'] = '<b>Konfigurationsdateien:</b> Bitte &auml;ndern Sie die entsprechenden Konfigurationsdateien<br />oder legen sie mit dem folgenden Inhalt neu an, falls sie nicht existieren.<br /><b>Bitte beachten Sie:</b> Das MySQL-Passwort wurde aus Sicherheitsgr&uuml;nden nicht ersetzt.<br />Bitte ersetzen Sie &quot;MYSQL_PASSWORD&quot; manuell durch das entsprechende Passwort.<br />Falls Sie es vergessen haben sollten, finden Sie es in der Datei &quot;lib/userdata.inc.php&quot;.';
 $lng['admin']['configfiles']['commands'] = '<b>Kommandos:</b> Bitte f&uuml;hren Sie die folgenden Kommandos in einer Shell aus.';
 $lng['admin']['configfiles']['restart'] = '<b>Neustart:</b> Bitte f&uuml;hren Sie die folgenden Kommandos zum Neuladen<br />der Konfigurationsdateuen in einer Shell aus.';
+$lng['admin']['templates']['templates'] = 'Vorlagen';
+$lng['admin']['templates']['template_add'] = 'Vorlage hinzuf&uuml;gen';
+$lng['admin']['templates']['action'] = 'Aktion';
+$lng['admin']['templates']['email'] = 'E-Mail';
+$lng['admin']['templates']['subject'] = 'Betreff';
+$lng['admin']['templates']['mailbody'] = 'Mailtext';
+$lng['admin']['templates']['createcustomer'] = 'Willkommensmail f&uuml;r neue Kunden';
+$lng['admin']['templates']['pop_success'] = 'Willkommensmail f&uuml;r neue E-Mail Konten';
+$lng['admin']['templates']['template_replace_vars'] = 'Variablen die in den Vorlagen ersetzt werden:';
+$lng['admin']['templates']['SURNAME'] = 'Wird mit dem Vornamen des Kunden ersetzt.';
+$lng['admin']['templates']['NAME'] = 'Wird mit dem Namen des Kunden ersetzt.';
+$lng['admin']['templates']['USERNAME'] = 'Wird mit dem Benutzernamen des neunen Kundenaccounts ersetzt.';
+$lng['admin']['templates']['PASSWORD'] = 'Wird mit dem Passwort des neunen Kundenaccounts ersetzt.';
+$lng['admin']['templates']['EMAIL'] = 'Wird mit der Adresse des neuen POP3/IMAP Kontos ersetzt.';
 
 /**
  * Serversettings

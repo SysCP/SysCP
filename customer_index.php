@@ -97,5 +97,23 @@
 		}
 	}
 
+	elseif($page=='change_language')
+	{
+		if(isset($_POST['send']) && $_POST['send']=='send')
+		{
+			$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `def_language`='".addslashes($_POST['def_language'])."' WHERE `customerid`='".$userinfo['customerid']."'");
+			$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".addslashes($_POST['def_language'])."' WHERE `hash`='".$s."'");
+			header("Location: $filename?s=$s");
+		}
+		else {
+			$language_options = '';
+			while(list($language_file, $language_name) = each($languages))
+			{
+				$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
+			}
+			eval("echo \"".getTemplate("index/change_language")."\";");
+		}
+	}
+
 
 ?>

@@ -182,6 +182,7 @@
 					$fax = addslashes ( $_POST['fax'] ) ;
 					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
 					$customernumber = addslashes ( $_POST['customernumber'] ) ;
+					$def_language = addslashes($_POST['def_language']);
 					$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
@@ -256,8 +257,8 @@
 
 						$result=$db->query(
 							"INSERT INTO `".TABLE_PANEL_CUSTOMERS."` ".
-							"(`adminid`, `loginname`, `password`, `name`, `surname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `createstdsubdomain`) ".
-							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$surname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '$createstdsubdomain')"
+							"(`adminid`, `loginname`, `password`, `name`, `surname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `createstdsubdomain`) ".
+							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$surname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber','$def_language', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '$createstdsubdomain')"
 							);
 						$customerid=$db->insert_id();
 
@@ -309,9 +310,20 @@
 
 						if($sendpassword == '1')
 						{
-							eval("\$mail_subject=\"".$lng['mails']['createcustomer']['subject']."\";");
-							eval("\$mail_body=\"".$lng['mails']['createcustomer']['mailbody']."\";");
-							mail("$surname $name <$email>",$mail_subject,$mail_body,"From: {$settings['panel']['adminmail']} <{$settings['panel']['adminmail']}>\r\n");
+							$replace_arr = array(
+								'SURNAME' => $surname,
+								'NAME' => $name,
+								'USERNAME' => $loginname,
+								'PASSWORD' => $password
+							);
+							// Get mail templates from database; the ones from 'admin' are fetched for fallback 
+							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_subject\'');
+							$admin_result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\'1\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_subject\'');
+							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $admin_result['value']),$replace_arr));
+							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
+							$admin_result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\'1\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
+							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $admin_result['value']),$replace_arr));
+							mail("$surname $name <$email>",$mail_subject,$mail_body,"From: {$userinfo['name']} <{$userinfo['email']}>\r\n");
 						}
 
 						header("Location: $filename?page=$page&s=$s");
@@ -319,6 +331,11 @@
 				}
 				else
 				{
+					$language_options = '';
+					while(list($language_file, $language_name) = each($languages))
+					{
+						$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
+					}
 					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', '1');
 					$sendpassword=makeyesno('sendpassword', '1', '0', '1');
 					eval("echo \"".getTemplate("customers/customers_add")."\";");
@@ -343,6 +360,7 @@
 					$fax = addslashes ( $_POST['fax'] ) ;
 					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
 					$customernumber = addslashes ( $_POST['customernumber'] ) ;
+					$def_language = addslashes($_POST['def_language']);
 					$newpassword = $_POST['newpassword'];
 					$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
@@ -412,7 +430,7 @@
 							inserttask('1');
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `surname`='$surname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `createstdsubdomain`='$createstdsubdomain', `deactivated`='$deactivated' WHERE `customerid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `surname`='$surname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', `def_language`='$def_language', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `createstdsubdomain`='$createstdsubdomain', `deactivated`='$deactivated' WHERE `customerid`='$id'");
 
 						$admin_update_query = "UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` ";
 						if ( $mysqls != '-1' || $result['mysqls'] != '-1' )
@@ -507,6 +525,11 @@
 				}
 				else
 				{
+					$language_options = '';
+					while(list($language_file, $language_name) = each($languages))
+					{
+						$language_options .= makeoption($language_name, $language_file, $result['def_language']);
+					}
 					$result['traffic']=$result['traffic']/(1024*1024);
 					$result['diskspace']=$result['diskspace']/1024;
 					$result['email'] = $idna_convert->decode($result['email']);

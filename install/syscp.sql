@@ -121,6 +121,7 @@ CREATE TABLE `panel_admins` (
   `password` varchar(50) NOT NULL default '',
   `name` varchar(255) NOT NULL default '',
   `email` varchar(255) NOT NULL default '',
+  `def_language` varchar(255) NOT NULL default '',
   `customers` int(15) NOT NULL default '0',
   `customers_used` int(15) NOT NULL default '0',
   `customers_see_all` tinyint(1) NOT NULL default '0',
@@ -174,6 +175,7 @@ CREATE TABLE `panel_customers` (
   `fax` varchar(255) NOT NULL default '',
   `email` varchar(255) NOT NULL default '',
   `customernumber` varchar(255) NOT NULL default '',
+  `def_language` varchar(255) NOT NULL default '',
   `diskspace` int(15) NOT NULL default '0',
   `diskspace_used` int(15) NOT NULL default '0',
   `mysqls` int(15) NOT NULL default '0',
@@ -402,6 +404,45 @@ CREATE TABLE `panel_tasks` (
 # --------------------------------------------------------
 
 #
+# Table structure for table `panel_templates`
+#
+
+CREATE TABLE panel_templates (
+  id int(11) NOT NULL auto_increment,
+  adminid int(11) NOT NULL default '0',
+  language varchar(255) NOT NULL default '',
+  templategroup varchar(255) NOT NULL default '',
+  varname varchar(255) NOT NULL default '',
+  value longtext NOT NULL,
+  PRIMARY KEY  (id),
+  KEY adminid (adminid)
+) TYPE=MyISAM;
+
+#
+# Dumping data for table `panel_templates`
+#
+
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (1, 1, 'English', 'mails', 'createcustomer_subject', 'Account informationen');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (2, 1, 'English', 'mails', 'createcustomer_mailbody', 'Hello {SURNAME} {NAME},\r\n\r\nhere is your account information:\r\nUsername: {USERNAME}\r\nPassword: {PASSWORD}\r\n\r\nThank you,\r\nthe SysCP-Team');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (3, 1, 'English', 'mails', 'pop_success_subject', 'Mail account set up successfully');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (4, 1, 'English', 'mails', 'pop_success_mailbody', 'Hello,\r\nyour Mail account {EMAIL}\r\nwas set up successfully.\r\n\r\nThis is an automatically created\r\neMail, please do not answer!\r\n\r\nYours sincerely, the SysCP-Team');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (5, 1, 'Deutsch', 'mails', 'createcustomer_subject', 'Accountinformationen');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (6, 1, 'Deutsch', 'mails', 'createcustomer_mailbody', 'Hallo {SURNAME} {NAME},\r\n\r\nhier ihre Accountinformationen:\r\n\r\nBenutzername: {USERNAME}\r\nPassword: {PASSWORD}\r\n\r\nVielen Dank,\r\nIhr SysCP-Team');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (7, 1, 'Deutsch', 'mails', 'pop_success_subject', 'eMail-Konto erfolgreich eingerichtet');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (8, 1, 'Deutsch', 'mails', 'pop_success_mailbody', 'Hallo,\r\n\r\nihr eMail-Konto {EMAIL}\r\nwurde erfolgreich eingerichtet.\r\nDies ist eine automatisch generierte\r\neMail, bitte antworten Sie nicht auf\r\ndiese Mitteilung.\r\n\r\nIhr SysCP-Team');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (9, 1, 'Francais', 'mails', 'createcustomer_subject', 'Informations de votre acc&egrave;s');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (10, 1, 'Francais', 'mails', 'createcustomer_mailbody', 'Bonjour {SURNAME} {NAME},\r\n\r\nici vos informations d´acc&egrave;s:\r\n\r\nIdentifiant: {USERNAME}\r\nMot de passe: {PASSWORD}\r\n\r\nNous vous remercions,\r\nVotre Webmaster');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (11, 1, 'Francais', 'mails', 'pop_success_subject', 'Acc&egrave;s POP3 install&eacute;');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (12, 1, 'Francais', 'mails', 'pop_success_mailbody', 'Bonjour,\r\n\r\nvotre acc&egrave;s POP3 {EMAIL}\r\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\r\n\r\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\r\n\r\nVotre Webmaster');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (13, 1, 'Chinese', 'mails', 'createcustomer_subject', '&#36134;&#25143;&#20449;&#24687;');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (14, 1, 'Chinese', 'mails', 'createcustomer_mailbody', '&#24744;&#22909;{SURNAME} {NAME},\n\n&#36825;&#37324;&#26159;&#24744;&#30340;&#36134;&#25143;&#20449;&#24687;:\n\n&#29992;&#25143;&#21517;: {USERNAME}\n&#23494;&#30721;: {PASSWORD}\n\n&#38750;&#24120;&#24863;&#35874;&#65292;&#24744;&#30340;&#26381;&#21153;&#23567;&#32452;');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (15, 1, 'Chinese', 'mails', 'pop_success_subject', 'POP3&#36134;&#25143;&#25104;&#21151;&#34987;&#21019;&#24314;');
+INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (16, 1, 'Chinese', 'mails', 'pop_success_mailbody', '&#20320;&#22909;&#20197;&#34987;&#25104;&#21151;&#21019;&#24314;&#36825;&#26159;&#19968;&#20010;&#33258;&#21160;&#29983;&#25104;&#30340;&#36825;&#26159;&#19968;&#20010;&#33258;&#21160;&#29983;&#25104;&#30340;&#37038;&#20214;&#65292;&#35831;&#19981;&#29992;&#31572;&#22797;&#36825;&#20010;&#36890;&#30693;&#24744;&#30340;&#26381;&#21153;&#23567;&#32452;');
+
+
+# --------------------------------------------------------
+
+#
 # Table structure for table `panel_traffic`
 #
 
@@ -479,28 +520,30 @@ INSERT INTO `panel_navigation` VALUES (1, 'login', '', 'login;login', 'login.nou
 INSERT INTO `panel_navigation` VALUES (2, 'login', 'login.nourl', 'login;login', 'index.php', '', 0);
 INSERT INTO `panel_navigation` VALUES (3, 'customer', '', 'menue;main;main', 'customer_index.php', '', 0);
 INSERT INTO `panel_navigation` VALUES (4, 'customer', 'customer_index.php', 'menue;main;changepassword', 'customer_index.php?page=change_password', '', 0);
-INSERT INTO `panel_navigation` VALUES (5, 'customer', 'customer_index.php', 'login;logout', 'customer_index.php?action=logout', '', 0);
-INSERT INTO `panel_navigation` VALUES (6, 'customer', '', 'menue;email;email', 'customer_email.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (7, 'customer', 'customer_email.php', 'menue;email;emails', 'customer_email.php?page=emails', 'emails', 0);
-INSERT INTO `panel_navigation` VALUES (8, 'customer', '', 'menue;mysql;mysql', 'customer_mysql.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (9, 'customer', 'customer_mysql.php', 'menue;mysql;databases', 'customer_mysql.php?page=mysqls', 'mysqls', 0);
-INSERT INTO `panel_navigation` VALUES (10, 'customer', '', 'menue;domains;domains', 'customer_domains.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (11, 'customer', 'customer_domains.php', 'menue;domains;settings', 'customer_domains.php?page=domains', '', 0);
-INSERT INTO `panel_navigation` VALUES (12, 'customer', '', 'menue;ftp;ftp', 'customer_ftp.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (13, 'customer', 'customer_ftp.php', 'menue;ftp;accounts', 'customer_ftp.php?page=accounts', '', 0);
-INSERT INTO `panel_navigation` VALUES (14, 'customer', '', 'menue;extras;extras', 'customer_extras.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (15, 'customer', 'customer_extras.php', 'menue;extras;directoryprotection', 'customer_extras.php?page=htpasswds', '', 0);
-INSERT INTO `panel_navigation` VALUES (16, 'customer', 'customer_extras.php', 'menue;extras;pathoptions', 'customer_extras.php?page=htaccess', '', 0);
-INSERT INTO `panel_navigation` VALUES (17, 'admin', '', 'admin;overview', 'admin_index.php?page=overview', '', 0);
-INSERT INTO `panel_navigation` VALUES (18, 'admin', 'admin_index.php', 'menue;main;changepassword', 'admin_index.php?page=change_password', '', 0);
-INSERT INTO `panel_navigation` VALUES (19, 'admin', 'admin_index.php', 'login;logout', 'admin_index.php?action=logout', '', 0);
-INSERT INTO `panel_navigation` VALUES (20, 'admin', '', 'admin;resources', 'admin_resources.nourl', 'customers', 0);
-INSERT INTO `panel_navigation` VALUES (21, 'admin', 'admin_resources.nourl', 'admin;customers', 'admin_customers.php?page=customers', 'customers', 0);
-INSERT INTO `panel_navigation` VALUES (22, 'admin', 'admin_resources.nourl', 'admin;domains', 'admin_domains.php?page=domains', 'domains', 0);
-INSERT INTO `panel_navigation` VALUES (23, 'admin', 'admin_resources.nourl', 'admin;admins', 'admin_admins.php?page=admins', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (24, 'admin', '', 'admin;server', 'admin_server.nourl', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (25, 'admin', 'admin_server.nourl', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (26, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (5, 'customer', 'customer_index.php', 'menue;main;changelanguage', 'customer_index.php?page=change_language', '', 0);
+INSERT INTO `panel_navigation` VALUES (6, 'customer', 'customer_index.php', 'login;logout', 'customer_index.php?action=logout', '', 0);
+INSERT INTO `panel_navigation` VALUES (7, 'customer', '', 'menue;email;email', 'customer_email.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (8, 'customer', 'customer_email.php', 'menue;email;emails', 'customer_email.php?page=emails', 'emails', 0);
+INSERT INTO `panel_navigation` VALUES (9, 'customer', '', 'menue;mysql;mysql', 'customer_mysql.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (10, 'customer', 'customer_mysql.php', 'menue;mysql;databases', 'customer_mysql.php?page=mysqls', 'mysqls', 0);
+INSERT INTO `panel_navigation` VALUES (11, 'customer', '', 'menue;domains;domains', 'customer_domains.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (12, 'customer', 'customer_domains.php', 'menue;domains;settings', 'customer_domains.php?page=domains', '', 0);
+INSERT INTO `panel_navigation` VALUES (13, 'customer', '', 'menue;ftp;ftp', 'customer_ftp.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (14, 'customer', 'customer_ftp.php', 'menue;ftp;accounts', 'customer_ftp.php?page=accounts', '', 0);
+INSERT INTO `panel_navigation` VALUES (15, 'customer', '', 'menue;extras;extras', 'customer_extras.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (16, 'customer', 'customer_extras.php', 'menue;extras;directoryprotection', 'customer_extras.php?page=htpasswds', '', 0);
+INSERT INTO `panel_navigation` VALUES (17, 'customer', 'customer_extras.php', 'menue;extras;pathoptions', 'customer_extras.php?page=htaccess', '', 0);
+INSERT INTO `panel_navigation` VALUES (18, 'admin', '', 'admin;overview', 'admin_index.php?page=overview', '', 0);
+INSERT INTO `panel_navigation` VALUES (19, 'admin', 'admin_index.php', 'menue;main;changepassword', 'admin_index.php?page=change_password', '', 0);
+INSERT INTO `panel_navigation` VALUES (20, 'admin', 'admin_index.php', 'menue;main;changelanguage', 'admin_index.php?page=change_language', '', 0);
+INSERT INTO `panel_navigation` VALUES (21, 'admin', 'admin_index.php', 'login;logout', 'admin_index.php?action=logout', '', 0);
+INSERT INTO `panel_navigation` VALUES (22, 'admin', '', 'admin;resources', 'admin_resources.nourl', 'customers', 0);
+INSERT INTO `panel_navigation` VALUES (23, 'admin', 'admin_resources.nourl', 'admin;customers', 'admin_customers.php?page=customers', 'customers', 0);
+INSERT INTO `panel_navigation` VALUES (24, 'admin', 'admin_resources.nourl', 'admin;domains', 'admin_domains.php?page=domains', 'domains', 0);
+INSERT INTO `panel_navigation` VALUES (25, 'admin', 'admin_resources.nourl', 'admin;admins', 'admin_admins.php?page=admins', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (26, 'admin', '', 'admin;server', 'admin_server.nourl', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (27, 'admin', 'admin_server.nourl', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (28, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', 'change_serversettings', 0);
 
 
 # --------------------------------------------------------

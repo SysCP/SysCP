@@ -199,9 +199,9 @@ $lng['question']['mysql_reallydelete'] = 'Voulez-vous vraiment effacer la banque
 /**
  * Mails
  */
-$lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 $username\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
+$lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 {EMAIL}\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
 $lng['mails']['pop_success']['subject'] = 'Acc&egrave;s POP3 install&eacute;';
-$lng['mails']['createcustomer']['mailbody'] = 'Bonjour $surname $name,\n\nici vos informations d´acc&egrave;s:\n\nIdentifiant: $loginname\nMot de passe: $password\n\nNous vous remercions,\nVotre Webmaster';
+$lng['mails']['createcustomer']['mailbody'] = 'Bonjour {SURNAME} {NAME},\n\nici vos informations d´acc&egrave;s:\n\nIdentifiant: {USERNAME}\nMot de passe: {PASSWORD}\n\nNous vous remercions,\nVotre Webmaster';
 $lng['mails']['createcustomer']['subject'] = 'Informations de votre acc&egrave;s';
 
 /**

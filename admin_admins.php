@@ -107,6 +107,7 @@
 				$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
 				$password = addslashes ( $_POST['password'] ) ;
 				$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
+				$def_language = addslashes($_POST['def_language']);
 				$customers = intval_ressource ( $_POST['customers'] ) ;
 				$domains = intval_ressource ( $_POST['domains'] ) ;
 				$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
@@ -144,14 +145,19 @@
 						$change_serversettings = '0';
 					}
 
-					$result=$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`)
-					                   VALUES ('$loginname', '".md5($password)."', '$name', '$email', '$change_serversettings', '$customers', '$customers_see_all', '$domains', '$domains_see_all', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls')");
+					$result=$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`)
+					                   VALUES ('$loginname', '".md5($password)."', '$name', '$email','$def_language', '$change_serversettings', '$customers', '$customers_see_all', '$domains', '$domains_see_all', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls')");
 					$adminid=$db->insert_id();
 					header("Location: $filename?page=$page&s=$s");
 				}
 			}
 			else
 			{
+				$language_options = '';
+				while(list($language_file, $language_name) = each($languages))
+				{
+					$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
+				}
 				$change_serversettings=makeyesno('change_serversettings', '1', '0', '0');
 				$customers_see_all=makeyesno('customers_see_all', '1', '0', '0');
 				$domains_see_all=makeyesno('domains_see_all', '1', '0', '0');
@@ -174,6 +180,7 @@
 					$name = addslashes ( $_POST['name'] ) ;
 					$newpassword = addslashes ( $_POST['newpassword'] ) ;
 					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
+					$def_language = addslashes($_POST['def_language']);
 					$deactivated = intval ( $_POST['deactivated'] ) ;
 					$customers = intval_ressource ( $_POST['customers'] ) ;
 					$domains = intval_ressource ( $_POST['domains'] ) ;
@@ -223,7 +230,7 @@
 							$change_serversettings = '0';
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `name`='$name', `email`='$email', `change_serversettings` = '$change_serversettings', `customers` = '$customers', `customers_see_all` = '$customers_see_all', `domains` = '$domains', `domains_see_all` = '$domains_see_all', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `adminid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `name`='$name', `email`='$email', `def_language`='$def_language', `change_serversettings` = '$change_serversettings', `customers` = '$customers', `customers_see_all` = '$customers_see_all', `domains` = '$domains', `domains_see_all` = '$domains_see_all', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `adminid`='$id'");
 
 						header("Location: $filename?page=$page&s=$s");
 					}
@@ -233,6 +240,11 @@
 					$result['traffic']=$result['traffic']/(1024*1024);
 					$result['diskspace']=$result['diskspace']/1024;
 					$result['email'] = $idna_convert->decode($result['email']);
+					$language_options = '';
+					while(list($language_file, $language_name) = each($languages))
+					{
+						$language_options .= makeoption($language_name, $language_file, $result['def_language']);
+					}
 					$change_serversettings=makeyesno('change_serversettings', '1', '0', $result['change_serversettings']);
 					$customers_see_all=makeyesno('customers_see_all', '1', '0', $result['customers_see_all']);
 					$domains_see_all=makeyesno('domains_see_all', '1', '0', $result['domains_see_all']);
