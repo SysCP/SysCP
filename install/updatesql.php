@@ -58,7 +58,7 @@
 	}
 
 	/**
-	 * Second case: We are updating from a version = 1.0.10
+	 * Second case: We are updating from version = 1.0.10
 	 */
 	if($settings['panel']['version'] == '1.0.10')
 	{
@@ -72,6 +72,8 @@
 	{
 		include('./updatesql_1.2.inc.php');
 	}
+
+	updateCounters ();
 
 	header('Location: ../index.php');
  

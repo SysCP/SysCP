@@ -114,8 +114,9 @@
 		$db->query("INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (27, 'panel', 'webftp_url', '');");
 		$db->query("INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (28, 'panel', 'standardlanguage', 'german');");
 
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2-beta1' WHERE `settinggroup`='panel' AND `varname`='version'");
-		$settings['panel']['version'] = '1.2-beta1';
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `varname`='ipaddress' WHERE `settinggroup`='system' AND `varname`='ipadress'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.0' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.0';
 	}
 
 ?>
