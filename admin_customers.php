@@ -100,7 +100,6 @@
 					$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='$id' AND `adminsession` = '0'");
 					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC."` WHERE `customerid`='$id'");
 
-					$db->query("DELETE FROM `".TABLE_MAIL_TRANSPORT."` WHERE `customerid`='$id'");
 					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='$id'");
 					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='$id'");
 
