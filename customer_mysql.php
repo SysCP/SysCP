@@ -65,7 +65,7 @@
 					unset($db_root->password);
 
 					$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $result['databasename'] . '`@localhost' );
-					$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . $result['databasename'] . '` . * FROM `' . $result['databasename'] . '`@localhost;' );
+					$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $result['databasename'] ) . '` . * FROM `' . $result['databasename'] . '`@localhost;' );
 					$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $result['databasename'] . '" AND `Host` = "localhost"' );
 					$db_root->query( 'DROP DATABASE IF EXISTS `' . $result['databasename'] . '`' );
 					$db_root->query( 'FLUSH PRIVILEGES' );
@@ -116,7 +116,7 @@
 						unset($db_root->password);
 
 						$db_root->query( 'CREATE DATABASE `' . $username . '`' );
-						$db_root->query( 'GRANT ALL PRIVILEGES ON `' . $username . '`.* TO `' . $username . '`@localhost IDENTIFIED BY \'password\'' );
+						$db_root->query( 'GRANT ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $username ) . '`.* TO `' . $username . '`@localhost IDENTIFIED BY \'password\'' );
 						$db_root->query( 'SET PASSWORD FOR `' . $username .'`@localhost = PASSWORD(\'' . $password . '\')' );
 						$db_root->query( 'FLUSH PRIVILEGES' );
 
