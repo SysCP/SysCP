@@ -7,7 +7,7 @@ $header
      <input type="hidden" name="mailbodyid" value="$mailbodyid">
      <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
       <tr>
-       <td colspan="20" class="title">{$lng['admin']['templates']['template_add']}</td>
+       <td colspan="20" class="title">{$lng['admin']['templates']['template_edit']}</td>
       </tr>
       <tr>
        <td class="maintable">{$lng['login']['language']}:</td>

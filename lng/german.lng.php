@@ -248,6 +248,7 @@ $lng['admin']['configfiles']['commands'] = '<b>Kommandos:</b> Bitte f&uuml;hren 
 $lng['admin']['configfiles']['restart'] = '<b>Neustart:</b> Bitte f&uuml;hren Sie die folgenden Kommandos zum Neuladen<br />der Konfigurationsdateuen in einer Shell aus.';
 $lng['admin']['templates']['templates'] = 'Vorlagen';
 $lng['admin']['templates']['template_add'] = 'Vorlage hinzuf&uuml;gen';
+$lng['admin']['templates']['template_edit'] = 'Vorlage bearbeiten';
 $lng['admin']['templates']['action'] = 'Aktion';
 $lng['admin']['templates']['email'] = 'E-Mail';
 $lng['admin']['templates']['subject'] = 'Betreff';

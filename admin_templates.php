@@ -39,6 +39,11 @@
 
 		if($action=='')
 		{
+			$available_templates=array(
+				'createcustomer',
+				'pop_success'
+			);
+			
 			$templates_array=array();
 			$result=$db->query("SELECT `id`, `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE ".(($userinfo['change_serversettings']!=1) ? "`adminid`='{$userinfo['adminid']}' AND " : "" )."`templategroup`='mails' ORDER BY `language`, `varname`");
 			while($row=$db->fetch_array($result))
@@ -58,6 +63,22 @@
 					eval("\$templates.=\"".getTemplate("templates/templates_template")."\";");
 				}
 			}
+			
+			$add = false;
+			while(list($language_file, $language_name) = each($languages))
+			{
+				$templates_done=array();
+				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$language_name.'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
+				while(($row=$db->fetch_array($result))!=false)
+				{
+					$templates_done[]=str_replace('_subject','',$row['varname']);
+				}
+				if(count(array_diff($available_templates,$templates_done))>0)
+				{
+					$add = true;
+				}
+			}
+			
 			eval("echo \"".getTemplate("templates/templates")."\";");
 		}
 

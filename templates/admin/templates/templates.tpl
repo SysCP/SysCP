@@ -3,17 +3,17 @@ $header
     <tr>
      <td colspan="20" class="title">{$lng['admin']['templates']['templates']}</td>
     </tr>
-    <tr>
+    <if $add><tr>
      <td colspan="20" class="maintable"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['templates']['template_add']}</a></td>
-    </tr>
+    </tr></if>
     <tr>
      <td class="maintable">{$lng['login']['language']}</td>
      <td class="maintable">{$lng['admin']['templates']['action']}</td>
      <td class="maintable">&nbsp;</td>
     </tr>
     $templates
-    <tr>
+    <if $add><tr>
      <td colspan="20" class="maintable"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['templates']['template_add']}</a></td>
-    </tr>
+    </tr></if>
    </table>
 $footer

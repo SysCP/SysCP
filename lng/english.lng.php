@@ -248,6 +248,7 @@ $lng['admin']['configfiles']['commands'] = '<b>Commands:</b> Please execute the 
 $lng['admin']['configfiles']['restart'] = '<b>Restart:</b> Please execute the following commands in a shell in order to reload the new configuration.';
 $lng['admin']['templates']['templates'] = 'Templates';
 $lng['admin']['templates']['template_add'] = 'Add template';
+$lng['admin']['templates']['template_edit'] = 'Edit template';
 $lng['admin']['templates']['action'] = 'Action';
 $lng['admin']['templates']['email'] = 'E-Mail';
 $lng['admin']['templates']['subject'] = 'Subject';
