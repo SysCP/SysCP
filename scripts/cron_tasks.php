@@ -40,6 +40,7 @@
 		{
 			$debugMsg[] = '  cron_tasks: Task1 started - vhost.conf rebuild';
 			$vhosts_file='# '.$settings['system']['apacheconf_directory'].'vhosts.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.'."\n"."\n";
+			$vhosts_file.='Include '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n\n";
 			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress']."\n"."\n";
 
 			$vhosts_file.='# DummyHost for DefaultSite'."\n";
@@ -128,7 +129,7 @@
 				$vhosts_file.="\n";
 			}
 
-			$vhosts_file_handler = fopen($settings['system']['apacheconf_directory'].'vhosts.conf', 'w');
+			$vhosts_file_handler = fopen($settings['system']['apacheconf_directory'].'vhosts-test.conf', 'w');
 			fwrite($vhosts_file_handler, $vhosts_file);
 			fclose($vhosts_file_handler);
 			safe_exec($settings['system']['apachereload_command']);
@@ -173,83 +174,95 @@
 						'WHERE `path` = "'.$path.'"'
 					);
 				}
-				else
+				
+				$diroptions_file = '';
+				$diroptions_file = '# '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next dir options change at the panel.'."\n"."\n";
+				$result = $db->query(
+					'SELECT * ' .
+					'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
+					'ORDER BY `path`'
+				);
+				$diroptions = array();
+				while($row_diroptions=$db->fetch_array($result))
 				{
-					$htpasswd_file = '';
-					$htaccess_file = '';
-					$row_htaccess  = $db->query_first(
-						'SELECT * ' .
-						'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
-						'WHERE `path` = "'.$row['data']['path'].'"'
-					);
-					
-					if ( $row_htaccess['options_indexes'] == '1' )
+					$diroptions[$row_diroptions['path']] = $row_diroptions;
+					$diroptions[$row_diroptions['path']]['htpasswds'] = array();
+				}
+				$result = $db->query(
+					'SELECT * ' .
+					'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
+					'ORDER BY `path`, `username`'
+				);
+				while($row_htpasswds=$db->fetch_array($result))
+				{
+					$diroptions[$row_htpasswds['path']]['path'] = $row_htpasswds['path'];
+					$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
+					$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
+				}
+				
+				foreach($diroptions as $row_diroptions)
+				{
+					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
+					if ( $row_diroptions['options_indexes'] == '1' )
 					{
-						$htaccess_file .= 'Options Indexes'."\n";
+						$diroptions_file .= '  Options Indexes'."\n";
 								$debugMsg[] = '  cron_tasks: Task3 - Setting Options Indexes';
 					}
-					if ( $row_htaccess['error404path'] != '')
+					if ( $row_diroptions['error404path'] != '')
 					{
-						$htaccess_file .= 'ErrorDocument 404 '.$row_htaccess['error404path']."\n";
+						$diroptions_file .= '  ErrorDocument 404 '.$row_htaccess['error404path']."\n";
 					}
-					if ( $row_htaccess['error403path'] != '')
+					if ( $row_diroptions['error403path'] != '')
 					{
-						$htaccess_file .= 'ErrorDocument 403 '.$row_htaccess['error403path']."\n";
+						$diroptions_file .= '  ErrorDocument 403 '.$row_htaccess['error403path']."\n";
 					}
-					if ( $row_htaccess['error401path'] != '')
+					if ( $row_diroptions['error401path'] != '')
 					{
-						$htaccess_file .= 'ErrorDocument 401 '.$row_htaccess['error401path']."\n";
+						$diroptions_file .= '  ErrorDocument 401 '.$row_htaccess['error401path']."\n";
 					}
-					if ( $row_htaccess['error500path'] != '')
+					if ( $row_diroptions['error500path'] != '')
 					{
-						$htaccess_file .= 'ErrorDocument 500 '.$row_htaccess['error500path']."\n";
+						$diroptions_file .= '  ErrorDocument 500 '.$row_htaccess['error500path']."\n";
 					}
-				
 					
-					$result_htpasswd = $db->query(
-						'SELECT `username`, `password` ' .
-						'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
-						'WHERE `path` = "'.$row['data']['path'].'"'
-					);
-					if ( $db->num_rows($result_htpasswd) != 0 )
+					if(count($row_diroptions['htpasswds']) > 0)
 					{
-								$debugMsg[] = '  cron_tasks: Task3 - Setting Password';
-						$htaccess_file .= 'AuthType Basic'."\n";
-						$htaccess_file .= 'AuthName "Restricted Area"'."\n";
-						$htaccess_file .= 'AuthUserFile '.$row['data']['path'].'.htpasswd'."\n";
-						$htaccess_file .= 'require valid-user'."\n";
-		
-						while ($row_htpasswd = $db->fetch_array($result_htpasswd))
+						$htpasswd_file = '';
+						$htpasswd_filename = '';
+						foreach($row_diroptions['htpasswds'] as $row_htpasswd)
 						{
+							if($htpasswd_filename == '')
+							{
+								$htpasswd_filename = $settings['system']['apacheconf_directory'].'htpasswd/'.$row_diroptions['customerid'].'-'.$row_htpasswd['id'].'-'.md5($row_diroptions['path']).'.htpasswd';
+							}
 							$htpasswd_file .= $row_htpasswd['username'].':'.$row_htpasswd['password']."\n";
 						}
-					}
-					if ($htaccess_file != '')
-					{
-						$htaccess_file_handler = fopen($row['data']['path'].'.htaccess', 'w');
-						fwrite($htaccess_file_handler, $htaccess_file);
-						fclose($htaccess_file_handler);
-						$debugMsg[] = '  cron_tasks: Task3 - htaccess written';
-					}
-					if ($htpasswd_file != '')
-					{
-						$htpasswd_file_handler = fopen($row['data']['path'].'.htpasswd', 'w');
+								$debugMsg[] = '  cron_tasks: Task3 - Setting Password';
+						$diroptions_file .= '  AuthType Basic'."\n";
+						$diroptions_file .= '  AuthName "Restricted Area"'."\n";
+						$diroptions_file .= '  AuthUserFile '.$htpasswd_filename."\n";
+						$diroptions_file .= '  require valid-user'."\n";
+						
+						if(!file_exists($settings['system']['apacheconf_directory'].'htpasswd/')) {
+							mkdir($settings['system']['apacheconf_directory'].'htpasswd/','750');
+						}
+						$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
 						fwrite($htpasswd_file_handler, $htpasswd_file);
 						fclose($htpasswd_file_handler);
-						$debugMsg[] = '  cron_tasks: Task3 - htpasswd written';
 					}
-
-					if($htaccess_file == '' && file_exists($row['data']['path'].'.htaccess') )
-					{
-						unlink($row['data']['path'].'.htaccess');
-						$debugMsg[] = '  cron_tasks: Task3 - htaccess deleted';
+					else {
+						if( file_exists($row_diroptions['path'].'.htpasswd') )
+						{
+							unlink($row_diroptions['path'].'.htpasswd');
+								$debugMsg[] = '  cron_tasks: Task3 - htpasswd deleted';
+						}
 					}
-					if($htpasswd_file == '' && file_exists($row['data']['path'].'.htpasswd') )
-					{
-						unlink($row['data']['path'].'.htpasswd');
-						$debugMsg[] = '  cron_tasks: Task3 - htpasswd deleted';
-					}
+					$diroptions_file .= '</Directory>'."\n\n";
 				}
+				$diroptions_file_handler = fopen($settings['system']['apacheconf_directory'].'diroptions.conf', 'w');
+				fwrite($diroptions_file_handler, $diroptions_file);
+				fclose($diroptions_file_handler);
+				safe_exec($settings['system']['apachereload_command']);
 			}
 		}
 
