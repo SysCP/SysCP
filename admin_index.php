@@ -24,6 +24,13 @@
 	 */
 	require("./lib/init.php");
 
+	if($action == 'logout')
+	{
+		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['adminid']}' AND `adminsession` = '1'");
+		header("Location: ./index.php");
+		exit;
+	}
+
 	if(isset($_POST['id']))
 	{
 		$id=intval($_POST['id']);
