@@ -272,12 +272,12 @@
 		$db->query(
 			'ALTER TABLE `'.TABLE_PANEL_CUSTOMERS.'`
 				ADD `email_accounts` INT( 15 ) NOT NULL AFTER `emails_used` ,
-				ADD `email_accounts_used` INT( 15 ) NOT NULL AFTER `email_accounts` ;
+				ADD `email_accounts_used` INT( 15 ) NOT NULL AFTER `email_accounts`
 		');
 		$db->query(
 			'ALTER TABLE `'.TABLE_PANEL_ADMINS.'`
 				ADD `email_accounts` INT( 15 ) NOT NULL AFTER `emails_used` ,
-				ADD `email_accounts_used` INT( 15 ) NOT NULL AFTER `email_accounts` ;
+				ADD `email_accounts_used` INT( 15 ) NOT NULL AFTER `email_accounts`
 		');
 
 		$db->query ( 'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` SET `email_accounts` = `emails` ');

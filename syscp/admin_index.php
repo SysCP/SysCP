@@ -83,6 +83,12 @@
 			$lookfornewversion_link = "$filename?s=$s&page=$page&lookfornewversion=yes";
 		}
 
+		$userinfo['diskspace']=round($userinfo['diskspace']/1024,4);
+		$userinfo['diskspace_used']=round($userinfo['diskspace_used']/1024,4);
+		$userinfo['traffic']=round($userinfo['traffic']/(1024*1024),4);
+		$userinfo['traffic_used']=round($userinfo['traffic_used']/(1024*1024),4);
+
+		$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 		eval("echo \"".getTemplate("index/index")."\";");
 	}
 	

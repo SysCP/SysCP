@@ -59,6 +59,7 @@ $lng['customer']['diskspace'] = 'Webspace (MB)';
 $lng['customer']['traffic'] = 'Traffic (GB)';
 $lng['customer']['mysqls'] = 'Banque(s) de donn&eacute;es MySQL';
 $lng['customer']['emails'] = 'Adresse(s) e-mail';
+$lng['customer']['accounts'] = 'Acc&egrave;s e-mail';
 $lng['customer']['forwarders'] = 'Retransmissions e-mail';
 $lng['customer']['ftps'] = 'Acc&egrave;s FTP';
 $lng['customer']['subdomains'] = 'Sub-Domain(s)';
@@ -71,8 +72,7 @@ $lng['customer']['unlimited'] = 'illimit&eacute;';
 $lng['menue']['main']['main'] = 'General';
 $lng['menue']['main']['changepassword'] = 'Changer le mot de passe';
 $lng['menue']['email']['email'] = 'e-mail';
-$lng['menue']['email']['pop'] = 'Acc&egrave;s POP3';
-$lng['menue']['email']['forwarders'] = 'Retransmissions';
+$lng['menue']['email']['emails'] = 'Adresse(s)';
 $lng['menue']['email']['webmail'] = 'Webmail';
 $lng['menue']['mysql']['mysql'] = 'MySQL';
 $lng['menue']['mysql']['databases'] = 'Banques de donn&eacute;es';
@@ -98,6 +98,7 @@ $lng['index']['accountdetails'] = 'Donn&eacute;es de l´acc&egrave;s';
 $lng['changepassword']['old_password'] = 'Vieux mot de passe';
 $lng['changepassword']['new_password'] = 'Nouveau mot de passe';
 $lng['changepassword']['new_password_confirm'] = 'Nouveau mot de passe (confirmer)';
+$lng['changepassword']['new_password_ifnotempty'] = 'Nouveau mot de passe (Veuillez laisser vide pour aucun changement)';
 $lng['changepassword']['also_change_ftp'] = ' Changer aussi le mot de passe de l´acc&egrave;s FTP general';
 
 /**
@@ -114,11 +115,16 @@ $lng['domains']['wildcarddomain'] = 'Domain Wildcard?';
  * eMails
  */
 $lng['emails']['description'] = 'Ici vous pouvez appliquer vos boites &agrave; e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domain</i></b><br>Identifiant: <b><i>l´adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
-$lng['emails']['forwarders_add'] = 'Appliquer une retransmission';
+$lng['emails']['emailaddress'] = 'Adresse';
+$lng['emails']['emails_add'] = 'Appliquer une Adresse';
+$lng['emails']['emails_edit'] = 'Changer une adresse';
+$lng['emails']['account'] = 'Acc&egrave;s';
+$lng['emails']['account_add'] = 'Appliquer un acc&egrave;s';
+$lng['emails']['account_delete'] = 'Effacer acc&egrave;s';
 $lng['emails']['from'] = 'de';
 $lng['emails']['to'] = '&agrave;';
-$lng['emails']['pop3_add'] = 'Appliquer un acc&egrave;s POP3';
-$lng['emails']['emailaddress'] = 'Acc&egrave;s / Adresse';
+$lng['emails']['forwarders'] = 'Retransmissions';
+$lng['emails']['forwarder_add'] = 'Appliquer une retransmission';
 
 /**
  * FTP
@@ -131,6 +137,7 @@ $lng['ftp']['account_add'] = 'Appliquer un acc&egrave;s';
  */
 $lng['mysql']['description'] = 'Ici vous pouvez appliquer et effacer des banques de donn&eacute;es MySQL.<br>Les changements sont tout de suite op&eacute;rant et les banques sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos banques de donn&eacute;es.<br><br>L´acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c´est!)<br><br>$connection = mysql_connect("localhost", "<i>Votre identifiant</i>", "<i>Votre mot de passe</i>");<br>mysql_select_db("<i>Le nom de la banque</i>", $connection);';
 $lng['mysql']['databasename'] = 'Nom de la banque';
+$lng['mysql']['databasedescription'] = 'Description de la banque';
 $lng['mysql']['database_create'] = 'Appliquer une banque de donn&eacute;es';
 
 /**
@@ -142,12 +149,22 @@ $lng['extras']['view_directory'] = 'Faire voir le fichier';
 $lng['extras']['pathoptions_add'] = 'Appliquer des options de chemin';
 $lng['extras']['directory_browsing'] = 'Faire voir le contenu des fichiers';
 $lng['extras']['pathoptions_edit'] = 'Modifier les options de chemin';
+$lng['extras']['error404path'] = '404';
+$lng['extras']['error403path'] = '403';
+$lng['extras']['error500path'] = '500';
+$lng['extras']['error401path'] = '401';
+$lng['extras']['errordocument404path'] = 'Chemin de la document erreur 404';
+$lng['extras']['errordocument403path'] = 'Chemin de la document erreur 403';
+$lng['extras']['errordocument500path'] = 'Chemin de la document erreur 500';
+$lng['extras']['errordocument401path'] = 'Chemin de la document erreur 401';
 
 /**
  * Errors
  */
 $lng['error']['error'] = 'Erreur';
 $lng['error']['directorymustexist'] = 'Le dossier que vous avez choisi n´existe pas. S´il vous plait appliquer le avec votre client FTP.';
+$lng['error']['filemustexist'] = 'Le fichier que vous avez choisi n´existe pas.';
+$lng['error']['allresourcesused'] = 'Vous avez d&eacute;j&agrave; us&eacute;s tous ressources.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Vous ne pouvez pas effacer une domain qui est utilis&eacute; pour des adresses e-mail. ';
 $lng['error']['firstdeleteallsubdomains'] = 'Il faut effacer toutes les subdomains avant d´appliquer un domain Wildcard.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Vous ne pouvez pas effacer votre acc&egrave;s principal.';
@@ -167,8 +184,9 @@ $lng['question']['admin_domain_reallydelete'] = 'Voulez-vous vraiment effacer le
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Voulez-vous vraiment d&eacute;sactiver ces modes importants (OpenBasedir et/o&ugrave; SafeMode) ?';
 $lng['question']['admin_admin_reallydelete'] = 'Voulez-vous vraiment effacer l\'administrateur %s?<br />Tout ses comptes vont &ecirc;tre affect&eacute; au administrateur principal.';
 $lng['question']['domains_reallydelete'] = 'Voulez-vous vraiment effacer le domain %s?';
-$lng['question']['email_reallydelete_forwarders'] = 'Voulez-vous vraiment effacer la retransmission %s?';
-$lng['question']['email_reallydelete_pop'] = 'Voulez-vous vraiment effacer l\'adresse e-mail %s?';
+$lng['question']['email_reallydelete'] = 'Voulez-vous vraiment effacer l\'adresse e-mail %s?';
+$lng['question']['email_reallydelete_account'] = 'Voulez-vous vraiment effacer l\'acc&egrave;s d\'e-mail %s?';
+$lng['question']['email_reallydelete_forwarder'] = 'Voulez-vous vraiment effacer la retransmission %s?';
 $lng['question']['extras_reallydelete'] = 'Voulez-vous vraiment effacer la protection du dossier %s?';
 $lng['question']['extras_reallydelete_pathoptions'] = 'Voulez-vous vraiment effacer les options du chemin %s?';
 $lng['question']['ftp_reallydelete'] = 'Voulez-vous vraiment effacer l\'acc&egrave;s eMail %s?';

@@ -327,7 +327,7 @@
 					{
 						$destination = $idna_convert->encode(addslashes($_POST['destination']));
 						$result['destination_array'] = explode ( ' ', $result['destination'] ) ;
-						if($destination == '' || !verify_email($destination) || in_array ( $destination , $result['destination_array'] ) )
+						if($destination == '' || !verify_email($destination) || $destination == $result['email'] || in_array ( $destination , $result['destination_array'] ) )
 						{
 							standard_error('notallreqfieldsorerrors');
 							exit;

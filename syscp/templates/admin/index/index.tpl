@@ -5,43 +5,43 @@ $header
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['admin']['customers']}:</td>
-      <td class="maintable">{$overview['number_customers']}</td>
+      <td class="maintable">{$overview['number_customers']} ({$userinfo['customers']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['domains']}:</td>
-      <td class="maintable">{$overview['number_domains']}</td>
+      <td class="maintable">{$overview['number_domains']} ({$userinfo['domains']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['diskspace']}:</td>
-      <td class="maintable">{$overview['diskspace_used']}</td>
+      <td class="maintable">{$overview['diskspace_used']} ({$userinfo['diskspace_used']}/{$userinfo['diskspace']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['traffic']}:</td>
-      <td class="maintable">{$overview['traffic_used']}</td>
+      <td class="maintable">{$overview['traffic_used']} ({$userinfo['traffic_used']}/{$userinfo['traffic']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['mysqls']}:</td>
-      <td class="maintable">{$overview['mysqls_used']}</td>
+      <td class="maintable">{$overview['mysqls_used']} ({$userinfo['mysqls_used']}/{$userinfo['mysqls']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['emails']}:</td>
-      <td class="maintable">{$overview['emails_used']}</td>
+      <td class="maintable">{$overview['emails_used']} ({$userinfo['emails_used']}/{$userinfo['emails']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['accounts']}:</td>
-      <td class="maintable">{$overview['email_accounts_used']}</td>
+      <td class="maintable">{$overview['email_accounts_used']} ({$userinfo['email_accounts_used']}/{$userinfo['email_accounts']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['forwarders']}:</td>
-      <td class="maintable">{$overview['email_forwarders_used']}</td>
+      <td class="maintable">{$overview['email_forwarders_used']} ({$userinfo['email_forwarders_used']}/{$userinfo['email_forwarders']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['ftps']}:</td>
-      <td class="maintable">{$overview['ftps_used']}</td>
+      <td class="maintable">{$overview['ftps_used']} ({$userinfo['ftps_used']}/{$userinfo['ftps']})</td>
      </tr>
      <tr>
       <td class="maintable" align="right">{$lng['customer']['subdomains']}:</td>
-      <td class="maintable">{$overview['subdomains_used']}</td>
+      <td class="maintable">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
      </tr>
      <tr>
       <td colspan="2" class="title"><b>{$lng['admin']['systemdetails']}</b></td>
