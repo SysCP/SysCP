@@ -300,5 +300,55 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.5-cvs1';
 	}
+	if($settings['panel']['version'] == '1.2.5-cvs1')
+	{
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `lang`       = "admin;resources", ' .
+			'    `url`        = "admin_resources.nourl", ' .
+			'    `area`       = "admin"'
+		);
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `lang`       = "admin;server", ' .
+			'    `url`        = "admin_server.nourl", ' .
+			'    `required_resources` = "change_serversettings", ' .
+			'    `area`       = "admin"'
+		);
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `lang`       = "login;login", ' .
+			'    `url`        = "login.nourl", ' .
+			'    `area`       = "login"'
+		);
+
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `parent_url` = "admin_index.php" ' .
+			'WHERE `url`      = "admin_index.php?page=change_password" OR ' .
+			'      `url`      = "admin_index.php?action=logout"'
+		);
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `parent_url` = "admin_resources.nourl" ' .
+			'WHERE `url`      = "admin_customers.php?page=customers" OR ' .
+			'      `url`      = "admin_domains.php?page=domains" OR ' .
+			'      `url`      = "admin_admins.php?page=admins"'
+		);
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `parent_url` = "admin_server.nourl" ' .
+			'WHERE `url`      = "admin_configfiles.php?page=configfiles" OR ' .
+			'      `url`      = "admin_settings.php?page=settings"'
+		);
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `parent_url` = "login.nourl" ' .
+			'WHERE `url`      = "index.php"'
+		);
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.5-cvs2';
+	}
 
 ?>

@@ -172,7 +172,7 @@ $lng['error']['login'] = 'The username or password you typed in is wrong. Please
 $lng['error']['login_blocked'] = 'This account has been suspended because of too many login errors. <br />Please try again in '.$settings['login']['deactivatetime'].' seconds.';
 $lng['error']['notallreqfieldsorerrors'] = 'You have not filled in all or filled in some fields incorrectly.';
 $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
-$lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more ressources than you own for yourself.';
+$lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more resources than you own for yourself.';
 $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
 
 /**
@@ -204,13 +204,14 @@ $lng['mails']['createcustomer']['subject'] = 'Account informationen';
  * Admin
  */
 $lng['admin']['overview'] = 'Overview';
-$lng['admin']['ressourcedetails'] = 'Used ressources';
+$lng['admin']['ressourcedetails'] = 'Used resources';
 $lng['admin']['systemdetails'] = 'System Details';
 $lng['admin']['syscpdetails'] = 'SysCP Details';
 $lng['admin']['installedversion'] = 'Installed Version';
 $lng['admin']['latestversion'] = 'Latest Version';
 $lng['admin']['lookfornewversion']['clickhere'] = 'search via webservice';
 $lng['admin']['lookfornewversion']['error'] = 'Error while reading';
+$lng['admin']['resources'] = 'Resources';
 $lng['admin']['customer'] = 'Customer';
 $lng['admin']['customers'] = 'Customers';
 $lng['admin']['customer_add'] = 'Create customer';
@@ -225,14 +226,15 @@ $lng['admin']['admin_edit'] = 'Edit admin';
 $lng['admin']['customers_see_all'] = 'Can see all customers?';
 $lng['admin']['domains_see_all'] = 'Can see all domains?';
 $lng['admin']['change_serversettings'] = 'Can change server settings?';
-$lng['admin']['serversettings'] = 'Server settings';
+$lng['admin']['server'] = 'Server';
+$lng['admin']['serversettings'] = 'Settings';
 $lng['admin']['stdsubdomain'] = 'Standard subdomain';
 $lng['admin']['stdsubdomain_add'] = 'Create standard subdomain';
 $lng['admin']['deactivated'] = 'Deactivated';
 $lng['admin']['deactivated_user'] = 'Deactivate User';
 $lng['admin']['sendpassword'] = 'Send password';
 $lng['admin']['ownvhostsettings'] = 'Own vHost-Settings';
-$lng['admin']['configfiles']['serverconfiguration'] = 'Server configuration';
+$lng['admin']['configfiles']['serverconfiguration'] = 'Configuration';
 $lng['admin']['configfiles']['files'] = '<b>Configfiles:</b> Please change the following files or create them with<br />the following content if they do not exist.<br /><b>Please Note:</b> The MySQL-password has not been replaced for security reasons.<br />Please replace &quot;MYSQL_PASSWORD&quot; on your own. If you forgot your MySQL-password<br />you\'ll find it in &quot;lib/userdata.inc.php&quot;.';
 $lng['admin']['configfiles']['commands'] = '<b>Commands:</b> Please execute the following commands in a shell.';
 $lng['admin']['configfiles']['restart'] = '<b>Restart:</b> Please execute the following commands in a shell in order to reload the new configuration.';

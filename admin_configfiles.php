@@ -256,7 +256,7 @@
 
 			if(isset($configfiles[$distribution]['daemons'][$daemon]['commands']) && is_array($configfiles[$distribution]['daemons'][$daemon]['commands']))
 			{
-				$commands = implode('<br />', $configfiles[$distribution]['daemons'][$daemon]['commands']);
+				$commands = implode("\n", $configfiles[$distribution]['daemons'][$daemon]['commands']);
 			}
 			else
 			{
@@ -282,14 +282,14 @@
 					$file_content = implode('', file('./templates/misc/configfiles/'.$distribution.'/'.$daemon.'/'.$filename));
 					$file_content = strtr($file_content, $replace_arr);
 					$file_content = htmlspecialchars($file_content);
-					$height = 25 * ((count(explode("\n", $file_content)))-1);
+					$numbrows = count(explode("\n", $file_content));
 					eval("\$files.=\"".getTemplate("configfiles/configfiles_file")."\";");
 				}
 			}
 
 			if(isset($configfiles[$distribution]['daemons'][$daemon]['restart']) && is_array($configfiles[$distribution]['daemons'][$daemon]['restart']))
 			{
-				$restart = implode('<br />', $configfiles[$distribution]['daemons'][$daemon]['restart']);
+				$restart = implode("\n", $configfiles[$distribution]['daemons'][$daemon]['restart']);
 			}
 			else
 			{
