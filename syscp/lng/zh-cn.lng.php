@@ -11,8 +11,8 @@
  * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * @author Wang Changyi <wangchangyi@hotmail.com>, Patrick Brueckner <patrick_brueckner@yahoo.de>
- * @copyright (C) 2004 Wang Changyi <wangchangyi@hotmail.com>, Patrick Brueckner <patrick_brueckner@yahoo.de>
+ * @author Wang Changyi <wangchangyi@hotmail.com>, Patrick Brueckner <patrick_brueckner@yahoo.de>, Ke Zhang <windflowerflower@hotmail.com>
+ * @copyright (C) 2004 Wang Changyi <wangchangyi@hotmail.com>, Patrick Brueckner <patrick_brueckner@yahoo.de>, Ke Zhang <windflowerflower@hotmail.com>
  * @package Language
  * @version $Id$
  */
@@ -137,8 +137,8 @@ $lng['ftp']['account_add'] = '&#28155;&#21152;&#36134;&#25143;';
  */
 $lng['mysql']['description'] = '&#36825;&#37324;&#24744;&#21487;&#20197;&#28155;&#21152;&#21644;&#21024;&#38500;MySQL&#25968;&#25454;&#24211;<br>&#26356;&#25913;&#31435;&#21051;&#29983;&#25928;&#24182;&#19988;&#25968;&#25454;&#24211;&#31435;&#21051;&#21487;&#20197;&#20351;&#29992;<br>&#22312;&#33756;&#21333;&#20013;&#24744;&#21487;&#20197;&#25214;&#21040;&#21435;&#24448;phpMyAdmin&#30340;&#38142;&#25509;&#65292;&#22312;&#27492;&#24744;&#21487;&#20197;&#36731;&#26494;&#32534;&#36753;&#24744;&#25968;&#25454;&#24211;&#20013;&#30340;&#20869;&#23481;<br><br>php&#21407;&#25991;&#20214;&#30340;&#36827;&#20837;&#25968;&#25454;&#22914;&#19979;&#25152;&#31034;:<i>&#26012;&#20307;&#23383;</i>&#30340;&#35828;&#26126;&#20250;&#34987;&#27599;&#27425;&#30340;&#30331;&#35760;&#32780;&#26367;&#20195;<br>&#20027;&#26426;&#21517;:<b>localhost</b><br>&#29992;&#25143;&#21517;:<b><i>&#25968;&#25454;&#24211;&#21517;</i></b><br>&#23494;&#30721;:<b><i>&#34987;&#36873;&#23494;&#30721;</i></b><br>&#25968;&#25454;&#24211;:<b><i>&#25968;&#25454;&#24211;&#21517;';
 $lng['mysql']['databasename'] = '&#29992;&#25143;&#21517;/&#25968;&#25454;&#24211;&#21517;';
+$lng['mysql']['databasedescription'] = '&#25968;&#25454;&#24211;&#25551;&#36848;';
 $lng['mysql']['database_create'] = '&#21019;&#24314;&#25968;&#25454;&#24211;';
- 
 
 /**
  * Extras
@@ -282,7 +282,7 @@ $lng['serversettings']['webmail_url']['title'] = '&#32593;&#32476;&#37038;&#2021
 $lng['serversettings']['webmail_url']['description'] = '&#32593;&#32476;&#37038;&#20214;&#25918;&#22312;&#21738;&#37324;?';
 $lng['serversettings']['webftp_url']['title'] = '&#32593;&#32476;FTP&#30340;URL';
 $lng['serversettings']['webftp_url']['description'] = '&#32593;&#32476;FTP&#25918;&#22312;&#21738;&#37324;?';
-$lng['serversettings']['language']['description'] = '&#24744;&#30340;&#26631;&#20934;&#35821;&#35328;&#26159;&#20160;&#20040;&#35821;&#65311;';</p>
+$lng['serversettings']['language']['description'] = '&#24744;&#30340;&#26631;&#20934;&#35821;&#35328;&#26159;&#20160;&#20040;&#35821;&#65311;';
 $lng['serversettings']['maxloginattempts']['title']       = '&#26368;&#22810;&#30331;&#38470;&#27425;&#25968;';
 $lng['serversettings']['maxloginattempts']['description'] = '&#26368;&#22810;&#30331;&#38470;&#27425;&#25968;&#30452;&#21040;&#24080;&#25143;&#22833;&#25928;';
 $lng['serversettings']['deactivatetime']['title']       = '&#24080;&#25143;&#22833;&#25928;&#26102;&#38388;';
