@@ -20,6 +20,10 @@ $header
        <td class="maintable" nowrap><input type="text" name="email" value=""></td>
       </tr>
       <tr>
+       <td class="maintable">{$lng['login']['language']}:</td>
+       <td class="maintable" nowrap><select name="def_language">$language_options</select></td>
+      </tr>
+      <tr>
        <td class="maintable">{$lng['admin']['change_serversettings']}</td>
        <td class="maintable" nowrap>$change_serversettings</td>
       </tr>

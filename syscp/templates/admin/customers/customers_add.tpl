@@ -52,6 +52,10 @@ $header
        <td class="maintable" nowrap><input type="text" name="customernumber" value=""></td>
       </tr>
       <tr>
+       <td class="maintable">{$lng['login']['language']}:</td>
+       <td class="maintable" nowrap><select name="def_language">$language_options</select></td>
+      </tr>
+      <tr>
        <td class="maintable">{$lng['customer']['diskspace']}: *</td>
        <td class="maintable" nowrap><input type="text" name="diskspace" value="0" maxlength="6"></td>
       </tr>

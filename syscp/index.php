@@ -85,8 +85,12 @@
 			if(isset($userinfo['userid']) && $userinfo['userid'] != '')
 			{
 				$s = md5(uniqid(microtime(),1));
-
-				if(isset($_POST['language']) && isset($languages[$_POST['language']]))
+				
+				if(isset($_POST['language']) && $_POST['language'] == 'profile')
+				{
+					$language = $userinfo['def_language'];
+				}
+				else if(isset($_POST['language']) && isset($languages[$_POST['language']]))
 				{
 					$language = addslashes($_POST['language']);
 				}
@@ -115,9 +119,10 @@
 		else
 		{
 			$language_options = '';
+			$language_options .= makeoption($lng['login']['profile_lng'], 'profile', 'profile');
 			while(list($language_file, $language_name) = each($languages))
 			{
-				$language_options .= makeoption($language_name, $language_file, $language);
+				$language_options .= makeoption($language_name, $language_file, 'profile');
 			}
 			eval("echo \"".getTemplate("login")."\";");
 		}

@@ -400,5 +400,54 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.6';
 	}
+	if($settings['panel']['version'] == '1.2.6')
+	{
+		$result = $db->query_first( 'SELECT `value` FROM `'.TABLE_PANEL_SETTINGS.'` WHERE `settinggroup` = \'panel\' AND `varname` = \'standardlanguage\'' );
+		$def_language = $result['value'];
+		
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_ADMINS.'` ADD `def_language` VARCHAR( 255 ) NOT NULL AFTER `email`' );
+		$db->query( 'UPDATE `'.TABLE_PANEL_ADMINS.'` SET `def_language` = \''.$def_language.'\'');
+
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_CUSTOMERS.'` ADD `def_language` VARCHAR( 255 ) NOT NULL AFTER `customernumber`' );
+		$db->query( 'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` SET `def_language` = \''.$def_language.'\'' );
+
+		$db->query( 'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` (`area`,`parent_url`,`lang`,`url`) VALUES (\'customer\',\'customer_index.php\',\'menue;main;changelanguage\',\'customer_index.php?page=change_language\')' );
+		$db->query( 'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` (`area`,`parent_url`,`lang`,`url`) VALUES (\'admin\',\'admin_index.php\',\'menue;main;changelanguage\',\'admin_index.php?page=change_language\')' );
+		
+		$db->query( 'CREATE TABLE `'.TABLE_PANEL_TEMPLATES.'` (
+  			`id` int(11) NOT NULL auto_increment,
+  			`adminid` int(11) NOT NULL default \'0\',
+  			`language` varchar(255) NOT NULL default \'\',
+  			`templategroup` varchar(255) NOT NULL default \'\',
+  			`varname` varchar(255) NOT NULL default \'\',
+  			`value` longtext NOT NULL,
+  			PRIMARY KEY  (`id`),
+  			KEY `adminid` (`adminid`)
+			) TYPE=MyISAM
+		' );
+		
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (1, 1, \'English\', \'mails\', \'createcustomer_subject\', \'Account informationen\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (2, 1, \'English\', \'mails\', \'createcustomer_mailbody\', \'Hello {SURNAME} {NAME},\r\n\r\nhere is your account information:\r\nUsername: {USERNAME}\r\nPassword: {PASSWORD}\r\n\r\nThank you,\r\nthe SysCP-Team\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (3, 1, \'English\', \'mails\', \'pop_success_subject\', \'Mail account set up successfully\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (4, 1, \'English\', \'mails\', \'pop_success_mailbody\', \'Hello,\r\nyour Mail account {EMAIL}\r\nwas set up successfully.\r\n\r\nThis is an automatically created\r\neMail, please do not answer!\r\n\r\nYours sincerely, the SysCP-Team\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (5, 1, \'Deutsch\', \'mails\', \'createcustomer_subject\', \'Accountinformationen\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (6, 1, \'Deutsch\', \'mails\', \'createcustomer_mailbody\', \'Hallo {SURNAME} {NAME},\r\n\r\nhier ihre Accountinformationen:\r\n\r\nBenutzername: {USERNAME}\r\nPassword: {PASSWORD}\r\n\r\nVielen Dank,\r\nIhr SysCP-Team\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (7, 1, \'Deutsch\', \'mails\', \'pop_success_subject\', \'eMail-Konto erfolgreich eingerichtet\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (8, 1, \'Deutsch\', \'mails\', \'pop_success_mailbody\', \'Hallo,\r\n\r\nihr eMail-Konto {EMAIL}\r\nwurde erfolgreich eingerichtet.\r\nDies ist eine automatisch generierte\r\neMail, bitte antworten Sie nicht auf\r\ndiese Mitteilung.\r\n\r\nIhr SysCP-Team\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (9, 1, \'Francais\', \'mails\', \'createcustomer_subject\', \'Informations de votre acc&egrave;s\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (10, 1, \'Francais\', \'mails\', \'createcustomer_mailbody\', \'Bonjour {SURNAME} {NAME},\r\n\r\nici vos informations d´acc&egrave;s:\r\n\r\nIdentifiant: {USERNAME}\r\nMot de passe: {PASSWORD}\r\n\r\nNous vous remercions,\r\nVotre Webmaster\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (11, 1, \'Francais\', \'mails\', \'pop_success_subject\', \'Acc&egrave;s POP3 install&eacute;\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (12, 1, \'Francais\', \'mails\', \'pop_success_mailbody\', \'Bonjour,\r\n\r\nvotre acc&egrave;s POP3 {EMAIL}\r\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\r\n\r\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\r\n\r\nVotre Webmaster\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (13, 1, \'Chinese\', \'mails\', \'createcustomer_subject\', \'&#36134;&#25143;&#20449;&#24687;\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (14, 1, \'Chinese\', \'mails\', \'createcustomer_mailbody\', \'&#24744;&#22909;{SURNAME} {NAME},\n\n&#36825;&#37324;&#26159;&#24744;&#30340;&#36134;&#25143;&#20449;&#24687;:\n\n&#29992;&#25143;&#21517;: {USERNAME}\n&#23494;&#30721;: {PASSWORD}\n\n&#38750;&#24120;&#24863;&#35874;&#65292;&#24744;&#30340;&#26381;&#21153;&#23567;&#32452;\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (15, 1, \'Chinese\', \'mails\', \'pop_success_subject\', \'POP3&#36134;&#25143;&#25104;&#21151;&#34987;&#21019;&#24314;\')');
+		$db->query('INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (16, 1, \'Chinese\', \'mails\', \'pop_success_mailbody\', \'&#20320;&#22909;&#20197;&#34987;&#25104;&#21151;&#21019;&#24314;&#36825;&#26159;&#19968;&#20010;&#33258;&#21160;&#29983;&#25104;&#30340;&#36825;&#26159;&#19968;&#20010;&#33258;&#21160;&#29983;&#25104;&#30340;&#37038;&#20214;&#65292;&#35831;&#19981;&#29992;&#31572;&#22797;&#36825;&#20010;&#36890;&#30693;&#24744;&#30340;&#26381;&#21153;&#23567;&#32452;\')');
+		
+		$db->query( 'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` (`area`,`lang`,`url`) VALUES (\'admin\',\'admin;templates;templates\',\'admin_templates.nourl\')' );
+		$db->query( 'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` (`area`,`parent_url`,`lang`,`url`) VALUES (\'admin\',\'admin_templates.nourl\',\'admin;templates;email\',\'admin_templates.php?page=email\')' );
+		
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.6-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.6-cvs1';
+	}
 
 ?>

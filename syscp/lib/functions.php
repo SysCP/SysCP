@@ -943,5 +943,49 @@
 		}
 		return $the_value ;
 	}
+	
+	/**
+	 * Replaces all occurences of variables defined in the second argument
+	 * in the first argument with their values.
+	 * 
+	 * @param string The string that should be searched for variables
+	 * @param array The array containing the variables with their values
+	 * @return string The submitted string with the variables replaced.
+	 * @author Michael Duergner
+	 */
+	function replace_variables($text,$vars) {
+		$pattern = "/\{([a-zA-Z0-9\-_]+)\}/";
+		if(count($vars) > 0 && preg_match_all($pattern,$text,$matches)) {
+			for($i = 0;$i < count($matches[1]);$i++) {
+				$current = $matches[1][$i];
+				$var = $vars[$current];
+				$text = str_replace("{" . $current . "}",$var,$text);
+			}
+		}
+		return $text;
+	}
+	
+	/**
+	 * Wrapper for the html_entity_decode function as this function is not
+	 * present in Woody's PHP 4.1.2. In Sarge the html_entity_decode function
+	 * shipped with PHP is used, for Woody own code is used.
+	 * 
+	 * @param string The string in which the html entites should be decoded.
+	 * @return string The decoded string
+	 * @author Michael Duergner
+	 */
+	function _html_entity_decode($string)
+	{
+		if(function_exists('html_entity_decode'))
+		{
+			return html_entity_decode($string);
+		}
+		else
+		{
+			$trans_table = get_html_translation_table(HTML_ENTITIES);
+			$trans_table = array_flip($trans_table);
+			return strtr($string,$trans_table);
+		}
+	}
 
 ?>
