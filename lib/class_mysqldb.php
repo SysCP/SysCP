@@ -134,26 +134,6 @@
 		{
 			global $numbqueries;
 
-			/**
-			 * This is a very ugly workaround for php4.3.10 in connection
-			 * to the new libmysql14.so, which should have made things
-			 * _much_ more better. The opposite happened. :( No quoted
-			 * tablenames in queries are possible anymore, if you select
-			 * more than two fields from a table.
-			 */
-			$phpversion = explode ( '.' , phpversion() ) ;
-			if ( $phpversion[0] == '4' && $phpversion[1] == '3' && intval($phpversion[2]) >= 10 )
-			{
-				global $sql ;
-				if ( $this->user != $sql['root_user'] )
-				{
-					$query_str = str_replace ( '`' , '' , $query_str ) ;
-				}
-			}
-			/**
-			 * End ugly workaround for php4.3.10
-			 */
-
 			if(!$unbuffered)
 			{
 				$this->query_id=mysql_query($query_str,$this->link_id);
