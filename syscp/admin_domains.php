@@ -72,7 +72,7 @@
 			foreach($domain_array as $row)
 			{
 				$standardsubdomain = false;
-				if($row['isemaildomain'] == '0' && $row['parentdomainid'] == '0')
+				if($row['parentdomainid'] == '-1')
 				{
 					$standardsubdomain = true;
 				}
@@ -88,11 +88,11 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
+					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used` = `subdomains_used` - 0".($deleted_domains - 1)." WHERE `customerid` = '{$result['customerid']}'");
+					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `domainid` IN (SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE (`id`='$id' OR `parentdomainid`='$id') AND `isemaildomain`='1')");
+					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid` IN (SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE (`id`='$id' OR `parentdomainid`='$id') AND `isemaildomain`='1')");
 					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id' OR `parentdomainid`='".$result['id']."'");
 					$deleted_domains = $db->affected_rows();
-					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used` = `subdomains_used` - 0".($deleted_domains - 1)." WHERE `customerid` = '{$result['customerid']}'");
-					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `domainid`='$id'");
-					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '{$userinfo['adminid']}'");
 					updateCounters () ;
 
@@ -116,8 +116,12 @@
 				{
 					$domain = $idna_convert->encode(addslashes($_POST['domain']));
 					$customerid = intval($_POST['customerid']);
+					$subcanemaildomain = intval($_POST['subcanemaildomain']);
+					$isemaildomain = intval($_POST['isemaildomain']);
 					if($userinfo['change_serversettings'] == '1')
 					{
+						$isbinddomain = $_POST['isbinddomain'];
+						$caneditldomain = intval($_POST['caneditdomain']);
 						$zonefile = addslashes($_POST['zonefile']);
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
@@ -126,6 +130,8 @@
 					}
 					else
 					{
+						$isbinddomain = '1';
+						$caneditdomain = '1';
 						$zonefile = '';
 						$openbasedir = '1';
 						$safemode = '1';
@@ -150,7 +156,7 @@
 					{
 						$documentroot.='/';
 					}
-					if ( ( substr($documentroot, 0, 1) != '/') && !preg_match('/^https?\:\/\//', $documentroot) )
+					if ( ( substr($documentroot, 0, 1) != '/') && ( substr($documentroot,0 ,7) != 'http://') )
 					{
 						$documentroot='/'.$documentroot;
 					}
@@ -167,6 +173,23 @@
 					{
 						$speciallogfile = '0';
 					}
+					if($isbinddomain != '1')
+					{
+						$isbinddomain = '0';
+					}
+					if($isemaildomain != '1')
+					{
+						$isemaildomain = '0';
+					}
+					if($subcanemaildomain != '1')
+					{
+						$subcanemaildomain = '0';
+					}
+					if($caneditdomain != '1')
+					{
+						$caneditdomain = '0';
+					}
+					
 
 					if($domain=='' || $documentroot=='' || $customerid==0 || $domain_check['domain'] == $domain)
 					{
@@ -177,7 +200,7 @@
 					{ 
 						if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
 						{
-							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=".urlencode($specialsettings).";speciallogfile=$speciallogfile;reallydoit=reallydoit");
+							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=".urlencode($specialsettings).";speciallogfile=$speciallogfile;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;reallydoit=reallydoit");
 							exit;
 						}
 						if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
@@ -186,7 +209,7 @@
 						}
 
 						$specialsettings = addslashes($specialsettings);
-						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$zonefile', '1', '$openbasedir', '$safemode', '$speciallogfile', '$specialsettings')");
+						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isbinddomain`, `isemaildomain`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$zonefile', '$isbinddomain', '$isemaildomain', '$subcanemaildomain', '$caneditdomain', '$openbasedir', '$safemode', '$speciallogfile', '$specialsettings')");
 						$domainid=$db->insert_id();
 						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '{$userinfo['adminid']}'");
 
@@ -204,6 +227,10 @@
 					{
 						$customers.=makeoption($row_customer['name'].' '.$row_customer['firstname'].' ('.$row_customer['loginname'].')',$row_customer['customerid']);
 					}
+					$isbinddomain=makeyesno('isbinddomain', '1', '0', '1');
+					$isemaildomain=makeyesno('isemaildomain', '1', '0', '1');
+					$subcanemaildomain=makeyesno('subcanemaildomain', '1', '0', '0');
+					$caneditdomain=makeyesno('caneditdomain', '1', '0', '1');
 					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
 					$safemode=makeyesno('safemode', '1', '0', '1');
 					$speciallogfile=makeyesno('speciallogfile', '1', '0', '0');
@@ -215,7 +242,7 @@
 		elseif($action=='edit' && $id!=0)
 		{
 			$result=$db->query_first(
-				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`loginname`, `c`.`name`, `c`.`firstname` " .
+				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`loginname`, `c`.`name`, `c`.`firstname` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 				"WHERE `d`.`parentdomainid`='0' AND `d`.`id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")
@@ -224,8 +251,12 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
+					$isemaildomain = intval($_POST['isemaildomain']);
+					$subcanemaildomain = intval($_POST['subcanemaildomain']);
+					$caneditdomain = intval($_POST['caneditdomain']);
 					if($userinfo['change_serversettings'] == '1')
 					{
+						$isbinddomain = $_POST['isbinddomain'];
 						$zonefile = addslashes($_POST['zonefile']);
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
@@ -243,6 +274,7 @@
 					}
 					else
 					{
+						$isbinddomain = $result['isbinddomain'];
 						$zonefile = $result['zonefile'];
 						$openbasedir = $result['openbasedir'];
 						$safemode = $result['safemode'];
@@ -258,10 +290,26 @@
 					{
 						$safemode = '0';
 					}
+					if($isbinddomain != '1')
+					{
+						$isbinddomain = '0';
+					}
+					if($isemaildomain != '1')
+					{
+						$isemaildomain = '0';
+					}
+					if($subcanemaildomain != '1')
+					{
+						$subcanemaildomain = '0';
+					}
+					if($caneditdomain != '1')
+					{
+						$caneditdomain = '0';
+					}
 					
 					if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit') && $userinfo['change_serversettings'] == '1')
 					{
-						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
+						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentrootisbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;;zonefile=$zonefile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
 						exit;
 					}
 					if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
@@ -273,13 +321,18 @@
 					{
 						inserttask('1');
 					}
-					if($zonefile != $result['zonefile'])
+					if($isbinddomain != $result['isbinddomain'] || $zonefile != $result['zonefile'])
 					{
 						inserttask('4');
 					}
+					if($isemaildomain == '0' && $result['isemaildomain'] == '1')
+					{
+						$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `domainid`='$id' ");
+						$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid`='$id' ");
+					}
 
 					$specialsettings = addslashes($specialsettings);
-					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$documentroot', `zonefile`='$zonefile', `openbasedir`='$openbasedir', `safemode`='$safemode', `specialsettings`='$specialsettings' WHERE `id`='$id'");
+					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$documentroot', `isbinddomain`='$isbinddomain', `isemaildomain`='$isemaildomain', `subcanemaildomain`='$subcanemaildomain', `caneditdomain`='$caneditdomain', `zonefile`='$zonefile', `openbasedir`='$openbasedir', `safemode`='$safemode', `specialsettings`='$specialsettings' WHERE `id`='$id'");
 					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `openbasedir`='$openbasedir', `safemode`='$safemode', `specialsettings`='$specialsettings'  WHERE `parentdomainid`='$id'");
 	
 					header("Location: $filename?page=$page&s=$s");
@@ -288,6 +341,10 @@
 				{
 					$result['domain'] = $idna_convert->decode($result['domain']);
 					$result['specialsettings'] = stripslashes($result['specialsettings']);
+					$isbinddomain=makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);
+					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
+					$subcanemaildomain=makeyesno('subcanemaildomain', '1', '0', $result['subcanemaildomain']);
+					$caneditdomain=makeyesno('caneditdomain', '1', '0', $result['caneditdomain']);
 					$openbasedir=makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 					$safemode=makeyesno('safemode', '1', '0', $result['safemode']);
 					$speciallogfile=($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);

@@ -137,6 +137,14 @@
 //				echo 'system_hostname<br />';
 				$value=addslashes($idna_convert->encode($_POST['system_hostname']));
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='hostname'");
+				$result=$db->query('SELECT `standardsubdomain` FROM `'.TABLE_PANEL_CUSTOMERS.'` WHERE `standardsubdomain`!=\'0\'');
+				$domains=array();
+				while(($row=$db->fetch_array($result)) !== false)
+				{
+					$domains[]='\''.$row['standardsubdomain'].'\'';
+				}
+				$domains=join($domains,',');
+				$db->query('UPDATE `'.TABLE_PANEL_DOMAINS.'` SET `domain`=REPLACE(`domain`,\''.$settings['system']['hostname'].'\',\''.$value.'\') WHERE `id` IN ('.$domains.')');
 				inserttask('1');
 			}
 

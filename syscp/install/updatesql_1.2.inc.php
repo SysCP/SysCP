@@ -560,5 +560,21 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.7-cvs2';
 	}
+	if($settings['panel']['version'] == '1.2.7-cvs2')
+	{
+		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `isbinddomain` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `documentroot`");
+		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `subcanemaildomain` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `iswildcarddomain`");
+		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `caneditdomain` TINYINT( 1 ) NOT NULL DEFAULT '1' AFTER `subcanemaildomain`");
+		
+		$result=$db->query(
+			'UPDATE ' .
+			'`'.TABLE_PANEL_DOMAINS.'` ' .
+			'SET `isbinddomain`=\'1\'' .
+			'WHERE `isemaildomain`=\'1\''
+		);
+		
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.7-cvs3';
+	}
 
 ?>

@@ -341,8 +341,8 @@
 							
 							$db->query(
 								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
-								"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '$documentroot', '', '0', '1', '1', '0', '')"
+								"(`domain`, `customerid`, `adminid`, `parentdomainid`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
+								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '-1', '$documentroot', '', '0', '0', '1', '1', '0', '')"
 							);
 							$domainid=$db->insert_id();
 							$db->query(
@@ -462,14 +462,14 @@
 						{
 							$db->query(
 								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
-								"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '$documentroot', '', '0', '1', '1', '0', '')"
+								"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
+								"VALUES ('{$result['loginname']}.{$settings['system']['hostname']}', '{$result['customerid']}', '{$userinfo['adminid']}', '{$result['documentroot']}', '', '0', '0', '1', '1', '0', '')"
 							);
 							$domainid=$db->insert_id();
 							$db->query(
 								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
 								'SET `standardsubdomain`=\''.$domainid.'\' ' .
-								'WHERE `customerid`=\''.$customerid.'\''
+								'WHERE `customerid`=\''.$result['customerid'].'\''
 							);
 							inserttask('1');
 						}
@@ -478,6 +478,11 @@
 							$db->query(
 								'DELETE FROM `'.TABLE_PANEL_DOMAINS.'` ' .
 								'WHERE `id`=\''.$result['standardsubdomain'].'\''
+							);
+							$db->query(
+								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
+								'SET `standardsubdomain`=\'0\' ' .
+								'WHERE `customerid`=\''.$result['customerid'].'\''
 							);
 							inserttask('1');
 						}
@@ -494,7 +499,7 @@
 							inserttask('1');
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `firstname`='$firstname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', `def_language`='$def_language', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `createstdsubdomain`='$createstdsubdomain', `deactivated`='$deactivated' WHERE `customerid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `firstname`='$firstname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', `def_language`='$def_language', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `customerid`='$id'");
 
 						$admin_update_query = "UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` ";
 						if ( $mysqls != '-1' || $result['mysqls'] != '-1' )
@@ -597,7 +602,7 @@
 					$result['traffic']=$result['traffic']/(1024*1024);
 					$result['diskspace']=$result['diskspace']/1024;
 					$result['email'] = $idna_convert->decode($result['email']);
-					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', $result['createstdsubdomain']);
+					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', (($result['standardsubdomain'] != '0') ? '1' : '0'));
 					$deactivated=makeyesno('deactivated', '1', '0', $result['deactivated']);
 					eval("echo \"".getTemplate("customers/customers_edit")."\";");
 				}
