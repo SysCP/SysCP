@@ -393,7 +393,7 @@
 	 * BEGIN INSTALL ---------------------------------------------------
 	 */
 
-	if(isset($_POST['installstep']) && $_POST['installstep'] == '1' && $admin_pass1 == $admin_pass2 && $admin_pass1 != '' && $admin_pass2 != '' && $mysql_unpriv_pass != '' && $mysql_root_pass != '' && $servername != '' && $serverip != '')
+	if(isset($_POST['installstep']) && $_POST['installstep'] == '1' && $admin_pass1 == $admin_pass2 && $admin_pass1 != '' && $admin_pass2 != '' && $mysql_unpriv_pass != '' && $mysql_root_pass != '' && $servername != '' && $serverip != '' && $mysql_unpriv_user != $mysql_root_user)
 	{
 		page_header();
 ?>
@@ -534,7 +534,7 @@
 		 <td class="maintable"><input type="text" name="mysql_database" value="<?php echo $mysql_database; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_unpriv_user']; ?>:</td>
+		 <td class="maintable" align="right"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_user']; ?>:</td>
 		 <td class="maintable"><input type="text" name="mysql_unpriv_user" value="<?php echo $mysql_unpriv_user; ?>"></td>
 		</tr>
 		<tr>
@@ -542,7 +542,7 @@
 		 <td class="maintable"><input type="password" name="mysql_unpriv_pass" value="<?php echo $mysql_unpriv_pass; ?>"></td>
 		</tr>
 		<tr>
-		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_root_user']; ?>:</td>
+		 <td class="maintable" align="right"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_root_user']; ?>:</td>
 		 <td class="maintable"><input type="text" name="mysql_root_user" value="<?php echo $mysql_root_user; ?>"></td>
 		</tr>
 		<tr>
