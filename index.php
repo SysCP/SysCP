@@ -43,21 +43,50 @@
 			$loginname = addslashes($_POST['loginname']);
 			$password = addslashes($_POST['password']);
 
-			$result = $db->query("SELECT `customerid` AS `userid` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '$loginname' AND `password` = '".md5($password)."' AND `deactivated` <> '1'");
-			if ($db->num_rows($result) > 0) 
+			$row = $db->query_first("SELECT `loginname` AS `customer` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='$loginname'");
+			if ($row['customer'] == $loginname)
 			{
-				$userinfo = $db->fetch_array($result);
-				$userinfo['adminsession'] = '0';
+				$table = "`".TABLE_PANEL_CUSTOMERS."`";
+				$uid = 'customerid';
+				$adminsession = '0';
 			}
 			else
 			{
-				// wenn user nicht vorhanden auf admin testen
-				$result = $db->query("SELECT `adminid` AS `userid` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '$loginname' AND `password` = '".md5($password)."' AND `deactivated` <> '1'");
-				if ($db->num_rows($result) > 0)
+				$row = $db->query_first("SELECT `loginname` AS `admin` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='$loginname'");
+				if ($row['admin'] == $loginname)
 				{
-					$userinfo = $db->fetch_array($result);
-					$userinfo['adminsession'] = '1';
+					$table = "`".TABLE_PANEL_ADMINS."`";
+					$uid = 'adminid';
+					$adminsession = '1';
 				}
+				else
+				{
+					standard_error('login');
+					exit;
+				}
+			}
+
+			$userinfo = $db->query_first("SELECT * FROM $table WHERE `loginname`='$loginname'");
+			if ($userinfo['loginfail_count'] >= $settings['login']['maxloginattempts'] && $userinfo['lastlogin_fail'] > (time()-$settings['login']['deactivatetime']))
+			{
+				standard_error('login_blocked');
+				exit;
+			}
+			elseif ($userinfo['password'] == md5($password))
+			{
+				// login correct
+				// reset loginfail_counter, set lastlogin_succ
+				$db->query("UPDATE $table SET `lastlogin_succ`='".time()."', `loginfail_count`='0' WHERE `$uid`='".$userinfo[$uid]."'");
+				$userinfo['userid'] = $userinfo[$uid];
+				$userinfo['adminsession'] = $adminsession;
+			}
+			else
+			{
+				// login incorrect
+				$db->query("UPDATE $table SET `lastlogin_fail`='".time()."', `loginfail_count`=`loginfail_count`+1 WHERE `$uid`='".$userinfo[$uid]."'");
+				unset($userinfo);
+				standard_error('login');
+				exit;
 			}
 
 			if(isset($userinfo['userid']) && $userinfo['userid'] != '')

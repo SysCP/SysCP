@@ -148,6 +148,7 @@ $lng['error']['directorymustexist'] = 'The directory you typed in has to exist. 
 $lng['error']['domains_cantdeletemaindomain'] = 'You cannot delete a domain which is used as an email-domain.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'You cannot delete your main FTP-account';
 $lng['error']['login'] = 'The username or password you typed in is wrong. Please try it again!';
+$lng['error']['login_blocked'] = 'This account has been suspended because of too many loginerrors. <br />Please try again in '.$settings['login']['deactivatetime'].' seconds.';
 $lng['error']['notallreqfieldsorerrors'] = 'You have not filled in all or filled in some fields incorrectly.';
 $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more ressources than you own for yourself.';
