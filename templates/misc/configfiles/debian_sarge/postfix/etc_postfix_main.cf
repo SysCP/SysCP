@@ -5,6 +5,7 @@ myhostname = <SERVERNAME>
 mydomain = <SERVERNAME>
 mydestination = $myhostname $mydomain localhost localhost.$mydomain
 mynetworks = 127.0.0.0/8
+alias_maps = $alias_database
 smtpd_recipient_restrictions = permit_mynetworks permit_sasl_authenticated reject_unauth_destination
 virtual_mailbox_base = <VIRTUAL_MAILBOX_BASE>
 virtual_mailbox_maps = mysql:/etc/postfix/mysql-virtual_mailbox_maps.cf

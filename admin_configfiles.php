@@ -37,8 +37,8 @@
 					'label' => 'Apache Webserver (HTTP)',
 					'commands' => Array
 					(
-						'echo "Include /etc/apache/vhosts.conf" >> /etc/apache/httpd.conf',
-						'touch /etc/apache/vhosts.conf',
+						'echo "Include '.$settings['system']['apacheconf_directory'].'" >> /etc/apache/httpd.conf',
+						'touch '.$settings['system']['apacheconf_directory'].'vhosts.conf',
 						'mkdir -p '.$settings['system']['documentroot_prefix'],
 						'mkdir -p '.$settings['system']['logfiles_directory']
 					),
@@ -56,8 +56,8 @@
 					),
 					'commands' => Array
 					(
-						'echo "include \"/etc/bind/syscp_bind.conf\";" >> /etc/bind/named.conf',
-						'touch /etc/bind/syscp_bind.conf'
+						'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
+						'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
 					),
 					'restart' => Array
 					(
@@ -145,8 +145,8 @@
 					'label' => 'Apache Webserver (HTTP)',
 					'commands' => Array
 					(
-						'echo "Include /etc/apache/vhosts.conf" >> /etc/apache/httpd.conf',
-						'touch /etc/apache/vhosts.conf',
+						'echo "Include '.$settings['system']['apacheconf_directory'].'" >> /etc/apache/httpd.conf',
+						'touch '.$settings['system']['apacheconf_directory'].'vhosts.conf',
 						'mkdir -p '.$settings['system']['documentroot_prefix'],
 						'mkdir -p '.$settings['system']['logfiles_directory']
 					),
@@ -164,8 +164,8 @@
 					),
 					'commands' => Array
 					(
-						'echo "include \"/etc/bind/syscp_bind.conf\";" >> /etc/bind/named.conf',
-						'touch /etc/bind/syscp_bind.conf'
+						'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
+						'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
 					),
 					'restart' => Array
 					(
