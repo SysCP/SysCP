@@ -127,6 +127,7 @@ CREATE TABLE `panel_domains` (
   `customerid` int(11) unsigned NOT NULL default '0',
   `documentroot` varchar(255) NOT NULL default '',
   `isemaildomain` tinyint(1) NOT NULL default '0',
+  `iswildcarddomain` tinyint(1) NOT NULL default '0',
   `zonefile` varchar(255) NOT NULL default '',
   `parentdomainid` int(11) unsigned NOT NULL default '0',
   `openbasedir` tinyint(1) NOT NULL default '0',
