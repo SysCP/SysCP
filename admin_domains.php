@@ -114,12 +114,7 @@
 
 					$domain_check = $db->query_first("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '$domain'");
 
-					if($settings['system']['documentrootstyle'] == 'domain')
-					{
-						$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
-						$documentroot = $customer['documentroot'].'/'.$domain;
-					}
-					elseif( (isset($_POST['documentroot']) && $_POST['documentroot'] == '') || $userinfo['change_serversettings'] != '1')
+					if( (isset($_POST['documentroot']) && $_POST['documentroot'] == '') || $userinfo['change_serversettings'] != '1')
 					{
 						$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
 						$documentroot = $customer['documentroot'];
@@ -203,13 +198,13 @@
 					}
 					else
 					{
-						$zonefile = '';
-						$openbasedir = '1';
-						$safemode = '1';
-						$specialsettings = '';
+						$zonefile = $result['zonefile'];
+						$openbasedir = $result['openbasedir'];
+						$safemode = $result['safemode'];
+						$specialsettings = $result['specialsettings'];
 					}
 
-					if($settings['system']['documentrootstyle'] == 'customer' && $userinfo['change_serversettings'] == '1')
+					if($userinfo['change_serversettings'] == '1')
 					{
 						$documentroot = addslashes($_POST['documentroot']);
 						if($documentroot=='')
@@ -242,7 +237,7 @@
 						$safemode = '0';
 					}
 					
-					if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
+					if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit') && $userinfo['change_serversettings'] == '1')
 					{
 						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=$specialsettings;reallydoit=reallydoit");
 						exit;

@@ -93,28 +93,12 @@
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."'");
 					
-					if($settings['system']['documentrootstyle'] == 'domain')
+					$path = makeCorrectDir(addslashes($_POST['path']));
+					$path = $userinfo['documentroot'].$path;
+					if(!is_dir($path))
 					{
-						$path = $userinfo['documentroot'].'/'.$domain.'-'.$subdomain.'/';
-					}
-					else
-					{
-						$path = addslashes($_POST['path']);
-						$path = str_replace('..','',$path);
-						if(substr($path, -1, 1) != '/')
-						{
-							$path .= '/';
-							}
-						if(substr($path, 0, 1) != '/')
-						{
-							$path = '/'.$path;
-						}
-						$path = $userinfo['documentroot'].$path;
-						if(!is_dir($path))
-						{
-							standard_error('directorymustexist');
-							exit;
-						}
+						standard_error('directorymustexist');
+						exit;
 					}
 
 					if($path=='' || $subdomain=='' ||  $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain)
@@ -143,7 +127,7 @@
 			}
 		}
 
-		elseif($action=='edit' && $id!=0 && $settings['system']['documentrootstyle'] == 'customer')
+		elseif($action=='edit' && $id!=0)
 		{
 			$result=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['customerid']) && $result['customerid']==$userinfo['customerid'])
