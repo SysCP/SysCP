@@ -360,7 +360,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.2-cvs3');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.2-cvs4');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -479,4 +479,21 @@ INSERT INTO `panel_languages` VALUES (1, 'Deutsch', 'lng/german.lng.php');
 INSERT INTO `panel_languages` VALUES (2, 'English', 'lng/english.lng.php');
 INSERT INTO `panel_languages` VALUES (3, 'Francais', 'lng/french.lng.php');
 INSERT INTO `panel_languages` VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');
-               
+
+# 
+# Table structure for table `panel_cronscript`
+# 
+
+CREATE TABLE `panel_cronscript` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `file` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM ;
+
+# 
+# Dumping data for table `panel_cronscript`
+# 
+
+INSERT INTO `panel_cronscript` (`id`, `file`) VALUES (1, 'cron_traffic.php');
+INSERT INTO `panel_cronscript` (`id`, `file`) VALUES (2, 'cron_tasks.php');
+        
