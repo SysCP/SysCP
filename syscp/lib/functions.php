@@ -707,7 +707,7 @@
 	 * @author Michael Dürgner <michael@duergner.com>
 	 */
 	function check_username($username) {
-		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_\.]*[a-zA-Z0-9\-\_\.\$]$/",$username);
+		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*[a-zA-Z0-9\-\_\$]$/",$username);
 	}
 	
 	/**
@@ -720,7 +720,7 @@
 	 * @author Michael Dürgner <michael@duergner.com>
 	 */
 	function check_username_prefix($username_prefix) {
-		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_\.]*$/",$username_prefix);
+		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*$/",$username_prefix);
 	}
 	
 	/**
