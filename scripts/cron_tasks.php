@@ -24,6 +24,7 @@
 	/**
 	 * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
 	 */
+	$debugMsg[] = '  cron_tasks: Searching for tasks to do';
 	$result=$db->query("SELECT `id`, `type`, `data` FROM `".TABLE_PANEL_TASKS."` ORDER BY `type` ASC");
 	while($row=$db->fetch_array($result))
 	{
@@ -37,6 +38,7 @@
 		 */
 		if($row['type'] == '1')
 		{
+			$debugMsg[] = '  cron_tasks: Task1 started - vhost.conf rebuild';
 			$vhosts_file='# '.$settings['system']['apacheconf_directory'].'vhosts.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.'."\n"."\n";
 			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress']."\n"."\n";
 
@@ -47,6 +49,7 @@
 			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
+				$debugMsg[] = '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain'];
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
 				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
@@ -110,6 +113,7 @@
 			$result_customers=$db->query("SELECT `customerid`, `loginname`, `guid`, `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `createstdsubdomain`='1' AND `deactivated` <> '1'");
 			while($customer=$db->fetch_array($result_customers))
 			{
+				$debugMsg[] = '  cron_tasks: Task1 - Writing Domain '.$customer['loginname'].'.'.$settings['system']['hostname'];
 				$vhosts_file.='# Standardsubdomain - CustomerID: '.$customer['customerid'].' - CustomerLogin: '.$customer['loginname']."\n";
 				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 				$vhosts_file.='  ServerName '.$customer['loginname'].'.'.$settings['system']['hostname']."\n";
@@ -126,6 +130,7 @@
 			fwrite($vhosts_file_handler, $vhosts_file);
 			fclose($vhosts_file_handler);
 			safe_exec($settings['system']['apachereload_command']);
+			$debugMsg[] = '   cron_tasks: Task1 - Apache reloaded';
 		}
 
 		/**
@@ -133,6 +138,7 @@
 		 */
 		elseif($row['type'] == '2')
 		{
+			$debugMsg[] = '  cron_tasks: Task2 started - create new home';
 			if(is_array($row['data']))
 			{
 				safe_exec('mkdir -p '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer');
@@ -148,19 +154,24 @@
 		 */
 		elseif($row['type'] == '3')
 		{
+			$debugMsg[] = '  cron_tasks: Task3 started - create/change/del htaccess/htpasswd';
 			if(is_array($row['data']))
 			{
 				$path=$row['data']['path'];
+				$debugMsg[] = '  cron_tasks: Task3 - Path: '.$path;
+				
 				$htpasswd_file='';
 				$htaccess_file='';
 				$row_htaccess = $db->query_first("SELECT `options_indexes` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path` = '".$row['data']['path']."'");
 				if($row_htaccess['options_indexes'] == '1')
 				{
+					$debugMsg[] = '  cron_tasks: Task3 - Setting Options Indexes';
 					$htaccess_file .= 'Options Indexes'."\n";
 				}
 				$result_htpasswd = $db->query("SELECT `username`, `password` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `path` = '".$row['data']['path']."'");
 				if($db->num_rows($result_htpasswd) != 0)
 				{
+					$debugMsg[] = '  cron_tasks: Task3 - Setting Password';
 					$htaccess_file.='AuthType Basic'."\n";
 					$htaccess_file.='AuthName "Restricted Area"'."\n";
 					$htaccess_file.='AuthUserFile '.$row['data']['path'].'.htpasswd'."\n";
@@ -176,21 +187,25 @@
 					$htaccess_file_handler = fopen($row['data']['path'].'.htaccess', 'w');
 					fwrite($htaccess_file_handler, $htaccess_file);
 					fclose($htaccess_file_handler);
+					$debugMsg[] = '  cron_tasks: Task3 - htaccess written';
 				}
 				if ($htpasswd_file != '')
 				{
 					$htpasswd_file_handler = fopen($row['data']['path'].'.htpasswd', 'w');
 					fwrite($htpasswd_file_handler, $htpasswd_file);
 					fclose($htpasswd_file_handler);
+					$debugMsg[] = '  cron_tasks: Task3 - htpasswd written';
 				}
 
 				if($htaccess_file == '' && file_exists($row['data']['path'].'.htaccess') )
 				{
 					unlink($row['data']['path'].'.htaccess');
+					$debugMsg[] = '  cron_tasks: Task3 - htaccess deleted';
 				}
 				if($htpasswd_file == '' && file_exists($row['data']['path'].'.htpasswd') )
 				{
 					unlink($row['data']['path'].'.htpasswd');
+					$debugMsg[] = '  cron_tasks: Task3 - htpasswd deleted';
 				}
 			}
 		}
@@ -200,11 +215,13 @@
 		 */
 		elseif($row['type'] == '4')
 		{
+			$debugMsg[] = '  cron_tasks: Task4 started - Rebuilding syscp_bind.conf';
 			$bindconf_file='# '.$settings['system']['bindconf_directory'].'syscp_bind.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.'."\n"."\n";
 			
 			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`zonefile`, `d`.`isemaildomain`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain` = '1' ORDER BY `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
+				$debugMsg[] = '  cron_tasks: Task4 - Writing '.$domain['id'].'::'.$domain['domain'];
 				if($domain['zonefile'] == '')
 				{
 					$domain['zonefile'] = $settings['system']['binddefaultzone'];
@@ -220,7 +237,9 @@
 			$bindconf_file_handler = fopen($settings['system']['bindconf_directory'].'syscp_bind.conf', 'w');
 			fwrite($bindconf_file_handler, $bindconf_file);
 			fclose($bindconf_file_handler);
+			$debugMsg[] = '  cron_tasks: Task4 - syscp_bind.conf written';
 			safe_exec($settings['system']['bindreload_command']);
+			$debugMsg[] = '  cron_tasks: Task4 - Bind9 reloaded';
 		}
 	}
 	if($db->num_rows($result) != 0)
