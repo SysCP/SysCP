@@ -145,7 +145,7 @@
 						$vhosts_file.='  php_admin_flag safe_mode On '."\n";
 					}
 
-					if(!file_exists($domain['documentroot']))
+					if(!is_dir($domain['documentroot']))
 					{
 						exec('mkdir -p '.$domain['documentroot']);
 						exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
@@ -168,7 +168,7 @@
 					$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\n";
 					$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log combined'."\n";
 				}
-				$vhosts_file.=$domain['specialsettings']."\n";
+				$vhosts_file.=stripslashes($domain['specialsettings'])."\n";
 				$vhosts_file.='</VirtualHost>'."\n";
 				$vhosts_file.="\n";
 			}
