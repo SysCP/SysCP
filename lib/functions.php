@@ -488,7 +488,7 @@
 	 */
 	function updateCounters ()
 	{
-		global $db, $settings;
+		global $db;
 		$admin_resources = Array () ;
 
 		// Customers
@@ -588,7 +588,7 @@
 			);
 
 			$customer_emails_result = $db->query(
-				'SELECT `email`, `destination`, `popaccountid` AS `number_email_forwarders` ' .
+				'SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` ' .
 				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
 				'WHERE `customerid` = "'.$customer['customerid'].'" '
 			);
@@ -599,14 +599,9 @@
 			{
 				if ( $customer_emails_row['destination'] != '' )
 				{
-					if($customer_emails_row['email']{0} == '@')
-					{
-						$customer_emails_row['email'] = $settings['email']['catchallkeyword'].$customer_emails_row['email'];
-					}
-
 					$customer_emails_row['destination'] = explode ( ' ' , makeCorrectDestination ( $customer_emails_row['destination'] ) ) ;
 					$customer_email_forwarders += count ( $customer_emails_row['destination'] ) ;
-					if ( in_array ( $customer_emails_row['email'] , $customer_emails_row['destination'] ) )
+					if ( in_array ( $customer_emails_row['email_full'] , $customer_emails_row['destination'] ) )
 					{
 						$customer_email_forwarders -= 1 ;
 						$customer_email_accounts ++ ;
@@ -828,7 +823,7 @@
 				if ( str_replace( ' ' , '' , $row['url'] ) != '' && !stristr($row['url'], 'nourl' ))
 				{
 					// append sid only to local
-					if ( !preg_match('/^https?\:\/\//', $row['url'] ) && (isset ($s) ) )
+					if ( !preg_match('/^https?\:\/\//', $row['url'] ) && ( isset($s) && $s != '' ) )
 					{
 						// generate sid with ? oder &
 						if ( preg_match('/\?/' , $row['url'] ) )

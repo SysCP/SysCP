@@ -47,13 +47,6 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='login' AND `varname`='deactivatetime'");
 			}
 
-			if($_POST['email_catachallkeyword']!=$settings['email']['catchallkeyword'])
-			{
-//				echo 'email_catachallkeyword<br />';
-				$value=addslashes($_POST['email_catachallkeyword']);
-				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='email' AND `varname`='catchallkeyword'");
-			}
-
 			if($_POST['customer_accountprefix']!=$settings['customer']['accountprefix'])
 			{
 //				echo 'customer_accountprefix<br />';

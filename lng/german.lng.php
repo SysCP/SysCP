@@ -30,6 +30,7 @@ $lng['panel']['no'] = 'Nein';
 $lng['panel']['emptyfornochanges'] = 'leer f&uuml;r keine &Auml;nderung';
 $lng['panel']['emptyfordefault'] = 'leer f&uuml;r Standardeinstellung';
 $lng['panel']['path'] = 'Pfad';
+$lng['panel']['toggle'] = 'Umschalten';
 
 /**
  * Login
@@ -118,6 +119,8 @@ $lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre eMail Adressen einric
 $lng['emails']['emailaddress'] = 'eMail-Adresse';
 $lng['emails']['emails_add'] = 'eMail-Adresse anlegen';
 $lng['emails']['emails_edit'] = 'eMail-Adresse &auml;ndern';
+$lng['emails']['catchall'] = 'Catchall';
+$lng['emails']['iscatchall'] = 'Als catchall-Adresse definieren?';
 $lng['emails']['account'] = 'Konto';
 $lng['emails']['account_add'] = 'Konto anlegen';
 $lng['emails']['account_delete'] = 'Konto l&ouml;schen';
@@ -167,6 +170,7 @@ $lng['error']['filemustexist'] = 'Die Datei, welche Sie eingegeben haben muss ex
 $lng['error']['allresourcesused'] = 'Sie haben bereits alle Ihnen zur Verfügung stehenden Ressourcen verbraucht.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als eMail-Domain verwendet wird l&ouml;schen. ';
 $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomains l&ouml;schen, bevor Sie eine Wildcarddomain anlegen k&ouml;nnen.';
+$lng['error']['youhavealreadyacatchallforthisdomain'] = 'Sie haben bereits eine Adresse als Catchall f&uuml;r diese Domain definiert.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
 $lng['error']['login'] = 'Der angegebene Benutzernamen/Passwort ist falsch.';
 $lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zuvieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';
@@ -195,7 +199,7 @@ $lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l
 /**
  * Mails
  */
-$lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr eMail-Konto $destination\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
+$lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr eMail-Konto $username\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'eMail-Konto erfolgreich eingerichtet';
 $lng['mails']['createcustomer']['mailbody'] = 'Hallo $surname $name,\n\nhier ihre Accountinformationen:\n\nBenutzername: $loginname\nPassword: $password\n\nVielen Dank,\nIhr SysCP-Team';
 $lng['mails']['createcustomer']['subject'] = 'Accountinformationen';
@@ -244,8 +248,6 @@ $lng['admin']['configfiles']['restart'] = '<b>Neustart:</b> Bitte f&uuml;hren Si
  */
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'Wie lange muss ein Benutzer inaktiv sein, damit die Session ung&uuml;tig wird? (Sekunden)';
-$lng['serversettings']['catachallkeyword']['title'] = 'Catchall-Keyword';
-$lng['serversettings']['catachallkeyword']['description'] = 'Welche eMail-adresse soll automatisch zum Catch-all werden?';
 $lng['serversettings']['accountprefix']['title'] = 'Kundenprefix';
 $lng['serversettings']['accountprefix']['description'] = 'Welchen Prefix sollen die Kundenaccounts haben?';
 $lng['serversettings']['mysqlprefix']['title'] = 'SQL-Prefix';

@@ -350,5 +350,28 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.5-cvs2';
 	}
+	if($settings['panel']['version'] == '1.2.5-cvs2')
+	{
+		$db->query(
+			'ALTER TABLE `'.TABLE_MAIL_VIRTUAL.'`
+				ADD `email_full` VARCHAR( 50 ) NOT NULL AFTER `email` ,
+				ADD `iscatchall` TINYINT( 1 ) UNSIGNED NOT NULL AFTER `popaccountid`
+		');
+		$db->query( 'UPDATE `'.TABLE_MAIL_VIRTUAL.'` SET `email_full` = `email`' );
+		$email_virtual_result = $db->query ( 'SELECT `id`, `email` FROM `'.TABLE_MAIL_VIRTUAL.'`' );
+		while ( $email_virtual_row = $db->fetch_array ( $email_virtual_result ) )
+		{
+			if($email_virtual_row['email']{0} == '@')
+			{
+				$email_full = $settings['email']['catchallkeyword'] . $email_virtual_row['email'] ;
+				$db->query ( 'UPDATE `'.TABLE_MAIL_VIRTUAL.'` SET `email_full` = "' . $email_full . '", `iscatchall` = "1" WHERE `id` = "' . $email_virtual_row['id'] . '"' );
+			}
+		}
+
+		$db->query ( ' DELETE FROM `'.TABLE_PANEL_SETTINGS.'` WHERE `settinggroup` = "email" AND `varname` = "catchallkeyword" ' ) ;
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.5-cvs3';
+	}
 
 ?>

@@ -20,10 +20,6 @@ $header
        <td class="maintable" nowrap><input type="text" name="login_deactivatetime" value="{$settings['login']['deactivatetime']}"></td>
       </tr>
       <tr>
-       <td class="maintable" align="right"><b>{$lng['serversettings']['catachallkeyword']['title']}:</b><br />{$lng['serversettings']['catachallkeyword']['description']}</td>
-       <td class="maintable" nowrap><input type="text" name="email_catachallkeyword" value="{$settings['email']['catchallkeyword']}"></td>
-      </tr>
-      <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['accountprefix']['title']}:</b><br />{$lng['serversettings']['accountprefix']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="customer_accountprefix" value="{$settings['customer']['accountprefix']}"></td>
       </tr>
