@@ -31,6 +31,7 @@ $lng['panel']['emptyfornochanges'] = 'Veuillez laisser vide pour aucun changemen
 $lng['panel']['emptyfordefault'] = 'Veuillez laisser vide pour l´option standard';
 $lng['panel']['path'] = 'Chemin';
 $lng['panel']['toggle'] = 'Permuter';
+$lng['panel']['next'] = 'continuer';
 
 /**
  * Login
@@ -40,6 +41,7 @@ $lng['login']['password'] = 'Mot de passe';
 $lng['login']['language'] = 'Langue';
 $lng['login']['login'] = 'S´identifier';
 $lng['login']['logout'] = 'Se deconnecter';
+$lng['login']['profile_lng'] = 'Langue du profil';
 
 /**
  * Customer
@@ -72,6 +74,7 @@ $lng['customer']['unlimited'] = 'illimit&eacute;';
  */
 $lng['menue']['main']['main'] = 'General';
 $lng['menue']['main']['changepassword'] = 'Changer le mot de passe';
+$lng['menue']['main']['changelanguage'] = 'Changer la langue';
 $lng['menue']['email']['email'] = 'e-mail';
 $lng['menue']['email']['emails'] = 'Adresse(s)';
 $lng['menue']['email']['webmail'] = 'Webmail';
@@ -178,6 +181,7 @@ $lng['error']['notallreqfieldsorerrors'] = 'Vous n´avez pas rempli toutes les ca
 $lng['error']['oldpasswordnotcorrect'] = 'Le vieux mot de passe n´est pas correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus des ressources qu´il reste.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; c´est pas possible d´effacer ou modifier l´administrateur principal.';
+$lng['error']['mustbeurl'] = 'Vous n´avez pas dict&eacute; un URL valid.';
 
 /**
  * Questions
@@ -187,6 +191,7 @@ $lng['question']['admin_customer_reallydelete'] = 'Voulez-vous vraiment effacer 
 $lng['question']['admin_domain_reallydelete'] = 'Voulez-vous vraiment effacer le domain %s?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Voulez-vous vraiment d&eacute;sactiver ces modes importants (OpenBasedir et/o&ugrave; SafeMode) ?';
 $lng['question']['admin_admin_reallydelete'] = 'Voulez-vous vraiment effacer l\'administrateur %s?<br />Tout ses comptes vont &ecirc;tre affect&eacute; au administrateur principal.';
+$lng['question']['admin_template_reallydelete'] = 'Voulez-vous vraiment supprimer le template \'%s\'?';
 $lng['question']['domains_reallydelete'] = 'Voulez-vous vraiment effacer le domain %s?';
 $lng['question']['email_reallydelete'] = 'Voulez-vous vraiment effacer l\'adresse e-mail %s?';
 $lng['question']['email_reallydelete_account'] = 'Voulez-vous vraiment effacer l\'acc&egrave;s d\'e-mail %s?';
@@ -242,6 +247,21 @@ $lng['admin']['configfiles']['serverconfiguration'] = 'Configuration';
 $lng['admin']['configfiles']['files'] = '<b>Fichiers de configuration:</b> S´il vous-plait modifiez les fichiers correspondants<br />ou cr&eacute;ez les avec les contenu ci-dessous.<br /><b>IMPORTANT:</b> Le mot de passe MySQL n´est pas donn&eacute;s dans les dates ci-dessus<br />&agrave; cause des raisons de s&eacute;curit&eacute;. S´il vous-plait substituez les &quot;MYSQL_PASSWORD&quot;<br />manuellement avec le mot de passe. En cas de l´avoir oubli&eacute;, vous le trouvez dans<br />le fichier &quot;lib/userdata.inc.php&quot;.';
 $lng['admin']['configfiles']['commands'] = '<b>Commandes:</b> S´il vous-plait ex&eacute;cuter les commandes ci-dessous sur le shell.';
 $lng['admin']['configfiles']['restart'] = '<b>R&eacute;demarrer:</b> S´il vous-plait ex&eacute;cuter les commandes ci-dessous pour<br />r&eacute;initialiser les fichiers de configuration.';
+$lng['admin']['templates']['templates'] = 'Templates';
+$lng['admin']['templates']['template_add'] = 'Appliquer un template';
+$lng['admin']['templates']['template_edit'] = 'Modifier un template';
+$lng['admin']['templates']['action'] = 'Action';
+$lng['admin']['templates']['email'] = 'E-Mail';
+$lng['admin']['templates']['subject'] = 'R&eacute;f&eacute;rence';
+$lng['admin']['templates']['mailbody'] = 'Texte du mail';
+$lng['admin']['templates']['createcustomer'] = 'Mail de bienvenu pour des nouveaux clients';
+$lng['admin']['templates']['pop_success'] = 'Mail de bienvenu pour des nouveaux acc&egrave;s e-mail';
+$lng['admin']['templates']['template_replace_vars'] = 'Les variables qui vont &ecirc;tre remplacées dans le template:';
+$lng['admin']['templates']['SURNAME'] = 'Va &ecirc;tre remplac&eacute; par le pr&eacute;nom.';
+$lng['admin']['templates']['NAME'] = 'Va &ecirc;tre remplac&eacute; par le nom.';
+$lng['admin']['templates']['USERNAME'] = 'Va &ecirc;tre remplacé par le login.';
+$lng['admin']['templates']['PASSWORD'] = 'Va &ecirc;tre remplacé par le mot de passe du client.';
+$lng['admin']['templates']['EMAIL'] = 'Va &ecirc;tre remplac&eacute; par l´acc&egrave;s e-mail.';
 
 /**
  * Serversettings
