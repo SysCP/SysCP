@@ -73,7 +73,7 @@
 					'restart' => Array
 					(
 						'/etc/init.d/courier-authdaemon restart',
-						'/etc/init.d/courier-pop3 restart'
+						'/etc/init.d/courier-pop restart'
 					)
 				),
 				'postfix' => Array
@@ -96,6 +96,105 @@
 						'mkdir -p /var/spool/postfix/lib/security',
 						'mkdir -p /var/spool/postfix/var/run/mysqld',
 						'cp /lib/security/pam_mysql.so /var/spool/postfix/lib/security/'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/postfix restart'
+					)
+				),
+				'proftpd' => Array
+				(
+					'label' => 'ProFTPd (FTP)',
+					'files' => Array
+					(
+						'etc_proftpd.conf' => '/etc/proftpd.conf'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/proftpd restart'
+					)
+				),
+				'cron' => Array
+				(
+					'label' => 'Crond (cronscript)',
+					'files' => Array
+					(
+						'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
+						'etc_cron.d_syscp' => '/etc/cron.d/syscp'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/cron restart'
+					)
+				)
+			)
+		),
+		'debian_sarge' => Array
+		(
+			'label' => 'Debian 3.1 (Sarge)',
+			'daemons' => Array
+			(
+				'apache' => Array
+				(
+					'label' => 'Apache Webserver (HTTP)',
+					'commands' => Array
+					(
+						'echo "Include /etc/apache/vhosts.conf" >> /etc/apache/httpd.conf',
+						'touch /etc/apache/vhosts.conf'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/apache restart'
+					)
+				),
+				'bind' => Array
+				(
+					'label' => 'Bind9 Nameserver (DNS)',
+					'files' => Array
+					(
+						'etc_bind_default.zone' => '/etc/bind/default.zone'
+					),
+					'commands' => Array
+					(
+						'echo "include \"/etc/bind/syscp_bind.conf\";" >> /etc/bind/named.conf',
+						'touch /etc/bind/syscp_bind.conf'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/bind9 restart'
+					)
+				),
+				'courier' => Array
+				(
+					'label' => 'Courier (POP3/IMAP)',
+					'files' => Array
+					(
+						'etc_courier_authdaemonrc' => '/etc/courier/authdaemonrc',
+						'etc_courier_authmysqlrc' => '/etc/courier/authmysqlrc'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/courier-authdaemon restart',
+						'/etc/init.d/courier-pop restart'
+					)
+				),
+				'postfix' => Array
+				(
+					'label' => 'Postfix (MTA)',
+					'files' => Array
+					(
+						'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+						'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+						'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+						'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+						'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
+						'etc_init.d_postfix' => '/etc/init.d/postfix'
+					),
+					'commands' => Array
+					(
+						'mkdir -p /etc/postfix/sasl',
+						'mkdir -p /var/spool/postfix/etc/pam.d',
+						'mkdir -p /var/spool/postfix/var/run/mysqld',
 					),
 					'restart' => Array
 					(
@@ -159,7 +258,9 @@
 				'<SQL_DB>' => $sql['db'], 
 				'<SERVERNAME>' => $settings['system']['hostname'],
 				'<SERVERIP>' => $settings['system']['ipaddress'],
-				'<VIRTUAL_MAILBOX_BASE>' => $settings['system']['vmail_homedir']
+				'<VIRTUAL_MAILBOX_BASE>' => $settings['system']['vmail_homedir'],
+				'<VIRTUAL_UID_MAPS>' => $settings['system']['vmail_uid'],
+				'<VIRTUAL_GID_MAPS>' => $settings['system']['vmail_gid']
 			);
 			$files = '';
 			if(isset($configfiles[$distribution]['daemons'][$daemon]['files']) && is_array($configfiles[$distribution]['daemons'][$daemon]['files']))
