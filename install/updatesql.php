@@ -18,7 +18,7 @@
  */
 
 	/**
-	 * Inlcudes the Usersettings eg. MySQL-Username/Passwort etc.
+	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
 	require('../lib/userdata.inc.php');
 
