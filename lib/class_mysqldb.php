@@ -76,7 +76,9 @@
 		{
 			// check for mysql extension
 			if (!extension_loaded('mysql'))
+			{
 				$this->showerror('You should install the PHP MySQL extension!');
+			}
 			$this->server=$server;
 			$this->user=$user;
 			$this->password=$password;

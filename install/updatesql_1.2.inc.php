@@ -198,5 +198,13 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.3-cvs1';
 	}
-        
+	if($settings['panel']['version'] == '1.2.3-cvs1')
+	{
+        $db->query(
+        	'ALTER TABLE `panel_databases` ' .
+        	'ADD `description` VARCHAR( 255 ) NOT NULL'
+        );
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.3-cvs2';
+	}
 ?>

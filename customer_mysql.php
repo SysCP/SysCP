@@ -42,7 +42,7 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query( "SELECT `id`, `databasename` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . $userinfo['customerid'] . "' ORDER BY `databasename` ASC" );
+			$result=$db->query( "SELECT `id`, `databasename`, `description` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . $userinfo['customerid'] . "' ORDER BY `databasename` ASC" );
 			$mysqls='';
 			while($row=$db->fetch_array($result))
 			{
@@ -123,7 +123,9 @@
 						$db_root->close();
 						// End root-session
 
-						$result=$db->query( 'INSERT INTO `' . TABLE_PANEL_DATABASES . '` (`customerid`, `databasename`) VALUES ("' . $userinfo['customerid'] .'", "' . $username .'")' );
+						// Statement modifyed for Database description -- PH 2004-11-29
+						$databasedescription=addslashes($_POST['description']);
+						$result=$db->query( 'INSERT INTO `' . TABLE_PANEL_DATABASES . '` (`customerid`, `databasename`, `description`) VALUES ("' . $userinfo['customerid'] .'", "' . $username .'", "' . $databasedescription .'")' );
 						$result=$db->query( 'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`+1, `mysql_lastaccountnumber`=`mysql_lastaccountnumber`+1 WHERE `customerid`="' . $userinfo['customerid'] . '"' );
 
 						header("Location: $filename?page=$page&s=$s");
@@ -138,18 +140,14 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first( 'SELECT `id`, `databasename` FROM `' . TABLE_PANEL_DATABASES . '` WHERE `customerid`="' . $userinfo['customerid'] . '" AND `id`="' . $id . '"' );
+			$result=$db->query_first( 'SELECT `id`, `databasename`, `description` FROM `' . TABLE_PANEL_DATABASES . '` WHERE `customerid`="' . $userinfo['customerid'] . '" AND `id`="' . $id . '"' );
 			if(isset($result['databasename']) && $result['databasename'] != '')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
+					// Only change Password if it is set, do nothing if it is empty! -- PH 2004-11-29
 					$password=addslashes($_POST['password']);
-					if($password=='')
-					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
-					}
-					else
+					if($password!='')
 					{
 						// Begin root-session
 						$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
@@ -160,10 +158,14 @@
 
 						$db_root->close();
 						// End root-session
+					}
+
+					// Update the Database description -- PH 2004-11-29
+					$databasedescription=addslashes($_POST['description']);
+					$result=$db->query( 'UPDATE `' . TABLE_PANEL_DATABASES . '` SET `description`="' . $databasedescription . '" WHERE `customerid`="' . $userinfo['customerid'] . '" AND `id`="' . $id . '"');
 
 						header("Location: $filename?page=$page&s=$s");
 					}
-				}
 				else 
 				{
 					eval("echo \"".getTemplate("mysql/mysqls_edit")."\";");
