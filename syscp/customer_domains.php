@@ -48,8 +48,12 @@
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 			}
-			if($userinfo['subdomains_used']<$userinfo['subdomains'])
+			if($userinfo['subdomains_used'] < $userinfo['subdomains'] || $userinfo['subdomains'] == '-1')
 			{
+				if($db->num_rows($result) > 15)
+				{
+					eval("\$domains=\"".getTemplate("domains/domains_adddomain")."\".\$domains;");
+				}
 				eval("\$domains.=\"".getTemplate("domains/domains_adddomain")."\";");
 			}
 			eval("echo \"".getTemplate("domains/domainlist")."\";");
@@ -79,7 +83,7 @@
 
 		elseif($action=='add')
 		{
-			if($userinfo['subdomains_used']<$userinfo['subdomains'])
+			if($userinfo['subdomains_used'] < $userinfo['subdomains'] || $userinfo['subdomains'] == '-1')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
@@ -176,7 +180,6 @@
 				}
 			}
 		}
-
-
 	}
+
 ?>

@@ -48,8 +48,12 @@
 			{
 				eval("\$mysqls.=\"".getTemplate("mysql/mysqls_database")."\";");
 			}
-			if($userinfo['mysqls_used']<$userinfo['mysqls'])
+			if($userinfo['mysqls_used'] < $userinfo['mysqls'] || $userinfo['mysqls'] == '-1')
 			{
+				if($db->num_rows($result) > 15)
+				{
+					eval("\$mysqls=\"".getTemplate("mysql/mysqls_adddatabase")."\".\$mysqls;");
+				}
 				eval("\$mysqls.=\"".getTemplate("mysql/mysqls_adddatabase")."\";");
 			}
 			eval("echo \"".getTemplate("mysql/mysqls")."\";");
@@ -75,6 +79,10 @@
 					{
 						$resetaccnumber=" , `mysql_lastaccountnumber`='0'";
 					}
+					else
+					{
+						$resetaccnumber='';
+					}
 					$result=$db->query("UPDATE ".TABLE_PANEL_CUSTOMERS." SET `mysqls_used`=`mysqls_used`-1 $resetaccnumber WHERE `customerid`='".$userinfo['customerid']."'");
 					header("Location: $filename?page=$page&s=$s");
 				}
@@ -86,7 +94,7 @@
 
 		elseif($action=='add')
 		{
-			if($userinfo['mysqls_used']<$userinfo['mysqls'])
+			if($userinfo['mysqls_used'] < $userinfo['mysqls'] || $userinfo['mysqls'] == '-1')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{

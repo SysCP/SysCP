@@ -48,8 +48,12 @@
 			{
 				eval("\$accounts.=\"".getTemplate("email/pop_account")."\";");
 			}
-			if($userinfo['emails_used']<$userinfo['emails'])
+			if($userinfo['emails_used'] < $userinfo['emails'] || $userinfo['emails'] == '-1')
 			{
+				if($db->num_rows($result) > 15)
+				{
+					eval("\$accounts=\"".getTemplate("email/pop_addaccount")."\".\$accounts;");
+				}
 				eval("\$accounts.=\"".getTemplate("email/pop_addaccount")."\";");
 			}
 			eval("echo \"".getTemplate("email/pop")."\";");
@@ -75,7 +79,7 @@
 
 		elseif($action=='add')
 		{
-			if($userinfo['emails_used']<$userinfo['emails'])
+			if($userinfo['emails_used'] < $userinfo['emails'] || $userinfo['emails'] == '-1')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
@@ -161,8 +165,12 @@
 				}
 				eval("\$accounts.=\"".getTemplate("email/forwarders_forwarder")."\";");
 			}
-			if($userinfo['email_forwarders_used']<$userinfo['email_forwarders'])
+			if($userinfo['email_forwarders_used'] < $userinfo['email_forwarders'] || $userinfo['email_forwarders'] == '-1')
 			{
+				if($db->num_rows($result) > 15)
+				{
+					eval("\$accounts=\"".getTemplate("email/forwarders_addforwarder")."\".\$accounts;");
+				}
 				eval("\$accounts.=\"".getTemplate("email/forwarders_addforwarder")."\";");
 			}
 			eval("echo \"".getTemplate("email/forwarders")."\";");
@@ -187,7 +195,7 @@
 
 		elseif($action=='add')
 		{
-			if($userinfo['email_forwarders_used']<$userinfo['email_forwarders'])
+			if($userinfo['email_forwarders_used'] < $userinfo['email_forwarders'] || $userinfo['email_forwarders'] == '-1')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{

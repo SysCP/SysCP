@@ -183,6 +183,42 @@
 	}
 
 	/**
+	 * Replaces Strings in an array, with the advantage that you can select which fields should be str_replace'd
+	 *
+	 * @param mixed String or array of strings to search for
+	 * @param mixed String or array to replace with
+	 * @param array The subject array
+	 * @param string The fields which should be checked for, seperated by spaces
+	 * @return array The str_replace'd array
+	 */
+	 function str_replace_array($search, $replace, $subject, $fields = '')
+	 {
+		if(is_array($subject))
+		{
+			$fields = explode(' ', $fields);
+			if(is_array($fields) && !empty($fields))
+			{
+				while(list(,$field)=each($fields))
+				{
+					if($field != '')
+					{
+						$subject[$field] = str_replace($search, $replace, $subject[$field]);
+					}
+				}
+			}
+			else
+			{
+				$subject = str_replace($search, $replace, $subject);
+			}
+		}
+		else
+		{
+			$subject = str_replace($search, $replace, $subject);
+		}
+		return $subject;
+	 }
+
+	/**
 	 * Returns if an emailaddress is in correct format or not
 	 *
 	 * @param string The email address to check

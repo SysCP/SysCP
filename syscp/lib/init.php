@@ -65,8 +65,10 @@
 	$remote_addr = htmlspecialchars($_SERVER['REMOTE_ADDR']);
 	$http_user_agent = htmlspecialchars($_SERVER['HTTP_USER_AGENT']);
 	$nosession = 0;
-	unset($customerinfo);
+	unset($userinfo);
+	unset($userid);
 	unset($customerid);
+	unset($adminid);
 	unset($s);
 
 	if(isset($_POST['s']))
@@ -121,7 +123,7 @@
 	 */
 	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' ) ;
 	$standardlanguage = 'german';
-	if(!isset($customerinfo['language']) || !isset($languages[$customerinfo['language']]))
+	if(!isset($userinfo['language']) || !isset($languages[$userinfo['language']]))
 	{
 		if(isset($_GET['language']) && isset($languages[$_GET['language']]))
 		{
@@ -134,7 +136,7 @@
 	}
 	else
 	{
-		$language = $customerinfo['language'];
+		$language = $userinfo['language'];
 	}
 
 	if(file_exists('./lng/'.$language.'.lng.php'))
@@ -150,7 +152,7 @@
 	 */
 	if($nosession == 1 && AREA != 'login')
 	{
-		unset($customerinfo);
+		unset($userinfo);
 		header('Location: ./index.php');
 	}
 

@@ -48,8 +48,12 @@
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['homedir']);
 				eval("\$accounts.=\"".getTemplate("ftp/accounts_account")."\";");
 			}
-			if($userinfo['ftps_used']<$userinfo['ftps'])
+			if($userinfo['ftps_used'] < $userinfo['ftps'] || $userinfo['ftps'] == '-1')
 			{
+				if($db->num_rows($result) > 15)
+				{
+					eval("\$accounts=\"".getTemplate("ftp/accounts_addaccount")."\".\$accounts;");
+				}
 				eval("\$accounts.=\"".getTemplate("ftp/accounts_addaccount")."\";");
 			}
 			eval("echo \"".getTemplate("ftp/accounts")."\";");
@@ -69,6 +73,10 @@
 					{
 						$resetaccnumber=" , `ftp_lastaccountnumber`='0'";
 					}
+					else
+					{
+						$resetaccnumber='';
+					}
 					$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`-1 $resetaccnumber WHERE `customerid`='".$userinfo['customerid']."'");
 					header("Location: $filename?page=$page&s=$s");
 				}
@@ -84,7 +92,7 @@
 
 		elseif($action=='add')
 		{
-			if($userinfo['ftps_used']<$userinfo['ftps'])
+			if($userinfo['ftps_used'] < $userinfo['ftps'] || $userinfo['ftps'] == '-1')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
