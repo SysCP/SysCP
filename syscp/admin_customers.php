@@ -159,13 +159,13 @@
 					$diskspace=$diskspace*1024;
 					$traffic=$traffic*1024*1024;
 
-					if( ( ( ($userinfo['diskspace_used'] + $diskspace) > $userinfo['diskspace']) && $userinfo['diskspace'] != '-1') || 
+					if( ( ( ($userinfo['diskspace_used'] + $diskspace) > $userinfo['diskspace']) && ($userinfo['diskspace']/1024) != '-1') || 
 					    ( ( ($userinfo['mysqls_used'] + $mysqls) > $userinfo['mysqls']) && $userinfo['mysqls'] != '-1') || 
 					    ( ( ($userinfo['emails_used'] + $emails) > $userinfo['emails']) && $userinfo['emails'] != '-1') || 
 					    ( ( ($userinfo['email_forwarders_used'] + $email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1') || 
 					    ( ( ($userinfo['ftps_used'] + $ftps) > $userinfo['ftps']) && $userinfo['ftps'] != '-1') || 
 					    ( ( ($userinfo['subdomains_used'] + $subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1') || 
-					    ( ( ($userinfo['traffic_used'] + $traffic) > $userinfo['traffic']) && $userinfo['traffic'] != '-1')
+					    ( ( ($userinfo['traffic_used'] + $traffic) > $userinfo['traffic']) && ($userinfo['traffic']/(1024*1024)) != '-1')
 					  )
 					{
 						standard_error('youcantallocatemorethanyouhave');
@@ -279,13 +279,13 @@
 					$diskspace=$diskspace*1024;
 					$traffic=$traffic*1024*1024;
 
-					if( ( ( ($userinfo['diskspace_used']        + $diskspace        - $result['diskspace'])        > $userinfo['diskspace'])        && $userinfo['diskspace'] != '-1') || 
+					if( ( ( ($userinfo['diskspace_used']        + $diskspace        - $result['diskspace'])        > $userinfo['diskspace'])        && ($userinfo['diskspace']/1024) != '-1') || 
 					    ( ( ($userinfo['mysqls_used']           + $mysqls           - $result['mysqls'])           > $userinfo['mysqls'])           && $userinfo['mysqls'] != '-1') || 
 					    ( ( ($userinfo['emails_used']           + $emails           - $result['emails'])           > $userinfo['emails'])           && $userinfo['emails'] != '-1') || 
 					    ( ( ($userinfo['email_forwarders_used'] + $email_forwarders - $result['email_forwarders']) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1') || 
 					    ( ( ($userinfo['ftps_used']             + $ftps             - $result['ftps'])             > $userinfo['ftps'])             && $userinfo['ftps'] != '-1') || 
 					    ( ( ($userinfo['subdomains_used']       + $subdomains       - $result['subdomains'])       > $userinfo['subdomains'])       && $userinfo['subdomains'] != '-1') || 
-					    ( ( ($userinfo['traffic_used']          + $traffic          - $result['traffic'])          > $userinfo['traffic'])          && $userinfo['traffic'] != '-1')
+					    ( ( ($userinfo['traffic_used']          + $traffic          - $result['traffic'])          > $userinfo['traffic'])          && ($userinfo['traffic']/(1024*1024)) != '-1')
 					  )
 					{
 						standard_error('youcantallocatemorethanyouhave');

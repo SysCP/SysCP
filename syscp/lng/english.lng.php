@@ -82,6 +82,7 @@ $lng['menue']['ftp']['ftp'] = 'FTP';
 $lng['menue']['ftp']['accounts'] = 'Accounts';
 $lng['menue']['extras']['extras'] = 'Extras';
 $lng['menue']['extras']['directoryprotection'] = 'Directory protection';
+$lng['menue']['extras']['pathoptions'] = 'path options';
 
 /**
  * Index
@@ -134,6 +135,10 @@ $lng['mysql']['database_create'] = 'Create database';
  */
 $lng['extras']['description'] = 'Here you can add some extras for example the directory protection.<br />The system will need some time to apply the new settings after every change.';
 $lng['extras']['directoryprotection_add'] = 'Add directory protection';
+$lng['extras']['view_directory'] = 'display directory content';
+$lng['extras']['pathoptions_add'] = 'add path options';
+$lng['extras']['directory_browsing'] = 'directory content browsing';
+$lng['extras']['pathoptions_edit'] = 'edit path options';
 
 /**
  * Errors
@@ -160,6 +165,7 @@ $lng['question']['domains_reallydelete'] = 'Do you really want to delete this do
 $lng['question']['email_reallydelete_forwarders'] = 'Do you really want to delete this forwarder?';
 $lng['question']['email_reallydelete_pop'] = 'Do you really want to delete this email-account?';
 $lng['question']['extras_reallydelete'] = 'Do you really want to delete this directory protection?';
+$lng['question']['extras_reallydelete_pathoptions'] = 'Do you really want to delete these path options?';
 $lng['question']['ftp_reallydelete'] = 'Do you really want to delete this FTP-account?';
 $lng['question']['mysql_reallydelete'] = 'Do you really want to delete this database? This cannot be undone!';
 
