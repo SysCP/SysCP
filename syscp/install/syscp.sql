@@ -34,7 +34,10 @@ CREATE TABLE `panel_admins` (
   `traffic` int(15) NOT NULL default '0',
   `traffic_used` int(15) NOT NULL default '0',
   `deactivated` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`adminid`)
+  `lastlogin_succ` int(11) unsigned NOT NULL default '0',
+  `lastlogin_fail` int(11) unsigned NOT NULL default '0',
+  `loginfail_count` int(11) unsigned NOT NULL default '0',
+   PRIMARY KEY  (`adminid`)
 ) TYPE=MyISAM ;
 
 
@@ -80,7 +83,10 @@ CREATE TABLE `panel_customers` (
   `ftp_lastaccountnumber` int(11) NOT NULL default '0',
   `mysql_lastaccountnumber` int(11) NOT NULL default '0',
   `deactivated` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`customerid`),
+  `lastlogin_succ` int(11) unsigned NOT NULL default '0',
+  `lastlogin_fail` int(11) unsigned NOT NULL default '0',
+  `loginfail_count` int(11) unsigned NOT NULL default '0',
+   PRIMARY KEY  (`customerid`),
   KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
 #
@@ -248,6 +254,8 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.1-cvs');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
 
 
 # --------------------------------------------------------

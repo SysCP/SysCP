@@ -148,6 +148,7 @@ $lng['error']['directorymustexist'] = 'Das Verzeichnis, das Sie eingegeben haben
 $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als eMail-Domain verwendet wird l&ouml;schen. ';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
 $lng['error']['login'] = 'Der angegebene Benuternamen/Passwort ist falsch.';
+$lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zuvieler Fehlversuche vorrübergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';
 $lng['error']['notallreqfieldsorerrors'] = 'Sie haben nicht alle Felder oder ein Feld mit fehlerhaften Angaben ausgef&uuml;llt.';
 $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressource verteilen als Sie noch frei haben.';
