@@ -2,6 +2,112 @@
 # --------------------------------------------------------
 
 #
+# Table structure for table `ftp_groups`
+#
+
+DROP TABLE IF EXISTS `ftp_groups`;
+CREATE TABLE `ftp_groups` (
+  `id` int(20) NOT NULL auto_increment,
+  `groupname` varchar(60) NOT NULL default '',
+  `gid` int(5) NOT NULL default '0',
+  `members` longtext NOT NULL,
+  `customerid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `groupname` (`groupname`),
+  KEY `customerid` (`customerid`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `ftp_groups`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `ftp_users`
+#
+
+DROP TABLE IF EXISTS `ftp_users`;
+CREATE TABLE `ftp_users` (
+  `id` int(20) NOT NULL auto_increment,
+  `username` varchar(20) NOT NULL default '',
+  `uid` int(5) NOT NULL default '0',
+  `gid` int(5) NOT NULL default '0',
+  `password` varchar(20) NOT NULL default '',
+  `homedir` varchar(255) NOT NULL default '',
+  `shell` varchar(255) NOT NULL default '/bin/false',
+  `login_enabled` enum('N','Y') NOT NULL default 'N',
+  `login_count` int(15) NOT NULL default '0',
+  `last_login` datetime NOT NULL default '0000-00-00 00:00:00',
+  `up_count` int(15) NOT NULL default '0',
+  `up_bytes` bigint(30) NOT NULL default '0',
+  `down_count` int(15) NOT NULL default '0',
+  `down_bytes` bigint(30) NOT NULL default '0',
+  `customerid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `username` (`username`),
+  KEY `customerid` (`customerid`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `ftp_users`
+#
+
+# --------------------------------------------------------
+
+
+#
+# Table structure for table `mail_users`
+#
+
+DROP TABLE IF EXISTS `mail_users`;
+CREATE TABLE `mail_users` (
+  `id` int(11) NOT NULL auto_increment,
+  `email` varchar(128) NOT NULL default '',
+  `password` varchar(128) NOT NULL default '',
+  `password_enc` varchar(128) NOT NULL default '',
+  `uid` int(11) NOT NULL default '0',
+  `gid` int(11) NOT NULL default '0',
+  `homedir` varchar(128) NOT NULL default '',
+  `maildir` varchar(128) NOT NULL default '',
+  `postfix` enum('Y','N') NOT NULL default 'Y',
+  `domainid` int(11) NOT NULL default '0',
+  `customerid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `email` (`email`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `mail_users`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `mail_virtual`
+#
+
+DROP TABLE IF EXISTS `mail_virtual`;
+CREATE TABLE `mail_virtual` (
+  `id` int(11) NOT NULL auto_increment,
+  `email` varchar(50) NOT NULL default '',
+  `destination` text NOT NULL,
+  `domainid` int(11) NOT NULL default '0',
+  `customerid` int(11) NOT NULL default '0',
+  `popaccountid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `mail_virtual`
+#
+
+# --------------------------------------------------------
+
+
+#
 # Table structure for table `panel_admins`
 #
 
@@ -306,128 +412,4 @@ CREATE TABLE `panel_traffic` (
 
 
 # --------------------------------------------------------
-
-#
-# Table structure for table `postfix_transport`
-#
-
-DROP TABLE IF EXISTS `postfix_transport`;
-CREATE TABLE `postfix_transport` (
-  `id` int(11) NOT NULL auto_increment,
-  `domain` varchar(128) NOT NULL default '',
-  `destination` varchar(128) NOT NULL default '',
-  `domainid` int(11) NOT NULL default '0',
-  `customerid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `domain` (`domain`)
-) TYPE=MyISAM ;
-
-#
-# Dumping data for table `postfix_transport`
-#
-
-
-# --------------------------------------------------------
-
-#
-# Table structure for table `postfix_users`
-#
-
-DROP TABLE IF EXISTS `postfix_users`;
-CREATE TABLE `postfix_users` (
-  `id` int(11) NOT NULL auto_increment,
-  `email` varchar(128) NOT NULL default '',
-  `password` varchar(128) NOT NULL default '',
-  `uid` int(11) NOT NULL default '0',
-  `gid` int(11) NOT NULL default '0',
-  `homedir` varchar(128) NOT NULL default '',
-  `maildir` varchar(128) NOT NULL default '',
-  `postfix` enum('Y','N') NOT NULL default 'Y',
-  `domainid` int(11) NOT NULL default '0',
-  `customerid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `email` (`email`)
-) TYPE=MyISAM ;
-
-#
-# Dumping data for table `postfix_users`
-#
-
-
-# --------------------------------------------------------
-
-#
-# Table structure for table `postfix_virtual`
-#
-
-DROP TABLE IF EXISTS `postfix_virtual`;
-CREATE TABLE `postfix_virtual` (
-  `id` int(11) NOT NULL auto_increment,
-  `email` varchar(50) NOT NULL default '',
-  `destination` text NOT NULL,
-  `domainid` int(11) NOT NULL default '0',
-  `customerid` int(11) NOT NULL default '0',
-  `popaccountid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM ;
-
-#
-# Dumping data for table `postfix_virtual`
-#
-
-
-# --------------------------------------------------------
-
-#
-# Table structure for table `proftpd_groups`
-#
-
-DROP TABLE IF EXISTS `proftpd_groups`;
-CREATE TABLE `proftpd_groups` (
-  `id` int(20) NOT NULL auto_increment,
-  `groupname` varchar(60) NOT NULL default '',
-  `gid` int(5) NOT NULL default '0',
-  `members` longtext NOT NULL,
-  `customerid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `groupname` (`groupname`),
-  KEY `customerid` (`customerid`)
-) TYPE=MyISAM ;
-
-#
-# Dumping data for table `proftpd_groups`
-#
-
-
-# --------------------------------------------------------
-
-#
-# Table structure for table `proftpd_users`
-#
-
-DROP TABLE IF EXISTS `proftpd_users`;
-CREATE TABLE `proftpd_users` (
-  `id` int(20) NOT NULL auto_increment,
-  `username` varchar(20) NOT NULL default '',
-  `uid` int(5) NOT NULL default '0',
-  `gid` int(5) NOT NULL default '0',
-  `password` varchar(20) NOT NULL default '',
-  `homedir` varchar(255) NOT NULL default '',
-  `shell` varchar(255) NOT NULL default '/bin/false',
-  `login_enabled` enum('N','Y') NOT NULL default 'N',
-  `login_count` int(15) NOT NULL default '0',
-  `last_login` datetime NOT NULL default '0000-00-00 00:00:00',
-  `up_count` int(15) NOT NULL default '0',
-  `up_bytes` bigint(30) NOT NULL default '0',
-  `down_count` int(15) NOT NULL default '0',
-  `down_bytes` bigint(30) NOT NULL default '0',
-  `customerid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `username` (`username`),
-  KEY `customerid` (`customerid`)
-) TYPE=MyISAM ;
-
-#
-# Dumping data for table `proftpd_users`
-#
 

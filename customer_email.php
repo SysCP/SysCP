@@ -42,7 +42,7 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `email`, `customerid` FROM `".TABLE_POSTFIX_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
+			$result=$db->query("SELECT `id`, `email`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
 			$accounts='';
 			while($row=$db->fetch_array($result))
 			{
@@ -61,13 +61,13 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `customerid` FROM `".TABLE_POSTFIX_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['email']) && $result['email']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_POSTFIX_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
-					$db->query("DELETE FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `popaccountid`='".$result['id']."'");
+					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `popaccountid`='".$result['id']."'");
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `emails_used`=`emails_used`-1 WHERE `customerid`='".$userinfo['customerid']."'");
 					header("Location: $filename?page=$page&s=$s");
 				}
@@ -92,7 +92,7 @@
 					{
 						$email = str_replace($settings['email']['catchallkeyword'], '', $email);
 					}
-					$email_check=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
+					$email_check=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
 					$password=addslashes($_POST['password']);
 					if($email=='' || $email_part=='' || $password=='' || $domain_check['domain']!=$domain || $email_check['email']==$email)
 					{
@@ -101,9 +101,9 @@
 					}
 					else
 					{
-						$db->query("INSERT INTO `".TABLE_POSTFIX_USERS."` (`customerid`, `email`, `password`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".$userinfo['customerid']."', '$destination', ENCRYPT('$password'), '".$settings['system']['vmail_homedir']."', '".$userinfo['loginname']."/$destination/', '".$settings['system']['vmail_uid']."', '".$settings['system']['vmail_gid']."', '".$domain_check['id']."', 'y')");
+						$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `password`, `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".$userinfo['customerid']."', '$destination', '$password', ENCRYPT('$password'), '".$settings['system']['vmail_homedir']."', '".$userinfo['loginname']."/$destination/', '".$settings['system']['vmail_uid']."', '".$settings['system']['vmail_gid']."', '".$domain_check['id']."', 'y')");
 						$popaccountid = $db->insert_id();
-						$db->query("INSERT INTO `".TABLE_POSTFIX_VIRTUAL."` (`customerid`, `email`, `destination`, `domainid`, `popaccountid`) VALUES ('".$userinfo['customerid']."', '$email', '$destination', '".$domain_check['id']."', '$popaccountid')");
+						$db->query("INSERT INTO `".TABLE_MAIL_VIRTUAL."` (`customerid`, `email`, `destination`, `domainid`, `popaccountid`) VALUES ('".$userinfo['customerid']."', '$email', '$destination', '".$domain_check['id']."', '$popaccountid')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `emails_used`=`emails_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 	
 						eval("\$mail_subject=\"".$lng['mails']['pop_success']['subject']."\";");
@@ -127,7 +127,7 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `customerid` FROM `".TABLE_POSTFIX_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['email']) && $result['email']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
@@ -140,7 +140,7 @@
 					}
 					else
 					{
-						$result=$db->query("UPDATE `".TABLE_POSTFIX_USERS."` SET `password`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+						$result=$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `password` = '$password', `password_enc`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						header("Location: $filename?page=$page&s=$s");
 					}
 				}
@@ -155,7 +155,7 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `email`, `destination`, `popaccountid` FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `popaccountid` = '0' ORDER BY `email` ASC");
+			$result=$db->query("SELECT `id`, `email`, `destination`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `popaccountid` = '0' ORDER BY `email` ASC");
 			$accounts='';
 			while($row=$db->fetch_array($result))
 			{
@@ -178,12 +178,12 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 			if(isset($result['email']) && $result['email']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_forwarders_used`=`email_forwarders_used`-1 WHERE `customerid`='".$userinfo['customerid']."'");
 					header("Location: $filename?page=$page&s=$s");
 				}
@@ -208,7 +208,7 @@
 					{
 						$email = str_replace($settings['email']['catchallkeyword'], '', $email);
 					}
-					$email_check=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
+					$email_check=$db->query_first("SELECT `id`, `email`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `email`='$email' AND `customerid`='".$userinfo['customerid']."'");
 					if($email=='' || $email_part =='' || $destination=='' || !verify_email($destination) || $domain_check['domain']!=$domain || $email_check['email'] == $email)
 					{
 						standard_error('notallreqfieldsorerrors');
@@ -216,7 +216,7 @@
 					}
 					else
 					{
-						$db->query("INSERT INTO `".TABLE_POSTFIX_VIRTUAL."` (`customerid`, `email`, `destination`, `domainid`) VALUES ('".$userinfo['customerid']."', '$email', '$destination', '".$domain_check['id']."')");
+						$db->query("INSERT INTO `".TABLE_MAIL_VIRTUAL."` (`customerid`, `email`, `destination`, `domainid`) VALUES ('".$userinfo['customerid']."', '$email', '$destination', '".$domain_check['id']."')");
 						$db->query("UPDATE ".TABLE_PANEL_CUSTOMERS." SET `email_forwarders_used`=`email_forwarders_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 						header("Location: $filename?page=$page&s=$s");
 					}

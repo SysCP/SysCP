@@ -21,7 +21,7 @@
  * Begin
  */
 $lng['install']['welcome'] = 'Welcome to SysCP Installation';
-$lng['install']['welcometext'] = 'Thank you for chosing SysCP. Please fill in the following fields with the required settings to start the installation. <b>Attantion:</b> If the database you chose for SysCP already exists on your System, it will be erased with all containing data!';
+$lng['install']['welcometext'] = 'Thank you for choosing SysCP. Please fill out the following fields with the required information to start the installation. <b>Attantion:</b> If the database you chose for SysCP already exists on your System, it will be erased with all containing data!';
 $lng['install']['database'] = 'Database';
 $lng['install']['mysql_hostname'] = 'MySQL-Hostname';
 $lng['install']['mysql_database'] = 'MySQL-Database';
@@ -29,7 +29,7 @@ $lng['install']['mysql_unpriv_user'] = 'Username for the unprivileged MySQL-acco
 $lng['install']['mysql_unpriv_pass'] = 'Password for the unprivileged MySQL-account';
 $lng['install']['mysql_root_user'] = 'Username for the MySQL-root-account';
 $lng['install']['mysql_root_pass'] = 'Password for the MySQL-root-account';
-$lng['install']['admin_account'] = 'Adminministrator Account';
+$lng['install']['admin_account'] = 'Administrator Account';
 $lng['install']['admin_user'] = 'Administrator Username';
 $lng['install']['admin_pass'] = 'Administrator Password';
 $lng['install']['admin_pass_confirm'] = 'Administrator-Password (confirm)';

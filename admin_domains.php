@@ -73,9 +73,8 @@
 					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id' OR `parentdomainid`='".$result['id']."'");
 					$deleted_domains = $db->affected_rows();
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used` = `subdomains_used` - 0".($deleted_domains - 1)." WHERE `customerid` = '{$result['customerid']}'");
-					$db->query("DELETE FROM `".TABLE_POSTFIX_TRANSPORT."` WHERE `domainid`='$id'");
-					$db->query("DELETE FROM `".TABLE_POSTFIX_USERS."` WHERE `domainid`='$id'");
-					$db->query("DELETE FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `domainid`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `domainid`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '{$userinfo['adminid']}'");
 
 					inserttask('1');
@@ -164,7 +163,6 @@
 
 						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$zonefile', '1', '$openbasedir', '$safemode', '$speciallogfile', '$specialsettings')");
 						$domainid=$db->insert_id();
-						$db->query("INSERT INTO `".TABLE_POSTFIX_TRANSPORT."` (`domain`, `destination`, `domainid`, `customerid`) VALUES ('$domain', 'virtual:', '$domainid', '$customerid')");
 						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '{$userinfo['adminid']}'");
 
 						inserttask('1');
