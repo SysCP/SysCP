@@ -488,7 +488,7 @@
 	 */
 	function updateCounters ()
 	{
-		global $db;
+		global $db, $settings;
 		$admin_resources = Array () ;
 
 		// Customers
@@ -599,6 +599,11 @@
 			{
 				if ( $customer_emails_row['destination'] != '' )
 				{
+					if($customer_emails_row['email']{0} == '@')
+					{
+						$customer_emails_row['email'] = $settings['email']['catchallkeyword'].$customer_emails_row['email'];
+					}
+
 					$customer_emails_row['destination'] = explode ( ' ' , makeCorrectDestination ( $customer_emails_row['destination'] ) ) ;
 					$customer_email_forwarders += count ( $customer_emails_row['destination'] ) ;
 					if ( in_array ( $customer_emails_row['email'] , $customer_emails_row['destination'] ) )
