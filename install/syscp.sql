@@ -140,6 +140,26 @@ CREATE TABLE `panel_domains` (
 # --------------------------------------------------------
 
 #
+# Table structure for table `panel_htaccess`
+#
+
+DROP TABLE IF EXISTS `panel_htaccess`;
+CREATE TABLE `panel_htaccess` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `customerid` int(11) unsigned NOT NULL default '0',
+  `path` varchar(255) NOT NULL default '',
+  `options_indexes` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `panel_htaccess`
+#
+
+
+# --------------------------------------------------------
+
+#
 # Table structure for table `panel_htpasswds`
 #
 
