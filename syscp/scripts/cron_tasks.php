@@ -113,22 +113,6 @@
 				$vhosts_file.="\n";
 			}
 
-			$result_customers=$db->query("SELECT `customerid`, `loginname`, `guid`, `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `createstdsubdomain`='1' AND `deactivated` <> '1'");
-			while($customer=$db->fetch_array($result_customers))
-			{
-				$debugMsg[] = '  cron_tasks: Task1 - Writing Domain '.$customer['loginname'].'.'.$settings['system']['hostname'];
-				$vhosts_file.='# Standardsubdomain - CustomerID: '.$customer['customerid'].' - CustomerLogin: '.$customer['loginname']."\n";
-				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
-				$vhosts_file.='  ServerName '.$customer['loginname'].'.'.$settings['system']['hostname']."\n";
-				$vhosts_file.='  DocumentRoot '.$customer['documentroot'].'/'."\n";
-				$vhosts_file.='  php_admin_value open_basedir '.$customer['documentroot'].'/'."\n";
-				$vhosts_file.='  php_admin_flag safe_mode On '."\n";
-				$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$customer['loginname'].'-error.log'."\n";
-				$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$customer['loginname'].'-access.log combined'."\n";
-				$vhosts_file.='</VirtualHost>'."\n";
-				$vhosts_file.="\n";
-			}
-
 			$vhosts_file_handler = fopen($settings['system']['apacheconf_directory'].'vhosts-test.conf', 'w');
 			fwrite($vhosts_file_handler, $vhosts_file);
 			fclose($vhosts_file_handler);

@@ -533,5 +533,32 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.7-cvs1';
 	}
+	if($settings['panel']['version'] == '1.2.7-cvs1')
+	{
+		$db->query("ALTER TABLE `".TABLE_PANEL_CUSTOMERS."` CHANGE `createstdsubdomain` `standardsubdomain` INT( 11 ) NOT NULL ");
+		$result=$db->query(
+			'SELECT * ' .
+			'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
+			'WHERE `standardsubdomain`=\'1\''
+		);
+		while($row=$db->fetch_array($result))
+		{
+			$db->query(
+				"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
+				"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
+				"VALUES ('{$row['loginname']}'.{$settings['system']['hostname']}', '{$row['customerid']}'', '{$row['adminid']}', '{$row['documentroot']}'', '', '0', '1', '1', '0', '')"
+			);
+			$domainid=$db->insert_id();
+			$db->query(
+				'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
+				'SET `standardsubdomain`=\''.$domainid.'\' ' .
+				'WHERE `customerid`=\''.$row['customerid'].'\''
+			);
+		}
+		inserttask('1');
+		
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.7-cvs2';
+	}
 
 ?>

@@ -65,7 +65,7 @@
 				$domains=$db->query_first(
 					'SELECT COUNT(`id`) AS `domains` ' .
 					'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
-					'WHERE `customerid`=\''.$row['customerid'].'\' AND `parentdomainid`=\'0\''
+					'WHERE `customerid`=\''.$row['customerid'].'\' AND `parentdomainid`=\'0\' AND `isemaildomain`=\'1\''
 				);
 				$row['domains']=$domains['domains'];
 				$row['traffic_used']=round($row['traffic_used']/(1024*1024),4);
@@ -264,11 +264,11 @@
 						{
 							$password=substr(md5(uniqid(microtime(),1)),12,6);
 						}
-
+						
 						$result=$db->query(
 							"INSERT INTO `".TABLE_PANEL_CUSTOMERS."` ".
-							"(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `createstdsubdomain`) ".
-							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$firstname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber','$def_language', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '$createstdsubdomain')"
+							"(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `standardsubdomain`) ".
+							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$firstname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber','$def_language', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '0')"
 							);
 						$customerid=$db->insert_id();
 
@@ -304,19 +304,54 @@
 						$admin_update_query .= " WHERE `adminid` = '{$userinfo['adminid']}'";
 						$db->query( $admin_update_query );
 
-						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$guid' WHERE `settinggroup`='system' AND `varname`='lastguid'");
-						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$accountnumber' WHERE `settinggroup`='system' AND `varname`='lastaccountnumber'");
+						$db->query(
+							"UPDATE `".TABLE_PANEL_SETTINGS."` " .
+							"SET `value`='$guid' " .
+							"WHERE `settinggroup`='system' AND `varname`='lastguid'"
+						);
+						$db->query(
+							"UPDATE `".TABLE_PANEL_SETTINGS."` " .
+							"SET `value`='$accountnumber' " .
+							"WHERE `settinggroup`='system' AND `varname`='lastaccountnumber'"
+						);
 
 						inserttask('2',$loginname,$guid,$guid);
-						inserttask('1');
 
 						// Add htpasswd for the webalizer stats
 						$path = $documentroot . '/webalizer/' ;
-						$db->query("INSERT INTO `".TABLE_PANEL_HTPASSWDS."` (`customerid`, `username`, `password`, `path`) VALUES ('$customerid', '$loginname', '".crypt($password)."', '$path')");
+						$db->query(
+							"INSERT INTO `".TABLE_PANEL_HTPASSWDS."` " .
+							"(`customerid`, `username`, `password`, `path`) " .
+							"VALUES ('$customerid', '$loginname', '".crypt($password)."', '$path')"
+						);
 						inserttask('3',$path);
 
-						$result=$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('$customerid', '$loginname', ENCRYPT('$password'), '$documentroot/', 'y', '$guid', '$guid')");
-						$result=$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('$customerid', '$loginname', '$guid', '$loginname')");
+						$result=$db->query(
+							"INSERT INTO `".TABLE_FTP_USERS."` " .
+							"(`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) " .
+							"VALUES ('$customerid', '$loginname', ENCRYPT('$password'), '$documentroot/', 'y', '$guid', '$guid')"
+						);
+						$result=$db->query(
+							"INSERT INTO `".TABLE_FTP_GROUPS."` " .
+							"(`customerid`, `groupname`, `gid`, `members`) " .
+							"VALUES ('$customerid', '$loginname', '$guid', '$loginname')"
+						);
+						
+						if($createstdsubdomain == '1') {
+							
+							$db->query(
+								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
+								"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
+								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '$documentroot', '', '0', '1', '1', '0', '')"
+							);
+							$domainid=$db->insert_id();
+							$db->query(
+								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
+								'SET `standardsubdomain`=\''.$domainid.'\' ' .
+								'WHERE `customerid`=\''.$customerid.'\''
+							);
+							inserttask('1');
+						}
 
 						if($sendpassword == '1')
 						{
@@ -423,8 +458,27 @@
 						{
 							$createstdsubdomain = '0';
 						}
-						if($createstdsubdomain != $result['createstdsubdomain'])
+						if($createstdsubdomain == '1' && $result['standardsubdomain'] == '0')
 						{
+							$db->query(
+								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
+								"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
+								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '$documentroot', '', '0', '1', '1', '0', '')"
+							);
+							$domainid=$db->insert_id();
+							$db->query(
+								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
+								'SET `standardsubdomain`=\''.$domainid.'\' ' .
+								'WHERE `customerid`=\''.$customerid.'\''
+							);
+							inserttask('1');
+						}
+						if($createstdsubdomain == '0' && $result['standardsubdomain'] != '0')
+						{
+							$db->query(
+								'DELETE FROM `'.TABLE_PANEL_DOMAINS.'` ' .
+								'WHERE `id`=\''.$result['standardsubdomain'].'\''
+							);
 							inserttask('1');
 						}
 
