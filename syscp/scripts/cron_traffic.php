@@ -30,6 +30,9 @@
 	{
 		$debugMsg[] = '  cron_traffic: Traffic run started...';
 		$yesterday=time()-(60*60*24);
+
+		$admin_traffic = Array();
+
 		$result=$db->query("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` ORDER BY `customerid` ASC");
 		while($row=$db->fetch_array($result))
 		{
@@ -73,6 +76,14 @@
 				$new['ftp_up']=($ftptraffic['up_bytes_sum']/1024);
 				$new['ftp_down']=($ftptraffic['down_bytes_sum']/1024);
 				$new['mail']=$mailtraffic;
+			}
+
+			if(!isset($admin_traffic[$row['adminid']]))
+			{
+				$admin_traffic[$row['adminid']]['http'] = 0 ;
+				$admin_traffic[$row['adminid']]['ftp_up'] = 0 ;
+				$admin_traffic[$row['adminid']]['ftp_down'] = 0 ;
+				$admin_traffic[$row['adminid']]['mail'] = 0 ;
 			}
 
 			$new['all']=$httptraffic+($ftptraffic['up_bytes_sum']/1024)+($ftptraffic['down_bytes_sum']/1024)+$mailtraffic;
@@ -143,13 +154,15 @@
 		$result=$db->query("SELECT `adminid` FROM `".TABLE_PANEL_ADMINS."` ORDER BY `adminid` ASC");
 		while($row=$db->fetch_array($result))
 		{
-			$admin_traffic[$row['adminid']]['all'] = $admin_traffic[$row['adminid']]['http'] + $admin_traffic[$row['adminid']]['ftp_up'] + $admin_traffic[$row['adminid']]['ftp_down'] + $admin_traffic[$row['adminid']]['mail'];
-			$db->query("REPLACE INTO `".TABLE_PANEL_TRAFFIC_ADMINS."` (`adminid`, `year`, `month`, `day`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('$row[adminid]', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".$admin_traffic[$row['adminid']]['http']."', '".$admin_traffic[$row['adminid']]['ftp_up']."', '".$admin_traffic[$row['adminid']]['ftp_down']."', '".$admin_traffic[$row['adminid']]['mail']."')");
-			$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `traffic_used`='".$admin_traffic[$row['adminid']]['all']."' WHERE `adminid`='".$row['adminid']."'");
+			if(isset($admin_traffic[$row['adminid']]))
+			{
+				$admin_traffic[$row['adminid']]['all'] = $admin_traffic[$row['adminid']]['http'] + $admin_traffic[$row['adminid']]['ftp_up'] + $admin_traffic[$row['adminid']]['ftp_down'] + $admin_traffic[$row['adminid']]['mail'];
+				$db->query("REPLACE INTO `".TABLE_PANEL_TRAFFIC_ADMINS."` (`adminid`, `year`, `month`, `day`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('$row[adminid]', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".$admin_traffic[$row['adminid']]['http']."', '".$admin_traffic[$row['adminid']]['ftp_up']."', '".$admin_traffic[$row['adminid']]['ftp_down']."', '".$admin_traffic[$row['adminid']]['mail']."')");
+				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `traffic_used`='".$admin_traffic[$row['adminid']]['all']."' WHERE `adminid`='".$row['adminid']."'");
+			}
 		}
 
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".date('dmy')."' WHERE `settinggroup`='system' AND `varname`='last_traffic_run'");
 	}
 
- 
 ?>
