@@ -8,6 +8,10 @@ $header
        <td colspan="2" class="title">{$lng['mysql']['database_create']}</td>
       </tr>
       <tr>
+       <td class="maintable">{$lng['mysql']['databasedescription']}:</td>
+       <td class="maintable"><input type="text" name="description" maxlength="100"></td>
+      </tr>
+      <tr>
        <td class="maintable">{$lng['login']['password']}:</td>
        <td class="maintable"><input type="password" name="password" maxlength="50"></td>
       </tr>

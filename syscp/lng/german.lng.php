@@ -98,6 +98,7 @@ $lng['index']['accountdetails'] = 'Accountdaten';
 $lng['changepassword']['old_password'] = 'Altes Passwort';
 $lng['changepassword']['new_password'] = 'Neues Passwort';
 $lng['changepassword']['new_password_confirm'] = 'Neues Passwort (best&auml;tigen)';
+$lng['changepassword']['new_password_ifnotempty'] = 'Neues Passwort (leer = nicht &auml;ndern)';
 $lng['changepassword']['also_change_ftp'] = ' Auch Passwort vom Haupt-FTP-Zugang &auml;ndern';
 
 /**
@@ -131,6 +132,7 @@ $lng['ftp']['account_add'] = 'Account anlegen';
  */
 $lng['mysql']['description'] = 'Hier k&ouml;nnen Sie MySQL-Datenbanken anlegen und l&ouml;schen.<br>Die &Auml;nderungen werden sofort wirksam und die Datenbanken sofort benutzbar.<br>Im Men&uuml; finden Sie einen Link zum phpMyAdmin, mit dem Sie Ihre Datenbankeninhalte einfach bearbeiten k&ouml;nnen.<br><br>Die Zugangsdaten von php-Skripten sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b>localhost</b><br>Benutzername: <b><i>Datenbankname</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b><br>Datenbank: <b><i>Datenbankname';
 $lng['mysql']['databasename'] = 'Benutzer-/Datenbankname';
+$lng['mysql']['databasedescription'] = 'Datenbankbezeichnung';
 $lng['mysql']['database_create'] = 'Datenbank anlegen';
 
 /**
