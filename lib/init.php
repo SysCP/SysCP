@@ -95,37 +95,32 @@
 		$nosession = 1;
 	}
 
-	$timediff = time()-$settings['session']['sessiontimeout'];
-	$db->query(	'DELETE FROM `'.TABLE_PANEL_SESSIONS.'` ' .
-				'WHERE `lastactivity` < "'.$timediff.'"');
+	$timediff = time() - $settings['session']['sessiontimeout'];
+	$db->query( 'DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `lastactivity` < "' . $timediff . '"' ) ;
 
 	if(isset($s) && $s != "" && $nosession != 1)
 	{
-		$query = 	'SELECT `s`.*, `u`.* ' .
-					'FROM `'.TABLE_PANEL_SESSIONS.'` `s` ' .
-					'LEFT JOIN `';
+		$query = 'SELECT `s`.*, `u`.* ' .
+			'FROM `' . TABLE_PANEL_SESSIONS . '` `s` ' .
+			'LEFT JOIN `';
+
 		if (AREA == 'admin')
 		{
 			$query .= TABLE_PANEL_ADMINS.'` `u` ON (`s`.`userid` = `u`.`adminid`)';
+			$adminsession = '1' ;
 		}
 		else
 		{
-			$query .= TABLE_PANEL_CUSTOMERS.'` `u` ON (`s`.`userid` = `u`.`customerid`)';			
+			$query .= TABLE_PANEL_CUSTOMERS.'` `u` ON (`s`.`userid` = `u`.`customerid`)';	
+			$adminsession = '0' ;
 		}
-		$query .= 	'WHERE `s`.`hash`="'.addslashes($s).'" ' .
-					'AND `s`.`ipaddress`="'.addslashes($remote_addr).'" ' .
-					'AND `s`.`useragent`="'.addslashes($http_user_agent).'" ' .
-					'AND `s`.`lastactivity` > "'.$timediff.'" ' .
-					'AND `s`.`adminsession` = "';
-		if (AREA == 'admin')
-		{
-			$query .= '1';
-		}
-		else 
-		{
-			$query .= '0';
-		}
-		$query .= '"';
+
+		$query .= 'WHERE `s`.`hash`="'.addslashes($s).'" ' .
+			'AND `s`.`ipaddress`="'.addslashes($remote_addr).'" ' .
+			'AND `s`.`useragent`="'.addslashes($http_user_agent).'" ' .
+			'AND `s`.`lastactivity` > "'.$timediff.'" ' .
+			'AND `s`.`adminsession` = "' . $adminsession . '"';
+
 		$userinfo = $db->query_first($query);
 
 		if(
@@ -136,21 +131,13 @@
 		   (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1')
 		  )
 		{
-			$query =	'UPDATE `'.TABLE_PANEL_SESSIONS.'` ' .
-						'SET `lastactivity`="'.time().'" ' .
-						'WHERE `hash`="'.addslashes($s).'" ' .
-						'AND `adminsession` = "';
-			if (AREA == 'admin') 
-			{
-				$query .= '1';
-			}
-			else
-			{
-				$query .= '0';
-			}
-			$query .= '"';
+			$query = 'UPDATE `'.TABLE_PANEL_SESSIONS.'` ' .
+				'SET `lastactivity`="' . time() . '" ' .
+				'WHERE `hash`="' . addslashes($s) . '" ' .
+				'AND `adminsession` = "' . $adminsession . '"';
+
 			$db->query($query);
-			
+
 			$nosession = 0;
 		}
 		else
