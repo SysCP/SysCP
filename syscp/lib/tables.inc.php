@@ -33,7 +33,8 @@ define('TABLE_PANEL_TASKS','panel_tasks');
 define('TABLE_PANEL_TRAFFIC','panel_traffic');
 define('TABLE_PANEL_NAVIGATION','panel_navigation');
 define('TABLE_PANEL_LANGUAGE','panel_languages');
+define('TABLE_PANEL_CRONSCRIPT','panel_cronscript');
 
-$version = '1.2.2-cvs3';
+$version = '1.2.2-cvs4';
 
 ?>

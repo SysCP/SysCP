@@ -43,7 +43,7 @@
   				`lang`      varchar(255)         NOT NULL default '',
   				`url`       varchar(255)         NOT NULL default '',
   			PRIMARY KEY  (`id`)
-			) TYPE=MyISAM;
+			) TYPE=MyISAM
 		");
 		$db->query("INSERT INTO `".TABLE_PANEL_NAVIGATION."` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (1, 'login', 0, 'login;login', '');");
 		$db->query("INSERT INTO `".TABLE_PANEL_NAVIGATION."` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (2, 'customer', 0, 'menue;main;main', 'customer_index.php');");
@@ -81,7 +81,7 @@
   				`language` varchar(30)           NOT NULL default '',
   				`file`     varchar(255)          NOT NULL default '',
   			PRIMARY KEY  (`id`)
-			) TYPE=MyISAM;
+			) TYPE=MyISAM
 		");
 		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`id`, `language`, `file`) VALUES (1, 'Deutsch', 'lng/german.lng.php');");
 		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`id`, `language`, `file`) VALUES (2, 'English', 'lng/english.lng.php');");
@@ -110,4 +110,19 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.2-cvs3';
 	}
+	if($settings['panel']['version'] == '1.2.2-cvs3')
+	{
+		$db->query("
+			CREATE TABLE `".TABLE_PANEL_CRONSCRIPT."` (
+			  `id` int(11) unsigned NOT NULL auto_increment,
+			  `file` varchar(255) NOT NULL default '',
+			  PRIMARY KEY  (`id`)
+			) TYPE=MyISAM
+		");
+		$db->query("INSERT INTO `".TABLE_PANEL_CRONSCRIPT."` (`id`, `file`) VALUES (1, 'cron_traffic.php');");
+		$db->query("INSERT INTO `".TABLE_PANEL_CRONSCRIPT."` (`id`, `file`) VALUES (2, 'cron_tasks.php');");
+		$settings['panel']['version'] = '1.2.2-cvs4';
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
+	}
+        
 ?>
