@@ -36,8 +36,8 @@ $header
        <td class="maintable" nowrap><input type="text" name="system_logfiles_directory" value="{$settings['system']['logfiles_directory']}"></td>
       </tr>
       <tr>
-       <td class="maintable" align="right"><b>{$lng['serversettings']['ipadress']['title']}:</b><br />{$lng['serversettings']['ipadress']['description']}</td>
-       <td class="maintable" nowrap><input type="text" name="system_ipadress" value="{$settings['system']['ipadress']}"></td>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['ipaddress']['title']}:</b><br />{$lng['serversettings']['ipaddress']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="system_ipaddress" value="{$settings['system']['ipaddress']}"></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['hostname']['title']}:</b><br />{$lng['serversettings']['hostname']['description']}</td>
