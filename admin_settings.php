@@ -168,6 +168,44 @@
 			{
 //				echo 'panel_phpmyadmin_url<br />';
 				$value=addslashes($_POST['panel_phpmyadmin_url']);
+				if ($settings['panel']['phpmyadmin_url'] != '')
+				{
+					// delete or update menu
+					if ($value == '')
+					{
+						//delete
+						$query = 
+							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+							'WHERE `url`="'.$settings['panel']['phpmyadmin_url'].'"';
+					}
+					else
+					{
+						//update
+						$query =
+							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+							'SET `url`="'.$value.'" ' .
+							'WHERE `url`="'.$settings['panel']['phpmyadmin_url'].'"';
+					} 
+				}
+				else
+				{
+					// insert into menu
+						// get parent_id
+					$query =
+						'SELECT `id` ' .
+						'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+						'WHERE `lang` = "menue;mysql;mysql"';
+					$parent_id = $db->query_first($query);
+					$parent_id = $parent_id['id'];
+						// generate insert
+					$query =
+						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+						'SET `lang`      = "menue;mysql;phpmyadmin", ' .
+						'    `url`       = "'.$value.'", ' .
+						'    `area`      = "customer", ' .
+						'    `parent_id` = "'.$parent_id.'"';
+				}
+				$db->query($query);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='phpmyadmin_url'");
 			}
 
@@ -175,6 +213,44 @@
 			{
 //				echo 'panel_webmail_url<br />';
 				$value=addslashes($_POST['panel_webmail_url']);
+				if ($settings['panel']['webmail_url'] != '')
+				{
+					// delete or update menu
+					if ($value == '')
+					{
+						//delete
+						$query = 
+							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+							'WHERE `url`="'.$settings['panel']['webmail_url'].'"';
+					}
+					else
+					{
+						//update
+						$query =
+							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+							'SET `url`="'.$value.'" ' .
+							'WHERE `url`="'.$settings['panel']['webmail_url'].'"';
+					} 
+				}
+				else
+				{
+					// insert into menu
+						// get parent_id
+					$query =
+						'SELECT `id` ' .
+						'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+						'WHERE `lang` = "menue;email;email"';
+					$parent_id = $db->query_first($query);
+					$parent_id = $parent_id['id'];
+						// generate insert
+					$query =
+						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+						'SET `lang`      = "menue;email;webmail", ' .
+						'    `url`       = "'.$value.'", ' .
+						'    `area`      = "customer", ' .
+						'    `parent_id` = "'.$parent_id.'"';
+				}
+				$db->query($query);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='webmail_url'");
 			}
 
@@ -182,6 +258,44 @@
 			{
 //				echo 'panel_webftp_url<br />';
 				$value=addslashes($_POST['panel_webftp_url']);
+				if ($settings['panel']['webftp_url'] != '')
+				{
+					// delete or update menu
+					if ($value == '')
+					{
+						//delete
+						$query = 
+							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+							'WHERE `url`="'.$settings['panel']['webftp_url'].'"';
+					}
+					else
+					{
+						//update
+						$query =
+							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+							'SET `url`="'.$value.'" ' .
+							'WHERE `url`="'.$settings['panel']['webftp_url'].'"';
+					} 
+				}
+				else
+				{
+					// insert into menu
+						// get parent_id
+					$query =
+						'SELECT `id` ' .
+						'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+						'WHERE `lang` = "menue;ftp;ftp"';
+					$parent_id = $db->query_first($query);
+					$parent_id = $parent_id['id'];
+						// generate insert
+					$query =
+						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+						'SET `lang`      = "menue;ftp;webftp", ' .
+						'    `url`       = "'.$value.'", ' .
+						'    `area`      = "customer", ' .
+						'    `parent_id` = "'.$parent_id.'"';
+				}
+				$db->query($query);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 			}
 

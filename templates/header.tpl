@@ -22,7 +22,11 @@
       <tr>
         <td width="141" valign="top" background="images/syscp_navi_bg.gif">
             <!-- anfang Navigation -->
-            <br />$navigation<br /><br />
+            <br />
+     <table width="141" border="0" cellspacing="1" cellpadding="0">
+            $navigation
+     </table>
+            <br /><br />
             <!-- ende Navigation -->
         </td>
       </tr>
