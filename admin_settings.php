@@ -95,16 +95,16 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='logfiles_directory'");
 			}
 
-			if($_POST['system_ipadress']!=$settings['system']['ipadress'])
+			if($_POST['system_ipaddress']!=$settings['system']['ipaddress'])
 			{
-//				echo 'system_ipadress<br />';
-				$value=addslashes($_POST['system_ipadress']);
-				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='ipadress'");
+//				echo 'system_ipaddress<br />';
+				$value=addslashes($_POST['system_ipaddress']);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
 			}
 
 			if($_POST['system_hostname']!=$settings['system']['hostname'])
 			{
-//				echo 'system_ipadress<br />';
+//				echo 'system_hostname<br />';
 				$value=addslashes($_POST['system_hostname']);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='hostname'");
 				inserttask('1');
