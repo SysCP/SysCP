@@ -102,6 +102,7 @@
 						$zonefile = addslashes($_POST['zonefile']);
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
+						$speciallogfile = intval($_POST['speciallogfile']);
 						$specialsettings = str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
 					}
 					else
@@ -109,6 +110,7 @@
 						$zonefile = '';
 						$openbasedir = '1';
 						$safemode = '1';
+						$speciallogfile = '1';
 						$specialsettings = '';
 					}
 
@@ -142,6 +144,10 @@
 					{
 						$safemode = '0';
 					}
+					if($speciallogfile != '1')
+					{
+						$speciallogfile = '0';
+					}
 
 					if($domain=='' || $documentroot=='' || $customerid==0 || $domain_check['domain'] == $domain)
 					{
@@ -156,7 +162,7 @@
 							exit;
 						}
 
-						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$zonefile', '1', '$openbasedir', '$safemode', '$specialsettings')");
+						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$zonefile', '1', '$openbasedir', '$safemode', '$speciallogfile', '$specialsettings')");
 						$domainid=$db->insert_id();
 						$db->query("INSERT INTO `".TABLE_POSTFIX_TRANSPORT."` (`domain`, `destination`, `domainid`, `customerid`) VALUES ('$domain', 'virtual:', '$domainid', '$customerid')");
 						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '{$userinfo['adminid']}'");
@@ -177,6 +183,7 @@
 					}
 					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
 					$safemode=makeyesno('safemode', '1', '0', '1');
+					$speciallogfile=makeyesno('speciallogfile', '1', '0', '0');
 					eval("echo \"".getTemplate("domains/domains_add")."\";");
 				}
 			}
@@ -184,7 +191,7 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`specialsettings`, `c`.`name`, `c`.`surname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' AND `d`.`id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' "));
+			$result=$db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`name`, `c`.`surname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' AND `d`.`id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' "));
 			if($result['domain']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
@@ -195,6 +202,14 @@
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
 						$specialsettings = str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
+
+						$documentroot = addslashes($_POST['documentroot']);
+						if($documentroot=='')
+						{
+							$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
+							$documentroot=$customer['documentroot'];
+						}
+						$documentroot = makeCorrectDir($documentroot);
 					}
 					else
 					{
@@ -202,29 +217,6 @@
 						$openbasedir = $result['openbasedir'];
 						$safemode = $result['safemode'];
 						$specialsettings = $result['specialsettings'];
-					}
-
-					if($userinfo['change_serversettings'] == '1')
-					{
-						$documentroot = addslashes($_POST['documentroot']);
-						if($documentroot=='')
-						{
-							$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
-							$documentroot=$customer['documentroot'];
-						}
-
-						$documentroot = str_replace('..', '' ,$documentroot);
-						if(substr($documentroot, -1, 1) != '/')
-						{
-							$documentroot .= '/';
-						}
-						if(substr($documentroot, 0, 1) != '/')
-						{
-							$documentroot = '/'.$documentroot;
-						}
-					}
-					else
-					{
 						$documentroot = $result['documentroot'];
 					}
 
@@ -261,6 +253,7 @@
 				{
 					$openbasedir=makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 					$safemode=makeyesno('safemode', '1', '0', $result['safemode']);
+					$speciallogfile=($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
 					eval("echo \"".getTemplate("domains/domains_edit")."\";");
 				}
 			}

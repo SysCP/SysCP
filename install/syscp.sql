@@ -131,6 +131,7 @@ CREATE TABLE `panel_domains` (
   `parentdomainid` int(11) unsigned NOT NULL default '0',
   `openbasedir` tinyint(1) NOT NULL default '0',
   `safemode` tinyint(1) NOT NULL default '0',
+  `speciallogfile` tinyint(1) NOT NULL default '0',
   `specialsettings` text NOT NULL,
   `deactivated` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
