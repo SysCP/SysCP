@@ -105,7 +105,8 @@ $lng['domains']['description'] = 'Hier k&ouml;nnen Sie (Sub-)Domains erstellen u
 $lng['domains']['domainsettings'] = 'Domaineinstellungen';
 $lng['domains']['domainname'] = 'Domainname';
 $lng['domains']['subdomain_add'] = 'Subdomain anlegen';
-$lng['domains']['subdomain_edit'] = 'Subdomain bearbeiten';
+$lng['domains']['subdomain_edit'] = '(Sub-)Domain bearbeiten';
+$lng['domains']['wildcarddomain'] = 'Als Wildcarddomain eintragen?';
 
 /**
  * eMails
@@ -146,6 +147,7 @@ $lng['extras']['pathoptions_edit'] = 'Pfadoptionen bearbeiten';
 $lng['error']['error'] = 'Fehlermeldung';
 $lng['error']['directorymustexist'] = 'Das Verzeichnis, das Sie eingegeben haben muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als eMail-Domain verwendet wird l&ouml;schen. ';
+$lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomains l&ouml;schen, bevor Sie eine Wildcarddomain anlegen k&ouml;nnen.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
 $lng['error']['login'] = 'Der angegebene Benuternamen/Passwort ist falsch.';
 $lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zuvieler Fehlversuche vorrübergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';

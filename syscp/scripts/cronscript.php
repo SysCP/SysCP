@@ -106,13 +106,21 @@
 			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
 				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
-				$vhosts_file.='  ServerAlias www.'.$domain['domain']."\n";
+				if($domain['iswildcarddomain'] == '1')
+				{
+					$alias = '*';
+				}
+				else
+				{
+					$alias = 'www';
+				}
+				$vhosts_file.='  ServerAlias '.$alias.'.'.$domain['domain']."\n";
 				$vhosts_file.='  ServerAdmin webmaster@'.$domain['domain']."\n";
 				$vhosts_file.='  DocumentRoot '.$domain['documentroot']."\n";
 				if($domain['openbasedir'] == '1')
