@@ -45,9 +45,15 @@
 			$domains='';
 			$emaildomains_count=0;
 			$domains_count=0;
+			$domain_array=array();
 			while($row=$db->fetch_array($result))
 			{
 				$row['domain'] = $idna_convert->decode($row['domain']);
+				$domain_array[$row['domain']] = $row;
+			}
+			ksort($domain_array);
+			foreach($domain_array as $row)
+			{
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 				if($row['isemaildomain'] == '1' && $row['iswildcarddomain'] != '1')
