@@ -370,7 +370,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.5');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.5-cvs2');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -474,12 +474,13 @@ CREATE TABLE `panel_navigation` (
 # Dumping data for table `panel_navigation`
 #
 
-INSERT INTO `panel_navigation` VALUES (1, 'login', '', 'login;login', 'index.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (2, 'customer', '', 'menue;main;main', 'customer_index.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (3, 'customer', 'customer_index.php', 'menue;main;changepassword', 'customer_index.php?page=change_password', '', 0);
-INSERT INTO `panel_navigation` VALUES (4, 'customer', 'customer_index.php', 'login;logout', 'customer_index.php?action=logout', '', 0);
-INSERT INTO `panel_navigation` VALUES (5, 'customer', '', 'menue;email;email', 'customer_email.php', '', 0);
-INSERT INTO `panel_navigation` VALUES (6, 'customer', 'customer_email.php', 'menue;email;emails', 'customer_email.php?page=emails', 'emails', 0);
+INSERT INTO `panel_navigation` VALUES (1, 'login', '', 'login;login', 'login.nourl', '', 0);
+INSERT INTO `panel_navigation` VALUES (2, 'login', 'login.nourl', 'login;login', 'index.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (3, 'customer', '', 'menue;main;main', 'customer_index.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (4, 'customer', 'customer_index.php', 'menue;main;changepassword', 'customer_index.php?page=change_password', '', 0);
+INSERT INTO `panel_navigation` VALUES (5, 'customer', 'customer_index.php', 'login;logout', 'customer_index.php?action=logout', '', 0);
+INSERT INTO `panel_navigation` VALUES (6, 'customer', '', 'menue;email;email', 'customer_email.php', '', 0);
+INSERT INTO `panel_navigation` VALUES (7, 'customer', 'customer_email.php', 'menue;email;emails', 'customer_email.php?page=emails', 'emails', 0);
 INSERT INTO `panel_navigation` VALUES (8, 'customer', '', 'menue;mysql;mysql', 'customer_mysql.php', '', 0);
 INSERT INTO `panel_navigation` VALUES (9, 'customer', 'customer_mysql.php', 'menue;mysql;databases', 'customer_mysql.php?page=mysqls', 'mysqls', 0);
 INSERT INTO `panel_navigation` VALUES (10, 'customer', '', 'menue;domains;domains', 'customer_domains.php', '', 0);
@@ -490,13 +491,15 @@ INSERT INTO `panel_navigation` VALUES (14, 'customer', '', 'menue;extras;extras'
 INSERT INTO `panel_navigation` VALUES (15, 'customer', 'customer_extras.php', 'menue;extras;directoryprotection', 'customer_extras.php?page=htpasswds', '', 0);
 INSERT INTO `panel_navigation` VALUES (16, 'customer', 'customer_extras.php', 'menue;extras;pathoptions', 'customer_extras.php?page=htaccess', '', 0);
 INSERT INTO `panel_navigation` VALUES (17, 'admin', '', 'admin;overview', 'admin_index.php?page=overview', '', 0);
-INSERT INTO `panel_navigation` VALUES (18, 'admin', '', 'menue;main;changepassword', 'admin_index.php?page=change_password', '', 0);
-INSERT INTO `panel_navigation` VALUES (19, 'admin', '', 'admin;customers', 'admin_customers.php?page=customers', 'customers', 0);
-INSERT INTO `panel_navigation` VALUES (20, 'admin', '', 'admin;domains', 'admin_domains.php?page=domains', 'domains', 0);
-INSERT INTO `panel_navigation` VALUES (21, 'admin', '', 'admin;admins', 'admin_admins.php?page=admins', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (22, 'admin', '', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (23, 'admin', '', 'admin;serversettings', 'admin_settings.php?page=settings', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (24, 'admin', '', 'login;logout', 'admin_index.php?action=logout', '', 0);
+INSERT INTO `panel_navigation` VALUES (18, 'admin', 'admin_index.php', 'menue;main;changepassword', 'admin_index.php?page=change_password', '', 0);
+INSERT INTO `panel_navigation` VALUES (19, 'admin', 'admin_index.php', 'login;logout', 'admin_index.php?action=logout', '', 0);
+INSERT INTO `panel_navigation` VALUES (20, 'admin', '', 'admin;resources', 'admin_resources.nourl', 'customers', 0);
+INSERT INTO `panel_navigation` VALUES (21, 'admin', 'admin_resources.nourl', 'admin;customers', 'admin_customers.php?page=customers', 'customers', 0);
+INSERT INTO `panel_navigation` VALUES (22, 'admin', 'admin_resources.nourl', 'admin;domains', 'admin_domains.php?page=domains', 'domains', 0);
+INSERT INTO `panel_navigation` VALUES (23, 'admin', 'admin_resources.nourl', 'admin;admins', 'admin_admins.php?page=admins', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (24, 'admin', '', 'admin;server', 'admin_server.nourl', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (25, 'admin', 'admin_server.nourl', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (26, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', 'change_serversettings', 0);
 
 
 # --------------------------------------------------------

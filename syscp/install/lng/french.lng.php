@@ -20,8 +20,9 @@
 /**
  * Begin
  */
+$lng['install']['language'] = 'Langue';
 $lng['install']['welcome'] = 'Bienvenue à l´installation de SysCP';
-$lng['install']['welcometext'] = 'Merci beacoup d´avoir choisi SysCP. Pour installer SysCP remplissez les cases ci-dessous avec les dates demandées. <b>Attention:</b> Une banque de données déjà existante qui a le même nom que vous choisissez ci-dessous va être effacée!';
+$lng['install']['welcometext'] = 'Merci beacoup d´avoir choisi SysCP. Pour installer SysCP remplissez les cases ci-dessous avec les dates demandées.<br /><b>Attention:</b> Une banque de données déjà existante qui a le même nom que vous choisissez ci-dessous va être effacée!';
 $lng['install']['database'] = 'Banque de données';
 $lng['install']['mysql_hostname'] = 'Hostname MySQL';
 $lng['install']['mysql_database'] = 'Banque de données MySQL';

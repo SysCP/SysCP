@@ -661,6 +661,43 @@
 				'AND `isemaildomain` = "1"'
 			);
 
+			if ( ! isset ( $admin_resources[$admin['adminid']] ) )
+			{
+				$admin_resources[$admin['adminid']] = Array () ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['diskspace_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['diskspace_used'] = 0 ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['traffic_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['traffic_used'] = 0 ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['mysqls_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['mysqls_used'] = 0 ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['ftps_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['ftps_used'] = 0 ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['emails_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['emails_used'] = 0 ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['email_accounts_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['email_accounts_used'] = 0 ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['email_forwarders_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['email_forwarders_used'] = 0 ;
+			}
+			if ( ! isset ( $admin_resources[$admin['adminid']]['subdomains_used'] ) )
+			{
+				$admin_resources[$admin['adminid']]['subdomains_used'] = 0 ;
+			}
+
 			$db->query(
 				'UPDATE `'.TABLE_PANEL_ADMINS.'` ' .
 				'SET `customers_used` = "'.$admin_customers['number_customers'].'", ' .
@@ -771,12 +808,51 @@
 		//
 		while ($row = $db->fetch_array($result))
 		{
-			if ($row['parent_url'] == '' || $row['parent_url'] == ' ')
+			if ( $row['required_resources'] == '' || $userinfo[$row['required_resources']] > 0 || $userinfo[$row['required_resources']] == '-1' )
 			{
-				$nav[$row['url']][0] = $row;
-			}
-			else
-			{
+				$row['isparent'] = 0;
+				if ($row['parent_url'] == '' || $row['parent_url'] == ' ')
+				{
+					$row['parent_url'] = $row['url'] ;
+					$row['isparent'] = 1;
+				}
+
+				// get corect lang string
+				$lngArr = split ( ';' , $row['lang'] ) ;
+				$row['text'] = $lng;
+				foreach ($lngArr as $lKey => $lValue)
+				{
+					$row['text'] = $row['text'][$lValue] ;
+				}
+
+				if ( str_replace( ' ' , '' , $row['url'] ) != '' && !stristr($row['url'], 'nourl' ))
+				{
+					// append sid only to local
+					if ( !preg_match('/^https?\:\/\//', $row['url'] ) && (isset ($s) ) )
+					{
+						// generate sid with ? oder &
+						if ( preg_match('/\?/' , $row['url'] ) )
+						{
+							$row['url'] .= '&s='.$s;
+						}
+						else
+						{
+							$row['url'] .= '?s='.$s;
+						}
+					}
+
+					$target = '';
+					if ( $row['new_window'] == '1' )
+					{
+						$target = ' target="_blank"';
+					}
+					$row['completeLink'] = '<a href="' . $row['url'] . '"' . $target . ' class="menu">' . $row['text'] . '</a>' ;
+				}
+				else
+				{
+					$row['completeLink'] = $row['text'];
+				}
+
 				$nav[$row['parent_url']][] = $row;
 			}
 		}
@@ -787,57 +863,24 @@
 		{
 			foreach ($nav as $parent_url => $row) 
 			{
+				$navigation_links = '';
 				foreach ($row as $id => $navElem )
 				{
-					if ( $navElem['required_resources'] == '' || $userinfo[$navElem['required_resources']] > 0 || $userinfo[$navElem['required_resources']] == '-1' )
+					if ($navElem['isparent'] == 1 )
 					{
-						// get corect lang string
-						$lngArr = split(';',$navElem['lang']);
-						$text = $lng;
-						foreach ($lngArr as $lKey => $lValue)
-						{
-							$text = $text[$lValue];
-						}
-						if ($navElem['parent_url'] != '' && $navElem['parent_url'] != ' ')
-						{
-							$indent = '&nbsp;&nbsp;&nbsp;&raquo; ';
-						}
-						else
-						{
-							$indent = '&raquo; ';
-						}
-						$sid = '';
-						// append sid only to local
-						if ( !preg_match('/^https?\:\/\//', $navElem['url'] ) && (isset($s)) )
-						{
-							// generate sid with ? oder &
-							if (preg_match('/\?/',$navElem['url']))
-							{
-								$sid = '&s='.$s;
-							}
-							else
-							{
-								$sid = '?s='.$s;
-							}
-						}
-						// see if link should be opened in a new window
-						$target = '';
-						if ( $navElem['new_window'] == '1' )
-						{
-							$target = ' target="_blank"';
-						}
-						// assign url
-						if ( $navElem['url'] != '' && $navElem['url'] != ' ' )
-						{
-							$completeLink = '<a href="' . $navElem['url'] . $sid . '"' . $target . '>' . $text . '</a>' ;
-						}
-						else
-						{
-							$completeLink = $text ;
-						}
-						// read template
-						eval("\$return .= \"".getTemplate("navigation",1)."\";");
+						$completeLink_ElementTitle = $navElem['completeLink'];
 					}
+					else
+					{
+						// assign url
+						$completeLink = $navElem['completeLink'];
+						// read template
+						eval("\$navigation_links .= \"".getTemplate("navigation_link",1)."\";");
+					}
+				}
+				if ( $navigation_links != '' )
+				{
+					eval("\$return .= \"".getTemplate("navigation_element",1)."\";");
 				}
 			}
 		}
