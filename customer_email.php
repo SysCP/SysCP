@@ -141,8 +141,9 @@
 					else
 					{
 						$db->query("INSERT INTO `".TABLE_MAIL_VIRTUAL."` (`customerid`, `email`, `domainid`) VALUES ('".$userinfo['customerid']."', '$email', '".$domain_check['id']."')");
+						$address_id = $db->insert_id();
 						$db->query("UPDATE ".TABLE_PANEL_CUSTOMERS." SET `emails_used` = `emails_used` + 1 WHERE `customerid`='".$userinfo['customerid']."'");
-						header("Location: $filename?page=$page&s=$s");
+						header("Location: $filename?page=$page&action=edit&id=$address_id&s=$s");
 					}
 				}
 				else
