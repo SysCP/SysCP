@@ -294,5 +294,11 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.5';
 	}
+	if($settings['panel']['version'] == '1.2.5')
+	{
+		$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT(`password`)");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.5-cvs1';
+	}
 
 ?>
