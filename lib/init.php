@@ -61,8 +61,7 @@
 	/**
 	 * Selects settings from MySQL-Table
 	 */
-	$result = $db->query(	'SELECT `settinggroup`, `varname`, `value` ' .
-							'FROM `'.TABLE_PANEL_SETTINGS.'`');
+	$result = $db->query( 'SELECT `settinggroup`, `varname`, `value` FROM `'.TABLE_PANEL_SETTINGS.'`' );
 	while($row = $db->fetch_array($result))
 	{
 		if(($row['settinggroup'] == 'system' && $row['varname'] == 'hostname') || ($row['settinggroup'] == 'panel' && $row['varname'] == 'adminmail')) {
@@ -223,6 +222,7 @@
 	{
 		unset($userinfo);
 		header('Location: ./index.php');
+		exit;
 	}
 
 	/**
