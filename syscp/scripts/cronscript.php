@@ -88,7 +88,6 @@
 	 */
 	require("$pathtophpfiles/lib/functions.php");
 
-	
 	/**
 	 * Backend Wrapper
 	 */
@@ -98,12 +97,9 @@
 	$result = $db->query($query);
 	while ($row = $db->fetch_array($result))
 	{
-		$filelist[] = $row['file'];
-	}
-	foreach ($filelist as $id => $file)
-	{
 		include_once $pathtophpfiles.'/scripts/'.$row['file'];
 	}
+
 	unlink($lockfile);
 
 ?>
