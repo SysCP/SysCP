@@ -159,7 +159,7 @@
 					$city=addslashes($_POST['city']);
 					$phone=addslashes($_POST['phone']);
 					$fax=addslashes($_POST['fax']);
-					$email=addslashes($_POST['email']);
+					$email=$idna_convert->encode(addslashes($_POST['email']));
 					$customernumber=addslashes($_POST['customernumber']);
 					$diskspace=intval($_POST['diskspace']);
 					$traffic=doubleval($_POST['traffic']);
@@ -200,7 +200,7 @@
 							$loginname = addslashes($_POST['loginname']);
 							$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='".$loginname."'");
 							$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
-							if($loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname)
+							if($loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname || !check_username($loginname))
 							{
 								standard_error('notallreqfieldsorerrors');
 							}
@@ -281,7 +281,7 @@
 					$city=addslashes($_POST['city']);
 					$phone=addslashes($_POST['phone']);
 					$fax=addslashes($_POST['fax']);
-					$email=addslashes($_POST['email']);
+					$email=$idna_convert->encode(addslashes($_POST['email']));
 					$customernumber=addslashes($_POST['customernumber']);
 					$newpassword=$_POST['newpassword'];
 					$diskspace=intval($_POST['diskspace']);
@@ -363,6 +363,7 @@
 				{
 					$result['traffic']=$result['traffic']/(1024*1024);
 					$result['diskspace']=$result['diskspace']/1024;
+					$result['email'] = $idna_convert->decode($result['email']);
 					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', $result['createstdsubdomain']);
 					$deactivated=makeyesno('deactivated', '1', '0', $result['deactivated']);
 					eval("echo \"".getTemplate("customers/customers_edit")."\";");

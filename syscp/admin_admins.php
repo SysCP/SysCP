@@ -23,7 +23,7 @@
 	 * Include our init.php, which manages Sessions, Language etc.
 	 */
 	require("./lib/init.php");
-
+	
 	if(isset($_POST['id']))
 	{
 		$id=intval($_POST['id']);
@@ -104,7 +104,7 @@
 				$loginname=addslashes($_POST['loginname']);
 				$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
 				$password=addslashes($_POST['password']);
-				$email=addslashes($_POST['email']);
+				$email=$idna_convert->encode(addslashes($_POST['email']));
 				$customers=intval($_POST['customers']);
 				$domains=intval($_POST['domains']);
 				$subdomains=intval($_POST['subdomains']);
@@ -121,7 +121,7 @@
 				$diskspace=$diskspace*1024;
 				$traffic=$traffic*1024*1024;
 
-				if($name == '' || $loginname == '' || $loginname_check['loginname'] == $loginname || $password == '' || $email == '' || !verify_email($email))
+				if($name == '' || $loginname == '' || $loginname_check['loginname'] == $loginname || $password == '' || $email == '' || !verify_email($email) || !check_username($loginname))
 				{
 					standard_error('notallreqfieldsorerrors');
 					exit;
@@ -170,7 +170,7 @@
 				{
 					$name=addslashes($_POST['name']);
 					$newpassword=addslashes($_POST['newpassword']);
-					$email=addslashes($_POST['email']);
+					$email=$idna_convert->encode(addslashes($_POST['email']));
 					$deactivated=intval($_POST['deactivated']);
 					$customers=intval($_POST['customers']);
 					$domains=intval($_POST['domains']);
@@ -228,6 +228,7 @@
 				{
 					$result['traffic']=$result['traffic']/(1024*1024);
 					$result['diskspace']=$result['diskspace']/1024;
+					$result['email'] = $idna_convert->decode($result['email']);
 					$change_serversettings=makeyesno('change_serversettings', '1', '0', $result['change_serversettings']);
 					$customers_see_all=makeyesno('customers_see_all', '1', '0', $result['customers_see_all']);
 					$domains_see_all=makeyesno('domains_see_all', '1', '0', $result['domains_see_all']);

@@ -58,7 +58,12 @@
 			{
 //				echo 'customer_accountprefix<br />';
 				$value=addslashes($_POST['customer_accountprefix']);
-				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='accountprefix'");
+				if(!check_username_prefix($value)) {
+					
+				}
+				else {
+					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='accountprefix'");
+				}
 			}
 
 			if($_POST['customer_mysqlprefix']!=$settings['customer']['mysqlprefix'])
@@ -102,7 +107,7 @@
 			if($_POST['system_hostname']!=$settings['system']['hostname'])
 			{
 //				echo 'system_hostname<br />';
-				$value=addslashes($_POST['system_hostname']);
+				$value=addslashes($idna_convert->encode($_POST['system_hostname']));
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='hostname'");
 				inserttask('1');
 			}
@@ -172,7 +177,7 @@
 			if($_POST['panel_adminmail']!=$settings['panel']['adminmail'])
 			{
 //				echo 'panel_adminmail<br />';
-				$value=addslashes($_POST['panel_adminmail']);
+				$value=addslashes($idna_convert->encode($_POST['panel_adminmail']));
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
 			}
 

@@ -204,7 +204,16 @@
         	'ALTER TABLE `panel_databases` ' .
         	'ADD `description` VARCHAR( 255 ) NOT NULL'
         );
+		
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.3-cvs2';
+	}
+	if($settings['panel']['version'] == '1.2.3-cvs2')
+	{
+		$db->query("ALTER TABLE `".TABLE_MAIL_USERS."` ADD `username` VARCHAR( 128 ) NOT NULL");
+		$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `username`=`email`");
+		
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.3-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.3-cvs3';
 	}
 ?>

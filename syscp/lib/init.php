@@ -46,6 +46,17 @@
 	$db = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
 	unset($sql['password']);
 	unset($db->password);
+	
+	/**
+	 * Include our class_idna_convert_wrapper.php, which offers methods for de-
+	 * and encoding IDN domains.
+	 */
+	require('./lib/class_idna_convert_wrapper.php');
+	
+	/**
+	 * Create a new idna converter
+	 */
+	$idna_convert = new idna_convert_wrapper();
 
 	/**
 	 * Selects settings from MySQL-Table
@@ -54,7 +65,12 @@
 							'FROM `'.TABLE_PANEL_SETTINGS.'`');
 	while($row = $db->fetch_array($result))
 	{
-		$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $row['value'];
+		if(($row['settinggroup'] == 'system' && $row['varname'] == 'hostname') || ($row['settinggroup'] == 'panel' && $row['varname'] == 'adminmail')) {
+			$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $idna_convert->decode($row['value']);
+		}
+		else {
+			$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $row['value'];
+		}
 	}
 	unset($row);
 	unset($result);

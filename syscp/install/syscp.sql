@@ -65,6 +65,7 @@ DROP TABLE IF EXISTS `mail_users`;
 CREATE TABLE `mail_users` (
   `id` int(11) NOT NULL auto_increment,
   `email` varchar(128) NOT NULL default '',
+  `username` varchar(128) NOT NULL default '',
   `password` varchar(128) NOT NULL default '',
   `password_enc` varchar(128) NOT NULL default '',
   `uid` int(11) NOT NULL default '0',

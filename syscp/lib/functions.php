@@ -696,4 +696,30 @@
 		}
 		return $return;
 	}	
+	
+	/**
+	 * Returns if an username is in correct format or not.
+	 * A username is valid if it would be a username that is accepted by the
+	 * useradd command.
+	 *
+	 * @param string The username to check
+	 * @return bool Correct or not
+	 * @author Michael Dürgner <michael@duergner.com>
+	 */
+	function check_username($username) {
+		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_\.]*[a-zA-Z0-9\-\_\.\$]$/",$username);
+	}
+	
+	/**
+	 * Returns if an username_prefix is in correct format or not.
+	 * A username_prefix is valid if the resulting username would be a username
+	 * that is accepted by the useradd command.
+	 *
+	 * @param string The username to check
+	 * @return bool Correct or not
+	 * @author Michael Dürgner <michael@duergner.com>
+	 */
+	function check_username_prefix($username_prefix) {
+		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_\.]*$/",$username_prefix);
+	}
 ?>

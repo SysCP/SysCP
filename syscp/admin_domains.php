@@ -58,6 +58,7 @@
 			$result=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `c`.`loginname`, `c`.`name`, `c`.`surname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."ORDER BY `$sortby` $sortorder");
 			while($row=$db->fetch_array($result))
 			{
+				$row['domain'] = $idna_convert->decode($row['domain']);
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 			}
 			eval("echo \"".getTemplate("domains/domains")."\";");
@@ -94,7 +95,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$domain = addslashes($_POST['domain']);
+					$domain = $idna_convert->encode(addslashes($_POST['domain']));
 					$customerid = intval($_POST['customerid']);
 					if($userinfo['change_serversettings'] == '1')
 					{
@@ -184,6 +185,7 @@
 					{
 						$customers.=makeoption($row_customer['name'].' '.$row_customer['surname'].' ('.$row_customer['loginname'].')',$row_customer['customerid']);
 					}
+					$result['domain'] = $idna_convert->decode($result['domain']);
 					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
 					$safemode=makeyesno('safemode', '1', '0', '1');
 					$speciallogfile=makeyesno('speciallogfile', '1', '0', '0');
