@@ -190,7 +190,8 @@
 	/**
 	 * Fills variables for navigation, header and footer
 	 */
-	eval("\$navigation = \"".getTemplate("navigation")."\";");
+	$navigation = getNavigation($s);
+//	eval("\$navigation = \"".getTemplate("navigation")."\";");
 	eval("\$header = \"".getTemplate('header', '1')."\";");
 	eval("\$footer = \"".getTemplate('footer', '1')."\";");
 

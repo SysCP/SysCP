@@ -534,7 +534,7 @@
 	/******************************************************
 	 * Wrapper around the exec command.
 	 * 
-	 * @author Martin Burchert
+	 * @author Martin Burchert <eremit@adm1n.de>
 	 * @version 1.2
 	 * @param string exec_string String to be executed
 	 * @return string The result of the exec()
@@ -591,4 +591,92 @@
 		exec($exec_string, $return);
 		return $return;
 	}
+	
+	/******************************************************
+	 * Navigation generator
+	 * 
+	 * @author Martin Burchert <eremit@adm1n.de>
+	 * @version 1.0
+	 * @param array userinfo the userinfo of the user
+	 * @return string the content of the navigation bar
+	 *
+	 * History:
+	 ******************************************************
+	 * 1.0 : Initial Version 
+	 ******************************************************/
+	function getNavigation($s)
+	{
+		global $db, $lng;
+		
+		$return = '';
+		//
+		// query database
+		//
+		$query  = 
+			'SELECT * ' .
+			'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'WHERE `area`="'.AREA.'"';
+		$result = $db->query($query);
+		//
+		// presort in multidimensional array
+		//
+		while ($row = $db->fetch_array($result))
+		{
+			if ($row['parent_id'] == 0)
+			{
+				$nav[$row['id']][0] = $row;
+			}
+			else
+			{
+				$nav[$row['parent_id']][] = $row;
+			}
+		}
+		//
+		// generate output
+		//
+		if ( (isset($nav)) && (sizeof($nav) > 0))
+		{
+			foreach ($nav as $parent_id => $row) 
+			{
+				foreach ($row as $id => $navElem )
+				{
+					$url = '';
+					// get corect lang string
+					$lngArr = split(';',$navElem['lang']);
+					$text = $lng;
+					foreach ($lngArr as $lKey => $lValue)
+					{
+						$text = $text[$lValue];
+					}
+					if ($navElem['parent_id'] != '0')
+					{
+						$indent = '&nbsp;&nbsp;&nbsp;&raquo; ';
+					}
+					else
+					{
+						$indent = '&raquo; ';
+					}
+					$sid = '';
+					// append sid only to local
+					if (substr($navElem['url'],0,7) != 'http://')
+					{
+						// generate sid with ? oder &
+						if (preg_match('/\?/',$navElem['url']))
+						{
+							$sid = '&s='.$s;
+						}
+						else
+						{
+							$sid = '?s='.$s;
+						}
+					}
+					// assign url
+					$url = '<a href="'.$navElem['url'].$sid.'">';
+					// read template
+					eval("\$return .= \"".getTemplate("navigation",1)."\";");
+				}
+			}
+		}
+		return $return;
+	}	
 ?>
