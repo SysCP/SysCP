@@ -106,7 +106,7 @@
 			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`specialsettings`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
@@ -123,13 +123,28 @@
 				{
 					$vhosts_file.='  php_admin_flag safe_mode On '."\n";
 				}
-				if (!file_exists($domain['documentroot']))
+				if(!file_exists($domain['documentroot']))
 				{
 					exec('mkdir -p '.$domain['documentroot']);
 					exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
 				}
-				$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-error.log'."\n";
-				$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].'-access.log combined'."\n";
+				if($domain['speciallogfile'] == '1')
+				{
+					if($domain['parentdomainid'] == '0')
+					{
+						$speciallogfile = '-'.$domain['domain'];
+					}
+					else
+					{
+						$speciallogfile = '-'.$domain['parentdomain'];
+					}
+				}
+				else
+				{
+					$speciallogfile = '';
+				}
+				$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\n";
+				$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log combined'."\n";
 				$vhosts_file.=$domain['specialsettings']."\n";
 				$vhosts_file.='</VirtualHost>'."\n";
 				$vhosts_file.="\n";
@@ -272,7 +287,13 @@
 			 * HTTP-Traffic
 			 */
 			$httptraffic = 0;
-			$httptraffic = webalizer_hist($row['loginname'], $row['documentroot'], $row['loginname']);
+			$httptraffic = webalizer_hist($row['loginname'], $row['documentroot'].'/webalizer/', $row['loginname']);
+
+			$speciallogfiles_domains = $db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".$row['customerid']."' AND `isemaildomain` = '1' AND `speciallogfile` = '1'");
+			while($speciallogfiles_domains_row = $db->fetch_array($speciallogfiles_domains))
+			{
+				$httptraffic += webalizer_hist($row['loginname'].'-'.$speciallogfiles_domains_row['domain'], $row['documentroot'].'/webalizer/'.$speciallogfiles_domains_row['domain'].'/', $speciallogfiles_domains_row['domain']);
+			}
 
 			/**
 			 * FTP-Traffic

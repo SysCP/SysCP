@@ -89,7 +89,7 @@
 				{
 					$subdomain=addslashes($_POST['subdomain']);
 					$domain=addslashes($_POST['domain']);
-					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."'");
+					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."'");
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."'");
 					
@@ -108,7 +108,7 @@
 					}
 					else
 					{
-						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `parentdomainid`, `openbasedir`, `safemode`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['id']."', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['specialsettings']."')");
+						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `parentdomainid`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['id']."', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
 						$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 						inserttask('1');
 						header("Location: $filename?page=$page&s=$s");

@@ -304,7 +304,7 @@
 	 * @param int Year
 	 * @return int Used traffic
 	 */
-	function webalizer_hist($logfile, $documentroot, $caption, $month = 0, $year = 0)
+	function webalizer_hist($logfile, $outputdir, $caption, $month = 0, $year = 0)
 	{
 		global $settings;
 		$httptraffic = 0;
@@ -319,7 +319,11 @@
 			$year = date('Y',$yesterday);
 		}
 
-		exec('webalizer -n '.$caption.' -o '.$documentroot.'/webalizer/ '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
+		if(!file_exists($outputdir))
+		{
+			exec('mkdir -p '.$outputdir);
+		}
+		exec('webalizer -n '.$caption.' -o '.$outputdir.' '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
 
 		$webalizer_hist_size=@filesize($documentroot.'/webalizer/webalizer.hist');
 		$webalizer_hist_num=@fopen($documentroot.'/webalizer/webalizer.hist','r');

@@ -32,6 +32,10 @@ $header
        <td class="maintable" nowrap>$safemode</td>
       </tr>
       <tr>
+       <td class="maintable" nowrap>Speciallogfile:</td>
+       <td class="maintable" nowrap>$speciallogfile</td>
+      </tr>
+      <tr>
        <td class="maintable" nowrap>{$lng['admin']['ownvhostsettings']}:</td>
        <td class="maintable" nowrap><textarea rows="4" cols="30" name="specialsettings"></textarea></td>
       </tr></if>
