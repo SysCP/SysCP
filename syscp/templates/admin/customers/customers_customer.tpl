@@ -1,13 +1,10 @@
      <tr>
       <td class="maintable"><a href="$filename?s=$s&page=$page&action=su&id={$row['customerid']}" target="_blank">{$row['loginname']}</a></td>
-      <td class="maintable"><font size="-1">{$row['name']} {$row['surname']}</font></td>
-      <td class="maintable"><font size="-1"<if $row['diskspace'] < $row['diskspace_used'] && $row['diskspace'] != 'UL'> color="red"</if>>{$row['diskspace_used']}/{$row['diskspace']}</font></td>
-      <td class="maintable"><font size="-1"<if $row['traffic'] < $row['traffic_used'] && $row['traffic'] != 'UL'> color="red"</if>>{$row['traffic_used']}/{$row['traffic']}</font></td>
-      <td class="maintable"><font size="-1">{$row['mysqls_used']}/{$row['mysqls']}</font></td>
-      <td class="maintable"><font size="-1">{$row['emails_used']}/{$row['emails']}</font></td>
-      <td class="maintable"><font size="-1">{$row['email_forwarders_used']}/{$row['email_forwarders']}</font></td>
-      <td class="maintable"><font size="-1">{$row['ftps_used']}/{$row['ftps']}</font></td>
-      <td class="maintable"><font size="-1">{$row['deactivated']}</font></td>
-      <td class="maintable"><a href="$filename?s=$s&page=$page&action=delete&id={$row['customerid']}">{$lng['panel']['delete']}</a></td>
-      <td class="maintable"><a href="$filename?s=$s&page=$page&action=edit&id={$row['customerid']}">{$lng['panel']['edit']}</a></td>
+      <td class="maintable">{$row['name']}<br />{$row['surname']}</td>
+      <td class="maintable"><span<if $row['diskspace'] < $row['diskspace_used'] && $row['diskspace'] != 'UL'> style="color:red"</if>>{$row['diskspace_used']}/{$row['diskspace']}</span> (MB)<br /><span<if $row['traffic'] < $row['traffic_used'] && $row['traffic'] != 'UL'> style="color:red"</if>>{$row['traffic_used']}/{$row['traffic']}</span> (GB)</td>
+      <td class="maintable">{$row['mysqls_used']}/{$row['mysqls']}<br />{$row['ftps_used']}/{$row['ftps']}</td>
+      <td class="maintable">{$row['email_accounts_used']}/{$row['email_accounts']}<br />{$row['subdomains_used']}/{$row['subdomains']}</td>
+      <td class="maintable">{$row['emails_used']}/{$row['emails']}<br />{$row['email_forwarders_used']}/{$row['email_forwarders']}</td>
+      <td class="maintable">{$row['deactivated']}</td>
+      <td class="maintable"><a href="$filename?s=$s&page=$page&action=delete&id={$row['customerid']}">{$lng['panel']['delete']}</a><br /><a href="$filename?s=$s&page=$page&action=edit&id={$row['customerid']}">{$lng['panel']['edit']}</a></td>
      </tr>

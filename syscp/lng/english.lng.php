@@ -59,6 +59,7 @@ $lng['customer']['diskspace'] = 'Webspace (MB)';
 $lng['customer']['traffic'] = 'Traffic (GB)';
 $lng['customer']['mysqls'] = 'MySQL-Databases';
 $lng['customer']['emails'] = 'eMail-Addresses';
+$lng['customer']['accounts'] = 'eMail-Accounts';
 $lng['customer']['forwarders'] = 'eMail-Forwarders';
 $lng['customer']['ftps'] = 'FTP-Accounts';
 $lng['customer']['subdomains'] = 'Sub-Domain(s)';
@@ -71,8 +72,7 @@ $lng['customer']['unlimited'] = 'unlimited';
 $lng['menue']['main']['main'] = 'Main';
 $lng['menue']['main']['changepassword'] = 'Change password';
 $lng['menue']['email']['email'] = 'eMail';
-$lng['menue']['email']['pop'] = 'Accounts';
-$lng['menue']['email']['forwarders'] = 'Forwarders';
+$lng['menue']['email']['emails'] = 'Addresses';
 $lng['menue']['email']['webmail'] = 'WebMail';
 $lng['menue']['mysql']['mysql'] = 'MySQL';
 $lng['menue']['mysql']['databases'] = 'Databases';
@@ -115,11 +115,16 @@ $lng['domains']['wildcarddomain'] = 'Create as wildcarddomain?';
  * eMails
  */
 $lng['emails']['description'] = 'Here you can create and change your eMail addresses.<br />An account is like your letterbox in front of your house. If someone sends you an email, it will be dropped into the account.<br /><br />To download your emails use the following settings in your mailprogram: (The data in <i>italics</i> has to be changed to the equivalents you typed in!)<br />Hostname: <b><i>Domainname</i></b><br />Username: <b><i>Account name / eMail address</i></b><br />Password: <b><i>the password you\'ve chosen</i></b>';
-$lng['emails']['forwarders_add'] = 'Create forwarder';
+$lng['emails']['emailaddress'] = 'eMail-address';
+$lng['emails']['emails_add'] = 'Create eMail-address';
+$lng['emails']['emails_edit'] = 'Edit eMail-address';
+$lng['emails']['account'] = 'Account';
+$lng['emails']['account_add'] = 'Create account';
+$lng['emails']['account_delete'] = 'Delete account';
 $lng['emails']['from'] = 'Source';
 $lng['emails']['to'] = 'Destination';
-$lng['emails']['pop3_add'] = 'Create account';
-$lng['emails']['emailaddress'] = 'Account name / eMail address';
+$lng['emails']['forwarders'] = 'Forwarders';
+$lng['emails']['forwarder_add'] = 'Create forwarder';
 
 /**
  * FTP
@@ -152,12 +157,14 @@ $lng['extras']['errordocument404path'] = 'Path to ErrorDocument 404';
 $lng['extras']['errordocument403path'] = 'Path to ErrorDocument 403';
 $lng['extras']['errordocument500path'] = 'Path to ErrorDocument 500';
 $lng['extras']['errordocument401path'] = 'Path to ErrorDocument 401';
+
 /**
  * Errors
  */
 $lng['error']['error'] = 'Error';
 $lng['error']['directorymustexist'] = 'The directory you typed in has to exist. Please create it with your FTP client.';
 $lng['error']['filemustexist'] = 'The file you typed in has to exist.';
+$lng['error']['allresourcesused'] = 'You have already used all of your resources.';
 $lng['error']['domains_cantdeletemaindomain'] = 'You cannot delete a domain which is used as an email-domain.';
 $lng['error']['firstdeleteallsubdomains'] = 'You have to delete all Subdomains first before you can create a wildcard domain.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'You cannot delete your main FTP account';
@@ -177,8 +184,9 @@ $lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete th
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to deactivate these Securitysettings (OpenBasedir and/or SafeMode)?';
 $lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete the admin %s? Every customer and domain will be reallocated to the main administrator.';
 $lng['question']['domains_reallydelete'] = 'Do you really want to delete the domain %s?';
-$lng['question']['email_reallydelete_forwarders'] = 'Do you really want to delete the forwarder %s?';
-$lng['question']['email_reallydelete_pop'] = 'Do you really want to delete the email-account %s?';
+$lng['question']['email_reallydelete'] = 'Do you really want to delete the email-address %s?';
+$lng['question']['email_reallydelete_account'] = 'Do you really want to delete the email-account of %s?';
+$lng['question']['email_reallydelete_forwarder'] = 'Do you really want to delete the forwarder %s?';
 $lng['question']['extras_reallydelete'] = 'Do you really want to delete the directory protection for %s?';
 $lng['question']['extras_reallydelete_pathoptions'] = 'Do you really want to delete the path options for %s?';
 $lng['question']['ftp_reallydelete'] = 'Do you really want to delete the FTP account %s?';
@@ -279,6 +287,5 @@ $lng['serversettings']['maxloginattempts']['title']       = 'Max Login Attempts'
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximum login attempts after which the account gets deactivated.';
 $lng['serversettings']['deactivatetime']['title']       = 'Deactivate Time';
 $lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
-
 
 ?>

@@ -9,16 +9,13 @@ $header
     <tr>
      <td class="maintable">ID</td>
      <td class="maintable">{$lng['customer']['name']}</td>
-     <td class="maintable">CUST</td>
-     <td class="maintable">DOM</td>
-     <td class="maintable">SPACE</td>
-     <td class="maintable">TRAF</td>
-     <td class="maintable">MySQL</td>
-     <td class="maintable">POP</td>
-     <td class="maintable">FWD</td>
-     <td class="maintable">FTP</td>
+     <td class="maintable">{$lng['admin']['customers']}<br >{$lng['admin']['domains']}</td>
+     <td class="maintable">Space<br />Traffic</td>
+     <td class="maintable">MySQL<br />FTP</td>
+     <td class="maintable">eMails<br />Subdomains</td>
+     <td class="maintable">Accounts<br />Forwarders</td>
      <td class="maintable">Active</td>
-     <td class="maintable" colspan="2">&nbsp;</td>
+     <td class="maintable">&nbsp;</td>
     </tr>
     $admins
     <tr>

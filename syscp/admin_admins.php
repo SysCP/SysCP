@@ -65,7 +65,7 @@
 				$row['deactivated'] = str_replace('0', $lng['panel']['yes'], $row['deactivated']);
 				$row['deactivated'] = str_replace('1', $lng['panel']['no'], $row['deactivated']);
 
-				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_forwarders ftps subdomains');
+				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 
 				eval("\$admins.=\"".getTemplate("admins/admins_admin")."\";");
 			}
@@ -111,6 +111,7 @@
 				$domains = intval_ressource ( $_POST['domains'] ) ;
 				$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
 				$emails = intval_ressource ( $_POST['emails'] ) ;
+				$email_accounts = intval_ressource ( $_POST['email_accounts'] ) ;
 				$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
 				$ftps = intval_ressource ( $_POST['ftps'] ) ;
 				$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
@@ -143,8 +144,8 @@
 						$change_serversettings = '0';
 					}
 
-					$result=$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_forwarders`, `ftps`, `mysqls`)
-					                   VALUES ('$loginname', '".md5($password)."', '$name', '$email', '$change_serversettings', '$customers', '$customers_see_all', '$domains', '$domains_see_all', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_forwarders', '$ftps', '$mysqls')");
+					$result=$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`)
+					                   VALUES ('$loginname', '".md5($password)."', '$name', '$email', '$change_serversettings', '$customers', '$customers_see_all', '$domains', '$domains_see_all', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls')");
 					$adminid=$db->insert_id();
 					header("Location: $filename?page=$page&s=$s");
 				}
@@ -178,6 +179,7 @@
 					$domains = intval_ressource ( $_POST['domains'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
 					$emails = intval_ressource ( $_POST['emails'] ) ;
+					$email_accounts = intval_ressource ( $_POST['email_accounts'] ) ;
 					$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
 					$ftps = intval_ressource ( $_POST['ftps'] ) ;
 					$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
@@ -221,7 +223,7 @@
 							$change_serversettings = '0';
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `name`='$name', `email`='$email', `change_serversettings` = '$change_serversettings', `customers` = '$customers', `customers_see_all` = '$customers_see_all', `domains` = '$domains', `domains_see_all` = '$domains_see_all', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `adminid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `name`='$name', `email`='$email', `change_serversettings` = '$change_serversettings', `customers` = '$customers', `customers_see_all` = '$customers_see_all', `domains` = '$domains', `domains_see_all` = '$domains_see_all', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `adminid`='$id'");
 
 						header("Location: $filename?page=$page&s=$s");
 					}

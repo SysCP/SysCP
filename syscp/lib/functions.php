@@ -245,13 +245,20 @@
 	{
 		$email=strtolower($email);
 
-		if(!preg_match("/^([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,}))/si",$email))
+		$returncode_preg = preg_match("/^([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,}))/si",$email) ;
+		$returncode_space = false ;
+		if ( !strstr ( $email , ' ' ) )
 		{
-			return false;
+			$returncode_space = true ;
+		}
+
+		if ( $returncode_preg == true && $returncode_space == true)
+		{
+			return true ;
 		}
 		else
 		{
-			return true;
+			return false ;
 		}
 	}
 
@@ -426,21 +433,20 @@
 		return $dir;
 	}
 
- 	/**
- 	 * Function which returns a correct filename, means to add a slash at the beginning if not there and to remove all ..'s
- 	 *
- 	 * @param string filename the filename
- 	 * @return string the corrected filename
- 	 * @author Florian Lippert <flo@redenswert.de>,
- 	 * @author Michael Russ <mr@edvruss.com>
- 	 * @author Martin Burchert <eremit@adm1n.de>
- 	 * 
- 	 */
- 	function makeCorrectFile($filename)
- 	{
+	/**
+	 * Function which returns a correct filename, means to add a slash at the beginning if not there and to remove all ..'s
+	 *
+	 * @param string filename the filename
+	 * @return string the corrected filename
+	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Michael Russ <mr@edvruss.com>
+	 * @author Martin Burchert <eremit@adm1n.de>
+	 */
+	function makeCorrectFile($filename)
+	{
 		if ( substr($filename, 0, 1) != '/' )
 		{
-			$dir = '/'.$dir;
+			$filename = '/'.$filename;
 		}
  
 		$search   = Array ('/(\/)+/', '/(\.)+/');
@@ -448,6 +454,31 @@
 		$filename = preg_replace($search, $replace, $filename);
 
 		return $filename;
+	}
+
+	/**
+	 * Function which returns a correct destination for Postfix Virtual Table
+	 *
+	 * @param string The destinations
+	 * @return string the corrected destinations
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function makeCorrectDestination($destination)
+	{
+		$search   = '/(\ )+/' ;
+		$replace  = ' ';
+		$destination = preg_replace($search, $replace, $destination);
+		
+		if ( substr($destination, 0, 1) == ' ' )
+		{
+			$destination = substr ( $destination , 1 ) ;
+		}
+		if ( substr($destination, -1, 1) == ' ' )
+		{
+			$destination = substr ( $destination , 0 , strlen ( $destination ) - 1 ) ;
+		}
+
+		return $destination;
 	}
 
 	/**
@@ -469,23 +500,38 @@
 		while($customer = $db->fetch_array($customers))
 		{
 			$customer_mysqls = $db->query_first(
-				'SELECT COUNT(*) AS `number_mysqls`' .
+				'SELECT COUNT(*) AS `number_mysqls` ' .
 				'FROM `'.TABLE_PANEL_DATABASES.'` ' .
 				'WHERE `customerid` = "'.$customer['customerid'].'"'
 			);
 
 			$customer_emails = $db->query_first(
-				'SELECT COUNT(*) AS `number_emails`' .
-				'FROM `'.TABLE_MAIL_USERS.'` ' .
+				'SELECT COUNT(*) AS `number_emails` ' .
+				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
 				'WHERE `customerid` = "'.$customer['customerid'].'"'
 			);
 
-			$customer_email_forwarders = $db->query_first(
-				'SELECT COUNT(*) AS `number_email_forwarders`' .
+			$customer_emails_result = $db->query(
+				'SELECT `email`, `destination`, `popaccountid` AS `number_email_forwarders` ' .
 				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
-				'WHERE `customerid` = "'.$customer['customerid'].'" ' .
-				'AND `popaccountid` = "0"'
+				'WHERE `customerid` = "'.$customer['customerid'].'" '
 			);
+
+			$customer_email_forwarders = 0;
+			$customer_email_accounts = 0;
+			while ( $customer_emails_row = $db->fetch_array ( $customer_emails_result ) )
+			{
+				if ( $customer_emails_row['destination'] != '' )
+				{
+					$customer_emails_row['destination'] = explode ( ' ' , makeCorrectDestination ( $customer_emails_row['destination'] ) ) ;
+					$customer_email_forwarders += count ( $customer_emails_row['destination'] ) ;
+					if ( in_array ( $customer_emails_row['email'] , $customer_emails_row['destination'] ) )
+					{
+						$customer_email_forwarders -= 1 ;
+						$customer_email_accounts ++ ;
+					}
+				}
+			}
 
 			$customer_ftps = $db->query_first(
 				'SELECT COUNT(*) AS `number_ftps` ' .
@@ -504,7 +550,8 @@
 				'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
 				'SET `mysqls_used` = "'.$customer_mysqls['number_mysqls'].'", ' .
 				'    `emails_used` = "'.$customer_emails['number_emails'].'", ' .
-				'    `email_forwarders_used` = "'.$customer_email_forwarders['number_email_forwarders'].'", ' .
+				'    `email_accounts_used` = "'.$customer_email_accounts.'", ' .
+				'    `email_forwarders_used` = "'.$customer_email_forwarders.'", ' .
 				'    `ftps_used` = "'.($customer_ftps['number_ftps']-1).'", ' .
 				'    `subdomains_used` = "'.$customer_subdomains['number_subdomains'].'" ' .
 				'WHERE `customerid` = "'.$customer['customerid'].'"'
@@ -525,6 +572,7 @@
 				'SUM(`diskspace`) AS `diskspace`, ' .
 				'SUM(`mysqls`) AS `mysqls`, ' .
 				'SUM(`emails`) AS `emails`, ' .
+				'SUM(`email_accounts`) AS `email_accounts`, ' .
 				'SUM(`email_forwarders`) AS `email_forwarders`, ' .
 				'SUM(`ftps`) AS `ftps`, ' .
 				'SUM(`subdomains`) AS `subdomains`, ' .
@@ -545,6 +593,7 @@
 				'    `diskspace_used` = "'.$admin_customers['diskspace'].'", ' .
 				'    `mysqls_used` = "'.$admin_customers['mysqls'].'", ' .
 				'    `emails_used` = "'.$admin_customers['emails'].'", ' .
+				'    `email_accounts_used` = "'.$admin_customers['email_accounts'].'", ' .
 				'    `email_forwarders_used` = "'.$admin_customers['email_forwarders'].'", ' .
 				'    `ftps_used` = "'.$admin_customers['ftps'].'", ' .
 				'    `subdomains_used` = "'.$admin_customers['subdomains'].'", ' .

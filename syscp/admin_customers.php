@@ -65,7 +65,7 @@
 				$row['deactivated'] = str_replace('0', $lng['panel']['yes'], $row['deactivated']);
 				$row['deactivated'] = str_replace('1', $lng['panel']['no'], $row['deactivated']);
 
-				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_forwarders ftps subdomains');
+				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 
 				eval("\$customers.=\"".getTemplate("customers/customers_customer")."\";");
 			}
@@ -132,6 +132,10 @@
 					{
 						$admin_update_query .= ", `emails_used` = `emails_used` - 0".$result['emails'];
 					}
+					if ( $result['email_accounts'] != '-1' )
+					{
+						$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` - 0".$result['email_accounts'];
+					}
 					if ( $result['email_forwarders'] != '-1' )
 					{
 						$admin_update_query .= ", `email_forwarders_used` = `email_forwarders_used` - 0".$result['email_forwarders'];
@@ -182,6 +186,7 @@
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
 					$emails = intval_ressource ( $_POST['emails'] ) ;
+					$email_accounts = intval_ressource ( $_POST['email_accounts'] ) ;
 					$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
 					$ftps = intval_ressource ( $_POST['ftps'] ) ;
 					$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
@@ -195,12 +200,14 @@
 					if( ( ( ($userinfo['diskspace_used']        + $diskspace)        > $userinfo['diskspace'])        && ($userinfo['diskspace']/1024) != '-1') || 
 					    ( ( ($userinfo['mysqls_used']           + $mysqls)           > $userinfo['mysqls'])           && $userinfo['mysqls'] != '-1') || 
 					    ( ( ($userinfo['emails_used']           + $emails)           > $userinfo['emails'])           && $userinfo['emails'] != '-1') || 
+					    ( ( ($userinfo['email_accounts_used']   + $email_accounts)   > $userinfo['email_accounts'])   && $userinfo['email_accounts'] != '-1') || 
 					    ( ( ($userinfo['email_forwarders_used'] + $email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1') || 
 					    ( ( ($userinfo['ftps_used']             + $ftps)             > $userinfo['ftps'])             && $userinfo['ftps'] != '-1') || 
 					    ( ( ($userinfo['subdomains_used']       + $subdomains)       > $userinfo['subdomains'])       && $userinfo['subdomains'] != '-1') ||
 					    ( ($diskspace/1024) == '-1' && ($userinfo['diskspace']/1024) != '-1' ) ||
 					    ( $mysqls == '-1'           && $userinfo['mysqls'] != '-1' ) ||
 					    ( $emails == '-1'           && $userinfo['emails'] != '-1' ) ||
+					    ( $email_accounts == '-1'   && $userinfo['email_accounts'] != '-1' ) ||
 					    ( $email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1' ) ||
 					    ( $ftps == '-1'             && $userinfo['ftps'] != '-1' ) ||
 					    ( $subdomains == '-1'       && $userinfo['subdomains'] != '-1' )
@@ -249,8 +256,8 @@
 
 						$result=$db->query(
 							"INSERT INTO `".TABLE_PANEL_CUSTOMERS."` ".
-							"(`adminid`, `loginname`, `password`, `name`, `surname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_forwarders`, `ftps`, `mysqls`, `createstdsubdomain`) ".
-							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$surname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_forwarders', '$ftps', '$mysqls', '$createstdsubdomain')"
+							"(`adminid`, `loginname`, `password`, `name`, `surname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `createstdsubdomain`) ".
+							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$surname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '$createstdsubdomain')"
 							);
 						$customerid=$db->insert_id();
 
@@ -262,6 +269,10 @@
 						if ( $emails != '-1' )
 						{
 							$admin_update_query .= ", `emails_used` = `emails_used` + 0".$emails;
+						}
+						if ( $email_accounts != '-1' )
+						{
+							$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` + 0".$email_accounts;
 						}
 						if ( $email_forwarders != '-1' )
 						{
@@ -332,6 +343,7 @@
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
 					$emails = intval_ressource ( $_POST['emails'] ) ;
+					$email_accounts = intval_ressource ( $_POST['email_accounts'] ) ;
 					$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
 					$ftps = intval_ressource ( $_POST['ftps'] ) ;
 					$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
@@ -344,12 +356,14 @@
 					if( ( ( ($userinfo['diskspace_used']        + $diskspace        - $result['diskspace'])        > $userinfo['diskspace'])        && ($userinfo['diskspace']/1024) != '-1') || 
 					    ( ( ($userinfo['mysqls_used']           + $mysqls           - $result['mysqls'])           > $userinfo['mysqls'])           && $userinfo['mysqls'] != '-1') || 
 					    ( ( ($userinfo['emails_used']           + $emails           - $result['emails'])           > $userinfo['emails'])           && $userinfo['emails'] != '-1') || 
+					    ( ( ($userinfo['email_accounts_used']   + $email_accounts   - $result['email_accounts'])   > $userinfo['email_accounts'])   && $userinfo['email_accounts'] != '-1') || 
 					    ( ( ($userinfo['email_forwarders_used'] + $email_forwarders - $result['email_forwarders']) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1') || 
 					    ( ( ($userinfo['ftps_used']             + $ftps             - $result['ftps'])             > $userinfo['ftps'])             && $userinfo['ftps'] != '-1') || 
 					    ( ( ($userinfo['subdomains_used']       + $subdomains       - $result['subdomains'])       > $userinfo['subdomains'])       && $userinfo['subdomains'] != '-1') ||
 					    ( ($diskspace/1024) == '-1' && ($userinfo['diskspace']/1024) != '-1' ) ||
 					    ( $mysqls == '-1'           && $userinfo['mysqls'] != '-1' ) ||
 					    ( $emails == '-1'           && $userinfo['emails'] != '-1' ) ||
+					    ( $email_accounts == '-1'   && $userinfo['email_accounts'] != '-1' ) ||
 					    ( $email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1' ) ||
 					    ( $ftps == '-1'             && $userinfo['ftps'] != '-1' ) ||
 					    ( $subdomains == '-1'       && $userinfo['subdomains'] != '-1' )
@@ -393,7 +407,7 @@
 							inserttask('1');
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `surname`='$surname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `createstdsubdomain`='$createstdsubdomain', `deactivated`='$deactivated' WHERE `customerid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `surname`='$surname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `createstdsubdomain`='$createstdsubdomain', `deactivated`='$deactivated' WHERE `customerid`='$id'");
 
 						$admin_update_query = "UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` ";
 						if ( $mysqls != '-1' || $result['mysqls'] != '-1' )
@@ -418,6 +432,18 @@
 							if ( $result['emails'] != '-1' )
 							{
 								$admin_update_query .= " - 0".($result['emails'])." ";
+							}
+						}
+						if ( $email_accounts != '-1' || $result['email_accounts'] != '-1' )
+						{
+							$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` ";
+							if ( $email_accounts != '-1' )
+							{
+								$admin_update_query .= " + 0".($email_accounts)." ";
+							}
+							if ( $result['email_accounts'] != '-1' )
+							{
+								$admin_update_query .= " - 0".($result['email_accounts'])." ";
 							}
 						}
 						if ( $email_forwarders != '-1' || $result['email_forwarders'] != '-1' )

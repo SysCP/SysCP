@@ -68,6 +68,10 @@ $header
        <td class="maintable" nowrap><input type="text" name="emails" value="0" maxlength="9"></td>
       </tr>
       <tr>
+       <td class="maintable">{$lng['customer']['accounts']}: *</td>
+       <td class="maintable" nowrap><input type="text" name="email_accounts" value="0" maxlength="9"></td>
+      </tr>
+      <tr>
        <td class="maintable">{$lng['customer']['forwarders']}: *</td>
        <td class="maintable" nowrap><input type="text" name="email_forwarders" value="0" maxlength="9"></td>
       </tr>

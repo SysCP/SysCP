@@ -28,6 +28,10 @@ $header
       <td class="maintable">{$overview['emails_used']}</td>
      </tr>
      <tr>
+      <td class="maintable" align="right">{$lng['customer']['accounts']}:</td>
+      <td class="maintable">{$overview['email_accounts_used']}</td>
+     </tr>
+     <tr>
       <td class="maintable" align="right">{$lng['customer']['forwarders']}:</td>
       <td class="maintable">{$overview['email_forwarders_used']}</td>
      </tr>

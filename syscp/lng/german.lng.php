@@ -59,6 +59,7 @@ $lng['customer']['diskspace'] = 'Webspace (MB)';
 $lng['customer']['traffic'] = 'Traffic (GB)';
 $lng['customer']['mysqls'] = 'MySQL-Datenbanken';
 $lng['customer']['emails'] = 'eMail-Adressen';
+$lng['customer']['accounts'] = 'eMail-Konten';
 $lng['customer']['forwarders'] = 'eMail-Weiterleitungen';
 $lng['customer']['ftps'] = 'FTP-Accounts';
 $lng['customer']['subdomains'] = 'Sub-Domain(s)';
@@ -71,8 +72,7 @@ $lng['customer']['unlimited'] = 'unendlich';
 $lng['menue']['main']['main'] = 'Allgemein';
 $lng['menue']['main']['changepassword'] = 'Passwort &auml;ndern';
 $lng['menue']['email']['email'] = 'eMail';
-$lng['menue']['email']['pop'] = 'Konten';
-$lng['menue']['email']['forwarders'] = 'Weiterleitungen';
+$lng['menue']['email']['emails'] = 'Adressen';
 $lng['menue']['email']['webmail'] = 'WebMail';
 $lng['menue']['mysql']['mysql'] = 'MySQL';
 $lng['menue']['mysql']['databases'] = 'Datenbanken';
@@ -115,11 +115,16 @@ $lng['domains']['wildcarddomain'] = 'Als Wildcarddomain eintragen?';
  * eMails
  */
 $lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre eMail Adressen einrichten.<br />Ein Konto ist wie Ihr Briefkasten vor der Haust&uuml;re. Wenn jemand eine email an Sie schreibt, dann wird diese in dieses Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / eMail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
-$lng['emails']['forwarders_add'] = 'Weiterleitung anlegen';
+$lng['emails']['emailaddress'] = 'eMail-Adresse';
+$lng['emails']['emails_add'] = 'eMail-Adresse anlegen';
+$lng['emails']['emails_edit'] = 'eMail-Adresse &auml;ndern';
+$lng['emails']['account'] = 'Konto';
+$lng['emails']['account_add'] = 'Konto anlegen';
+$lng['emails']['account_delete'] = 'Konto l&ouml;schen';
 $lng['emails']['from'] = 'Von';
 $lng['emails']['to'] = 'Nach';
-$lng['emails']['pop3_add'] = 'Konto anlegen';
-$lng['emails']['emailaddress'] = 'Konto/Adresse';
+$lng['emails']['forwarders'] = 'Weiterleitungen';
+$lng['emails']['forwarder_add'] = 'Weiterleitung hinzuf&uuml;gen';
 
 /**
  * FTP
@@ -153,13 +158,13 @@ $lng['extras']['errordocument403path'] = 'Pfad zum Fehlerdokoument 403';
 $lng['extras']['errordocument500path'] = 'Pfad zum Fehlerdokoument 500';
 $lng['extras']['errordocument401path'] = 'Pfad zum Fehlerdokoument 401';
 
-
 /**
  * Errors
  */
 $lng['error']['error'] = 'Fehlermeldung';
 $lng['error']['directorymustexist'] = 'Das Verzeichnis, das Sie eingegeben haben muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
 $lng['error']['filemustexist'] = 'Die Datei, welche Sie eingegeben haben muss existieren.';
+$lng['error']['allresourcesused'] = 'Sie haben bereits alle Ihnen zur Verfügung stehenden Ressourcen verbraucht.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als eMail-Domain verwendet wird l&ouml;schen. ';
 $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomains l&ouml;schen, bevor Sie eine Wildcarddomain anlegen k&ouml;nnen.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
@@ -179,8 +184,9 @@ $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirkli
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';
 $lng['question']['admin_admin_reallydelete'] = 'Wollen Sie den Admin %s wirklich l&ouml;schen?<br />Alle Kunden und Domains werden dem Hauptadmin zugeteilt.';
 $lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
-$lng['question']['email_reallydelete_forwarders'] = 'Wollen Sie die Weiterleitung %s wirklich l&ouml;schen?';
-$lng['question']['email_reallydelete_pop'] = 'Wollen Sie die eMail-Adresse %s wirklich l&ouml;schen?';
+$lng['question']['email_reallydelete'] = 'Wollen Sie die eMail-Adresse %s wirklich l&ouml;schen?';
+$lng['question']['email_reallydelete_account'] = 'Wollen Sie das Konto von %s wirklich l&ouml;schen?';
+$lng['question']['email_reallydelete_forwarder'] = 'Wollen Sie die Weiterleitung %s wirklich l&ouml;schen?';
 $lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz f&uuml;r %s wirklich l&ouml;schen?';
 $lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen f&uuml;r den Pfad %s wirklich l&ouml;schen?';
 $lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account %s wirklich l&ouml;schen?';

@@ -55,6 +55,10 @@ $header
       <td class="maintable">{$userinfo['emails_used']} ({$userinfo['emails']})</td>
      </tr>
      <tr>
+      <td class="maintable" align="right">{$lng['customer']['accounts']}:</td>
+      <td class="maintable">{$userinfo['email_accounts_used']} ({$userinfo['email_accounts']})</td>
+     </tr>
+     <tr>
       <td class="maintable" align="right">{$lng['customer']['forwarders']}:</td>
       <td class="maintable">{$userinfo['email_forwarders_used']} ({$userinfo['email_forwarders']})</td>
      </tr>
