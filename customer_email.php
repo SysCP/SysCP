@@ -69,7 +69,7 @@
 					header("Location: $filename?page=$page&s=$s");
 				}
 				else {
-					ask_yesno('email_reallydelete_pop', $filename, "id=$id;page=$page;action=$action");
+					ask_yesno('email_reallydelete_pop', $filename, "id=$id;page=$page;action=$action", $result['email']);
 				}
 			}
 		}
@@ -182,7 +182,7 @@
 					header("Location: $filename?page=$page&s=$s");
 				}
 				else {
-					ask_yesno('email_reallydelete_forwarders', $filename, "id=$id;page=$page;action=$action");
+					ask_yesno('email_reallydelete_forwarders', $filename, "id=$id;page=$page;action=$action", $result['email'] . ' -> ' . $result['destination']);
 				}
 			}
 		}

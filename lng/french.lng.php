@@ -162,17 +162,17 @@ $lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la sécurité
  * Questions
  */
 $lng['question']['question'] = 'Question de sécurité';
-$lng['question']['admin_customer_reallydelete'] = 'Voulez-vous vraiment effacer ce compte? ATTENTION! Toutes les données vont être effacées! Après ceci fait il faut effacer les dossiers du system des fichiers manuellement.';
-$lng['question']['admin_domain_reallydelete'] = 'Voulez-vous vraiment effacer ce domain?';
+$lng['question']['admin_customer_reallydelete'] = 'Voulez-vous vraiment effacer le compte %s?<br />ATTENTION! Toutes les données vont être effacées! Après ceci fait il faut effacer les dossiers du system des fichiers manuellement.';
+$lng['question']['admin_domain_reallydelete'] = 'Voulez-vous vraiment effacer le domain %s?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Voulez-vous vraiment désactiver ces modes importants (OpenBasedir et/où SafeMode) ?';
-$lng['question']['admin_admin_reallydelete'] = 'Voulez-vous vraiment effacer cet administrateur? Tout ses comptes vont être affecté au administrateur principal.';
-$lng['question']['domains_reallydelete'] = 'Voulez-vous vraiment effacer ce domain?';
-$lng['question']['email_reallydelete_forwarders'] = 'Voulez-vous vraiment effacer cette retransmission?';
-$lng['question']['email_reallydelete_pop'] = 'Voulez-vous vraiment effacer cette adresse e-mail?';
-$lng['question']['extras_reallydelete'] = 'Voulez-vous vraiment effacer cette protection du dossier?';
-$lng['question']['extras_reallydelete_pathoptions'] = 'Voulez-vous vraiment effacer les options de ce chemin?';
-$lng['question']['ftp_reallydelete'] = 'Voulez-vous vraiment effacer cet accès POP3?';
-$lng['question']['mysql_reallydelete'] = 'Voulez-vous vraiment effacer cette banque de donnés? ATTENTION: Toutes les données vont être effacées!';
+$lng['question']['admin_admin_reallydelete'] = 'Voulez-vous vraiment effacer l\'administrateur %s?<br />Tout ses comptes vont être affecté au administrateur principal.';
+$lng['question']['domains_reallydelete'] = 'Voulez-vous vraiment effacer le domain %s?';
+$lng['question']['email_reallydelete_forwarders'] = 'Voulez-vous vraiment effacer la retransmission %s?';
+$lng['question']['email_reallydelete_pop'] = 'Voulez-vous vraiment effacer l\'adresse e-mail %s?';
+$lng['question']['extras_reallydelete'] = 'Voulez-vous vraiment effacer la protection du dossier %s?';
+$lng['question']['extras_reallydelete_pathoptions'] = 'Voulez-vous vraiment effacer les options du chemin %s?';
+$lng['question']['ftp_reallydelete'] = 'Voulez-vous vraiment effacer l\'accès eMail %s?';
+$lng['question']['mysql_reallydelete'] = 'Voulez-vous vraiment effacer la banque de donnés %s?<br />ATTENTION: Toutes les données vont être effacées!';
 
 /**
  * Mails

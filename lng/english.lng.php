@@ -162,17 +162,17 @@ $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the m
  * Questions
  */
 $lng['question']['question'] = 'Securityquestion';
-$lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete this customer? This cannot be undone!';
-$lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete this domain?';
+$lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete the customer %s? This cannot be undone!';
+$lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete the domain %s?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to deactivate these Securitysettings (OpenBasedir and/or SafeMode)?';
-$lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete this admin? Every customer and domain will be reallocated to the main administrator.';
-$lng['question']['domains_reallydelete'] = 'Do you really want to delete this domain?';
-$lng['question']['email_reallydelete_forwarders'] = 'Do you really want to delete this forwarder?';
-$lng['question']['email_reallydelete_pop'] = 'Do you really want to delete this email-account?';
-$lng['question']['extras_reallydelete'] = 'Do you really want to delete this directory protection?';
-$lng['question']['extras_reallydelete_pathoptions'] = 'Do you really want to delete these path options?';
-$lng['question']['ftp_reallydelete'] = 'Do you really want to delete this FTP account?';
-$lng['question']['mysql_reallydelete'] = 'Do you really want to delete this database? This cannot be undone!';
+$lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete the admin %s? Every customer and domain will be reallocated to the main administrator.';
+$lng['question']['domains_reallydelete'] = 'Do you really want to delete the domain %s?';
+$lng['question']['email_reallydelete_forwarders'] = 'Do you really want to delete the forwarder %s?';
+$lng['question']['email_reallydelete_pop'] = 'Do you really want to delete the email-account %s?';
+$lng['question']['extras_reallydelete'] = 'Do you really want to delete the directory protection for %s?';
+$lng['question']['extras_reallydelete_pathoptions'] = 'Do you really want to delete the path options for %s?';
+$lng['question']['ftp_reallydelete'] = 'Do you really want to delete the FTP account %s?';
+$lng['question']['mysql_reallydelete'] = 'Do you really want to delete the database %s? This cannot be undone!';
 
 /**
  * Mails
