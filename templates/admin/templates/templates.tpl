@@ -9,7 +9,7 @@ $header
     <tr>
      <td class="maintable">{$lng['login']['language']}</td>
      <td class="maintable">{$lng['admin']['templates']['action']}</td>
-     <td class="maintable">&nbsp;</td>
+     <td class="maintable" colspan="2">&nbsp;</td>
     </tr>
     $templates
     <if $add><tr>
