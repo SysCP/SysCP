@@ -298,7 +298,7 @@
 	 * Function which make webalizer statistics and returns used traffic of a month and year
 	 *
 	 * @param string Name of logfile
-	 * @param string Documentroot of Domain
+	 * @param string Place where stats should be build
 	 * @param string Caption for webalizer output
 	 * @param int Month
 	 * @param int Year
@@ -325,8 +325,8 @@
 		}
 		exec('webalizer -n '.$caption.' -o '.$outputdir.' '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
 
-		$webalizer_hist_size=@filesize($documentroot.'/webalizer/webalizer.hist');
-		$webalizer_hist_num=@fopen($documentroot.'/webalizer/webalizer.hist','r');
+		$webalizer_hist_size=@filesize($outputdir.'webalizer.hist');
+		$webalizer_hist_num=@fopen($outputdir.'webalizer.hist','r');
 		$webalizer_hist=@fread($webalizer_hist_num,$webalizer_hist_size);
 		@fclose($webalizer_hist_num);
 		$webalizer_hist_rows=explode("\n",$webalizer_hist);
