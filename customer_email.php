@@ -42,7 +42,7 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `email`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
+			$result=$db->query("SELECT `id`, `username`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
 			$accounts='';
 			$emails_count=0;
 			while($row=$db->fetch_array($result))
@@ -58,8 +58,8 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
-			if(isset($result['email']) && $result['email']!='')
+			$result=$db->query_first("SELECT `id`, `username`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			if(isset($result['username']) && $result['username']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
@@ -81,9 +81,10 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$email_part=addslashes($_POST['email_part']);
-					$domain=addslashes($_POST['domain']);
+					$domain=$idna_convert->encode(addslashes($_POST['domain']));
 					$domain_check=$db->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."'");
 					$email = $email_part.'@'.$domain;
+					$username = $idna_convert->decode($email);
 					$destination = $email;
 					if(substr($email, 0, strlen($settings['email']['catchallkeyword']) + 1) == $settings['email']['catchallkeyword'].'@')
 					{
@@ -98,7 +99,7 @@
 					}
 					else
 					{
-						$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `password`, `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".$userinfo['customerid']."', '$destination', '$password', ENCRYPT('$password'), '".$settings['system']['vmail_homedir']."', '".$userinfo['loginname']."/$destination/', '".$settings['system']['vmail_uid']."', '".$settings['system']['vmail_gid']."', '".$domain_check['id']."', 'y')");
+						$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `username`, `password`, `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".$userinfo['customerid']."', '$destination', '$username', '$password', ENCRYPT('$password'), '".$settings['system']['vmail_homedir']."', '".$userinfo['loginname']."/$username/', '".$settings['system']['vmail_uid']."', '".$settings['system']['vmail_gid']."', '".$domain_check['id']."', 'y')");
 						$popaccountid = $db->insert_id();
 						$db->query("INSERT INTO `".TABLE_MAIL_VIRTUAL."` (`customerid`, `email`, `destination`, `domainid`, `popaccountid`) VALUES ('".$userinfo['customerid']."', '$email', '$destination', '".$domain_check['id']."', '$popaccountid')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `emails_used`=`emails_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
@@ -115,7 +116,7 @@
 					$domains='';
 					while($row=$db->fetch_array($result))
 					{
-						$domains.=makeoption($row['domain'],$row['domain']);
+						$domains.=makeoption($idna_convert->decode($row['domain']),$row['domain']);
 					}
 					eval("echo \"".getTemplate("email/pop_add")."\";");
 				}
@@ -124,8 +125,8 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `email`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
-			if(isset($result['email']) && $result['email']!='')
+			$result=$db->query_first("SELECT `id`, `username`, `customerid` FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			if(isset($result['username']) && $result['username']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
@@ -162,6 +163,8 @@
 					$row['email'] = $settings['email']['catchallkeyword'].$row['email'];
 				}
 				$forwarders_count++;
+				$row['email'] = $idna_convert->decode($row['email']);
+				$row['destination'] = $idna_convert->decode($row['destination']);
 				eval("\$accounts.=\"".getTemplate("email/forwarders_forwarder")."\";");
 			}
 			$emaildomains_count=$db->query_first("SELECT COUNT(`id`) AS `count` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
@@ -194,8 +197,8 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$email_part=addslashes($_POST['email_part']);
-					$domain=addslashes($_POST['domain']);
-					$destination=addslashes($_POST['destination']);
+					$domain=$idna_convert->encode(addslashes($_POST['domain']));
+					$destination=$idna_convert->encode(addslashes($_POST['destination']));
 					$domain_check=$db->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."'");
 					$email=$email_part.'@'.$domain;
 					if(substr($email, 0, strlen($settings['email']['catchallkeyword']) + 1) == $settings['email']['catchallkeyword'].'@')
@@ -220,7 +223,7 @@
 					$domains='';
 					while($row=$db->fetch_array($result))
 					{
-						$domains.=makeoption($row['domain'],$row['domain']);
+						$domains.=makeoption($idna_convert->decode($row['domain']),$row['domain']);
 					}
 					eval("echo \"".getTemplate("email/forwarders_add")."\";");
 				}

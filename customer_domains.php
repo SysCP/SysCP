@@ -47,6 +47,7 @@
 			$domains_count=0;
 			while($row=$db->fetch_array($result))
 			{
+				$row['domain'] = $idna_convert->decode($row['domain']);
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 				if($row['isemaildomain'] == '1' && $row['iswildcarddomain'] != '1')
@@ -87,8 +88,8 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$subdomain=addslashes($_POST['subdomain']);
-					$domain=addslashes($_POST['domain']);
+					$subdomain=$idna_convert->encode(addslashes($_POST['subdomain']));
+					$domain=$idna_convert->encode(addslashes($_POST['domain']));
 					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' AND `iswildcarddomain`='0' ");
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."'");
@@ -124,7 +125,7 @@
 					$domains='';
 					while($row=$db->fetch_array($result))
 					{
-						$domains.=makeoption($row['domain'],$row['domain']);
+						$domains.=makeoption($idna_convert->decode($row['domain']),$row['domain']);
 					}
 					eval("echo \"".getTemplate("domains/domains_add")."\";");
 				}
@@ -181,6 +182,7 @@
 					}
 				}
 				else {
+					$result['domain'] = $idna_convert->decode($result['domain']);
 					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
 					$iswildcarddomain=makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);
 					eval("echo \"".getTemplate("domains/domains_edit")."\";");

@@ -37,6 +37,7 @@
 		$result=$db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1'");
 		while($row=$db->fetch_array($result))
 		{
+			$row['domain'] = $idna_convert->decode($row['domain']);
 			if($domains == '')
 			{
 				$domains=$row['domain'];
@@ -46,6 +47,8 @@
 				$domains.=', '.$row['domain'];
 			}
 		}
+		
+		$userinfo['email'] = $idna_convert->decode($userinfo['email']);
 
 		$yesterday=time()-(60*60*24);
 		$month=date('M Y', $yesterday);
