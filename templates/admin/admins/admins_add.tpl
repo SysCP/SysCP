@@ -25,7 +25,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['admin']['customers']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="customers" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="customers" value="0" maxlength="9"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['admin']['customers_see_all']}</td>
@@ -33,7 +33,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['admin']['domains']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="domains" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="domains" value="0" maxlength="9"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['admin']['domains_see_all']}</td>
@@ -41,31 +41,31 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['diskspace']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="diskspace" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="diskspace" value="0" maxlength="6"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['traffic']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="traffic" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="traffic" value="0" maxlength="3"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['subdomains']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="subdomains" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="subdomains" value="0" maxlength="9"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['emails']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="emails" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="emails" value="0" maxlength="9"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['forwarders']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="email_forwarders" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="email_forwarders" value="0" maxlength="9"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['ftps']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="ftps" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="ftps" value="0" maxlength="9"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['mysqls']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="mysqls" value="0"></td>
+       <td class="maintable" nowrap><input type="text" name="mysqls" value="0" maxlength="9"></td>
       </tr>
       <tr>
        <td class="maintable" nowrap>{$lng['login']['password']}:</td>

@@ -65,11 +65,11 @@ $header
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['vmail_uid']['title']}:</b><br />{$lng['serversettings']['vmail_uid']['description']}</td>
-       <td class="maintable" nowrap><input type="text" name="system_vmail_uid" value="{$settings['system']['vmail_uid']}"></td>
+       <td class="maintable" nowrap><input type="text" name="system_vmail_uid" value="{$settings['system']['vmail_uid']}" maxlength="5"></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['vmail_gid']['title']}:</b><br />{$lng['serversettings']['vmail_gid']['description']}</td>
-       <td class="maintable" nowrap><input type="text" name="system_vmail_gid" value="{$settings['system']['vmail_gid']}"></td>
+       <td class="maintable" nowrap><input type="text" name="system_vmail_gid" value="{$settings['system']['vmail_gid']}" maxlength="5"></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['vmail_homedir']['title']}:</b><br />{$lng['serversettings']['vmail_homedir']['description']}</td>
