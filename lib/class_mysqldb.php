@@ -82,7 +82,23 @@
 
 			if(!$this->link_id)
 			{
-				$this->showerror('Establishing connection failed, exiting');
+				//try to connect with no password an change it afterwards. only for root user
+				if($this->user == 'root')
+				{
+					$this->link_id=@mysql_connect($this->server,$this->user,'');
+					if($this->link_id)
+					{
+						$this->query("SET PASSWORD = PASSWORD('".$this->password."')");
+					}
+					else
+					{
+						$this->showerror('Establishing connection failed, exiting');
+					}
+				}
+				else
+				{
+					$this->showerror('Establishing connection failed, exiting');
+				}
 			}
 
 			if($this->database != '')
