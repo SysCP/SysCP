@@ -153,7 +153,52 @@
 	/**
 	 * Language Managament
 	 */
-	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' , 'french' => 'Francais' , 'zh-cn' => 'Chinese' ) ;
+	// query the whole table
+	$query =
+		'SELECT * ' .
+		'FROM `'.TABLE_PANEL_LANGUAGE.'` ';
+	$result = $db->query($query);
+	// presort languages
+	while ($row = $db->fetch_array($result))
+	{
+		$langs[$row['language']][] = $row;
+	} 
+	// buildup $languages for the login screen
+	foreach ($langs as $key => $value)
+	{
+		$languages[$key] = $key;
+	}
+	if(!isset($userinfo['language']) || !isset($languages[$userinfo['language']]))
+	{
+		if(isset($_GET['language']) && isset($languages[$_GET['language']]))
+		{
+			$language = addslashes($_GET['language']);
+		}
+		else
+		{
+			$language = $settings['panel']['standardlanguage'];
+		}
+	}
+	else
+	{
+		$language = $userinfo['language'];
+	}
+	// include every english language file we can get
+	foreach ($langs['English'] as $key => $value)
+	{
+		include_once $value['file'];
+	}
+	// now include the selected language if its not english
+	if ($language != 'English') 
+	{
+		foreach ($langs[$language] as $key => $value)
+		{
+			include_once $value['file'];
+		}
+	}
+	
+	
+/*	$languages = Array( 'german' => 'Deutsch' , 'english' => 'English' , 'french' => 'Francais' , 'zh-cn' => 'Chinese' ) ;
 	if(!isset($userinfo['language']) || !isset($languages[$userinfo['language']]))
 	{
 		if(isset($_GET['language']) && isset($languages[$_GET['language']]))
@@ -172,12 +217,11 @@
 
 	if(file_exists('./lng/'.$language.'.lng.php'))
 	{
-		/**
-		 * Includes file /lng/$language.lng.php if it exists
+*/		/**		 Includes file /lng/$language.lng.php if it exists
 		 */
-		require('./lng/'.$language.'.lng.php');
+/*		require('./lng/'.$language.'.lng.php');
 	}
-
+*/
 	/**
 	 * Redirects to index.php (login page) if no session exists
 	 */
@@ -191,7 +235,6 @@
 	 * Fills variables for navigation, header and footer
 	 */
 	$navigation = getNavigation($s);
-//	eval("\$navigation = \"".getTemplate("navigation")."\";");
 	eval("\$header = \"".getTemplate('header', '1')."\";");
 	eval("\$footer = \"".getTemplate('footer', '1')."\";");
 

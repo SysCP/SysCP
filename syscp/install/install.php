@@ -459,7 +459,7 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$serverip' WHERE `settinggroup` = 'system' AND `varname` = 'ipaddress'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$servername' WHERE `settinggroup` = 'system' AND `varname` = 'hostname'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$version' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$language' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$languages[$language]."' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
 		status_message('green', 'OK');
 
 		//last but not least create the main admin

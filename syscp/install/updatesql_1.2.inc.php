@@ -72,5 +72,21 @@
 		$db->query("INSERT INTO `panel_navigation` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (24, 'admin', 0, 'login;logout', 'admin_index.php?action=logout');");
 		$settings['panel']['version'] = '1.2.2-cvs1';
 	}	
-
+	if($settings['panel']['version'] == '1.2.2-cvs1')
+	{
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.2-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$db->query("
+			CREATE TABLE `panel_languages` (
+  				`id`       int(11)      unsigned NOT NULL auto_increment,
+  				`language` varchar(30)           NOT NULL default '',
+  				`file`     varchar(255)          NOT NULL default '',
+  			PRIMARY KEY  (`id`)
+			) TYPE=MyISAM;
+		");
+		$db->query("INSERT INTO `panel_languages` (`id`, `language`, `file`) VALUES (1, 'Deutsch', 'lng/german.lng.php');");
+		$db->query("INSERT INTO `panel_languages` (`id`, `language`, `file`) VALUES (2, 'English', 'lng/english.lng.php');");
+		$db->query("INSERT INTO `panel_languages` (`id`, `language`, `file`) VALUES (3, 'Francais', 'lng/french.lng.php');");
+		$db->query("INSERT INTO `panel_languages` (`id`, `language`, `file`) VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');");
+		$settings['panel']['version'] = '1.2.2-cvs2';
+	}
 ?>
