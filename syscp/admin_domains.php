@@ -185,7 +185,6 @@
 					{
 						$customers.=makeoption($row_customer['name'].' '.$row_customer['surname'].' ('.$row_customer['loginname'].')',$row_customer['customerid']);
 					}
-					$result['domain'] = $idna_convert->decode($result['domain']);
 					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
 					$safemode=makeyesno('safemode', '1', '0', '1');
 					$speciallogfile=makeyesno('speciallogfile', '1', '0', '0');
@@ -261,6 +260,7 @@
 				}
 				else
 				{
+					$result['domain'] = $idna_convert->decode($result['domain']);
 					$result['specialsettings'] = stripslashes($result['specialsettings']);
 					$openbasedir=makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 					$safemode=makeyesno('safemode', '1', '0', $result['safemode']);
