@@ -65,6 +65,14 @@
 		include('./updatesql_1.0-1.2.inc.php');
 	}
 
+	/**
+	 * Third case: We are updating from a version > 1.2-beta1
+	 */
+	if(substr($settings['panel']['version'], 0, 3) == '1.2')
+	{
+		include('./updatesql_1.2.inc.php');
+	}
+
 	header('Location: ../index.php');
  
 ?>
