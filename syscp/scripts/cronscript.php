@@ -251,11 +251,11 @@
 					fclose($htpasswd_file_handler);
 				}
 
-				if($htaccess_file == '' && file_exists($row['data']['path']).'.htaccess')
+				if($htaccess_file == '' && file_exists($row['data']['path'].'.htaccess') )
 				{
 					unlink($row['data']['path'].'.htaccess');
 				}
-				if($htpasswd_file == '' && file_exists($row['data']['path']).'.htpasswd')
+				if($htpasswd_file == '' && file_exists($row['data']['path'].'.htpasswd') )
 				{
 					unlink($row['data']['path'].'.htpasswd');
 				}
