@@ -16,7 +16,12 @@
  * @package System
  * @version $Id$
  */
- 
+
+	if(@php_sapi_name() != 'cli' && @php_sapi_name() != 'cgi')
+	{
+		die('This script will only work in the shell.');
+	}
+
 	$lockfile='/tmp/syscp_cron.lock';
 	$pathtophpfiles='/var/www/syscp';
 
