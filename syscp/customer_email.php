@@ -105,7 +105,7 @@
 	
 						eval("\$mail_subject=\"".$lng['mails']['pop_success']['subject']."\";");
 						eval("\$mail_body=\"".$lng['mails']['pop_success']['mailbody']."\";");
-						mail("$email <$email>",$mail_subject,$mail_body,"From: {$settings['panel']['adminmail']} <{$settings['panel']['adminmail']}>\r\n");
+						mail("$destination <$destination>",$mail_subject,$mail_body,"From: {$settings['panel']['adminmail']} <{$settings['panel']['adminmail']}>\r\n");
 	
 						header("Location: $filename?page=$page&s=$s");
 					}
