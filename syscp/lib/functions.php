@@ -307,6 +307,7 @@
 	function webalizer_hist($logfile, $outputdir, $caption, $month = 0, $year = 0)
 	{
 		global $settings;
+
 		$httptraffic = 0;
 
 		$yesterday = time()-(60*60*24);
@@ -319,6 +320,7 @@
 			$year = date('Y',$yesterday);
 		}
 
+		$outputdir = makeCorrectDir ($outputdir);
 		if(!file_exists($outputdir))
 		{
 			exec('mkdir -p '.$outputdir);
@@ -357,8 +359,6 @@
 	 */
 	function makeCorrectDir($dir)
 	{
-		$dir = str_replace('..', '', $dir);
-		$dir = str_replace('//', '/', $dir);
 		if(substr($dir, -1, 1) != '/')
 		{
 			$dir .= '/';
@@ -367,6 +367,11 @@
 		{
 			$dir = '/'.$dir;
 		}
+
+		$search = Array ('/(\/)+/', '/(\.)+/');
+		$replace = Array ('/', '.');
+		$dir = preg_replace($search, $replace, $dir);
+
 		return $dir;
 	}
 
