@@ -195,6 +195,16 @@
 		}
 
 		/**
+		 * Returns the number of rows affected by last query
+		 *
+		 * @return int affected rows
+		 */
+		function affected_rows()
+		{
+			return mysql_affected_rows($this->link_id);
+		}
+
+		/**
 		 * Returns errordescription and errornumber if an error occured.
 		 *
 		 * @return int Errornumber

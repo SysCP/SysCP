@@ -55,7 +55,7 @@
 			}
 
 			$domains='';
-			$result=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `c`.`name`, `c`.`surname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' ORDER BY `$sortby` $sortorder");
+			$result=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `c`.`name`, `c`.`surname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."ORDER BY `$sortby` $sortorder");
 			while($row=$db->fetch_array($result))
 			{
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
@@ -65,15 +65,18 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `domain`, `customerid`, `documentroot`, `isemaildomain`, `zonefile` FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `domain`, `customerid`, `documentroot`, `isemaildomain`, `zonefile` FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
 			if($result['domain']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id' OR `parentdomainid`='".$result['id']."'");
+					$deleted_domains = $db->affected_rows();
+					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used` = `subdomains_used` - 0".($deleted_domains - 1)." WHERE `customerid` = '{$result['customerid']}'");
 					$db->query("DELETE FROM `".TABLE_POSTFIX_TRANSPORT."` WHERE `domainid`='$id'");
 					$db->query("DELETE FROM `".TABLE_POSTFIX_USERS."` WHERE `domainid`='$id'");
 					$db->query("DELETE FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `domainid`='$id'");
+					$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '{$userinfo['adminid']}'");
 
 					inserttask('1');
 					inserttask('4');
@@ -88,101 +91,125 @@
 
 		elseif($action=='add')
 		{
-			if(isset($_POST['send']) && $_POST['send']=='send')
+			if($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1')
 			{
-				$domain=addslashes($_POST['domain']);
-				$zonefile=addslashes($_POST['zonefile']);
-				$customerid=intval($_POST['customerid']);
-				$openbasedir=intval($_POST['openbasedir']);
-				$safemode=intval($_POST['safemode']);
-				$specialsettings=str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
-
-				$domain_check = $db->query_first("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '$domain'");
-
-				if($settings['system']['documentrootstyle'] == 'domain')
+				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
-					$documentroot = $customer['documentroot'].'/'.$domain;
-				}
-				elseif($_POST['documentroot'] == '')
-				{
-					$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
-					$documentroot = $customer['documentroot'];
-				}
-				else
-				{
-					$documentroot=addslashes($_POST['documentroot']);
-				}
-
-				$documentroot=str_replace('..','',$documentroot);
-				if(substr($documentroot, -1, 1) != '/')
-				{
-					$documentroot.='/';
-				}
-				if(substr($documentroot, 0, 1) != '/')
-				{
-					$documentroot='/'.$documentroot;
-				}
-
-				if($openbasedir != '1')
-				{
-					$openbasedir = '0';
-				}
-				if($safemode != '1')
-				{
-					$safemode = '0';
-				}
-
-				if($domain=='' || $documentroot=='' || $customerid==0 || $domain_check['domain'] == $domain)
-				{
-					standard_error('notallreqfieldsorerrors');
-					exit;
-				}
-				else
-				{
-					if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
+					$domain = addslashes($_POST['domain']);
+					$customerid = intval($_POST['customerid']);
+					if($userinfo['change_serversettings'] == '1')
 					{
-						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=$specialsettings;reallydoit=reallydoit");
-						exit;
+						$zonefile = addslashes($_POST['zonefile']);
+						$openbasedir = intval($_POST['openbasedir']);
+						$safemode = intval($_POST['safemode']);
+						$specialsettings = str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
+					}
+					else
+					{
+						$zonefile = '';
+						$openbasedir = '1';
+						$safemode = '1';
+						$specialsettings = '';
 					}
 
-					$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `specialsettings`) VALUES ('$domain', '$customerid', '$documentroot', '$zonefile', '1', '$openbasedir', '$safemode', '$specialsettings')");
-					$domainid=$db->insert_id();
-					$db->query("INSERT INTO `".TABLE_POSTFIX_TRANSPORT."` (`domain`, `destination`, `domainid`, `customerid`) VALUES ('$domain', 'virtual:', '$domainid', '$customerid')");
+					$domain_check = $db->query_first("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '$domain'");
 
-					inserttask('1');
-					inserttask('4');
+					if($settings['system']['documentrootstyle'] == 'domain')
+					{
+						$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
+						$documentroot = $customer['documentroot'].'/'.$domain;
+					}
+					elseif( (isset($_POST['documentroot']) && $_POST['documentroot'] == '') || $userinfo['change_serversettings'] != '1')
+					{
+						$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
+						$documentroot = $customer['documentroot'];
+					}
+					else
+					{
+						$documentroot=addslashes($_POST['documentroot']);
+					}
 
-					header("Location: $filename?page=$page&s=$s");
+					$documentroot=str_replace('..','',$documentroot);
+					if(substr($documentroot, -1, 1) != '/')
+					{
+						$documentroot.='/';
+					}
+					if(substr($documentroot, 0, 1) != '/')
+					{
+						$documentroot='/'.$documentroot;
+					}
+
+					if($openbasedir != '1')
+					{
+						$openbasedir = '0';
+					}
+					if($safemode != '1')
+					{
+						$safemode = '0';
+					}
+
+					if($domain=='' || $documentroot=='' || $customerid==0 || $domain_check['domain'] == $domain)
+					{
+						standard_error('notallreqfieldsorerrors');
+						exit;
+					}
+					else
+					{
+						if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
+						{
+							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=$specialsettings;reallydoit=reallydoit");
+							exit;
+						}
+
+						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$zonefile', '1', '$openbasedir', '$safemode', '$specialsettings')");
+						$domainid=$db->insert_id();
+						$db->query("INSERT INTO `".TABLE_POSTFIX_TRANSPORT."` (`domain`, `destination`, `domainid`, `customerid`) VALUES ('$domain', 'virtual:', '$domainid', '$customerid')");
+						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '{$userinfo['adminid']}'");
+
+						inserttask('1');
+						inserttask('4');
+
+						header("Location: $filename?page=$page&s=$s");
+					}
 				}
-			}
-			else
-			{
-				$customers='';
-				$result_customers=$db->query("SELECT `customerid`, `name`, `surname` FROM `".TABLE_PANEL_CUSTOMERS."` ORDER BY `name` ASC");
-				while($row_customer=$db->fetch_array($result_customers))
+				else
 				{
-					$customers.=makeoption($row_customer['name'].' '.$row_customer['surname'].' ('.$row_customer['customerid'].')',$row_customer['customerid']);
+					$customers='';
+					$result_customers=$db->query("SELECT `customerid`, `name`, `surname` FROM `".TABLE_PANEL_CUSTOMERS."` ".( $userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '{$userinfo['adminid']}' ")." ORDER BY `name` ASC");
+					while($row_customer=$db->fetch_array($result_customers))
+					{
+						$customers.=makeoption($row_customer['name'].' '.$row_customer['surname'].' ('.$row_customer['customerid'].')',$row_customer['customerid']);
+					}
+					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
+					$safemode=makeyesno('safemode', '1', '0', '1');
+					eval("echo \"".getTemplate("domains/domains_add")."\";");
 				}
-				$openbasedir=makeyesno('openbasedir', '1', '0', '1');
-				$safemode=makeyesno('safemode', '1', '0', '1');
-				eval("echo \"".getTemplate("domains/domains_add")."\";");
 			}
 		}
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`specialsettings`, `c`.`name`, `c`.`surname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' AND `id`='$id'");
+			$result=$db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`specialsettings`, `c`.`name`, `c`.`surname` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isemaildomain`='1' AND `d`.`id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' "));
 			if($result['domain']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$zonefile=addslashes($_POST['zonefile']);
-					$openbasedir=intval($_POST['openbasedir']);
-					$safemode=intval($_POST['safemode']);
-					$specialsettings=str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
+					if($userinfo['change_serversettings'] == '1')
+					{
+						$zonefile = addslashes($_POST['zonefile']);
+						$openbasedir = intval($_POST['openbasedir']);
+						$safemode = intval($_POST['safemode']);
+						$specialsettings = str_replace("\r\n", "\n", addslashes($_POST['specialsettings']));
+					}
+					else
+					{
+						$zonefile = '';
+						$openbasedir = '1';
+						$safemode = '1';
+						$specialsettings = '';
+					}
 
-					if($settings['system']['documentrootstyle'] == 'customer')
+					if($settings['system']['documentrootstyle'] == 'customer' && $userinfo['change_serversettings'] == '1')
 					{
 						$documentroot = addslashes($_POST['documentroot']);
 						if($documentroot=='')

@@ -15,11 +15,11 @@ $header
        <td class="maintable">Domain:</td>
        <td class="maintable" nowrap><input type="text" name="domain" value=""></td>
       </tr>
-      <if $settings['system']['documentrootstyle'] == 'customer'><tr>
+      <if $settings['system']['documentrootstyle'] == 'customer' && $userinfo['change_serversettings'] == '1'><tr>
        <td class="maintable" nowrap>DocumentRoot:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="documentroot" value=""></td>
       </tr></if>
-      <tr>
+      <if $userinfo['change_serversettings'] == '1'><tr>
        <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="zonefile" value=""></td>
       </tr>
@@ -34,7 +34,7 @@ $header
       <tr>
        <td class="maintable" nowrap>{$lng['admin']['ownvhostsettings']}:</td>
        <td class="maintable" nowrap><textarea rows="4" cols="30" name="specialsettings"></textarea></td>
-      </tr>
+      </tr></if>
       <tr>
        <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['panel']['save']}"></td>
       </tr>

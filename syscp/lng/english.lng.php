@@ -145,6 +145,8 @@ $lng['error']['ftp_cantdeletemainaccount'] = 'You cannot delete your main FTP-ac
 $lng['error']['login'] = 'The username or password you typed in is wrong. Please try it again!';
 $lng['error']['notallreqfieldsorerrors'] = 'You have not filled in all or filled in some fields incorrectly.';
 $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
+$lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more ressources than you own for yourself.';
+$lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
 
 /**
  * Questions
@@ -153,6 +155,7 @@ $lng['question']['question'] = 'Securityquestion';
 $lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete this customer? This cannot be undone!';
 $lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete this domain?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to deactivate these Securitysettings (OpenBasedir and/or SafeMode)?';
+$lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete this admin? Every customer and domain will be reallocated to the mainadmin.';
 $lng['question']['domains_reallydelete'] = 'Do you really want to delete this domain?';
 $lng['question']['email_reallydelete_forwarders'] = 'Do you really want to delete this forwarder?';
 $lng['question']['email_reallydelete_pop'] = 'Do you really want to delete this email-account?';
@@ -186,6 +189,13 @@ $lng['admin']['customer_edit'] = 'Edit customer';
 $lng['admin']['domains'] = 'Domains';
 $lng['admin']['domain_add'] = 'Create domain';
 $lng['admin']['domain_edit'] = 'Edit domain';
+$lng['admin']['admin'] = 'Admin';
+$lng['admin']['admins'] = 'Admins';
+$lng['admin']['admin_add'] = 'Create admin';
+$lng['admin']['admin_edit'] = 'Edit admin';
+$lng['admin']['customers_see_all'] = 'Can see all customers?';
+$lng['admin']['domains_see_all'] = 'Can see all domains?';
+$lng['admin']['change_serversettings'] = 'Can change serversettings?';
 $lng['admin']['serversettings'] = 'Serversettings';
 $lng['admin']['stdsubdomain'] = 'Standardsubdomain';
 $lng['admin']['stdsubdomain_add'] = 'Create standardsubdomain';
