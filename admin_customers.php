@@ -65,7 +65,7 @@
 				$row['deactivated'] = str_replace('0', $lng['panel']['yes'], $row['deactivated']);
 				$row['deactivated'] = str_replace('1', $lng['panel']['no'], $row['deactivated']);
 
-				if($row['traffic_used']>$row['traffic'])
+				if($row['traffic_used'] > $row['traffic'] && $row['traffic'] != '-1')
 				{
 					$row['traffic_color']='red';
 				}
@@ -74,7 +74,7 @@
 					$row['traffic_color']='';
 				}
 
-				if($row['diskspace_used']>$row['diskspace'])
+				if($row['diskspace_used'] > $row['diskspace'] && $row['diskspace'] != '-1')
 				{
 					$row['diskspace_color']='red';
 				}
@@ -82,6 +82,8 @@
 				{
 					$row['diskspace_color']='';
 				}
+
+				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_forwarders ftps subdomains');
 
 				eval("\$customers.=\"".getTemplate("customers/customers_customer")."\";");
 			}

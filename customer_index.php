@@ -44,10 +44,12 @@
 /*		$traffic=$db->query_first("SELECT SUM(http) AS http_sum, SUM(ftp_up) AS ftp_up_sum, SUM(ftp_down) AS ftp_down_sum, SUM(mail) AS mail_sum FROM ".TABLE_PANEL_TRAFFIC." WHERE year='".date('Y')."' AND month='".date('m')."' AND day<='".date('d')."' AND customerid='".$userinfo['customerid']."'");
 		$userinfo['traffic_used']=$traffic['http_sum']+$traffic['ftp_up_sum']+$traffic['ftp_down_sum']+$traffic['mail_sum'];*/
 
-		$userinfo['diskspace']=round($userinfo['diskspace']/1024,4).' MB';
-		$userinfo['diskspace_used']=round($userinfo['diskspace_used']/1024,4).' MB';
-		$userinfo['traffic']=round($userinfo['traffic']/(1024*1024),4).' GB';
-		$userinfo['traffic_used']=round($userinfo['traffic_used']/(1024*1024),4).' GB';
+		$userinfo['diskspace']=round($userinfo['diskspace']/1024,4);
+		$userinfo['diskspace_used']=round($userinfo['diskspace_used']/1024,4);
+		$userinfo['traffic']=round($userinfo['traffic']/(1024*1024),4);
+		$userinfo['traffic_used']=round($userinfo['traffic_used']/(1024*1024),4);
+
+		$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'diskspace traffic mysqls emails email_forwarders ftps subdomains');
 
 		eval("echo \"".getTemplate("index/index")."\";");
 	}
