@@ -10,7 +10,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['admin']['customer']}:</td>
-       <td class="maintable" nowrap>{$result['name']} {$result['surname']} ({$result['customerid']})</td>
+       <td class="maintable" nowrap>{$result['name']} {$result['surname']} ({$result['loginname']})</td>
       </tr>
       <tr>
        <td class="maintable">Domain:</td>
