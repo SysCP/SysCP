@@ -441,14 +441,20 @@
 		}
 	}
 
-	/**
+	/******************************************************
 	 * Wrapper around the exec command.
 	 * 
 	 * @author Martin Burchert
-	 * @version 1.0
+	 * @version 1.2
 	 * @param string exec_string String to be executed
 	 * @return string The result of the exec()
-	 */
+	 *
+	 * History:
+	 ******************************************************
+	 * 1.0 : Initial Version 
+	 * 1.1 : Added |,&,>,<,`,*,$,~,? as security breaks.
+	 * 1.2 : Removed * as security break
+	 ******************************************************/
 	function safe_exec($exec_string)
 	{
 		global $settings;
@@ -462,9 +468,17 @@
 		//
 		// check for ; in execute command
 		//
-		if (stristr($exec_string,';'))
+		if ((stristr($exec_string,';')) or
+			(stristr($exec_string,'|')) or
+			(stristr($exec_string,'&')) or
+			(stristr($exec_string,'>')) or
+			(stristr($exec_string,'<')) or
+			(stristr($exec_string,'`')) or
+			(stristr($exec_string,'$')) or
+			(stristr($exec_string,'~')) or
+			(stristr($exec_string,'?')) )
 		{ 
-			die ("SECURITY CHECK FAILED!\n';' not allowed in $exec_string!\nPlease check your whole server for security problems by hand!\n");
+			die ("SECURITY CHECK FAILED!\n' The execute string $exec_string is a possible security risk!\nPlease check your whole server for security problems by hand!\n");
 		}
 		//
 		// check if command is allowed here 
