@@ -38,7 +38,9 @@
 					'commands' => Array
 					(
 						'echo "Include /etc/apache/vhosts.conf" >> /etc/apache/httpd.conf',
-						'touch /etc/apache/vhosts.conf'
+						'touch /etc/apache/vhosts.conf',
+						'mkdir -p '.$settings['system']['documentroot_prefix'],
+						'mkdir -p '.$settings['system']['logfiles_directory']
 					),
 					'restart' => Array
 					(
@@ -95,7 +97,11 @@
 						'mkdir -p /var/spool/postfix/etc/pam.d',
 						'mkdir -p /var/spool/postfix/lib/security',
 						'mkdir -p /var/spool/postfix/var/run/mysqld',
-						'cp /lib/security/pam_mysql.so /var/spool/postfix/lib/security/'
+						'cp /lib/security/pam_mysql.so /var/spool/postfix/lib/security/',
+						'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
+						'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
+						'mkdir -p '.$settings['system']['vmail_homedir'],
+						'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
 					),
 					'restart' => Array
 					(
@@ -140,7 +146,9 @@
 					'commands' => Array
 					(
 						'echo "Include /etc/apache/vhosts.conf" >> /etc/apache/httpd.conf',
-						'touch /etc/apache/vhosts.conf'
+						'touch /etc/apache/vhosts.conf',
+						'mkdir -p '.$settings['system']['documentroot_prefix'],
+						'mkdir -p '.$settings['system']['logfiles_directory']
 					),
 					'restart' => Array
 					(
@@ -195,6 +203,10 @@
 						'mkdir -p /etc/postfix/sasl',
 						'mkdir -p /var/spool/postfix/etc/pam.d',
 						'mkdir -p /var/spool/postfix/var/run/mysqld',
+						'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
+						'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
+						'mkdir -p '.$settings['system']['vmail_homedir'],
+						'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
 					),
 					'restart' => Array
 					(
