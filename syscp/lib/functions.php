@@ -597,16 +597,18 @@
 	 * 
 	 * @author Martin Burchert <eremit@adm1n.de>
 	 * @version 1.0
+	 * @param string s The session-id of the user
 	 * @param array userinfo the userinfo of the user
 	 * @return string the content of the navigation bar
 	 *
 	 * History:
 	 ******************************************************
 	 * 1.0 : Initial Version 
+	 * 1.1 : Added new_window and required_resources (flo)
 	 ******************************************************/
-	function getNavigation($s)
+	function getNavigation($s, $userinfo)
 	{
-		global $db, $lng, $userinfo;
+		global $db, $lng;
 		
 		$return = '';
 		//

@@ -75,7 +75,6 @@
 	 */
 	$remote_addr = htmlspecialchars($_SERVER['REMOTE_ADDR']);
 	$http_user_agent = htmlspecialchars($_SERVER['HTTP_USER_AGENT']);
-	$nosession = 0;
 	unset($userinfo);
 	unset($userid);
 	unset($customerid);
@@ -85,10 +84,12 @@
 	if(isset($_POST['s']))
 	{
 		$s = $_POST['s'];
+		$nosession = 0;
 	}
 	elseif(isset($_GET['s']))
 	{
 		$s = $_GET['s'];
+		$nosession = 0;
 	}
 	else
 	{
@@ -99,6 +100,7 @@
 	$timediff = time() - $settings['session']['sessiontimeout'];
 	$db->query( 'DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `lastactivity` < "' . $timediff . '"' ) ;
 
+	$userinfo = Array();
 	if(isset($s) && $s != "" && $nosession != 1)
 	{
 		$query = 'SELECT `s`.*, `u`.* ' .
@@ -210,7 +212,7 @@
 	/**
 	 * Fills variables for navigation, header and footer
 	 */
-	$navigation = getNavigation($s);
+	$navigation = getNavigation($s, $userinfo);
 	eval("\$header = \"".getTemplate('header', '1')."\";");
 	eval("\$footer = \"".getTemplate('footer', '1')."\";");
 
