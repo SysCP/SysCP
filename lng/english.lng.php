@@ -105,7 +105,8 @@ $lng['domains']['description'] = 'Here you can create (Sub-)Domains and change t
 $lng['domains']['domainsettings'] = 'Domainsettings';
 $lng['domains']['domainname'] = 'Domainname';
 $lng['domains']['subdomain_add'] = 'Create subdomain';
-$lng['domains']['subdomain_edit'] = 'Edit subdomain';
+$lng['domains']['subdomain_edit'] = 'Edit (sub)domain';
+$lng['domains']['wildcarddomain'] = 'Create as wildcarddomain?';
 
 /**
  * eMails
@@ -146,6 +147,7 @@ $lng['extras']['pathoptions_edit'] = 'edit path options';
 $lng['error']['error'] = 'Error';
 $lng['error']['directorymustexist'] = 'The directory you typed in has to exist. Please create it with your FTP-programme.';
 $lng['error']['domains_cantdeletemaindomain'] = 'You cannot delete a domain which is used as an email-domain.';
+$lng['error']['firstdeleteallsubdomains'] = 'You have to delete all Subdomains first before you can create a wildcarddomain.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'You cannot delete your main FTP-account';
 $lng['error']['login'] = 'The username or password you typed in is wrong. Please try it again!';
 $lng['error']['login_blocked'] = 'This account has been suspended because of too many loginerrors. <br />Please try again in '.$settings['login']['deactivatetime'].' seconds.';
