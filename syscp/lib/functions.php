@@ -104,26 +104,28 @@
 	 * @param string The question
 	 * @param string File which will be called with POST if user clicks yes
 	 * @param string Values which will be given to $yesfile. Format: 'variable1=value1;variable2=value2;variable3=value3'
+	 * @param string Name of the target eg Domain or eMail address etc.
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	function ask_yesno($text,$yesfile,$params='')
+	function ask_yesno ( $text , $yesfile , $params = '' , $targetname = '')
 	{
-		global $userinfo,$tpl,$db,$s,$header,$footer,$lng;
-		$hiddenparams='';
-		if(isset($params))
+		global $userinfo , $tpl , $db , $s , $header , $footer , $lng ;
+		$hiddenparams = '' ;
+		if ( isset ( $params ) )
 		{
-			$params=explode(';',$params);
-			while(list(,$param)=each($params))
+			$params = explode ( ';' , $params ) ;
+			while ( list ( ,$param ) =each ( $params ) )
 			{
-				$param=explode('=',$param);
-				$hiddenparams.="<input type=\"hidden\" name=\"$param[0]\" value=\"$param[1]\">\n";
+				$param = explode ( '=' , $param ) ;
+				$hiddenparams .= "<input type=\"hidden\" name=\"$param[0]\" value=\"$param[1]\">\n" ;
 			}
 		}
-		if(isset($lng['question'][$text]))
+		if ( isset ( $lng['question'][$text] ) )
 		{
-			$text = $lng['question'][$text];
+			$text = $lng['question'][$text] ;
 		}
-		eval("echo \"".getTemplate('misc/question_yesno','1')."\";");
+		$text = str_replace ( '%s' , $targetname , $text ) ;
+		eval ( "echo \"".getTemplate('misc/question_yesno','1')."\";" ) ;
 	}
 
 	/**

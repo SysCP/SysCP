@@ -64,7 +64,7 @@
 				}
 				else
 				{
-					ask_yesno('extras_reallydelete', $filename, "id=$id;page=$page;action=$action");
+					ask_yesno('extras_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['username'] . ' (' . $result['path'] . ')' );
 				}
 			}
 		}
@@ -158,7 +158,7 @@
 				}
 				else
 				{
-					ask_yesno('extras_reallydelete_pathoptions', $filename, "id=$id;page=$page;action=$action");
+					ask_yesno('extras_reallydelete_pathoptions', $filename, "id=$id;page=$page;action=$action", $result['path']);
 				}
 			}
 		}

@@ -90,7 +90,7 @@
 				}
 				else 
 				{
-					ask_yesno('mysql_reallydelete', $filename, "id=$id;page=$page;action=$action");
+					ask_yesno('mysql_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['databasename']);
 				}
 			}
 		}

@@ -162,17 +162,17 @@ $lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&o
  * Questions
  */
 $lng['question']['question'] = 'Sicherheitsfrage';
-$lng['question']['admin_customer_reallydelete'] = 'Wollen Sie diesen Kunden wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
-$lng['question']['admin_domain_reallydelete'] = 'Wollen Sie diese Domain wirklich l&ouml;schen?';
+$lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
+$lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';
-$lng['question']['admin_admin_reallydelete'] = 'Wollen Sie diesen Admin wirklich l&ouml;schen? Alle Kunden und Domains werden dem Hauptadmin zugeteilt.';
-$lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain wirklich l&ouml;schen?';
-$lng['question']['email_reallydelete_forwarders'] = 'Wollen Sie die Weiterleitung wirklich l&ouml;schen?';
-$lng['question']['email_reallydelete_pop'] = 'Wollen Sie die eMail-Adresse wirklich l&ouml;schen?';
-$lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz wirklich l&ouml;schen?';
-$lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen für diesen Pfad wirklich löschen?';
-$lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account wirklich l&ouml;schen?';
-$lng['question']['mysql_reallydelete'] = 'Wollen Sie diese Datenbank wirklich l&ouml;schen? ACHTUNG! Alle Daten gehen unwiederruflich verloren!';
+$lng['question']['admin_admin_reallydelete'] = 'Wollen Sie den Admin %s wirklich l&ouml;schen?<br />Alle Kunden und Domains werden dem Hauptadmin zugeteilt.';
+$lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
+$lng['question']['email_reallydelete_forwarders'] = 'Wollen Sie die Weiterleitung %s wirklich l&ouml;schen?';
+$lng['question']['email_reallydelete_pop'] = 'Wollen Sie die eMail-Adresse %s wirklich l&ouml;schen?';
+$lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz f&uuml;r %s wirklich l&ouml;schen?';
+$lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen für den Pfad %s wirklich löschen?';
+$lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account %s wirklich l&ouml;schen?';
+$lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren!';
 
 /**
  * Mails

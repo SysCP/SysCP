@@ -140,7 +140,7 @@
 					header("Location: $filename?page=$page&s=$s");
 				}
 				else {
-					ask_yesno('admin_customer_reallydelete', $filename, "id=$id;page=$page;action=$action");
+					ask_yesno('admin_customer_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['loginname']);
 				}
 			}
 		}
