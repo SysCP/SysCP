@@ -19,6 +19,11 @@
 
 	$filename = basename($_SERVER['PHP_SELF']);
 
+	if(!file_exists('./lib/userdata.inc.php'))
+	{
+		die('You have to <a href="./install/install.php">configure</a> SysCP first!');
+	}
+
 	/**
 	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
