@@ -150,7 +150,7 @@
 					{
 						$documentroot.='/';
 					}
-					if ( ( substr($documentroot, 0, 1) != '/') && ( substr($documentroot,0 ,7) != 'http://') )
+					if ( ( substr($documentroot, 0, 1) != '/') && !preg_match('/^https?\:\/\//', $documentroot) )
 					{
 						$documentroot='/'.$documentroot;
 					}
@@ -237,7 +237,9 @@
 							$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
 							$documentroot=$customer['documentroot'];
 						}
-						$documentroot = makeCorrectDir($documentroot);
+						if(!preg_match('/^https?\:\/\//', $documentroot)) {
+							$documentroot = makeCorrectDir($documentroot);
+						}
 					}
 					else
 					{
