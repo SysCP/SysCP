@@ -41,7 +41,7 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `domain` ASC");
+			$result=$db->query("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `iswildcarddomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `domain` ASC");
 			$domains='';
 			$emaildomains_count=0;
 			$domains_count=0;
@@ -49,7 +49,7 @@
 			{
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
-				if($row['isemaildomain'])
+				if($row['isemaildomain'] == '1' && $row['iswildcarddomain'] != '1')
 				{
 					$emaildomains_count++;
 				}

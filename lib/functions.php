@@ -358,6 +358,7 @@
 	function makeCorrectDir($dir)
 	{
 		$dir = str_replace('..', '', $dir);
+		$dir = str_replace('//', '/', $dir);
 		if(substr($dir, -1, 1) != '/')
 		{
 			$dir .= '/';
