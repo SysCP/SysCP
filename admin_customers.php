@@ -199,7 +199,8 @@
 						{
 							$loginname = addslashes($_POST['loginname']);
 							$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='".$loginname."'");
-							if($loginname_check['loginname'] == $loginname)
+							$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
+							if($loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname)
 							{
 								standard_error('notallreqfieldsorerrors');
 							}
