@@ -155,29 +155,56 @@
 		elseif($row['type'] == '3')
 		{
 			$debugMsg[] = '  cron_tasks: Task3 started - create/change/del htaccess/htpasswd';
-			if(is_array($row['data']))
+			if ( is_array($row['data']) )
 			{
-				$path=$row['data']['path'];
-				$debugMsg[] = '  cron_tasks: Task3 - Path: '.$path;
+				$path = $row['data']['path'];
+						$debugMsg[] = '  cron_tasks: Task3 - Path: '.$path;
 				
-				$htpasswd_file='';
-				$htaccess_file='';
-				$row_htaccess = $db->query_first("SELECT `options_indexes` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path` = '".$row['data']['path']."'");
-				if($row_htaccess['options_indexes'] == '1')
+				$htpasswd_file = '';
+				$htaccess_file = '';
+				$row_htaccess  = $db->query_first(
+					'SELECT * ' .
+					'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
+					'WHERE `path` = "'.$row['data']['path'].'"'
+				);
+				
+				if ( $row_htaccess['options_indexes'] == '1' )
 				{
-					$debugMsg[] = '  cron_tasks: Task3 - Setting Options Indexes';
 					$htaccess_file .= 'Options Indexes'."\n";
+							$debugMsg[] = '  cron_tasks: Task3 - Setting Options Indexes';
 				}
-				$result_htpasswd = $db->query("SELECT `username`, `password` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `path` = '".$row['data']['path']."'");
-				if($db->num_rows($result_htpasswd) != 0)
+				if ( $row_htaccess['error404path'] != '')
 				{
-					$debugMsg[] = '  cron_tasks: Task3 - Setting Password';
-					$htaccess_file.='AuthType Basic'."\n";
-					$htaccess_file.='AuthName "Restricted Area"'."\n";
-					$htaccess_file.='AuthUserFile '.$row['data']['path'].'.htpasswd'."\n";
-					$htaccess_file.='require valid-user'."\n";
+					$htaccess_file .= 'ErrorDocument 404 '.$row_htaccess['error404path']."\n";
+				}
+				if ( $row_htaccess['error403path'] != '')
+				{
+					$htaccess_file .= 'ErrorDocument 403 '.$row_htaccess['error403path']."\n";
+				}
+				if ( $row_htaccess['error401path'] != '')
+				{
+					$htaccess_file .= 'ErrorDocument 401 '.$row_htaccess['error401path']."\n";
+				}
+				if ( $row_htaccess['error500path'] != '')
+				{
+					$htaccess_file .= 'ErrorDocument 500 '.$row_htaccess['error500path']."\n";
+				}
+			
+				
+				$result_htpasswd = $db->query(
+					'SELECT `username`, `password` ' .
+					'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
+					'WHERE `path` = "'.$row['data']['path'].'"'
+				);
+				if ( $db->num_rows($result_htpasswd) != 0 )
+				{
+							$debugMsg[] = '  cron_tasks: Task3 - Setting Password';
+					$htaccess_file .= 'AuthType Basic'."\n";
+					$htaccess_file .= 'AuthName "Restricted Area"'."\n";
+					$htaccess_file .= 'AuthUserFile '.$row['data']['path'].'.htpasswd'."\n";
+					$htaccess_file .= 'require valid-user'."\n";
 	
-					while($row_htpasswd = $db->fetch_array($result_htpasswd))
+					while ($row_htpasswd = $db->fetch_array($result_htpasswd))
 					{
 						$htpasswd_file .= $row_htpasswd['username'].':'.$row_htpasswd['password']."\n";
 					}

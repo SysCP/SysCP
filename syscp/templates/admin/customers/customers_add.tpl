@@ -9,7 +9,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['login']}: *</td>
-       <td class="maintable" nowrap><input type="text" name="loginname" value=""></td>
+       <td class="maintable" nowrap><input type="text" name="loginname" value="" maxlength="10"></td>
       </tr>
       <tr>
        <td class="maintable">{$lng['customer']['name']}: *</td>

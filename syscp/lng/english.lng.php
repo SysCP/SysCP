@@ -144,12 +144,20 @@ $lng['extras']['view_directory'] = 'display directory content';
 $lng['extras']['pathoptions_add'] = 'add path options';
 $lng['extras']['directory_browsing'] = 'directory content browsing';
 $lng['extras']['pathoptions_edit'] = 'edit path options';
-
+$lng['extras']['error404path'] = '404';
+$lng['extras']['error403path'] = '403';
+$lng['extras']['error500path'] = '500';
+$lng['extras']['error401path'] = '401';
+$lng['extras']['errordocument404path'] = 'Path to ErrorDocument 404';
+$lng['extras']['errordocument403path'] = 'Path to ErrorDocument 403';
+$lng['extras']['errordocument500path'] = 'Path to ErrorDocument 500';
+$lng['extras']['errordocument401path'] = 'Path to ErrorDocument 401';
 /**
  * Errors
  */
 $lng['error']['error'] = 'Error';
 $lng['error']['directorymustexist'] = 'The directory you typed in has to exist. Please create it with your FTP client.';
+$lng['error']['filemustexist'] = 'The file you typed in has to exist.';
 $lng['error']['domains_cantdeletemaindomain'] = 'You cannot delete a domain which is used as an email-domain.';
 $lng['error']['firstdeleteallsubdomains'] = 'You have to delete all Subdomains first before you can create a wildcard domain.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'You cannot delete your main FTP account';

@@ -426,6 +426,30 @@
 		return $dir;
 	}
 
+ 	/**
+ 	 * Function which returns a correct filename, means to add a slash at the beginning if not there and to remove all ..'s
+ 	 *
+ 	 * @param string filename the filename
+ 	 * @return string the corrected filename
+ 	 * @author Florian Lippert <flo@redenswert.de>,
+ 	 * @author Michael Russ <mr@edvruss.com>
+ 	 * @author Martin Burchert <eremit@adm1n.de>
+ 	 * 
+ 	 */
+ 	function makeCorrectFile($filename)
+ 	{
+		if ( substr($filename, 0, 1) != '/' )
+		{
+			$dir = '/'.$dir;
+		}
+ 
+		$search   = Array ('/(\/)+/', '/(\.)+/');
+		$replace  = Array ('/', '.');
+		$filename = preg_replace($search, $replace, $filename);
+
+		return $filename;
+	}
+
 	/**
 	 * Function which updates all counters of used ressources in panel_admins and panel_customers
 	 * 
@@ -704,7 +728,7 @@
 	 *
 	 * @param string The username to check
 	 * @return bool Correct or not
-	 * @author Michael Dürgner <michael@duergner.com>
+	 * @author Michael D?rgner <michael@duergner.com>
 	 */
 	function check_username($username) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*[a-zA-Z0-9\-\_\$]$/",$username);
@@ -717,7 +741,7 @@
 	 *
 	 * @param string The username to check
 	 * @return bool Correct or not
-	 * @author Michael Dürgner <michael@duergner.com>
+	 * @author Michael D?rgner <michael@duergner.com>
 	 */
 	function check_username_prefix($username_prefix) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*$/",$username_prefix);
