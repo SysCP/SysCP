@@ -82,6 +82,7 @@ $lng['menue']['ftp']['ftp'] = 'FTP';
 $lng['menue']['ftp']['accounts'] = 'Accounts';
 $lng['menue']['extras']['extras'] = 'Extras';
 $lng['menue']['extras']['directoryprotection'] = 'Verzeichnisschutz';
+$lng['menue']['extras']['pathoptions'] = 'Pfadoptionen';
 
 /**
  * Index
@@ -134,6 +135,10 @@ $lng['mysql']['database_create'] = 'Datenbank anlegen';
  */
 $lng['extras']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche Extras einrichten, wie zum Beispiel Verzeichnisschutz.<br />Die &Auml;nderungen sind erst nach einer bestimmten Zeit wirksam.';
 $lng['extras']['directoryprotection_add'] = 'Verzeichnisschutz anlegen';
+$lng['extras']['view_directory'] = 'Verzeichnis anzeigen';
+$lng['extras']['pathoptions_add'] = 'Pfadoptionen hinzufügen';
+$lng['extras']['directory_browsing'] = 'Verzeichnisinhalt anzeigen';
+$lng['extras']['pathoptions_edit'] = 'Pfadoptionen bearbeiten';
 
 /**
  * Errors
@@ -160,6 +165,7 @@ $lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain wirklich l&oum
 $lng['question']['email_reallydelete_forwarders'] = 'Wollen Sie die Weiterleitung wirklich l&ouml;schen?';
 $lng['question']['email_reallydelete_pop'] = 'Wollen Sie die eMail-Adresse wirklich l&ouml;schen?';
 $lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz wirklich l&ouml;schen?';
+$lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen für diesen Pfad wirklich löschen?';
 $lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account wirklich l&ouml;schen?';
 $lng['question']['mysql_reallydelete'] = 'Wollen Sie diese Datenbank wirklich l&ouml;schen? ACHTUNG! Alle Daten gehen unwiederruflich verloren!';
 

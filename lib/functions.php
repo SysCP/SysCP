@@ -307,6 +307,7 @@
 	function webalizer_hist($logfile, $documentroot, $caption, $month = 0, $year = 0)
 	{
 		global $settings;
+		$httptraffic = 0;
 
 		$yesterday = time()-(60*60*24);
 		if($month == 0)

@@ -21,6 +21,7 @@ define('TABLE_PANEL_ADMINS','panel_admins');
 define('TABLE_PANEL_CUSTOMERS','panel_customers');
 define('TABLE_PANEL_DATABASES','panel_databases');
 define('TABLE_PANEL_DOMAINS','panel_domains');
+define('TABLE_PANEL_HTACCESS','panel_htaccess');
 define('TABLE_PANEL_HTPASSWDS','panel_htpasswds');
 define('TABLE_PANEL_SESSIONS','panel_sessions');
 define('TABLE_PANEL_SETTINGS','panel_settings');

@@ -185,7 +185,7 @@
 		}
 
 		/**
-		 * TYPE=3 MEANS TO CREATE/CHANGE/DELETE A HTACCESS AND HTPASSWD
+		 * TYPE=3 MEANS TO CREATE/CHANGE/DELETE A HTACCESS AND/OR HTPASSWD
 		 */
 		elseif($row['type'] == '3')
 		{
@@ -193,31 +193,47 @@
 			{
 				$path=$row['data']['path'];
 				$htpasswd_file='';
-				$result_sub=$db->query("SELECT `username`, `password` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `path` = '".$row['data']['path']."'");
-				if($db->num_rows($result_sub) != 0)
+				$htaccess_file='';
+				$row_htaccess = $db->query_first("SELECT `options_indexes` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path` = '".$row['data']['path']."'");
+				if($row_htaccess['options_indexes'] == '1')
 				{
-					$htaccess_file='AuthType Basic'."\n";
+					$htaccess_file .= 'Options Indexes'."\n";
+				}
+				$result_htpasswd = $db->query("SELECT `username`, `password` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `path` = '".$row['data']['path']."'");
+				if($db->num_rows($result_htpasswd) != 0)
+				{
+					$htaccess_file.='AuthType Basic'."\n";
 					$htaccess_file.='AuthName "Restricted Area"'."\n";
 					$htaccess_file.='AuthUserFile '.$row['data']['path'].'.htpasswd'."\n";
 					$htaccess_file.='require valid-user'."\n";
-
+	
+					while($row_htpasswd = $db->fetch_array($result_htpasswd))
+					{
+						$htpasswd_file .= $row_htpasswd['username'].':'.$row_htpasswd['password']."\n";
+					}
+				}
+				if ($htaccess_file != '')
+				{
 					$htaccess_file_handler = fopen($row['data']['path'].'.htaccess', 'w');
 					fwrite($htaccess_file_handler, $htaccess_file);
 					fclose($htaccess_file_handler);
-	
-					while($row_sub=$db->fetch_array($result_sub))
-					{
-						$htpasswd_file.=$row_sub['username'].':'.$row_sub['password']."\n";
-					}
-
+				}
+				if ($htpasswd_file != '')
+				{
 					$htpasswd_file_handler = fopen($row['data']['path'].'.htpasswd', 'w');
 					fwrite($htpasswd_file_handler, $htpasswd_file);
 					fclose($htpasswd_file_handler);
 				}
-				else
+				if ($htaccess_file == '' && $htpasswd_file == '')
 				{
-					unlink($row['data']['path'].'.htaccess');
-					unlink($row['data']['path'].'.htpasswd');
+					if (file_exists($row['data']['path']).'.htaccess')
+					{
+						unlink($row['data']['path'].'.htaccess');
+					}
+					if (file_exists($row['data']['path']).'.htpasswd')
+					{
+						unlink($row['data']['path'].'.htpasswd');
+					}
 				}
 			}
 		}
