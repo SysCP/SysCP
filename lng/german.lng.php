@@ -178,7 +178,7 @@ $lng['question']['mysql_reallydelete'] = 'Wollen Sie diese Datenbank wirklich l&
  * Mails
  */
 $lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr eMail-Konto $destination\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
-$lng['mails']['pop_success']['subject'] = 'POP3-Konto erfolgreich eingerichtet';
+$lng['mails']['pop_success']['subject'] = 'eMail-Konto erfolgreich eingerichtet';
 $lng['mails']['createcustomer']['mailbody'] = 'Hallo $surname $name,\n\nhier ihre Accountinformationen:\n\nBenutzername: $loginname\nPassword: $password\n\nVielen Dank,\nIhr SysCP-Team';
 $lng['mails']['createcustomer']['subject'] = 'Accountinformationen';
 
