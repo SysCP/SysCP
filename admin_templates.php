@@ -45,7 +45,7 @@
 			);
 			
 			$templates_array=array();
-			$result=$db->query("SELECT `id`, `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE ".(($userinfo['change_serversettings']!=1) ? "`adminid`='{$userinfo['adminid']}' AND " : "" )."`templategroup`='mails' ORDER BY `language`, `varname`");
+			$result=$db->query("SELECT `id`, `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='{$userinfo['adminid']}' AND `templategroup`='mails' ORDER BY `language`, `varname`");
 			while($row=$db->fetch_array($result))
 			{
 				$parts=array();
@@ -84,12 +84,12 @@
 
 		elseif($action=='delete' && $subjectid!=0 && $mailbodyid!=0 && $userinfo['adminid'] != '1')
 		{
-			$result=$db->query_first("SELECT `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `id`='$subjectid'");
+			$result=$db->query_first("SELECT `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
 			if($result['varname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_PANEL_TEMPLATES."` WHERE `id`='$subjectid' OR `id`='$mailbodyid'");
+					$db->query("DELETE FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND (`id`='$subjectid' OR `id`='$mailbodyid')");
 					header("Location: $filename?page=$page&s=$s");
 				}
 				else
@@ -186,7 +186,7 @@
 
 		elseif($action=='edit')
 		{
-			$result=$db->query_first("SELECT `language`, `varname`, `value` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `id`='$subjectid'");
+			$result=$db->query_first("SELECT `language`, `varname`, `value` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
 			if($result['varname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
@@ -202,8 +202,8 @@
 					}
 					else
 					{
-						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$subject' WHERE `id`='$subjectid'");
-						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$mailbody' WHERE `id`='$mailbodyid'");
+						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$subject' WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
+						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$mailbody' WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$mailbodyid'");
 
 						header("Location: $filename?page=$page&s=$s");
 					}
