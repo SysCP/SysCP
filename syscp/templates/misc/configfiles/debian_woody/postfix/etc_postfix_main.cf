@@ -11,6 +11,7 @@ mydomain = <SERVERNAME>
 myhostname = <SERVERNAME>
 mydestination = $myhostname, localhost.$mydomain, $mydomain, $transport_maps
 mynetworks = 127.0.0.1/8
+alias_maps = $alias_database
 virtual_mailbox_limit = 20480000
 virtual_mailbox_base = <VIRTUAL_MAILBOX_BASE>
 virtual_uid_maps = static:<VIRTUAL_UID_MAPS>
@@ -25,4 +26,3 @@ smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, rej
 smtpd_sasl_security_options = noanonymous
 broken_sasl_auth_clients = yes
 message_size_limit = 20480000
- 
