@@ -73,16 +73,7 @@
 		{
 			if(isset($_POST['send']) && $_POST['send']=='send')
 			{
-				$path=addslashes($_POST['path']);
-				$path=str_replace('..','',$path);
-				if(substr($path, -1, 1) != '/')
-				{
-					$path.='/';
-				}
-				if(substr($path, 0, 1) != '/')
-				{
-					$path='/'.$path;
-				}
+				$path=makeCorrectDir(addslashes($_POST['path']));
 				$path=$userinfo['documentroot'].$path;
 				$username=addslashes($_POST['username']);
 				$username_path_check=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `username`='$username' AND `path`='$path' AND `customerid`='".$userinfo['customerid']."'");

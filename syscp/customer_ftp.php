@@ -96,16 +96,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$path=addslashes($_POST['path']);
-					$path=str_replace('..','',$path);
-					if(substr($path, -1, 1) != '/')
-					{
-						$path.='/';
-					}
-					if(substr($path, 0, 1) != '/')
-					{
-						$path='/'.$path;
-					}
+					$path=makeCorrectDir(addslashes($_POST['path']));
 					$path=$userinfo['documentroot'].$path;
 					$path_check=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `homedir`='$path' AND `customerid`='".$userinfo['customerid']."'");
 					$password=addslashes($_POST['password']);

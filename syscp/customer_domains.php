@@ -105,7 +105,7 @@
 						}
 					}
 
-					if($path=='' || $subdomain=='' ||  $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain)
+					if($path=='' || $subdomain=='' || $domain=='' || $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain)
 					{
 						standard_error('notallreqfieldsorerrors');
 						exit;
