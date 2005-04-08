@@ -121,7 +121,7 @@
 					if($userinfo['change_serversettings'] == '1')
 					{
 						$isbinddomain = $_POST['isbinddomain'];
-						$caneditldomain = intval($_POST['caneditdomain']);
+						$caneditdomain = intval($_POST['caneditdomain']);
 						$zonefile = addslashes($_POST['zonefile']);
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
