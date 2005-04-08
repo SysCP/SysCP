@@ -41,14 +41,7 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query('SELECT `standardsubdomain` FROM `'.TABLE_PANEL_CUSTOMERS.'` WHERE `standardsubdomain`!=\'0\'');
-			$domains=array();
-			while(($row=$db->fetch_array($result)) !== false)
-			{
-				$domains[]='\''.$row['standardsubdomain'].'\'';
-			}
-			$domains=join($domains,',');
-			$result=$db->query("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `caneditdomain`, `iswildcarddomain`, `parentdomainid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id` NOT IN (".$domains.") ORDER BY `domain` ASC");
+			$result=$db->query("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `caneditdomain`, `iswildcarddomain`, `parentdomainid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id` <> ".$userinfo['standardsubdomain']." ORDER BY `domain` ASC");
 			$domains='';
 			$parentdomains_count=0;
 			$domains_count=0;

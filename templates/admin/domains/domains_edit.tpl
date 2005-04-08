@@ -23,6 +23,10 @@ $header
       <tr>
        <td class="maintable" nowrap>Nameserver:</td>
        <td class="maintable" nowrap>$isbinddomain</td>
+      </tr>
+      <tr>
+       <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
+       <td class="maintable" nowrap><input type="text" name="zonefile" value="{$result['zonefile']}"></td>
       </tr></if>
       <tr>
        <td class="maintable" nowrap>Emaildomain:</td>
@@ -37,10 +41,6 @@ $header
        <td class="maintable" nowrap>$caneditdomain</td>
       </tr>
       <if $userinfo['change_serversettings'] == '1'><tr>
-       <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
-       <td class="maintable" nowrap><input type="text" name="zonefile" value="{$result['zonefile']}"></td>
-      </tr>
-      <tr>
        <td class="maintable" nowrap>OpenBasedir:</td>
        <td class="maintable" nowrap>$openbasedir</td>
       </tr>
