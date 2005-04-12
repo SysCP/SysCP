@@ -185,16 +185,15 @@
 					{
 						$iswildcarddomain = '0';
 					}
-					$isemaildomain = intval($_POST['isemaildomain']);
-					if($isemaildomain != '1')
-					{
-						$isemaildomain = '0';
-					}
-					if($result['subcanemaildomain'] == '0' && $result['parentdomainid'] != '0')
-					{
-						$isemaildomain = '0';
-					}
 
+					if($result['parentdomainid'] != '0' && $result['subcanemaildomain'] == '1' && isset ($_POST['isemaildomain']) )
+					{
+						$isemaildomain = intval($_POST['isemaildomain']);
+					}
+					else
+					{
+						$isemaildomain = '0';
+					}
 
 					if($path=='')
 					{
@@ -216,7 +215,8 @@
 						header("Location: $filename?page=$page&s=$s");
 					}
 				}
-				else {
+				else
+				{
 					$result['domain'] = $idna_convert->decode($result['domain']);
 					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
 					$iswildcarddomain=makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);

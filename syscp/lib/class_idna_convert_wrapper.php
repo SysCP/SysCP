@@ -117,7 +117,8 @@ require('./lib/idna_convert.class.php');
 					$domain = $strings[$i];
 					$email = false;
 				}
-				$domain = utf8_decode($this->idna_converter->$action(utf8_encode($domain)));
+				$domain = utf8_decode($this->idna_converter->$action(utf8_encode($domain.'.none')));
+				$domain = substr($domain, 0, strlen($domain)-5);
 				if($email)
 				{
 					$strings[$i] = $localpart . '@' . $domain;

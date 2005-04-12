@@ -115,7 +115,7 @@
 				{
 					$email_part = addslashes($_POST['email_part']);
 					$domain = $idna_convert->encode(addslashes($_POST['domain']));
-					$domain_check = $db->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."'");
+					$domain_check = $db->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ");
 					if ( isset ( $_POST['iscatchall'] ) && $_POST['iscatchall'] == '1' )
 					{
 						$iscatchall = '1' ;

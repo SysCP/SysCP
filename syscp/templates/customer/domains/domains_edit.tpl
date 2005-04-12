@@ -20,8 +20,7 @@ $header
        <td class="maintable">{$lng['domains']['wildcarddomain']}</td>
        <td class="maintable">$iswildcarddomain</td>
       </tr>
-      <if $result['subcanemaildomain'] == '1' || $result['parentdomainid'] == '0'><tr>
-      <tr>
+      <if $result['subcanemaildomain'] == '1' && $result['parentdomainid'] != '0' ><tr>
        <td class="maintable" nowrap>Emaildomain:</td>
        <td class="maintable" nowrap>$isemaildomain</td>
       </tr></if>

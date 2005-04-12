@@ -546,7 +546,7 @@
 			$db->query(
 				"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
 				"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-				"VALUES ('{$row['loginname']}'.{$settings['system']['hostname']}', '{$row['customerid']}', '{$row['adminid']}', '{$row['documentroot']}', '', '0', '1', '1', '0', '')"
+				"VALUES ('{$row['loginname']}.{$settings['system']['hostname']}', '{$row['customerid']}', '{$row['adminid']}', '{$row['documentroot']}', '', '0', '1', '1', '0', '')"
 			);
 			$domainid=$db->insert_id();
 			$db->query(
@@ -566,12 +566,31 @@
 		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `subcanemaildomain` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `iswildcarddomain`");
 		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `caneditdomain` TINYINT( 1 ) NOT NULL DEFAULT '1' AFTER `subcanemaildomain`");
 		
-		$result=$db->query(
+		$db->query(
 			'UPDATE ' .
 			'`'.TABLE_PANEL_DOMAINS.'` ' .
 			'SET `isbinddomain`=\'1\'' .
 			'WHERE `isemaildomain`=\'1\''
 		);
+
+		$standardsubdomainids=Array();
+		$result=$db->query(
+			'SELECT * ' .
+			'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
+			'WHERE `standardsubdomain`<>\'0\''
+		);
+		while($row=$db->fetch_array($result))
+		{
+			$standardsubdomainids[]=$row['standardsubdomain'];
+		}
+		$standardsubdomainids=implode(',',$standardsubdomainids);
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_DOMAINS.'` ' .
+			'SET `caneditdomain`=\'0\' ' .
+			'WHERE `id` IN('.$standardsubdomainids.')'
+		);
+
+		inserttask('1');
 		
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.7-cvs3';
