@@ -143,9 +143,11 @@
 				{
 					$domains[]='\''.$row['standardsubdomain'].'\'';
 				}
-				$domains=join($domains,',');
-				$db->query('UPDATE `'.TABLE_PANEL_DOMAINS.'` SET `domain`=REPLACE(`domain`,\''.$settings['system']['hostname'].'\',\''.$value.'\') WHERE `id` IN ('.$domains.')');
-				inserttask('1');
+				if(count($domains) > 0) {
+					$domains=join($domains,',');
+					$db->query('UPDATE `'.TABLE_PANEL_DOMAINS.'` SET `domain`=REPLACE(`domain`,\''.$settings['system']['hostname'].'\',\''.$value.'\') WHERE `id` IN ('.$domains.')');
+					inserttask('1');
+				}
 			}
 
 			if($_POST['system_apacheconf_directory']!=$settings['system']['apacheconf_directory'])

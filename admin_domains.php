@@ -72,7 +72,9 @@
 			foreach($domain_array as $row)
 			{
 				$standardsubdomain = false;
-				if($row['parentdomainid'] == '-1')
+				$sql = 'SELECT `customerid` FROM `'.TABLE_PANEL_CUSTOMERS.'` WHERE `standardsubdomain`=\''.$row['id'].'\'';
+				$result = $db->query_first($sql);
+				if(isset($result['customerid']))
 				{
 					$standardsubdomain = true;
 				}
@@ -83,7 +85,7 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `domain`, `customerid`, `documentroot`, `isemaildomain`, `zonefile` FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
+			$result=$db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`zonefile` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`id`='$id' AND `d`.`id` <> `c`.`standardsubdomain`".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' "));
 			if($result['domain']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
