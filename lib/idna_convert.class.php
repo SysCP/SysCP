@@ -3,7 +3,7 @@
 /* idna_convert.class.php - Encode / Decode Internationalized Domain Names   */
 /* (c) 2004 phlyLabs, Berlin (http://phlylabs.de)                            */
 /* All rights reserved                                                       */
-/* v0.3.6                                                                    */
+/* v0.3.7                                                                    */
 /* ------------------------------------------------------------------------- */
 
 // {{{ license
@@ -43,7 +43,7 @@
  * simple strings and complete email addresses as well. That means, that you might
  * use any of the following notations:
  *
- * - www.nörgler.com
+ * - www.nï¿½rgler.com
  * - xn--nrgler-wxa
  * - xn--brse-5qa.xn--knrz-1ra.info
  *
@@ -54,6 +54,7 @@
  * ACE input and output is always expected to be ASCII.
  *
  * @author  Matthias Sommerfeld <mso@phlylabs.de>
+ * @version 0.3.7
  *
  */
 
@@ -2413,8 +2414,7 @@ class idna_convert
 
         $codecount = 0; // How many chars have been consumed
 
-        // Start with the prefix; copy it to output
-        $encoded = $this->_punycode_prefix;
+        $encoded = '';
         // Copy all basic code points to output
         for ($i = 0; $i < $deco_len; ++$i) {
             $test = $decoded[$i];
@@ -2427,6 +2427,11 @@ class idna_convert
                 $codecount++;
             }
         }
+        if ($codecount == $deco_len) return $encoded; // All codepoints were basic ones
+
+        // Start with the prefix; copy it to output
+        $encoded = $this->_punycode_prefix.$encoded;
+
         // If we have basic code points in output, add an hyphen to the end
         if ($codecount) $encoded .= '-';
 

@@ -90,11 +90,11 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used` = `subdomains_used` - 0".($deleted_domains - 1)." WHERE `customerid` = '{$result['customerid']}'");
 					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `domainid` IN (SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE (`id`='$id' OR `parentdomainid`='$id') AND `isemaildomain`='1')");
 					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid` IN (SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE (`id`='$id' OR `parentdomainid`='$id') AND `isemaildomain`='1')");
 					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id' OR `parentdomainid`='".$result['id']."'");
 					$deleted_domains = $db->affected_rows();
+					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used` = `subdomains_used` - 0".($deleted_domains - 1)." WHERE `customerid` = '{$result['customerid']}'");
 					$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '{$userinfo['adminid']}'");
 					updateCounters () ;
 
@@ -120,6 +120,8 @@
 					$customerid = intval($_POST['customerid']);
 					$subcanemaildomain = intval($_POST['subcanemaildomain']);
 					$isemaildomain = intval($_POST['isemaildomain']);
+					$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
+					$documentroot = $customer['documentroot'];
 					if($userinfo['change_serversettings'] == '1')
 					{
 						$isbinddomain = $_POST['isbinddomain'];
@@ -129,6 +131,14 @@
 						$safemode = intval($_POST['safemode']);
 						$speciallogfile = intval($_POST['speciallogfile']);
 						$specialsettings = str_replace("\r\n", "\n", $_POST['specialsettings']);
+						if(isset($_POST['documentroot']) && $_POST['documentroot'] != '')
+						{
+							$documentroot = addslashes($_POST['documentroot']);
+							if(!preg_match('/^https?\:\/\//', $documentroot))
+							{
+								$documentroot = makeCorrectDir($documentroot);
+							}
+						}
 					}
 					else
 					{
@@ -142,26 +152,6 @@
 					}
 
 					$domain_check = $db->query_first("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '$domain'");
-
-					if( (isset($_POST['documentroot']) && $_POST['documentroot'] == '') || $userinfo['change_serversettings'] != '1')
-					{
-						$customer = $db->query_first("SELECT `documentroot` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$customerid'");
-						$documentroot = $customer['documentroot'];
-					}
-					else
-					{
-						$documentroot=addslashes($_POST['documentroot']);
-					}
-
-					$documentroot=str_replace('..','',$documentroot);
-					if(substr($documentroot, -1, 1) != '/')
-					{
-						$documentroot.='/';
-					}
-					if ( ( substr($documentroot, 0, 1) != '/') && ( substr($documentroot,0 ,7) != 'http://') )
-					{
-						$documentroot='/'.$documentroot;
-					}
 
 					if($openbasedir != '1')
 					{
@@ -202,7 +192,7 @@
 					{ 
 						if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
 						{
-							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;zonefile=$zonefile;openbasedir=$openbasedir;customerid=$customerid;safemode=$safemode;specialsettings=".urlencode($specialsettings).";speciallogfile=$speciallogfile;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;reallydoit=reallydoit");
+							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;customerid=$customerid;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;speciallogfile=$speciallogfile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
 							exit;
 						}
 						if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
@@ -270,7 +260,8 @@
 							$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
 							$documentroot=$customer['documentroot'];
 						}
-						if(!preg_match('/^https?\:\/\//', $documentroot)) {
+						if(!preg_match('/^https?\:\/\//', $documentroot))
+						{
 							$documentroot = makeCorrectDir($documentroot);
 						}
 					}
@@ -311,7 +302,7 @@
 					
 					if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit') && $userinfo['change_serversettings'] == '1')
 					{
-						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentrootisbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;;zonefile=$zonefile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
+						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentroot;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
 						exit;
 					}
 					if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
