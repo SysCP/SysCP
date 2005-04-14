@@ -40,11 +40,15 @@
 		{
 			$debugMsg[] = '  cron_tasks: Task1 started - vhost.conf rebuild';
 			$vhosts_file='# '.$settings['system']['apacheconf_directory'].'vhosts.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.'."\n"."\n";
-			$vhosts_file.='Include '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n\n";
+			if (file_exists($settings['system']['apacheconf_directory'].'diroptions.conf'))
+			{
+				$vhosts_file.='Include '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n\n";
+			}
 			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress']."\n"."\n";
 
 			$vhosts_file.='# DummyHost for DefaultSite'."\n";
 			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
+			$vhosts_file.='ServerName '.$settings['system']['hostname']."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
 			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
@@ -113,7 +117,7 @@
 				$vhosts_file.="\n";
 			}
 
-			$vhosts_file_handler = fopen($settings['system']['apacheconf_directory'].'vhosts-test.conf', 'w');
+			$vhosts_file_handler = fopen($settings['system']['apacheconf_directory'].'vhosts.conf', 'w');
 			fwrite($vhosts_file_handler, $vhosts_file);
 			fclose($vhosts_file_handler);
 			safe_exec($settings['system']['apachereload_command']);
@@ -219,7 +223,7 @@
 							if($htpasswd_filename == '')
 							{
 								$htpasswd_filename = $settings['system']['apacheconf_directory'].'htpasswd/'.$row_diroptions['customerid'].'-'.$row_htpasswd['id'].'-'.md5($row_diroptions['path']).'.htpasswd';
-								$htpasswd_files[] = $htpasswd_filename;
+								$htpasswd_files[] = basename($htpasswd_filename);
 							}
 							$htpasswd_file .= $row_htpasswd['username'].':'.$row_htpasswd['password']."\n";
 						}
@@ -229,8 +233,9 @@
 						$diroptions_file .= '  AuthUserFile '.$htpasswd_filename."\n";
 						$diroptions_file .= '  require valid-user'."\n";
 						
-						if(!file_exists($settings['system']['apacheconf_directory'].'htpasswd/')) {
-							mkdir($settings['system']['apacheconf_directory'].'htpasswd/','750');
+						if(!file_exists($settings['system']['apacheconf_directory'].'htpasswd/')) 
+						{
+							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0750);
 						}
 						$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
 						fwrite($htpasswd_file_handler, $htpasswd_file);
@@ -243,9 +248,11 @@
 				fclose($diroptions_file_handler);
 				safe_exec($settings['system']['apachereload_command']);
 				
-				$htpassswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
-				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle))) {
-					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files)) {
+				$htpasswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
+				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle))) 
+				{
+					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files)) 
+					{
 						unlink($htpasswd_filename);
 					}
 				}
