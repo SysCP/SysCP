@@ -379,7 +379,7 @@
 					$language_options = '';
 					while(list($language_file, $language_name) = each($languages))
 					{
-						$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
+						$language_options .= makeoption($language_name, $language_file, $userinfo['def_language']);
 					}
 					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', '1');
 					$sendpassword=makeyesno('sendpassword', '1', '0', '1');
