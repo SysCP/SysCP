@@ -159,10 +159,10 @@ $lng['extras']['error404path'] = '404';
 $lng['extras']['error403path'] = '403';
 $lng['extras']['error500path'] = '500';
 $lng['extras']['error401path'] = '401';
-$lng['extras']['errordocument404path'] = 'URL zum Fehlerdokoument 404';
-$lng['extras']['errordocument403path'] = 'URL zum Fehlerdokoument 403';
-$lng['extras']['errordocument500path'] = 'URL zum Fehlerdokoument 500';
-$lng['extras']['errordocument401path'] = 'URL zum Fehlerdokoument 401';
+$lng['extras']['errordocument404path'] = 'URL zum Fehlerdokument 404';
+$lng['extras']['errordocument403path'] = 'URL zum Fehlerdokument 403';
+$lng['extras']['errordocument500path'] = 'URL zum Fehlerdokument 500';
+$lng['extras']['errordocument401path'] = 'URL zum Fehlerdokument 401';
 
 /**
  * Errors
