@@ -595,5 +595,12 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.7-cvs3';
 	}
+	if($settings['panel']['version'] == '1.2.7-cvs3')
+	{
+		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`language`, `file`) VALUES ('Catalan', 'lng/catalan.lng.php');");
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.7-cvs4';
+	}
 
 ?>

@@ -108,7 +108,7 @@ $lng['changepassword']['also_change_ftp'] = ' also change password of the main F
 /**
  * Domains
  */
-$lng['domains']['description'] = 'Here you can create (Sub-)Domains and change their paths.<br />The system will need some time to apply the new settings after every change.';
+$lng['domains']['description'] = 'Here you can create (sub-)domains and change their paths.<br />The system will need some time to apply the new settings after every change.';
 $lng['domains']['domainsettings'] = 'Domain settings';
 $lng['domains']['domainname'] = 'Domain name';
 $lng['domains']['subdomain_add'] = 'Create subdomain';
@@ -172,7 +172,7 @@ $lng['error']['directorymustexist'] = 'The directory you typed in has to exist. 
 $lng['error']['filemustexist'] = 'The file you typed in has to exist.';
 $lng['error']['allresourcesused'] = 'You have already used all of your resources.';
 $lng['error']['domains_cantdeletemaindomain'] = 'You cannot delete a domain which is used as an email-domain.';
-$lng['error']['domains_canteditdomain'] = 'You cannot edit this domains. It has been disabled by the admin.';
+$lng['error']['domains_canteditdomain'] = 'You cannot edit this domain. It has been disabled by the admin.';
 $lng['error']['domains_cantdeletedomainwithemail'] = 'You cannot delete a domain which is used as an email-domain. Delete all email addresses first.';
 $lng['error']['firstdeleteallsubdomains'] = 'You have to delete all Subdomains first before you can create a wildcard domain.';
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'You have already defined a catchall for this domain.';
