@@ -584,11 +584,14 @@
 			$standardsubdomainids[]=$row['standardsubdomain'];
 		}
 		$standardsubdomainids=implode(',',$standardsubdomainids);
-		$db->query(
-			'UPDATE `'.TABLE_PANEL_DOMAINS.'` ' .
-			'SET `caneditdomain`=\'0\' ' .
-			'WHERE `id` IN('.$standardsubdomainids.')'
-		);
+		if ( $standardsubdomainids != '' )
+		{
+			$db->query(
+				'UPDATE `'.TABLE_PANEL_DOMAINS.'` ' .
+				'SET `caneditdomain`=\'0\' ' .
+				'WHERE `id` IN('.$standardsubdomainids.')'
+			);
+		}
 
 		inserttask('1');
 		
