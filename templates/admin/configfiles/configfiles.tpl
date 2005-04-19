@@ -10,7 +10,7 @@ $header
        <td class="maintable">{$lng['admin']['configfiles']['files']}<br />{$files}</td>
       </tr></if>
       <if $restart != ''><tr>
-       <td class="maintable">{$lng['admin']['configfiles']['restart']}<br /><textarea rows="1" cols="70" readonly="readonly">$restart</textarea></td>
+       <td class="maintable">{$lng['admin']['configfiles']['restart']}<br /><textarea rows="3" cols="70" readonly="readonly">$restart</textarea></td>
       </tr></if>
      </table>
 $footer 

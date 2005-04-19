@@ -13,11 +13,11 @@ $header
       </tr>
       <tr>
        <td class="maintable">Domain:</td>
-       <td class="maintable" nowrap><input type="text" name="domain" value=""></td>
+       <td class="maintable" nowrap><input type="text" name="domain" value="" size="60"></td>
       </tr>
       <if $userinfo['change_serversettings'] == '1'><tr>
        <td class="maintable" nowrap>DocumentRoot:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
-       <td class="maintable" nowrap><input type="text" name="documentroot" value=""></td>
+       <td class="maintable" nowrap><input type="text" name="documentroot" value="" size="60"></td>
       </tr>
       <tr>
        <td class="maintable" nowrap>Nameserver:</td>
@@ -25,7 +25,7 @@ $header
       </tr>
       <tr>
        <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
-       <td class="maintable" nowrap><input type="text" name="zonefile" value=""></td>
+       <td class="maintable" nowrap><input type="text" name="zonefile" value="" size="60"></td>
       </tr></if>
       <tr>
        <td class="maintable" nowrap>Emaildomain:</td>
@@ -53,7 +53,7 @@ $header
       </tr>
       <tr>
        <td class="maintable" nowrap>{$lng['admin']['ownvhostsettings']}:</td>
-       <td class="maintable" nowrap><textarea rows="4" cols="30" name="specialsettings"></textarea></td>
+       <td class="maintable" nowrap><textarea rows="12" cols="60" name="specialsettings"></textarea></td>
       </tr></if>
       <tr>
        <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['panel']['save']}"></td>
