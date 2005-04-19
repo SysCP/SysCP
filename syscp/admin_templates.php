@@ -82,7 +82,7 @@
 			eval("echo \"".getTemplate("templates/templates")."\";");
 		}
 
-		elseif($action=='delete' && $subjectid!=0 && $mailbodyid!=0 && $userinfo['adminid'] != '1')
+		elseif($action=='delete' && $subjectid!=0 && $mailbodyid!=0)
 		{
 			$result=$db->query_first("SELECT `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
 			if($result['varname']!='')
@@ -191,7 +191,6 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$template = addslashes($_POST['template']);
 					$subject = htmlentities(addslashes($_POST['subject']));
 					$mailbody = htmlentities(addslashes($_POST['mailbody']));
 					

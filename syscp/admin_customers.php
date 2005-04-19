@@ -363,11 +363,9 @@
 							);
 							// Get mail templates from database; the ones from 'admin' are fetched for fallback 
 							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_subject\'');
-							$admin_result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\'1\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_subject\'');
-							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $admin_result['value']),$replace_arr));
+							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['createcustomer']['subject']),$replace_arr));
 							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
-							$admin_result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\'1\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
-							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $admin_result['value']),$replace_arr));
+							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['createcustomer']['mailbody']),$replace_arr));
 							mail("$firstname $name <$email>",$mail_subject,$mail_body,"From: {$userinfo['name']} <{$userinfo['email']}>\r\n");
 						}
 

@@ -982,10 +982,14 @@
 		if(count($vars) > 0 && preg_match_all($pattern,$text,$matches)) {
 			for($i = 0;$i < count($matches[1]);$i++) {
 				$current = $matches[1][$i];
-				$var = $vars[$current];
-				$text = str_replace("{" . $current . "}",$var,$text);
+				if (isset ($vars[$current]) )
+				{
+					$var = $vars[$current];
+					$text = str_replace("{" . $current . "}",$var,$text);
+				}
 			}
 		}
+		$text = str_replace ( '\n', "\n" , $text ) ;
 		return $text;
 	}
 	

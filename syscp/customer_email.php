@@ -249,16 +249,15 @@
 							$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_accounts_used`=`email_accounts_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 							
 							$replace_arr=array(
-								'EMAIL' => $username
+								'EMAIL' => $email_full,
+								'USERNAME' => $username
 							);
 							$admin = $db->query_first('SELECT `name`, `email` FROM `' . TABLE_PANEL_ADMINS . '` WHERE `adminid`=\'' . $userinfo['adminid'] . '\'');
-							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$userinfo['language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_subject\'');
-							$admin_result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\'1\' AND `language`=\''.$userinfo['language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_subject\'');
-							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $admin_result['value']),$replace_arr));
-							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$userinfo['language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_mailbody\'');
-							$admin_result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\'1\' AND `language`=\''.$userinfo['language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_mailbody\'');
-							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $admin_result['value']),$replace_arr));
-							mail("$email_full <$email_full>",$mail_subject,$mail_body,"From: {$admin['name']} <{$admin['email']}>\r\n");
+							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$userinfo['def_language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_subject\'');
+							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['pop_success']['subject']),$replace_arr));
+							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$userinfo['def_language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_mailbody\'');
+							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['pop_success']['mailbody']),$replace_arr));
+							mail("{$userinfo['firstname']} {$userinfo['name']} <$email_full>",$mail_subject,$mail_body,"From: {$admin['name']} <{$admin['email']}>\r\n");
 	
 							header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
 						}
