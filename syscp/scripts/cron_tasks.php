@@ -192,24 +192,24 @@
 				foreach($diroptions as $row_diroptions)
 				{
 					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
-					if ( $row_diroptions['options_indexes'] == '1' )
+					if ( isset ( $row_diroptions['options_indexes'] ) && $row_diroptions['options_indexes'] == '1' )
 					{
 						$diroptions_file .= '  Options Indexes'."\n";
 								$debugMsg[] = '  cron_tasks: Task3 - Setting Options Indexes';
 					}
-					if ( $row_diroptions['error404path'] != '')
+					if ( isset ( $row_diroptions['error404path'] ) && $row_diroptions['error404path'] != '')
 					{
 						$diroptions_file .= '  ErrorDocument 404 '.$row_htaccess['error404path']."\n";
 					}
-					if ( $row_diroptions['error403path'] != '')
+					if ( isset ( $row_diroptions['error403path'] ) && $row_diroptions['error403path'] != '')
 					{
 						$diroptions_file .= '  ErrorDocument 403 '.$row_htaccess['error403path']."\n";
 					}
-					if ( $row_diroptions['error401path'] != '')
+					if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
 					{
 						$diroptions_file .= '  ErrorDocument 401 '.$row_htaccess['error401path']."\n";
 					}
-					if ( $row_diroptions['error500path'] != '')
+					if ( isset ( $row_diroptions['error500path'] ) && $row_diroptions['error500path'] != '')
 					{
 						$diroptions_file .= '  ErrorDocument 500 '.$row_htaccess['error500path']."\n";
 					}

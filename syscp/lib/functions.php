@@ -367,41 +367,44 @@
 
 		$httptraffic = 0;
 
-		$yesterday = time()-(60*60*24);
-		if($month == 0)
+		if ( file_exists ( $settings['system']['logfiles_directory'].$logfile.'-access.log' ) )
 		{
-			$month = date('n',$yesterday);
-		}
-		if($year == 0)
-		{
-			$year = date('Y',$yesterday);
-		}
-
-		$outputdir = makeCorrectDir ($outputdir);
-		if(!file_exists($outputdir))
-		{
-			safe_exec('mkdir -p '.$outputdir);
-		}
-		safe_exec('webalizer -n '.$caption.' -o '.$outputdir.' '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
-
-		$webalizer_hist_size=@filesize($outputdir.'webalizer.hist');
-		$webalizer_hist_num=@fopen($outputdir.'webalizer.hist','r');
-		$webalizer_hist=@fread($webalizer_hist_num,$webalizer_hist_size);
-		@fclose($webalizer_hist_num);
-		$webalizer_hist_rows=explode("\n",$webalizer_hist);
-		while(list(,$webalizer_hist_row)=each($webalizer_hist_rows))
-		{
-			if($webalizer_hist_row != '')
+			$yesterday = time()-(60*60*24);
+			if($month == 0)
 			{
-				/**
-				 * Month: $webalizer_hist_row['0']
-				 * Year:  $webalizer_hist_row['1']
-				 * KB:    $webalizer_hist_row['5']
-				 */
-				$webalizer_hist_row=explode(' ',$webalizer_hist_row);
-				if($webalizer_hist_row['0'] == $month && $webalizer_hist_row['1'] == $year)
+				$month = date('n',$yesterday);
+			}
+			if($year == 0)
+			{
+				$year = date('Y',$yesterday);
+			}
+
+			$outputdir = makeCorrectDir ($outputdir);
+			if(!file_exists($outputdir))
+			{
+				safe_exec('mkdir -p '.$outputdir);
+			}
+			safe_exec('webalizer -n '.$caption.' -o '.$outputdir.' '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
+
+			$webalizer_hist_size=@filesize($outputdir.'webalizer.hist');
+			$webalizer_hist_num=@fopen($outputdir.'webalizer.hist','r');
+			$webalizer_hist=@fread($webalizer_hist_num,$webalizer_hist_size);
+			@fclose($webalizer_hist_num);
+			$webalizer_hist_rows=explode("\n",$webalizer_hist);
+			while(list(,$webalizer_hist_row)=each($webalizer_hist_rows))
+			{
+				if($webalizer_hist_row != '')
 				{
-					$httptraffic = $webalizer_hist_row['5'];
+					/**
+					 * Month: $webalizer_hist_row['0']
+					 * Year:  $webalizer_hist_row['1']
+					 * KB:    $webalizer_hist_row['5']
+					 */
+					$webalizer_hist_row=explode(' ',$webalizer_hist_row);
+					if($webalizer_hist_row['0'] == $month && $webalizer_hist_row['1'] == $year)
+					{
+						$httptraffic = $webalizer_hist_row['5'];
+					}
 				}
 			}
 		}
