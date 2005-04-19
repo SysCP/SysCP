@@ -28,7 +28,7 @@ $lng['panel']['save'] = 'Sauvegarder';
 $lng['panel']['yes'] = 'Oui';
 $lng['panel']['no'] = 'Non';
 $lng['panel']['emptyfornochanges'] = 'Veuillez laisser vide pour aucun changement';
-$lng['panel']['emptyfordefault'] = 'Veuillez laisser vide pour l'option standard';
+$lng['panel']['emptyfordefault'] = 'Veuillez laisser vide pour l\'option standard';
 $lng['panel']['path'] = 'Chemin';
 $lng['panel']['toggle'] = 'Permuter';
 $lng['panel']['next'] = 'continuer';
@@ -39,7 +39,7 @@ $lng['panel']['next'] = 'continuer';
 $lng['login']['username'] = 'Identifiant';
 $lng['login']['password'] = 'Mot de passe';
 $lng['login']['language'] = 'Langue';
-$lng['login']['login'] = 'S'identifier';
+$lng['login']['login'] = 'S\'identifier';
 $lng['login']['logout'] = 'Se deconnecter';
 $lng['login']['profile_lng'] = 'Langue du profil';
 
@@ -94,7 +94,7 @@ $lng['menue']['extras']['pathoptions'] = 'Options du chemin';
  * Index
  */
 $lng['index']['customerdetails'] = 'Donn&eacute;es du compte';
-$lng['index']['accountdetails'] = 'Donn&eacute;es de l'acc&egrave;s';
+$lng['index']['accountdetails'] = 'Donn&eacute;es de l\'acc&egrave;s';
 
 /**
  * Change Password
@@ -103,7 +103,7 @@ $lng['changepassword']['old_password'] = 'Vieux mot de passe';
 $lng['changepassword']['new_password'] = 'Nouveau mot de passe';
 $lng['changepassword']['new_password_confirm'] = 'Nouveau mot de passe (confirmer)';
 $lng['changepassword']['new_password_ifnotempty'] = 'Nouveau mot de passe (Veuillez laisser vide pour aucun changement)';
-$lng['changepassword']['also_change_ftp'] = ' Changer aussi le mot de passe de l'acc&egrave;s FTP general';
+$lng['changepassword']['also_change_ftp'] = ' Changer aussi le mot de passe de l\'acc&egrave;s FTP general';
 
 /**
  * Domains
@@ -118,7 +118,7 @@ $lng['domains']['wildcarddomain'] = 'Domain Wildcard?';
 /**
  * eMails
  */
-$lng['emails']['description'] = 'Ici vous pouvez appliquer vos boites &agrave; e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domain</i></b><br>Identifiant: <b><i>l'adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
+$lng['emails']['description'] = 'Ici vous pouvez appliquer vos boites &agrave; e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domain</i></b><br>Identifiant: <b><i>l\'adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
 $lng['emails']['emailaddress'] = 'Adresse';
 $lng['emails']['emails_add'] = 'Appliquer une Adresse';
 $lng['emails']['emails_edit'] = 'Changer une adresse';
@@ -135,13 +135,13 @@ $lng['emails']['forwarder_add'] = 'Appliquer une retransmission';
 /**
  * FTP
  */
-$lng['ftp']['description'] = 'Ici vous pouvez appliquer des acc&egrave;s FTP additionel.<br />Les changements sont tout de suite op&eacute;rant et l'acc&egrave;s est disponible.';
+$lng['ftp']['description'] = 'Ici vous pouvez appliquer des acc&egrave;s FTP additionel.<br />Les changements sont tout de suite op&eacute;rant et l\'acc&egrave;s est disponible.';
 $lng['ftp']['account_add'] = 'Appliquer un acc&egrave;s';
 
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Ici vous pouvez appliquer et effacer des banques de donn&eacute;es MySQL.<br>Les changements sont tout de suite op&eacute;rant et les banques sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos banques de donn&eacute;es.<br><br>L'acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c'est!)<br><br>$connection = mysql_connect("localhost", "<i>Votre identifiant</i>", "<i>Votre mot de passe</i>");<br>mysql_select_db("<i>Le nom de la banque</i>", $connection);';
+$lng['mysql']['description'] = 'Ici vous pouvez appliquer et effacer des banques de donn&eacute;es MySQL.<br>Les changements sont tout de suite op&eacute;rant et les banques sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos banques de donn&eacute;es.<br><br>L\'acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c\'est!)<br><br>$connection = mysql_connect("localhost", "<i>Votre identifiant</i>", "<i>Votre mot de passe</i>");<br>mysql_select_db("<i>Le nom de la banque</i>", $connection);';
 $lng['mysql']['databasename'] = 'Nom de la banque';
 $lng['mysql']['databasedescription'] = 'Description de la banque';
 $lng['mysql']['database_create'] = 'Appliquer une banque de donn&eacute;es';
@@ -150,7 +150,7 @@ $lng['mysql']['database_create'] = 'Appliquer une banque de donn&eacute;es';
  * Extras
  */
 $lng['extras']['description'] = 'Ici vous pouvez appliquer des extras additionell, par example la protection des listes.<br />Il faut un peu de temps apr&egrave;s chaque changement pour reliser la configuration.';
-$lng['extras']['directoryprotection_add'] = 'Appliquer une protection des dossiers';
+$lng['extras']['directoryprotection_add'] = 'Appliquer une protection de dossier';
 $lng['extras']['view_directory'] = 'Faire voir le fichier';
 $lng['extras']['pathoptions_add'] = 'Appliquer des options de chemin';
 $lng['extras']['directory_browsing'] = 'Faire voir le contenu des fichiers';
@@ -168,22 +168,22 @@ $lng['extras']['errordocument401path'] = 'Chemin du document erreur 401';
  * Errors
  */
 $lng['error']['error'] = 'Erreur';
-$lng['error']['directorymustexist'] = 'Le dossier que vous avez choisi n'existe pas. S'il vous plait appliquer le avec votre client FTP.';
-$lng['error']['filemustexist'] = 'Le fichier que vous avez choisi n'existe pas.';
-$lng['error']['allresourcesused'] = 'Vous avez d&eacute;j&agrave; us&eacute;s tous ressources.';
+$lng['error']['directorymustexist'] = 'Le dossier que vous avez choisi n\'existe pas. S\'il vous plait appliquer le avec votre client FTP.';
+$lng['error']['filemustexist'] = 'Le fichier que vous avez choisi n\'existe pas.';
+$lng['error']['allresourcesused'] = 'Vous avez d&eacute;j&agrave; us&eacute;s toutes les ressources.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Vous ne pouvez pas effacer une domain qui est utilis&eacute; pour des adresses e-mail. ';
-$lng['error']['domains_canteditdomain'] = 'Vous n'avez pas le droit de configurer ce domain.';
-$lng['error']['domains_cantdeletedomainwithemail'] = 'Vous ne pouvez pas effacer un domain qui est utilisé comme domain e-mail. Il faut effacer toutes ses adresses avant.';
-$lng['error']['firstdeleteallsubdomains'] = 'Il faut effacer toutes les subdomains avant d'appliquer un domain Wildcard.';
-$lng['error']['youhavealreadyacatchallforthisdomain'] = 'Vous avez d&eacute;j&agrave; defin&eacute; une adresse catchall pour ce domaine.';
+$lng['error']['domains_canteditdomain'] = 'Vous n\'avez pas le droit de configurer ce domain.';
+$lng['error']['domains_cantdeletedomainwithemail'] = 'Vous ne pouvez pas effacer un domain qui est utilis&eacute; comme domain e-mail. Il faut effacer toutes ses adresses avant.';
+$lng['error']['firstdeleteallsubdomains'] = 'Il faut effacer toutes les subdomains avant d\'appliquer un domain Wildcard.';
+$lng['error']['youhavealreadyacatchallforthisdomain'] = 'Vous avez d&eacute;j&agrave; defin&eacute; une adresse catchall pour ce domain.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Vous ne pouvez pas effacer votre acc&egrave;s principal.';
 $lng['error']['login'] = 'Identifiant / mot de passe invalide.';
-$lng['error']['login_blocked'] = 'Cet acc&egrave;s &eacute;tait bloqu&eacute; &agrave; cause de trop des login fautes.<br />S'il vous-plait l'essayer encore dans '.$settings['login']['deactivatetime'].' secondes.';
-$lng['error']['notallreqfieldsorerrors'] = 'Vous n'avez pas rempli toutes les cases ou vous avez rempli des valeurs invalide.';
-$lng['error']['oldpasswordnotcorrect'] = 'Le vieux mot de passe n'est pas correct.';
-$lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus des ressources qu'il reste.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; c'est pas possible d'effacer ou modifier l'administrateur principal.';
-$lng['error']['mustbeurl'] = 'Vous n'avez pas dict&eacute; un URL valid.';
+$lng['error']['login_blocked'] = 'Cet acc&egrave;s &eacute;tait bloqu&eacute; &agrave; cause de trop des login fautes.<br />S\'il vous-plait l\'essayer encore dans '.$settings['login']['deactivatetime'].' secondes.';
+$lng['error']['notallreqfieldsorerrors'] = 'Vous n\'avez pas rempli toutes les cases ou vous l\'avez rempli avec des valeurs invalide.';
+$lng['error']['oldpasswordnotcorrect'] = 'Le vieux mot de passe n\'est pas correct.';
+$lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus des ressources qu\'il reste.';
+$lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; ce n\'est pas possible d\'effacer ou modifier l\'administrateur principal.';
+$lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; un URL valid.';
 
 /**
  * Questions
@@ -206,9 +206,9 @@ $lng['question']['mysql_reallydelete'] = 'Voulez-vous vraiment effacer la banque
 /**
  * Mails
  */
-$lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 {EMAIL}\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC'est un e-mail g&eacute;ner&eacute; automatiquement, s'il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
+$lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 {EMAIL}\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC\'est un e-mail g&eacute;ner&eacute; automatiquement, s\'il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
 $lng['mails']['pop_success']['subject'] = 'Acc&egrave;s POP3 install&eacute;';
-$lng['mails']['createcustomer']['mailbody'] = 'Bonjour {FIRSTNAME} {NAME},\n\nici vos informations d'acc&egrave;s:\n\nIdentifiant: {USERNAME}\nMot de passe: {PASSWORD}\n\nNous vous remercions,\nVotre Webmaster';
+$lng['mails']['createcustomer']['mailbody'] = 'Bonjour {FIRSTNAME} {NAME},\n\nici vos informations d\'acc&egrave;s:\n\nIdentifiant: {USERNAME}\nMot de passe: {PASSWORD}\n\nNous vous remercions,\nVotre Webmaster';
 $lng['mails']['createcustomer']['subject'] = 'Informations de votre acc&egrave;s';
 
 /**
@@ -247,9 +247,9 @@ $lng['admin']['deactivated_user'] = 'Bloquer utilisateur';
 $lng['admin']['sendpassword'] = 'Envoyer mot de passe';
 $lng['admin']['ownvhostsettings'] = 'Configuration sp&eacute;ciale du vHost';
 $lng['admin']['configfiles']['serverconfiguration'] = 'Configuration';
-$lng['admin']['configfiles']['files'] = '<b>Fichiers de configuration:</b> S'il vous-plait modifiez les fichiers correspondants<br />ou cr&eacute;ez les avec les contenu ci-dessous.<br /><b>IMPORTANT:</b> Le mot de passe MySQL n'est pas donn&eacute;s dans les dates ci-dessus<br />&agrave; cause des raisons de s&eacute;curit&eacute;. S'il vous-plait substituez les &quot;MYSQL_PASSWORD&quot;<br />manuellement avec le mot de passe. En cas de l'avoir oubli&eacute;, vous le trouvez dans<br />le fichier &quot;lib/userdata.inc.php&quot;.';
-$lng['admin']['configfiles']['commands'] = '<b>Commandes:</b> S'il vous-plait ex&eacute;cuter les commandes ci-dessous sur le shell.';
-$lng['admin']['configfiles']['restart'] = '<b>R&eacute;demarrer:</b> S'il vous-plait ex&eacute;cuter les commandes ci-dessous pour<br />r&eacute;initialiser les fichiers de configuration.';
+$lng['admin']['configfiles']['files'] = '<b>Fichiers de configuration:</b> S\'il vous-plait modifiez les fichiers correspondants<br />ou cr&eacute;ez les avec les contenu ci-dessous.<br /><b>IMPORTANT:</b> Le mot de passe MySQL n\'est pas donn&eacute;s dans les dates ci-dessus<br />&agrave; cause des raisons de s&eacute;curit&eacute;. S\'il vous-plait substituez les &quot;MYSQL_PASSWORD&quot;<br />manuellement avec le mot de passe. En cas de l\'avoir oubli&eacute;, vous le trouvez dans<br />le fichier &quot;lib/userdata.inc.php&quot;.';
+$lng['admin']['configfiles']['commands'] = '<b>Commandes:</b> S\'il vous-plait ex&eacute;cuter les commandes ci-dessous sur le shell.';
+$lng['admin']['configfiles']['restart'] = '<b>R&eacute;demarrer:</b> S\'il vous-plait ex&eacute;cuter les commandes ci-dessous pour<br />r&eacute;initialiser les fichiers de configuration.';
 $lng['admin']['templates']['templates'] = 'Templates';
 $lng['admin']['templates']['template_add'] = 'Appliquer un template';
 $lng['admin']['templates']['template_edit'] = 'Modifier un template';
@@ -262,47 +262,47 @@ $lng['admin']['templates']['pop_success'] = 'Mail de bienvenu pour des nouveaux 
 $lng['admin']['templates']['template_replace_vars'] = 'Les variables qui vont &ecirc;tre remplacées dans le template:';
 $lng['admin']['templates']['FIRSTNAME'] = 'Va &ecirc;tre remplac&eacute; par le pr&eacute;nom.';
 $lng['admin']['templates']['NAME'] = 'Va &ecirc;tre remplac&eacute; par le nom.';
-$lng['admin']['templates']['USERNAME'] = 'Va &ecirc;tre remplacé par le login.';
-$lng['admin']['templates']['PASSWORD'] = 'Va &ecirc;tre remplacé par le mot de passe du client.';
-$lng['admin']['templates']['EMAIL'] = 'Va &ecirc;tre remplac&eacute; par l'acc&egrave;s e-mail.';
+$lng['admin']['templates']['USERNAME'] = 'Va &ecirc;tre remplac&eacute; par le login.';
+$lng['admin']['templates']['PASSWORD'] = 'Va &ecirc;tre remplac&eacute; par le mot de passe du client.';
+$lng['admin']['templates']['EMAIL'] = 'Va &ecirc;tre remplac&eacute; par l\'acc&egrave;s e-mail.';
 
 /**
  * Serversettings
  */
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
-$lng['serversettings']['session_timeout']['description'] = 'Combien de temps faut-il etre inactif pour que votre session se ferme automatiquement (secondes)';
+$lng['serversettings']['session_timeout']['description'] = 'Combien de temps faut-il &ecirc;tre inactif pour que votre session se ferme automatiquement (secondes)';
 $lng['serversettings']['accountprefix']['title'] = 'Pr&eacute;fix des comptes';
-$lng['serversettings']['accountprefix']['description'] = 'Quel pr&eacute;fix doivent avoir les comptes?';
+$lng['serversettings']['accountprefix']['description'] = 'Quel pr&eacute;fix doivent-ils avoir les comptes?';
 $lng['serversettings']['mysqlprefix']['title'] = 'Pr&eacute;fix SQL';
-$lng['serversettings']['mysqlprefix']['description'] = 'Quel pr&eacute;fix doivent avoir les banques de donn&eacute;es?';
+$lng['serversettings']['mysqlprefix']['description'] = 'Quel pr&eacute;fix doivent-elles avoir les banques de donn&eacute;es?';
 $lng['serversettings']['ftpprefix']['title'] = 'Pr&eacute;fix FTP';
-$lng['serversettings']['ftpprefix']['description'] = 'Quel pr&eacute;fix doivent avoir les acc&egrave;s FTP?';
+$lng['serversettings']['ftpprefix']['description'] = 'Quel pr&eacute;fix doivent-ils avoir les acc&egrave;s FTP?';
 $lng['serversettings']['documentroot_prefix']['title'] = 'Documentdirectory';
 $lng['serversettings']['documentroot_prefix']['description'] = 'O&ugrave; doivent &ecirc;tre tous les comptes';
 $lng['serversettings']['logfiles_directory']['title'] = 'Logfilesdirectory';
-$lng['serversettings']['logfiles_directory']['description'] = 'O&ugrave; doivent &ecirc;tre les archives d'acc&egrave;s?';
+$lng['serversettings']['logfiles_directory']['description'] = 'O&ugrave; doivent &ecirc;tre les archives d\'acc&egrave;s?';
 $lng['serversettings']['ipaddress']['title'] = 'Adresse IP';
-$lng['serversettings']['ipaddress']['description'] = 'Quelle est l'adresse IP du server?';
+$lng['serversettings']['ipaddress']['description'] = 'Quelle est l\'adresse IP du server?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Quel est le hostname du server?';
 $lng['serversettings']['apacheconf_directory']['title'] = 'Apache-Config-Directory';
-$lng['serversettings']['apacheconf_directory']['description'] = 'O&ugrave; est sauvegard&eacute;e la configuration de l'Apache?';
+$lng['serversettings']['apacheconf_directory']['description'] = 'O&ugrave; est sauvegard&eacute;e la configuration de l\'Apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache-Reload-Command';
-$lng['serversettings']['apachereload_command']['description'] = 'Comment est la commande pour red&eacute;marrer l'Apache?';
+$lng['serversettings']['apachereload_command']['description'] = 'Comment est la commande pour red&eacute;marrer l\Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind-Config-Directory';
 $lng['serversettings']['bindconf_directory']['description'] = 'O&ugrave; est sauvegard&eacute;e la configuration du BIND?';
 $lng['serversettings']['bindreload_command']['title'] = 'Bind-Reload-Command';
 $lng['serversettings']['bindreload_command']['description'] = 'Comment est la commande pour red&eacute;marrer le BIND?';
 $lng['serversettings']['binddefaultzone']['title'] = 'Bind-Default-Zone';
-$lng['serversettings']['binddefaultzone']['description'] = 'Comment s'appelle la zone standard des tous les domaines?';
+$lng['serversettings']['binddefaultzone']['description'] = 'Comment s\'appelle la zone standard des tous les domaines?';
 $lng['serversettings']['vmail_uid']['title'] = 'Mails-Uid';
 $lng['serversettings']['vmail_uid']['description'] = 'Quel UID doivent avoir les e-mails?';
 $lng['serversettings']['vmail_gid']['title'] = 'Mails-Gid';
 $lng['serversettings']['vmail_gid']['description'] = 'Quel GID doivent avoir les e-mails?';
 $lng['serversettings']['vmail_homedir']['title'] = 'Mails-Homedir';
 $lng['serversettings']['vmail_homedir']['description'] = 'O&ugrave; doivent &ecirc;tre les e-mails?';
-$lng['serversettings']['adminmail']['title'] = 'Adresse de l'exp&eacute;diteur';
-$lng['serversettings']['adminmail']['description'] = 'Quelle est l'adresse standard des e-mails qui sont envoy&eacute;s de SysCP?';
+$lng['serversettings']['adminmail']['title'] = 'Adresse de l\'exp&eacute;diteur';
+$lng['serversettings']['adminmail']['description'] = 'Quelle est l\'adresse standard des e-mails qui sont envoy&eacute;s de SysCP?';
 $lng['serversettings']['phpmyadmin_url']['title'] = 'URL phpMyAdmin';
 $lng['serversettings']['phpmyadmin_url']['description'] = '&Agrave; quelle adresse se trouve le phpMyAdmin?';
 $lng['serversettings']['webmail_url']['title'] = 'URL WebMail';
@@ -310,9 +310,9 @@ $lng['serversettings']['webmail_url']['description'] = '&Agrave; quelle adresse 
 $lng['serversettings']['webftp_url']['title'] = 'URL WebFTP';
 $lng['serversettings']['webftp_url']['description'] = '&Agrave; quelle adresse se trouve le WebFTP?';
 $lng['serversettings']['language']['description'] = 'Quelle langue est la langue pr&eacute;d&eacute;finie?';
-$lng['serversettings']['maxloginattempts']['title'] = 'Nombre d'essais maximal';
-$lng['serversettings']['maxloginattempts']['description'] = 'Nombre d'essais de se connecter maximal jusqu'&agrave; la d&eacute;activation de l'acc&egrave;s.';
+$lng['serversettings']['maxloginattempts']['title'] = 'Nombre d\'essais maximal';
+$lng['serversettings']['maxloginattempts']['description'] = 'Nombre d\essais de se connecter maximal jusqu\&agrave; la d&eacute;activation de l\acc&egrave;s.';
 $lng['serversettings']['deactivatetime']['title'] = 'Dur&eacute;e de la d&eacute;activation';
-$lng['serversettings']['deactivatetime']['description'] = 'Dur&eacute;e (en secondes) pendant laquelle l'acc&egrave;s reste d&eacute;activ&eacute;.';
+$lng['serversettings']['deactivatetime']['description'] = 'Dur&eacute;e (en secondes) pendant laquelle l\acc&egrave;s reste d&eacute;activ&eacute;.';
 
 ?>
