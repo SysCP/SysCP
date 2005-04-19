@@ -132,7 +132,7 @@
 			$language_options = '';
 			while(list($language_file, $language_name) = each($languages))
 			{
-				$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
+				$language_options .= makeoption($language_name, $language_file, $userinfo['def_language']);
 			}
 			eval("echo \"".getTemplate("index/change_language")."\";");
 		}

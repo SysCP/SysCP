@@ -18,7 +18,7 @@ $header
       </tr>
       <if $userinfo['change_serversettings'] == '1'><tr>
        <td class="maintable" nowrap>DocumentRoot:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
-       <td class="maintable" nowrap><input type="text" name="documentroot" value="{$result['documentroot']}"></td>
+       <td class="maintable" nowrap><input type="text" name="documentroot" value="{$result['documentroot']}" size="60"></td>
       </tr>
       <tr>
        <td class="maintable" nowrap>Nameserver:</td>
@@ -26,7 +26,7 @@ $header
       </tr>
       <tr>
        <td class="maintable" nowrap>Zonefile:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
-       <td class="maintable" nowrap><input type="text" name="zonefile" value="{$result['zonefile']}"></td>
+       <td class="maintable" nowrap><input type="text" name="zonefile" value="{$result['zonefile']}" size="60"></td>
       </tr></if>
       <tr>
        <td class="maintable" nowrap>Emaildomain:</td>
@@ -54,7 +54,7 @@ $header
       </tr>
       <tr>
        <td class="maintable" nowrap>{$lng['admin']['ownvhostsettings']}:</td>
-       <td class="maintable" nowrap><textarea rows="4" cols="30" name="specialsettings">{$result['specialsettings']}</textarea></td>
+       <td class="maintable" nowrap><textarea rows="12" cols="60" name="specialsettings">{$result['specialsettings']}</textarea></td>
       </tr></if>
       <tr>
        <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['panel']['save']}"></td>
