@@ -41,23 +41,49 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `caneditdomain`, `iswildcarddomain`, `parentdomainid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id` <> ".$userinfo['standardsubdomain']." ORDER BY `domain` ASC");
-			$domains='';
-			$parentdomains_count=0;
-			$domains_count=0;
-			$domain_array=array();
-			while($row=$db->fetch_array($result))
-			{
-				$row['domain'] = $idna_convert->decode($row['domain']);
-				$domain_array[$row['domain']] = $row;
-			}
-			ksort($domain_array);
-			foreach($domain_array as $row)
-			{
-				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
-				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
-				if($row['parentdomainid'] == '0' && $row['iswildcarddomain'] != '1' && $row['caneditdomain'] == '1')
+			$result = $db->query(
+				"SELECT `id`, " .
+				"       `customerid`, " .
+				"       `domain`, " .
+				"       `documentroot`, " .
+				"       `isemaildomain`, " .
+				"       `caneditdomain`, " .
+				"       `iswildcarddomain`, " .
+				"       `parentdomainid` " .
+				"FROM `".TABLE_PANEL_DOMAINS."` " .
+				"WHERE `customerid`='".$userinfo['customerid']."' " .
+				"  AND `id` <> ".$userinfo['standardsubdomain']
+			);
+ 			$domains='';
+ 			$parentdomains_count=0;
+ 			$domains_count=0;
+ 			$domain_array=array();
+			while( $row = $db->fetch_array($result) )
+ 			{
+ 				$row['domain'] = $idna_convert->decode($row['domain']);
+				$domainparts = explode('.',$row['domain']);
+				$domainparts = array_reverse($domainparts);
+				$sortkey = '';
+				foreach ($domainparts as $key => $part)
 				{
+					$sortkey .= $part.'.';
+				}
+				$domain_array[$sortkey] = $row;
+ 			}
+ 			ksort($domain_array);
+			$parentdomainid = 0;
+ 			foreach($domain_array as $row)
+ 			{
+ 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
+
+				if ($row['parentdomainid'] == 0)
+				{
+					eval("\$domains.=\"".getTemplate("domains/domains_delimiter")."\";");
+				}
+
+ 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
+ 				if($row['parentdomainid'] == '0' && $row['iswildcarddomain'] != '1' && $row['caneditdomain'] == '1')
+ 				{
 					$parentdomains_count++;
 				}
 				$domains_count++;

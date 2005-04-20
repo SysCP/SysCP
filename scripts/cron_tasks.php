@@ -251,9 +251,9 @@
 				$htpasswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
 				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle))) 
 				{
-					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files)) 
+					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files) && file_exists($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename)) 
 					{
-						unlink($htpasswd_filename);
+						unlink($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename);
 					}
 				}
 			}
