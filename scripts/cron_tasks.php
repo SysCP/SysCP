@@ -25,8 +25,8 @@
 	 * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
 	 */
 	$debugMsg[] = '  cron_tasks: Searching for tasks to do';
-	$result=$db->query("SELECT `id`, `type`, `data` FROM `".TABLE_PANEL_TASKS."` ORDER BY `type` ASC");
-	while($row=$db->fetch_array($result))
+	$result_tasks=$db->query("SELECT `id`, `type`, `data` FROM `".TABLE_PANEL_TASKS."` ORDER BY `type` ASC");
+	while($row=$db->fetch_array($result_tasks))
 	{
 		if($row['data'] != '')
 		{
@@ -267,7 +267,7 @@
 			$debugMsg[] = '  cron_tasks: Task4 started - Rebuilding syscp_bind.conf';
 			$bindconf_file='# '.$settings['system']['bindconf_directory'].'syscp_bind.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.'."\n"."\n";
 			
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`zonefile`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isbindldomain` = '1' ORDER BY `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`zonefile`, `c`.`loginname`, `c`.`guid` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) WHERE `d`.`isbinddomain` = '1' ORDER BY `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				$debugMsg[] = '  cron_tasks: Task4 - Writing '.$domain['id'].'::'.$domain['domain'];
@@ -291,7 +291,7 @@
 			$debugMsg[] = '  cron_tasks: Task4 - Bind9 reloaded';
 		}
 	}
-	if($db->num_rows($result) != 0)
+	if($db->num_rows($result_tasks) != 0)
 	{
 		$db->query("DELETE FROM `".TABLE_PANEL_TASKS."`");
 	}
