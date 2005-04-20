@@ -146,11 +146,6 @@
 						}
 					}
 					
-					$isemaildomain = intval($_POST['isemaildomain']);
-					if($isemaildomain != '1') {
-						$isemaildomain = '0';
-					}
-
 					if($path=='' || $subdomain=='' || $subdomain=='www' || preg_match('/.*\..*/',$subdomain) || $domain=='' || $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain)
 					{
 						standard_error('notallreqfieldsorerrors');
@@ -158,7 +153,7 @@
 					}
 					else
 					{
-						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['id']."', '".$isemaildomain."', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
+						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
 						$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 						inserttask('1');
 						header("Location: $filename?page=$page&s=$s");
