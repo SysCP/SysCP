@@ -42,11 +42,31 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `popaccountid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `email` ASC");
-			$accounts='';
+			$result = $db->query(
+				'SELECT `'.TABLE_MAIL_VIRTUAL.'`.`id`, ' .
+				'       `'.TABLE_MAIL_VIRTUAL.'`.`domainid`, ' .
+				'       `'.TABLE_MAIL_VIRTUAL.'`.`email`, ' .
+				'       `'.TABLE_MAIL_VIRTUAL.'`.`email_full`, ' .
+				'       `'.TABLE_MAIL_VIRTUAL.'`.`iscatchall`, ' .
+				'       `'.TABLE_MAIL_VIRTUAL.'`.`destination`, ' .
+				'       `'.TABLE_MAIL_VIRTUAL.'`.`popaccountid`, ' .
+				'       `'.TABLE_PANEL_DOMAINS.'`.`domain` ' .
+				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
+				'LEFT JOIN `'.TABLE_PANEL_DOMAINS.'` ' .
+				'  ON (`'.TABLE_MAIL_VIRTUAL.'`.`domainid` = `'.TABLE_PANEL_DOMAINS.'`.`id`)' .
+				'WHERE `'.TABLE_MAIL_VIRTUAL.'`.`customerid`="'.$userinfo['customerid'].'" ' .
+				'ORDER BY `domainid`, `email` ASC'
+			);
+ 			$accounts='';
 			$emails_count=0;
-			while($row=$db->fetch_array($result))
-			{
+			$domainname = '';
+ 			while($row = $db->fetch_array($result))
+ 			{
+				if ($domainname != $row['domain'])
+				{
+					$domainname = $row['domain'];
+					eval("\$accounts.=\"".getTemplate("email/emails_domain")."\";");
+				}
 				$emails_count++;
 				$row['email'] = $idna_convert->decode($row['email']);
 				$row['email_full'] = $idna_convert->decode($row['email_full']);
