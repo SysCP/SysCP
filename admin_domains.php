@@ -134,10 +134,6 @@
 						if(isset($_POST['documentroot']) && $_POST['documentroot'] != '')
 						{
 							$documentroot = addslashes($_POST['documentroot']);
-							if(!preg_match('/^https?\:\/\//', $documentroot))
-							{
-								$documentroot = makeCorrectDir($documentroot);
-							}
 						}
 					}
 					else
@@ -149,6 +145,10 @@
 						$safemode = '1';
 						$speciallogfile = '1';
 						$specialsettings = '';
+					}
+					if(!preg_match('/^https?\:\/\//', $documentroot))
+					{
+						$documentroot = makeCorrectDir($documentroot);
 					}
 
 					$domain_check = $db->query_first("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '$domain'");
@@ -260,10 +260,6 @@
 							$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
 							$documentroot=$customer['documentroot'];
 						}
-						if(!preg_match('/^https?\:\/\//', $documentroot))
-						{
-							$documentroot = makeCorrectDir($documentroot);
-						}
 					}
 					else
 					{
@@ -273,6 +269,10 @@
 						$safemode = $result['safemode'];
 						$specialsettings = $result['specialsettings'];
 						$documentroot = $result['documentroot'];
+					}
+					if(!preg_match('/^https?\:\/\//', $documentroot))
+					{
+						$documentroot = makeCorrectDir($documentroot);
 					}
 
 					if($openbasedir != '1')
