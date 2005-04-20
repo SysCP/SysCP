@@ -192,7 +192,7 @@
 						}
 					}
 
-					if(isset($_POST['iswildcarddomain']) && $_POST['iswildcarddomain'] == '1')
+					if(isset($_POST['iswildcarddomain']) && $_POST['iswildcarddomain'] == '1' && $result['parentdomainid'] == '0' && $userinfo['subdomains'] != '0')
 					{
 						$wildcarddomaincheck = $db->query("SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE `parentdomainid` = '{$result['id']}'");
 						if($db->num_rows($wildcarddomaincheck) != '0')
