@@ -376,7 +376,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.7-cvs4');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.8');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -426,23 +426,6 @@ CREATE TABLE `panel_templates` (
 #
 # Dumping data for table `panel_templates`
 #
-
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (1, 1, 'English', 'mails', 'createcustomer_subject', 'Account informationen');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (2, 1, 'English', 'mails', 'createcustomer_mailbody', 'Hello {FIRSTNAME} {NAME},\r\n\r\nhere is your account information:\r\nUsername: {USERNAME}\r\nPassword: {PASSWORD}\r\n\r\nThank you,\r\nthe SysCP-Team');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (3, 1, 'English', 'mails', 'pop_success_subject', 'Mail account set up successfully');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (4, 1, 'English', 'mails', 'pop_success_mailbody', 'Hello,\r\nyour Mail account {EMAIL}\r\nwas set up successfully.\r\n\r\nThis is an automatically created\r\neMail, please do not answer!\r\n\r\nYours sincerely, the SysCP-Team');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (5, 1, 'Deutsch', 'mails', 'createcustomer_subject', 'Accountinformationen');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (6, 1, 'Deutsch', 'mails', 'createcustomer_mailbody', 'Hallo {FIRSTNAME} {NAME},\r\n\r\nhier ihre Accountinformationen:\r\n\r\nBenutzername: {USERNAME}\r\nPassword: {PASSWORD}\r\n\r\nVielen Dank,\r\nIhr SysCP-Team');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (7, 1, 'Deutsch', 'mails', 'pop_success_subject', 'eMail-Konto erfolgreich eingerichtet');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (8, 1, 'Deutsch', 'mails', 'pop_success_mailbody', 'Hallo,\r\n\r\nihr eMail-Konto {EMAIL}\r\nwurde erfolgreich eingerichtet.\r\nDies ist eine automatisch generierte\r\neMail, bitte antworten Sie nicht auf\r\ndiese Mitteilung.\r\n\r\nIhr SysCP-Team');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (9, 1, 'Francais', 'mails', 'createcustomer_subject', 'Informations de votre acc&egrave;s');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (10, 1, 'Francais', 'mails', 'createcustomer_mailbody', 'Bonjour {FIRSTNAME} {NAME},\r\n\r\nici vos informations d´acc&egrave;s:\r\n\r\nIdentifiant: {USERNAME}\r\nMot de passe: {PASSWORD}\r\n\r\nNous vous remercions,\r\nVotre Webmaster');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (11, 1, 'Francais', 'mails', 'pop_success_subject', 'Acc&egrave;s POP3 install&eacute;');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (12, 1, 'Francais', 'mails', 'pop_success_mailbody', 'Bonjour,\r\n\r\nvotre acc&egrave;s POP3 {EMAIL}\r\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\r\n\r\nC´est un e-mail g&eacute;ner&eacute; automatiquement, s´il vous plait ne repondez pas a ce message.\r\n\r\nVotre Webmaster');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (13, 1, 'Chinese', 'mails', 'createcustomer_subject', '&#36134;&#25143;&#20449;&#24687;');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (14, 1, 'Chinese', 'mails', 'createcustomer_mailbody', '&#24744;&#22909;{FIRSTNAME} {NAME},\n\n&#36825;&#37324;&#26159;&#24744;&#30340;&#36134;&#25143;&#20449;&#24687;:\n\n&#29992;&#25143;&#21517;: {USERNAME}\n&#23494;&#30721;: {PASSWORD}\n\n&#38750;&#24120;&#24863;&#35874;&#65292;&#24744;&#30340;&#26381;&#21153;&#23567;&#32452;');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (15, 1, 'Chinese', 'mails', 'pop_success_subject', 'POP3&#36134;&#25143;&#25104;&#21151;&#34987;&#21019;&#24314;');
-INSERT INTO panel_templates (id, adminid, language, templategroup, varname, value) VALUES (16, 1, 'Chinese', 'mails', 'pop_success_mailbody', '&#20320;&#22909;&#20197;&#34987;&#25104;&#21151;&#21019;&#24314;&#36825;&#26159;&#19968;&#20010;&#33258;&#21160;&#29983;&#25104;&#30340;&#36825;&#26159;&#19968;&#20010;&#33258;&#21160;&#29983;&#25104;&#30340;&#37038;&#20214;&#65292;&#35831;&#19981;&#29992;&#31572;&#22797;&#36825;&#20010;&#36890;&#30693;&#24744;&#30340;&#26381;&#21153;&#23567;&#32452;');
 
 
 # --------------------------------------------------------
