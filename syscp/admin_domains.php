@@ -90,8 +90,22 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `domainid` IN (SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE (`id`='$id' OR `parentdomainid`='$id') AND `isemaildomain`='1')");
-					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid` IN (SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE (`id`='$id' OR `parentdomainid`='$id') AND `isemaildomain`='1')");
+					$query =
+						'SELECT `id` ' .
+						'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
+						'WHERE (`id`="'.$id.'" OR `parentdomainid`="'.$id.'") ' .
+						'  AND  `isemaildomain`="1"';
+					$subResult = $db->query($query);
+					$idString = array();
+					while ( $subRow = $db->fetch_array($subResult) )
+					{
+						$idString[] = '`domainid` = "'.$subRow['id'].'"';	
+					}
+					$idString = implode(' OR ', $idString);
+					$query = 
+						'DELETE FROM `'.TABLE_MAIL_USERS.'` ' .
+						'WHERE '.$idString;
+					$db->query($query);
 					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `id`='$id' OR `parentdomainid`='".$result['id']."'");
 					$deleted_domains = $db->affected_rows();
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used` = `subdomains_used` - 0".($deleted_domains - 1)." WHERE `customerid` = '{$result['customerid']}'");
