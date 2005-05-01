@@ -235,7 +235,7 @@
 						
 						if(!file_exists($settings['system']['apacheconf_directory'].'htpasswd/')) 
 						{
-							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0750);
+							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0751);
 						}
 						$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
 						fwrite($htpasswd_file_handler, $htpasswd_file);
