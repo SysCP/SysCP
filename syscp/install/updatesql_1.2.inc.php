@@ -595,7 +595,6 @@
 	}
 	if($settings['panel']['version'] == '1.2.8')
 	{
-		chmod($settings['system']['apacheconf_directory'].'htpasswd/',751);
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.8-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.8-cvs1';
 	}
