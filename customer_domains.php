@@ -213,7 +213,7 @@
 					}
 					else
 					{
-						$isemaildomain = '0';
+						$isemaildomain = $result['isemaildomain'];
 					}
 
 					if($path=='')
