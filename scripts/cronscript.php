@@ -23,26 +23,29 @@
 	}
 	
 	$cronscriptDebug = false;
-	$lockfile='/var/run/syscp_cron.lock';
-	$debugMsg[] = 'Setting Lockfile to '.$lockfile;
+	// --- martin @ 05.05.2005 -------------------------------------------------
+	// reworked this part to remove a possible race condition, if the cronscript
+	// was called more than once within execution time of the if-clause 
+	$lockdir        = '/var/run/';
+	$lockFilename   = 'syscp_cron.lock-';
+	$lockfName      = $lockFilename.time();
+	$lockfile		= $lockdir.$lockfName;
+	$debugMsg[]     = 'Setting Lockfile to '.$lockfile;
+	$pathtophpfiles = '/var/www/syscp';
+	$debugMsg[]     = 'Setting SysCP installation path to '.$pathtophpfiles;
+	$filename       = 'cronscript.php';
 	
-	$pathtophpfiles='/var/www/syscp';
-	$debugMsg[] = 'Setting SysCP installation path to '.$pathtophpfiles;
-
-	
-	$filename = 'cronscript.php';
-	if(file_exists($lockfile))
+	touch($lockfile); 
+	$lockDirHandle  = opendir($lockdir);
+	while ($fName = readdir($lockDirHandle))
 	{
-		/**
-		 * Do not proceed further if the lockfile exists.
-		 */
-		die('Lockfile ('.$lockfile.') exists. Exiting...');
+		if ( $lockFilename == substr($fName, 0, strlen($lockFilename)) && $lockfName != $fName )
+		{
+			unlink($lockfile);		
+			die('There is already a lockfile. Exiting...');
+		}
 	}
-	else
-	{
-		exec('touch '.$lockfile);
-		$debugMsg[] = 'Creating Lockfile';
-	}
+	//--------------------------------------------------------------------------	
 	
 	/**
 	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.

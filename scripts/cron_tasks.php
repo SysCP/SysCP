@@ -235,7 +235,13 @@
 						
 						if(!file_exists($settings['system']['apacheconf_directory'].'htpasswd/')) 
 						{
+							// --- martin @ 05.05.2005 -------------------------
+							// added umask get,set for proper creation of the dir
+							$umask = umask;
+							umask( 0000 );
 							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0751);
+							umask( $umask );
+							//--------------------------------------------------
 						}
 						$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
 						fwrite($htpasswd_file_handler, $htpasswd_file);
