@@ -237,7 +237,7 @@
 						{
 							// --- martin @ 05.05.2005 -------------------------
 							// added umask get,set for proper creation of the dir
-							$umask = umask;
+							$umask = umask();
 							umask( 0000 );
 							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0751);
 							umask( $umask );

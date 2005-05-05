@@ -622,7 +622,7 @@
 				'SELECT COUNT(*) AS `number_subdomains` ' .
 				'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
 				'WHERE `customerid` = "'.$customer['customerid'].'" ' .
-				'AND `isemaildomain` = "0"'
+				'AND `parentdomainid` <> "0"'
 			);
 
 			$db->query(
