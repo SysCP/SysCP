@@ -33,8 +33,6 @@
 		$id=intval($_GET['id']);
 	}
 
-updateCounters();
-
 	if($page=='customers' && $userinfo['customers'] != '0' )
 	{
 		if($action=='')
