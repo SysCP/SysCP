@@ -33,6 +33,8 @@
 		$id=intval($_GET['id']);
 	}
 
+updateCounters();
+
 	if($page=='customers' && $userinfo['customers'] != '0' )
 	{
 		if($action=='')
@@ -56,16 +58,16 @@
 
 			$customers='';
 			$result=$db->query(
-				"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `a`.`loginname` AS `adminname` " .
+				"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " .
 				"FROM `".TABLE_PANEL_CUSTOMERS."` `c`, `".TABLE_PANEL_ADMINS."` `a` " .
 				"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '{$userinfo['adminid']}' AND " )."`c`.`adminid`=`a`.`adminid` " .
 				"ORDER BY `c`.`$sortby` $sortorder");
 			while($row=$db->fetch_array($result))
 			{
 				$domains=$db->query_first(
-					'SELECT COUNT(`id`) AS `domains` ' .
-					'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
-					'WHERE `customerid`=\''.$row['customerid'].'\' AND `parentdomainid`=\'0\' AND `isemaildomain`=\'1\''
+					"SELECT COUNT(`id`) AS `domains` " .
+					"FROM `".TABLE_PANEL_DOMAINS."` " .
+					"WHERE `customerid`='".$row['customerid']."' AND `parentdomainid`='0' AND `id` <> '" . $row['standardsubdomain'] . "' "
 				);
 				$row['domains']=$domains['domains'];
 				$row['traffic_used']=round($row['traffic_used']/(1024*1024),4);
