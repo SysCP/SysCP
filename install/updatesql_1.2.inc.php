@@ -593,10 +593,10 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.8' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.8';
 	}
-	if($settings['panel']['version'] == '1.2.8')
+	if($settings['panel']['version'] == '1.2.8' || $settings['panel']['version'] == '1.2.8-cvs1')
 	{
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.8-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
-		$settings['panel']['version'] = '1.2.8-cvs1';
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.9' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.9';
 	}
 	
 ?>
