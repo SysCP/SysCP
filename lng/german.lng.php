@@ -168,9 +168,9 @@ $lng['extras']['errordocument401path'] = 'URL zum Fehlerdokument 401';
  * Errors
  */
 $lng['error']['error'] = 'Fehlermeldung';
-$lng['error']['directorymustexist'] = 'Das Verzeichnis, das Sie eingegeben haben muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
-$lng['error']['filemustexist'] = 'Die Datei, welche Sie eingegeben haben muss existieren.';
-$lng['error']['allresourcesused'] = 'Sie haben bereits alle Ihnen zur Verf?gung stehenden Ressourcen verbraucht.';
+$lng['error']['directorymustexist'] = 'Das Verzeichnis %s muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
+$lng['error']['filemustexist'] = 'Die Datei %s muss existieren.';
+$lng['error']['allresourcesused'] = 'Sie haben bereits alle Ihnen zur Verf&uuml;gung stehenden Ressourcen verbraucht.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als eMail-Domain verwendet wird l&ouml;schen. ';
 $lng['error']['domains_canteditdomain'] = 'Sie k&ouml;nnen diese Domain nicht bearbeiten. Dies wurde durch den Admin verweigert';
 $lng['error']['domains_cantdeletedomainwithemail'] = 'Sie k&ouml;nnen keine Domain l&ouml;schen die noch als E-Mail Domain verwendet wird. L&ouml;schen Sie zuerst alle E-Mail Adressen dieser Domain.';
@@ -178,17 +178,54 @@ $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomain
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Sie haben bereits eine Adresse als Catchall f&uuml;r diese Domain definiert.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
 $lng['error']['login'] = 'Der angegebene Benutzername/Passwort ist falsch.';
-$lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zuvieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';
+$lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zu vieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';
 $lng['error']['notallreqfieldsorerrors'] = 'Sie haben nicht alle Felder oder ein Feld mit fehlerhaften Angaben ausgef&uuml;llt.';
 $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
-$lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressource verteilen als Sie noch frei haben.';
+$lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressourcen verteilen als Sie noch frei haben.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie den Hauptadmin nicht l&ouml;schen oder bearbeiten.';
-$lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine URL angeben.';
+
+$lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine vollständige URL angeben (z.B. http://irgendwas.de/error404.htm)';
+$lng['error']['stringisempty'] ='Fehlende Eingabe im Feld';
+$lng['error']['myloginname'] ='\'Benutzername\'';
+$lng['error']['mypassword'] ='\'Passwort\'';
+$lng['error']['oldpassword'] ='\'Altes Passwort\'';
+$lng['error']['newpassword'] ='\'Neues Passwort\'';
+$lng['error']['newpasswordconfirm']='\'Neues Passwort (best&auml;tigen)\'';
+$lng['error']['newpasswordconfirmerror']='Das neue Passwort und die Best&auml;tigung sind nicht identisch.';
+$lng['error']['myname'] = '\'Name\'';
+$lng['error']['myfirstname'] = '\'Vorname\'';
+$lng['error']['emailadd'] = '\'EMail-Adresse\'';
+$lng['error']['mydomain'] = '\'Domain\'';
+$lng['error']['mydocumentroot'] = '\'Documentroot\'';
+$lng['error']['loginnameexists']= 'Login-Name %s existiert bereits.';
+$lng['error']['emailiswrong']= 'EMail-Adresse %s beinhaltet ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
+$lng['error']['loginnameiswrong']= 'Login-Name %s beinhaltet ung&uuml;ltige Zeichen.';
+$lng['error']['userpathcombinationdupe']='Kombination aus Benutzername und Pfad existiert bereits.';
+$lng['error']['patherror']='allgemeiner Fehler! Pfad darf nicht leer sein.';
+$lng['error']['errordocpathdupe']='Option f&uuml;r Pfad %s existiert bereits.';
+$lng['error']['adduserfirst']='Sie m&uuml;ssen zuerst einen Kunden anlegen.';
+$lng['error']['domainalreadyexists']= 'Die Domain %s wurde bereits einem Kunden zugeordnet.';
+$lng['error']['nolanguageselect']='Keine Sprache ausgewählt.';
+$lng['error']['nosubjectcreate']='Sie m&uuml;ssen einen Betreff angeben.';
+$lng['error']['nomailbodycreate']='Sie m&uuml;ssen einen Mail-Text eingeben.';
+$lng['error']['templatenotfound']='Template wurde nicht gefunden.';
+$lng['error']['alltemplatesdefined']='Sie k&ouml;nnen keine weiteren Templates anlegen, da bereits alle Sprachen mit Templates versorgt sind.';
+$lng['error']['wwwnotallowed']='Ihre Subdomain darf nicht www heissen.';
+$lng['error']['subdomainiswrong']='Die Subdomain %s beinhaltet ung&uuml;ltige Zeichen.';
+$lng['error']['domaincantbeempty']='Der Domain-Name darf nicht leer sein.';
+$lng['error']['domainexistalready']='Die Domain %s existiert bereits.';
+$lng['error']['emailexistalready']='Die EMail-Adresse %s existiert bereits.';
+$lng['error']['maindomainnonexist']='Die Haupt-Domain %s existiert nicht.';
+$lng['error']['destinationnonexist']='Bitte geben Sie Ihre Weiterleitungsadresse im Feld \'Nach\' ein.';
+$lng['error']['destinationalreadyexistasmail']='Die Weiterleitung zu %s exisitiert bereits als aktive EMail-Adresse.';
+$lng['error']['destinationalreadyexist']='Es gibt bereits eine Weiterleitung nach %s .';
+$lng['error']['destinationiswrong']= 'Die Weiterleitungsadresse-Adresse %s beinhaltet ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
+$lng['error']['domainname']=$lng['domains']['domainname'];
 
 /**
  * Questions
  */
-$lng['question']['question'] = 'Sicherheitsfrage';
+$lng['question']['question'] = 'Sicherheitsabfrage';
 $lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
 $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';

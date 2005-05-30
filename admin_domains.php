@@ -99,7 +99,7 @@
 					$idString = array();
 					while ( $subRow = $db->fetch_array($subResult) )
 					{
-						$idString[] = '`domainid` = "'.$subRow['id'].'"';	
+						$idString[] = '`domainid` = "'.$subRow['id'].'"';
 					}
 					$idString = implode(' OR ', $idString);
 					if ( $idString != '' )
@@ -202,15 +202,27 @@
 					{
 						$caneditdomain = '0';
 					}
-					
 
-					if($domain=='' || $documentroot=='' || $customerid==0 || $domain_check['domain'] == $domain)
+
+					if($domain=='')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error(array('stringisempty','mydomain'));
 					}
+					elseif($documentroot=='')
+					{
+						standard_error(array('stringisempty','mydocumentroot'));
+					}
+					elseif($customerid==0)
+					{
+						standard_error('adduserfirst');
+					}
+					elseif($domain_check['domain'] == $domain)
+					{
+						standard_error('domainalreadyexists',$domain);
+					}
+
 					else
-					{ 
+					{
 						if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
 						{
 							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;customerid=$customerid;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;speciallogfile=$speciallogfile;openbasedir=$openbasedir;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");

@@ -99,7 +99,7 @@ $lng['index']['accountdetails'] = 'Donn&eacute;es de l\'acc&egrave;s';
 /**
  * Change Password
  */
-$lng['changepassword']['old_password'] = 'Vieux mot de passe';
+$lng['changepassword']['old_password'] = 'Ancien mot de passe';
 $lng['changepassword']['new_password'] = 'Nouveau mot de passe';
 $lng['changepassword']['new_password_confirm'] = 'Nouveau mot de passe (confirmer)';
 $lng['changepassword']['new_password_ifnotempty'] = 'Nouveau mot de passe (Veuillez laisser vide pour aucun changement)';
@@ -185,6 +185,44 @@ $lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer
 $lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; ce n\'est pas possible d\'effacer ou modifier l\'administrateur principal.';
 $lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; un URL valid.';
 
+$lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; un URL valid.';
+$lng['error']['stringisempty'] ='Entrée manquant au panneau';
+$lng['error']['myloginname'] ='\'identifiant\'';
+$lng['error']['mypassword'] ='\'mot de passe\'';
+$lng['error']['oldpassword'] ='\'ancien mot de passe\'';
+$lng['error']['newpassword'] ='\'nouveau mot de passe\'';
+$lng['error']['newpasswordconfirm']='\'nouveau mot de passe (confirmer)\'';
+$lng['error']['newpasswordconfirmerror']='Les deux nouveaus mots de passe ne sont pas &eacute;gals.';
+$lng['error']['myname'] = '\'nom\'';
+$lng['error']['myfirstname'] = '\'pr&eacute;nom\'';
+$lng['error']['emailadd'] = '\'e-mail\'';
+$lng['error']['mydomain'] = '\'domain\'';
+$lng['error']['mydocumentroot'] = '\'Documentroot\'';
+$lng['error']['loginnameexists']= 'L\'identifiant %s existe d&eacute;j&agrave;.';
+$lng['error']['emailiswrong']= 'L\'adresse %s contient des signes invalides ou n\'est pas complet.';
+$lng['error']['loginnameiswrong']= 'L\'identifiant %s contient des signes invalides.';
+$lng['error']['userpathcombinationdupe']='Cette combination d\'identifiant et sentier existe d&eacute;j&agrave;.';
+$lng['error']['patherror']='Erreur g&eacute;n&eacute;ral! Le sentier ne doit pas &ecirc;tre vide.';
+$lng['error']['errordocpathdupe']='Il y a d&eacute;j&agrave; une option concernant le sentier %s.';
+$lng['error']['adduserfirst']='Vous devez appliquer un compte avant.';
+$lng['error']['domainalreadyexists']= 'Vous avez d&eacute;j&agrave; appliqu&eacute; le domaine %s.';
+$lng['error']['nolanguageselect']='Aucune langue choisi.';
+$lng['error']['nosubjectcreate']='Il faut donner un sujet.';
+$lng['error']['nomailbodycreate']='Il faut marquer un texte.';
+$lng['error']['templatenotfound']='Aucun template trouvé.';
+$lng['error']['alltemplatesdefined']='Vous avez d&eacute;j&agrave; appliqu&eacute des templates pour toutes les langues.';
+$lng['error']['wwwnotallowed']='Un subdomaine ne doit pas s\'appeler www.';
+$lng['error']['subdomainiswrong']='Le subdomaine %s contient des signes invalides.';
+$lng['error']['domaincantbeempty']='Le nom de domaine ne doit pas &ecirc;tre vide.';
+$lng['error']['domainexistalready']='Le domaine %s existe d&eacute;j&agrave;.';
+$lng['error']['emailexistalready']='L\'adresse %s existe d&eacute;j&agrave;.';
+$lng['error']['maindomainnonexist']='Le domaine %s n\'existe pas.';
+$lng['error']['destinationnonexist']='S\'il-vous-plait marquez votre adresse de retransmission au panneau \'&agrave;\'.';
+$lng['error']['destinationalreadyexistasmail']='La retransmission vers l\'adresse %s existe d&eacute;j&agrave; comme adresse active.';
+$lng['error']['destinationalreadyexist']='Il y a d&eacute;j&agrave; une retransmission vers l\'adresse %s.';
+$lng['error']['destinationiswrong']= 'L\'adresse %s contient des signes invalides ou n\'est pas complet.';
+$lng['error']['domainname']=$lng['domains']['domainname'];
+
 /**
  * Questions
  */
@@ -259,7 +297,7 @@ $lng['admin']['templates']['subject'] = 'R&eacute;f&eacute;rence';
 $lng['admin']['templates']['mailbody'] = 'Texte du mail';
 $lng['admin']['templates']['createcustomer'] = 'Mail de bienvenu pour des nouveaux clients';
 $lng['admin']['templates']['pop_success'] = 'Mail de bienvenu pour des nouveaux acc&egrave;s e-mail';
-$lng['admin']['templates']['template_replace_vars'] = 'Les variables qui vont &ecirc;tre remplac�es dans le template:';
+$lng['admin']['templates']['template_replace_vars'] = 'Les variables qui vont &ecirc;tre remplac�es dans le template:';
 $lng['admin']['templates']['FIRSTNAME'] = 'Va &ecirc;tre remplac&eacute; par le pr&eacute;nom.';
 $lng['admin']['templates']['NAME'] = 'Va &ecirc;tre remplac&eacute; par le nom.';
 $lng['admin']['templates']['USERNAME'] = 'Va &ecirc;tre remplac&eacute; par le login.';

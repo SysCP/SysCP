@@ -149,11 +149,29 @@
 					$email_full = $email_part . '@' . $domain ;
 
 					$email_check=$db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid` FROM `".TABLE_MAIL_VIRTUAL."` WHERE ( `email`='$email' OR `email_full` = '$email_full' ) AND `customerid`='".$userinfo['customerid']."'");
-					if($email=='' || $email_full == '' || $email_part=='' || $domain=='' || $domain_check['domain']!=$domain || $email_check['email_full'] == $email_full || !verify_email($email_part . '@' . $domain))
+
+					if($email=='' || $email_full == '' || $email_part=='')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error(array('stringisempty','emailadd'));
 					}
+					elseif($domain=='')
+					{
+						standard_error('domaincantbeempty');
+					}
+					elseif($domain_check['domain']!=$domain)
+					{
+						standard_error('maindomainnonexist',$domain);
+					}
+					elseif($email_check['email_full'] == $email_full)
+					{
+						standard_error('emailexistalready',$email_full);
+					}
+					elseif(!verify_email($email_part . '@' . $domain))
+					{
+						standard_error('emailiswrong',$email_full);
+					}
+
+
 					elseif ( $email_check['email'] == $email )
 					{
 						standard_error('youhavealreadyacatchallforthisdomain');
@@ -255,11 +273,16 @@
 						$email_full = $result['email_full'];
 						$username = $idna_convert->decode($email_full);
 						$password=addslashes($_POST['password']);
-						if($email_full == '' || $password == '')
+
+						if($email_full == '')
 						{
-							standard_error('notallreqfieldsorerrors');
-							exit;
+							standard_error(array('stringisempty','emailadd'));
 						}
+						elseif($password == '')
+						{
+							standard_error(array('stringisempty','mypassword'));
+						}
+
 						else
 						{
 							$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `username`, `password`, `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".$userinfo['customerid']."', '$email_full', '$username', '$password', ENCRYPT('$password'), '".$settings['system']['vmail_homedir']."', '".$userinfo['loginname']."/$email_full/', '".$settings['system']['vmail_uid']."', '".$settings['system']['vmail_gid']."', '".$result['domainid']."', 'y')");
@@ -305,7 +328,7 @@
 					$password=addslashes($_POST['password']);
 					if($password=='')
 					{
-						standard_error('notallreqfieldsorerrors');
+						standard_error(array('stringisempty','mypassword'));
 						exit;
 					}
 					else
@@ -356,11 +379,25 @@
 					{
 						$destination = $idna_convert->encode(addslashes($_POST['destination']));
 						$result['destination_array'] = explode ( ' ', $result['destination'] ) ;
-						if($destination == '' || !verify_email($destination) || $destination == $result['email'] || in_array ( $destination , $result['destination_array'] ) )
+
+						if($destination == '')
 						{
-							standard_error('notallreqfieldsorerrors');
-							exit;
+							standard_error('destinationnonexist');
 						}
+						elseif(!verify_email($destination))
+						{
+							standard_error('destinationiswrong',$destination);
+						}
+						elseif($destination == $result['email'])
+						{
+							standard_error('destinationalreadyexistasmail',$destination);
+						}
+						elseif(in_array ( $destination , $result['destination_array'] ))
+						{
+							standard_error('destinationalreadyexist',$destination);
+						}
+
+
 						else
 						{
 							$result['destination'] .= ' ' . $destination;

@@ -104,8 +104,7 @@
 					$password=addslashes($_POST['password']);
 					if($password=='')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error(array('stringisempty','mypassword'));
 					}
 					else
 					{

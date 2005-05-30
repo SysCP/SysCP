@@ -74,21 +74,32 @@
 			if(isset($_POST['send']) && $_POST['send']=='send')
 			{
 				$path=makeCorrectDir(addslashes($_POST['path']));
+				$userpath=$path;
 				$path=$userinfo['documentroot'].$path;
 				$username=addslashes($_POST['username']);
 				$username_path_check=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `username`='$username' AND `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
 				$password=crypt(addslashes($_POST['password']));
-				if($path=='' || $username == '' || ($username_path_check['username'] == $username && $username_path_check['path'] == $path) || $password=='' || !is_dir($path))
+                $passwordtest=$_POST['password'];
+
+				if(!is_dir($path))
 				{
-					if(!is_dir($path))
-					{
-						standard_error('directorymustexist');
-					}
-					else
-					{
-						standard_error('notallreqfieldsorerrors');
-					}
-					exit;
+					standard_error('directorymustexist',$userpath);
+				}
+				elseif($username=='')
+				{
+					standard_error(array('stringisempty','myloginname'));
+				}
+				elseif($username_path_check['username'] == $username && $username_path_check['path'] == $path)
+				{
+					standard_error('userpathcombinationdupe');
+				}
+				elseif($passwordtest=='')
+				{
+					standard_error(array('stringisempty','mypassword'));
+				}
+				elseif($path=='')
+				{
+					standard_error('patherror');
 				}
 				else
 				{
@@ -110,10 +121,10 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$password=crypt(addslashes($_POST['password']));
-					if($password=='')
+					$passwordtest=$_POST['password'];
+					if ($passwordtest=='')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error(array('stringisempty','mypassword'));
 					}
 					else
 					{
@@ -167,6 +178,7 @@
 			if( (isset($_POST['send'])) && ($_POST['send']=='send') )
 			{
 				$path            = makeCorrectDir(addslashes($_POST['path']));
+                $userpath        = $path;
 				$path            = $userinfo['documentroot'].$path;
 				$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
 					if (    ($_POST['error404path'] == '')
@@ -210,24 +222,21 @@
 						standard_error('mustbeurl');
 					}
 
-				
-				if (    ($path == '') 
-			         || ($path_dupe_check['path'] == $path) 
-			         || (!is_dir($path)) 
-			       )
-				{
 					if (!is_dir($path))
 					{
-						standard_error('directorymustexist');
+						standard_error('directorymustexist',$userpath);
 					}
-					else
+					elseif ($path_dupe_check['path'] == $path)
 					{
-						standard_error('notallreqfieldsorerrors');
+						standard_error('errordocpathdupe',$userpath);
 					}
-				}
+					elseif ($path == '')
+					{
+						standard_error('patherror');
+					}
 				else
 				{
-					
+
 					$db->query(
 						'INSERT INTO `'.TABLE_PANEL_HTACCESS.'` ' .
 						'       (`customerid`, ' .
@@ -245,13 +254,13 @@
 						'        "'.$error403path.'", ' .
 						'        "'.$error401path.'", ' .
 						'        "'.$error500path.'" ' .
-						'       )' 
+						'       )'
 					);
 					inserttask('3',$path);
 					header("Location: $filename?page=$page&s=$s");
 				}
 			}
-			else 
+			else
 			{
 				$options_indexes = makeyesno('options_indexes','1','0','1');
 				eval("echo \"".getTemplate("extras/htaccess_add")."\";");
@@ -265,7 +274,7 @@
 				'WHERE `customerid` = "'.$userinfo['customerid'].'" ' .
 				'  AND `id`         = "'.$id.'"'
 			);
-			
+
 			if (    (isset($result['customerid']))
 			     && ($result['customerid'] != '')
 			     && ($result['customerid'] == $userinfo['customerid'])

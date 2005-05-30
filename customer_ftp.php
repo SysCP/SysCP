@@ -91,21 +91,24 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$path=makeCorrectDir(addslashes($_POST['path']));
+					$userpath=$path;
 					$path=$userinfo['documentroot'].$path;
 					$path_check=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `homedir`='$path' AND `customerid`='".$userinfo['customerid']."'");
 					$password=addslashes($_POST['password']);
-					if($path=='' || $password=='' || /*$path_check['homedir']==$path ||*/ !is_dir($path))
+
+					if(!is_dir($path))
 					{
-						if(!is_dir($path))
-						{
-							standard_error('directorymustexist');
-						}
-						else
-						{
-							standard_error('notallreqfieldsorerrors');
-						}
-						exit;
+						standard_error('directorymustexist',$userpath);
 					}
+					elseif($password=='')
+					{
+						standard_error(array('stringisempty','mypassword'));
+					}
+					elseif($path=='')
+					{
+						standard_error('patherror');
+					}
+
 					else
 					{
 						$username=$userinfo['loginname'].$settings['customer']['ftpprefix'].(intval($userinfo['ftp_lastaccountnumber'])+1);
@@ -132,7 +135,7 @@
 					$password=addslashes($_POST['password']);
 					if($password=='')
 					{
-						standard_error('notallreqfieldsorerrors');
+						standard_error(array('stringisempty','mypassword'));
 						exit;
 					}
 					else

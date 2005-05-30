@@ -138,19 +138,44 @@
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
 						$path=makeCorrectDir($path);
+						$userpath=$path;
 						$path=$userinfo['documentroot'].$path;
 						if(!is_dir($path))
 						{
-							standard_error('directorymustexist');
+							standard_error('directorymustexist',$userpath);
 							exit;
 						}
 					}
-					
-					if($path=='' || $subdomain=='' || $subdomain=='www' || preg_match('/.*\..*/',$subdomain) || $domain=='' || $completedomain_check['domain']==$completedomain || $domain_check['domain']!=$domain)
+
+					if($path=='')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error('patherror');
 					}
+					elseif($subdomain=='')
+					{
+						standard_error(array('stringisempty','domainname'));
+					}
+					elseif($subdomain=='www')
+					{
+						standard_error('wwwnotallowed');
+					}
+					elseif(preg_match('/.*\..*/',$subdomain))
+					{
+						standard_error('subdomainiswrong',$subdomain);
+					}
+					elseif($domain=='')
+					{
+						standard_error('domaincantbeempty');
+					}
+					elseif($completedomain_check['domain']==$completedomain)
+					{
+						standard_error('domainexistalready',$completedomain);
+					}
+					elseif($domain_check['domain']!=$domain)
+					{
+						standard_error('maindomainnonexist',$domain);
+					}
+
 					else
 					{
 						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
@@ -184,10 +209,11 @@
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
 						$path=makeCorrectDir($path);
+						$userpath=$path;
 						$path=$userinfo['documentroot'].$path;
 						if(!is_dir($path))
 						{
-							standard_error('directorymustexist');
+							standard_error('directorymustexist',$userpath);
 							exit;
 						}
 					}
@@ -218,7 +244,7 @@
 
 					if($path=='')
 					{
-						standard_error('notallreqfieldsorerrors');
+						standard_error('patherror');
 						exit;
 					}
 					else
