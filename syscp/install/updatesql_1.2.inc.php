@@ -598,5 +598,13 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.9' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.9';
 	}
+	if($settings['panel']['version'] == '1.2.9')
+	{
+		$db->query("UPDATE `".TABLE_PANEL_LANGUAGE."` SET `language`='Fran&ccedil;ais' WHERE `language`='Francais'");
+		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`language`, `file`) VALUES ('Espag&ntilde;ol', 'lng/spanish.lng.php');");
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.9-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.9-cvs1';
+	}
 	
 ?>

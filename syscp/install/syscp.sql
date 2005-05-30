@@ -557,9 +557,10 @@ CREATE TABLE `panel_languages` (
 
 INSERT INTO `panel_languages` VALUES (1, 'Deutsch', 'lng/german.lng.php');
 INSERT INTO `panel_languages` VALUES (2, 'English', 'lng/english.lng.php');
-INSERT INTO `panel_languages` VALUES (3, 'Francais', 'lng/french.lng.php');
+INSERT INTO `panel_languages` VALUES (3, 'Fran&ccedil;ais', 'lng/french.lng.php');
 INSERT INTO `panel_languages` VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');
 INSERT INTO `panel_languages` VALUES (5, 'Catalan', 'lng/catalan.lng.php');
+INSERT INTO `panel_languages` VALUES (6, 'Espag&ntilde;ol', 'lng/spanish.lng.php');
 
 
 # --------------------------------------------------------
