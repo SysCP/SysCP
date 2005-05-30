@@ -168,8 +168,8 @@ $lng['extras']['errordocument401path'] = 'URL to ErrorDocument 401';
  * Errors
  */
 $lng['error']['error'] = 'Error';
-$lng['error']['directorymustexist'] = 'The directory you typed in has to exist. Please create it with your FTP client.';
-$lng['error']['filemustexist'] = 'The file you typed in has to exist.';
+$lng['error']['directorymustexist'] = 'The directory %s must exist. Please create it with your FTP client.';
+$lng['error']['filemustexist'] = 'The file %s must exist.';
 $lng['error']['allresourcesused'] = 'You have already used all of your resources.';
 $lng['error']['domains_cantdeletemaindomain'] = 'You cannot delete a domain which is used as an email-domain.';
 $lng['error']['domains_canteditdomain'] = 'You cannot edit this domain. It has been disabled by the admin.';
@@ -183,7 +183,44 @@ $lng['error']['notallreqfieldsorerrors'] = 'You have not filled in all or filled
 $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more resources than you own for yourself.';
 $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
-$lng['error']['mustbeurl'] = 'You have not typed a valid url';
+
+$lng['error']['mustbeurl'] = 'You have not typed a valid or complete url (e.g. http://somedomain.com/error404.htm)';
+$lng['error']['stringisempty'] ='Missing Input in Field';
+$lng['error']['myloginname'] ='\'Username\'';
+$lng['error']['mypassword'] ='\'Password\'';
+$lng['error']['oldpassword'] ='\'Old password\'';
+$lng['error']['newpassword'] ='\'New password\'';
+$lng['error']['newpasswordconfirm']='\'New password (confirm)\'';
+$lng['error']['newpasswordconfirmerror']='New password and confirmation does not match';
+$lng['error']['myname'] = '\'Name\'';
+$lng['error']['myfirstname'] = '\'First Name\'';
+$lng['error']['emailadd'] = '\'EMail-Address\'';
+$lng['error']['mydomain'] = '\'Domain\'';
+$lng['error']['mydocumentroot'] = '\'Documentroot\'';
+$lng['error']['loginnameexists']= 'Login-Name %s already exists';
+$lng['error']['emailiswrong']= 'EMail-Address %s contains invalid characters or is incomplete';
+$lng['error']['loginnameiswrong']= 'Login-Name %s contains invalid characters';
+$lng['error']['userpathcombinationdupe']='Combination of Username and Path already exists';
+$lng['error']['patherror']='General Error! path cannot be empty';
+$lng['error']['errordocpathdupe']='Option for path %s already exists';
+$lng['error']['adduserfirst']='Please create a customer first';
+$lng['error']['domainalreadyexists']= 'The domain %s is already assigned to a customer';
+$lng['error']['nolanguageselect']='No language selected.';
+$lng['error']['nosubjectcreate']='You must define a topic for this mail template.';
+$lng['error']['nomailbodycreate']='You must define a Mail-Text for this mail template.';
+$lng['error']['templatenotfound']='Template was not found.';
+$lng['error']['alltemplatesdefined']='You cant define more templates, all languages are supported already.';
+$lng['error']['wwwnotallowed']='www is not allowed as a name for subdomains.';
+$lng['error']['subdomainiswrong']='The subdomain %s contains invalid characters.';
+$lng['error']['domaincantbeempty']='The domain-name can not be empty.';
+$lng['error']['domainexistalready']='The domain %s already exists.';
+$lng['error']['emailexistalready']='The EMail-Address %s already exists.';
+$lng['error']['maindomainnonexist']='The main-domain %s does not exist.';
+$lng['error']['destinationnonexist']='Please create your forwarder in the field \'Destination\'.';
+$lng['error']['destinationalreadyexistasmail']='The forwarder to %s already exists as active EMail-Address.';
+$lng['error']['destinationalreadyexist']='You have already defined a forwarder to %s .';
+$lng['error']['destinationiswrong']= 'The forwarder %s contains invalid character(s) or is incomplete.';
+$lng['error']['domainname']=$lng['domains']['domainname'];
 
 /**
  * Questions
@@ -209,7 +246,7 @@ $lng['question']['mysql_reallydelete'] = 'Do you really want to delete the datab
 $lng['mails']['pop_success']['mailbody'] = 'Hello,\n\nyour Mail account {EMAIL}\nwas set up successfully.\n\nThis is an automatically created\neMail, please do not answer!\n\nYours sincerely, the SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'Mail account set up successfully';
 $lng['mails']['createcustomer']['mailbody'] = 'Hello {FIRSTNAME} {NAME},\n\nhere is your account information:\n\nUsername: {USERNAME}\nPassword: {PASSWORD}\n\nThank you,\nthe SysCP-Team';
-$lng['mails']['createcustomer']['subject'] = 'Account informationen';
+$lng['mails']['createcustomer']['subject'] = 'Account information';
 
 /**
  * Admin

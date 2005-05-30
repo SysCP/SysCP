@@ -51,21 +51,44 @@
 	}
 
 	/**
-	 * Prints errormessage on screen
+	 * Prints one ore more errormessages on screen
 	 *
-	 * @param string Errormessage
+	 * @param array Errormessages
+	 * @param string A %s in the errormessage will be replaced by this string.
 	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Ron Brand <ron.brand@web.de>
 	 */
-	function standard_error($error='')
+	function standard_error($errors='', $replacer='')
 	{
 		global $db, $tpl, $userinfo, $s, $header, $footer, $lng;
-		if(isset($lng['error'][$error]))
+
+		if(!is_array($errors))
 		{
-			$error = $lng['error'][$error];
+			$errors = Array ($errors);
 		}
-		else
+
+		$error = '';
+		foreach ($errors as $single_error)
 		{
-			$error = 'Unknown Error';
+			if(isset($lng['error'][$single_error]))
+			{
+				$single_error = $lng['error'][$single_error];
+				$single_error = str_replace ( '%s' , $replacer , $single_error ) ;
+			}
+			else
+			{
+				$error = 'Unknown Error';
+				break;
+			}
+
+			if(!isset($error))
+			{
+				$error = $single_error ;
+			}
+			else
+			{
+				$error .= ' ' . $single_error;
+			}
 		}
 		eval("echo \"".getTemplate('misc/error','1')."\";");
 		exit;

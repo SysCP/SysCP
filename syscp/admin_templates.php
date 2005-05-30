@@ -139,11 +139,23 @@
 				}
 				$templates=array_diff($available_templates,$templates);
 
-				if($language == '' || $subject == '' || $mailbody == '' || (array_search($template,$templates) === false))
+				if($language == '')
 				{
-					standard_error('notallreqfieldsorerrors');
-					exit;
+					standard_error('nolanguageselect');
 				}
+				elseif($subject == '')
+				{
+					standard_error('nosubjectcreate');
+				}
+				elseif($mailbody == '')
+				{
+					standard_error('nomailbodycreate');
+				}
+				elseif(array_search($template,$templates) === false)
+				{
+					standard_error('templatenotfound');
+				}
+
 				else
 				{
 
@@ -178,7 +190,7 @@
 				}
 				else
 				{
-					standard_error('notallreqfieldsorerrors');
+					standard_error('alltemplatesdefined');
 					exit;
 				}
 			}
@@ -193,12 +205,16 @@
 				{
 					$subject = htmlentities(addslashes($_POST['subject']));
 					$mailbody = htmlentities(addslashes($_POST['mailbody']));
-					
-					if($subject=='' || $mailbody=='')
+
+					if($subject == '')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error('nosubjectcreate');
 					}
+					elseif($mailbody == '')
+					{
+						standard_error('nomailbodycreate');
+					}
+
 					else
 					{
 						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$subject' WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");

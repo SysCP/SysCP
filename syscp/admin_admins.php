@@ -125,11 +125,35 @@
 				$diskspace = $diskspace * 1024 ;
 				$traffic = $traffic * 1024 * 1024 ;
 
-				if($name == '' || $loginname == '' || $loginname_check['loginname'] == $loginname || $password == '' || $email == '' || !verify_email($email) || !check_username($loginname))
+				if($loginname == '')
 				{
-					standard_error('notallreqfieldsorerrors');
-					exit;
+					standard_error(array('stringisempty','myloginname'));
 				}
+				elseif($loginname_check['loginname'] == $loginname)
+				{
+					standard_error('loginnameexists',$loginname);
+				}
+				elseif(!check_username($loginname))
+				{
+					standard_error('loginnameiswrong',$loginname);
+				}
+				elseif($name == '')
+				{
+					standard_error(array('stringisempty','myname'));
+				}
+				elseif($email == '')
+				{
+					standard_error(array('stringisempty','emailadd'));
+				}
+				elseif($password == '')
+				{
+					standard_error(array('stringisempty','mypassword'));
+				}
+				elseif(!verify_email($email))
+				{
+					standard_error('emailiswrong',$email);
+				}
+
 				else
 				{
 					if($customers_see_all != '1')
@@ -199,10 +223,17 @@
 					$diskspace = $diskspace * 1024 ;
 					$traffic = $traffic * 1024 * 1024 ;
 
-					if($name=='' || $email=='' || !verify_email($email) )
+					if($name == '')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error(array('stringisempty','myname'));
+					}
+					elseif($email == '')
+					{
+						standard_error(array('stringisempty','emailadd'));
+					}
+					elseif(!verify_email($email))
+					{
+						standard_error('emailiswrong',$email);
 					}
 					else
 					{

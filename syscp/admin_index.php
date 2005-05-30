@@ -104,11 +104,24 @@
 			}
 			$new_password=addslashes($_POST['new_password']);
 			$new_password_confirm=addslashes($_POST['new_password_confirm']);
-			if($old_password=='' || $new_password=='' || $new_password_confirm=='' || $new_password!=$new_password_confirm)
+
+			if($old_password=='')
 			{
-				standard_error('notallreqfieldsorerrors');
-				exit;
+				standard_error(array('stringisempty','oldpassword'));
 			}
+			elseif($new_password == '')
+			{
+				standard_error(array('stringisempty','newpassword'));
+			}
+			elseif($new_password_confirm == '')
+			{
+				standard_error(array('stringisempty','newpasswordconfirm'));
+			}
+			elseif($new_password!=$new_password_confirm)
+			{
+				standard_error('newpasswordconfirmerror');
+			}
+
 			else
 			{
 				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `password`='".md5($new_password)."' WHERE `adminid`='".$userinfo['adminid']."' AND `password`='".md5($old_password)."'");

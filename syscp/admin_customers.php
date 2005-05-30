@@ -228,10 +228,21 @@
 						exit;
 					}
 
-					if($name=='' || $firstname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
+					if($name == '')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+					       	standard_error(array('stringisempty','myname'));
+					}
+					elseif($firstname=='')
+					{
+						standard_error(array('stringisempty','myfirstname'));
+					}
+					elseif($email == '')
+					{
+						standard_error(array('stringisempty','emailadd'));
+					}
+					elseif(!verify_email($email))
+					{
+						standard_error('emailiswrong',$email);
 					}
 					else
 					{
@@ -240,10 +251,16 @@
 							$loginname = addslashes($_POST['loginname']);
 							$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='".$loginname."'");
 							$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
-							if($loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname || !check_username($loginname))
-							{
-								standard_error('notallreqfieldsorerrors');
-							}
+
+						if($loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname)
+						{
+							standard_error('loginnameexists',$loginname);
+						}
+						elseif(!check_username($loginname))
+						{
+							standard_error('loginnameiswrong',$loginname);
+						}
+
 							$accountnumber=intval($settings['system']['lastaccountnumber']);
 						}
 						else
@@ -361,7 +378,7 @@
 								'USERNAME' => $loginname,
 								'PASSWORD' => $password
 							);
-							// Get mail templates from database; the ones from 'admin' are fetched for fallback 
+							// Get mail templates from database; the ones from 'admin' are fetched for fallback
 							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_subject\'');
 							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['createcustomer']['subject']),$replace_arr));
 							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
@@ -439,11 +456,23 @@
 						exit;
 					}
 
-					if($name=='' || $firstname=='' || /*$company=='' || $street=='' || $zipcode=='' || $city=='' || $phone=='' || $fax=='' || $customernumber=='' ||*/ $email=='' || !verify_email($email) )
+					if($name == '')
 					{
-						standard_error('notallreqfieldsorerrors');
-						exit;
+						standard_error(array('stringisempty','myname'));
 					}
+					elseif($firstname=='')
+					{
+						standard_error(array('stringisempty','myfirstname'));
+					}
+					elseif($email == '')
+					{
+						standard_error(array('stringisempty','emailadd'));
+					}
+					elseif(!verify_email($email))
+					{
+						standard_error('emailiswrong',$email);
+					}
+
 					else
 					{
 						$updatepassword='';
