@@ -62,6 +62,7 @@
 				{
 					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `up_count`=`up_count`+'".$result['up_count']."', `up_bytes`=`up_bytes`+'".$result['up_bytes']."', `down_count`=`down_count`+'".$result['down_count']."', `down_bytes`=`down_bytes`+'".$result['down_bytes']."' WHERE `username`='".$userinfo['loginname']."' ");
 					$db->query("DELETE FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+					$db->query("UPDATE `".TABLE_FTP_GROUPS."` SET `members`=REPLACE(`members`,',".$result['username']."','') WHERE `customerid`='".$userinfo['customerid']."'");
 //					$db->query("DELETE FROM `".TABLE_FTP_GROUPS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					if($userinfo['ftps_used']=='1')
 					{
@@ -113,6 +114,7 @@
 					{
 						$username=$userinfo['loginname'].$settings['customer']['ftpprefix'].(intval($userinfo['ftp_lastaccountnumber'])+1);
 						$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('".$userinfo['customerid']."', '$username', ENCRYPT('$password'), '$path', 'y', '".$userinfo['guid']."', '".$userinfo['guid']."')");
+						$db->query("UPDATE `".TABLE_FTP_GROUPS."` SET `members`=CONCAT_WS(',',`members`,'".$username."') WHERE `customerid`='".$userinfo['customerid']."' AND `gid`='".$userinfo['guid']."'");
 //						$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`+1, `ftp_lastaccountnumber`=`ftp_lastaccountnumber`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 //						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$uid' WHERE settinggroup='ftp' AND varname='lastguid'");

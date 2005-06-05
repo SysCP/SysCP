@@ -199,19 +199,19 @@
 					}
 					if ( isset ( $row_diroptions['error404path'] ) && $row_diroptions['error404path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 404 '.$row_htaccess['error404path']."\n";
+						$diroptions_file .= '  ErrorDocument 404 '.$row_diroptions['error404path']."\n";
 					}
 					if ( isset ( $row_diroptions['error403path'] ) && $row_diroptions['error403path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 403 '.$row_htaccess['error403path']."\n";
+						$diroptions_file .= '  ErrorDocument 403 '.$row_diroptions['error403path']."\n";
 					}
 					if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 401 '.$row_htaccess['error401path']."\n";
+						$diroptions_file .= '  ErrorDocument 401 '.$row_diroptions['error401path']."\n";
 					}
 					if ( isset ( $row_diroptions['error500path'] ) && $row_diroptions['error500path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 500 '.$row_htaccess['error500path']."\n";
+						$diroptions_file .= '  ErrorDocument 500 '.$row_diroptions['error500path']."\n";
 					}
 					
 					if(count($row_diroptions['htpasswds']) > 0)
