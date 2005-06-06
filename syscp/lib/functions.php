@@ -953,10 +953,21 @@
 	 *
 	 * @param string The username to check
 	 * @return bool Correct or not
-	 * @author Michael D?rgner <michael@duergner.com>
+	 * @author Michael Duergner <michael@duergner.com>
 	 */
 	function check_username_prefix($username_prefix) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*$/",$username_prefix);
+	}
+	
+	/**
+	 * Returns if a mysql_prefix is in correct format or not.
+	 *
+	 * @param string The mysql_prefix to check
+	 * @return bool Correct or not
+	 * @author Michael Duergner <michael@duergner.com>
+	 */
+	function check_username_prefix($mysql_prefix) {
+		return preg_match("/^[a-zA-Z0-9\-\_]+$/",$mysql_prefix);
 	}
 	
 	/**
@@ -1040,6 +1051,18 @@
 			$trans_table = array_flip($trans_table);
 			return strtr($string,$trans_table);
 		}
+	}
+	
+	/**
+	 * Check if the submitted string is a valid domainname, i.e.
+	 * it consists only of the following characters ([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}
+	 * 
+	 * @param string The domainname which should be checked.
+	 * @return boolean True if the domain is valid, false otherwise
+	 * @author Michael Duergner
+	 */
+	function check_domain($domainname) {
+		return preg_match('/^([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}$/i',$domainname);
 	}
 
 ?>
