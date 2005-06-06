@@ -61,7 +61,7 @@
 			{
 //				echo 'customer_mysqlprefix<br />';
 				$value=addslashes($_POST['customer_mysqlprefix']);
-				if(check_username_prefix($value))
+				if(check_mysql_prefix($value))
 				{
 					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='customer' AND `varname`='mysqlprefix'");
 				}

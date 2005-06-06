@@ -186,6 +186,7 @@ $lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&o
 
 $lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine vollständige URL angeben (z.B. http://irgendwas.de/error404.htm)';
 $lng['error']['stringisempty'] ='Fehlende Eingabe im Feld';
+$lng['error']['stringiswrong'] ='Falsche Eingabe im Feld';
 $lng['error']['myloginname'] ='\'Benutzername\'';
 $lng['error']['mypassword'] ='\'Passwort\'';
 $lng['error']['oldpassword'] ='\'Altes Passwort\'';

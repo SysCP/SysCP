@@ -186,6 +186,7 @@ $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the m
 
 $lng['error']['mustbeurl'] = 'You have not typed a valid or complete url (e.g. http://somedomain.com/error404.htm)';
 $lng['error']['stringisempty'] ='Missing Input in Field';
+$lng['error']['stringiswrong'] ='Wrong Input in Field';
 $lng['error']['myloginname'] ='\'Username\'';
 $lng['error']['mypassword'] ='\'Password\'';
 $lng['error']['oldpassword'] ='\'Old password\'';
