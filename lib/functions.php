@@ -966,7 +966,7 @@
 	 * @return bool Correct or not
 	 * @author Michael Duergner <michael@duergner.com>
 	 */
-	function check_username_prefix($mysql_prefix) {
+	function check_mysql_prefix($mysql_prefix) {
 		return preg_match("/^[a-zA-Z0-9\-\_]+$/",$mysql_prefix);
 	}
 	
