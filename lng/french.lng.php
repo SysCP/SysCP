@@ -183,10 +183,10 @@ $lng['error']['notallreqfieldsorerrors'] = 'Vous n\'avez pas rempli toutes les c
 $lng['error']['oldpasswordnotcorrect'] = 'Le vieux mot de passe n\'est pas correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus des ressources qu\'il reste.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; ce n\'est pas possible d\'effacer ou modifier l\'administrateur principal.';
-$lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; un URL valid.';
 
 $lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; un URL valid.';
 $lng['error']['stringisempty'] ='Entrée manquant au panneau';
+$lng['error']['stringiswrong'] ='Entrée invalid au panneau';
 $lng['error']['myloginname'] ='\'identifiant\'';
 $lng['error']['mypassword'] ='\'mot de passe\'';
 $lng['error']['oldpassword'] ='\'ancien mot de passe\'';
