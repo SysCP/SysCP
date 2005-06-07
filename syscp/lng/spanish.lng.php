@@ -186,6 +186,7 @@ $lng['error']['youcantdeletechangemainadmin'] = 'Como paso de seguiridad Usted n
 
 $lng['error']['mustbeurl'] = 'Usted tiene que dar una completa direccion URL(por ejemplo: http://algo.de/error404.htm)';
 $lng['error']['stringisempty'] ='Falta un dato';
+$lng['error']['stringiswrong'] = 'Dato falso';
 $lng['error']['myloginname'] ='\'Nombre del usuario\'';
 $lng['error']['mypassword'] ='\'Clave de acceso\'';
 $lng['error']['oldpassword'] ='\'Clave Vieja\'';
@@ -240,7 +241,7 @@ $lng['question']['email_reallydelete_forwarder'] = '&#191;Usted realmente desea 
 $lng['question']['extras_reallydelete'] = '&#191;Usted realmente desea suprimir la protecci&oacute;n del directorio %s?';
 $lng['question']['extras_reallydelete_pathoptions'] = '&#191;Usted realmente desea suprimir las opciones del camino para el %s?';
 $lng['question']['ftp_reallydelete'] = '&#191;Usted realmente desea suprimir la cuenta %s del ftp?';
-$lng['question']['mysql_reallydelete'] = '&#191;Usted realmente desea suprimir la base de datos %s?ATENCIÒN! todos los datos se perder&aacute;n definitivamente';
+$lng['question']['mysql_reallydelete'] = '&#191;Usted realmente desea suprimir la base de datos %s?ATENCI&Ograve;N! todos los datos se perder&aacute;n definitivamente';
 
 /**
  * Mails
