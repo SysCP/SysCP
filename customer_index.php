@@ -114,11 +114,16 @@
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
 		{
-			$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `def_language`='".addslashes($_POST['def_language'])."' WHERE `customerid`='".$userinfo['customerid']."'");
-			$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".addslashes($_POST['def_language'])."' WHERE `hash`='".$s."'");
+			$def_language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['def_language'] ) ) ) ;
+			if(isset($languages[$def_language]))
+			{
+				$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `def_language`='".$def_language."' WHERE `customerid`='".$userinfo['customerid']."'");
+				$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".$def_language."' WHERE `hash`='".$s."'");
+			}
 			header("Location: $filename?s=$s");
 		}
-		else {
+		else
+		{
 			$language_options = '';
 			while(list($language_file, $language_name) = each($languages))
 			{
