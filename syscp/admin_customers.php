@@ -192,7 +192,7 @@
 					$fax = addslashes ( $_POST['fax'] ) ;
 					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
 					$customernumber = addslashes ( $_POST['customernumber'] ) ;
-					$def_language = addslashes($_POST['def_language']);
+					$def_language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['def_language'] ) ) ) ;
 					$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
@@ -420,7 +420,7 @@
 					$fax = addslashes ( $_POST['fax'] ) ;
 					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
 					$customernumber = addslashes ( $_POST['customernumber'] ) ;
-					$def_language = addslashes($_POST['def_language']);
+					$def_language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['def_language'] ) ) ) ;
 					$newpassword = $_POST['newpassword'];
 					$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;

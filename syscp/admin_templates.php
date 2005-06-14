@@ -107,7 +107,7 @@
 			);
 			if(isset($_POST['prepare']) && $_POST['prepare']=='prepare')
 			{
-				$language=addslashes($_POST['language']);
+				$language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['language'] ) ) ) ;
 				
 				$templates=array();
 				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$language.'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
@@ -126,7 +126,7 @@
 			}
 			else if(isset($_POST['send']) && $_POST['send']=='send')
 			{
-				$language=addslashes($_POST['language']);
+				$language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['language'] ) ) ) ;
 				$template = addslashes($_POST['template']);
 				$subject = htmlentities(addslashes($_POST['subject']));
 				$mailbody = htmlentities(addslashes($_POST['mailbody']));
