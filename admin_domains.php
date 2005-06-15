@@ -137,7 +137,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$domain = $idna_convert->encode(preg_replace('/\:(\d)+$/','',preg_replace('/^https?\:\/\//','',addslashes($_POST['domain']))));
+					$domain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/','/^https?\:\/\//'),'',addslashes($_POST['domain'])));
 					$customerid = intval($_POST['customerid']);
 					$subcanemaildomain = intval($_POST['subcanemaildomain']);
 					$isemaildomain = intval($_POST['isemaildomain']);

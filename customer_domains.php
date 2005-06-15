@@ -128,7 +128,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$subdomain=$idna_convert->encode(addslashes($_POST['subdomain']));
+					$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/','/^https?\:\/\//'),'',addslashes($_POST['subdomain'])));
 					$domain=$idna_convert->encode(addslashes($_POST['domain']));
 					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 					$completedomain=$subdomain.'.'.$domain;
