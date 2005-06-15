@@ -86,17 +86,21 @@
 			{
 				$s = md5(uniqid(microtime(),1));
 				
-				if(isset($_POST['language']) && $_POST['language'] == 'profile')
+				if(isset($_POST['language']))
 				{
-					$language = $userinfo['def_language'];
-				}
-				else if(isset($_POST['language']) && isset($languages[$_POST['language']]))
-				{
-					$language = addslashes($_POST['language']);
+					$language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['language'] ) ) ) ;
+					if($language == 'profile')
+					{
+						$language = $userinfo['def_language'];
+					}
+					elseif(!isset($languages[$language]))
+					{
+						$language = $settings['panel']['standardlanguage'];
+					}
 				}
 				else
 				{
-					$language = '';
+					$language = $settings['panel']['standardlanguage'];
 				}
 
 				$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['userid']}' AND `adminsession` = '{$userinfo['adminsession']}'");
