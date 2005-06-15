@@ -243,9 +243,21 @@
 							umask( $umask );
 							//--------------------------------------------------
 						}
-						$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
-						fwrite($htpasswd_file_handler, $htpasswd_file);
-						fclose($htpasswd_file_handler);
+						// --- flo @ 15.06.2005 ----------------------------
+						// added is_dir conditions to prevent unwanted php-errors if /etc/apache/htpasswd is a normal file and no directory (bug #66)
+						elseif(!is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
+						{
+							$debugMsg[] = '  cron_tasks: WARNING!!! ' . $settings['system']['apacheconf_directory'].'htpasswd/ is not a directory. htpasswd directory protection is disabled!!!';
+							echo 'WARNING!!! ' . $settings['system']['apacheconf_directory'].'htpasswd/ is not a directory. htpasswd directory protection is disabled!!!' ;
+						}
+
+						if(file_exists($settings['system']['apacheconf_directory'].'htpasswd/') && is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
+						{
+							$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
+							fwrite($htpasswd_file_handler, $htpasswd_file);
+							fclose($htpasswd_file_handler);
+						}
+						//--------------------------------------------------
 					}
 					$diroptions_file .= '</Directory>'."\n\n";
 				}
@@ -254,12 +266,15 @@
 				fclose($diroptions_file_handler);
 				safe_exec($settings['system']['apachereload_command']);
 				
-				$htpasswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
-				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle))) 
+				if(file_exists($settings['system']['apacheconf_directory'].'htpasswd/') && is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
 				{
-					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files) && file_exists($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename)) 
+					$htpasswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
+					while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle))) 
 					{
-						unlink($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename);
+						if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files) && file_exists($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename)) 
+						{
+							unlink($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename);
+						}
 					}
 				}
 			}
