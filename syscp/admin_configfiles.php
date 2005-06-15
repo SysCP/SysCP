@@ -196,7 +196,7 @@
 						'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
 						'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
 						'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
-						'etc_init.d_postfix' => '/etc/init.d/postfix'
+						'etc_mysql_debian-start' => '/etc/mysql/debian-start'
 					),
 					'commands' => Array
 					(
