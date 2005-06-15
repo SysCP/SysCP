@@ -221,7 +221,7 @@
 
 			if($_POST['panel_standardlanguage']!=$settings['panel']['standardlanguage'])
 			{
-				$value=addslashes($_POST['panel_standardlanguage']);
+				$value = addslashes ( htmlentities ( _html_entity_decode ( $_POST['panel_standardlanguage'] ) ) ) ;
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='standardlanguage'");
 			}
 
