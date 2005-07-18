@@ -17,6 +17,25 @@
  * @version $Id$
  */
 
+	// --- martin @ 18.07.2005 -------------------------------------------------
+	// this short piece of code has been introduced to remove severe security
+	// holes with register_globals=on set. 
+	/**
+	 * Register Globals Security Fix
+	 * - unsetting every variable registered in $_GET and as variable itself
+	 */
+	foreach ( $_GET as $key => $value )
+	{
+		if ( isset( $key ) )
+		{
+			unset( $$key );
+		}
+	}
+	unset( $_ );
+	unset( $value );
+	unset( $key );
+	// -------------------------------------------------------------------------	 
+
 	$filename = basename($_SERVER['PHP_SELF']);
 
 	if(!file_exists('./lib/userdata.inc.php'))
