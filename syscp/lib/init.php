@@ -22,11 +22,11 @@
 	// holes with register_globals=on set. 
 	/**
 	 * Register Globals Security Fix
-	 * - unsetting every variable registered in $_GET and as variable itself
+	 * - unsetting every variable registered in $_REQUEST and as variable itself
 	 */
-	foreach ( $_GET as $key => $value )
+	foreach ( $_REQUEST as $key => $value )
 	{
-		if ( isset( $key ) )
+		if ( isset( $$key ) )
 		{
 			unset( $$key );
 		}
