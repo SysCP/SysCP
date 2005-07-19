@@ -308,7 +308,7 @@ $lng['admin']['templates']['EMAIL'] = 'Wird mit der Adresse des neuen POP3/IMAP 
  * Serversettings
  */
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
-$lng['serversettings']['session_timeout']['description'] = 'Wie lange muss ein Benutzer inaktiv sein, damit die Session ung&uuml;tig wird? (Sekunden)';
+$lng['serversettings']['session_timeout']['description'] = 'Wie lange muss ein Benutzer inaktiv sein, damit die Session ung&uuml;ltig wird? (Sekunden)';
 $lng['serversettings']['accountprefix']['title'] = 'Kundenprefix';
 $lng['serversettings']['accountprefix']['description'] = 'Welchen Prefix sollen die Kundenaccounts haben?';
 $lng['serversettings']['mysqlprefix']['title'] = 'SQL-Prefix';
