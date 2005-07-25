@@ -190,6 +190,9 @@
 	/**
 	 * Language Managament
 	 */
+	$langs     = array();
+	$languages = array();
+
 	// query the whole table
 	$query =
 		'SELECT * ' .
@@ -244,6 +247,11 @@
 		exit;
 	}
 
+	/**
+	 * Initialize Template Engine
+	 */
+	$templatecache = array(); 
+	
 	/**
 	 * Fills variables for navigation, header and footer
 	 */
