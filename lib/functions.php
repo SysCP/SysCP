@@ -435,7 +435,23 @@
 	}
 
 	/**
-	 * Function which returns a correct dirname, means to add slashes at the beginning and at the end if none there and to remove all ..'s
+	 * Function which returns a secure path, means to remove all multiple dots and slashes
+	 *
+	 * @param string The path
+	 * @return string The corrected path
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function makeSecurePath($path)
+	{
+		$search = Array ('/(\/)+/', '/(\.)+/');
+		$replace = Array ('/', '.');
+		$path = preg_replace($search, $replace, $path);
+
+		return $path;
+	}
+
+	/**
+	 * Function which returns a correct dirname, means to add slashes at the beginning and at the end if there weren't none
 	 *
 	 * @param string The dirname
 	 * @return string The corrected dirname
@@ -452,15 +468,13 @@
 			$dir = '/'.$dir;
 		}
 
-		$search = Array ('/(\/)+/', '/(\.)+/');
-		$replace = Array ('/', '.');
-		$dir = preg_replace($search, $replace, $dir);
+		$dir = makeSecurePath ( $dir ) ;
 
 		return $dir;
 	}
 
 	/**
-	 * Function which returns a correct filename, means to add a slash at the beginning if not there and to remove all ..'s
+	 * Function which returns a correct filename, means to add a slash at the beginning if there weren't none
 	 *
 	 * @param string filename the filename
 	 * @return string the corrected filename
@@ -475,9 +489,7 @@
 			$filename = '/'.$filename;
 		}
  
-		$search   = Array ('/(\/)+/', '/(\.)+/');
-		$replace  = Array ('/', '.');
-		$filename = preg_replace($search, $replace, $filename);
+		$filename = makeSecurePath ( $filename ) ;
 
 		return $filename;
 	}

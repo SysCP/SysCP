@@ -80,13 +80,15 @@
 	/**
 	 * Selects settings from MySQL-Table
 	 */
+	$settings = Array() ;
 	$result = $db->query( 'SELECT `settinggroup`, `varname`, `value` FROM `'.TABLE_PANEL_SETTINGS.'`' );
 	while($row = $db->fetch_array($result))
 	{
 		if(($row['settinggroup'] == 'system' && $row['varname'] == 'hostname') || ($row['settinggroup'] == 'panel' && $row['varname'] == 'adminmail')) {
 			$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $idna_convert->decode($row['value']);
 		}
-		else {
+		else
+		{
 			$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $row['value'];
 		}
 	}
@@ -226,14 +228,14 @@
 	// include every english language file we can get
 	foreach ($langs['English'] as $key => $value)
 	{
-		include_once $value['file'];
+		include_once makeSecurePath ( $value['file'] ) ;
 	}
 	// now include the selected language if its not english
 	if ($language != 'English') 
 	{
 		foreach ($langs[$language] as $key => $value)
 		{
-			include_once $value['file'];
+			include_once makeSecurePath ( $value['file'] ) ;
 		}
 	}
 	
