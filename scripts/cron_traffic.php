@@ -43,7 +43,7 @@
 			$httptraffic = 0;
 			$httptraffic = webalizer_hist($row['loginname'], $row['documentroot'].'/webalizer/', $row['loginname']);
 
-			$speciallogfiles_domains = $db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".$row['customerid']."' AND `speciallogfile` = '1'");
+			$speciallogfiles_domains = $db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".$row['customerid']."' AND `parentdomainid` = 0 AND `speciallogfile` = '1'");
 			while($speciallogfiles_domains_row = $db->fetch_array($speciallogfiles_domains))
 			{
 				$httptraffic += webalizer_hist($row['loginname'].'-'.$speciallogfiles_domains_row['domain'], $row['documentroot'].'/webalizer/'.$speciallogfiles_domains_row['domain'].'/', $speciallogfiles_domains_row['domain']);
