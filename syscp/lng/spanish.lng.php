@@ -37,7 +37,7 @@ $lng['panel']['next'] = 'continuar';
  * Login
  */
 $lng['login']['username'] = 'Nombre del usuario';
-$lng['login']['password'] = 'Clave de acceso';
+$lng['login']['password'] = 'contrase&ntilde;a';
 $lng['login']['language'] = 'Lengua';
 $lng['login']['login'] = 'Registrarse';
 $lng['login']['logout'] = 'Finalizar sesi&oacute;n';
@@ -73,7 +73,7 @@ $lng['customer']['unlimited'] = 'infinito';
  * Customermenue
  */
 $lng['menue']['main']['main'] = 'Universal';
-$lng['menue']['main']['changepassword'] = 'Cambiar clave de acceso';
+$lng['menue']['main']['changepassword'] = 'Cambiar contrase&ntilde;a';
 $lng['menue']['main']['changelanguage'] = 'Cambiar Idioma';
 $lng['menue']['email']['email'] = 'eMail';
 $lng['menue']['email']['emails'] = 'Direcciones';
@@ -99,11 +99,11 @@ $lng['index']['accountdetails'] = 'Datos Cuentas';
 /**
  * Change Password
  */
-$lng['changepassword']['old_password'] = 'Clave de acceso anterior';
-$lng['changepassword']['new_password'] = 'Clave de acceso nueva';
-$lng['changepassword']['new_password_confirm'] = 'Clave de acceso (Repetir)';
-$lng['changepassword']['new_password_ifnotempty'] = 'Clave Nueva (libre=sin cambio)';
-$lng['changepassword']['also_change_ftp'] = 'tambien cambiar la Clave de acceso del FTP';
+$lng['changepassword']['old_password'] = 'Contrase&ntilde;a anterior';
+$lng['changepassword']['new_password'] = 'Contrase&ntilde;a nueva';
+$lng['changepassword']['new_password_confirm'] = 'Contrase&ntilde;a (Repetir)';
+$lng['changepassword']['new_password_ifnotempty'] = 'Contrase&ntilde;a nueva (libre=sin cambio)';
+$lng['changepassword']['also_change_ftp'] = 'tambien cambiar la Contrase&ntilde;a del FTP';
 
 /**
  * Domains
@@ -113,7 +113,7 @@ $lng['domains']['domainsettings'] = 'Configuraciones del dominio';
 $lng['domains']['domainname'] = 'Nombre del dominio';
 $lng['domains']['subdomain_add'] = 'Crear el secundario-dominio';
 $lng['domains']['subdomain_edit'] = 'Corrija el dominio (secundario)';
-$lng['domains']['wildcarddomain'] = '&#191;Cree como comod&Atilde;n-dominio?';
+$lng['domains']['wildcarddomain'] = '&#191;Crear como comod&Atilde;n-dominio?';
 
 /**
  * eMails
@@ -141,7 +141,7 @@ $lng['ftp']['account_add'] = 'Crear Cuenta';
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Aqui se puede crear/cancelar la MySQL Base de Datos.<br>Los Cambios se actualizan de inmediato y la Base de Datos se puede usar enseguida.<br />En el men&uacute; usted encuentra el phpMyAdmin de la herramienta con el cual usted puede administrar f&aacute;cilmente su base de datos.<br /><br />Para utilizar sus bases de datos en sus propias php-escrituras utilice las configuraciones siguientes: (Los datos en letra <i>cursiva</i> seran sustituidas por las asignadas!)<br />Nombre del Host:<b>localhost</b><br />Nombre del Usuario: <b><i>nombre de la base de datos</i></b><br />Clave: <b><i>clave de acceso elegida</i></b><br />Base de datos: <b><i>Nombre de la base de datos';
+$lng['mysql']['description'] = 'Aqui se puede crear/cancelar la MySQL Base de Datos.<br>Los Cambios se actualizan de inmediato y la Base de Datos se puede usar enseguida.<br />En el men&uacute; usted encuentra el phpMyAdmin de la herramienta con el cual usted puede administrar f&aacute;cilmente su base de datos.<br /><br />Para utilizar sus bases de datos en sus propias php-escrituras utilice las configuraciones siguientes: (Los datos en letra <i>cursiva</i> seran sustituidas por las asignadas!)<br />Nombre del Host:<b>localhost</b><br />Nombre del Usuario: <b><i>nombre de la base de datos</i></b><br />Clave: <b><i>contrase&ntilde;a elegida</i></b><br />Base de datos: <b><i>Nombre de la base de datos';
 $lng['mysql']['databasename'] = 'Nombre -/Base de Datos';
 $lng['mysql']['databasedescription'] = 'Indentificador de la Base de Datos';
 $lng['mysql']['database_create'] = 'Abrir base de Datos';
@@ -188,10 +188,10 @@ $lng['error']['mustbeurl'] = 'Usted tiene que dar una completa direccion URL(por
 $lng['error']['stringisempty'] ='Falta un dato';
 $lng['error']['stringiswrong'] = 'Dato falso';
 $lng['error']['myloginname'] ='\'Nombre del usuario\'';
-$lng['error']['mypassword'] ='\'Clave de acceso\'';
+$lng['error']['mypassword'] ='\'Contrase&ntilde;a\'';
 $lng['error']['oldpassword'] ='\'Clave Vieja\'';
-$lng['error']['newpassword'] ='\'Clave de acceso nueva\'';
-$lng['error']['newpasswordconfirm']='\'Clave de acceso (Repetir):\'';
+$lng['error']['newpassword'] ='\'Contrase&ntilde;a nueva\'';
+$lng['error']['newpasswordconfirm']='\'Contrase&ntilde;a (Repetir):\'';
 $lng['error']['newpasswordconfirmerror']='La Clave Nueva a la Confirmacion de Clave no Coinciden';
 $lng['error']['myname'] = '\'Apellido\'';
 $lng['error']['myfirstname'] = '\'Nombre\'';
@@ -217,7 +217,7 @@ $lng['error']['domaincantbeempty']='El nombre del dominio-Apellido no puede esta
 $lng['error']['domainexistalready']='El dominio %s existe ya.';
 $lng['error']['emailexistalready']='El email address %s existe ya.';
 $lng['error']['maindomainnonexist']='El dominio-principal %s no existe.';
-$lng['error']['destinationnonexist']='Cree por favor su email-expedici&oacute;n en \'Destinaci&oacute;n\'.';
+$lng['error']['destinationnonexist']='Crear por favor su email-expedici&oacute;n en \'Destinaci&oacute;n\'.';
 $lng['error']['destinationalreadyexistasmail']='La direccion Secundaria %s ya existe como Direccion e-mail activa.';
 $lng['error']['destinationalreadyexist']='Ya existe una Direccion Secundaria para %s .';
 $lng['error']['destinationiswrong']= 'La Direccion Secundaria %s contiene simbolos invalidos o esta incompleta.';
@@ -248,7 +248,7 @@ $lng['question']['mysql_reallydelete'] = '&#191;Usted realmente desea suprimir l
  */
 $lng['mails']['pop_success']['mailbody'] = 'Hola,\n\nsu cuenta del correo {EMAIL}\nfue instalada con &eacute;xito .\n\nEsto es un email autom&aacute;ticamente creado,\n\nno conteste por favor!\n\nSinceramente suyo, el SysCP-Equipo';
 $lng['mails']['pop_success']['subject'] = 'cuenta del email instalada con &eacute;xito';
-$lng['mails']['createcustomer']['mailbody'] = 'Hola {FIRSTNAME} {NAME},\n\naqu&Atilde; est&aacute; su informaci&oacute;n de la cuenta:\n\nNombre del usuario: {USERNAME}\nclave de acceso: {PASSWORD}\n\nGracias,\nel SysCP-Equipo';
+$lng['mails']['createcustomer']['mailbody'] = 'Hola {FIRSTNAME} {NAME},\n\naqu&Atilde; est&aacute; su informaci&oacute;n de la cuenta:\n\nNombre del usuario: {USERNAME}\nContrase&ntilde;a: {PASSWORD}\n\nGracias,\nel SysCP-Equipo';
 $lng['mails']['createcustomer']['subject'] = 'Informaci&oacute;n de la cuenta';
 
 
@@ -266,15 +266,15 @@ $lng['admin']['lookfornewversion']['error'] = 'Error de lectura';
 $lng['admin']['resources'] = 'Recursos';
 $lng['admin']['customer'] = 'Cliente';
 $lng['admin']['customers'] = 'Clientes';
-$lng['admin']['customer_add'] = 'Cree a un cliente';
+$lng['admin']['customer_add'] = 'Crear un cliente nuevo';
 $lng['admin']['customer_edit'] = 'Corrija a un cliente';
 $lng['admin']['domains'] = 'Dominios';
-$lng['admin']['domain_add'] = 'Cree el dominio';
+$lng['admin']['domain_add'] = 'Crear el dominio';
 $lng['admin']['domain_edit'] = 'Corrija el dominio';
 $lng['admin']['subdomainforemail'] = 'dominio-secundario como dominio de email';
 $lng['admin']['admin'] = 'Administrador';
 $lng['admin']['admins'] = 'Administradores';
-$lng['admin']['admin_add'] = 'Cree un admininstrator';
+$lng['admin']['admin_add'] = 'Crear un admininstrator';
 $lng['admin']['admin_edit'] = 'corrija el admininstrator';
 $lng['admin']['customers_see_all'] = '&#191;Puede ver a todos los clientes?';
 $lng['admin']['domains_see_all'] = '&#191;Puede ver todos los dominios?';
@@ -282,13 +282,13 @@ $lng['admin']['change_serversettings'] = '&#191;Puede cambiar configuraciones de
 $lng['admin']['server'] = 'Servidor';
 $lng['admin']['serversettings'] = 'Configuraciones';
 $lng['admin']['stdsubdomain'] = 'dominio-secundario est&aacute;ndar';
-$lng['admin']['stdsubdomain_add'] = 'Cree el subdomain est&aacute;ndar';
+$lng['admin']['stdsubdomain_add'] = 'Crear el subdomain est&aacute;ndar';
 $lng['admin']['deactivated'] = 'Desactivado';
 $lng['admin']['deactivated_user'] = 'Desactive a utilizador';
-$lng['admin']['sendpassword'] = 'Env&Atilde;e la clave de acceso';
+$lng['admin']['sendpassword'] = 'Env&Atilde;e la contrase&ntilde;a';
 $lng['admin']['ownvhostsettings'] = 'vHost-Configuraciones propias';
 $lng['admin']['configfiles']['serverconfiguration'] = 'Configuraci&oacute;n';
-$lng['admin']['configfiles']['files'] = '<b>Configfiles:</b> Cambie por favor los ficheros siguientes<br />o cr&eacute;elos con el contenido siguiente si no existen.<br /><b>Por favor note:</b> La MySQL-clave de acceso  no se ha substituido por razones de seguridad.<br />Substituya por favor &quot;MYSQL_PASSWORD&quot;manualmente por la propia. Si usted se olvid&oacute; de su MySQL-clave de acceso<br />usted la encontrar&aacute; en el &quot;lib/userdata.inc.php&quot;.';
+$lng['admin']['configfiles']['files'] = '<b>Configfiles:</b> Cambie por favor los ficheros siguientes<br />o cr&eacute;elos con el contenido siguiente si no existen.<br /><b>Por favor note:</b> La MySQL-contrase&ntilde;a  no se ha substituido por razones de seguridad.<br />Substituya por favor &quot;MYSQL_PASSWORD&quot;manualmente por la propia. Si usted se olvid&oacute; de su MySQL-contrase&ntilde;a<br />usted la encontrar&aacute; en el &quot;lib/userdata.inc.php&quot;.';
 $lng['admin']['configfiles']['commands'] = '<b>Commands:</b> Ejecute por favor los comandos siguientes en un shell.';
 $lng['admin']['configfiles']['restart'] = '<b>Relanzar:</b> Ejecute por favor los comandos siguientes en un shell para recargar la nueva configuraci&oacute;n.';
 $lng['admin']['templates']['templates'] = 'Modelos';
@@ -304,7 +304,7 @@ $lng['admin']['templates']['template_replace_vars'] = 'Variables que se substitu
 $lng['admin']['templates']['FIRSTNAME'] = 'Substituido por el nombre de los clientes.';
 $lng['admin']['templates']['NAME'] = 'Substituido por el Apellido de los clientes.';
 $lng['admin']['templates']['USERNAME'] = 'Substituido por el username de la cuenta de clientes.';
-$lng['admin']['templates']['PASSWORD'] = 'Substituido por la clave de acceso de la cuenta de clientes.';
+$lng['admin']['templates']['PASSWORD'] = 'Substituido por la contrase&ntilde;a de la cuenta de clientes.';
 $lng['admin']['templates']['EMAIL'] = 'Substituido por la direccion de la cuenta de POP3/del IMAP.';
 
 /**
