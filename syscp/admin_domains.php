@@ -72,8 +72,14 @@
 			foreach($domain_array as $row)
 			{
 				$standardsubdomain = false;
-				$sql = 'SELECT `customerid` FROM `'.TABLE_PANEL_CUSTOMERS.'` WHERE `standardsubdomain`=\''.$row['id'].'\'';
-				$result = $db->query_first($sql);
+				// --- martin @ 03.08.2005 ---------------------------------------------------------
+				// changed query variable not to collide with an elemental config variable
+				$query = 
+					'SELECT `customerid` ' .
+					'FROM   `'.TABLE_PANEL_CUSTOMERS.'` ' .
+					'WHERE  `standardsubdomain` = \''.$row['id'].'\'';
+				$result = $db->query_first( $query );
+				// ---------------------------------------------------------------------------------
 				if(isset($result['customerid']))
 				{
 					$standardsubdomain = true;
