@@ -65,6 +65,38 @@
 	$db = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
 	unset($sql['password']);
 	unset($db->password);
+	// --- martin @ 04.08.2005 ------------------------------------------------
+	// we will try to unset most of the $sql information if they are not needed
+	// by the calling script
+	if ( basename( $_SERVER['PHP_SELF'] ) == 'admin_configfiles.php' )
+	{
+		// Configfiles needs host, user, db 
+		unset( $sql['root_user']     );
+		unset( $sql['root_password'] );
+	}
+	elseif (    basename( $_SERVER['PHP_SELF'] ) == 'customer_mysql.php'
+	         || basename( $_SERVER['PHP_SELF'] ) == 'admin_customers.php' )
+	{
+		// customer mysql needs root pw, root user, host for database creation
+		// admin customers needs it for database deletion
+		unset( $sql['user'] );
+		unset( $sql['db']   ); 
+	}
+	elseif ( basename( $_SERVER['PHP_SELF'] ) == 'admin_settings.php' )
+	{
+		// admin settings needs the  host, user, root user, root pw
+		unset( $sql['db']            );
+	}
+	else
+	{
+		// Other scripts doesn't need anything at all
+		unset( $sql['host']          );
+		unset( $sql['user']          );
+		unset( $sql['db']            );
+		unset( $sql['root_user']     );
+		unset( $sql['root_password'] );
+	} 
+	// ------------------------------------------------------------------------
 	
 	/**
 	 * Include our class_idna_convert_wrapper.php, which offers methods for de-

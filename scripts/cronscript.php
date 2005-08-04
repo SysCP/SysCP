@@ -76,8 +76,12 @@
 	}
 	$debugMsg[] = 'Database Connection established';
 	
-	unset($sql['password']);
-	unset($db->password);
+	// --- martin @ 04.08.2005 -----------------------------------------------------------------
+	// changed the following lines to remove the whole sql referrence 
+	unset( $sql               );
+	unset( $db->password      );
+	unset( $db_root->password );
+	// -----------------------------------------------------------------------------------------
 
 	$result=$db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FROM `".TABLE_PANEL_SETTINGS."`");
 	while($row=$db->fetch_array($result))
