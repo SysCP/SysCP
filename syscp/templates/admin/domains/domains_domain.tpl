@@ -2,7 +2,7 @@
       <td class="maintable" align="right"><font size="-1">{$row['id']}</font></td>
       <td class="maintable"><font size="-1">{$row['domain']}</font></td>
       <td class="maintable"><font size="-1">{$row['name']} {$row['firstname']} ({$row['loginname']})</font></td>
-      <td class="maintable"><if !$standardsubdomain><a href="$filename?s=$s&page=$page&action=delete&id={$row['id']}">{$lng['panel']['delete']}</a></if></td>
+      <td class="maintable"><if (!$standardsubdomain && !$aliasdomain)><a href="$filename?s=$s&page=$page&action=delete&id={$row['id']}">{$lng['panel']['delete']}</a></if></td>
       <td class="maintable"><a href="$filename?s=$s&page=$page&action=edit&id={$row['id']}">{$lng['panel']['edit']}</a></td>
      </tr>
 

@@ -12,6 +12,10 @@ $header
        <td class="maintable">{$lng['domains']['domainname']}:</td>
        <td class="maintable" nowrap>{$result['domain']}</td>
       </tr>
+      <if $alias_check == '0'><tr>
+       <td class="maintable">{$lng['domains']['aliasdomain']}:</td>
+       <td class="maintable" nowrap><select name="alias">$domains</select></td>
+      </tr></if>
       <tr>
        <td class="maintable">{$lng['panel']['path']}:</td>
        <td class="maintable"><input type="text" name="path" value="{$result['documentroot']}" maxlength="50"></td>

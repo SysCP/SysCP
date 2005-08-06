@@ -114,6 +114,8 @@ $lng['domains']['domainname'] = 'Domain name';
 $lng['domains']['subdomain_add'] = 'Create subdomain';
 $lng['domains']['subdomain_edit'] = 'Edit (sub)domain';
 $lng['domains']['wildcarddomain'] = 'Create as wildcarddomain?';
+$lng['domains']['aliasdomain'] = 'Alias for domain';
+$lng['domains']['noaliasdomain'] = 'No alias domain';
 
 /**
  * eMails
@@ -215,6 +217,7 @@ $lng['error']['wwwnotallowed']='www is not allowed as a name for subdomains.';
 $lng['error']['subdomainiswrong']='The subdomain %s contains invalid characters.';
 $lng['error']['domaincantbeempty']='The domain-name can not be empty.';
 $lng['error']['domainexistalready']='The domain %s already exists.';
+$lng['error']['domainisaliasorothercustomer']='The selected alias domain is either itself an alias domain or belongs to another customer.';
 $lng['error']['emailexistalready']='The EMail-Address %s already exists.';
 $lng['error']['maindomainnonexist']='The main-domain %s does not exist.';
 $lng['error']['destinationnonexist']='Please create your forwarder in the field \'Destination\'.';
