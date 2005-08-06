@@ -42,17 +42,19 @@
 		if($action=='')
 		{
 			$result = $db->query(
-				"SELECT `id`, " .
-				"       `customerid`, " .
-				"       `domain`, " .
-				"       `documentroot`, " .
-				"       `isemaildomain`, " .
-				"       `caneditdomain`, " .
-				"       `iswildcarddomain`, " .
-				"       `parentdomainid` " .
-				"FROM `".TABLE_PANEL_DOMAINS."` " .
-				"WHERE `customerid`='".$userinfo['customerid']."' " .
-				"  AND `id` <> ".$userinfo['standardsubdomain']
+				"SELECT `d`.`id`, " .
+				"       `d`.`customerid`, " .
+				"       `d`.`domain`, " .
+				"       `d`.`documentroot`, " .
+				"       `d`.`isemaildomain`, " .
+				"       `d`.`caneditdomain`, " .
+				"       `d`.`iswildcarddomain`, " .
+				"       `d`.`parentdomainid`, " .
+				"		`ad`.`domain` AS `aliasdomain` " .
+				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
+				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+				"WHERE `d`.`customerid`='".$userinfo['customerid']."' " .
+				"  AND `d`.`id` <> ".$userinfo['standardsubdomain']
 			);
  			$domains='';
  			$parentdomains_count=0;
@@ -80,6 +82,12 @@
 				{
 					eval("\$domains.=\"".getTemplate("domains/domains_delimiter")."\";");
 				}
+				$aliasdomain=false;
+				$result=$db->query_first('SELECT COUNT(`id`) AS `count` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$row['id'].'\'');
+				if($result['count'] > 0)
+				{
+					$aliasdomain=true;
+				}
 
  				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
  				if($row['parentdomainid'] == '0' && $row['iswildcarddomain'] != '1' && $row['caneditdomain'] == '1')
@@ -95,7 +103,8 @@
 		elseif($action=='delete' && $id!=0)
 		{
 			$result=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `parentdomainid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
-			if(isset($result['parentdomainid']) && $result['parentdomainid']!='0')
+			$alias_check=$db->query_first('SELECT COUNT(`id`) AS `count` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$id.'\'');
+			if(isset($result['parentdomainid']) && $result['parentdomainid']!='0' && $alias_check['count'] == 0)
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
@@ -133,6 +142,13 @@
 					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."' AND `caneditdomain` = '1'");
+					$aliasdomain = intval($_POST['alias']);
+					
+					$aliasdomain_check=array('id' => 0);
+					if($aliasdomain!=0)
+					{
+						$aliasdomain_check = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`,`'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`customerid`=\''.$userinfo['customerid'].'\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\''.$userinfo['customerid'].'\' AND `d`.`id`=\''.$aliasdomain.'\'');
+					}
 					
 					$path=addslashes($_POST['path']);
 					if(!preg_match('/^https?\:\/\//', $path))
@@ -175,10 +191,14 @@
 					{
 						standard_error('maindomainnonexist',$domain);
 					}
+					elseif($aliasdomain_check['id']!=$aliasdomain)
+					{
+						standard_error('domainisaliasorothercustomer');
+					}
 
 					else
 					{
-						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
+						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', ".(($aliasdomain != 0) ? "'".$aliasdomain."'" : "NULL").", '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
 						$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 						inserttask('1');
 						header("Location: $filename?page=$page&s=$s");
@@ -192,6 +212,12 @@
 					{
 						$domains.=makeoption($idna_convert->decode($row['domain']),$row['domain']);
 					}
+					$aliasdomains=makeoption($lng['domains']['noaliasdomain'],0);
+					$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`id` <> `c`.`standardsubdomain` AND `d`.`customerid`=`c`.`customerid` AND `d`.`customerid`=".$userinfo['customerid']." ORDER BY `d`.`domain` ASC");
+					while($row_domain=$db->fetch_array($result_domains))
+					{
+						$aliasdomains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id']);
+					}
 					eval("echo \"".getTemplate("domains/domains_add")."\";");
 				}
 			}
@@ -199,13 +225,16 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `d`.`id`, `d`.`customerid`, `d`.`domain`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`parentdomainid`, `pd`.`subcanemaildomain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_DOMAINS."` `pd` WHERE `d`.`customerid`='".$userinfo['customerid']."' AND `d`.`id`='$id' AND ((`d`.`parentdomainid`!='0' AND `pd`.`id`=`d`.`parentdomainid`) OR (`d`.`parentdomainid`='0' AND `pd`.`id`=`d`.`id`)) AND `d`.`caneditdomain`='1'");
+			$result=$db->query_first("SELECT `d`.`id`, `d`.`customerid`, `d`.`domain`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`parentdomainid`, `d`.`aliasdomain`, `pd`.`subcanemaildomain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_DOMAINS."` `pd` WHERE `d`.`customerid`='".$userinfo['customerid']."' AND `d`.`id`='$id' AND ((`d`.`parentdomainid`!='0' AND `pd`.`id`=`d`.`parentdomainid`) OR (`d`.`parentdomainid`='0' AND `pd`.`id`=`d`.`id`)) AND `d`.`caneditdomain`='1'");
+			$alias_check=$db->query_first('SELECT COUNT(`id`) AS count FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$result['id'].'\'');
+			$alias_check=$alias_check['count'];
 			
 			if(isset($result['customerid']) && $result['customerid']==$userinfo['customerid'])
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$path=addslashes($_POST['path']);
+					$aliasdomain = intval($_POST['alias']);
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
 						$path=makeCorrectDir($path);
@@ -242,6 +271,16 @@
 						$isemaildomain = $result['isemaildomain'];
 					}
 
+					$aliasdomain_check=array('id' => 0);
+					if($aliasdomain!=0)
+					{
+						$aliasdomain_check = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`,`'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`customerid`=\''.$result['customerid'].'\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\''.$result['customerid'].'\' AND `d`.`id`=\''.$aliasdomain.'\'');
+					}
+					if($aliasdomain_check['id']!=$aliasdomain)
+					{
+						standard_error('domainisaliasorothercustomer');
+					}
+					
 					if($path=='')
 					{
 						standard_error('patherror');
@@ -254,10 +293,10 @@
 							$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `domainid`='$id'");
 							$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `domainid`='$id'");
 						}
-						if($path != $result['documentroot'] || $isemaildomain != $result['isemaildomain'] || $iswildcarddomain != $result['iswildcarddomain'])
+						if($path != $result['documentroot'] || $isemaildomain != $result['isemaildomain'] || $iswildcarddomain != $result['iswildcarddomain'] || $aliasdomain != $result['aliasdomain'])
 						{
 							inserttask('1');
-							$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$path', `isemaildomain`='$isemaildomain', `iswildcarddomain`='$iswildcarddomain' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+							$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$path', `isemaildomain`='$isemaildomain', `iswildcarddomain`='$iswildcarddomain', `aliasdomain`=".(($aliasdomain!=0 && $alias_check==0) ? '\''.$aliasdomain.'\'' : 'NULL')." WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						}
 						header("Location: $filename?page=$page&s=$s");
 					}
@@ -265,6 +304,12 @@
 				else
 				{
 					$result['domain'] = $idna_convert->decode($result['domain']);
+					$domains=makeoption($lng['domains']['noaliasdomain'],0,$result['aliasdomain']);
+					$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`id`<>'".$result['id']."' AND `c`.`standardsubdomain`<>`d`.`id` AND `d`.`customerid`='".$userinfo['customerid']."' AND `c`.`customerid`=`d`.`customerid` ORDER BY `d`.`domain` ASC");
+					while($row_domain=$db->fetch_array($result_domains))
+					{
+						$domains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id'],$result['aliasdomain']);
+					}
 					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
 					$iswildcarddomain=makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);

@@ -624,5 +624,13 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.11' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.11';
 	}
+
+	if($settings['panel']['version'] == '1.2.11')
+	{
+		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `aliasdomain` INT( 11 ) UNSIGNED NULL AFTER `customerid`");
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.11-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.11-cvs1';
+	}
 	
 ?>

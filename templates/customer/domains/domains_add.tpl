@@ -12,6 +12,10 @@ $header
        <td class="maintable" nowrap><input type="text" name="subdomain" value="" size="15" maxlength="50"> <b>.</b> <select name="domain">$domains</select></td>
       </tr>
       <tr>
+       <td class="maintable">{$lng['domains']['aliasdomain']}:</td>
+       <td class="maintable" nowrap><select name="alias">$aliasdomains</select></td>
+      </tr>
+      <tr>
        <td class="maintable">{$lng['panel']['path']}:</td>
        <td class="maintable"><input type="text" name="path" value="/" maxlength="50"></td>
       </tr>

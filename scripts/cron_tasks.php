@@ -51,7 +51,7 @@
 			$vhosts_file.='ServerName '.$settings['system']['hostname']."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				$debugMsg[] = '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain'];
@@ -59,6 +59,12 @@
 				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
 
+				$server_alias = '';
+				$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$domain['id'].'\'');
+				while(($alias_domain=$db->fetch_array($alias_domains)) !== false)
+				{
+					$server_alias .= ' '.$alias_domain['domain'].' '.(($alias_domain['iswildcarddomain']==1) ? '*' : 'www').'.'.$alias_domain['domain'];
+				}
 				if($domain['iswildcarddomain'] == '1')
 				{
 					$alias = '*';
@@ -67,7 +73,7 @@
 				{
 					$alias = 'www';
 				}
-				$vhosts_file.='  ServerAlias '.$alias.'.'.$domain['domain']."\n";
+				$vhosts_file.='  ServerAlias '.$alias.'.'.$domain['domain'].$server_alias."\n";
 				$vhosts_file.='  ServerAdmin '.$domain['email']."\n";
 
 				if(preg_match('/^https?\:\/\//', $domain['documentroot']))

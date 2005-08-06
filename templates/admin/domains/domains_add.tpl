@@ -15,6 +15,10 @@ $header
        <td class="maintable">Domain:</td>
        <td class="maintable" nowrap><input type="text" name="domain" value="" size="60"></td>
       </tr>
+      <tr>
+       <td class="maintable">{$lng['domains']['aliasdomain']}:</td>
+       <td class="maintable" nowrap><select name="alias">$domains</select></td>
+      </tr>
       <if $userinfo['change_serversettings'] == '1'><tr>
        <td class="maintable" nowrap>DocumentRoot:<font size="-2"><br />({$lng['panel']['emptyfordefault']})</td>
        <td class="maintable" nowrap><input type="text" name="documentroot" value="" size="60"></td>

@@ -114,6 +114,8 @@ $lng['domains']['domainname'] = 'Domainname';
 $lng['domains']['subdomain_add'] = 'Subdomain anlegen';
 $lng['domains']['subdomain_edit'] = '(Sub-)Domain bearbeiten';
 $lng['domains']['wildcarddomain'] = 'Als Wildcarddomain eintragen?';
+$lng['domains']['aliasdomain'] = 'Alias für Domain';
+$lng['domains']['noaliasdomain'] = 'Keine Aliasdomain';
 
 /**
  * eMails
@@ -184,7 +186,7 @@ $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressourcen verteilen als Sie noch frei haben.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie den Hauptadmin nicht l&ouml;schen oder bearbeiten.';
 
-$lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine vollstÃ¤ndige URL angeben (z.B. http://irgendwas.de/error404.htm)';
+$lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine vollständige URL angeben (z.B. http://irgendwas.de/error404.htm)';
 $lng['error']['stringisempty'] ='Fehlende Eingabe im Feld';
 $lng['error']['stringiswrong'] ='Falsche Eingabe im Feld';
 $lng['error']['myloginname'] ='\'Benutzername\'';
@@ -206,7 +208,7 @@ $lng['error']['patherror']='allgemeiner Fehler! Pfad darf nicht leer sein.';
 $lng['error']['errordocpathdupe']='Option f&uuml;r Pfad %s existiert bereits.';
 $lng['error']['adduserfirst']='Sie m&uuml;ssen zuerst einen Kunden anlegen.';
 $lng['error']['domainalreadyexists']= 'Die Domain %s wurde bereits einem Kunden zugeordnet.';
-$lng['error']['nolanguageselect']='Keine Sprache ausgewÃ¤hlt.';
+$lng['error']['nolanguageselect']='Keine Sprache ausgewählt.';
 $lng['error']['nosubjectcreate']='Sie m&uuml;ssen einen Betreff angeben.';
 $lng['error']['nomailbodycreate']='Sie m&uuml;ssen einen Mail-Text eingeben.';
 $lng['error']['templatenotfound']='Template wurde nicht gefunden.';
