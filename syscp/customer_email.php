@@ -62,9 +62,9 @@
 			$domainname = '';
  			while($row = $db->fetch_array($result))
  			{
-				if ($domainname != $row['domain'])
+				if ($domainname != $idna_convert->decode($row['domain']))
 				{
-					$domainname = $row['domain'];
+					$domainname = $idna_convert->decode($row['domain']);
 					eval("\$accounts.=\"".getTemplate("email/emails_domain")."\";");
 				}
 				$emails_count++;
