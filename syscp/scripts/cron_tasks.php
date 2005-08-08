@@ -44,10 +44,16 @@
 			{
 				$vhosts_file.='Include '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n\n";
 			}
-			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress']."\n"."\n";
+			// --- martin @ 08.08.2005 -------------------------------------------------------
+			// added portnumber to ip entries, fixing bug #79
+			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress'].':80'."\n"."\n";
+			// -------------------------------------------------------------------------------
 
 			$vhosts_file.='# DummyHost for DefaultSite'."\n";
-			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
+			// --- martin @ 08.08.2005 -------------------------------------------------------
+			// added portnumber to ip entries, fixing bug #79
+			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].':80>'."\n";
+			// -------------------------------------------------------------------------------
 			$vhosts_file.='ServerName '.$settings['system']['hostname']."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
@@ -56,7 +62,10 @@
 			{
 				$debugMsg[] = '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain'];
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
-				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].'>'."\n";
+				// --- martin @ 08.08.2005 -------------------------------------------------------
+				// added portnumber to ip entries, fixing bug #79
+				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].':80>'."\n";
+				// -------------------------------------------------------------------------------
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
 
 				$server_alias = '';
