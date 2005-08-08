@@ -805,6 +805,11 @@
 		//
 		// execute the command and return output
 		//
+
+		// --- martin @ 08.08.2005 -------------------------------------------------------
+		// fixing usage of uninitialised variable
+		$return = '';
+		// -------------------------------------------------------------------------------
 		exec($exec_string, $return);
 		return $return;
 	}
@@ -1028,6 +1033,10 @@
 	 */
 	function replace_variables($text,$vars) {
 		$pattern = "/\{([a-zA-Z0-9\-_]+)\}/";
+		// --- martin @ 08.08.2005 -------------------------------------------------------
+		// fixing usage of uninitialised variable
+		$matches = array();
+		// -------------------------------------------------------------------------------
 		if(count($vars) > 0 && preg_match_all($pattern,$text,$matches)) {
 			for($i = 0;$i < count($matches[1]);$i++) {
 				$current = $matches[1][$i];
