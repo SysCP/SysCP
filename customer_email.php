@@ -118,7 +118,7 @@
 					}
 					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `emails_used`=`emails_used` - 1 , `email_forwarders_used` = `email_forwarders_used` - $number_forwarders $update_users_query_addon WHERE `customerid`='".$userinfo['customerid']."'");
-					header("Location: $filename?page=$page&s=$s");
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
@@ -182,7 +182,7 @@
 						$db->query("INSERT INTO `".TABLE_MAIL_VIRTUAL."` (`customerid`, `email`, `email_full`, `iscatchall`, `domainid`) VALUES ('".$userinfo['customerid']."', '$email', '$email_full', '$iscatchall', '".$domain_check['id']."')");
 						$address_id = $db->insert_id();
 						$db->query("UPDATE ".TABLE_PANEL_CUSTOMERS." SET `emails_used` = `emails_used` + 1 WHERE `customerid`='".$userinfo['customerid']."'");
-						header("Location: $filename?page=$page&action=edit&id=$address_id&s=$s");
+    					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $address_id , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -254,7 +254,7 @@
 						$db->query ( "UPDATE `".TABLE_MAIL_VIRTUAL."` SET `email` = '$email' , `iscatchall` = '1' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='".$result['id']."'" );
 					}
 				}
-				header("Location: $filename?page=$page&action=edit&id=$id&s=$s");
+				redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 			}
 		}
 	}
@@ -302,7 +302,7 @@
 							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['pop_success']['mailbody']),$replace_arr));
 							mail("{$userinfo['firstname']} {$userinfo['name']} <$email_full>",$mail_subject,$mail_body,"From: {$admin['name']} <{$admin['email']}>\r\n");
 	
-							header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
+        					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 						}
 					}
 					else
@@ -334,7 +334,7 @@
 					else
 					{
 						$result=$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `password` = '$password', `password_enc`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='".$result['popaccountid']."'");
-						header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
+       					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -356,7 +356,7 @@
 					$result['destination'] = str_replace ( $result['email_full'] , '' , $result['destination'] ) ;
 					$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."', `popaccountid` = '0' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_accounts_used` = `email_accounts_used` - 1 WHERE `customerid`='".$userinfo['customerid']."'");
-					header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
+   					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 				}
 				else
 				{
@@ -404,7 +404,7 @@
 							$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 							$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_forwarders_used` = `email_forwarders_used` + 1 WHERE `customerid`='".$userinfo['customerid']."'");
 
-							header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
+        					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 						}
 					}
 					else
@@ -452,7 +452,7 @@
 						$result['destination'] = str_replace ( $forwarder , '' , $result['destination'] ) ;
 						$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_forwarders_used` = `email_forwarders_used` - 1 WHERE `customerid`='".$userinfo['customerid']."'");
-						header("Location: $filename?page=emails&action=edit&id=$id&s=$s");
+       					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 					}
 					else
 					{

@@ -90,7 +90,7 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND (`id`='$subjectid' OR `id`='$mailbodyid')");
-					header("Location: $filename?page=$page&s=$s");
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
@@ -163,7 +163,7 @@
 					                   VALUES ('{$userinfo['adminid']}', '$language', 'mails', '".$template."_subject','$subject')");
 					$result=$db->query("INSERT INTO `".TABLE_PANEL_TEMPLATES."` (`adminid`, `language`, `templategroup`, `varname`, `value`)
 					                   VALUES ('{$userinfo['adminid']}', '$language', 'mails', '".$template."_mailbody','$mailbody')");
-					header("Location: $filename?page=$page&s=$s");
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
 			else
@@ -220,7 +220,7 @@
 						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$subject' WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
 						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$mailbody' WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$mailbodyid'");
 
-						header("Location: $filename?page=$page&s=$s");
+    					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else

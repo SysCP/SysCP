@@ -90,11 +90,11 @@
 				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`={$userinfo['userid']}");
 				$s = md5(uniqid(microtime(),1));
 				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('$s', '$id', '{$result['ipaddress']}', '{$result['useragent']}', '" . time() . "', '{$result['language']}', '0')");
-				header("Location: ./customer_index.php?s=$s");
+				redirectTo ( 'customer_index.php' , Array ( 's' => $s ) ) ;
 			}
 			else
 			{
-				header("Location: ./index.php?action=login");
+				redirectTo ( 'index.php' , Array ( 'action' => 'login' ) ) ;
 			}
 		}
 
@@ -168,9 +168,10 @@
 					inserttask('1');
 					inserttask('4');
 
-					header("Location: $filename?page=$page&s=$s");
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
-				else {
+				else
+				{
 					ask_yesno('admin_customer_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['loginname']);
 				}
 			}
@@ -386,7 +387,7 @@
 							mail("$firstname $name <$email>",$mail_subject,$mail_body,"From: {$userinfo['name']} <{$userinfo['email']}>\r\n");
 						}
 
-						header("Location: $filename?page=$page&s=$s");
+    					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -616,7 +617,7 @@
 						$admin_update_query .= " WHERE `adminid` = '{$result['adminid']}'";
 						$db->query( $admin_update_query );
 
-						header("Location: $filename?page=$page&s=$s");
+    					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else

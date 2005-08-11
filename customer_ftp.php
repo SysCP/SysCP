@@ -73,9 +73,10 @@
 						$resetaccnumber='';
 					}
 					$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`-1 $resetaccnumber WHERE `customerid`='".$userinfo['customerid']."'");
-					header("Location: $filename?page=$page&s=$s");
+            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
-				else {
+				else
+				{
 					ask_yesno('ftp_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['username']);
 				}
 			}
@@ -118,10 +119,11 @@
 //						$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`+1, `ftp_lastaccountnumber`=`ftp_lastaccountnumber`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 //						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$uid' WHERE settinggroup='ftp' AND varname='lastguid'");
-						header("Location: $filename?page=$page&s=$s");
+            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
-				else {
+				else
+				{
 					eval("echo \"".getTemplate("ftp/accounts_add")."\";");
 				}
 			}
@@ -143,7 +145,7 @@
 					else
 					{
 						$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
-						header("Location: $filename?page=$page&s=$s");
+            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else {

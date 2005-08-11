@@ -86,7 +86,7 @@
 
 					$result=$db->query( 'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`-1 ' . $resetaccnumber . 'WHERE `customerid`="' . $userinfo['customerid'] .'"' );
 
-					header("Location: $filename?page=$page&s=$s");
+    				redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else 
 				{
@@ -127,7 +127,7 @@
 						$result=$db->query( 'INSERT INTO `' . TABLE_PANEL_DATABASES . '` (`customerid`, `databasename`, `description`) VALUES ("' . $userinfo['customerid'] .'", "' . $username .'", "' . $databasedescription .'")' );
 						$result=$db->query( 'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`+1, `mysql_lastaccountnumber`=`mysql_lastaccountnumber`+1 WHERE `customerid`="' . $userinfo['customerid'] . '"' );
 
-						header("Location: $filename?page=$page&s=$s");
+        				redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else 
@@ -163,8 +163,8 @@
 					$databasedescription=addslashes($_POST['description']);
 					$result=$db->query( 'UPDATE `' . TABLE_PANEL_DATABASES . '` SET `description`="' . $databasedescription . '" WHERE `customerid`="' . $userinfo['customerid'] . '" AND `id`="' . $id . '"');
 
-						header("Location: $filename?page=$page&s=$s");
-					}
+        			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+				}
 				else 
 				{
 					eval("echo \"".getTemplate("mysql/mysqls_edit")."\";");

@@ -129,7 +129,7 @@
 
 	if(!isset($settings['panel']['version']) || $settings['panel']['version'] != $version)
 	{
-		header('Location: ./install/updatesql.php');
+		redirectTo ( 'install/updatesql.php' ) ;
 		exit;
 	}
 
@@ -277,7 +277,7 @@
 	if($nosession == 1 && AREA != 'login')
 	{
 		unset($userinfo);
-		header('Location: ./index.php');
+		redirectTo ( 'index.php' ) ;
 		exit;
 	}
 

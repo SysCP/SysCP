@@ -365,7 +365,7 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 			}
 
-			header("Location: $filename?page=$page&s=$s");
+			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 		}
 		else
 		{
