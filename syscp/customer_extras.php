@@ -60,7 +60,7 @@
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					inserttask('3',$result['path']);
-					header("Location: $filename?page=$page&s=$s");
+           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
@@ -105,7 +105,7 @@
 				{
 					$db->query("INSERT INTO `".TABLE_PANEL_HTPASSWDS."` (`customerid`, `username`, `password`, `path`) VALUES ('".$userinfo['customerid']."', '$username', '$password', '$path')");
 					inserttask('3',$path);
-					header("Location: $filename?page=$page&s=$s");
+           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
 			else {
@@ -130,10 +130,11 @@
 					{
 						$db->query("UPDATE `".TABLE_PANEL_HTPASSWDS."` SET `password`='$password' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						inserttask('3',$result['path']);
-						header("Location: $filename?page=$page&s=$s");
+            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
-				else {
+				else
+				{
 					$result['path']=str_replace($userinfo['documentroot'],'',$result['path']);
 					eval("echo \"".getTemplate("extras/htpasswds_edit")."\";");
 				}
@@ -165,7 +166,7 @@
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					inserttask('3', $result['path']);
-					header("Location: $filename?page=$page&s=$s");
+           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
@@ -257,7 +258,7 @@
 						'       )'
 					);
 					inserttask('3',$path);
-					header("Location: $filename?page=$page&s=$s");
+           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
 			else
@@ -347,7 +348,7 @@
 							'  AND `id` = "'.$id.'"'
 						);
 					}
-					header("Location: $filename?page=$page&s=$s");
+           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{

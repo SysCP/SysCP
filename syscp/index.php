@@ -108,11 +108,11 @@
 				
 				if($userinfo['adminsession'] == '1')
 				{
-					header("Location: ./admin_index.php?s=$s");
+					redirectTo ( 'admin_index.php' , Array ( 's' => $s ) );
 				}
 				else
 				{
-					header("Location: ./customer_index.php?s=$s");
+					redirectTo ( 'customer_index.php' , Array ( 's' => $s ) );
 				}
 			}
 			else

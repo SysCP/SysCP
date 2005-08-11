@@ -27,7 +27,7 @@
 	if($action == 'logout')
 	{
 		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['customerid']}' AND `adminsession` = '0'");
-		header("Location: ./index.php");
+		redirectTo ( 'index.php' ) ;
 		exit;
 	}
 
@@ -102,10 +102,11 @@
 				{
 					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('$new_password') WHERE `customerid`='".$userinfo['customerid']."' AND `username`='".$userinfo['loginname']."'");
 				}
-				header("Location: $filename?s=$s");
+				redirectTo ( $filename , Array ( 's' => $s ) ) ;
 			}
 		}
-		else {
+		else
+		{
 			eval("echo \"".getTemplate("index/change_password")."\";");
 		}
 	}
@@ -120,7 +121,7 @@
 				$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `def_language`='".$def_language."' WHERE `customerid`='".$userinfo['customerid']."'");
 				$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".$def_language."' WHERE `hash`='".$s."'");
 			}
-			header("Location: $filename?s=$s");
+			redirectTo ( $filename , Array ( 's' => $s ) ) ;
 		}
 		else
 		{

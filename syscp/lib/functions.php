@@ -175,26 +175,33 @@
 	}
 
 	/**
-	 * Returns Array, whose elements were stripslash'ed
+	 * Sends an header ( 'Location ...' ) to the browser.
 	 *
-	 * @param array The array to stripslashes
-	 * @return array The stripslash'ed array
+	 * @param string Destination
+	 * @param array Get-Variables
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	function stripslashes_array($source)
+	function redirectTo ( $destination , $get_variables = Array () )
 	{
-		if(is_array($source))
+		if ( is_array ( $get_variables ) )
 		{
-			while(list($var,$val)=each($source))
+			while ( list ( $var , $val ) = each ( $get_variables ) )
 			{
-				$returnval[$var]=stripslashes($val);
+				if ( !isset ( $params ) )
+				{
+				    $params = '?' ;
+				}
+				else
+				{
+				    $params .= '&' ;
+				}
+				$params .= $var . '=' . $val ;
 			}
 		}
-		else
-		{
-			$returnval=stripslashes($source);
-		}
-		return $returnval;
+		
+		header ( 'Location: ./' . $destination . $params ) ;
+		
+		return true ;
 	}
 
 	/**

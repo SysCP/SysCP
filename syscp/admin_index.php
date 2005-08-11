@@ -27,7 +27,7 @@
 	if($action == 'logout')
 	{
 		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['adminid']}' AND `adminsession` = '1'");
-		header("Location: ./index.php");
+		redirectTo ( 'index.php' ) ;
 		exit;
 	}
 
@@ -125,7 +125,7 @@
 			else
 			{
 				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `password`='".md5($new_password)."' WHERE `adminid`='".$userinfo['adminid']."' AND `password`='".md5($old_password)."'");
-				header("Location: $filename?s=$s");
+		    	redirectTo ( $filename , Array ( 's' => $s ) ) ;
 			}
 		}
 		else {
@@ -143,7 +143,7 @@
 				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `def_language`='".$def_language."' WHERE `adminid`='".$userinfo['adminid']."'");
 				$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".$def_language."' WHERE `hash`='".$s."'");
 			}
-			header("Location: $filename?s=$s");
+			redirectTo ( $filename , Array ( 's' => $s ) ) ;
 		}
 		else
 		{
