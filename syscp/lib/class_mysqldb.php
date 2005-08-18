@@ -77,7 +77,7 @@
 			// check for mysql extension
 			if (!extension_loaded('mysql'))
 			{
-				$this->showerror('You should install the PHP MySQL extension!');
+				$this->showerror('You should install the PHP MySQL extension!',false);
 			}
 			$this->server=$server;
 			$this->user=$user;
@@ -243,13 +243,16 @@
 		 *
 		 * @param string Errormessage
 		 */
-		function showerror($errormsg)
+		function showerror($errormsg,$mysqlActive = true)
 		{
 			global $filename;
-			$this->geterrdescno();
-			$errormsg .= "\n";
-			$errormsg .= 'mysql error number: '.$this->errno."\n";
-			$errormsg .= 'mysql error desc: '.$this->errdesc."\n";
+			if($mysqlActive)
+			{
+				$this->geterrdescno();
+				$errormsg .= "\n";
+				$errormsg .= 'mysql error number: '.$this->errno."\n";
+				$errormsg .= 'mysql error desc: '.$this->errdesc."\n";
+			}
 			$errormsg .= 'Script: '.getenv('REQUEST_URI')   ."\n";
 			$errormsg .= 'Referer: '.getenv('HTTP_REFERER') ."\n";
 			$errormsg .= 'Time/date: '.date('d/m/Y h:i A')  ."\n";
