@@ -31,7 +31,7 @@ $header
       <td colspan="2" class="title"><b>{$lng['index']['accountdetails']}</b></td>
      </tr>
      <tr>
-      <td class="maintable" align="right">{$lng['customer']['login']}:</td>
+      <td class="maintable" align="right">{$lng['login']['username']}:</td>
       <td class="maintable">{$userinfo['loginname']}</td>
      </tr>
      <tr>

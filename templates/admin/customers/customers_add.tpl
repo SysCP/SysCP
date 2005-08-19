@@ -8,7 +8,7 @@ $header
        <td colspan="20" class="title">{$lng['admin']['customer_add']}</td>
       </tr>
       <tr>
-       <td class="maintable">{$lng['customer']['login']}: *</td>
+       <td class="maintable">{$lng['login']['username']}: *</td>
        <td class="maintable" nowrap><input type="text" name="loginname" value="" maxlength="10"></td>
       </tr>
       <tr>

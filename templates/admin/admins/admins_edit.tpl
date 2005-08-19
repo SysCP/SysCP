@@ -9,7 +9,7 @@ $header
        <td colspan="20" class="title">{$lng['admin']['admin_edit']}</td>
       </tr>
       <tr>
-       <td class="maintable">{$lng['customer']['login']}:</td>
+       <td class="maintable">{$lng['login']['username']}:</td>
        <td class="maintable" nowrap>{$result['loginname']}</td>
       </tr>
       <tr>

@@ -46,7 +46,6 @@ $lng['login']['profile_lng'] = 'Lenguaje del perfil';
 /**
  * Customer
  */
-$lng['customer']['login'] = 'Nombre del usuario';
 $lng['customer']['documentroot'] = 'Hogar';
 $lng['customer']['name'] = 'Apellido';
 $lng['customer']['firstname'] = 'Nombre';
@@ -187,15 +186,15 @@ $lng['error']['youcantdeletechangemainadmin'] = 'Como paso de seguiridad Usted n
 $lng['error']['mustbeurl'] = 'Usted tiene que dar una completa direccion URL(por ejemplo: http://algo.de/error404.htm)';
 $lng['error']['stringisempty'] ='Falta un dato';
 $lng['error']['stringiswrong'] = 'Dato falso';
-$lng['error']['myloginname'] ='\'Nombre del usuario\'';
-$lng['error']['mypassword'] ='\'Contrase&ntilde;a\'';
-$lng['error']['oldpassword'] ='\'Clave Vieja\'';
-$lng['error']['newpassword'] ='\'Contrase&ntilde;a nueva\'';
-$lng['error']['newpasswordconfirm']='\'Contrase&ntilde;a (Repetir):\'';
+$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
+$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
+$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
+$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
+$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
 $lng['error']['newpasswordconfirmerror']='La Clave Nueva a la Confirmacion de Clave no Coinciden';
-$lng['error']['myname'] = '\'Apellido\'';
-$lng['error']['myfirstname'] = '\'Nombre\'';
-$lng['error']['emailadd'] = '\'EMail-Address\'';
+$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
+$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
+$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
 $lng['error']['mydomain'] = '\'dominio\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
 $lng['error']['loginnameexists']= 'Conexi&oacute;n-Nombre %s existe ya';

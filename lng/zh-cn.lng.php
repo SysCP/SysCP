@@ -46,7 +46,6 @@ $lng['login']['profile_lng'] = '&#29992;&#25143;&#26631;&#20934;&#35821;&#35328;
 /**
  * Customer
  */
-$lng['customer']['login'] = '&#29992;&#25143;&#21517;';
 $lng['customer']['documentroot'] = '&#26681;&#30446;&#24405;';
 $lng['customer']['name'] = '&#22995;';
 $lng['customer']['firstname'] = '&#21517;';
@@ -187,15 +186,15 @@ $lng['error']['youcantdeletechangemainadmin'] = '&#20986;&#20110;&#20445;&#23494
 $lng['error']['mustbeurl'] = '&#24744;&#27809;&#26377;&#36755;&#20837;&#26377;&#25928;&#25110;&#32773;&#23436;&#25972;&#30340;url(&#20363;&#22914;http://somedomain.com/error404.htm)';
 $lng['error']['stringisempty'] ='&#32570;&#23569;&#21306;&#22495;&#20869;&#30340;&#36755;&#20837;';
 $lng['error']['stringiswrong'] ='&#21306;&#22495;&#20869;&#36755;&#20837;&#38169;&#35823;';
-$lng['error']['myloginname'] ='\'&#29992;&#25143;&#21517;\'';
-$lng['error']['mypassword'] ='\'&#23494;&#30721;\'';
-$lng['error']['oldpassword'] ='\'&#26087;&#23494;&#30721;\'';
-$lng['error']['newpassword'] ='\'&#26032;&#23494;&#30721;\'';
-$lng['error']['newpasswordconfirm']='\'&#26032;&#23494;&#30721;&#30830;&#23450;\'';
+$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
+$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
+$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
+$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
+$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
 $lng['error']['newpasswordconfirmerror']='&#26032;&#23494;&#30721;&#21644;&#26032;&#23494;&#30721;&#30830;&#23450;&#19981;&#21305;&#37197;';
-$lng['error']['myname'] ='\'&#22995;\'';
-$lng['error']['myfirstname'] ='\'&#21517;\'';
-$lng['error']['emailadd'] ='\'&#30005;&#23376;&#37038;&#20214;&#22320;&#22336;\'';
+$lng['error']['myname'] ='\''.$lng['customer']['name'].'\'';
+$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
+$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
 $lng['error']['mydomain'] ='\'&#22495;&#21517;\'';
 $lng['error']['mydocumentroot'] ='\'&#25991;&#20214;&#26469;&#28304;\'';
 $lng['error']['loginnameexists']='&#30331;&#38470;&#21517;%s&#24050;&#32463;&#23384;&#22312;';
