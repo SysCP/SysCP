@@ -46,7 +46,6 @@ $lng['login']['profile_lng'] = 'Langue du profil';
 /**
  * Customer
  */
-$lng['customer']['login'] = 'Identifiant';
 $lng['customer']['documentroot'] = 'Chemin';
 $lng['customer']['name'] = 'Nom';
 $lng['customer']['firstname'] = 'Pr&eacute;nom';
@@ -187,15 +186,15 @@ $lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute
 $lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; un URL valid.';
 $lng['error']['stringisempty'] ='Entr&eacute;e manquant au panneau';
 $lng['error']['stringiswrong'] ='Entr&eacute;e invalid au panneau';
-$lng['error']['myloginname'] ='\'identifiant\'';
-$lng['error']['mypassword'] ='\'mot de passe\'';
-$lng['error']['oldpassword'] ='\'ancien mot de passe\'';
-$lng['error']['newpassword'] ='\'nouveau mot de passe\'';
-$lng['error']['newpasswordconfirm']='\'nouveau mot de passe (confirmer)\'';
+$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
+$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
+$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
+$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
+$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
 $lng['error']['newpasswordconfirmerror']='Les deux nouveaus mots de passe ne sont pas &eacute;gals.';
-$lng['error']['myname'] = '\'nom\'';
-$lng['error']['myfirstname'] = '\'pr&eacute;nom\'';
-$lng['error']['emailadd'] = '\'e-mail\'';
+$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
+$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
+$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
 $lng['error']['mydomain'] = '\'domain\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
 $lng['error']['loginnameexists']= 'L\'identifiant %s existe d&eacute;j&agrave;.';

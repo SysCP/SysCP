@@ -46,7 +46,6 @@ $lng['login']['profile_lng'] = 'Idioma padr&atilde;o';
 /**
  * Customer
  */
-$lng['customer']['login'] = 'Usu&aacute;rio';
 $lng['customer']['documentroot'] = 'Diretorio home';
 $lng['customer']['name'] = 'Sobrenome';
 $lng['customer']['firstname'] = 'Primeiro nome';
@@ -187,15 +186,15 @@ $lng['error']['youcantdeletechangemainadmin'] = 'Voce n&atilde;o pode deletar ou
 $lng['error']['mustbeurl'] = 'Voce n&atilde;o digitou uma URL v&aacute;lida (ex. http://seudominio.com/erro404.htm)';
 $lng['error']['stringisempty'] ='Faltando informa&ccedil;&atilde;o no campo';
 $lng['error']['stringiswrong'] ='Erro na informa&ccedil;&atilde;o do campo';
-$lng['error']['myloginname'] ='\'Usu&aacute;rio\'';
-$lng['error']['mypassword'] ='\'Senha\'';
-$lng['error']['oldpassword'] ='\'Senha antiga\'';
-$lng['error']['newpassword'] ='\'Nova senha\'';
-$lng['error']['newpasswordconfirm']='\'Confirme a nova senha\'';
+$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
+$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
+$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
+$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
+$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
 $lng['error']['newpasswordconfirmerror']='A nova senha e a confirma&ccedil;&atilde;o n&atilde;o conferem';
-$lng['error']['myname'] = '\'Nome\'';
-$lng['error']['myfirstname'] = '\'Primeiro nome\'';
-$lng['error']['emailadd'] = '\'E-mail\'';
+$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
+$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
+$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
 $lng['error']['mydomain'] = '\'Dominio\'';
 $lng['error']['mydocumentroot'] = '\'Documento principal\'';
 $lng['error']['loginnameexists']= 'Login %s j&aacute; existe';
