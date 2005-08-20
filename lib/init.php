@@ -110,6 +110,11 @@
 	$idna_convert = new idna_convert_wrapper();
 
 	/**
+	 * Includes the Functions
+	 */
+	require('./lib/functions.php');
+
+	/**
 	 * Selects settings from MySQL-Table
 	 */
 	$settings = Array() ;
@@ -132,11 +137,6 @@
 		redirectTo ( 'install/updatesql.php' ) ;
 		exit;
 	}
-
-	/**
-	 * Includes the Functions
-	 */
-	require('./lib/functions.php');
 
 	/**
 	 * SESSION MANAGEMENT
