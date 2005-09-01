@@ -9,7 +9,7 @@ $header
       </tr>
       <tr>
        <td class="maintable"><b>{$lng['panel']['path']}:</b></td>
-       <td class="maintable" nowrap><input type="text" name="path" value="/" size="30"></td>
+       <td class="maintable" nowrap>{$pathSelect}<td>
       </tr>
       <tr>
        <td class="maintable"><b>{$lng['extras']['directory_browsing']}:</b></td>

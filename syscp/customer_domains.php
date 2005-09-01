@@ -219,6 +219,8 @@
 					{
 						$aliasdomains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id']);
 					}
+					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
+					                             $userinfo['guid'], $settings['panel']['pathedit'] );				
 					eval("echo \"".getTemplate("domains/domains_add")."\";");
 				}
 			}

@@ -633,4 +633,18 @@
 		$settings['panel']['version'] = '1.2.11-cvs1';
 	}
 	
+	if($settings['panel']['version'] == '1.2.11-cvs1')
+	{
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settingid` = \'\' , ' .
+			'`settinggroup`  = \'panel\', ' .
+			'`varname`       = \'pathedit\', ' .
+			'`value`         = \'Manual\''
+		); 
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.11-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.11-cvs2';
+	}
+	
 ?>

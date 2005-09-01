@@ -17,7 +17,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['panel']['path']}:</td>
-       <td class="maintable"><input type="text" name="path" value="/" maxlength="50"></td>
+       <td class="maintable">{$pathSelect}</td>
       </tr>
       <tr>
        <td class="maintable" colspan=2 align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['domains']['subdomain_add']}"></td>

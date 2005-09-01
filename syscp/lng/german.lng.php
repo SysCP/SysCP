@@ -32,6 +32,7 @@ $lng['panel']['emptyfordefault'] = 'leer f&uuml;r Standardeinstellung';
 $lng['panel']['path'] = 'Pfad';
 $lng['panel']['toggle'] = 'Umschalten';
 $lng['panel']['next'] = 'weiter';
+$lng['panel']['dirsmissing'] = 'Verzeichnisse nicht verf&uuml;gbar oder lesbar';
 
 /**
  * Login
@@ -186,6 +187,7 @@ $lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Re
 $lng['error']['youcantdeletechangemainadmin'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie den Hauptadmin nicht l&ouml;schen oder bearbeiten.';
 
 $lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine vollst&auml;ndige URL angeben (z.B. http://irgendwas.de/error404.htm)';
+$lng['error']['invalidpath'] = 'Sie haben keine g&uuml;ltige URL ausgew&auml;hlt (Evtl. Probleme beim Verzeichnislisting?)';
 $lng['error']['stringisempty'] ='Fehlende Eingabe im Feld';
 $lng['error']['stringiswrong'] ='Falsche Eingabe im Feld';
 $lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
@@ -353,5 +355,7 @@ $lng['serversettings']['maxloginattempts']['title']       = 'Max Loginversuche';
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximale Anzahl an Loginversuchen bis der Account deaktiviert wird.';
 $lng['serversettings']['deactivatetime']['title']       = 'L&auml;nge der Deaktivierung';
 $lng['serversettings']['deactivatetime']['description'] = 'Zeitraum (in sek.) f&uuml;r den der Account deaktiviert ist.';
+$lng['serversettings']['pathedit']['title']       = 'Pfad-Eingabemethode';
+$lng['serversettings']['pathedit']['description'] = 'Soll ein Pfad via Dropdown-Men&uuml; ausgew&auml;hlt oder manuell eingegeben werden k&ouml;nnen.';
 
 ?>

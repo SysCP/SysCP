@@ -88,6 +88,10 @@ $header
        <td class="maintable" nowrap><select name="panel_standardlanguage">$languages</select></td>
       </tr>
       <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['pathedit']['title']}:</b><br />{$lng['serversettings']['pathedit']['description']}</td>
+       <td class="maintable" nowrap><select name="panel_pathedit">$pathedit</select></td>
+      </tr>
+      <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['phpmyadmin_url']['title']}:</b><br />{$lng['serversettings']['phpmyadmin_url']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="panel_phpmyadmin_url" value="{$settings['panel']['phpmyadmin_url']}"></td>
       </tr>

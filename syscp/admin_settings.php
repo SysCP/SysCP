@@ -225,6 +225,12 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='standardlanguage'");
 			}
 
+			if($_POST['panel_pathedit']!=$settings['panel']['pathedit'])
+			{
+				$value = addslashes ( htmlentities ( _html_entity_decode ( $_POST['panel_pathedit'] ) ) ) ;
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='pathedit'");
+			}
+
 			if($_POST['panel_phpmyadmin_url']!=$settings['panel']['phpmyadmin_url'])
 			{
 //				echo 'panel_phpmyadmin_url<br />';
@@ -383,6 +389,11 @@
 			foreach ($langs as $key => $value)
 			{
 				$languages .= makeoption($key,$value,$settings['panel']['standardlanguage']);
+			}
+
+			foreach (array('Manual','Dropdown') as $method)
+			{
+				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit']);
 			}
 			
 			eval("echo \"".getTemplate("settings/settings")."\";");

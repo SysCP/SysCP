@@ -18,7 +18,6 @@
  */
 
 	define('AREA', 'customer');
-
 	/**
 	 * Include our init.php, which manages Sessions, Language etc.
 	 */
@@ -98,6 +97,10 @@
 					$path_check=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `homedir`='$path' AND `customerid`='".$userinfo['customerid']."'");
 					$password=addslashes($_POST['password']);
 
+					if(!$_POST['path'])
+					{
+						standard_error('invalidpath');
+					}
 					if(!is_dir($path))
 					{
 						standard_error('directorymustexist',$userpath);
@@ -124,6 +127,8 @@
 				}
 				else
 				{
+					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
+					                             $userinfo['guid'], $settings['panel']['pathedit'] );				
 					eval("echo \"".getTemplate("ftp/accounts_add")."\";");
 				}
 			}
