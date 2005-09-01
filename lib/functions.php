@@ -1089,8 +1089,87 @@
 	 * @return boolean True if the domain is valid, false otherwise
 	 * @author Michael Duergner
 	 */
-	function check_domain($domainname) {
+	function check_domain($domainname) 
+	{
 		return preg_match('/^([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}$/i',$domainname);
 	}
 
+	/**
+	 * Returns an array of found directories
+	 *  
+	 * This function checks every found directory if they match either $uid or $gid, if they do
+	 * the found directory is valid. It uses recursive function calls to find subdirectories. Due
+	 * to the recursive behauviour this function may consume much memory. 
+	 *  
+	 * @param  string   path       The path to start searching in
+	 * @param  integer  uid        The uid which must match the found directories
+	 * @param  integer  gid        The gid which must match the found direcotries
+	 * @param  array    _fileList  recursive transport array !for internal use only!
+	 * @return array    Array of found valid pathes
+	 * 
+	 * @author Martin Burchert  <martin.burchert@syscp.de>
+	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
+	 */	
+	function findDirs ( $path, $uid, $gid, $_fileList = array() )
+	{
+		$dh = opendir( $path );
+		while ( false !== ( $file = readdir( $dh ) ) )
+		{
+			if ( $file == '.' && (    fileowner( $path.'/'.$file ) == $uid
+			                       || filegroup( $path.'/'.$file ) == $gid 
+			                     )
+			   )
+			{
+				$_fileList[] = $path.'/';
+			}
+			if ( $file != '..' && $file != '.' && is_dir( $path.'/'.$file ) )
+			{
+				$_fileList = findDirs( $path.'/'.$file, $uid, $gid, $_fileList );
+			}
+		}
+		closedir( $dh );
+		return $_fileList;
+	}	
+
+	/**
+	 * Returns a valid html tag for the choosen $fieldType for pathes 
+	 * 
+	 * @param  string   path       The path to start searching in
+	 * @param  integer  uid        The uid which must match the found directories
+	 * @param  integer  gid        The gid which must match the found direcotries
+	 * @param  string   fieldType  Either "Manual" or "Dropdown"
+	 * @return string   The html tag for the choosen $fieldType
+	 * 
+	 * @author Martin Burchert  <martin.burchert@syscp.de>
+	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
+	 */	
+	function makePathfield( $path, $uid, $gid, $fieldType )
+	{
+		global $lng; 
+		
+		$field = '';
+		if ( $fieldType == 'Manual' )
+		{
+			$field = '<input type="text" name="path" value="/" size="30">';
+		}
+		elseif ( $fieldType == 'Dropdown' )
+		{
+			$dirList = findDirs( $path, $uid, $gid );
+			if ( sizeof( $dirList ) > 0 )
+			{
+				$field   = '<select name="path">';
+				foreach ( $dirList as $key => $dir )
+				{
+					$dir    = str_replace( $path, '', $dir );
+					$field .= makeoption( $dir, $dir, '');
+				}
+				$field .= '</select>';
+			}
+			else
+			{
+				$field = $lng['panel']['dirsmissing'];
+			}
+		}
+		return $field;
+	}
 ?>

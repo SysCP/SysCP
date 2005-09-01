@@ -81,6 +81,10 @@
 				$password=crypt(addslashes($_POST['password']));
                 $passwordtest=$_POST['password'];
 
+				if(!$_POST['path'])
+				{
+					standard_error('invalidpath');
+				}
 				if(!is_dir($path))
 				{
 					standard_error('directorymustexist',$userpath);
@@ -108,7 +112,10 @@
            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
-			else {
+			else 
+			{
+				$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
+				                             $userinfo['guid'], $settings['panel']['pathedit'] );				
 				eval("echo \"".getTemplate("extras/htpasswds_add")."\";");
 			}
 		}
@@ -182,6 +189,10 @@
                 $userpath        = $path;
 				$path            = $userinfo['documentroot'].$path;
 				$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
+					if(!$_POST['path'])
+					{
+						standard_error('invalidpath');
+					}
 					if (    ($_POST['error404path'] == '')
 					     || (preg_match('/^https?\:\/\//', $_POST['error404path']) )
 					   )
@@ -263,6 +274,8 @@
 			}
 			else
 			{
+				$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
+				                             $userinfo['guid'], $settings['panel']['pathedit'] );				
 				$options_indexes = makeyesno('options_indexes','1','0','1');
 				eval("echo \"".getTemplate("extras/htaccess_add")."\";");
 			}

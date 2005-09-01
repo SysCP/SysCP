@@ -32,6 +32,7 @@ $lng['panel']['emptyfordefault'] = 'empty for defaults';
 $lng['panel']['path'] = 'Path';
 $lng['panel']['toggle'] = 'Toggle';
 $lng['panel']['next'] = 'next';
+$lng['panel']['dirsmissing'] = 'Can not find or read the directory!';
 
 /**
  * Login
@@ -186,6 +187,7 @@ $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more reso
 $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
 
 $lng['error']['mustbeurl'] = 'You have not typed a valid or complete url (e.g. http://somedomain.com/error404.htm)';
+$lng['error']['invalidpath'] = 'You have not choosen a valid url (maybe problems with the dirlisting?)';
 $lng['error']['stringisempty'] ='Missing Input in Field';
 $lng['error']['stringiswrong'] ='Wrong Input in Field';
 $lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
@@ -354,5 +356,7 @@ $lng['serversettings']['maxloginattempts']['title']       = 'Max Login Attempts'
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximum login attempts after which the account gets deactivated.';
 $lng['serversettings']['deactivatetime']['title']       = 'Deactivate Time';
 $lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
+$lng['serversettings']['pathedit']['title']       = 'Type of path input';
+$lng['serversettings']['pathedit']['description'] = 'Should a path be choosen by a dropdown menu or by an input field?';
 
 ?>
