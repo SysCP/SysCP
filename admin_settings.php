@@ -400,4 +400,19 @@
 		}
 	}
 
+	elseif ( $page == 'rebuildconfigs' && $userinfo['change_serversettings'] == '1')
+	{
+		if ( $_POST['send'] && $_POST['send'] == 'send' )
+		{
+			inserttask('1');
+			inserttask('4');
+			redirectTo ( 'admin_index.php' , array( 's' => $s ) ) ;
+		}
+		else
+		{
+			ask_yesno('admin_configs_reallyrebuild', $filename, 'id='.$id.';page='.$page );
+		}
+			
+	}
+	
 ?>

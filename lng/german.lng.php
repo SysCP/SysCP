@@ -243,6 +243,7 @@ $lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz f&uu
 $lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen f&uuml;r den Pfad %s wirklich l&ouml;schen?';
 $lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account %s wirklich l&ouml;schen?';
 $lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren!';
+$lng['question']['admin_configs_reallyrebuild'] = 'Wollen Sie wirklich Ihre Apache und Bind Konfigurationsdateien neu erstellen lassen?';
 
 /**
  * Mails
@@ -281,6 +282,7 @@ $lng['admin']['domains_see_all'] = 'Kann alle Domains sehen?';
 $lng['admin']['change_serversettings'] = 'Kann Servereinstellungen bearbeiten?';
 $lng['admin']['server'] = 'Server';
 $lng['admin']['serversettings'] = 'Einstellungen';
+$lng['admin']['rebuildconf'] = 'Configs neuschreiben';
 $lng['admin']['stdsubdomain'] = 'Standardsubdomain';
 $lng['admin']['stdsubdomain_add'] = 'Standardsubdomain anlegen';
 $lng['admin']['deactivated'] = 'Gesperrt';
