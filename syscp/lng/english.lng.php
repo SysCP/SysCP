@@ -244,6 +244,7 @@ $lng['question']['extras_reallydelete'] = 'Do you really want to delete the dire
 $lng['question']['extras_reallydelete_pathoptions'] = 'Do you really want to delete the path options for %s?';
 $lng['question']['ftp_reallydelete'] = 'Do you really want to delete the FTP account %s?';
 $lng['question']['mysql_reallydelete'] = 'Do you really want to delete the database %s? This cannot be undone!';
+$lng['question']['admin_configs_reallyrebuild'] = 'Do you really want to rebuild your apache and bind config files?';
 
 /**
  * Mails
@@ -282,6 +283,7 @@ $lng['admin']['domains_see_all'] = 'Can see all domains?';
 $lng['admin']['change_serversettings'] = 'Can change server settings?';
 $lng['admin']['server'] = 'Server';
 $lng['admin']['serversettings'] = 'Settings';
+$lng['admin']['rebuildconf'] = 'Rebuild Config Files';
 $lng['admin']['stdsubdomain'] = 'Standard subdomain';
 $lng['admin']['stdsubdomain_add'] = 'Create standard subdomain';
 $lng['admin']['deactivated'] = 'Deactivated';

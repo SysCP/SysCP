@@ -647,4 +647,20 @@
 		$settings['panel']['version'] = '1.2.11-cvs2';
 	}
 	
+	if($settings['panel']['version'] == '1.2.11-cvs2')
+	{
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `area` = \'admin\', ' .
+			'    `parent_url` = \'admin_server.nourl\', ' .
+			'    `lang` = \'admin;rebuildconf\', ' .
+			'    `url` = \'admin_settings.php?page=rebuildconfigs\', ' .
+			'    `order` = \'30\', ' .
+			'    `required_resources` = \'change_serversettings\', ' .
+			'    `new_window` = \'0\''
+		);  
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.11-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.11-cvs3';
+	}
 ?>
