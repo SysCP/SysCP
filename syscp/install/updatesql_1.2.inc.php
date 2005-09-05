@@ -663,4 +663,24 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.11-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.11-cvs3';
 	}
+	
+	if($settings['panel']['version'] == '1.2.11-cvs3')
+	{
+		$db->query(
+			'ALTER TABLE `'.TABLE_MAIL_USERS.'` '.
+			'CHANGE  `email`    `email`    VARCHAR( 255 ) NOT NULL , '.
+			'CHANGE  `username` `username` VARCHAR( 255 ) NOT NULL , '.
+			'CHANGE  `homedir`  `homedir`  VARCHAR( 255 ) NOT NULL , '.
+			'CHANGE  `maildir`  `maildir`  VARCHAR( 255 ) NOT NULL '
+		);  
+		$db->query(
+			'ALTER TABLE `'.TABLE_MAIL_VIRTUAL.'` '.
+			'CHANGE  `email`      `email`      VARCHAR( 255 ) NOT NULL , '.
+			'CHANGE  `email_full` `email_full` VARCHAR( 255 ) NOT NULL '
+		);  
+
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.11-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
+		$settings['panel']['version'] = '1.2.11-cvs4';
+	}
+
 ?>
