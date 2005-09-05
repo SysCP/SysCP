@@ -64,14 +64,14 @@ CREATE TABLE `ftp_users` (
 DROP TABLE IF EXISTS `mail_users`;
 CREATE TABLE `mail_users` (
   `id` int(11) NOT NULL auto_increment,
-  `email` varchar(128) NOT NULL default '',
-  `username` varchar(128) NOT NULL default '',
+  `email` varchar(255) NOT NULL default '',
+  `username` varchar(255) NOT NULL default '',
   `password` varchar(128) NOT NULL default '',
   `password_enc` varchar(128) NOT NULL default '',
   `uid` int(11) NOT NULL default '0',
   `gid` int(11) NOT NULL default '0',
-  `homedir` varchar(128) NOT NULL default '',
-  `maildir` varchar(128) NOT NULL default '',
+  `homedir` varchar(255) NOT NULL default '',
+  `maildir` varchar(255) NOT NULL default '',
   `postfix` enum('Y','N') NOT NULL default 'Y',
   `domainid` int(11) NOT NULL default '0',
   `customerid` int(11) NOT NULL default '0',
@@ -93,8 +93,8 @@ CREATE TABLE `mail_users` (
 DROP TABLE IF EXISTS `mail_virtual`;
 CREATE TABLE `mail_virtual` (
   `id` int(11) NOT NULL auto_increment,
-  `email` varchar(50) NOT NULL default '',
-  `email_full` varchar(50) NOT NULL default '',
+  `email` varchar(255) NOT NULL default '',
+  `email_full` varchar(255) NOT NULL default '',
   `destination` text NOT NULL,
   `domainid` int(11) NOT NULL default '0',
   `customerid` int(11) NOT NULL default '0',
@@ -377,7 +377,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.11-cvs1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.11-cvs4');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -385,6 +385,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (27, 'panel', 'webftp_url', '');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (28, 'panel', 'standardlanguage', 'English');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (29, 'system', 'mysql_access_host', 'localhost');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (30, 'panel', 'pathedit', 'Manual');
 
 
 # --------------------------------------------------------
@@ -536,6 +537,7 @@ INSERT INTO `panel_navigation` VALUES (27, 'admin', 'admin_server.nourl', 'admin
 INSERT INTO `panel_navigation` VALUES (28, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', '20', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;templates;templates', 'admin_templates.nourl', '40', '', 0);
 INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_templates.nourl', 'admin;templates;email', 'admin_templates.php?page=email', '10', '', 0);
+INSERT INTO `panel_navigation` VALUES (31, 'admin', 'admin_server.nourl', 'admin;rebuildconf', 'admin_settings.php?page=rebuildconfigs', '30', 'change_serversettings', 0);
 
 
 # --------------------------------------------------------
