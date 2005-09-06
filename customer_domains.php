@@ -313,7 +313,10 @@
 					{
 						$domains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id'],$result['aliasdomain']);
 					}
-					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
+					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
+					                             $userinfo['guid'], $settings['panel']['pathedit'],
+					                             $result['documentroot'] );				
+//					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
 					$iswildcarddomain=makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
 					eval("echo \"".getTemplate("domains/domains_edit")."\";");

@@ -1143,14 +1143,15 @@
 	 * @author Martin Burchert  <martin.burchert@syscp.de>
 	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
 	 */	
-	function makePathfield( $path, $uid, $gid, $fieldType )
+	function makePathfield( $path, $uid, $gid, $fieldType, $value )
 	{
 		global $lng; 
 		
+		$value = str_replace( $path, '', $value );
 		$field = '';
 		if ( $fieldType == 'Manual' )
 		{
-			$field = '<input type="text" name="path" value="/" size="30">';
+			$field = '<input type="text" name="path" value="'.$value.'" size="30">';
 		}
 		elseif ( $fieldType == 'Dropdown' )
 		{
@@ -1161,7 +1162,7 @@
 				foreach ( $dirList as $key => $dir )
 				{
 					$dir    = str_replace( $path, '', $dir );
-					$field .= makeoption( $dir, $dir, '');
+					$field .= makeoption( $dir, $dir, $value);
 				}
 				$field .= '</select>';
 			}

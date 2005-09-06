@@ -18,7 +18,7 @@ $header
       </tr></if>
       <tr>
        <td class="maintable">{$lng['panel']['path']}:</td>
-       <td class="maintable"><input type="text" name="path" value="{$result['documentroot']}" maxlength="50"></td>
+       <td class="maintable">{$pathSelect}</td>
       </tr>
       <if $result['parentdomainid'] == '0' && $userinfo['subdomains'] != '0' ><tr>
        <td class="maintable">{$lng['domains']['wildcarddomain']}</td>
