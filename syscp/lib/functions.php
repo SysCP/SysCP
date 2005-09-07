@@ -776,7 +776,7 @@
 		// define allowed system commands 
 		//
 		$allowed_commands = array(
-			'touch','chown', 'mkdir', 'webalizer', 'cp', 'du', 'touch',
+			'touch','chown', 'mkdir', 'webalizer', 'cp', 'du', 
 			$settings['system']['apachereload_command'],
 			$settings['system']['bindreload_command']);
 		//
