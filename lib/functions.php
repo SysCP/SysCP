@@ -1143,7 +1143,7 @@
 	 * @author Martin Burchert  <martin.burchert@syscp.de>
 	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
 	 */	
-	function makePathfield( $path, $uid, $gid, $fieldType, $value )
+	function makePathfield( $path, $uid, $gid, $fieldType, $value='' )
 	{
 		global $lng; 
 		
