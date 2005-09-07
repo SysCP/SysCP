@@ -220,10 +220,10 @@
 					{
 						$diroptions_file .= '  ErrorDocument 403 '.$row_diroptions['error403path']."\n";
 					}
-					if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
-					{
-						$diroptions_file .= '  ErrorDocument 401 '.$row_diroptions['error401path']."\n";
-					}
+//					if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
+//					{
+//						$diroptions_file .= '  ErrorDocument 401 '.$row_diroptions['error401path']."\n";
+//					}
 					if ( isset ( $row_diroptions['error500path'] ) && $row_diroptions['error500path'] != '')
 					{
 						$diroptions_file .= '  ErrorDocument 500 '.$row_diroptions['error500path']."\n";

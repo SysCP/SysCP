@@ -28,10 +28,6 @@ $header
        <td class="maintable"><input type="text" name="error500path" value=""  maxlength="50"></td>
       </tr>
       <tr>
-       <td class="maintable"><b>{$lng['extras']['errordocument401path']}:</b><br />{$lng['panel']['emptyfordefault']}</td>
-       <td class="maintable"><input type="text" name="error401path" value=""  maxlength="50"></td>
-      </tr>
-      <tr>
        <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['extras']['pathoptions_add']}"></td>
       </tr>
      </table>

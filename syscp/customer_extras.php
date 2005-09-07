@@ -223,16 +223,16 @@
 					{
 						standard_error('mustbeurl');
 					}
-					if (    ($_POST['error401path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
-					   )
-					{
-						$error401path = $_POST['error401path'];
-					}
-					else
-					{
-						standard_error('mustbeurl');
-					}
+//					if (    ($_POST['error401path'] == '')
+//					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+//					   )
+//					{
+//						$error401path = $_POST['error401path'];
+//					}
+//					else
+//					{
+//						standard_error('mustbeurl');
+//					}
 
 					if (!is_dir($path))
 					{
@@ -256,7 +256,7 @@
 						'        `options_indexes`, ' .
 						'        `error404path`, ' .
 						'        `error403path`, ' .
-						'        `error401path`, ' .
+//						'        `error401path`, ' .
 						'        `error500path` ' .
 						'       ) ' .
 						'VALUES ("'.$userinfo['customerid'].'", ' .
@@ -264,7 +264,7 @@
 						'        "'.$_POST['options_indexes'].'", ' .
 						'        "'.$error404path.'", ' .
 						'        "'.$error403path.'", ' .
-						'        "'.$error401path.'", ' .
+//						'        "'.$error401path.'", ' .
 						'        "'.$error500path.'" ' .
 						'       )'
 					);
@@ -331,21 +331,21 @@
 					{
 						standard_error('mustbeurl');
 					}
-					if (    ($_POST['error401path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
-					   )
-					{
-						$error401path = $_POST['error401path'];
-					}
-					else
-					{
-						standard_error('mustbeurl');
-					}
+//					if (    ($_POST['error401path'] == '')
+//					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+//					   )
+//					{
+//						$error401path = $_POST['error401path'];
+//					}
+//					else
+//					{
+//						standard_error('mustbeurl');
+//					}
 
 					if (    ($option_indexes != $result['options_indexes'])
 					     || ($error404path   != $result['error404path'])
 					     || ($error403path   != $result['error403path'])
-					     || ($error401path   != $result['error401path'])
+//					     || ($error401path   != $result['error401path'])
 					     || ($error500path   != $result['error500path'])
 					   )
 					{
@@ -355,7 +355,7 @@
 							'SET `options_indexes` = "'.$option_indexes.'",' .
 							'    `error404path`    = "'.$error404path.'", ' .
 							'    `error403path`    = "'.$error403path.'", ' .
-							'    `error401path`    = "'.$error401path.'", ' .
+//							'    `error401path`    = "'.$error401path.'", ' .
 							'    `error500path`    = "'.$error500path.'" ' .
 							'WHERE `customerid` = "'.$userinfo['customerid'].'" ' .
 							'  AND `id` = "'.$id.'"'
@@ -368,7 +368,7 @@
 					$result['path']         = str_replace($userinfo['documentroot'], '', $result['path']);
 					$result['error404path'] = $result['error404path'];
 					$result['error403path'] = $result['error403path'];
-					$result['error401path'] = $result['error401path'];
+//					$result['error401path'] = $result['error401path'];
 					$result['error500path'] = $result['error500path'];
 					$options_indexes = makeyesno('options_indexes', '1', '0', $result['options_indexes']);
 					eval("echo \"".getTemplate("extras/htaccess_edit")."\";");
