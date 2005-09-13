@@ -300,7 +300,7 @@
 							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['pop_success']['subject']),$replace_arr));
 							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$userinfo['def_language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_mailbody\'');
 							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['pop_success']['mailbody']),$replace_arr));
-							mail("{$userinfo['firstname']} {$userinfo['name']} <$email_full>",$mail_subject,$mail_body,"From: {$admin['name']} <{$admin['email']}>\r\n");
+							mail("$email_full",$mail_subject,$mail_body,"From: {$admin['name']} <{$admin['email']}>\r\n");
 	
         					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 						}
