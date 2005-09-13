@@ -11,8 +11,8 @@
  * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * @author Tim Zielosko <tim@zielosko.de>
- * @copyright (C) 2004 Tim Zielosko
+ * @author Tim Zielosko <tim.zielosko@syscp.de>
+ * @copyright (C) 2004 - 2005 Tim Zielosko
  * @package Language
  * @version $Id$
  */
@@ -32,6 +32,7 @@ $lng['panel']['emptyfordefault'] = 'Veuillez laisser vide pour l\'option standar
 $lng['panel']['path'] = 'Chemin';
 $lng['panel']['toggle'] = 'Permuter';
 $lng['panel']['next'] = 'continuer';
+$lng['panel']['dirsmissing'] = 'Dossiers non disponibles ou illisibles';
 
 /**
  * Login
@@ -113,6 +114,8 @@ $lng['domains']['domainname'] = 'Nom du Domain';
 $lng['domains']['subdomain_add'] = 'Appliquer un Subdomain';
 $lng['domains']['subdomain_edit'] = 'Changer un Subdomain';
 $lng['domains']['wildcarddomain'] = 'Domain Wildcard?';
+$lng['domains']['aliasdomain'] = 'Pseudonyme pour un domain';
+$lng['domains']['noaliasdomain'] = 'Domain non-pseudonyme';
 
 /**
  * eMails
@@ -150,9 +153,9 @@ $lng['mysql']['database_create'] = 'Appliquer une banque de donn&eacute;es';
  */
 $lng['extras']['description'] = 'Ici vous pouvez appliquer des extras additionell, par example la protection des listes.<br />Il faut un peu de temps apr&egrave;s chaque changement pour reliser la configuration.';
 $lng['extras']['directoryprotection_add'] = 'Appliquer une protection de dossier';
-$lng['extras']['view_directory'] = 'Faire voir le fichier';
+$lng['extras']['view_directory'] = 'Faire voir le dossier';
 $lng['extras']['pathoptions_add'] = 'Appliquer des options de chemin';
-$lng['extras']['directory_browsing'] = 'Faire voir le contenu des fichiers';
+$lng['extras']['directory_browsing'] = 'Montrer le contenu des dossiers';
 $lng['extras']['pathoptions_edit'] = 'Modifier les options de chemin';
 $lng['extras']['error404path'] = '404';
 $lng['extras']['error403path'] = '403';
@@ -183,7 +186,8 @@ $lng['error']['oldpasswordnotcorrect'] = 'Le vieux mot de passe n\'est pas corre
 $lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus des ressources qu\'il reste.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; ce n\'est pas possible d\'effacer ou modifier l\'administrateur principal.';
 
-$lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; un URL valid.';
+$lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; une adresse URL valide.';
+$lng['error']['invalidpath'] = 'Vous n\'avez pas choisi une adresse URL valide (Probablement &agrave; cause de probl&egrave;s avec le listing de dossiers?)';
 $lng['error']['stringisempty'] ='Entr&eacute;e manquant au panneau';
 $lng['error']['stringiswrong'] ='Entr&eacute;e invalid au panneau';
 $lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
@@ -214,6 +218,7 @@ $lng['error']['wwwnotallowed']='Un subdomaine ne doit pas s\'appeler www.';
 $lng['error']['subdomainiswrong']='Le subdomaine %s contient des signes invalides.';
 $lng['error']['domaincantbeempty']='Le nom de domaine ne doit pas &ecirc;tre vide.';
 $lng['error']['domainexistalready']='Le domaine %s existe d&eacute;j&agrave;.';
+$lng['error']['domainisaliasorothercustomer']='Le domain pseudonyme choisi est un domain pseudonyme soi-m&ecirc;me ou fait partie d\'un autre client.';
 $lng['error']['emailexistalready']='L\'adresse %s existe d&eacute;j&agrave;.';
 $lng['error']['maindomainnonexist']='Le domaine %s n\'existe pas.';
 $lng['error']['destinationnonexist']='S\'il-vous-plait marquez votre adresse de retransmission au panneau \'&agrave;\'.';
@@ -239,6 +244,7 @@ $lng['question']['extras_reallydelete'] = 'Voulez-vous vraiment effacer la prote
 $lng['question']['extras_reallydelete_pathoptions'] = 'Voulez-vous vraiment effacer les options du chemin %s?';
 $lng['question']['ftp_reallydelete'] = 'Voulez-vous vraiment effacer l\'acc&egrave;s eMail %s?';
 $lng['question']['mysql_reallydelete'] = 'Voulez-vous vraiment effacer la banque de donn&eacute;s %s?<br />ATTENTION: Toutes les donn&eacute;es vont &ecirc;tre effac&eacute;es!';
+$lng['question']['admin_configs_reallyrebuild'] = 'Voulez-vous vraiment laisser refaire les fichiers de configuration de Apache et Bind?';
 
 /**
  * Mails
@@ -277,6 +283,7 @@ $lng['admin']['domains_see_all'] = 'Peut voir tous les Domains?';
 $lng['admin']['change_serversettings'] = 'Peut modifier la configuration du server?';
 $lng['admin']['server'] = 'Server';
 $lng['admin']['serversettings'] = 'R&eacute;glage';
+$lng['admin']['rebuildconf'] = 'Refaire la configuration';
 $lng['admin']['stdsubdomain'] = 'Subdomain-type';
 $lng['admin']['stdsubdomain_add'] = 'Appliquer un subdomain-type';
 $lng['admin']['deactivated'] = 'Bloqu&eacute;';
@@ -340,16 +347,18 @@ $lng['serversettings']['vmail_homedir']['title'] = 'Mails-Homedir';
 $lng['serversettings']['vmail_homedir']['description'] = 'O&ugrave; doivent &ecirc;tre les e-mails?';
 $lng['serversettings']['adminmail']['title'] = 'Adresse de l\'exp&eacute;diteur';
 $lng['serversettings']['adminmail']['description'] = 'Quelle est l\'adresse standard des e-mails qui sont envoy&eacute;s de SysCP?';
-$lng['serversettings']['phpmyadmin_url']['title'] = 'URL phpMyAdmin';
+$lng['serversettings']['phpmyadmin_url']['title'] = 'Adresse URL phpMyAdmin';
 $lng['serversettings']['phpmyadmin_url']['description'] = '&Agrave; quelle adresse se trouve le phpMyAdmin?';
-$lng['serversettings']['webmail_url']['title'] = 'URL WebMail';
+$lng['serversettings']['webmail_url']['title'] = 'Adresse URL WebMail';
 $lng['serversettings']['webmail_url']['description'] = '&Agrave; quelle adresse se trouve le WebMail?';
-$lng['serversettings']['webftp_url']['title'] = 'URL WebFTP';
+$lng['serversettings']['webftp_url']['title'] = 'Adresse URL WebFTP';
 $lng['serversettings']['webftp_url']['description'] = '&Agrave; quelle adresse se trouve le WebFTP?';
 $lng['serversettings']['language']['description'] = 'Quelle langue est la langue pr&eacute;d&eacute;finie?';
 $lng['serversettings']['maxloginattempts']['title'] = 'Nombre d\'essais maximal';
 $lng['serversettings']['maxloginattempts']['description'] = 'Nombre d\essais de se connecter maximal jusqu\&agrave; la d&eacute;activation de l\acc&egrave;s.';
 $lng['serversettings']['deactivatetime']['title'] = 'Dur&eacute;e de la d&eacute;activation';
 $lng['serversettings']['deactivatetime']['description'] = 'Dur&eacute;e (en secondes) pendant laquelle l\acc&egrave;s reste d&eacute;activ&eacute;.';
+$lng['serversettings']['pathedit']['title'] = 'Mode d\'indication du chemin';
+$lng['serversettings']['pathedit']['description'] = 'Choisir un chemin par menu Dropdown ou pouvoir l\'entrer manuellement.';
 
 ?>

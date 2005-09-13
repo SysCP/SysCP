@@ -12,7 +12,7 @@
  * See the GNU General Public License for more details.
  *
  * @author Florian Lippert <flo@redenswert.de>
- * @copyright (C) 2003-2004 Florian Lippert
+ * @copyright (C) 2003-2005 Florian Lippert
  * @package Language
  * @version $Id$
  */
@@ -218,6 +218,7 @@ $lng['error']['wwwnotallowed']='Ihre Subdomain darf nicht www heissen.';
 $lng['error']['subdomainiswrong']='Die Subdomain %s beinhaltet ung&uuml;ltige Zeichen.';
 $lng['error']['domaincantbeempty']='Der Domain-Name darf nicht leer sein.';
 $lng['error']['domainexistalready']='Die Domain %s existiert bereits.';
+$lng['error']['domainisaliasorothercustomer']='Die ausgewählte Aliasdomain ist entweder selber eine Aliasdomain oder gehört zu einem anderen Kunden.';
 $lng['error']['emailexistalready']='Die eMail-Adresse %s existiert bereits.';
 $lng['error']['maindomainnonexist']='Die Haupt-Domain %s existiert nicht.';
 $lng['error']['destinationnonexist']='Bitte geben Sie Ihre Weiterleitungsadresse im Feld \'Nach\' ein.';
@@ -353,11 +354,11 @@ $lng['serversettings']['webmail_url']['description'] = 'Wo liegt das WebMail? (m
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP-URL';
 $lng['serversettings']['webftp_url']['description'] = 'Wo liegt das WebFTP? (muss mit http:// beginnen)';
 $lng['serversettings']['language']['description'] = 'Welche Sprache ist ihre Standardsprache?';
-$lng['serversettings']['maxloginattempts']['title']       = 'Max Loginversuche';
+$lng['serversettings']['maxloginattempts']['title'] = 'Max Loginversuche';
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximale Anzahl an Loginversuchen bis der Account deaktiviert wird.';
-$lng['serversettings']['deactivatetime']['title']       = 'L&auml;nge der Deaktivierung';
+$lng['serversettings']['deactivatetime']['title'] = 'L&auml;nge der Deaktivierung';
 $lng['serversettings']['deactivatetime']['description'] = 'Zeitraum (in sek.) f&uuml;r den der Account deaktiviert ist.';
-$lng['serversettings']['pathedit']['title']       = 'Pfad-Eingabemethode';
+$lng['serversettings']['pathedit']['title'] = 'Pfad-Eingabemethode';
 $lng['serversettings']['pathedit']['description'] = 'Soll ein Pfad via Dropdown-Men&uuml; ausgew&auml;hlt oder manuell eingegeben werden k&ouml;nnen.';
 
 ?>

@@ -32,6 +32,7 @@ $lng['panel']['emptyfordefault'] = 'vacia para los valores por defecto';
 $lng['panel']['path'] = 'camino';
 $lng['panel']['toggle'] = 'cambio';
 $lng['panel']['next'] = 'continuar';
+$lng['panel']['dirsmissing'] = 'Los registros no est&aacute;n disponibles o no son le&iacute;bles.';
 
 /**
  * Login
@@ -113,6 +114,8 @@ $lng['domains']['domainname'] = 'Nombre del dominio';
 $lng['domains']['subdomain_add'] = 'Crear el secundario-dominio';
 $lng['domains']['subdomain_edit'] = 'Corrija el dominio (secundario)';
 $lng['domains']['wildcarddomain'] = '&#191;Crear como comod&Atilde;n-dominio?';
+$lng['domains']['aliasdomain'] = 'Alias para dominio';
+$lng['domains']['noaliasdomain'] = 'No es un alias de dominio';
 
 /**
  * eMails
@@ -184,6 +187,7 @@ $lng['error']['youcantallocatemorethanyouhave'] = 'Usted no puede afectar un apa
 $lng['error']['youcantdeletechangemainadmin'] = 'Como paso de seguiridad Usted no puede Borar/reconfigurar el administrador-principal.';
 
 $lng['error']['mustbeurl'] = 'Usted tiene que dar una completa direccion URL(por ejemplo: http://algo.de/error404.htm)';
+$lng['error']['invalidpath'] = 'No ha seleccionado una URL v&aacute;lida (&#191;probablemente problemas con el listado de registros?)';
 $lng['error']['stringisempty'] ='Falta un dato';
 $lng['error']['stringiswrong'] = 'Dato falso';
 $lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
@@ -214,6 +218,7 @@ $lng['error']['wwwnotallowed']='www no se permite como nombre para los secundari
 $lng['error']['subdomainiswrong']='El dominio-secundario %s contiene caracteres inv&aacute;lidos.';
 $lng['error']['domaincantbeempty']='El nombre del dominio-Apellido no puede estar Vacio.';
 $lng['error']['domainexistalready']='El dominio %s existe ya.';
+$lng['error']['domainisaliasorothercustomer']='El alias de dominio seleccionado es un propio alias de dominio o pertenece a otro cliente.';
 $lng['error']['emailexistalready']='El email address %s existe ya.';
 $lng['error']['maindomainnonexist']='El dominio-principal %s no existe.';
 $lng['error']['destinationnonexist']='Crear por favor su email-expedici&oacute;n en \'Destinaci&oacute;n\'.';
@@ -241,6 +246,7 @@ $lng['question']['extras_reallydelete'] = '&#191;Usted realmente desea suprimir 
 $lng['question']['extras_reallydelete_pathoptions'] = '&#191;Usted realmente desea suprimir las opciones del camino para el %s?';
 $lng['question']['ftp_reallydelete'] = '&#191;Usted realmente desea suprimir la cuenta %s del ftp?';
 $lng['question']['mysql_reallydelete'] = '&#191;Usted realmente desea suprimir la base de datos %s?ATENCI&Ograve;N! todos los datos se perder&aacute;n definitivamente';
+$lng['question']['admin_configs_reallyrebuild'] = '&#191;Realmente desea elaborar de nuevo sus archivos de configuraci&oacute;n de Apache y Bind? ';
 
 /**
  * Mails
@@ -249,7 +255,6 @@ $lng['mails']['pop_success']['mailbody'] = 'Hola,\n\nsu cuenta del correo {EMAIL
 $lng['mails']['pop_success']['subject'] = 'cuenta del email instalada con &eacute;xito';
 $lng['mails']['createcustomer']['mailbody'] = 'Hola {FIRSTNAME} {NAME},\n\naqu&Atilde; est&aacute; su informaci&oacute;n de la cuenta:\n\nNombre del usuario: {USERNAME}\nContrase&ntilde;a: {PASSWORD}\n\nGracias,\nel SysCP-Equipo';
 $lng['mails']['createcustomer']['subject'] = 'Informaci&oacute;n de la cuenta';
-
 
 /**
  * Admin
@@ -280,6 +285,7 @@ $lng['admin']['domains_see_all'] = '&#191;Puede ver todos los dominios?';
 $lng['admin']['change_serversettings'] = '&#191;Puede cambiar configuraciones del servidor?';
 $lng['admin']['server'] = 'Servidor';
 $lng['admin']['serversettings'] = 'Configuraciones';
+$lng['admin']['rebuildconf'] = 'Escrever de novo os configs';
 $lng['admin']['stdsubdomain'] = 'dominio-secundario est&aacute;ndar';
 $lng['admin']['stdsubdomain_add'] = 'Crear el subdomain est&aacute;ndar';
 $lng['admin']['deactivated'] = 'Desactivado';
@@ -354,5 +360,7 @@ $lng['serversettings']['maxloginattempts']['title'] = 'Tentativas m&aacute;ximas
 $lng['serversettings']['maxloginattempts']['description'] = 'Las tentativas m&aacute;ximas de registro despu&eacute;s de lo cual la cuenta se desactiva.';
 $lng['serversettings']['deactivatetime']['title'] = 'tiempo de la desactivaci&oacute;n';
 $lng['serversettings']['deactivatetime']['description'] =  'tiempo (en segundos) para el cual la cuenta est&aacute; desactivada.';
+$lng['serversettings']['pathedit']['title'] = 'M&eacute;todo de introducci&oacute;n de datos del trayecto ';
+$lng['serversettings']['pathedit']['description'] = 'Prefiere seleccionar un trayecto a trav&eacute;s de un men&uacute;-dropdown o introducirlo manualmente.';
 
 ?>
