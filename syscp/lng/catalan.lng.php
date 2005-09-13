@@ -32,6 +32,7 @@ $lng['panel']['emptyfordefault'] = 'deixeu-ho buit per usar el valor predetermin
 $lng['panel']['path'] = 'Ruta';
 $lng['panel']['toggle'] = 'Marcar/Desmarcar';
 $lng['panel']['next'] = 'següent';
+$lng['panel']['dirsmissing'] = 'No puc trobar o escriure en aquest directori!'; 
 
 /**
  * Login
@@ -46,7 +47,6 @@ $lng['login']['profile_lng'] = 'Idioma del perfil';
 /**
  * Customer
  */
-$lng['customer']['login'] = 'Nom d\'usuari';
 $lng['customer']['documentroot'] = 'Directori HOME';
 $lng['customer']['name'] = 'Nom';
 $lng['customer']['surname'] = 'Cognom';
@@ -114,6 +114,8 @@ $lng['domains']['domainname'] = 'Nom del domini';
 $lng['domains']['subdomain_add'] = 'Crear subdomini';
 $lng['domains']['subdomain_edit'] = 'Editar (sub)domini';
 $lng['domains']['wildcarddomain'] = 'Crear un domini comod&iacute;? (wildcarddomain)';
+$lng['domains']['aliasdomain'] = 'Sobrenom per a aquest domini';
+$lng['domains']['noaliasdomain'] = 'No hi ha sobrenom del domini'; 
 
 /**
  * eMails
@@ -183,7 +185,10 @@ $lng['error']['notallreqfieldsorerrors'] = 'No has omplert tots els camps o algu
 $lng['error']['oldpasswordnotcorrect'] = 'La clau antiga no &eacute;s la correcta.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'No pots ocupar m&eacute;s espai del que tens assignat!';
 $lng['error']['youcantdeletechangemainadmin'] = 'L\'usuari admin &eacute;s sagrat...';
+
 $lng['error']['mustbeurl'] = 'No has escrit una URL correcte';
+$lng['error']['invalidpath'] = 'No has escrit una URL v&agrave;lida (potser hi ha algun problema en el llistat de directoris)';
+$lng['error']['domainisaliasorothercustomer']='El sobrenom de domini escollit ja existeix, o pertany a un altre client.';
 
 /**
  * Questions
@@ -202,6 +207,7 @@ $lng['question']['extras_reallydelete'] = 'Segur que vols esborrar la direcci&oa
 $lng['question']['extras_reallydelete_pathoptions'] = 'Segur que vols eliminar les opcions de ruta (PATH) de %s?';
 $lng['question']['ftp_reallydelete'] = 'Segur que vols esborrar el compte FTP %s?';
 $lng['question']['mysql_reallydelete'] = 'Segur que vols eliminar la base de dades %s? Aquesta acci&oacute; &eacute;s irreversible!';
+$lng['question']['admin_configs_reallyrebuild'] = 'Segur que vols regenerar les configuracions dels servidors apache i bind?';
 
 /**
  * Mails
@@ -240,6 +246,7 @@ $lng['admin']['domains_see_all'] = 'Pot veure tots els dominis?';
 $lng['admin']['change_serversettings'] = 'Pot canviar configuracions del servidor?';
 $lng['admin']['server'] = 'Servidor';
 $lng['admin']['serversettings'] = 'Opcions del servidor';
+$lng['admin']['rebuildconf'] = 'Regenerar fitxers de configuraci&oacute;';
 $lng['admin']['stdsubdomain'] = 'Subdomini est&agrave;ndar';
 $lng['admin']['stdsubdomain_add'] = 'Crear subdomini est&agrave;ndar';
 $lng['admin']['deactivated'] = 'Desactivat';
@@ -314,5 +321,7 @@ $lng['serversettings']['maxloginattempts']['title']       = 'Intents de logueix 
 $lng['serversettings']['maxloginattempts']['description'] = 'Número de vegades que pots intentar identificar-te abans de que la compta es desactivi.';
 $lng['serversettings']['deactivatetime']['title']       = 'Temps de desactivacio';
 $lng['serversettings']['deactivatetime']['description'] = 'Segons que la compta estar&agrave; inactiva quan s\'ha produit un seguit d\'intents frustrats d\'identificaci&oacute;.';
+$lng['serversettings']['pathedit']['title'] = 'Tipus d\'entrada de ruta';
+$lng['serversettings']['pathedit']['description'] = 'Vols que la ruta sigui escrita en una casella de text o en un men&uacute; desplegable?';
 
 ?>

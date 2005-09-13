@@ -32,6 +32,7 @@ $lng['panel']['emptyfordefault'] = 'Restaurar padr&atilde;o';
 $lng['panel']['path'] = 'Caminho';
 $lng['panel']['toggle'] = 'Toggle';
 $lng['panel']['next'] = 'Pr&oacute;ximo';
+$lng['panel']['dirsmissing'] = 'Direct&oacute;rio n&atilde;o dispon&iacute;vel ou ileg&iacute;vel';
 
 /**
  * Login
@@ -113,6 +114,8 @@ $lng['domains']['domainname'] = 'Nome do dominio';
 $lng['domains']['subdomain_add'] = 'Criar Sub-dominio';
 $lng['domains']['subdomain_edit'] = 'Editar (sub)dominio';
 $lng['domains']['wildcarddomain'] = 'Criar um wildcarddomain?';
+$lng['domains']['aliasdomain'] = 'Ali&aacute;s para o dominio';
+$lng['domains']['noaliasdomain'] = 'N&atilde;o dominio do ali&aacute;s';
 
 /**
  * eMails
@@ -184,6 +187,7 @@ $lng['error']['youcantallocatemorethanyouhave'] = 'Voce n&atilde;o pode alocar m
 $lng['error']['youcantdeletechangemainadmin'] = 'Voce n&atilde;o pode deletar ou editar o administrador principal por raz&otilde;es de seguran&ccedil;a.';
 
 $lng['error']['mustbeurl'] = 'Voce n&atilde;o digitou uma URL v&aacute;lida (ex. http://seudominio.com/erro404.htm)';
+$lng['error']['invalidpath'] = 'Optou por um URL n&atilde;o v&aacute;lido (eventuais problemas na lista do direct&oacute;rio)';
 $lng['error']['stringisempty'] ='Faltando informa&ccedil;&atilde;o no campo';
 $lng['error']['stringiswrong'] ='Erro na informa&ccedil;&atilde;o do campo';
 $lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
@@ -214,6 +218,7 @@ $lng['error']['wwwnotallowed']='www n&atilde;o &eacute; permitido como nome de s
 $lng['error']['subdomainiswrong']='O subdominio %s cont&eacute;m caracteres inv&aacute;lidos.';
 $lng['error']['domaincantbeempty']='O nome do dominio n&atilde;o pode estar vazio.';
 $lng['error']['domainexistalready']='O dominio %s j&aacute; existe.';
+$lng['error']['domainisaliasorothercustomer']='O dom&iacute;nio-alias escolhido &eacute; ele pr&oacute;prio um dom&iacute;nio-alias ou este pertence a um outro cliente.';
 $lng['error']['emailexistalready']='O E-mail %s j&aacute; existe.';
 $lng['error']['maindomainnonexist']='O dominio principal %s n&atilde;o existe.';
 $lng['error']['destinationnonexist']='Por favor crie seu redirecionamento no campo \'Destino\'.';
@@ -239,6 +244,7 @@ $lng['question']['extras_reallydelete'] = 'Voce realmente deseja deletar a prote
 $lng['question']['extras_reallydelete_pathoptions'] = 'Voce realmente deseja deletar o caminho %s?';
 $lng['question']['ftp_reallydelete'] = 'Voce realmente deseja deletar a conta de FTP %s?';
 $lng['question']['mysql_reallydelete'] = 'Voce realmente deseja deletar o banco de dados %s? Este comando n&atilde;o poder&aacute; ser cancelado!';
+$lng['question']['admin_configs_reallyrebuild'] = 'Est&aacute; certo que quer deixar reconfigurar os ficheiros de configura&ccedil;&atilde;o de Apache e Bind?';
 
 /**
  * Mails
@@ -277,6 +283,7 @@ $lng['admin']['domains_see_all'] = 'Mostrar todos os dominios';
 $lng['admin']['change_serversettings'] = 'Alterar configura&ccedil;&ccedil;es do servidor?';
 $lng['admin']['server'] = 'Servidor';
 $lng['admin']['serversettings'] = 'Configura&ccedil;&ccedil;es';
+$lng['admin']['rebuildconf'] = 'Escrever de novo os configs';
 $lng['admin']['stdsubdomain'] = 'Subdominio padr&atilde;o';
 $lng['admin']['stdsubdomain_add'] = 'Criar Subdominio padr&atilde;o';
 $lng['admin']['deactivated'] = 'Desativado';
@@ -351,5 +358,7 @@ $lng['serversettings']['maxloginattempts']['title']       = 'Tentativas maximas 
 $lng['serversettings']['maxloginattempts']['description'] = 'Tentativas maximas de Login para a conta ser desativada.';
 $lng['serversettings']['deactivatetime']['title']       = 'Tempo que a conta deve permanecer desativada';
 $lng['serversettings']['deactivatetime']['description'] = 'Tempo (sec.) qua a conta permanece desativada depois de muitas tentativas de login.';
+$lng['serversettings']['pathedit']['title']       = 'File-M&eacute;todo de entrada';
+$lng['serversettings']['pathedit']['description'] = 'A escolha do file tem que ser feita atrav&eacute;s do Dropdown-Menu ou pode ser feita manualmente?';
 
 ?>
