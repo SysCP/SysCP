@@ -302,7 +302,7 @@
 							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['pop_success']['mailbody']),$replace_arr));
 							mail("$email_full",$mail_subject,$mail_body,"From: {$admin['name']} <{$admin['email']}>\r\n");
 	
-        					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
+        					redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 						}
 					}
 					else
@@ -334,7 +334,7 @@
 					else
 					{
 						$result=$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `password` = '$password', `password_enc`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='".$result['popaccountid']."'");
-       					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
+       					redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -356,7 +356,7 @@
 					$result['destination'] = str_replace ( $result['email_full'] , '' , $result['destination'] ) ;
 					$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."', `popaccountid` = '0' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_accounts_used` = `email_accounts_used` - 1 WHERE `customerid`='".$userinfo['customerid']."'");
-   					redirectTo ( $filename , Array ( 'page' => $page , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
+   					redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 				}
 				else
 				{
