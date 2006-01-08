@@ -11,8 +11,9 @@
  * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * @author Tim Zielosko <tim.zielosko@syscp.de>
+ * @author Tim Zielosko <tim.zielosko@syscp.de>, Aldo Reset <aldo.reset@placenet.org>
  * @copyright (C) 2004 - 2005 Tim Zielosko
+ * @copyright (C) 2006 Tim Zielosko, Aldo Reset
  * @package Language
  * @version $Id$
  */
@@ -23,7 +24,7 @@
  */
 $lng['panel']['edit'] = 'Modifier';
 $lng['panel']['delete'] = 'Effacer';
-$lng['panel']['create'] = 'Appliquer';
+$lng['panel']['create'] = 'Cr&eacute;er';
 $lng['panel']['save'] = 'Sauvegarder';
 $lng['panel']['yes'] = 'Oui';
 $lng['panel']['no'] = 'Non';
@@ -62,7 +63,7 @@ $lng['customer']['diskspace'] = 'Webspace (MB)';
 $lng['customer']['traffic'] = 'Traffic (GB)';
 $lng['customer']['mysqls'] = 'Banque(s) de donn&eacute;es MySQL';
 $lng['customer']['emails'] = 'Adresse(s) e-mail';
-$lng['customer']['accounts'] = 'Acc&egrave;s e-mail';
+$lng['customer']['accounts'] = 'Comptes e-mail';
 $lng['customer']['forwarders'] = 'Retransmissions e-mail';
 $lng['customer']['ftps'] = 'Acc&egrave;s FTP';
 $lng['customer']['subdomains'] = 'Sub-Domain(s)';
@@ -84,7 +85,7 @@ $lng['menue']['mysql']['phpmyadmin'] = 'phpMyAdmin';
 $lng['menue']['domains']['domains'] = 'Domains';
 $lng['menue']['domains']['settings'] = 'R&eacute;glages';
 $lng['menue']['ftp']['ftp'] = 'FTP';
-$lng['menue']['ftp']['accounts'] = 'Acc&egrave;s';
+$lng['menue']['ftp']['accounts'] = 'Comptes';
 $lng['menue']['ftp']['webftp'] = 'WebFTP';
 $lng['menue']['extras']['extras'] = 'Extras';
 $lng['menue']['extras']['directoryprotection'] = 'Protection des dossiers';
@@ -93,8 +94,8 @@ $lng['menue']['extras']['pathoptions'] = 'Options du chemin';
 /**
  * Index
  */
-$lng['index']['customerdetails'] = 'Donn&eacute;es du compte';
-$lng['index']['accountdetails'] = 'Donn&eacute;es de l\'acc&egrave;s';
+$lng['index']['customerdetails'] = 'Donn&eacute;es du client';
+$lng['index']['accountdetails'] = 'Donn&eacute;es des comptes';
 
 /**
  * Change Password
@@ -111,8 +112,8 @@ $lng['changepassword']['also_change_ftp'] = ' Changer aussi le mot de passe de l
 $lng['domains']['description'] = 'Ici vous pouvez inscrire des Domains et changer ses chemins.<br />Il faut un peu de temps apr&egrave;s chaque changement pour relire la configuration.';
 $lng['domains']['domainsettings'] = 'Configuration des Domains';
 $lng['domains']['domainname'] = 'Nom du Domain';
-$lng['domains']['subdomain_add'] = 'Appliquer un Subdomain';
-$lng['domains']['subdomain_edit'] = 'Changer un Subdomain';
+$lng['domains']['subdomain_add'] = 'Ajouter un Sous-domain';
+$lng['domains']['subdomain_edit'] = 'Changer un Sous-domain';
 $lng['domains']['wildcarddomain'] = 'Domain Wildcard?';
 $lng['domains']['aliasdomain'] = 'Pseudonyme pour un domain';
 $lng['domains']['noaliasdomain'] = 'Domain non-pseudonyme';
@@ -120,41 +121,41 @@ $lng['domains']['noaliasdomain'] = 'Domain non-pseudonyme';
 /**
  * eMails
  */
-$lng['emails']['description'] = 'Ici vous pouvez appliquer vos boites &agrave; e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domain</i></b><br>Identifiant: <b><i>l\'adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
+$lng['emails']['description'] = 'Ici vous pouvez cr&eacute;er vos boites e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domain</i></b><br>Identifiant: <b><i>l\'adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
 $lng['emails']['emailaddress'] = 'Adresse';
-$lng['emails']['emails_add'] = 'Appliquer une Adresse';
+$lng['emails']['emails_add'] = 'Ajouter une Adresse';
 $lng['emails']['emails_edit'] = 'Changer une adresse';
 $lng['emails']['catchall'] = 'Catchall';
-$lng['emails']['iscatchall'] = 'D&eacute;finer comme adresse catchall?';
-$lng['emails']['account'] = 'Acc&egrave;s';
-$lng['emails']['account_add'] = 'Appliquer un acc&egrave;s';
-$lng['emails']['account_delete'] = 'Effacer acc&egrave;s';
+$lng['emails']['iscatchall'] = 'D&eacute;signer comme adresse catchall?';
+$lng['emails']['account'] = 'Comptes';
+$lng['emails']['account_add'] = 'Ajouter un compte';
+$lng['emails']['account_delete'] = 'Supprimer un compte';
 $lng['emails']['from'] = 'de';
-$lng['emails']['to'] = '&agrave;';
-$lng['emails']['forwarders'] = 'Retransmissions';
-$lng['emails']['forwarder_add'] = 'Appliquer une retransmission';
+$lng['emails']['to'] = 'pour';
+$lng['emails']['forwarders'] = 'Redirections';
+$lng['emails']['forwarder_add'] = 'Ajouter une redirection';
 
 /**
  * FTP
  */
-$lng['ftp']['description'] = 'Ici vous pouvez appliquer des acc&egrave;s FTP additionel.<br />Les changements sont tout de suite op&eacute;rant et l\'acc&egrave;s est disponible.';
-$lng['ftp']['account_add'] = 'Appliquer un acc&egrave;s';
+$lng['ftp']['description'] = 'Ici vous pouvez ajouter des acc&egrave;s FTP suppl&eacute;mentaires.<br />Les changements sont imédiatement appliqu&eacute;s et l\'acc&egrave;s est disponible.';
+$lng['ftp']['account_add'] = 'Ajouter un acc&egrave;s';
 
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Ici vous pouvez appliquer et effacer des banques de donn&eacute;es MySQL.<br>Les changements sont tout de suite op&eacute;rant et les banques sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos banques de donn&eacute;es.<br><br>L\'acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c\'est!)<br><br>$connection = mysql_connect("localhost", "<i>Votre identifiant</i>", "<i>Votre mot de passe</i>");<br>mysql_select_db("<i>Le nom de la banque</i>", $connection);';
-$lng['mysql']['databasename'] = 'Nom de la banque';
-$lng['mysql']['databasedescription'] = 'Description de la banque';
-$lng['mysql']['database_create'] = 'Appliquer une banque de donn&eacute;es';
+$lng['mysql']['description'] = 'Ici vous pouvez ajouterp et supprimer des bases de donn&eacute;es MySQL.<br>Les changements sont immédiatement appliq&eacute;s  et les bases sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos bases de donn&eacute;es.<br><br>L\'acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c\'est!)<br><br>$connection = mysql_connect("localhost", "<i>Votre identifiant</i>", "<i>Votre mot de passe</i>");<br>mysql_select_db("<i>Le nom de la banque</i>", $connection);';
+$lng['mysql']['databasename'] = 'Nom de la base';
+$lng['mysql']['databasedescription'] = 'Description de la base';
+$lng['mysql']['database_create'] = 'Ajouter une base de donn&eacute;es';
 
 /**
  * Extras
  */
-$lng['extras']['description'] = 'Ici vous pouvez appliquer des extras additionell, par example la protection des listes.<br />Il faut un peu de temps apr&egrave;s chaque changement pour reliser la configuration.';
-$lng['extras']['directoryprotection_add'] = 'Appliquer une protection de dossier';
+$lng['extras']['description'] = 'Ici vous pouvez ajouter des extras suppl&eacute;mentaires, par example la protection des listes.<br />Il faut un peu de temps apr&egrave;s chaque changement pour relire la configuration.';
+$lng['extras']['directoryprotection_add'] = 'Ajouter une protection de dossier';
 $lng['extras']['view_directory'] = 'Faire voir le dossier';
-$lng['extras']['pathoptions_add'] = 'Appliquer des options de chemin';
+$lng['extras']['pathoptions_add'] = 'Ajouter des options de chemin';
 $lng['extras']['directory_browsing'] = 'Montrer le contenu des dossiers';
 $lng['extras']['pathoptions_edit'] = 'Modifier les options de chemin';
 $lng['extras']['error404path'] = '404';
@@ -262,30 +263,30 @@ $lng['admin']['ressourcedetails'] = 'Ressources utilis&eacute;s';
 $lng['admin']['systemdetails'] = 'Details du system';
 $lng['admin']['syscpdetails'] = 'Details du SysCP';
 $lng['admin']['installedversion'] = 'Version install&eacute;e';
-$lng['admin']['latestversion'] = 'La plus nouvelle version';
+$lng['admin']['latestversion'] = 'La plus r&eacute;cente version';
 $lng['admin']['lookfornewversion']['clickhere'] = 'Interroger par internet';
 $lng['admin']['lookfornewversion']['error'] = 'Erreur en triant';
 $lng['admin']['resources'] = 'R&eacute;ssources';
-$lng['admin']['customer'] = 'Compte';
-$lng['admin']['customers'] = 'Comptes';
-$lng['admin']['customer_add'] = 'Appliquer un compte';
-$lng['admin']['customer_edit'] = 'Modifier un compte';
+$lng['admin']['customer'] = 'Client';
+$lng['admin']['customers'] = 'Clients';
+$lng['admin']['customer_add'] = 'Ajouter un compte client';
+$lng['admin']['customer_edit'] = 'Modifier un compte client';
 $lng['admin']['domains'] = 'Domains';
-$lng['admin']['domain_add'] = 'Appliquer un Domain';
+$lng['admin']['domain_add'] = 'Ajouter un Domain';
 $lng['admin']['domain_edit'] = 'Modifier le domain';
-$lng['admin']['subdomainforemail'] = 'Subdomains comme domain e-mail';
+$lng['admin']['subdomainforemail'] = 'Sous-domain comme domain e-mail';
 $lng['admin']['admin'] = 'Administrateur';
 $lng['admin']['admins'] = 'Administrateurs';
-$lng['admin']['admin_add'] = 'Appliquer un administrateur';
+$lng['admin']['admin_add'] = 'Ajouter un administrateur';
 $lng['admin']['admin_edit'] = 'Modifier un administrateur';
 $lng['admin']['customers_see_all'] = 'Peut voir tous les comptes?';
 $lng['admin']['domains_see_all'] = 'Peut voir tous les Domains?';
 $lng['admin']['change_serversettings'] = 'Peut modifier la configuration du server?';
-$lng['admin']['server'] = 'Server';
+$lng['admin']['server'] = 'Serveur';
 $lng['admin']['serversettings'] = 'R&eacute;glage';
 $lng['admin']['rebuildconf'] = 'Refaire la configuration';
-$lng['admin']['stdsubdomain'] = 'Subdomain-type';
-$lng['admin']['stdsubdomain_add'] = 'Appliquer un subdomain-type';
+$lng['admin']['stdsubdomain'] = 'Sous-domain-type';
+$lng['admin']['stdsubdomain_add'] = 'Ajouter un subdomain-type';
 $lng['admin']['deactivated'] = 'Bloqu&eacute;';
 $lng['admin']['deactivated_user'] = 'Bloquer utilisateur';
 $lng['admin']['sendpassword'] = 'Envoyer mot de passe';
@@ -295,7 +296,7 @@ $lng['admin']['configfiles']['files'] = '<b>Fichiers de configuration:</b> S\'il
 $lng['admin']['configfiles']['commands'] = '<b>Commandes:</b> S\'il vous-plait ex&eacute;cuter les commandes ci-dessous sur le shell.';
 $lng['admin']['configfiles']['restart'] = '<b>R&eacute;demarrer:</b> S\'il vous-plait ex&eacute;cuter les commandes ci-dessous pour<br />r&eacute;initialiser les fichiers de configuration.';
 $lng['admin']['templates']['templates'] = 'Templates';
-$lng['admin']['templates']['template_add'] = 'Appliquer un template';
+$lng['admin']['templates']['template_add'] = 'Ajouter un template';
 $lng['admin']['templates']['template_edit'] = 'Modifier un template';
 $lng['admin']['templates']['action'] = 'Action';
 $lng['admin']['templates']['email'] = 'E-Mail';
