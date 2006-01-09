@@ -105,7 +105,7 @@
 					if(!is_dir($domain['documentroot']))
 					{
 						safe_exec('mkdir -p "'.$domain['documentroot'].'"');
-						safe_exec('chown -R "'.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot'].'"');
+						safe_exec('chown -R '.$domain['guid'].':'.$domain['guid'].' "'.$domain['documentroot'].'"');
 					}
 					if($domain['speciallogfile'] == '1')
 					{
@@ -150,8 +150,8 @@
 				safe_exec('mkdir -p "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer"');
 				safe_exec('mkdir -p "'.$settings['system']['vmail_homedir'].$row['data']['loginname'].'"');
 				safe_exec('cp -a '.$pathtophpfiles.'/templates/misc/standardcustomer/* "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/"');
-				safe_exec('chown -R "'.$row['data']['uid'].':'.$row['data']['gid'].' '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'"');
-				safe_exec('chown -R "'.$settings['system']['vmail_uid'].':'.$settings['system']['vmail_gid'].' '.$settings['system']['vmail_homedir'].$row['data']['loginname'].'"');
+				safe_exec('chown -R '.$row['data']['uid'].':'.$row['data']['gid'].' "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'"');
+				safe_exec('chown -R '.$settings['system']['vmail_uid'].':'.$settings['system']['vmail_gid'].' "'.$settings['system']['vmail_homedir'].$row['data']['loginname'].'"');
 			}
 		}
 

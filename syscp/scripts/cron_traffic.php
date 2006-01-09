@@ -103,7 +103,7 @@
 			 */
 			$debugMsg[] = '  cron_traffic: calculating webspace usage for '.$row['loginname'];
 			$webspaceusage=0;
-			$back = safe_exec('du -s '.$row['documentroot']);
+			$back = safe_exec('du -s "'.$row['documentroot'].'"');
 			foreach($back as $backrow)
 			{
 				$webspaceusage=explode(' ',$backrow);
@@ -116,7 +116,7 @@
 			 */
 			$debugMsg[] = '  cron_traffic: calculating mailspace usage for '.$row['loginname'];
 			$emailusage=0;
-			$back = safe_exec('du -s '.$settings['system']['vmail_homedir'].$row['loginname']);
+			$back = safe_exec('du -s "'.$settings['system']['vmail_homedir'].$row['loginname'].'"');
 			foreach($back as $backrow)
 			{
 				$emailusage=explode(' ',$backrow);
