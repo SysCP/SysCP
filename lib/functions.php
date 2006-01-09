@@ -412,9 +412,9 @@
 			$outputdir = makeCorrectDir ($outputdir);
 			if(!file_exists($outputdir))
 			{
-				safe_exec('mkdir -p '.$outputdir);
+				safe_exec('mkdir -p "'.$outputdir.'"');
 			}
-			safe_exec('webalizer -n '.$caption.' -o '.$outputdir.' '.$settings['system']['logfiles_directory'].$logfile.'-access.log');
+			safe_exec('webalizer -n "'.$caption.'" -o "'.$outputdir.'" "'.$settings['system']['logfiles_directory'].$logfile.'-access.log"');
 
 			$webalizer_hist_size=@filesize($outputdir.'webalizer.hist');
 			$webalizer_hist_num=@fopen($outputdir.'webalizer.hist','r');
