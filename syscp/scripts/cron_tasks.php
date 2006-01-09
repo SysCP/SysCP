@@ -92,7 +92,7 @@
 				else
 				{
 					$domain['documentroot'] = makeCorrectDir ($domain['documentroot']);
-					$vhosts_file.='  DocumentRoot '.$domain['documentroot']."\n";
+					$vhosts_file.='  DocumentRoot "'.$domain['documentroot']."\"\n";
 					if($domain['openbasedir'] == '1')
 					{
 						$vhosts_file.='  php_admin_value open_basedir '.$domain['documentroot']."\n";
@@ -104,28 +104,28 @@
 
 					if(!is_dir($domain['documentroot']))
 					{
-						safe_exec('mkdir -p '.$domain['documentroot']);
-						safe_exec('chown -R '.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot']);
+						safe_exec('mkdir -p "'.$domain['documentroot'].'"');
+						safe_exec('chown -R "'.$domain['guid'].':'.$domain['guid'].' '.$domain['documentroot'].'"');
 					}
 					if($domain['speciallogfile'] == '1')
 					{
 						if($domain['parentdomainid'] == '0')
 						{
 							$speciallogfile = '-'.$domain['domain'];
-							$vhosts_file .= '   Alias /webalizer '.$domain['customerroot'].'/webalizer/'.$domain['domain']."\n";
+							$vhosts_file .= '   Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['domain']."\"\n";
 						}
 						else
 						{
 							$speciallogfile = '-'.$domain['parentdomain'];
-							$vhosts_file .= '   Alias /webalizer '.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\n";
+							$vhosts_file .= '   Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\"\n";
 						}
 					}
 					else
 					{
 						$speciallogfile = '';
 					}
-					$vhosts_file.='  ErrorLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\n";
-					$vhosts_file.='  CustomLog '.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log combined'."\n";
+					$vhosts_file.='  ErrorLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\"\n";
+					$vhosts_file.='  CustomLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log" combined'."\n";
 				}
 				$vhosts_file.=stripslashes($domain['specialsettings'])."\n";
 				$vhosts_file.='</VirtualHost>'."\n";
@@ -147,11 +147,11 @@
 			$debugMsg[] = '  cron_tasks: Task2 started - create new home';
 			if(is_array($row['data']))
 			{
-				safe_exec('mkdir -p '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer');
-				safe_exec('mkdir -p '.$settings['system']['vmail_homedir'].$row['data']['loginname']);
-				safe_exec('cp -a '.$pathtophpfiles.'/templates/misc/standardcustomer/* '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/');
-				safe_exec('chown -R '.$row['data']['uid'].':'.$row['data']['gid'].' '.$settings['system']['documentroot_prefix'].$row['data']['loginname']);
-				safe_exec('chown -R '.$settings['system']['vmail_uid'].':'.$settings['system']['vmail_gid'].' '.$settings['system']['vmail_homedir'].$row['data']['loginname']);
+				safe_exec('mkdir -p "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer"');
+				safe_exec('mkdir -p "'.$settings['system']['vmail_homedir'].$row['data']['loginname'].'"');
+				safe_exec('cp -a '.$pathtophpfiles.'/templates/misc/standardcustomer/* "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/"');
+				safe_exec('chown -R "'.$row['data']['uid'].':'.$row['data']['gid'].' '.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'"');
+				safe_exec('chown -R "'.$settings['system']['vmail_uid'].':'.$settings['system']['vmail_gid'].' '.$settings['system']['vmail_homedir'].$row['data']['loginname'].'"');
 			}
 		}
 
@@ -214,11 +214,11 @@
 					}
 					if ( isset ( $row_diroptions['error404path'] ) && $row_diroptions['error404path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 404 '.$row_diroptions['error404path']."\n";
+						$diroptions_file .= '  ErrorDocument 404 "'.$row_diroptions['error404path']."\"\n";
 					}
 					if ( isset ( $row_diroptions['error403path'] ) && $row_diroptions['error403path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 403 '.$row_diroptions['error403path']."\n";
+						$diroptions_file .= '  ErrorDocument 403 "'.$row_diroptions['error403path']."\"\n";
 					}
 //					if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
 //					{
@@ -226,7 +226,7 @@
 //					}
 					if ( isset ( $row_diroptions['error500path'] ) && $row_diroptions['error500path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 500 '.$row_diroptions['error500path']."\n";
+						$diroptions_file .= '  ErrorDocument 500 "'.$row_diroptions['error500path']."\"\n";
 					}
 					
 					if(count($row_diroptions['htpasswds']) > 0)
