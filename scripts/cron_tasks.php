@@ -11,10 +11,13 @@
  * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * @author Florian Lippert <flo@redenswert.de>
+ * @author    Florian Lippert <flo@redenswert.de>
  * @copyright (C) 2003-2004 Florian Lippert
- * @package System
- * @version $Id$
+ * @package   System
+ * @version   $Id$
+ * 
+ * @changes   martin@2006-01-30:
+ *            - fixed race condition during task row deletion
  */
 	if(@php_sapi_name() != 'cli' && @php_sapi_name() != 'cgi')
 	{
@@ -25,9 +28,13 @@
 	 * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
 	 */
 	$debugMsg[] = '  cron_tasks: Searching for tasks to do';
-	$result_tasks=$db->query("SELECT `id`, `type`, `data` FROM `".TABLE_PANEL_TASKS."` ORDER BY `type` ASC");
-	while($row=$db->fetch_array($result_tasks))
+	$result_tasks = $db->query("SELECT `id`, `type`, `data` FROM `".TABLE_PANEL_TASKS."` ORDER BY `type` ASC");
+	$resultIDs   = array();	
+	
+	while($row = $db->fetch_array($result_tasks))
 	{
+		$resultIDs[] = $row['id'];
+		
 		if($row['data'] != '')
 		{
 			$row['data']=unserialize($row['data']);
@@ -44,16 +51,10 @@
 			{
 				$vhosts_file.='Include '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n\n";
 			}
-			// --- martin @ 08.08.2005 -------------------------------------------------------
-			// added portnumber to ip entries, fixing bug #79
 			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress'].':80'."\n"."\n";
-			// -------------------------------------------------------------------------------
 
 			$vhosts_file.='# DummyHost for DefaultSite'."\n";
-			// --- martin @ 08.08.2005 -------------------------------------------------------
-			// added portnumber to ip entries, fixing bug #79
 			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].':80>'."\n";
-			// -------------------------------------------------------------------------------
 			$vhosts_file.='ServerName '.$settings['system']['hostname']."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
@@ -62,10 +63,7 @@
 			{
 				$debugMsg[] = '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain'];
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
-				// --- martin @ 08.08.2005 -------------------------------------------------------
-				// added portnumber to ip entries, fixing bug #79
 				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].':80>'."\n";
-				// -------------------------------------------------------------------------------
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
 
 				$server_alias = '';
@@ -250,16 +248,11 @@
 						
 						if(!file_exists($settings['system']['apacheconf_directory'].'htpasswd/')) 
 						{
-							// --- martin @ 05.05.2005 -------------------------
-							// added umask get,set for proper creation of the dir
 							$umask = umask();
 							umask( 0000 );
 							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0751);
 							umask( $umask );
-							//--------------------------------------------------
 						}
-						// --- flo @ 15.06.2005 ----------------------------
-						// added is_dir conditions to prevent unwanted php-errors if /etc/apache/htpasswd is a normal file and no directory (bug #66)
 						elseif(!is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
 						{
 							$debugMsg[] = '  cron_tasks: WARNING!!! ' . $settings['system']['apacheconf_directory'].'htpasswd/ is not a directory. htpasswd directory protection is disabled!!!';
@@ -272,7 +265,6 @@
 							fwrite($htpasswd_file_handler, $htpasswd_file);
 							fclose($htpasswd_file_handler);
 						}
-						//--------------------------------------------------
 					}
 					$diroptions_file .= '</Directory>'."\n\n";
 				}
@@ -327,9 +319,16 @@
 			$debugMsg[] = '  cron_tasks: Task4 - Bind9 reloaded';
 		}
 	}
-	if($db->num_rows($result_tasks) != 0)
+	if( $db->num_rows( $result_tasks ) != 0 )
 	{
-		$db->query("DELETE FROM `".TABLE_PANEL_TASKS."`");
+		$where = array();
+		
+		foreach( $resultIDs as $id )
+		{
+			$where[] = '`id`=\''.$id.'\'';
+		}
+		$where = implode( $where, ' OR ');
+		$db->query("DELETE FROM `".TABLE_PANEL_TASKS."` WHERE ".$where);
 	}
  
 ?>
