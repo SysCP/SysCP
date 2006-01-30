@@ -21,14 +21,14 @@
 		die('This script will only work in the shell.');
 	}
 
-	$debugMsg[] = '  cron_traffic: Started...';
+	fwrite( $debugHandler, '  cron_traffic: Started...');
 	/**
 	 * DAILY TRAFFIC AND DISKUSAGE MESSURE
 	 */
 
 	if($settings['system']['last_traffic_run'] != date('dmy'))
 	{
-		$debugMsg[] = '  cron_traffic: Traffic run started...';
+		fwrite( $debugHandler, '  cron_traffic: Traffic run started...');
 		$yesterday=time()-(60*60*24);
 
 		$admin_traffic = Array();
@@ -39,7 +39,7 @@
 			/**
 			 * HTTP-Traffic
 			 */
-			$debugMsg[] = '  cron_traffic: http traffic for '.$row['loginname'].' started...';
+			fwrite( $debugHandler, '  cron_traffic: http traffic for '.$row['loginname'].' started...');
 			$httptraffic = 0;
 			$httptraffic = webalizer_hist($row['loginname'], $row['documentroot'].'/webalizer/', $row['loginname']);
 
@@ -52,7 +52,7 @@
 			/**
 			 * FTP-Traffic
 			 */
-			$debugMsg[] = '  cron_traffic: ftp traffic for '.$row['loginname'].' started...';
+			fwrite( $debugHandler, '  cron_traffic: ftp traffic for '.$row['loginname'].' started...');
 			$mailtraffic=0;
 			$ftptraffic=Array();
 			$ftptraffic=$db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$row['customerid']."'");
@@ -62,7 +62,7 @@
 			 */
 			if(date('d',$yesterday)!='01')
 			{
-				$debugMsg[] = '  cron_traffic: total traffic for '.$row['loginname'].' started';
+				fwrite( $debugHandler, '  cron_traffic: total traffic for '.$row['loginname'].' started');
 				$oldtraffic=$db->query_first("SELECT SUM(`http`) AS `http_sum`, SUM(`ftp_up`) AS `ftp_up_sum`, SUM(`ftp_down`) AS `ftp_down_sum`, SUM(`mail`) AS `mail_sum` FROM `".TABLE_PANEL_TRAFFIC."` WHERE `year`='".date('Y',$yesterday)."' AND `month`='".date('m',$yesterday)."' AND `day`<'".date('d',$yesterday)."' AND `customerid`='".$row['customerid']."'");
 				$new['http']=$httptraffic-$oldtraffic['http_sum'];
 				$new['ftp_up']=($ftptraffic['up_bytes_sum']/1024)-$oldtraffic['ftp_up_sum'];
@@ -71,7 +71,7 @@
 			}
 			else
 			{
-				$debugMsg[] = '  cron_traffic: (new month) total traffic for '.$row['loginname'].' started';
+				fwrite( $debugHandler, '  cron_traffic: (new month) total traffic for '.$row['loginname'].' started');
 				$new['http']=$httptraffic;
 				$new['ftp_up']=($ftptraffic['up_bytes_sum']/1024);
 				$new['ftp_down']=($ftptraffic['down_bytes_sum']/1024);
@@ -101,7 +101,7 @@
 			/**
 			 * WebSpace-Usage
 			 */
-			$debugMsg[] = '  cron_traffic: calculating webspace usage for '.$row['loginname'];
+			fwrite( $debugHandler, '  cron_traffic: calculating webspace usage for '.$row['loginname']);
 			$webspaceusage=0;
 			$back = safe_exec('du -s "'.$row['documentroot'].'"');
 			foreach($back as $backrow)
@@ -114,7 +114,7 @@
 			/**
 			 * MailSpace-Usage
 			 */
-			$debugMsg[] = '  cron_traffic: calculating mailspace usage for '.$row['loginname'];
+			fwrite( $debugHandler, '  cron_traffic: calculating mailspace usage for '.$row['loginname']);
 			$emailusage=0;
 			$back = safe_exec('du -s "'.$settings['system']['vmail_homedir'].$row['loginname'].'"');
 			foreach($back as $backrow)
@@ -127,7 +127,7 @@
 			/**
 			 * MySQLSpace-Usage
 			 */
-			$debugMsg[] = '  cron_traffic: calculating mysqlspace usage for '.$row['loginname'];
+			fwrite( $debugHandler, '  cron_traffic: calculating mysqlspace usage for '.$row['loginname']);
 			$mysqlusage=0;
 			$databases_result=$db->query("SELECT `databasename` FROM `".TABLE_PANEL_DATABASES."` WHERE `customerid`='".$row['customerid']."'");
 			while($database_row=$db->fetch_array($databases_result))

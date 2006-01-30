@@ -23,47 +23,52 @@
 	}
 	
 	$cronscriptDebug = false;
-	// --- martin @ 05.05.2005 -------------------------------------------------
-	// reworked this part to remove a possible race condition, if the cronscript
-	// was called more than once within execution time of the if-clause 
 	$lockdir        = '/var/run/';
 	$lockFilename   = 'syscp_cron.lock-';
 	$lockfName      = $lockFilename.time();
 	$lockfile		= $lockdir.$lockfName;
-	$debugMsg[]     = 'Setting Lockfile to '.$lockfile;
 	$pathtophpfiles = '/var/www/syscp';
-	$debugMsg[]     = 'Setting SysCP installation path to '.$pathtophpfiles;
 	$filename       = 'cronscript.php';
 	
-	touch($lockfile); 
+//	touch($lockfile);
+	// create and open the lockfile!
+	$debugHandler = fopen( $lockfile, 'w' ); 
+	fwrite( $debugHandler, 'Setting Lockfile to '.$lockfile );
+	fwrite( $debugHandler, 'Setting SysCP installation path to '.$pathtophpfiles);
+	
+	// open the lockfile directory and scan for existing lockfiles
 	$lockDirHandle  = opendir($lockdir);
 	while ($fName = readdir($lockDirHandle))
 	{
 		if ( $lockFilename == substr($fName, 0, strlen($lockFilename)) && $lockfName != $fName )
 		{
+			// close the current lockfile
+			fclose( $debugHandler );
+			// ... and delete it 
 			unlink($lockfile);		
-			die('There is already a lockfile. Exiting...');
+			die('There is already a lockfile. Exiting...' . "\n" . 
+			    'Take a look into the contents of ' . $lockdir . $lockfile . 
+			    '* for more information!' );
 		}
 	}
-	//--------------------------------------------------------------------------	
 	
 	/**
 	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
 	require("$pathtophpfiles/lib/userdata.inc.php");
-	$debugMsg[] = 'Userdatas included';
+	fwrite( $debugHandler, 'Userdatas included');
 
 	/**
 	 * Includes the MySQL-Tabledefinitions etc.
 	 */
 	require("$pathtophpfiles/lib/tables.inc.php");
-	$debugMsg[] = 'Table definitions included';
+	fwrite( $debugHandler, 'Table definitions included' );
 
 	/**
 	 * Includes the MySQL-Connection-Class
 	 */
 	require("$pathtophpfiles/lib/class_mysqldb.php");
-	$debugMsg[] = 'Database Class has been loaded';
+	fwrite( $debugHandler, 'Database Class has been loaded');
 	$db      = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
 	$db_root = new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 	if($db->link_id == 0 || $db_root->link_id == 0)
@@ -71,17 +76,15 @@
 		/**
 		 * Do not proceed further if no database connection could be established (either normal or root)
 		 */
+		fclose( $debugHandler );
 		unlink($lockfile);
 		die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 	}
-	$debugMsg[] = 'Database Connection established';
+	fwrite( $debugHandler, 'Database Connection established' );
 	
-	// --- martin @ 04.08.2005 -----------------------------------------------------------------
-	// changed the following lines to remove the whole sql referrence 
 	unset( $sql               );
 	unset( $db->password      );
 	unset( $db_root->password );
-	// -----------------------------------------------------------------------------------------
 
 	$result=$db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FROM `".TABLE_PANEL_SETTINGS."`");
 	while($row=$db->fetch_array($result))
@@ -90,7 +93,7 @@
 	}
 	unset($row);
 	unset($result);
-	$debugMsg[] = 'SysCP Settings has been loaded from the datbase';
+	fwrite( $debugHandler, 'SysCP Settings has been loaded from the datbase');
 	
 	
 	if(!isset($settings['panel']['version']) || $settings['panel']['version'] != $version)
@@ -98,16 +101,17 @@
 		/**
 		 * Do not proceed further if the Database version is not the same as the script version
 		 */
+		fclose( $debugHandler );
 		unlink($lockfile);
 		die('Version of File doesnt match Version of Database. Exiting...');
 	}
-	$debugMsg[] = 'SysCP Version and Database Version are correct';
+	fwrite( $debugHandler, 'SysCP Version and Database Version are correct');
 	
 	/**
 	 * Includes the Functions
 	 */
 	require("$pathtophpfiles/lib/functions.php");
-	$debugMsg[] = 'Functions has been included';
+	fwrite/ $debugHandler, 'Functions has been included' );
 
 	/**
 	 * Backend Wrapper
@@ -118,23 +122,14 @@
 	$cronFileIncludeResult = $db->query($query);
 	while ($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
 	{
-		$debugMsg[] = 'Processing ...'.$pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
+		fwrite( $debugHandler, 'Processing ...'.$pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file']);
 		include_once $pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
-		$debugMsg[] = 'Processing done!';
+		fwrite( $debugHandler, 'Processing done!');
 	}
 
+	fclose( $debugHandler );
 	unlink($lockfile);
-	$debugMsg[] = 'Deleting Lockfile!';
 	
 	$db->close();
-	$debugMsg[] = 'Closing DB Connection!';
-	
-	if ($cronscriptDebug)
-	{
-		foreach ($debugMsg as $k => $v)
-		{
-			print $v."\n";
-		}
-	}
-	
+		
 ?>
