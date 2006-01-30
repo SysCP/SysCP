@@ -106,20 +106,20 @@
 	 */
 	function makeyesno($name,$yesvalue,$novalue="",$yesselected="")
 	{
-		global $lng;
-		if($yesselected)
-		{
-			$yeschecked=' checked';
-			$nochecked='';
-		}
- 		else
-		{
-			$yeschecked='';
-			$nochecked=' checked';
-		}
- 		$code="<b>".$lng['panel']['yes']."</b> <input type=\"radio\" name=\"$name\" value=\"$yesvalue\"$yeschecked> &nbsp; \n<b>".$lng['panel']['no']."</b> <input type=\"radio\" name=\"$name\" value=\"$novalue\"$nochecked> ";
- 		return $code;
-	}
+ 		global $lng;
+ 		if($yesselected)
+ 		{
+			$yeschecked=' checked="checked"';
+ 			$nochecked='';
+ 		}
+  		else
+ 		{
+ 			$yeschecked='';
+			$nochecked=' checked="checked"';
+ 		}
+ 		$code="<b>".$lng['panel']['yes']."</b> <input type=\"radio\" name=\"$name\" value=\"$yesvalue\"$yeschecked /> &nbsp; \n<b>".$lng['panel']['no']."</b> <input type=\"radio\" name=\"$name\" value=\"$novalue\"$nochecked /> ";
+  		return $code;
+ 	}
 
 	/**
 	 * Prints Question on screen
@@ -137,14 +137,14 @@
 		if ( isset ( $params ) )
 		{
 			$params = explode ( ';' , $params ) ;
-			while ( list ( ,$param ) =each ( $params ) )
-			{
-				$param = explode ( '=' , $param ) ;
-				$hiddenparams .= "<input type=\"hidden\" name=\"$param[0]\" value=\"$param[1]\">\n" ;
-			}
-		}
-		if ( isset ( $lng['question'][$text] ) )
-		{
+ 			while ( list ( ,$param ) =each ( $params ) )
+ 			{
+ 				$param = explode ( '=' , $param ) ;
+				$hiddenparams .= "<input type=\"hidden\" name=\"$param[0]\" value=\"$param[1]\" />\n" ;
+ 			}
+ 		}
+ 		if ( isset ( $lng['question'][$text] ) )
+ 		{
 			$text = $lng['question'][$text] ;
 		}
 		$text = str_replace ( '%s' , $targetname , $text ) ;
@@ -795,7 +795,7 @@
 		// define allowed system commands 
 		//
 		$allowed_commands = array(
-			'touch','chown', 'mkdir', 'webalizer', 'cp', 'du', 
+			'touch', 'chown', 'mkdir', 'webalizer', 'cp', 'du', 'chmod',
 			$settings['system']['apachereload_command'],
 			$settings['system']['bindreload_command']);
 		//
@@ -954,7 +954,7 @@
 				// generate sid with ? oder &
 				if ( preg_match('/\?/' , $data['url'] ) )
 				{
-					$data['url'] .= '&s='.$s;
+					$data['url'] .= '&amp;s='.$s;
 				}
 				else
 				{
@@ -1170,7 +1170,7 @@
 		$field = '';
 		if ( $fieldType == 'Manual' )
 		{
-			$field = '<input type="text" name="path" value="'.$value.'" size="30">';
+			$field = '<input type="text" name="path" value="'.$value.'" size="30" />';
 		}
 		elseif ( $fieldType == 'Dropdown' )
 		{

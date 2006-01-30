@@ -69,7 +69,7 @@
 				$row['domain'] = $idna_convert->decode($row['domain']);
 				$domain_array[$row['domain']] = $row;
 			}
-			ksort($domain_array);
+//			ksort($domain_array);
 			foreach($domain_array as $row)
 			{
 				$standardsubdomain = false;

@@ -378,20 +378,22 @@
 			// query the whole table
 			$query =
 				'SELECT * ' .
-				'FROM `'.TABLE_PANEL_LANGUAGE.'` ';
-			$result = $db->query($query);
-			// presort languages
-			while ($row = $db->fetch_array($result))
-			{
-				$langs[$row['language']] = $row['language'];
-			} 
-			// buildup $languages for the login screen
-			foreach ($langs as $key => $value)
-			{
-				$languages .= makeoption($key,$value,$settings['panel']['standardlanguage']);
-			}
-
-			foreach (array('Manual','Dropdown') as $method)
+ 				'FROM `'.TABLE_PANEL_LANGUAGE.'` ';
+ 			$result = $db->query($query);
+ 			// presort languages
+			$langs2 = "";
+ 			while ($row = $db->fetch_array($result))
+ 			{
+				$langs2[$row['language']] = $row['language'];
+ 			} 
+			// buildup $languages2 for the login screen
+			$languages2 = "";
+			foreach ($langs2 as $key => $value)
+ 			{
+				$languages2 .= makeoption($key,$value,$settings['panel']['standardlanguage']);
+ 			}
+ 
+ 			foreach (array('Manual','Dropdown') as $method)
 			{
 				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit']);
 			}

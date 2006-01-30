@@ -74,13 +74,13 @@
 			else
 			{
 				$lookfornewversion_lable = $lng['admin']['lookfornewversion']['error'];
-				$lookfornewversion_link = "$filename?s=$s&page=$page&lookfornewversion=yes";
+				$lookfornewversion_link = "$filename?s=$s&amp;page=$page&amp;lookfornewversion=yes";
 			}
 		}
 		else
 		{
 			$lookfornewversion_lable = $lng['admin']['lookfornewversion']['clickhere'];
-			$lookfornewversion_link = "$filename?s=$s&page=$page&lookfornewversion=yes";
+			$lookfornewversion_link = "$filename?s=$s&amp;page=$page&amp;lookfornewversion=yes";
 		}
 
 		$userinfo['diskspace']=round($userinfo['diskspace']/1024,4);
