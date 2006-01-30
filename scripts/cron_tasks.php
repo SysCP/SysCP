@@ -91,18 +91,22 @@
 				{
 					$domain['documentroot'] = makeCorrectDir ($domain['documentroot']);
 					$vhosts_file.='  DocumentRoot "'.$domain['documentroot']."\"\n";
-					if($domain['openbasedir'] == '1')
+ 					if($domain['openbasedir'] == '1')
+ 					{
+						$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot']."\"\n";
+ 					}
+ 					if($domain['safemode'] == '1')
+ 					{
+ 						$vhosts_file.='  php_admin_flag safe_mode On '."\n";
+ 					}
+					if($domain['safemode'] == '0')
 					{
-						$vhosts_file.='  php_admin_value open_basedir '.$domain['documentroot']."\n";
+						$vhosts_file.='  php_admin_flag safe_mode Off '."\n";
 					}
-					if($domain['safemode'] == '1')
-					{
-						$vhosts_file.='  php_admin_flag safe_mode On '."\n";
-					}
-
-					if(!is_dir($domain['documentroot']))
-					{
-						safe_exec('mkdir -p "'.$domain['documentroot'].'"');
+ 
+ 					if(!is_dir($domain['documentroot']))
+ 					{					
+ 						safe_exec('mkdir -p "'.$domain['documentroot'].'"');
 						safe_exec('chown -R '.$domain['guid'].':'.$domain['guid'].' "'.$domain['documentroot'].'"');
 					}
 					if($domain['speciallogfile'] == '1')
@@ -204,14 +208,19 @@
 				$htpasswd_files = array();
 				foreach($diroptions as $row_diroptions)
 				{
-					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
-					if ( isset ( $row_diroptions['options_indexes'] ) && $row_diroptions['options_indexes'] == '1' )
-					{
-						$diroptions_file .= '  Options Indexes'."\n";
-						fwrite( $debugHandler, '  cron_tasks: Task3 - Setting Options Indexes');
+ 					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
+ 					if ( isset ( $row_diroptions['options_indexes'] ) && $row_diroptions['options_indexes'] == '1' )
+ 					{
+						$diroptions_file .= '  Options +Indexes'."\n";
+						fwrite( $debugHandler, '  cron_tasks: Task3 - Setting Options +Indexes');
 					}
-					if ( isset ( $row_diroptions['error404path'] ) && $row_diroptions['error404path'] != '')
+					if ( isset ( $row_diroptions['options_indexes'] ) && $row_diroptions['options_indexes'] == '0' )
 					{
+						$diroptions_file .= '  Options -Indexes'."\n";
+						fwrite( $debugHandler, '  cron_tasks: Task3 - Setting Options -Indexes');
+ 					}
+ 					if ( isset ( $row_diroptions['error404path'] ) && $row_diroptions['error404path'] != '')
+ 					{
 						$diroptions_file .= '  ErrorDocument 404 "'.$row_diroptions['error404path']."\"\n";
 					}
 					if ( isset ( $row_diroptions['error403path'] ) && $row_diroptions['error403path'] != '')
