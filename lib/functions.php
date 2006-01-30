@@ -177,31 +177,50 @@
 	/**
 	 * Sends an header ( 'Location ...' ) to the browser.
 	 *
-	 * @param string Destination
-	 * @param array Get-Variables
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @param   string   Destination
+	 * @param   array    Get-Variables
+	 * @param   boolean  if the target we are creating for a redirect 
+	 *                   should be a relative or an absolute url
+	 * 
+	 * @return  boolean  false if params is not an array
+	 * 
+	 * @author  Florian Lippert <flo@redenswert.de>
+	 * @author  Martin Burchert <eremit@syscp.org>
+	 * 
+	 * @changes martin@2005-01-29
+	 *          - added isRelative parameter
+	 *          - speed up the url generation 
+	 *          - fixed bug #91
 	 */
-	function redirectTo ( $destination , $get_variables = Array () )
+	function redirectTo ( $destination , $get_variables = array(), $isRelative = false )
 	{
+		$params = array();
 		if ( is_array ( $get_variables ) )
 		{
-			while ( list ( $var , $val ) = each ( $get_variables ) )
+			foreach( $get_variables as $key => $value )
 			{
-				if ( !isset ( $params ) )
-				{
-				    $params = '?' ;
-				}
-				else
-				{
-				    $params .= '&' ;
-				}
-				$params .= $var . '=' . $val ;
+				$params[] = $key . '=' . $value;				
 			}
+
+			$params = '?' . implode($params, '&' );
+
+			if ( $isRelative )
+			{	
+				$protocol = '';
+				$host     = '';
+				$path     = './';
+			}
+			else 
+			{
+				$protocol = strtolower(strtok($_SERVER['SERVER_PROTOCOL'], '/')).'://';
+				$host     = $_SERVER['HTTP_HOST'];
+				$path     = dirname( $_SERVER['PHP_SELF']);
+			}
+			header ( 'Location: ' . $protocol . $host . $path . 
+			         '/' . $destination . $params ) ;
 		}
 		
-		header ( 'Location: ./' . $destination . $params ) ;
-		
-		return true ;
+		return false;
 	}
 
 	/**
