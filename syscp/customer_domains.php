@@ -11,10 +11,10 @@
  * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * @author Florian Lippert <flo@redenswert.de>
+ * @author    Florian Lippert <flo@redenswert.de>
  * @copyright (C) 2003-2004 Florian Lippert
- * @package Panel
- * @version $Id$
+ * @package   Panel
+ * @version   $Id$
  */
 
 	define('AREA', 'customer');
