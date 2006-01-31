@@ -212,14 +212,28 @@
 			}
 			else 
 			{
-				$protocol = strtolower(strtok($_SERVER['SERVER_PROTOCOL'], '/')).'://';
-				$host     = $_SERVER['HTTP_HOST'];
-				$path     = dirname( $_SERVER['PHP_SELF']);
-			}
-			header ( 'Location: ' . $protocol . $host . $path . 
-			         '/' . $destination . $params ) ;
-		}
-		
+				if ( isset( $_SERVER['SSL_PROTOCOL'] ) )
+				{
+					$protocol = 'https://';
+				}
+				else 
+				{
+					$protocol = 'http://';
+				}
+ 				$host = $_SERVER['HTTP_HOST'];
+ 				
+				if ( dirname( $_SERVER['PHP_SELF'] ) == '/' )
+				{
+					$path     = '/';
+				}
+				else 
+				{
+					$path     = dirname($_SERVER['PHP_SELF']) . '/';
+				}
+ 			}
+			header ( 'Location: ' . $protocol . $host . $path . $destination . $params ) ;
+ 		}
+
 		return false;
 	}
 
