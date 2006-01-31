@@ -111,7 +111,7 @@
 	 * Includes the Functions
 	 */
 	require("$pathtophpfiles/lib/functions.php");
-	fwrite/ $debugHandler, 'Functions has been included' );
+	fwrite( $debugHandler, 'Functions has been included' );
 
 	/**
 	 * Backend Wrapper
