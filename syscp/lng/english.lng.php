@@ -309,6 +309,7 @@ $lng['admin']['templates']['NAME'] = 'Replaced with the customers name.';
 $lng['admin']['templates']['USERNAME'] = 'Replaced with the customers account username.';
 $lng['admin']['templates']['PASSWORD'] = 'Replaced with the customers account password.';
 $lng['admin']['templates']['EMAIL'] = 'Replaced with the address of the POP3/IMAP account.';
+$lng['admin']['cronlastrun'] = 'Last Cron';
 
 /**
  * Serversettings
@@ -331,6 +332,8 @@ $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'What\'s the Hostname of this server?';
 $lng['serversettings']['apacheconf_directory']['title'] = 'Apache configuration directory';
 $lng['serversettings']['apacheconf_directory']['description'] = 'Where are the apache configfiles?';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Apache configuration filename';
+$lng['serversettings']['apacheconf_filename']['description'] = 'How should the apache configuration file called?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache reload command';
 $lng['serversettings']['apachereload_command']['description'] = 'What\'s the apache reload command?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind config directory';
@@ -360,5 +363,7 @@ $lng['serversettings']['deactivatetime']['title']       = 'Deactivate Time';
 $lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
 $lng['serversettings']['pathedit']['title']       = 'Type of path input';
 $lng['serversettings']['pathedit']['description'] = 'Should a path be choosen by a dropdown menu or by an input field?';
+$lng['serversettings']['paging']['title']       = 'Entries per page';
+$lng['serversettings']['paging']['description'] = 'How many entries shall be shown on one page? (0 = disable paging)';
 
 ?>

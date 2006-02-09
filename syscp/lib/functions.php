@@ -340,21 +340,17 @@
 
 		if($type=='1')
 		{
-			$result=$db->query_first(
-				'SELECT `type` ' .
-				'FROM `' . TABLE_PANEL_TASKS . '` ' .
+			$db->query(
+				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
 				'WHERE `type`="1"'
 			);
 
-			if($result['type']=='')
-			{
-				$db->query(
-					'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-					'(`type`) ' .
-					'VALUES ' .
-					'("1")'
-				);
-			}
+			$db->query(
+				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
+				'(`type`) ' .
+				'VALUES ' .
+				'("1")'
+			);
 		}
 		elseif($type=='2' && $param1!='' && $param2!='' && $param3!='')
 		{
@@ -395,21 +391,17 @@
 		}
 		elseif($type=='4')
 		{
-			$result=$db->query_first(
-				'SELECT `type` ' .
-				'FROM `' . TABLE_PANEL_TASKS . '` ' .
+			$db->query(
+				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
 				'WHERE `type`="4"'
 			);
 
-			if($result['type']=='')
-			{
-				$db->query(
-					'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-					'(`type`) ' .
-					'VALUES ' .
-					'("4")'
-				);
-			}
+			$db->query(
+				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
+				'(`type`) ' .
+				'VALUES ' .
+				'("4")'
+			);
 		}
 	}
 

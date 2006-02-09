@@ -219,6 +219,15 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
 			}
 
+			if($_POST['panel_paging']!=$settings['panel']['paging'])
+			{
+				$value=intval($_POST['panel_paging']);
+				if ($value < 0) {
+					$value = 0;
+				}
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='paging'");
+			}
+
 			if($_POST['panel_standardlanguage']!=$settings['panel']['standardlanguage'])
 			{
 				$value = addslashes ( htmlentities ( _html_entity_decode ( $_POST['panel_standardlanguage'] ) ) ) ;

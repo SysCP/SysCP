@@ -42,6 +42,55 @@
 		{
 			$result=$db->query("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `username` ASC");
 			$accounts='';
+			$rows = $db->num_rows($result);
+			if ($settings['panel']['paging'] > 0)
+			{
+				$pages = intval($rows / $settings['panel']['paging']);
+			}
+			else
+			{
+				$pages = 0;
+			}
+			if ($pages != 0)
+			{
+				if(isset($_GET['no']))
+				{
+					$pageno = intval($_GET['no']);
+				}
+				else
+				{
+					$pageno = 1;
+				}
+				if ($pageno > $pages)
+				{
+					$pageno = $pages + 1;
+				}
+				elseif ($pageno < 1)
+				{
+					$pageno = 1;
+				}
+				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
+				$result=$db->query(
+					"SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `username` ASC " .
+					" LIMIT $pagestart , ".$settings['panel']['paging'].";"
+				);
+				$paging = '';
+				for ($count = 1; $count <= $pages+1; $count++)
+				{
+					if ($count == $pageno)
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
+					}
+					else
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
+					}
+				}
+			}
+			else
+			{
+				$paging = "";
+			}
 			while($row=$db->fetch_array($result))
 			{
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['homedir']);

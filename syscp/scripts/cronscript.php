@@ -47,7 +47,7 @@
 			// ... and delete it 
 			unlink($lockfile);		
 			die('There is already a lockfile. Exiting...' . "\n" . 
-			    'Take a look into the contents of ' . $lockdir . $lockfile . 
+			    'Take a look into the contents of ' . $lockdir . $lockFilename . 
 			    '* for more information!' );
 		}
 	}
@@ -129,7 +129,13 @@
 
 	fclose( $debugHandler );
 	unlink($lockfile);
-	
+
+	$db->query(
+		'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
+		'SET `value` = UNIX_TIMESTAMP() ' .
+		'WHERE `settinggroup` = \'system\', ' .
+		'  AND `varname`      = \'lastcronrun\' '
+		);
+
 	$db->close();
-		
 ?>

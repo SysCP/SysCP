@@ -89,6 +89,8 @@
 		$userinfo['traffic_used']=round($userinfo['traffic_used']/(1024*1024),4);
 
 		$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
+
+		$cronlastrun = date("d.m.Y H:i:s", $settings['system']['lastcronrun']);
 		eval("echo \"".getTemplate("index/index")."\";");
 	}
 	

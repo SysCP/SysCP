@@ -9,7 +9,6 @@ $header
       <td class="maintable">{$lng['extras']['error404path']}</td>
       <td class="maintable">{$lng['extras']['error403path']}</td>
       <td class="maintable">{$lng['extras']['error500path']}</td>
-      <td class="maintable">{$lng['extras']['error401path']}</td>
       <td class="maintable" colspan="2">&nbsp;</td>
      </tr>
      $htaccess

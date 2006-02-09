@@ -57,6 +57,67 @@
 				"  AND `d`.`id` <> ".$userinfo['standardsubdomain']
 			);
  			$domains='';
+			$rows = $db->num_rows($result);
+			if ($settings['panel']['paging'] > 0)
+			{
+				$pages = intval($rows / $settings['panel']['paging']);
+			}
+			else
+			{
+				$pages = 0;
+			}
+			if ($pages != 0)
+			{
+				if(isset($_GET['no']))
+				{
+					$pageno = intval($_GET['no']);
+				}
+				else
+				{
+					$pageno = 1;
+				}
+				if ($pageno > $pages)
+				{
+					$pageno = $pages + 1;
+				}
+				elseif ($pageno < 1)
+				{
+					$pageno = 1;
+				}
+				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
+				$result=$db->query(
+					"SELECT `d`.`id`, " .
+					"       `d`.`customerid`, " .
+					"       `d`.`domain`, " .
+					"       `d`.`documentroot`, " .
+					"       `d`.`isemaildomain`, " .
+					"       `d`.`caneditdomain`, " .
+					"       `d`.`iswildcarddomain`, " .
+					"       `d`.`parentdomainid`, " .
+					"		`ad`.`domain` AS `aliasdomain` " .
+					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
+					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+					"WHERE `d`.`customerid`='".$userinfo['customerid']."' " .
+					"  AND `d`.`id` <> ".$userinfo['standardsubdomain'] .
+					" LIMIT $pagestart , ".$settings['panel']['paging'].";"
+				);
+				$paging = '';
+				for ($count = 1; $count <= $pages+1; $count++)
+				{
+					if ($count == $pageno)
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
+					}
+					else
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
+					}
+				}
+			}
+			else
+			{
+				$paging = "";
+			}
  			$parentdomains_count=0;
  			$domains_count=0;
  			$domain_array=array();
@@ -72,7 +133,30 @@
 				}
 				$domain_array[$sortkey] = $row;
  			}
- 			ksort($domain_array);
+			$domain_id_array=array();
+			foreach($domain_array as $sortkey => $row)
+			{
+				$domain_id_array[$row['id']] = $sortkey;
+			}
+			$domain_sort_array=array();
+			foreach($domain_array as $sortkey => $row)
+			{
+				if ($row['parentdomainid'] == 0)
+				{
+					$domain_sort_array[$sortkey]=array($sortkey=>$row);
+				}
+				else
+				{
+					$domain_sort_array[$domain_id_array[$row['parentdomainid']]][$sortkey] = $row;
+				}
+			}
+			$domain_array=array();
+			ksort($domain_sort_array);
+			foreach($domain_sort_array as $subarray)
+			{
+				ksort($subarray);
+				$domain_array=array_merge($domain_array,$subarray);
+			}
 			$parentdomainid = 0;
  			foreach($domain_array as $row)
  			{

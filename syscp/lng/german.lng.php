@@ -218,7 +218,7 @@ $lng['error']['wwwnotallowed']='Ihre Subdomain darf nicht www heissen.';
 $lng['error']['subdomainiswrong']='Die Subdomain %s beinhaltet ung&uuml;ltige Zeichen.';
 $lng['error']['domaincantbeempty']='Der Domain-Name darf nicht leer sein.';
 $lng['error']['domainexistalready']='Die Domain %s existiert bereits.';
-$lng['error']['domainisaliasorothercustomer']='Die ausgewählte Aliasdomain ist entweder selber eine Aliasdomain oder gehört zu einem anderen Kunden.';
+$lng['error']['domainisaliasorothercustomer']='Die ausgewï¿½lte Aliasdomain ist entweder selber eine Aliasdomain oder gehï¿½t zu einem anderen Kunden.';
 $lng['error']['emailexistalready']='Die eMail-Adresse %s existiert bereits.';
 $lng['error']['maindomainnonexist']='Die Haupt-Domain %s existiert nicht.';
 $lng['error']['destinationnonexist']='Bitte geben Sie Ihre Weiterleitungsadresse im Feld \'Nach\' ein.';
@@ -329,8 +329,10 @@ $lng['serversettings']['ipaddress']['title'] = 'IP-Adresse';
 $lng['serversettings']['ipaddress']['description'] = 'Welche IP-Adresse hat der Server?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Welchen Hostname hat der Server?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Apache-Config-Directory';
+$lng['serversettings']['apacheconf_directory']['title'] = 'Apache-Config-Verzeichnis';
 $lng['serversettings']['apacheconf_directory']['description'] = 'Wo liegen die Apache-Konfigdateien?';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Apache-Config-Dateiname';
+$lng['serversettings']['apacheconf_filename']['description'] = 'Wie soll die Apache-Konfigurationsdatei genannt werden?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache-Reload-Command';
 $lng['serversettings']['apachereload_command']['description'] = 'Wie heisst das Skript zum reloaden des Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind-Config-Directory';
@@ -360,5 +362,7 @@ $lng['serversettings']['deactivatetime']['title'] = 'L&auml;nge der Deaktivierun
 $lng['serversettings']['deactivatetime']['description'] = 'Zeitraum (in sek.) f&uuml;r den der Account deaktiviert ist.';
 $lng['serversettings']['pathedit']['title'] = 'Pfad-Eingabemethode';
 $lng['serversettings']['pathedit']['description'] = 'Soll ein Pfad via Dropdown-Men&uuml; ausgew&auml;hlt oder manuell eingegeben werden k&ouml;nnen.';
+$lng['serversettings']['paging']['title']       = 'Eintr&auml;ge pro Seite';
+$lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
 
 ?>

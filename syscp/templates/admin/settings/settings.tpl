@@ -52,6 +52,10 @@ $header
        <td class="maintable" nowrap><input type="text" name="system_apacheconf_directory" value="{$settings['system']['apacheconf_directory']}"></td>
       </tr>
       <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['apacheconf_filename']['title']}:</b><br />{$lng['serversettings']['apacheconf_filename']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="system_apacheconf_filename" value="{$settings['system']['apacheconf_filename']}"></td>
+      </tr>
+      <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['apachereload_command']['title']}:</b><br />{$lng['serversettings']['apachereload_command']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="system_apachereload_command" value="{$settings['system']['apachereload_command']}"></td>
       </tr>
@@ -82,6 +86,10 @@ $header
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['adminmail']['title']}:</b><br />{$lng['serversettings']['adminmail']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}"></td>
+      </tr>
+      <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['paging']['title']}:</b><br />{$lng['serversettings']['paging']['description']}</td>
+       <td class="maintable" nowrap><input type="text" name="panel_paging" value="{$settings['panel']['paging']}"></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['login']['language']}:</b><br />{$lng['serversettings']['language']['description']}</td>

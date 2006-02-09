@@ -688,5 +688,36 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.12' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.12';
 	}
+	
+	if( $settings['panel']['version'] == '1.2.12' )
+	{
+		$db->query( 
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'system\', ' .
+			'    `varname`      = \'apacheconf_filename\', ' .
+			'    `value`        = \'vhosts.conf\' '
+		);
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'system\', ' .
+			'    `varname`      = \'lastcronrun\', ' .
+			'    `value`        = \'\' '
+		);
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'panel\', ' .
+			'    `varname`      = \'paging\', ' .
+			'    `value`        = \'20\' '
+			);
+
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `value` = \'1.2.12-svn1\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'  AND `varname`      = \'version\''
+		);
+
+		$settings['panel']['version'] = '1.2.12-svn1';	
+	}
 
 ?>

@@ -74,6 +74,10 @@ $header
       <td colspan="2" class="title"><b>{$lng['admin']['syscpdetails']}</b></td>
      </tr>
      <tr>
+      <td class="maintable" align="right">{$lng['admin']['cronlastrun']}:</td>
+      <td class="maintable">$cronlastrun</td>
+     </tr>
+     <tr>
       <td class="maintable" align="right">{$lng['admin']['installedversion']}:</td>
       <td class="maintable">$version</td>
      </tr>
