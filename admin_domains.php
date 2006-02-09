@@ -63,6 +63,60 @@
 				"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
 				"ORDER BY `$sortby` $sortorder"
 			);
+			$rows = $db->num_rows($result);
+			if ($settings['panel']['paging'] > 0)
+			{
+				$pages = intval($rows / $settings['panel']['paging']);
+			}
+			else
+			{
+				$pages = 0;
+			}
+			if ($pages != 0)
+			{
+				if(isset($_GET['no']))
+				{
+					$pageno = intval($_GET['no']);
+				}
+				else
+				{
+					$pageno = 1;
+				}
+				if ($pageno > $pages)
+				{
+					$pageno = $pages + 1;
+				}
+				elseif ($pageno < 1)
+				{
+					$pageno = 1;
+				}
+				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
+				$result=$db->query(
+					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `ad`.`domain` AS `alias` " .
+					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
+					"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
+					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+					"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
+					"ORDER BY `$sortby` $sortorder " .
+					"LIMIT $pagestart , ".$settings['panel']['paging'].";"
+				);
+				$paging = '';
+				for ($count = 1; $count <= $pages+1; $count++)
+				{
+					if ($count == $pageno)
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
+					}
+					else
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
+					}
+				}
+			}
+			else
+			{
+				$paging = "";
+			}
 			$domain_array=array();
 			while($row=$db->fetch_array($result))
 			{

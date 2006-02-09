@@ -6,6 +6,9 @@ $header
     <tr>
      <td colspan="20" class="maintable"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['admin_add']}</a></td>
     </tr>
+    <if 0 < $pages><tr>
+     <td colspan="20" class="maintable">{$paging}</td>
+    </tr></if>
     <tr>
      <td class="maintable">ID</td>
      <td class="maintable">{$lng['customer']['name']}</td>
@@ -18,6 +21,9 @@ $header
      <td class="maintable">&nbsp;</td>
     </tr>
     $admins
+    <if 0 < $pages><tr>
+     <td colspan="20" class="maintable">{$paging}</td>
+    </tr></if>
     <tr>
      <td colspan="20" class="maintable"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['admin_add']}</a></td>
     </tr>

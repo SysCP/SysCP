@@ -78,7 +78,15 @@
 				$path=$userinfo['documentroot'].$path;
 				$username=addslashes($_POST['username']);
 				$username_path_check=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `username`='$username' AND `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
-				$password=crypt(addslashes($_POST['password']));
+				if ( CRYPT_STD_DES == 1 )
+				{
+					$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
+					$password = addslashes(crypt($_POST['password'], $saltfordescrypt));
+				}
+				else
+				{
+					$password = addslashes(crypt($_POST['password']));
+				}
                 $passwordtest=$_POST['password'];
 
 				if(!$_POST['path'])
@@ -127,7 +135,15 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$password=crypt(addslashes($_POST['password']));
+					if ( CRYPT_STD_DES == 1 )
+					{
+						$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
+						$password = addslashes(crypt($_POST['password'], $saltfordescrypt));
+					}
+					else
+					{
+						$password = addslashes(crypt($_POST['password']));
+					}
 					$passwordtest=$_POST['password'];
 					if ($passwordtest=='')
 					{

@@ -60,6 +60,58 @@
 				"FROM `".TABLE_PANEL_CUSTOMERS."` `c`, `".TABLE_PANEL_ADMINS."` `a` " .
 				"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '{$userinfo['adminid']}' AND " )."`c`.`adminid`=`a`.`adminid` " .
 				"ORDER BY `c`.`$sortby` $sortorder");
+			$rows = $db->num_rows($result);
+			if ($settings['panel']['paging'] > 0)
+			{
+				$pages = intval($rows / $settings['panel']['paging']);
+			}
+			else
+			{
+				$pages = 0;
+			}
+			if ($pages != 0)
+			{
+				if(isset($_GET['no']))
+				{
+					$pageno = intval($_GET['no']);
+				}
+				else
+				{
+					$pageno = 1;
+				}
+				if ($pageno > $pages)
+				{
+					$pageno = $pages + 1;
+				}
+				elseif ($pageno < 1)
+				{
+					$pageno = 1;
+				}
+				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
+				$result=$db->query(
+					"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " .
+					"FROM `".TABLE_PANEL_CUSTOMERS."` `c`, `".TABLE_PANEL_ADMINS."` `a` " .
+					"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '{$userinfo['adminid']}' AND " )."`c`.`adminid`=`a`.`adminid` " .
+					"ORDER BY `c`.`$sortby` $sortorder " .
+					"LIMIT $pagestart , ".$settings['panel']['paging'].";"
+				);
+				$paging = '';
+				for ($count = 1; $count <= $pages+1; $count++)
+				{
+					if ($count == $pageno)
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
+					}
+					else
+					{
+						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
+					}
+				}
+			}
+			else
+			{
+				$paging = "";
+			}
 			while($row=$db->fetch_array($result))
 			{
 				$domains=$db->query_first(
@@ -337,10 +389,19 @@
 
 						// Add htpasswd for the webalizer stats
 						$path = $documentroot . '/webalizer/' ;
+						if ( CRYPT_STD_DES == 1 )
+						{
+							$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
+							$password = crypt($password, $saltfordescrypt);
+						}
+						else
+						{
+							$password = crypt($password);
+						}
 						$db->query(
 							"INSERT INTO `".TABLE_PANEL_HTPASSWDS."` " .
 							"(`customerid`, `username`, `password`, `path`) " .
-							"VALUES ('$customerid', '$loginname', '".crypt($password)."', '$path')"
+							"VALUES ('$customerid', '$loginname', '$password', '$path')"
 						);
 						inserttask('3',$path);
 

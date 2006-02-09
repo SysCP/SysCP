@@ -28,7 +28,7 @@
 	 * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
 	 */
 	fwrite( $debugHandler, '  cron_tasks: Searching for tasks to do');
-	$result_tasks = $db->query("SELECT `id`, `type`, `data` FROM `".TABLE_PANEL_TASKS."` ORDER BY `type` ASC");
+	$result_tasks = $db->query("SELECT `id`, `type`, `data` FROM `".TABLE_PANEL_TASKS."` ORDER BY `id` ASC");
 	$resultIDs   = array();	
 	
 	while($row = $db->fetch_array($result_tasks))
@@ -45,11 +45,18 @@
 		 */
 		if($row['type'] == '1')
 		{
-			fwrite( $debugHandler, '  cron_tasks: Task1 started - vhost.conf rebuild');
-			$vhosts_file='# '.$settings['system']['apacheconf_directory'].'vhosts.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.'."\n"."\n";
+			fwrite( $debugHandler, '  cron_tasks: Task1 started - ' . $settings['system']['apacheconf_filename']. ' rebuild');
+			$vhosts_file = '# '.$settings['system']['apacheconf_directory'] . 
+			               $settings['system']['apacheconf_filename'] . "\n" . 
+			               '# Created ' . date('d.m.Y H:i') . "\n" . 
+			               '# Do NOT manually edit this file, all changes will be ' .
+			               ' deleted after the next domain change at the panel.' . "\n" .
+			               "\n";
+			               
 			if (file_exists($settings['system']['apacheconf_directory'].'diroptions.conf'))
 			{
-				$vhosts_file.='Include '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n\n";
+				$vhosts_file .= 'Include ' . $settings['system']['apacheconf_directory'] . 
+				                'diroptions.conf' . "\n\n";
 			}
 			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress'].':80'."\n"."\n";
 
@@ -134,7 +141,8 @@
 				$vhosts_file.="\n";
 			}
 
-			$vhosts_file_handler = fopen($settings['system']['apacheconf_directory'].'vhosts.conf', 'w');
+			$vhosts_file_handler = fopen( $settings['system']['apacheconf_directory'] . 
+			                              $settings['system']['apacheconf_filename'], 'w');
 			fwrite($vhosts_file_handler, $vhosts_file);
 			fclose($vhosts_file_handler);
 			safe_exec($settings['system']['apachereload_command']);
