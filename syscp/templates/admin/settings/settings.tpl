@@ -93,7 +93,7 @@ $header
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['login']['language']}:</b><br />{$lng['serversettings']['language']['description']}</td>
-       <td class="maintable" nowrap><select name="panel_standardlanguage">$languages</select></td>
+       <td class="maintable" nowrap><select name="panel_standardlanguage">$languages2</select></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['pathedit']['title']}:</b><br />{$lng['serversettings']['pathedit']['description']}</td>
