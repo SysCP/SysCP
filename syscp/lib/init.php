@@ -17,9 +17,10 @@
  * @version $Id$
  */
 
-	// --- martin @ 18.07.2005 -------------------------------------------------
-	// this short piece of code has been introduced to remove severe security
-	// holes with register_globals=on set. 
+	// prevent syscp pages from being cached 
+	header ("Cache-Control: no-cache, must-revalidate");
+	header ("Pragma: no-cache");
+       
 	/**
 	 * Register Globals Security Fix
 	 * - unsetting every variable registered in $_REQUEST and as variable itself
@@ -34,7 +35,6 @@
 	unset( $_ );
 	unset( $value );
 	unset( $key );
-	// -------------------------------------------------------------------------	 
 
 	$filename = basename($_SERVER['PHP_SELF']);
 
@@ -65,7 +65,7 @@
 	$db = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
 	unset($sql['password']);
 	unset($db->password);
-	// --- martin @ 04.08.2005 ------------------------------------------------
+
 	// we will try to unset most of the $sql information if they are not needed
 	// by the calling script
 	if ( basename( $_SERVER['PHP_SELF'] ) == 'admin_configfiles.php' )
@@ -96,7 +96,6 @@
 		unset( $sql['root_user']     );
 		unset( $sql['root_password'] );
 	} 
-	// ------------------------------------------------------------------------
 	
 	/**
 	 * Include our class_idna_convert_wrapper.php, which offers methods for de-
