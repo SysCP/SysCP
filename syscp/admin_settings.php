@@ -401,7 +401,20 @@
  			{
 				$languages2 .= makeoption($key,$value,$settings['panel']['standardlanguage']);
  			}
- 
+
+			// build the IP addresses list
+			$result=$db->query('SELECT `ip` FROM `'.TABLE_PANEL_IPSANDPORTS.'` ORDER BY `ip` ASC');
+			$system_ipaddress_array='';
+			while($row=$db->fetch_array($result))
+			{
+				$system_ipaddress_array[$row['ip']] = $row['ip'];
+			}
+			$system_ipaddress='';
+			foreach($system_ipaddress_array as $key => $value)
+			{
+				$system_ipaddress.=makeoption($key,$value,$settings['system']['ipaddress']);
+			}
+
  			foreach (array('Manual','Dropdown') as $method)
 			{
 				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit']);

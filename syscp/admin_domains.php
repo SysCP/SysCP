@@ -56,10 +56,11 @@
 
 			$domains='';
 			$result=$db->query(
-				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `ad`.`domain` AS `alias` " .
+				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `ad`.`domain` AS `alias` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+				"LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) " .
 				"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
 				"ORDER BY `$sortby` $sortorder"
 			);
@@ -92,10 +93,11 @@
 				}
 				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
 				$result=$db->query(
-					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `ad`.`domain` AS `alias` " .
+					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `ad`.`domain` AS `alias` " .
 					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 					"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+					"LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) " .
 					"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
 					"ORDER BY `$sortby` $sortorder " .
 					"LIMIT $pagestart , ".$settings['panel']['paging'].";"
@@ -221,6 +223,7 @@
 						$safemode = intval($_POST['safemode']);
 						$speciallogfile = intval($_POST['speciallogfile']);
 						$specialsettings = str_replace("\r\n", "\n", $_POST['specialsettings']);
+						$ipandport = intval($_POST['ipandport']);
 						if(isset($_POST['documentroot']) && $_POST['documentroot'] != '')
 						{
 							$documentroot = addslashes($_POST['documentroot']);
@@ -235,6 +238,8 @@
 						$safemode = '1';
 						$speciallogfile = '1';
 						$specialsettings = '';
+						$ipandport = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `default`=\'1\'');
+						$ipandport = intval($ipandport['id']);
 					}
 					if(!preg_match('/^https?\:\/\//', $documentroot))
 					{
@@ -316,7 +321,7 @@
 						}
 
 						$specialsettings = addslashes($specialsettings);
-						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `aliasdomain`, `zonefile`, `isbinddomain`, `isemaildomain`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', ".(($aliasdomain!=0) ? '\''.$aliasdomain.'\'' : 'NULL').", '$zonefile', '$isbinddomain', '$isemaildomain', '$subcanemaildomain', '$caneditdomain', '$openbasedir', '$safemode', '$speciallogfile', '$specialsettings')");
+						$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`domain`, `customerid`, `adminid`, `documentroot`, `ipandport`, `aliasdomain`, `zonefile`, `isbinddomain`, `isemaildomain`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('$domain', '$customerid', '{$userinfo['adminid']}', '$documentroot', '$ipandport', ".(($aliasdomain!=0) ? '\''.$aliasdomain.'\'' : 'NULL').", '$zonefile', '$isbinddomain', '$isemaildomain', '$subcanemaildomain', '$caneditdomain', '$openbasedir', '$safemode', '$speciallogfile', '$specialsettings')");
 						$domainid=$db->insert_id();
 						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '{$userinfo['adminid']}'");
 
@@ -333,6 +338,13 @@
 					while($row_customer=$db->fetch_array($result_customers))
 					{
 						$customers.=makeoption($row_customer['name'].' '.$row_customer['firstname'].' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+					}
+					$ipsandports='';
+					$result_ipsandports=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
+					$result_ipsandports_default=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `default` = '1'");
+					while($row_ipandport=$db->fetch_array($result_ipsandports))
+					{
+						$ipsandports.=makeoption($row_ipandport['ip'].'/'.$row_ipandport['port'],$row_ipandport['id'],$result_ipsandports_default['id']);
 					}
 					$standardsubdomains=array();
 					$result_standardsubdomains=$db->query('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`, `'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`id`=`c`.`standardsubdomain`');
@@ -369,7 +381,7 @@
 		elseif($action=='edit' && $id!=0)
 		{
 			$result=$db->query_first(
-				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`loginname`, `c`.`name`, `c`.`firstname` " .
+				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`ipandport`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`loginname`, `c`.`name`, `c`.`firstname` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 				"WHERE `d`.`parentdomainid`='0' AND `d`.`id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")
@@ -391,6 +403,7 @@
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
 						$specialsettings = str_replace("\r\n", "\n", $_POST['specialsettings']);
+						$ipandport = intval($_POST['ipandport']);
 
 						$documentroot = addslashes($_POST['documentroot']);
 						if($documentroot=='')
@@ -406,6 +419,7 @@
 						$openbasedir = $result['openbasedir'];
 						$safemode = $result['safemode'];
 						$specialsettings = $result['specialsettings'];
+						$ipandport = $result['ipandport'];
 						$documentroot = $result['documentroot'];
 					}
 					if(!preg_match('/^https?\:\/\//', $documentroot))
@@ -473,7 +487,7 @@
 					}
 
 					$specialsettings = addslashes($specialsettings);
-					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$documentroot', `aliasdomain`=".(($aliasdomain!=0 && $alias_check==0) ? '\''.$aliasdomain.'\'' : 'NULL').", `isbinddomain`='$isbinddomain', `isemaildomain`='$isemaildomain', `subcanemaildomain`='$subcanemaildomain', `caneditdomain`='$caneditdomain', `zonefile`='$zonefile', `openbasedir`='$openbasedir', `safemode`='$safemode', `specialsettings`='$specialsettings' WHERE `id`='$id'");
+					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$documentroot', `ipandport`='$ipandport', `aliasdomain`=".(($aliasdomain!=0 && $alias_check==0) ? '\''.$aliasdomain.'\'' : 'NULL').", `isbinddomain`='$isbinddomain', `isemaildomain`='$isemaildomain', `subcanemaildomain`='$subcanemaildomain', `caneditdomain`='$caneditdomain', `zonefile`='$zonefile', `openbasedir`='$openbasedir', `safemode`='$safemode', `specialsettings`='$specialsettings' WHERE `id`='$id'");
 					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `openbasedir`='$openbasedir', `safemode`='$safemode', `specialsettings`='$specialsettings'  WHERE `parentdomainid`='$id'");
 	
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
@@ -486,6 +500,12 @@
 					while($row_domain=$db->fetch_array($result_domains))
 					{
 						$domains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id'],$result['aliasdomain']);
+					}
+					$ipsandports='';
+					$result_ipsandports=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
+					while($row_ipandport=$db->fetch_array($result_ipsandports))
+					{
+						$ipsandports.=makeoption($row_ipandport['ip'].'/'.$row_ipandport['port'],$row_ipandport['id'],$result['ipandport']);
 					}
 					$result['specialsettings'] = stripslashes($result['specialsettings']);
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);

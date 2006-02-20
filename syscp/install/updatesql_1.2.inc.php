@@ -688,10 +688,10 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.12' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.12';
 	}
-	
+
 	if( $settings['panel']['version'] == '1.2.12' )
 	{
-		$db->query( 
+		$db->query(
 			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
 			'SET `settinggroup` = \'system\', ' .
 			'    `varname`      = \'apacheconf_filename\', ' .
@@ -708,16 +708,49 @@
 			'SET `settinggroup` = \'panel\', ' .
 			'    `varname`      = \'paging\', ' .
 			'    `value`        = \'20\' '
-			);
-
+		);
 		$db->query(
 			'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
 			'SET `value` = \'1.2.12-svn1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
-			'  AND `varname`      = \'version\''
+			'AND `varname` = \'version\''
 		);
 
-		$settings['panel']['version'] = '1.2.12-svn1';	
+		$settings['panel']['version'] = '1.2.12-svn1';
+	}
+	if( $settings['panel']['version'] == '1.2.12-svn1' )
+	{
+		$db->query(
+			'ALTER TABLE `'.TABLE_PANEL_DOMAINS.'` ' .
+			'ADD `ipandport` int(11) unsigned NOT NULL default \'1\' AFTER `documentroot`'
+		);
+		$db->query(
+			'CREATE TABLE `'.TABLE_PANEL_IPSANDPORTS.'` (
+			`id` int(11) unsigned NOT NULL auto_increment,
+			`ip` varchar(15) NOT NULL default \'\',
+			`port` int(5) NOT NULL default \'80\',
+			`default` int(1) NOT NULL default \'0\',
+			PRIMARY KEY  (`id`)
+			) TYPE=MyISAM'
+		);
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_IPSANDPORTS.'` ' .
+			'(`ip`, `port`, `default`)' .
+			'VALUES (\''.$settings['system']['ipaddress'].'\', \'80\', \'1\')'
+		);
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'(`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)' .
+			'VALUES (\'admin\', \'admin_server.nourl\', \'admin;ipsandports;ipsandports\', \'admin_ipsandports.php?page=ipsandports\', \'40\', \'change_serversettings\', 0)'
+		);
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `value` = \'1.2.12-svn2\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\''
+		);
+
+		$settings['panel']['version'] = '1.2.12-svn2';
 	}
 
 ?>
