@@ -12,6 +12,7 @@ $header
     <tr>
      <td class="maintable">ID</td>
      <td class="maintable">Domain</td>
+     <td class="maintable">{$lng['admin']['ipsandports']['ip']}</td>
      <td class="maintable">{$lng['admin']['customer']}</td>
      <td class="maintable" colspan="2">&nbsp;</td>
     </tr>

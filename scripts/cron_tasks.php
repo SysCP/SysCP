@@ -19,7 +19,7 @@
  * @changes   martin@2006-01-30:
  *            - fixed race condition during task row deletion
  */
-	if(@php_sapi_name() != 'cli' && @php_sapi_name() != 'cgi')
+	if(@php_sapi_name() != 'cli' && @php_sapi_name() != 'cgi' && @php_sapi_name() != 'cgi-fcgi')
 	{
 		die('This script will only work in the shell.');
 	}
@@ -52,25 +52,35 @@
 			               '# Do NOT manually edit this file, all changes will be ' .
 			               ' deleted after the next domain change at the panel.' . "\n" .
 			               "\n";
-			               
+
 			if (file_exists($settings['system']['apacheconf_directory'].'diroptions.conf'))
 			{
 				$vhosts_file .= 'Include ' . $settings['system']['apacheconf_directory'] . 
 				                'diroptions.conf' . "\n\n";
 			}
-			$vhosts_file.='NameVirtualHost '.$settings['system']['ipaddress'].':80'."\n"."\n";
+
+			$result_ipsandports=$db->query("SELECT CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) ORDER BY `ip`.`ip` ASC");
+			while($ipandportresult=$db->fetch_array($result_ipsandports))
+			{
+				$ipandportarray[$ipandportresult['ipandport']] = $ipandportresult['ipandport'];
+			}
+			foreach($ipandportarray as $ipandport)
+			{
+				$vhosts_file.='NameVirtualHost '.$ipandport."\n";
+			}
+			$vhosts_file.="\n";
 
 			$vhosts_file.='# DummyHost for DefaultSite'."\n";
 			$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].':80>'."\n";
 			$vhosts_file.='ServerName '.$settings['system']['hostname']."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON(`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`deactivated` <> '1' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`deactivated` <> '1' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				fwrite( $debugHandler, '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain']);
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
-				$vhosts_file.='<VirtualHost '.$settings['system']['ipaddress'].':80>'."\n";
+				$vhosts_file.='<VirtualHost '.$domain['ipandport'].'>'."\n";
 				$vhosts_file.='  ServerName '.$domain['domain']."\n";
 
 				$server_alias = '';

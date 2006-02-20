@@ -25,6 +25,10 @@ $header
        <td class="maintable" nowrap><input type="text" name="documentroot" value="{$result['documentroot']}" size="60"></td>
       </tr>
       <tr>
+       <td class="maintable" nowrap>IP/Port:</td>
+       <td class="maintable" nowrap><select name="ipandport">$ipsandports</select></td>
+      </tr>
+      <tr>
        <td class="maintable" nowrap>Nameserver:</td>
        <td class="maintable" nowrap>$isbinddomain</td>
       </tr>

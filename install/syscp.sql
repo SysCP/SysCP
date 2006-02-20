@@ -243,6 +243,7 @@ CREATE TABLE `panel_domains` (
   `customerid` int(11) unsigned NOT NULL default '0',
   `aliasdomain` int(11) unsigned NULL,
   `documentroot` varchar(255) NOT NULL default '',
+  `ipandport` int(11) unsigned NOT NULL default '1',
   `isbinddomain` tinyint(1) NOT NULL default '0',
   `isemaildomain` tinyint(1) NOT NULL default '0',
   `iswildcarddomain` tinyint(1) NOT NULL default '0',
@@ -263,6 +264,26 @@ CREATE TABLE `panel_domains` (
 #
 # Dumping data for table `panel_domains`
 #
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_ipsandports`
+#
+DROP TABLE IF EXISTS `panel_ipsandports`;
+CREATE TABLE `panel_ipsandports` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `ip` varchar(15) NOT NULL default '',
+  `port` int(5) NOT NULL default '80',
+  `default` int(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `panel_ipsandports`
+#
+
 
 
 # --------------------------------------------------------
@@ -377,7 +398,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (21, 'system', 'binddefaultzone', 'default.zone');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.12');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.12-svn2');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -540,6 +561,7 @@ INSERT INTO `panel_navigation` VALUES (28, 'admin', 'admin_server.nourl', 'admin
 INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;templates;templates', 'admin_templates.nourl', '40', '', 0);
 INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_templates.nourl', 'admin;templates;email', 'admin_templates.php?page=email', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (31, 'admin', 'admin_server.nourl', 'admin;rebuildconf', 'admin_settings.php?page=rebuildconfigs', '30', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (32, 'admin', 'admin_server.nourl', 'admin;ipsandports;ipsandports', 'admin_ipsandports.php?page=ipsandports', '40', 'change_serversettings', 0);
 
 
 # --------------------------------------------------------

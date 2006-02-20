@@ -36,7 +36,8 @@ define('TABLE_PANEL_TRAFFIC_ADMINS','panel_traffic_admins');
 define('TABLE_PANEL_NAVIGATION','panel_navigation');
 define('TABLE_PANEL_LANGUAGE','panel_languages');
 define('TABLE_PANEL_CRONSCRIPT','panel_cronscript');
+define('TABLE_PANEL_IPSANDPORTS','panel_ipsandports');
 
-$version = '1.2.12-svn1';
+$version = '1.2.12-svn2';
 
 ?>

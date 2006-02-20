@@ -256,7 +256,7 @@
 			$errormsg .= 'Script: '.getenv('REQUEST_URI')   ."\n";
 			$errormsg .= 'Referer: '.getenv('HTTP_REFERER') ."\n";
 			$errormsg .= 'Time/date: '.date('d/m/Y h:i A')  ."\n";
-			if( (@php_sapi_name() != 'cli') && (@php_sapi_name() != 'cgi') )
+			if( (@php_sapi_name() != 'cli') && (@php_sapi_name() != 'cgi') && (@php_sapi_name() != 'cgi-fcgi') )
 			{
 				die(nl2br($errormsg));
 			}

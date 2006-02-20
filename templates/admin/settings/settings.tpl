@@ -41,7 +41,7 @@ $header
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['ipaddress']['title']}:</b><br />{$lng['serversettings']['ipaddress']['description']}</td>
-       <td class="maintable" nowrap><input type="text" name="system_ipaddress" value="{$settings['system']['ipaddress']}"></td>
+       <td class="maintable" nowrap><select name="system_ipaddress">$system_ipaddress</select></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['hostname']['title']}:</b><br />{$lng['serversettings']['hostname']['description']}</td>

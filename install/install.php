@@ -461,6 +461,13 @@
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$version' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$languages[$language]."' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$mysql_access_host."' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
+		
+		// and lets insert the default ip and port
+		$db->query('INSERT INTO `panel_ipsandports`      ' .
+		           ' SET `ip`      = \''.$serverip.'\',  ' .
+		           '     `port`    = \'80\',             ' .
+		           '     `default` = \'1\'               ');
+		           
 		status_message('green', 'OK');
 
 		//last but not least create the main admin

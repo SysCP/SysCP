@@ -17,7 +17,7 @@
  * @version $Id$
  */
 
-	if(@php_sapi_name() != 'cli' && @php_sapi_name() != 'cgi')
+	if(@php_sapi_name() != 'cli' && @php_sapi_name() != 'cgi' && @php_sapi_name() != 'cgi-fcgi')
 	{
 		die('This script will only work in the shell.');
 	}

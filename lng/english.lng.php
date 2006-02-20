@@ -143,7 +143,6 @@ $lng['ftp']['account_add'] = 'Create Account';
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Here you can create and change your MySQL-Databases.<br />The changes are made instantly and the database can be used immediately.<br />At the menu on the left side you find the tool phpMyAdmin with which you can easily administer your database.<br /><br />To use your databases in your own php-scripts use the following settings: (The data in <i>italics</i> have to be changed into the equivalents you typed in!)<br />Hostname: <b>localhost</b><br />Username: <b><i>Databasename</i></b><br />Password: <b><i>the password you\'ve chosen</i></b><br />Database: <b><i>Databasename</i></b>';
 $lng['mysql']['databasename'] = 'user/database name';
 $lng['mysql']['databasedescription'] = 'database description';
 $lng['mysql']['database_create'] = 'Create database';
@@ -309,7 +308,6 @@ $lng['admin']['templates']['NAME'] = 'Replaced with the customers name.';
 $lng['admin']['templates']['USERNAME'] = 'Replaced with the customers account username.';
 $lng['admin']['templates']['PASSWORD'] = 'Replaced with the customers account password.';
 $lng['admin']['templates']['EMAIL'] = 'Replaced with the address of the POP3/IMAP account.';
-$lng['admin']['cronlastrun'] = 'Last Cron';
 
 /**
  * Serversettings
@@ -332,8 +330,6 @@ $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'What\'s the Hostname of this server?';
 $lng['serversettings']['apacheconf_directory']['title'] = 'Apache configuration directory';
 $lng['serversettings']['apacheconf_directory']['description'] = 'Where are the apache configfiles?';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Apache configuration filename';
-$lng['serversettings']['apacheconf_filename']['description'] = 'How should the apache configuration file called?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache reload command';
 $lng['serversettings']['apachereload_command']['description'] = 'What\'s the apache reload command?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind config directory';
@@ -363,7 +359,34 @@ $lng['serversettings']['deactivatetime']['title']       = 'Deactivate Time';
 $lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
 $lng['serversettings']['pathedit']['title']       = 'Type of path input';
 $lng['serversettings']['pathedit']['description'] = 'Should a path be choosen by a dropdown menu or by an input field?';
+
+/**
+ * CHANGED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['mysql']['description'] = 'Here you can create and change your MySQL-Databases.<br />The changes are made instantly and the database can be used immediately.<br />At the menu on the left side you find the tool phpMyAdmin with which you can easily administer your database.<br /><br />To use your databases in your own php-scripts use the following settings: (The data in <i>italics</i> have to be changed into the equivalents you typed in!)<br />Hostname: <b>localhost</b><br />Username: <b><i>Databasename</i></b><br />Password: <b><i>the password you\'ve chosen</i></b><br />Database: <b><i>Databasename</i></b>';
+
+/**
+ * ADDED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['admin']['cronlastrun'] = 'Last Cron';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Apache configuration filename';
+$lng['serversettings']['apacheconf_filename']['description'] = 'How should the apache configuration file called?';
 $lng['serversettings']['paging']['title']       = 'Entries per page';
 $lng['serversettings']['paging']['description'] = 'How many entries shall be shown on one page? (0 = disable paging)';
+$lng['error']['ipstillhasdomains']= 'The IP/Port combination you want to delete still has domains assigned to it, please reassign those to other IP/Port combinations before deleting this IP/Port combination.';
+$lng['error']['cantdeletedefaultip'] = 'You cannot delete the default reseller IP/Port combination, please make another IP/Port combination default for resellers before deleting this IP/Port combination.';
+$lng['error']['cantdeletesystemip'] = 'You cannot delete the system IP, either create a new IP/Port combination for the system IP or change the system IP.';
+$lng['error']['myipaddress'] = '\'IP\'';
+$lng['error']['myport'] = '\'Port\'';
+$lng['error']['myipdefault'] = 'You need to select an IP/Port combination that should become default.';
+$lng['error']['myipnotdouble'] = 'This IP/Port combination already exists.';
+$lng['question']['admin_ip_reallydelete'] = 'Do you really want to delete the IP address %s?';
+$lng['admin']['ipsandports']['ipsandports'] = 'IPs and Ports';
+$lng['admin']['ipsandports']['add'] = 'Add IP/Port';
+$lng['admin']['ipsandports']['edit'] = 'Edit IP/Port';
+$lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
+$lng['admin']['ipsandports']['ip'] = 'IP';
+$lng['admin']['ipsandports']['port'] = 'Port';
+$lng['admin']['ipsandports']['default'] = 'Default reseller IP/Port';
 
 ?>

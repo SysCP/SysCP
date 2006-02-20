@@ -143,7 +143,6 @@ $lng['ftp']['account_add'] = 'Account anlegen';
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Hier k&ouml;nnen Sie MySQL-Datenbanken anlegen und l&ouml;schen.<br>Die &Auml;nderungen werden sofort wirksam und die Datenbanken sofort benutzbar.<br>Im Men&uuml; finden Sie einen Link zum phpMyAdmin, mit dem Sie Ihre Datenbankeninhalte einfach bearbeiten k&ouml;nnen.<br><br>Die Zugangsdaten von php-Skripten sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b>localhost</b><br>Benutzername: <b><i>Datenbankname</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b><br>Datenbank: <b><i>Datenbankname';
 $lng['mysql']['databasename'] = 'Benutzer-/Datenbankname';
 $lng['mysql']['databasedescription'] = 'Datenbankbezeichnung';
 $lng['mysql']['database_create'] = 'Datenbank anlegen';
@@ -331,8 +330,6 @@ $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Welchen Hostname hat der Server?';
 $lng['serversettings']['apacheconf_directory']['title'] = 'Apache-Config-Verzeichnis';
 $lng['serversettings']['apacheconf_directory']['description'] = 'Wo liegen die Apache-Konfigdateien?';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Apache-Config-Dateiname';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Wie soll die Apache-Konfigurationsdatei genannt werden?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache-Reload-Command';
 $lng['serversettings']['apachereload_command']['description'] = 'Wie heisst das Skript zum reloaden des Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind-Config-Directory';
@@ -362,6 +359,18 @@ $lng['serversettings']['deactivatetime']['title'] = 'L&auml;nge der Deaktivierun
 $lng['serversettings']['deactivatetime']['description'] = 'Zeitraum (in sek.) f&uuml;r den der Account deaktiviert ist.';
 $lng['serversettings']['pathedit']['title'] = 'Pfad-Eingabemethode';
 $lng['serversettings']['pathedit']['description'] = 'Soll ein Pfad via Dropdown-Men&uuml; ausgew&auml;hlt oder manuell eingegeben werden k&ouml;nnen.';
+
+/**
+ * CHANGED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['mysql']['description'] = 'Hier k&ouml;nnen Sie MySQL-Datenbanken anlegen und l&ouml;schen.<br>Die &Auml;nderungen werden sofort wirksam und die Datenbanken sofort benutzbar.<br>Im Men&uuml; finden Sie einen Link zum phpMyAdmin, mit dem Sie Ihre Datenbankeninhalte einfach bearbeiten k&ouml;nnen.<br><br>Die Zugangsdaten von php-Skripten sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b>localhost</b><br>Benutzername: <b><i>Datenbankname</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b><br>Datenbank: <b><i>Datenbankname</i></b>';
+
+/**
+ * ADDED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['admin']['cronlastrun'] = 'Last Cron';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Apache-Config-Dateiname';
+$lng['serversettings']['apacheconf_filename']['description'] = 'Wie soll die Apache-Konfigurationsdatei genannt werden?';
 $lng['serversettings']['paging']['title']       = 'Eintr&auml;ge pro Seite';
 $lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
 
