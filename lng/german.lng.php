@@ -373,5 +373,19 @@ $lng['serversettings']['apacheconf_filename']['title'] = 'Apache-Config-Dateinam
 $lng['serversettings']['apacheconf_filename']['description'] = 'Wie soll die Apache-Konfigurationsdatei genannt werden?';
 $lng['serversettings']['paging']['title']       = 'Eintr&auml;ge pro Seite';
 $lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
-
+$lng['error']['ipstillhasdomains']= 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &Auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
+$lng['error']['cantdeletedefaultip'] = 'Sie k&ouml;nnen die Standard IP/Port Kombination f&uuml;r Reseller nicht l&ouml;schen. Bitte setzen Sie eine andere IP/Port Kombination als Standard um diese l&ouml;schen zu k&ouml;nnen.';
+$lng['error']['cantdeletesystemip'] = 'Sie k&ouml;nnen die System IP nicht l&ouml;schen. Entweder legen Sie eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
+$lng['error']['myipaddress'] = '\'IP\'';
+$lng['error']['myport'] = '\'Port\'';
+$lng['error']['myipdefault'] = 'Sie m&uuml;ssen eine IP/Port Kombination ausw&auml;hlen, die den Standard defninieren soll.';
+$lng['error']['myipnotdouble'] = 'Diese Kombination aus IP und Post existiert bereits.';
+$lng['question']['admin_ip_reallydelete'] = 'Wollen Sie wirklich die IP %s l&ouml;schen?';
+$lng['admin']['ipsandports']['ipsandports'] = 'IPs und Ports';
+$lng['admin']['ipsandports']['add'] = 'IP/Port hinzuf&auml;gen';
+$lng['admin']['ipsandports']['edit'] = 'IP/Port bearbeiten';
+$lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
+$lng['admin']['ipsandports']['ip'] = 'IP';
+$lng['admin']['ipsandports']['port'] = 'Port';
+$lng['admin']['ipsandports']['default'] = 'Standard Reseller IP/Port'; 
 ?>
