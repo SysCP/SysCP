@@ -41,7 +41,6 @@
 	
 	$filename       = 'cronscript.php';
 	
-//	touch($lockfile);
 	// create and open the lockfile!
 	$debugHandler = fopen( $lockfile, 'w' ); 
 	fwrite( $debugHandler, 'Setting Lockfile to '.$lockfile );

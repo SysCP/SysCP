@@ -767,7 +767,7 @@
 	{
 		$db->query(
 			'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
-			'SET `value` = \'1.2.13-rc1\' ' .
+			'SET `value` = \'1.2.13-rc2\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\''
 		);
