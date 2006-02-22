@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * filename: $Source$
  * begin: Friday, Aug 06, 2004
@@ -144,7 +144,7 @@
 	$db->query(
 		'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
 		'SET `value` = UNIX_TIMESTAMP() ' .
-		'WHERE `settinggroup` = \'system\', ' .
+		'WHERE `settinggroup` = \'system\'  ' .
 		'  AND `varname`      = \'lastcronrun\' '
 		);
 
