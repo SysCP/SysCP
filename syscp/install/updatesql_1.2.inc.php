@@ -763,7 +763,7 @@
 
 		$settings['panel']['version'] = '1.2.13-rc1';
 	}
-	if( $settings['panel']['version'] == '1.2.12-rc1' )
+	if( $settings['panel']['version'] == '1.2.13-rc1' )
 	{
 		$db->query(
 			'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
