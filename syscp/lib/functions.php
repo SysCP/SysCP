@@ -212,7 +212,7 @@
 			}
 			else 
 			{
-				if ( isset( $_SERVER['SSL_PROTOCOL'] ) )
+				if ( isset( $_SERVER['HTTPS'] ) && strtolower($_SERVER['HTTPS']) == 'on' )
 				{
 					$protocol = 'https://';
 				}

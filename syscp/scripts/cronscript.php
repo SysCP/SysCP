@@ -31,8 +31,13 @@
 	// guess the syscp installation path
 	// normally you should not need to modify this script anymore, if your
 	// syscp installation isn't in /var/www/syscp 
-	$pathtophpfiles = $_SERVER['PWD'].'/'.$_SERVER['PHP_SELF'];
+	if( substr($_SERVER['PHP_SELF'], 0, 1) != '/' )
+	{ 
+		$pathtophpfiles = $_SERVER['PWD'];
+	}
+	$pathtophpfiles .= '/'.$_SERVER['PHP_SELF'];
 	$pathtophpfiles = str_replace('/./', '/', $pathtophpfiles );
+	$pathtophpfiles = str_replace('//','/', $pathtophpfiles );
 	$pathtophpfiles = dirname(dirname( $pathtophpfiles ));
 
 	// should the syscp installation guessing not work correctly,
