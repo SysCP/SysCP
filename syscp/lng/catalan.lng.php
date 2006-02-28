@@ -188,7 +188,44 @@ $lng['error']['youcantdeletechangemainadmin'] = 'L\'usuari admin &eacute;s sagra
 
 $lng['error']['mustbeurl'] = 'No has escrit una URL correcte';
 $lng['error']['invalidpath'] = 'No has escrit una URL v&agrave;lida (potser hi ha algun problema en el llistat de directoris)';
+$lng['error']['stringisempty'] ='Camp de text buit';
+$lng['error']['stringiswrong'] ='Contingut erroni en el camp de text';
+$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
+$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
+$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
+$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
+$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
+$lng['error']['newpasswordconfirmerror']='La nova clau no coincideix amb la confirmaci&oacute;';
+$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
+$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
+$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
+$lng['error']['mydomain'] = '\'Domini\'';
+$lng['error']['mydocumentroot'] = '\'Arrel dels documents\'';
+$lng['error']['loginnameexists']= 'Ja existeix l\'usuari %s';
+$lng['error']['emailiswrong']= 'L\'adre&ccedil;a de correu %s cont&eacute; car&agrave;cters inv&agrave;lids o est&agrave; incompleta';
+$lng['error']['loginnameiswrong']= 'El nom d\'usuari %s cont&eacute; no &eacute;s v&agrave;lid';
+$lng['error']['userpathcombinationdupe']='La combinaci&oacute; d\'usuari i Ruta escollida ja existeix';
+$lng['error']['patherror']='Error! Has d\'introduir una ruta';
+$lng['error']['errordocpathdupe']='Aquesta opci&oacute; per la ruta %s ja existeix';
+$lng['error']['adduserfirst']='Abans has de crear un client';
+$lng['error']['domainalreadyexists']= 'El domini %s ja est&agrave; assignat a un client';
+$lng['error']['nolanguageselect']='Has de sel&middot;leccionar un idioma.';
+$lng['error']['nosubjectcreate']='Has de definir l\'assumpte per aquesta plantilla de correu.';
+$lng['error']['nomailbodycreate']='Has de definir el cos del missatge per aquesta plantilla de correu.';
+$lng['error']['templatenotfound']='No s\'ha trobat la plantilla.';
+$lng['error']['alltemplatesdefined']='No pots definir noves plantilles. Tots els idiomes estan suportats.';
+$lng['error']['wwwnotallowed']='www no &eacute;s un subdomini perm&egrave;s.';
+$lng['error']['subdomainiswrong']='El subdomini %s cont&eacute; car&agrave;cters inv&agrave;lids.';
+$lng['error']['domaincantbeempty']='El domini no pot ser un camp buit.';
+$lng['error']['domainexistalready']='Ja existeix el domini %s.';
 $lng['error']['domainisaliasorothercustomer']='El sobrenom de domini escollit ja existeix, o pertany a un altre client.';
+$lng['error']['emailexistalready']='Ja existeix l\'adre&ccedil;a %s.';
+$lng['error']['maindomainnonexist']='El domini %s no existeix.';
+$lng['error']['destinationnonexist']='Si us plau crea la redirecci&oacute; a \'Dest&iacute;\'.';
+$lng['error']['destinationalreadyexistasmail']='La redirecci&oacute; a %s ja existeix com un compte de correu.';
+$lng['error']['destinationalreadyexist']='Ja hi ha una redirecci&oacute; a %s .';
+$lng['error']['destinationiswrong']= 'La redirecci&oacute; %s cont&eacute; car&agrave;cters inv&agrave;lids o &eacute;s incompleta.';
+$lng['error']['domainname']=$lng['domains']['domainname'];
 
 /**
  * Questions
@@ -323,5 +360,29 @@ $lng['serversettings']['deactivatetime']['title']       = 'Temps de desactivacio
 $lng['serversettings']['deactivatetime']['description'] = 'Segons que la compta estar&agrave; inactiva quan s\'ha produit un seguit d\'intents frustrats d\'identificaci&oacute;.';
 $lng['serversettings']['pathedit']['title'] = 'Tipus d\'entrada de ruta';
 $lng['serversettings']['pathedit']['description'] = 'Vols que la ruta sigui escrita en una casella de text o en un men&uacute; desplegable?';
+
+/**
+ * ADDED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['admin']['cronlastrun'] = '&Uacute;ltima volta';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Fitxer de configuraci&oacute; de l\'Apache';
+$lng['serversettings']['apacheconf_filename']['description'] = 'Nom del fitxer de configuraci&oacute; de l\'Apache';
+$lng['serversettings']['paging']['title'] = 'Entrades per p&agrave;gina';
+$lng['serversettings']['paging']['description'] = 'Entrades per p&agrave;gina? (0 = sense paginar)';
+$lng['error']['ipstillhasdomains']= 'La combinaci&oacute; IP/Port que vols esborrar t&eacute; dominis assignats. Si us plau, reassigna els dominis a una altra IP/Port abans d\'esborrar.';
+$lng['error']['cantdeletedefaultip'] = 'No pots esborrar la combinaci&oacute; IP/Port per defecte del resseller, si us plau, assigna una nova combinaci&oacute; IP/Port al resseller abans d\'esborrar.';
+$lng['error']['cantdeletesystemip'] = 'No pots esborrar la IP del sistema, abans crea una nova combinaci&oacute; IP/Port pel sistema.';
+$lng['error']['myipaddress'] = '\'IP\'';
+$lng['error']['myport'] = '\'Port\'';
+$lng['error']['myipdefault'] = 'Has de sel&middot;leccionar una combinaci&oacute; IP/Port per defecte.';
+$lng['error']['myipnotdouble'] = 'Aquesta combinaci&oacute; IP/Port ja existeix.';
+$lng['question']['admin_ip_reallydelete'] = 'Segur que vols esborrar la IP %s?';
+$lng['admin']['ipsandports']['ipsandports'] = 'IPs i Ports';
+$lng['admin']['ipsandports']['add'] = 'Afegir IP/Port';
+$lng['admin']['ipsandports']['edit'] = 'Editar IP/Port';
+$lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
+$lng['admin']['ipsandports']['ip'] = 'IP';
+$lng['admin']['ipsandports']['port'] = 'Port';
+$lng['admin']['ipsandports']['default'] = 'IP/Port per defecte del resseller'; 
 
 ?>
