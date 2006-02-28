@@ -774,4 +774,15 @@
 
 		$settings['panel']['version'] = '1.2.13-rc2';
 	}
+	if( $settings['panel']['version'] == '1.2.13-rc2' )
+	{
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `value` = \'1.2.13-rc3\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\''
+		);
+
+		$settings['panel']['version'] = '1.2.13-rc3';
+	}
 ?>
