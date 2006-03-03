@@ -42,7 +42,7 @@ $lng['login']['username'] = 'Identifiant';
 $lng['login']['password'] = 'Mot de passe';
 $lng['login']['language'] = 'Langue';
 $lng['login']['login'] = 'S\'identifier';
-$lng['login']['logout'] = 'Se d&eacue;connecter';
+$lng['login']['logout'] = 'Se d&eacute;connecter';
 $lng['login']['profile_lng'] = 'Langage du profil';
 
 /**
@@ -74,8 +74,8 @@ $lng['customer']['unlimited'] = 'illimit&eacute;';
  * Customermenue
  */
 $lng['menue']['main']['main'] = 'General';
-$lng['menue']['main']['changepassword'] = 'Changer le mot de passe';
-$lng['menue']['main']['changelanguage'] = 'Changer le langage';
+$lng['menue']['main']['changepassword'] = 'Changer de mot de passe';
+$lng['menue']['main']['changelanguage'] = 'Changer de langage';
 $lng['menue']['email']['email'] = 'e-mail';
 $lng['menue']['email']['emails'] = 'Adresse(s)';
 $lng['menue']['email']['webmail'] = 'Webmail';
@@ -115,13 +115,13 @@ $lng['domains']['domainname'] = 'Nom du Domaine';
 $lng['domains']['subdomain_add'] = 'Ajouter un Sous-domaine';
 $lng['domains']['subdomain_edit'] = 'Changer un Sous-domaine';
 $lng['domains']['wildcarddomain'] = 'Domaine Wildcard?';
-$lng['domains']['aliasdomain'] = 'Pseudonyme pour un domain';
+$lng['domains']['aliasdomain'] = 'Pseudonyme pour un domaine';
 $lng['domains']['noaliasdomain'] = 'Domaine non-pseudonyme';
 
 /**
  * eMails
  */
-$lng['emails']['description'] = 'Ici vous pouvez ajouter vos boites &agrave; e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domain</i></b><br>Identifiant: <b><i>l\'adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
+$lng['emails']['description'] = 'Ici vous pouvez ajouter vos boites &agrave; e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domaine</i></b><br>Identifiant: <b><i>l\'adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
 $lng['emails']['emailaddress'] = 'Adresse';
 $lng['emails']['emails_add'] = 'Ajouter une Adresse';
 $lng['emails']['emails_edit'] = 'Changer une adresse';
@@ -200,7 +200,7 @@ $lng['error']['newpasswordconfirmerror']='Les deux nouveaux mots de passe ne son
 $lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
 $lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
 $lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
-$lng['error']['mydomain'] = '\'domain\'';
+$lng['error']['mydomain'] = '\'domaine\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
 $lng['error']['loginnameexists']= 'L\'identifiant %s existe d&eacute;j&agrave;.';
 $lng['error']['emailiswrong']= 'L\'adresse %s contient des signes invalides ou n\'est pas complet.';
@@ -273,7 +273,7 @@ $lng['admin']['customer_add'] = 'Ajouter un compte';
 $lng['admin']['customer_edit'] = 'Modifier un compte';
 $lng['admin']['domains'] = 'Domaines';
 $lng['admin']['domain_add'] = 'Ajouter un Domaine';
-$lng['admin']['domain_edit'] = 'Modifier le domain';
+$lng['admin']['domain_edit'] = 'Modifier le domaine';
 $lng['admin']['subdomainforemail'] = 'Sous-domaines comme domaine e-mail';
 $lng['admin']['admin'] = 'Administrateur';
 $lng['admin']['admins'] = 'Administrateurs';
@@ -315,7 +315,7 @@ $lng['admin']['templates']['EMAIL'] = 'Va &ecirc;tre remplac&eacute; par l\'acc&
  * Serversettings
  */
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
-$lng['serversettings']['session_timeout']['description'] = 'Combien de temps faut-il &ecirc;tre inactif pour que votre session se ferme automatiquement (secondes)';
+$lng['serversettings']['session_timeout']['description'] = 'Combien de secondes d\'inactivit&eacute; pour que votre session se ferme?';
 $lng['serversettings']['accountprefix']['title'] = 'Pr&eacute;fix des comptes';
 $lng['serversettings']['accountprefix']['description'] = 'Quel pr&eacute;fix doivent-ils avoir les comptes?';
 $lng['serversettings']['mysqlprefix']['title'] = 'Pr&eacute;fix SQL';
@@ -355,11 +355,35 @@ $lng['serversettings']['webmail_url']['description'] = '&Agrave; quelle adresse 
 $lng['serversettings']['webftp_url']['title'] = 'Adresse URL WebFTP';
 $lng['serversettings']['webftp_url']['description'] = '&Agrave; quelle adresse se trouve le WebFTP?';
 $lng['serversettings']['language']['description'] = 'Quelle langue est la langue pr&eacute;d&eacute;finie?';
-$lng['serversettings']['maxloginattempts']['title'] = 'Nombre d\'essais maximal';
-$lng['serversettings']['maxloginattempts']['description'] = 'Nombre d\essais de se connecter maximal jusqu\&agrave; la d&eacute;activation de l\acc&egrave;s.';
+$lng['serversettings']['maxloginattempts']['title'] = 'Nombre d\'essais maximum';
+$lng['serversettings']['maxloginattempts']['description'] = 'Nombre de tentatives maximales avant la d&eacute;sactivation de l\'acc&egrave;s.';
 $lng['serversettings']['deactivatetime']['title'] = 'Dur&eacute;e de la d&eacute;activation';
 $lng['serversettings']['deactivatetime']['description'] = 'Dur&eacute;e (en secondes) pendant laquelle l\acc&egrave;s reste d&eacute;activ&eacute;.';
 $lng['serversettings']['pathedit']['title'] = 'Mode d\'indication du chemin';
 $lng['serversettings']['pathedit']['description'] = 'Choisir un chemin par menu Dropdown ou pouvoir l\'entrer manuellement.';
+
+/**
+ * ADDED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['admin']['cronlastrun'] = 'Derni&egrave;re Tache Cron';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Nom fichier de configuration Apache';
+$lng['serversettings']['apacheconf_filename']['description'] = 'Quel nom utiliserez-vous pour le fichier de configuration Apache?';
+$lng['serversettings']['paging']['title']       = 'R&eacute;sultats par page';
+$lng['serversettings']['paging']['description'] = 'Combien de r&eacute;sultats par page ? (0 = D&eacute;sactive la pagination)';
+$lng['error']['ipstillhasdomains']= 'La combinaison IP/port est encore utilis&eacute;e, svp r&eacute;assignez le ou les domaines concern&eacute;s &agrave; une autre combinaison avant de supprimer celle-ci.';
+$lng['error']['cantdeletedefaultip'] = 'Vous ne pouvez pas supprimer cette combinaison IP/Port, svp attribuez une autre combinaison par d&eacute;faut &agrave; ce revendeur avant de supprimer celle-ci.';
+$lng['error']['cantdeletesystemip'] = 'Vous ne pouvez pas supprimer, cr&eacute;er ou modifier  l\'IP syst&egrave;me.';
+$lng['error']['myipaddress'] = '\'IP\'';
+$lng['error']['myport'] = '\'Port\'';
+$lng['error']['myipdefault'] = 'Choissez une combinaison IP/port par d&eacute;faut.';
+$lng['error']['myipnotdouble'] = 'Cette combinaison existe d&eacute;j&agrave;.';
+$lng['question']['admin_ip_reallydelete'] = 'Voulez-vous r&eacute;ellement supprimer l\'adresse IP %s ?';
+$lng['admin']['ipsandports']['ipsandports'] = 'Ips et ports';
+$lng['admin']['ipsandports']['add'] = 'Ajouter IP/port';
+$lng['admin']['ipsandports']['edit'] = 'Modifier IP/port';
+$lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
+$lng['admin']['ipsandports']['ip'] = 'IP';
+$lng['admin']['ipsandports']['port'] = 'Port';
+$lng['admin']['ipsandports']['default'] = 'IP/port par d&eacute;faut pour les revendeurs';
 
 ?>
