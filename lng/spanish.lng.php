@@ -13,6 +13,7 @@
  *
  * @author Carlo Pedro Woedl <carlopedrowoedl@hotmail.com>, Ron Brand <ron.brand@web.de>
  * @copyright (C) 2005 Carlo Pedro Woedl, Ron Brand
+ * @copyright (C) 2006 Sandra Delgado
  * @package Language
  * @version $Id$
  */
@@ -362,5 +363,29 @@ $lng['serversettings']['deactivatetime']['title'] = 'tiempo de la desactivaci&oa
 $lng['serversettings']['deactivatetime']['description'] =  'tiempo (en segundos) para el cual la cuenta est&aacute; desactivada.';
 $lng['serversettings']['pathedit']['title'] = 'M&eacute;todo de introducci&oacute;n de datos del trayecto ';
 $lng['serversettings']['pathedit']['description'] = 'Prefiere seleccionar un trayecto a trav&eacute;s de un men&uacute;-dropdown o introducirlo manualmente.';
+
+/**
+ * ADDED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['admin']['cronlastrun'] = '&Uacute;ltimo Cron';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Archivo de configuraci&oacute;n de Apache';
+$lng['serversettings']['apacheconf_filename']['description'] = '&iquest;Como quiere nombrar el archivo de configuraci&oacute;n de apache?';
+$lng['serversettings']['paging']['title'] = 'Entradas por p&aacute;gina';
+$lng['serversettings']['paging']['description'] = '&iquest;Cuantas entradas deben ser mostradas en una p&aacute;gina? (0=desactivar paginaci&oacute;n)';
+$lng['error']['ipstillhasdomains']= 'La combinaci&oacute;n IP/Puerto que Usted quiere eliminar todav&iacute;a tiene dominios asignados, por favor vuelva a reasignar estas combinaciones IP/Puerto antes de eliminar esta combinaci&oacute;n IP/Puerto.';
+$lng['error']['cantdeletedefaultip'] = 'Usted no puede eliminar la combinaci&oacute;n IP/Puerto del distribuidor predeterminada, por favor crea otra combinaci&oacute;n IP/Puerto predeterminada para distribuidores antes de eliminar esta combinaci&oacute;n IP/Puerto.';
+$lng['error']['cantdeletesystemip'] = 'No puede eliminar la IP del sistema, crea una nueva combinaci&oacute;n IP/Puerto para el sistema IP o cambia the sistema IP.';
+$lng['error']['myipaddress'] = '\'IP\'';
+$lng['error']['myport'] = '\'Port\'';
+$lng['error']['myipdefault'] = 'Debe seleccionar una combinaci&oacute;n IP/Puerto que se convierta de manera predeterminado.';
+$lng['error']['myipnotdouble'] = 'Esta combinaci&oacute;n IP/Puerto ya existe.';
+$lng['question']['admin_ip_reallydelete'] = '&iquest;Realmente quiere eliminar esta direcci&oacute;n IP %s?';
+$lng['admin']['ipsandports']['ipsandports'] = 'IPs y Puertos';
+$lng['admin']['ipsandports']['add'] = 'A&ntilde;adir IP/Puerto';
+$lng['admin']['ipsandports']['edit'] = 'Editar IP/Puerto';
+$lng['admin']['ipsandports']['ipandport'] = 'IP/Puerto';
+$lng['admin']['ipsandports']['ip'] = 'IP';
+$lng['admin']['ipsandports']['port'] = 'Puerto';
+$lng['admin']['ipsandports']['default'] = 'Puerto ip predeterminado';
 
 ?>

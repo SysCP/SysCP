@@ -361,4 +361,28 @@ $lng['serversettings']['deactivatetime']['description'] = 'Tempo (sec.) qua a co
 $lng['serversettings']['pathedit']['title']       = 'File-M&eacute;todo de entrada';
 $lng['serversettings']['pathedit']['description'] = 'A escolha do file tem que ser feita atrav&eacute;s do Dropdown-Menu ou pode ser feita manualmente?';
 
+/**
+ * ADDED BETWEEN 1.2.12 and 1.2.13
+ */
+$lng['admin']['cronlastrun'] = 'Ultimo Agendamento';
+$lng['serversettings']['apacheconf_filename']['title'] = 'Nome do aqrquivo de configura&ccedil;&atilde;o do Apache';
+$lng['serversettings']['apacheconf_filename']['description'] = 'Como o arquivo de configura&ccedil;&atilde;o do apache deve ser chamado?';
+$lng['serversettings']['paging']['title']       = 'Entradas por pagina';
+$lng['serversettings']['paging']['description'] = 'Quantas entradas devem ser mostradas por pagina? (0 = desabilitar paginas)';
+$lng['error']['ipstillhasdomains']= 'O IP/Porta que voce quer deletar ainda possui dominios associados e eles, por favor altere o IP/Porta destes dominios antes de delet&aacute;-los.';
+$lng['error']['cantdeletedefaultip'] = 'Voce n&atilde;o pode deletar o IP/Porta padr&atilde;o do revendedor, por favor defina outro IP/Porta como padr&atilde;o antes deletar o IP/Porta desejado';
+$lng['error']['cantdeletesystemip'] = 'Voce n&atilde;o pode deletar o IP do sistema, nem criar uma nova combina&ccedil;&atilde;o IP/Porta para o sistema ou trocar o IP do sistema.';
+$lng['error']['myipaddress'] = '\'IP\'';
+$lng['error']['myport'] = '\'Porta\'';
+$lng['error']['myipdefault'] = 'Voce precisa selecionar o IP/Porta que ser&aacute; padr&atilde;o.';
+$lng['error']['myipnotdouble'] = 'Esta combina&ccedil;&atilde;o  IP/Porta j&aacute; existe.';
+$lng['question']['admin_ip_reallydelete'] = 'Voce realmente deseja deletar este endere&ccedil;o IP?';
+$lng['admin']['ipsandports']['ipsandports'] = 'IPs e Portas';
+$lng['admin']['ipsandports']['add'] = 'Adicionar IP/Porta';
+$lng['admin']['ipsandports']['edit'] = 'Editar IP/Porta';
+$lng['admin']['ipsandports']['ipandport'] = 'IP/Porta';
+$lng['admin']['ipsandports']['ip'] = 'IP';
+$lng['admin']['ipsandports']['port'] = 'Porta';
+$lng['admin']['ipsandports']['default'] = 'IP/Porta padr&atilde;o da revenda';
+
 ?>
