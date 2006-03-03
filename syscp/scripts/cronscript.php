@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * filename: $Source$
  * begin: Friday, Aug 06, 2004
