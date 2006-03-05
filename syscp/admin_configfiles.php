@@ -37,7 +37,7 @@
 					'label' => 'Apache Webserver (HTTP)',
 					'commands' => Array
 					(
-						'echo "Include '.$settings['system']['apacheconf_directory'].'vhosts.conf" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].'vhosts.conf" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
 						'touch '.$settings['system']['apacheconf_directory'].'vhosts.conf',
 						'mkdir -p '.$settings['system']['documentroot_prefix'],
 						'mkdir -p '.$settings['system']['logfiles_directory']
@@ -145,7 +145,7 @@
 					'label' => 'Apache Webserver (HTTP)',
 					'commands' => Array
 					(
-						'echo "Include '.$settings['system']['apacheconf_directory'].'vhosts.conf" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].'vhosts.conf" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
 						'touch '.$settings['system']['apacheconf_directory'].'vhosts.conf',
 						'mkdir -p '.$settings['system']['documentroot_prefix'],
 						'mkdir -p '.$settings['system']['logfiles_directory']
