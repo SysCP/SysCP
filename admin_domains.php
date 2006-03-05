@@ -344,7 +344,7 @@
 					$result_ipsandports_default=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `default` = '1'");
 					while($row_ipandport=$db->fetch_array($result_ipsandports))
 					{
-						$ipsandports.=makeoption($row_ipandport['ip'].'/'.$row_ipandport['port'],$row_ipandport['id'],$result_ipsandports_default['id']);
+						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'],$row_ipandport['id'],$result_ipsandports_default['id']);
 					}
 					$standardsubdomains=array();
 					$result_standardsubdomains=$db->query('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`, `'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`id`=`c`.`standardsubdomain`');
@@ -505,7 +505,7 @@
 					$result_ipsandports=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
 					while($row_ipandport=$db->fetch_array($result_ipsandports))
 					{
-						$ipsandports.=makeoption($row_ipandport['ip'].'/'.$row_ipandport['port'],$row_ipandport['id'],$result['ipandport']);
+						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'],$row_ipandport['id'],$result['ipandport']);
 					}
 					$result['specialsettings'] = stripslashes($result['specialsettings']);
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);
