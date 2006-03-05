@@ -66,7 +66,7 @@
 					{
 						$ipsandports_default_id = $row['id'];
 					}
-					$ipsandports_default.=makeoption($row['ip'].'/'.$row['port'],$row['id'],$ipsandports_default_id);
+					$ipsandports_default.=makeoption($row['ip'].':'.$row['port'],$row['id'],$ipsandports_default_id);
 					eval("\$ipsandports.=\"".getTemplate("ipsandports/ipsandports_ipandport")."\";");
 				}
 				eval("echo \"".getTemplate("ipsandports/ipsandports")."\";");
@@ -99,7 +99,7 @@
 							}
 							else
 							{
-								ask_yesno('admin_ip_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['ip'].'/'.$result['port']);
+								ask_yesno('admin_ip_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['ip'].':'.$result['port']);
 							}
 						}
 					}
