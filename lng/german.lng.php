@@ -375,7 +375,7 @@ $lng['serversettings']['paging']['title']       = 'Eintr&auml;ge pro Seite';
 $lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
 $lng['error']['ipstillhasdomains']= 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &Auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
 $lng['error']['cantdeletedefaultip'] = 'Sie k&ouml;nnen die Standard IP/Port Kombination f&uuml;r Reseller nicht l&ouml;schen. Bitte setzen Sie eine andere IP/Port Kombination als Standard um diese l&ouml;schen zu k&ouml;nnen.';
-$lng['error']['cantdeletesystemip'] = 'Sie k&ouml;nnen die System IP nicht l&ouml;schen. Entweder legen Sie eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
+$lng['error']['cantdeletesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
 $lng['error']['myipaddress'] = '\'IP\'';
 $lng['error']['myport'] = '\'Port\'';
 $lng['error']['myipdefault'] = 'Sie m&uuml;ssen eine IP/Port Kombination ausw&auml;hlen, die den Standard defninieren soll.';
@@ -388,4 +388,7 @@ $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
 $lng['admin']['ipsandports']['default'] = 'Standard Reseller IP/Port'; 
+
+// ADDED IN 1.2.13-rc3
+$lng['error']['cantchangesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie noch eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
 ?>

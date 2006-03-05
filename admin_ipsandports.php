@@ -58,14 +58,15 @@
 			{
 				$ipsandports='';
 				$ipsandports_default='';
-				$result=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
-				$result_default=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `default` = '1'");
+				$ipsandports_default_id='';
+				$result=$db->query("SELECT `id`, `ip`, `port`, `default` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
 				while($row=$db->fetch_array($result))
 				{
-					$ipsandports_default.=makeoption($row['ip'].'/'.$row['port'],$row['id'],$result_default['id']);
-				}
-				while($row=$db->fetch_array($result))
-				{
+					if($row['default']=='1')
+					{
+						$ipsandports_default_id = $row['id'];
+					}
+					$ipsandports_default.=makeoption($row['ip'].'/'.$row['port'],$row['id'],$ipsandports_default_id);
 					eval("\$ipsandports.=\"".getTemplate("ipsandports/ipsandports_ipandport")."\";");
 				}
 				eval("echo \"".getTemplate("ipsandports/ipsandports")."\";");
@@ -81,8 +82,8 @@
 				if($result['default']=='0')
 				{
 					$result=$db->query_first("SELECT `ip` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
-					$result=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
-					if($result['id']!='')
+					$result2=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
+					if( ( $result['ip']!=$settings['system']['ipaddress'] ) || ( $result['ip']==$settings['system']['ipaddress'] && $result2['id']!='' ) )
 					{
 						$result=$db->query_first("SELECT `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
 						if($result['ip']!='')
@@ -157,7 +158,7 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `ip` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
 			if($result['ip']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
@@ -166,6 +167,7 @@
 					$port = intval($_POST['port']);
 
 					$result2=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='$ip' AND `port`='$port'");
+					$result3=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
 
 					if($ip=='')
 					{
@@ -174,6 +176,10 @@
 					elseif($port=='')
 					{
 						standard_error(array('stringisempty','myport'));
+					}
+					elseif($result['ip']!=$ip && $result['ip']==$settings['system']['ipaddress'] && $result3['id']=='')
+					{
+						standard_error('cantchangesystemip');
 					}
 					elseif($result2['id']!='' && $result2['id']!=$id)
 					{

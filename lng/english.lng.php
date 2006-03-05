@@ -375,7 +375,7 @@ $lng['serversettings']['paging']['title']       = 'Entries per page';
 $lng['serversettings']['paging']['description'] = 'How many entries shall be shown on one page? (0 = disable paging)';
 $lng['error']['ipstillhasdomains']= 'The IP/Port combination you want to delete still has domains assigned to it, please reassign those to other IP/Port combinations before deleting this IP/Port combination.';
 $lng['error']['cantdeletedefaultip'] = 'You cannot delete the default reseller IP/Port combination, please make another IP/Port combination default for resellers before deleting this IP/Port combination.';
-$lng['error']['cantdeletesystemip'] = 'You cannot delete the system IP, either create a new IP/Port combination for the system IP or change the system IP.';
+$lng['error']['cantdeletesystemip'] = 'You cannot delete the last system IP, either create a new IP/Port combination for the system IP or change the system IP.';
 $lng['error']['myipaddress'] = '\'IP\'';
 $lng['error']['myport'] = '\'Port\'';
 $lng['error']['myipdefault'] = 'You need to select an IP/Port combination that should become default.';
@@ -388,5 +388,8 @@ $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
 $lng['admin']['ipsandports']['default'] = 'Default reseller IP/Port';
+
+// ADDED IN 1.2.13-rc3
+$lng['error']['cantchangesystemip'] = 'You cannot change the last system IP, either create another new IP/Port combination for the system IP or change the system IP.';
 
 ?>

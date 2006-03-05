@@ -415,6 +415,7 @@
 				$system_ipaddress.=makeoption($key,$value,$settings['system']['ipaddress']);
 			}
 
+			$pathedit='';
  			foreach (array('Manual','Dropdown') as $method)
 			{
 				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit']);
