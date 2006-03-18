@@ -186,7 +186,7 @@ $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more reso
 $lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
 
 $lng['error']['mustbeurl'] = 'You have not typed a valid or complete url (e.g. http://somedomain.com/error404.htm)';
-$lng['error']['invalidpath'] = 'You have not choosen a valid url (maybe problems with the dirlisting?)';
+$lng['error']['invalidpath'] = 'You have not chosen a valid url (maybe problems with the dirlisting?)';
 $lng['error']['stringisempty'] ='Missing Input in Field';
 $lng['error']['stringiswrong'] ='Wrong Input in Field';
 $lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
@@ -358,7 +358,7 @@ $lng['serversettings']['maxloginattempts']['description'] = 'Maximum login attem
 $lng['serversettings']['deactivatetime']['title']       = 'Deactivate Time';
 $lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
 $lng['serversettings']['pathedit']['title']       = 'Type of path input';
-$lng['serversettings']['pathedit']['description'] = 'Should a path be choosen by a dropdown menu or by an input field?';
+$lng['serversettings']['pathedit']['description'] = 'Should a path be selected by a dropdown menu or by an input field?';
 
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13
@@ -391,5 +391,5 @@ $lng['admin']['ipsandports']['default'] = 'Default reseller IP/Port';
 
 // ADDED IN 1.2.13-rc3
 $lng['error']['cantchangesystemip'] = 'You cannot change the last system IP, either create another new IP/Port combination for the system IP or change the system IP.';
-
+$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure, you want the document root for this domain, not being within the customerroot of the customer?';
 ?>
