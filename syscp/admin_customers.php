@@ -392,16 +392,16 @@
 						if ( CRYPT_STD_DES == 1 )
 						{
 							$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
-							$password = crypt($password, $saltfordescrypt);
+							$htpasswdPassword = crypt($password, $saltfordescrypt);
 						}
 						else
 						{
-							$password = crypt($password);
+							$htpasswdPassword = crypt($password);
 						}
 						$db->query(
 							"INSERT INTO `".TABLE_PANEL_HTPASSWDS."` " .
 							"(`customerid`, `username`, `password`, `path`) " .
-							"VALUES ('$customerid', '$loginname', '$password', '$path')"
+							"VALUES ('$customerid', '$loginname', '$htpasswdPassword', '$path')"
 						);
 						inserttask('3',$path);
 

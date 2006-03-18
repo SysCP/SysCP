@@ -226,7 +226,14 @@
 						$ipandport = intval($_POST['ipandport']);
 						if(isset($_POST['documentroot']) && $_POST['documentroot'] != '')
 						{
-							$documentroot = addslashes($_POST['documentroot']);
+							if ( substr($_POST['documentroot'],0,1) != '/' )
+							{
+								$documentroot .= '/'.addslashes($_POST['documentroot']);
+							}
+							else 
+							{
+								$documentroot = addslashes($_POST['documentroot']);
+							}
 						}
 					}
 					else
@@ -310,12 +317,29 @@
 
 					else
 					{
-						if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
+						if( ($openbasedir == '0' || $safemode == '0') 
+						    && (!isset($_POST['reallydoit']) 
+						       || $_POST['reallydoit'] != 'reallydoit') )
 						{
 							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;customerid=$customerid;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;speciallogfile=$speciallogfile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
 							exit;
 						}
-						if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
+						$pattern = sprintf('^%s', $customer['documentroot']);
+						if( !ereg($pattern,$documentroot) 
+						    && ( !isset($_POST['reallydocroot'] ) 
+						       || $_POST['reallydocroot'] != 'reallydocroot') )
+						{
+							$params = "page=$page;action=$action;domain=$domain;documentroot=$documentroot;customerid=$customerid;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;speciallogfile=$speciallogfile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).';reallydocroot=reallydocroot';
+							if ( isset($_POST['reallydoit']) )
+							{
+								$params .= ';reallydoit=reallydoit';
+							}
+							ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params );
+							exit;
+						  	
+						}
+						if( (isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
+						   || (isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' ) )
 						{
 							$specialsettings = urldecode($specialsettings);
 						}
@@ -392,6 +416,8 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
+					$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
+
 					$aliasdomain = intval($_POST['alias']);
 					$isemaildomain = intval($_POST['isemaildomain']);
 					$subcanemaildomain = intval($_POST['subcanemaildomain']);
@@ -408,7 +434,6 @@
 						$documentroot = addslashes($_POST['documentroot']);
 						if($documentroot=='')
 						{
-							$customer=$db->query_first("SELECT `documentroot` FROM ".TABLE_PANEL_CUSTOMERS." WHERE `customerid`='".$result['customerid']."'");
 							$documentroot=$customer['documentroot'];
 						}
 					}
@@ -467,7 +492,23 @@
 						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentroot;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
 						exit;
 					}
-					if(isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
+					$pattern = sprintf('^%s', $customer['documentroot']);
+					if( !ereg($pattern,$documentroot) 
+					    && ( !isset($_POST['reallydocroot'] ) 
+					       || $_POST['reallydocroot'] != 'reallydocroot') )
+					{
+						$params = "id=$id;page=$page;action=$action;documentroot=$documentroot;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).';reallydocroot=reallydocroot';
+						if ( isset($_POST['reallydoit']) )
+						{
+							$params .= ';reallydoit=reallydoit';
+						}
+						ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params );
+						exit;
+					  	
+					}
+
+					if( (isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
+					   || (isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' ) )
 					{
 						$specialsettings = urldecode($specialsettings);
 					}

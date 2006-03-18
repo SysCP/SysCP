@@ -785,4 +785,24 @@
 
 		$settings['panel']['version'] = '1.2.13-rc3';
 	}
+	if( $settings['panel']['version'] == '1.2.13-rc3' )
+	{
+		// update lastcronrun to current date
+		$query = 
+			'UPDATE `%s` ' . 
+			'SET `value` = UNIX_TIMESTAMP() ' . 
+			'WHERE `settinggroup` = \'system\' ' . 
+			'AND `varname` = \'lastcronrun\' ';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query( $query );
+		// set new version 
+		$query = 
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.13-rc4\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.13-rc4';
+	}
 ?>
