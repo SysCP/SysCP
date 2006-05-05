@@ -1,0 +1,2 @@
+auth required pam_mysql.so user=<SQL_UNPRIVILEGED_USER> passwd=<SQL_UNPRIVILEGED_PASSWORD> host=<SQL_HOST> db=<SQL_DB> table=mail_users usercolumn=username passwdcolumn=password_enc crypt=1
+account sufficient pam_mysql.so user=<SQL_UNPRIVILEGED_USER> passwd=<SQL_UNPRIVILEGED_PASSWORD> host=<SQL_HOST> db=<SQL_DB> table=mail_users usercolumn=username passwdcolumn=password_enc crypt=1 
