@@ -1,0 +1,28 @@
+
+  C R E O L E
+  ===========
+
+  Creole is a database abstraction layer for PHP5. It abstracts PHP's native 
+  db-specific API to create more portable code while also providing developers 
+  with a clean fully object-oriented interface based loosely on the API for Java's 
+  JDBC.
+   
+  There are a number of reasons why Creole exists (when there are already several
+  options for PHP).  Please see http://creole.phpdb.org for documentation,
+  propaganda, and links to the competition.
+  
+  J A R G O N
+  ===========
+  
+  Jargon is part of the "Creole" project, but is considered a different package.
+  The Jargon classes provide convenience features that Creole - which is designed
+  to be a db abstraction layer for use within other apps and frameworks - lacks.
+  
+  Jargon provides convenience features such as the PEAR [M]DB getCol(), getOne(),
+  etc. functions; Jargon makes it easy to perform paged queries; and Jargon
+  provides a very basic set of DAO classes.  
+  
+  See the INSTALL document to learn how to install these libraries.  For more
+  usage examples, please visit the site at http://creole.phpdb.org .  
+    
+  -- $Id: README,v 1.1 2004/03/20 04:09:57 hlellelid Exp $

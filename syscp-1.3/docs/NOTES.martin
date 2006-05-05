@@ -1,0 +1,33 @@
+Some notes about existing hooks in the core code: 
+
+MODULE  HOOKNAME            CALLING SCRIPT            
+------- ------------------- -------------------       
+core    deleteCustomer      admin_customers.php
+core    createCustomer      admin_customers.php
+
+core    deactivateCustomer  admin_customers.php
+
+core    updateDomain        admin_domains.php
+                            admin_settings.php
+                            customer_domains.php
+                            
+core    createDomain        admin_customers.php
+                            admin_domains.php
+                            customer_domains.php
+                            
+core    deleteDomain        admin_customers.php
+                            admin_domains.php
+                            customer_domains.php
+
+core	deleteIPPort        admin_ipsandports.php
+core    updateIPPort        admin_ipsandports.php
+core    createIPPort        admin_ipsandports.php
+
+core	createHTAccess		customer_extras.php
+							admin_customers.php
+core 	updateHTAccess		customer_extras.php
+core	deleteHTAccess		customer_extras.php
+
+core	createHTPasswd		customer_extras.php
+core	deleteHTPasswd		customer_extras.php
+core	updateHTPasswd		customer_extras.php
