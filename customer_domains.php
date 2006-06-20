@@ -143,7 +143,7 @@
 			{
 				if ($row['parentdomainid'] == 0)
 				{
-					$domain_sort_array[$sortkey]=array($sortkey=>$row);
+					$domain_sort_array[$sortkey][$sortkey] = $row;
 				}
 				else
 				{
