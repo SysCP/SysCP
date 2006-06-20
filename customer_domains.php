@@ -224,7 +224,7 @@
 				{
 					$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/','/^https?\:\/\//'),'',addslashes($_POST['subdomain'])));
 					$domain=$idna_convert->encode(addslashes($_POST['domain']));
-					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
+					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."' AND `caneditdomain` = '1'");
 					$aliasdomain = intval($_POST['alias']);
@@ -283,7 +283,7 @@
 
 					else
 					{
-						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', ".(($aliasdomain != 0) ? "'".$aliasdomain."'" : "NULL").", '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
+						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['ipandport']."', ".(($aliasdomain != 0) ? "'".$aliasdomain."'" : "NULL").", '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
 						$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 						inserttask('1');
     					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;

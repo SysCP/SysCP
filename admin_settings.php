@@ -98,6 +98,30 @@
 //				echo 'system_ipaddress<br />';
 				$value=addslashes($_POST['system_ipaddress']);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
+
+				// FLO[06-06-20]: This could be made more fashionable in my opinion...
+				$ipandport = $db->query('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `ip`=\''.$value.'\' AND `port`=\'80\''); 
+				if($db->num_rows($ipandport) > 0) {
+					$ipandport = $db->fetch_array($ipandport);
+					$ipandport = intval($ipandport['id']);
+				}
+				else
+				{
+					$ipandport = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `ip`=\''.$value.'\'');
+					$ipandport = intval($ipandport['id']);
+				}
+
+				$customerstddomains = $db->query('SELECT `standardsubdomain` FROM `'.TABLE_PANEL_CUSTOMERS.'` WHERE `standardsubdomain` <> \'0\'');
+				$ids = array();
+				while($row = $db->fetch_array($customerstddomains))
+				{
+					$ids[] = $row['standardsubdomain'];
+				}
+				if(count($ids) > 0)
+				{
+					$db->query('UPDATE `'.TABLE_PANEL_DOMAINS.'` SET `ipandport`=\''.$ipandport.'\' WHERE `id` IN ('.join(',',$ids).')');
+				}
+
 				inserttask('1');
 
 				if($sql['host'] != 'localhost')
