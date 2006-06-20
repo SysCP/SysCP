@@ -144,7 +144,7 @@ $lng['ftp']['account_add'] = 'Account anlegen';
  * MySQL
  */
 $lng['mysql']['databasename'] = 'Benutzer-/Datenbankname';
-$lng['mysql']['databasedescription'] = 'Datenbankbezeichnung';
+$lng['mysql']['databasedescription'] = 'Datenbankbeschreibung';
 $lng['mysql']['database_create'] = 'Datenbank anlegen';
 
 /**
