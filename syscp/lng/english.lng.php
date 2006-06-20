@@ -392,4 +392,8 @@ $lng['admin']['ipsandports']['default'] = 'Default reseller IP/Port';
 // ADDED IN 1.2.13-rc3
 $lng['error']['cantchangesystemip'] = 'You cannot change the last system IP, either create another new IP/Port combination for the system IP or change the system IP.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure, you want the document root for this domain, not being within the customerroot of the customer?';
+
+// ADDED IN 1.2.14-rc1
+$lng['admin']['memorylimitdisabled'] = 'Disabled';
+
 ?>

@@ -59,6 +59,10 @@
 
 		$phpversion = phpversion();
 		$phpmemorylimit = @ini_get("memory_limit");
+		if($phpmemorylimit == "") 
+		{
+			$phpmemorylimit = $lng['admin']['memorylimitdisabled']; 
+		}
 		$mysqlserverversion = mysql_get_server_info();
 		$mysqlclientversion = mysql_get_client_info();
 		$webserverinterface = strtoupper(@php_sapi_name());
