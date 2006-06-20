@@ -338,8 +338,12 @@
 							exit;
 						  	
 						}
-						if( (isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
-						   || (isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' ) )
+
+						if( isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit' )
+						{
+							$specialsettings = urldecode($specialsettings);
+						}
+						if( isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' )
 						{
 							$specialsettings = urldecode($specialsettings);
 						}
@@ -507,8 +511,11 @@
 					  	
 					}
 
-					if( (isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit') 
-					   || (isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' ) )
+					if( isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit' )
+					{
+						$specialsettings = urldecode($specialsettings);
+					}
+					if( isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' )
 					{
 						$specialsettings = urldecode($specialsettings);
 					}
