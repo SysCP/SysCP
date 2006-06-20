@@ -1147,7 +1147,7 @@
 			{
 				$_fileList[] = $path.'/';
 			}
-			if ( $file != '..' && $file != '.' && is_dir( $path.'/'.$file ) )
+			if ( $file != '..' && $file != '.' && is_dir( $path.'/'.$file ) && is_readable( $path.'/'.$file ) )
 			{
 				$_fileList = findDirs( $path.'/'.$file, $uid, $gid, $_fileList );
 			}
