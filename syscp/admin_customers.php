@@ -417,11 +417,13 @@
 						);
 						
 						if($createstdsubdomain == '1') {
-							
+							$ipandport = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `default`=\'1\''); 
+							$ipandport = intval($ipandport['id']);
+
 							$db->query(
 								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
-								"(`domain`, `customerid`, `adminid`, `parentdomainid`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '-1', '$documentroot', '', '0', '0', '1', '1', '0', '')"
+								"(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
+								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '-1', '$ipandport', '$documentroot', '', '0', '0', '1', '1', '0', '')"
 							);
 							$domainid=$db->insert_id();
 							$db->query(
