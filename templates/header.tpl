@@ -9,10 +9,10 @@
     This not only gives respect to the large amount of time given freely by the developers
     but also helps build interest, traffic and use of SysCP. If you refuse
     to include even this then support on our forums may be affected.
-    The SysCP Team : 2003-2005
+    The SysCP Team : 2003-2006
     Template made by Kirill Bauer.
 // -->
-  <div style="position:absolute; top:10px; right:10px">SysCP $version &copy; 2003-2005 by <a href="http://www.syscp.de/" target="_blank">the SysCP Team</a></div>
+  <div style="position:absolute; top:10px; right:10px">SysCP $version &copy; 2003-2006 by <a href="http://www.syscp.de/" target="_blank">the SysCP Team</a></div>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
       <td width="800"><img src="images/header.gif" width="800" height="89"></td>
