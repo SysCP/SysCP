@@ -395,6 +395,10 @@ $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure,
 
 // ADDED IN 1.2.14-rc1
 $lng['admin']['memorylimitdisabled'] = 'Disabled';
-$lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts. Please enter another accountname.'
+$lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts. Please enter another accountname.';
+
+$lng['domain']['openbasedirpath'] = 'OpenBasedir-path';
+$lng['domain']['docroot'] = 'Path from field above';
+$lng['domain']['homedir'] = 'Home directory';
 
 ?>

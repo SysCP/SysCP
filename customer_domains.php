@@ -234,7 +234,7 @@
 					{
 						$aliasdomain_check = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`,`'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`customerid`=\''.$userinfo['customerid'].'\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\''.$userinfo['customerid'].'\' AND `d`.`id`=\''.$aliasdomain.'\'');
 					}
-					
+
 					$path=addslashes($_POST['path']);
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
@@ -246,6 +246,15 @@
 							standard_error('directorymustexist',$userpath);
 							exit;
 						}
+					}
+
+					if(isset($_POST['openbasedir_path']) && $_POST['openbasedir_path'] == '1')
+					{
+						$openbasedir_path = '1';
+					}
+					else
+					{
+						$openbasedir_path = '0';
 					}
 
 					if($path=='')
@@ -283,7 +292,7 @@
 
 					else
 					{
-						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['ipandport']."', ".(($aliasdomain != 0) ? "'".$aliasdomain."'" : "NULL").", '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
+						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `openbasedir_path`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".$userinfo['customerid']."', '$completedomain', '$path', '".$domain_check['ipandport']."', ".(($aliasdomain != 0) ? "'".$aliasdomain."'" : "NULL").", '".$domain_check['id']."', '0', '".$domain_check['openbasedir']."', '".$openbasedir_path."', '".$domain_check['safemode']."', '".$domain_check['speciallogfile']."', '".$domain_check['specialsettings']."')");
 						$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 						inserttask('1');
     					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
@@ -303,8 +312,12 @@
 					{
 						$aliasdomains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id']);
 					}
+
+					$openbasedir=makeoption($lng['domain']['docroot'],0)
+					            .makeoption($lng['domain']['homedir'],1);
+
 					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
-					                             $userinfo['guid'], $settings['panel']['pathedit'] );				
+					                             $userinfo['guid'], $settings['panel']['pathedit'] );
 					eval("echo \"".getTemplate("domains/domains_add")."\";");
 				}
 			}
@@ -312,7 +325,7 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `d`.`id`, `d`.`customerid`, `d`.`domain`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`parentdomainid`, `d`.`aliasdomain`, `pd`.`subcanemaildomain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_DOMAINS."` `pd` WHERE `d`.`customerid`='".$userinfo['customerid']."' AND `d`.`id`='$id' AND ((`d`.`parentdomainid`!='0' AND `pd`.`id`=`d`.`parentdomainid`) OR (`d`.`parentdomainid`='0' AND `pd`.`id`=`d`.`id`)) AND `d`.`caneditdomain`='1'");
+			$result=$db->query_first("SELECT `d`.`id`, `d`.`customerid`, `d`.`domain`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`parentdomainid`, `d`.`aliasdomain`, `d`.`openbasedir_path` ,`pd`.`subcanemaildomain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_DOMAINS."` `pd` WHERE `d`.`customerid`='".$userinfo['customerid']."' AND `d`.`id`='$id' AND ((`d`.`parentdomainid`!='0' AND `pd`.`id`=`d`.`parentdomainid`) OR (`d`.`parentdomainid`='0' AND `pd`.`id`=`d`.`id`)) AND `d`.`caneditdomain`='1'");
 			$alias_check=$db->query_first('SELECT COUNT(`id`) AS count FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$result['id'].'\'');
 			$alias_check=$alias_check['count'];
 			
@@ -322,6 +335,7 @@
 				{
 					$path=addslashes($_POST['path']);
 					$aliasdomain = intval($_POST['alias']);
+
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
 						$path=makeCorrectDir($path);
@@ -363,15 +377,24 @@
 					{
 						$aliasdomain_check = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`,`'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`customerid`=\''.$result['customerid'].'\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\''.$result['customerid'].'\' AND `d`.`id`=\''.$aliasdomain.'\'');
 					}
+
 					if($aliasdomain_check['id']!=$aliasdomain)
 					{
 						standard_error('domainisaliasorothercustomer');
 					}
-					
+
+					if(isset($_POST['openbasedir_path']) && $_POST['openbasedir_path'] == '1')
+					{
+						$openbasedir_path = '1';
+					}
+					else
+					{
+						$openbasedir_path = '0';
+					}
+
 					if($path=='')
 					{
 						standard_error('patherror');
-						exit;
 					}
 					else
 					{
@@ -380,12 +403,12 @@
 							$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".$userinfo['customerid']."' AND `domainid`='$id'");
 							$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".$userinfo['customerid']."' AND `domainid`='$id'");
 						}
-						if($path != $result['documentroot'] || $isemaildomain != $result['isemaildomain'] || $iswildcarddomain != $result['iswildcarddomain'] || $aliasdomain != $result['aliasdomain'])
+						if($path != $result['documentroot'] || $isemaildomain != $result['isemaildomain'] || $iswildcarddomain != $result['iswildcarddomain'] || $aliasdomain != $result['aliasdomain'] || $openbasedir_path != $result['openbasedir_path'])
 						{
 							inserttask('1');
-							$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$path', `isemaildomain`='$isemaildomain', `iswildcarddomain`='$iswildcarddomain', `aliasdomain`=".(($aliasdomain!=0 && $alias_check==0) ? '\''.$aliasdomain.'\'' : 'NULL')." WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+							$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='$path', `isemaildomain`='$isemaildomain', `iswildcarddomain`='$iswildcarddomain', `aliasdomain`=".(($aliasdomain!=0 && $alias_check==0) ? '\''.$aliasdomain.'\'' : 'NULL').",`openbasedir_path`='$openbasedir_path' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						}
-            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -399,10 +422,14 @@
 					}
 					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
 					                             $userinfo['guid'], $settings['panel']['pathedit'],
-					                             $result['documentroot'] );				
+					                             $result['documentroot'] );
 //					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
 					$iswildcarddomain=makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
+
+					$openbasedir=makeoption($lng['domain']['docroot'],0,$result['openbasedir_path'])
+					            .makeoption($lng['domain']['homedir'],1,$result['openbasedir_path']);
+
 					eval("echo \"".getTemplate("domains/domains_edit")."\";");
 				}
 			}
