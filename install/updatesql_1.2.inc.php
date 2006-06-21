@@ -817,4 +817,42 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13';
 	}
+	if( $settings['panel']['version'] == '1.2.13' )
+	{
+		//get highest accountnumber
+		$query = 
+			'SELECT `loginname`	' .
+			'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' .
+			'WHERE `loginname` LIKE \'' . $settings['customer']['accountprefix'] . '%\';';
+		$result = $db->query($query);
+		$lastaccountnumber = 0;
+		while ($row = $db->fetch_array($result))
+		{
+			$tmpnumber = intval(substr($row['loginname'], strlen($settings['customer']['accountprefix'])));
+			if ( $tmpnumber > $lastaccountnumber )
+			{
+				$lastaccountnumber = $tmpnumber;
+			}
+		}
+		//update the lastaccountnumber to refer to the highest account availible + 1
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \''. $lastaccountnumber . '\' ' .
+			'WHERE `settinggroup` = \'system\' ' .
+			'AND `varname` = \'lastaccountnumber\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['system']['lastaccountnumber'] = $lastaccountnumber;
+
+		// set new version 
+		$query = 
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.13-svn1\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.13-svn1';
+	}
+
 ?>
