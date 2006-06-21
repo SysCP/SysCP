@@ -283,7 +283,7 @@
 
 					if($name == '')
 					{
-					       	standard_error(array('stringisempty','myname'));
+						standard_error(array('stringisempty','myname'));
 					}
 					elseif($firstname=='')
 					{
@@ -301,25 +301,32 @@
 					{
 						if(isset($_POST['loginname']) && $_POST['loginname'] != '')
 						{
+							$accountnumber = intval($settings['system']['lastaccountnumber']);
 							$loginname = addslashes($_POST['loginname']);
-							$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='".$loginname."'");
-							$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
 
-						if($loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname)
-						{
-							standard_error('loginnameexists',$loginname);
-						}
-						elseif(!check_username($loginname))
-						{
-							standard_error('loginnameiswrong',$loginname);
-						}
-
-							$accountnumber=intval($settings['system']['lastaccountnumber']);
+							// Accounts which match systemaccounts are not allowed, filtering them
+							if ( preg_match('/^'.$settings['customer']['accountprefix'].'([0-9]+)/', $loginname) )
+							{
+								standard_error('loginnameissystemaccount');
+							}
 						}
 						else
 						{
-							$accountnumber=intval($settings['system']['lastaccountnumber'])+1;
-							$loginname = $settings['customer']['accountprefix'].$accountnumber;
+							$accountnumber = intval($settings['system']['lastaccountnumber']) + 1;
+							$loginname = $settings['customer']['accountprefix'] . $accountnumber;
+						}
+
+						// Check if the account already exists
+						$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '".$loginname."'");
+						$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '".$loginname."'");
+
+						if ( $loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname )
+						{
+							standard_error( 'loginnameexists', $loginname );
+						}
+						elseif ( !check_username($loginname))
+						{
+							standard_error( 'loginnameiswrong', $loginname);
 						}
 
 						$guid=intval($settings['system']['lastguid'])+1;
@@ -379,11 +386,15 @@
 							"SET `value`='$guid' " .
 							"WHERE `settinggroup`='system' AND `varname`='lastguid'"
 						);
-						$db->query(
-							"UPDATE `".TABLE_PANEL_SETTINGS."` " .
-							"SET `value`='$accountnumber' " .
-							"WHERE `settinggroup`='system' AND `varname`='lastaccountnumber'"
-						);
+
+						if( $accountnumber != intval($settings['system']['lastaccountnumber']) )
+						{
+							$db->query(
+								"UPDATE `".TABLE_PANEL_SETTINGS."` " .
+								"SET `value`='$accountnumber' " .
+								"WHERE `settinggroup`='system' AND `varname`='lastaccountnumber'"
+							);
+						}
 
 						inserttask('2',$loginname,$guid,$guid);
 

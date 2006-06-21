@@ -395,5 +395,6 @@ $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure,
 
 // ADDED IN 1.2.14-rc1
 $lng['admin']['memorylimitdisabled'] = 'Disabled';
+$lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts. Please enter another accountname.'
 
 ?>

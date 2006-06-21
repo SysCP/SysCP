@@ -391,8 +391,10 @@ $lng['admin']['ipsandports']['default'] = 'Standard Reseller IP/Port';
 
 // ADDED IN 1.2.13-rc3
 $lng['error']['cantchangesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie noch eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
+$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Sind Sie sicher, dass der DocumentRoot dieser Domain au&szlig;erhalb des Heimatverzeichnisses des Kunden liegen soll?';
 
 // ADDED IN 1.2.14-rc1
 $lng['admin']['memorylimitdisabled'] = 'Deaktiviert';
+$lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht. Bitte w&auml;hlen Sie einen anderen Accountnamen.' 
 
 ?>
