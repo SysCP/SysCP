@@ -75,7 +75,7 @@
 			$vhosts_file.='ServerName '.$settings['system']['hostname']."\n";
 			$vhosts_file.='</VirtualHost>'."\n"."\n";
 
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`deactivated` <> '1' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`deactivated` <> '1' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				fwrite( $debugHandler, '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain']);
@@ -106,24 +106,34 @@
 				}
 				else
 				{
+					$domain['customerroot'] = makeCorrectDir ($domain['customerroot']);
 					$domain['documentroot'] = makeCorrectDir ($domain['documentroot']);
 					$vhosts_file.='  DocumentRoot "'.$domain['documentroot']."\"\n";
- 					if($domain['openbasedir'] == '1')
- 					{
-						$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot']."\"\n";
- 					}
- 					if($domain['safemode'] == '1')
- 					{
- 						$vhosts_file.='  php_admin_flag safe_mode On '."\n";
- 					}
+
+					if($domain['openbasedir'] == '1')
+					{
+						if($domain['openbasedir_path'] == '1')
+						{
+							$vhosts_file.='  php_admin_value open_basedir "'.$domain['customerroot']."\"\n";
+						}
+						else
+						{
+							$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot']."\"\n";
+						}
+					}
+
 					if($domain['safemode'] == '0')
 					{
 						$vhosts_file.='  php_admin_flag safe_mode Off '."\n";
 					}
- 
- 					if(!is_dir($domain['documentroot']))
- 					{					
- 						safe_exec('mkdir -p "'.$domain['documentroot'].'"');
+					else
+					{
+						$vhosts_file.='  php_admin_flag safe_mode On '."\n";
+					}
+
+					if(!is_dir($domain['documentroot']))
+					{
+						safe_exec('mkdir -p "'.$domain['documentroot'].'"');
 						safe_exec('chown -R '.$domain['guid'].':'.$domain['guid'].' "'.$domain['documentroot'].'"');
 					}
 					if($domain['speciallogfile'] == '1')

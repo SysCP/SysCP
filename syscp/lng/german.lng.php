@@ -395,6 +395,10 @@ $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Sind Sie sich
 
 // ADDED IN 1.2.14-rc1
 $lng['admin']['memorylimitdisabled'] = 'Deaktiviert';
-$lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht. Bitte w&auml;hlen Sie einen anderen Accountnamen.' 
+$lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht. Bitte w&auml;hlen Sie einen anderen Accountnamen.';
+
+$lng['domain']['openbasedirpath'] = 'OpenBasedir-Pfad';
+$lng['domain']['docroot'] = 'Oben eingegebener Pfad';
+$lng['domain']['homedir'] = 'Heimverzeichnis';
 
 ?>

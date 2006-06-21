@@ -854,5 +854,22 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn1';
 	}
+	if( $settings['panel']['version'] == '1.2.13-svn1' )
+	{
+		$query = 
+			'ALTER TABLE `%s` ADD `openbasedir_path` TINYINT( 1 ) UNSIGNED NOT NULL AFTER `openbasedir` ';
+		$query = sprintf( $query, TABLE_PANEL_DOMAINS);
+		$db->query($query);
+
+		// set new version 
+		$query = 
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.13-svn2\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.13-svn2';
+	}
 
 ?>

@@ -20,6 +20,10 @@ $header
        <td class="maintable">{$pathSelect}</td>
       </tr>
       <tr>
+       <td class="maintable">{$lng['domain']['openbasedirpath']}:</td>
+       <td class="maintable" nowrap><select name="openbasedir_path">$openbasedir</select></td>
+      </tr>
+      <tr>
        <td class="maintable" colspan=2 align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['domains']['subdomain_add']}"></td>
       </tr>
      </table>
