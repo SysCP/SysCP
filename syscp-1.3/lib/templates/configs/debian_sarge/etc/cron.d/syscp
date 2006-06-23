@@ -1,0 +1,9 @@
+#
+# Set PATH, otherwise restart-scripts won't find start-stop-daemon
+#
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+#
+# Regular cron jobs for the syscp package
+#
+*/5 * * * *	root	/usr/local/syscp/sbin/syscp cron
+7   0 * * * root	/usr/local/syscp/sbin/syscp traffic

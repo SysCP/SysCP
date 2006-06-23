@@ -1,261 +1,26 @@
 <?php
 /**
- * This file is part of the SysCP project. 
- * Copyright (c) 2003-2006 the SysCP Project. 
- * 
- * For the full copyright and license information, please view the COPYING 
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Project.
+ *
+ * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
- * 
+ *
  * @copyright  (c) the authors
- * @package    Org.Syscp.Core
+ * @package    Syscp.Misc
  * @subpackage Toolkit
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @version    $Id$
  */
 
 	/**
-	 * Get template from filesystem
-	 *
-	 * @author  Florian Lippert <flo@redenswert.de>
-	 * 
- 	 * @param   string  Name of the template
-	 * @param   string  If area should be used to get template
-	 * 
-	 * @return  string  The Template
-	 */
-	function getTemplate($template, $noarea = 0)
-	{
-		global $templatecache;
-		if($noarea != 1)
-		{
-			$template = AREA.'/'.$template;
-		}
-
-		if(!isset($templatecache[$template]))
-		{
-			$filename = SYSCP_PATH_LIB.'templates/'.$template.'.tpl';
-			if(file_exists($filename))
-			{
-				$templatefile=str_replace("\"","\\\"",implode(file($filename),''));
-			}
-			else
-			{
-				$templatefile='<!-- TEMPLATE NOT FOUND: '.$filename.' -->';
-			}
-			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
-			$templatecache[$template] = $templatefile;
-		}
-		return $templatecache[$template];
-	}
-
-	/**
-	 * Prints one ore more errormessages on screen
-	 * <b>This function does an exit() at the end! </b>
-	 *
-	 * @author Florian Lippert <flo@redenswert.de>
-	 * @author Ron Brand <ron.brand@web.de>
-	 * 
-	 * @param  array   Errormessages
-	 * @param  string  A %s in the errormessage will be replaced by this string.
-	 * 
-	 * @return void    calls an exit() and terminates the whole application
-	 */
-	function standard_error($errors='', $replacer='')
-	{
-		global $db, $tpl, $userinfo, $config, $header, $footer, $lng;
-
-		if(!is_array($errors))
-		{
-			$errors = Array ($errors);
-		}
-
-		$error = '';
-		foreach ($errors as $single_error)
-		{
-			if(isset($lng['error'][$single_error]))
-			{
-				$single_error = $lng['error'][$single_error];
-				$single_error = str_replace ( '%s' , $replacer , $single_error ) ;
-			}
-			else
-			{
-				$error = 'Unknown Error';
-				break;
-			}
-
-			if(!isset($error))
-			{
-				$error = $single_error ;
-			}
-			else
-			{
-				$error .= ' ' . $single_error;
-			}
-		}
-		eval("echo \"".getTemplate('misc/error','1')."\";");
-		exit;
-	}
-
-	/**
-	 * Returns HTML Code for two radio buttons with two choices: yes and no 
-	 *
-	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
-	 * @param  string  Name of HTML-Variable
-	 * @param  string  Value which will be returned if user chooses yes
-	 * @param  string  Value which will be returned if user chooses no
-	 * @param  string  Value which is chosen by default
-	 * 
-	 * @return string  HTML Code
-	 */
-	function makeyesno($name,$yesvalue,$novalue="",$yesselected="")
-	{
- 		global $lng;
- 		if($yesselected)
- 		{
-			$yeschecked=' checked="checked"';
- 			$nochecked='';
- 		}
-  		else
- 		{
- 			$yeschecked='';
-			$nochecked=' checked="checked"';
- 		}
- 		$code="<b>".$lng['panel']['yes']."</b> <input type=\"radio\" name=\"$name\" value=\"$yesvalue\"$yeschecked /> &nbsp; \n<b>".$lng['panel']['no']."</b> <input type=\"radio\" name=\"$name\" value=\"$novalue\"$nochecked /> ";
-  		return $code;
- 	}
-
-	/**
-	 * Prints Question directly on screen
-	 *
-	 * @author Florian Lippert <flo@redenswert.de>
-	 * @author Martin Burchert <eremit@syscp.org>
-	 * 
-	 * @param  string  The question
-	 * @param  string  File which will be called with POST if user clicks yes
-	 * @param  string  Values which will be given to $yesfile. 
-	 *                 Format: 'variable1=value1;variable2=value2;variable3=value3'
-	 * @param  string  Name of the target eg Domain or eMail address etc.
-	 * 
-	 * @return void
-	 */
-	function ask_yesno ( $text , $yesfile , $params = '' , $targetname = '')
-	{
-		global $userinfo , $tpl , $db , $config , $header , $footer , $lng ;
-		$hiddenparams = '' ;
-		if ( isset ( $params ) )
-		{
-			$params = explode ( ';' , $params ) ;
- 			while ( list ( ,$param ) =each ( $params ) )
- 			{
- 				$param = explode ( '=' , $param ) ;
-				$hiddenparams .= "<input type=\"hidden\" name=\"$param[0]\" value=\"$param[1]\" />\n" ;
- 			}
- 		}
- 		if ( isset ( $lng['question'][$text] ) )
- 		{
-			$text = $lng['question'][$text] ;
-		}
-		$text = str_replace ( '%s' , $targetname , $text ) ;
-		eval ( "echo \"".getTemplate('misc/question_yesno','1')."\";" ) ;
-	}
-
-	/**
-	 * Return HTML Code for an option within a <select>
-	 *
-	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
-	 * @param  string The caption
-	 * @param  string The Value which will be returned
-	 * @param  string Values which will be selected by default.
-	 * 
-	 * @return string HTML Code
-	 */
-	function makeoption($title,$value,$selvalue="")
-	{
-		if($value==$selvalue)
-		{
-			$selected='selected="selected"';
-		}
- 		else
-		{
-			$selected='';
-		}
- 		$option="<option value=\"$value\" $selected >$title</option>";
- 		return $option;
-	}
-
-	/**
-	 * Sends an header ( 'Location ...' ) to the browser.
-	 *
-	 * @author  Florian Lippert <flo@redenswert.de>
-	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
-	 * @param   string   Destination
-	 * @param   array    Get-Variables
-	 * @param   boolean  if the target we are creating for a redirect 
-	 *                   should be a relative or an absolute url
-	 * 
-	 * @return  boolean  false if params is not an array
-	 * 
-	 * @changes martin@2005-01-29
-	 *          - added isRelative parameter
-	 *          - speed up the url generation 
-	 *          - fixed bug #91
-	 */
-	function redirectTo ( $destination , $get_variables = array(), $isRelative = false )
-	{
-		$params = array();
-		if ( is_array ( $get_variables ) )
-		{
-			foreach( $get_variables as $key => $value )
-			{
-				$params[] = $key . '=' . $value;				
-			}
-
-			$params = '?' . implode($params, '&' );
-
-			if ( $isRelative )
-			{	
-				$protocol = '';
-				$host     = '';
-				$path     = './';
-			}
-			else 
-			{
-				if ( isset( $_SERVER['HTTPS'] ) && strtolower($_SERVER['HTTPS']) == 'on' )
-				{
-					$protocol = 'https://';
-				}
-				else 
-				{
-					$protocol = 'http://';
-				}
- 				$host = $_SERVER['HTTP_HOST'];
- 				
-				if ( dirname( $_SERVER['PHP_SELF'] ) == '/' )
-				{
-					$path     = '/';
-				}
-				else 
-				{
-					$path     = dirname($_SERVER['PHP_SELF']) . '/';
-				}
- 			}
-			header ( 'Location: ' . $protocol . $host . $path . $destination . $params ) ;
- 		}
-
-		return false;
-	}
-
-	/**
 	 * Returns Array, whose elements have been checked whether thay are empty or not
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  array  The array to trim
-	 * 
+	 *
 	 * @return array  The trim'med array
 	 */
 	function array_trim($source)
@@ -276,15 +41,19 @@
 
 	/**
 	 * Replaces Strings in an array, with the advantage that you can select which fields should be str_replace'd
-	 * 
+	 *
 	 * @author Florian Lippert <flo@redenswert.de>
 	 *
 	 * @param  mixed   String or array of strings to search for
 	 * @param  mixed   String or array to replace with
 	 * @param  array   The subject array
 	 * @param  string  The fields which should be checked for, seperated by spaces
-	 * 
+	 *
 	 * @return array   The str_replace'd array
+	 *
+	 * @todo Check if str_replace fits the purpose. We only use this function in the
+	 *       code to replace -1 with UL/Unlimited. This code is used in
+	 *       admin_admins.php, admin_customers.php admin_index.php customer_index.php
 	 */
 	 function str_replace_array($search, $replace, $subject, $fields = '')
 	 {
@@ -317,10 +86,13 @@
 	 * Returns if an emailaddress is in correct format or not
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  string  The email address to check
-	 * 
+	 *
 	 * @return bool    Correct or not
+	 *
+	 * @todo THis is a simple regexp validation. Check what the returncode_space does. THis
+	 *       is used in: admin_admins.php(2x) admin_customers.php(2x) customer_email(2x)
 	 */
 	function verify_email($email)
 	{
@@ -344,102 +116,19 @@
 	}
 
 	/**
-	 * Inserts a task into the PANEL_TASKS-Table
-	 *
-	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
-	 * @param  int     Type of task
-	 * @param  string  Parameter 1
-	 * @param  string  Parameter 2
-	 * @param  string  Parameter 3
-	 * 
-	 * @return void
-	 * 
-	 * @deprecated 
-	 */
-	function inserttask($type,$param1='',$param2='',$param3='')
-	{
-		global $db;
-
-		if($type=='1')
-		{
-			$db->query(
-				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
-				'WHERE `type`="1"'
-			);
-
-			$db->query(
-				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-				'(`type`) ' .
-				'VALUES ' .
-				'("1")'
-			);
-		}
-		elseif($type=='2' && $param1!='' && $param2!='' && $param3!='')
-		{
-			$data=Array();
-			$data['loginname']=$param1;
-			$data['uid']=$param2;
-			$data['gid']=$param3;
-			$data=serialize($data);
-			$db->query(
-				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-				'(`type`, `data`) ' .
-				'VALUES ' .
-				'("2", "' . addslashes($data) . '")'
-			);
-		}
-		elseif($type=='3' && $param1!='')
-		{
-			$data=Array();
-			$data['path']=$param1;
-			$data=serialize($data);
-
-			$result=$db->query_first(
-				'SELECT `type` ' .
-				'FROM `' . TABLE_PANEL_TASKS . '` ' .
-				'WHERE `type`="3" ' .
-				'AND `data`="' . addslashes($data) .'"'
-			);
-
-			if($result['type']=='')
-			{
-				$db->query(
-					'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-					'(`type`, `data`) ' .
-					'VALUES ' .
-					'("3", "' . addslashes($data) . '")'
-				);
-			}
-		}
-		elseif($type=='4')
-		{
-			$db->query(
-				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
-				'WHERE `type`="4"'
-			);
-
-			$db->query(
-				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-				'(`type`) ' .
-				'VALUES ' .
-				'("4")'
-			);
-		}
-	}
-
-	/**
 	 * Function which make webalizer statistics and returns used traffic of a month and year
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  string  Name of logfile
 	 * @param  string  Place where stats should be build
 	 * @param  string  Caption for webalizer output
 	 * @param  int     Month
 	 * @param  int     Year
-	 * 
+	 *
 	 * @return int     Used traffic
+	 *
+	 * @todo Move this function into the cronscript area. We don'T need it globally.
 	 */
 	function webalizer_hist($logfile, $outputdir, $caption, $month = 0, $year = 0)
 	{
@@ -495,15 +184,17 @@
 	 * Function which returns a secure path, means to remove all multiple dots and slashes
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  string  The path
-	 * 
+	 *
 	 * @return string  The corrected path
+	 *
+	 * @todo No longer used?
 	 */
 	function makeSecurePath($path)
 	{
-		$search = Array ('/(\/)+/', '/(\.)+/');
-		$replace = Array ('/', '.');
+		$search = array ('/(\/)+/', '/(\.)+/');
+		$replace = array ('/', '.');
 		$path = preg_replace($search, $replace, $path);
 
 		return $path;
@@ -513,10 +204,12 @@
 	 * Function which returns a correct dirname, means to add slashes at the beginning and at the end if there weren't none
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  string  The dirname
-	 * 
+	 *
 	 * @return string  The corrected dirname
+	 *
+	 * @todo This should be moved to Syscp.class.php, it's a core security functionality.
 	 */
 	function makeCorrectDir($dir)
 	{
@@ -540,10 +233,12 @@
 	 * @author Florian Lippert <flo@redenswert.de>
 	 * @author Michael Russ <mr@edvruss.com>
 	 * @author Martin Burchert <eremit@adm1n.de>
-	 * 
+	 *
 	 * @param  string  the filename
-	 * 
+	 *
 	 * @return string  the corrected filename
+	 *
+	 * @todo Not used any longer?
 	 */
 	function makeCorrectFile($filename)
 	{
@@ -551,7 +246,7 @@
 		{
 			$filename = '/'.$filename;
 		}
- 
+
 		$filename = makeSecurePath ( $filename ) ;
 
 		return $filename;
@@ -561,17 +256,19 @@
 	 * Function which returns a correct destination for Postfix Virtual Table
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  string  The destinations
-	 * 
+	 *
 	 * @return string  the corrected destinations
+	 *
+	 * @todo Used only in customer_email(4x) maybe move there?
 	 */
 	function makeCorrectDestination($destination)
 	{
 		$search   = '/(\ )+/' ;
 		$replace  = ' ';
 		$destination = preg_replace($search, $replace, $destination);
-		
+
 		if ( substr($destination, 0, 1) == ' ' )
 		{
 			$destination = substr ( $destination , 1 ) ;
@@ -586,10 +283,13 @@
 
 	/**
 	 * Function which updates all counters of used ressources in panel_admins and panel_customers
-	 * 
+	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @return void
+	 *
+	 * @todo Consider what about to do with this function. After introducing propel and having a
+	 *       User model and handler, we should move this function there. FInd an interim place.
 	 */
 	function updateCounters ()
 	{
@@ -757,7 +457,7 @@
 			$admin_domains = $db->query_first(
 				'SELECT COUNT(*) AS `number_domains` ' .
 				'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
-				'WHERE `adminid` = "'.$admin['adminid'].'" ' . 
+				'WHERE `adminid` = "'.$admin['adminid'].'" ' .
 				'AND `isemaildomain` = "1"'
 			);
 
@@ -816,253 +516,66 @@
 	}
 
 	/**
-	 * Wrapper around the exec command.
-	 * 
-	 * @author Martin Burchert <eremit@adm1n.de>
-	 *
-	 * @param  string  String to be executed
-	 * 
-	 * @return string  The result of the exec()
-	 */
-	function safe_exec($exec_string)
-	{
-		global $config;
-		//
-		// define allowed system commands 
-		//
-		$allowed_commands = array(
-			'touch', 'chown', 'mkdir', 'webalizer', 'cp', 'du', 'chmod',
-			$config->get('system.apachereload_command'),
-			$config->get('system.bindreload_command') );
-		//
-		// check for ; in execute command
-		//
-		if ((stristr($exec_string,';')) or
-			(stristr($exec_string,'|')) or
-			(stristr($exec_string,'&')) or
-			(stristr($exec_string,'>')) or
-			(stristr($exec_string,'<')) or
-			(stristr($exec_string,'`')) or
-			(stristr($exec_string,'$')) or
-			(stristr($exec_string,'~')) or
-			(stristr($exec_string,'?')) )
-		{ 
-			die ("SECURITY CHECK FAILED!\n' The execute string $exec_string is a possible security risk!\nPlease check your whole server for security problems by hand!\n");
-		}
-		//
-		// check if command is allowed here 
-		//	
-		$allowed = false;
-		foreach ($allowed_commands as $key => $value)
-		{
-			if ($allowed == false)
-			{
-				$allowed = stristr($exec_string, $value);
-			}
-		}
-		if ($allowed == false)
-		{
-			die("SECURITY CHECK FAILED!\nYour command '$exec_string' is not allowed!\nPlease check your whole server for security problems by hand!\n");
-		}
-		//
-		// execute the command and return output
-		//
-
-		// --- martin @ 08.08.2005 -------------------------------------------------------
-		// fixing usage of uninitialised variable
-		$return = '';
-		// -------------------------------------------------------------------------------
-		exec($exec_string, $return);
-		return $return;
-	}
-	
-	/**
-	 * Navigation generator
-	 * 
-	 * @author Martin Burchert <eremit@adm1n.de>
-	 * 
-	 * @param  string The session-id of the user
-	 * @param  array  The userinfo of the user
-	 * 
-	 * @return string The content of the navigation bar
-	 */
-	function getNavigation($s, $userinfo)
-	{
-		global $db, $lng;
-		
-		$return = '';
-		//
-		// query database
-		//
-		$query  = 
-			'SELECT * ' .
-			'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-			'WHERE `area`=\''.AREA.'\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 
-			'ORDER BY `order`, `id` ASC' ;
-		$result = $db->query($query);
-		//
-		// presort in multidimensional array
-		//
-		while ($row = $db->fetch_array($result))
-		{
-			if ( $row['required_resources'] == '' || $userinfo[$row['required_resources']] > 0 || $userinfo[$row['required_resources']] == '-1' )
-			{
-				$row['parent_url'] = $row['url'] ;
-				$row['isparent'] = 1;
-				
-				$nav[$row['parent_url']][] = _createNavigationEntry($s,$row);
-				
-				$subQuery = 
-					'SELECT * '.
-					'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
-					'WHERE `area`=\''.AREA.'\' AND `parent_url`=\''.$row['url'].'\' ' . 
-					'ORDER BY `order`, `id` ASC' ;
-				$subResult = $db->query($subQuery);
-				while($subRow = $db->fetch_array($subResult))
-				{
-					if ( $subRow['required_resources'] == '' || $userinfo[$subRow['required_resources']] > 0 || $userinfo[$subRow['required_resources']] == '-1' )
-					{
-						$subRow['isparent'] = 0;
-						$nav[$row['parent_url']][] = _createNavigationEntry($s,$subRow);
-					}
-				}
-			}
-		}
-		//
-		// generate output
-		//
-		if ( (isset($nav)) && (sizeof($nav) > 0))
-		{
-			foreach ($nav as $parent_url => $row) 
-			{
-				$navigation_links = '';
-				foreach ($row as $id => $navElem )
-				{
-					if ($navElem['isparent'] == 1 )
-					{
-						$completeLink_ElementTitle = $navElem['completeLink'];
-					}
-					else
-					{
-						// assign url
-						$completeLink = $navElem['completeLink'];
-						// read template
-						eval("\$navigation_links .= \"".getTemplate("navigation_link",1)."\";");
-					}
-				}
-				if ( $navigation_links != '' )
-				{
-					eval("\$return .= \"".getTemplate("navigation_element",1)."\";");
-				}
-			}
-		}
-		return $return;
-	}
-	
-	/**
-	 * Processes a navigation entry in the database. It generates the correct
-	 * link and language.
-	 * 
-	 * @author unknown
-	 * 
-	 * @param  string The sessionid.
-	 * @param  array  The data recieved during the mysql query.
-	 * 
-	 * @return array  The processed data.
-	 */
-	function _createNavigationEntry($s, $data)
-	{
-		global $db, $lng;
-		
-		// get corect lang string
-		$lngArr = split ( ';' , $data['lang'] ) ;
-		$data['text'] = $lng;
-		foreach ($lngArr as $lKey => $lValue)
-		{
-			$data['text'] = $data['text'][$lValue] ;
-		}
-		if ( str_replace( ' ' , '' , $data['url'] ) != '' && !stristr($data['url'], 'nourl' ))
-		{
-			// append sid only to local
-			if ( !preg_match('/^https?\:\/\//', $data['url'] ) && ( isset($s) && $s != '' ) )
-			{
-				// generate sid with ? oder &
-				if ( preg_match('/\?/' , $data['url'] ) )
-				{
-					$data['url'] .= '&amp;s='.$s;
-				}
-				else
-				{
-					$data['url'] .= '?s='.$s;
-				}
-			}
-			$target = '';
-			if ( $data['new_window'] == '1' )
-			{
-				$target = ' target="_blank"';
-			}
-			$data['completeLink'] = '<a href="' . $data['url'] . '"' . $target . ' class="menu">' . $data['text'] . '</a>' ;
-		}
-		else
-		{
-			$data['completeLink'] = $data['text'];
-		}
-		
-		return $data;
-	}
-	
-	/**
 	 * Returns if an username is in correct format or not.
 	 * A username is valid if it would be a username that is accepted by the
 	 * useradd command.
 	 *
 	 * @author Michael D?rgner <michael@duergner.com>
-	 * 
+	 *
 	 * @param  string The username to check
-	 * 
+	 *
 	 * @return bool   Correct or not
+	 *
+	 * @todo Used in admin_admins, admin_customers admin_settings(2x). We should replace this
+	 *       with a validation handler at a later time.
 	 */
 	function check_username($username) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*[a-zA-Z0-9\-\_\$]$/",$username);
 	}
-	
+
 	/**
 	 * Returns if an username_prefix is in correct format or not.
 	 * A username_prefix is valid if the resulting username would be a username
 	 * that is accepted by the useradd command.
 	 *
 	 * @author Michael Duergner <michael@duergner.com>
-	 * 
+	 *
 	 * @param  string The username to check
-	 * 
+	 *
 	 * @return bool   Correct or not
+	 *
+	 * @todo Only used in admin_Settings. move there?
 	 */
 	function check_username_prefix($username_prefix) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*$/",$username_prefix);
 	}
-	
+
 	/**
 	 * Returns if a mysql_prefix is in correct format or not.
 	 *
 	 * @author Michael Duergner <michael@duergner.com>
-	 * 
+	 *
 	 * @param  string The mysql_prefix to check
-	 * 
+	 *
 	 * @return bool   Correct or not
+	 *
+	 * @todo only used in admin_settings, move there?
 	 */
 	function check_mysql_prefix($mysql_prefix) {
 		return preg_match("/^[a-zA-Z0-9\-\_]+$/",$mysql_prefix);
 	}
-	
+
 	/**
 	 * Returns an integer of the given value which isn't negative.
 	 * Returns -1 if the given value was -1.
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  mixed The value
-	 * 
+	 *
 	 * @return int   The positive value
+	 *
+	 * @todo Should be replaced by (int), has some addiotnal functionality regarding negative values
 	 */
 	function intval_ressource ( $the_value )
 	{
@@ -1073,16 +586,17 @@
 		}
 		return $the_value ;
 	}
-	
+
 	/**
 	 * Returns a double of the given value which isn't negative.
 	 * Returns -1 if the given value was -1.
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
-	 * 
+	 *
 	 * @param  mixed  The value
-	 * 
+	 *
 	 * @return double The positive value
+	 * @todo Should be replaced by typecast, has some addiotnal functionality regarding negative values
 	 */
 	function doubleval_ressource ( $the_value )
 	{
@@ -1093,17 +607,19 @@
 		}
 		return $the_value ;
 	}
-	
+
 	/**
 	 * Replaces all occurences of variables defined in the second argument
 	 * in the first argument with their values.
-	 * 
+	 *
 	 * @author Michael Duergner
-	 * 
+	 *
 	 * @param  string The string that should be searched for variables
 	 * @param  array  The array containing the variables with their values
-	 * 
+	 *
 	 * @return string The submitted string with the variables replaced.
+	 *
+	 * @todo COnsider using another solution, maybe preg_replace
 	 */
 	function replace_variables($text,$vars) {
 		$pattern = "/\{([a-zA-Z0-9\-_]+)\}/";
@@ -1124,17 +640,19 @@
 		$text = str_replace ( '\n', "\n" , $text ) ;
 		return $text;
 	}
-	
+
 	/**
 	 * Wrapper for the html_entity_decode function as this function is not
 	 * present in Woody's PHP 4.1.2. In Sarge the html_entity_decode function
 	 * shipped with PHP is used, for Woody own code is used.
-	 * 
+	 *
 	 * @author Michael Duergner
-	 * 
+	 *
 	 * @param  string The string in which the html entites should be decoded.
-	 * 
+	 *
 	 * @return string The decoded string
+	 *
+	 * @todo remove this function, we switched to php5.1.x
 	 */
 	function _html_entity_decode($string)
 	{
@@ -1149,77 +667,83 @@
 			return strtr($string,$trans_table);
 		}
 	}
-	
+
 	/**
 	 * Check if the submitted string is a valid domainname, i.e.
 	 * it consists only of the following characters ([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}
-	 * 
+	 *
 	 * @author Michael Duergner
-	 * 
+	 *
 	 * @param  string  The domainname which should be checked.
-	 * 
+	 *
 	 * @return boolean True if the domain is valid, false otherwise
+	 *
+	 * @todo only used once in admin_domains, move there
 	 */
-	function check_domain($domainname) 
+	function check_domain($domainname)
 	{
 		return preg_match('/^([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}$/i',$domainname);
 	}
 
 	/**
 	 * Returns an array of found directories
-	 *  
+	 *
 	 * This function checks every found directory if they match either $uid or $gid, if they do
 	 * the found directory is valid. It uses recursive function calls to find subdirectories. Due
-	 * to the recursive behauviour this function may consume much memory. 
-	 *  
+	 * to the recursive behauviour this function may consume much memory.
+	 *
 	 * @author Martin Burchert  <martin.burchert@syscp.org>
 	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.org>
-	 * 
+	 *
 	 * @param  string   The path to start searching in
 	 * @param  integer  The uid which must match the found directories
 	 * @param  integer  The gid which must match the found direcotries
 	 * @param  array    recursive transport array !for internal use only!
-	 * 
+	 *
 	 * @return array    Array of found valid pathes
-	 */	
+	 *
+	 * @todo maybe move to syscp::? can be enhanced to fit a more general purpose
+	 */
 	function findDirs ( $path, $uid, $gid, $_fileList = array() )
 	{
 		$dh = opendir( $path );
 		while ( false !== ( $file = readdir( $dh ) ) )
 		{
 			if ( $file == '.' && (    fileowner( $path.'/'.$file ) == $uid
-			                       || filegroup( $path.'/'.$file ) == $gid 
+			                       || filegroup( $path.'/'.$file ) == $gid
 			                     )
 			   )
 			{
 				$_fileList[] = $path.'/';
 			}
-			if ( $file != '..' && $file != '.' && is_dir( $path.'/'.$file ) )
+			if ( $file != '..' && $file != '.' && is_dir( $path.'/'.$file ) && is_readable($path.'/'.$file))
 			{
 				$_fileList = findDirs( $path.'/'.$file, $uid, $gid, $_fileList );
 			}
 		}
 		closedir( $dh );
 		return $_fileList;
-	}	
+	}
 
 	/**
-	 * Returns a valid html tag for the choosen $fieldType for pathes 
-	 * 
+	 * Returns a valid html tag for the choosen $fieldType for pathes
+	 *
 	 * @author Martin Burchert  <martin.burchert@syscp.org>
 	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.org>
-	 * 
+	 *
 	 * @param  string   The path to start searching in
 	 * @param  integer  The uid which must match the found directories
 	 * @param  integer  The gid which must match the found direcotries
 	 * @param  string   Either "Manual" or "Dropdown"
-	 * 
+	 *
 	 * @return string   The html tag for the choosen $fieldType
-	 */	
+	 *
+	 * @todo needs to be reworked, generating html here is uh ugly.
+	 */
 	function makePathfield( $path, $uid, $gid, $fieldType, $value='' )
 	{
-		global $lng; 
-		
+		global $lng;
+
 		$value = str_replace( $path, '', $value );
 		$field = '';
 		if ( $fieldType == 'Manual' )
@@ -1246,155 +770,5 @@
 		}
 		return $field;
 	}
-	/**
-	 * generates the navigation array for the panel
-	 * 
-	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
-	 * @param   string  the session-id of the user
-	 * @param   db      database abstraction class
-	 * @param   array   the language array
-	 * @param   array   the userinfo array of the current user
-	 * 
-	 * @return  array   the navigation array in the form of 
-	 *                  array( $order =>
-	 *                         array( 'url' => $url,
-	 *                                'lang' => $lang, 
-	 *                                'target' => $target,
-	 *                                'childs' =>
-	 *                                array( 'url' => $url, 
-	 *                                       'lang' => $lang,
-	 *                                       'target' => $target
-	 *                                     )
-	 *                              )
-	 */
-	function getNavigationArray( $s, $db, $lng, $userinfo )
-	{
-		// init vars
-		$return = '';
-		
-		// query database for parent elements
-		$query  = 
-			'SELECT * ' .
-			'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-			'WHERE `area`=\''.AREA.'\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 
-			'ORDER BY `order`, `id` ASC' ;
-		$result = $db->query($query);
 
-		// create the parents
-		while( $row = $db->fetch_array( $result ) )
-		{
-			// check resources
-			if (    $row['required_resources'] == '' 
-			     || $userinfo[$row['required_resources']] > 0 
-			     || $userinfo[$row['required_resources']] == '-1' )
-			{
-				// find next free order place
-				$order = $row['order'];
-				while( isset( $return[$order]))
-				{
-					$order++;
-				}
-				
-				$return[$order] = _createNavigationElement( $s, $lng, array( 'url' => $row['url'], 'target' => $row['new_window'], 'lang' => $row['lang'] ) );
-				
-				// find child elements
-				$childs   = array();
-				$subQuery = 
-					'SELECT * '.
-					'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
-					'WHERE `area`=\''.AREA.'\' ' .
-					'  AND `parent_url`=\''.$row['url'].'\' ' . 
-					'ORDER BY `order`, `id` ASC' ;
-					
-				$subResult = $db->query($subQuery);
-
-				while($subRow = $db->fetch_array($subResult))
-				{
-					if (    $subRow['required_resources'] == '' 
-					     || $userinfo[$subRow['required_resources']] > 0 
-					     || $userinfo[$subRow['required_resources']] == '-1' )
-					{
-						$subOrder = $subRow['order'];
-						// find next free childorder place
-						while( isset( $childs[$subOrder] ) )
-						{
-							$subOrder++;
-						}
-						$childs[$subOrder] = _createNavigationElement( $s, $lng, array( 'url' => $subRow['url'], 'target' => $subRow['new_window'], 'lang' => $subRow['lang'] ) );
-					}
-				}
-
-				// assign found childs to their parent
-				$return[$order]['childs'] = $childs;
-			}			
-		}
-		return $return;
-	}
-	
-	/**
-	 * creates a navigation array element
-	 *
-	 * @author Martin Burchert <eremit@syscp.org>
-	 * 
-	 * @param  string  the session-id
-	 * @param  array   the language array
-	 * @param  array   an array in the form of 
-	 *                 array( 'url'    => $url,
-	 *                        'target' => $target, 
-	 *                        'lang'   => $langs 
-	 *                      )
-	 * 
-	 * @return array   an array in the same form as $data, but completly
-	 *                 and correctly filled
-	 */
-	function _createNavigationElement( $s, $lng, $data )
-	{
-		$return = array();
-		
-		// create language element
-		$lang = $data['lang'];
-		$lang = split(';', $lang );
-		$elem = $lng;
-		foreach( $lang as $key )
-		{
-			$elem = $elem[$key];
-		}
-		$return['lang'] = html_entity_decode($elem);
-		
-		// create url
-		$url = $data['url'];
-		if ( !preg_match('/nourl/i', $url ) && !trim($url) == '' )
-		{
-			// try to append sid, but only to local 
-			if ( !preg_match('/^https?\:\/\//', $url ) )
-			{
-				// generate sid with ? oder &
-				if ( preg_match('/\?/' , $url ) )
-				{
-					$url .= '&s='.$s;
-				}
-				else
-				{
-					$url .= '?s='.$s;
-				}
-			}
-			$return['url'] = $url;
-			$return['isLink'] = true;
-		}
-		else 
-		{
-			$return['isLink'] = false;
-		}
-		
-		// check for target
-		$target = '_self';
-		if ( $data['target'] == 1 )
-		{
-			$target = '_blank';
-		}
-		$return['target'] = $target;
-		
-		return $return;
-	}
 ?>

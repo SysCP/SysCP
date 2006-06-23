@@ -1,15 +1,15 @@
 <?php
 /**
- * This file is part of the SysCP project. 
- * Copyright (c) 2003-2006 the SysCP Project. 
- * 
- * For the full copyright and license information, please view the COPYING 
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Project.
+ *
+ * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
- * 
+ *
  * @author     Florian Lippert <flo@redenswert.de>
  * @copyright  (c) 2003-2006 Florian Lippert
- * @package    Org.Syscp.Core
+ * @package    Syscp.Misc
  * @subpackage Language
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @version    $Id$
@@ -318,8 +318,6 @@ $lng['serversettings']['mysqlprefix']['title'] = 'SQL Prefix';
 $lng['serversettings']['mysqlprefix']['description'] = 'Which prefix should mysql accounts have?';
 $lng['serversettings']['ftpprefix']['title'] = 'FTP Prefix';
 $lng['serversettings']['ftpprefix']['description'] = 'Which prefix should ftp accounts have?';
-$lng['serversettings']['documentroot_prefix']['title'] = 'Document directory';
-$lng['serversettings']['documentroot_prefix']['description'] = 'Where should all data be stored?';
 $lng['serversettings']['logfiles_directory']['title'] = 'Logfilesdirectory';
 $lng['serversettings']['logfiles_directory']['description'] = 'Where should all log files be stored?';
 $lng['serversettings']['ipaddress']['title'] = 'IP-Address';
@@ -340,8 +338,6 @@ $lng['serversettings']['vmail_uid']['title'] = 'Mails-Uid';
 $lng['serversettings']['vmail_uid']['description'] = 'Which UserID should mails have?';
 $lng['serversettings']['vmail_gid']['title'] = 'Mails-Gid';
 $lng['serversettings']['vmail_gid']['description'] = 'Which GroupID should mails have?';
-$lng['serversettings']['vmail_homedir']['title'] = 'Mails-Homedir';
-$lng['serversettings']['vmail_homedir']['description'] = 'Where should all mails be stored?';
 $lng['serversettings']['adminmail']['title'] = 'Sender';
 $lng['serversettings']['adminmail']['description'] = 'What\'s the senderaddress for emails sent from the Panel?';
 $lng['serversettings']['phpmyadmin_url']['title'] = 'phpMyAdmin URL';
@@ -390,4 +386,36 @@ $lng['admin']['ipsandports']['default'] = 'Default reseller IP/Port';
 // ADDED IN 1.2.13-rc3
 $lng['error']['cantchangesystemip'] = 'You cannot change the last system IP, either create another new IP/Port combination for the system IP or change the system IP.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure, you want the document root for this domain, not being within the customerroot of the customer?';
+
+/**
+ * ADDED IN 1.3.0-dev4
+ */
+$lng['login']['theme'] = 'Layout/Theme';
+
+/**
+ * ADDED IN 1.3.2-dev4
+ */
+$lng['question']['admin_reallyclearcache'] = 'Do you really want to clean the cache?';
+$lng['admin']['clearcache'] = 'Empty Cache';
+
+$lng['serversettings']['user_homedir']['title'] = 'Users Homedirectory';
+$lng['serversettings']['user_homedir']['description'] = 'Home directory of the user. Please note, SysCP will not add anything to your path,<br/> you are enforced to user replacer. You have the following replacer available: <br/><b>{LOGIN}</b>: Loginname of the Customer';
+$lng['serversettings']['apache_access_log']['title'] = 'Apaches Access Logfile';
+$lng['serversettings']['apache_access_log']['description'] = 'Path to the Apache Access Logfile of a domain, you are enforced to use replacer.<br/>You have the following replacer available:<br/><b>{LOGIN}</b>: Loginname of the customer<br/><b>{USERHOME}</b>: Homedir of the user owning the domain<br/><b>{DOMAIN}</b>: Name of the domain';
+$lng['serversettings']['apache_error_log']['title'] = 'Apaches Error Logfile';
+$lng['serversettings']['apache_error_log']['description'] = 'Path to the Apache Error Logfile of a domain, you are enforced to use replacer.<br/>You have the following replacer available:<br/><b>{LOGIN}</b>: Loginname of the customer<br/><b>{USERHOME}</b>: Homedir of the user owning the domain<br/><b>{DOMAIN}</b>: Name of the domain';
+
+/**
+ * CHANGED IN 1.3.2-dev4
+ */
+$lng['serversettings']['documentroot_prefix']['title'] = 'Domain Document directory';
+$lng['serversettings']['documentroot_prefix']['description'] = 'The path to the domain documentroot. You have the following replacers available:<br/><b>{USERHOME}</b>: Homedir of the user owning the domain<br/><b>{LOGIN}</b>: Loginname of the user owning the domain<br/><b>{DOMAIN}</b>: Name of the domain';
+$lng['serversettings']['vmail_homedir']['title'] = 'Mails-User-Homedir';
+$lng['serversettings']['vmail_homedir']['description'] = 'Where should all mails of a user be stored? You have to use replacers and have the following available:<br/><b>{USERHOME}</b>: Homedir of the User<br/><b>{LOGIN}</b>: Loginname of the customer';
+/**
+ * REMOVED IN 1.3.2-dev4
+ */
+$lng['serversettings']['logfiles_directory']['title'] = '';
+$lng['serversettings']['logfiles_directory']['description'] = '';
+
 ?>

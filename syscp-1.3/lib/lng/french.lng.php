@@ -1,17 +1,17 @@
 <?php
 /**
- * This file is part of the SysCP project. 
- * Copyright (c) 2003-2006 the SysCP Project. 
- * 
- * For the full copyright and license information, please view the COPYING 
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Project.
+ *
+ * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
- * 
+ *
  * @author     Tim Zielosko <tim.zielosko@syscp.org>
  * @author     Aldo Reset <aldo.reset@placenet.org>
  * @copyright  (c) 2004 - 2005 Tim Zielosko
  * @copyright  (c) 2006 Tim Zielosko, Aldo Reset
- * @package    Org.Syscp.Core
+ * @package    Syscp.Misc
  * @subpackage Language
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @version    $Id$

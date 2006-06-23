@@ -1,15 +1,15 @@
 <?php
 /**
- * This file is part of the SysCP project. 
- * Copyright (c) 2003-2006 the SysCP Project. 
- * 
- * For the full copyright and license information, please view the COPYING 
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Project.
+ *
+ * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
- * 
- * @author     Jordi Romero (jordi@jrom.net) 
+ *
+ * @author     Jordi Romero (jordi@jrom.net)
  * @copyright  (c) 2005 Jordi Romero
- * @package    Org.Syscp.Core
+ * @package    Syscp.Misc
  * @subpackage Language
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @version    $Id$
@@ -29,7 +29,7 @@ $lng['panel']['emptyfordefault'] = 'deixeu-ho buit per usar el valor predetermin
 $lng['panel']['path'] = 'Ruta';
 $lng['panel']['toggle'] = 'Marcar/Desmarcar';
 $lng['panel']['next'] = 'següent';
-$lng['panel']['dirsmissing'] = 'No puc trobar o escriure en aquest directori!'; 
+$lng['panel']['dirsmissing'] = 'No puc trobar o escriure en aquest directori!';
 
 /**
  * Login
@@ -112,7 +112,7 @@ $lng['domains']['subdomain_add'] = 'Crear subdomini';
 $lng['domains']['subdomain_edit'] = 'Editar (sub)domini';
 $lng['domains']['wildcarddomain'] = 'Crear un domini comod&iacute;? (wildcarddomain)';
 $lng['domains']['aliasdomain'] = 'Sobrenom per a aquest domini';
-$lng['domains']['noaliasdomain'] = 'No hi ha sobrenom del domini'; 
+$lng['domains']['noaliasdomain'] = 'No hi ha sobrenom del domini';
 
 /**
  * eMails
@@ -380,6 +380,6 @@ $lng['admin']['ipsandports']['edit'] = 'Editar IP/Port';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
-$lng['admin']['ipsandports']['default'] = 'IP/Port per defecte del resseller'; 
+$lng['admin']['ipsandports']['default'] = 'IP/Port per defecte del resseller';
 
 ?>

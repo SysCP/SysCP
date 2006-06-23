@@ -1,20 +1,20 @@
 <?php
 /**
- * This file is part of the SysCP project. 
- * Copyright (c) 2003-2006 the SysCP Project. 
- * 
- * For the full copyright and license information, please view the COPYING 
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Project.
+ *
+ * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
- * 
+ *
  * @author     Jackie Zhang <jackie.zhang@arcor.de>
  * @author     Wang Changyi <wangchangyi@hotmail.com>
  * @author     Patrick Brueckner <patrick_brueckner@yahoo.de>
  * @author     Yuan Yang <melodieyy@web.de>
  * @copyright  (c) 2004 Wang Changyi, Patrick Brueckner
  * @copyright  (c) 2004/2005 Jackie Zhang
- * @copyright  (c) 2006 Yuan Yang 
- * @package    Org.Syscp.Core
+ * @copyright  (c) 2006 Yuan Yang
+ * @package    Syscp.Misc
  * @subpackage Language
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @version    $Id$
@@ -385,6 +385,6 @@ $lng['admin']['ipsandports']['edit'] = '&#32534;&#36753;IP/&#31471;&#21475;';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/&#31471;&#21475;';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = '&#31471;&#21475;';
-$lng['admin']['ipsandports']['default'] = '&#40664;&#35748;&#20998;&#38144;&#21830;IP/&#31471;&#21475;'; 
+$lng['admin']['ipsandports']['default'] = '&#40664;&#35748;&#20998;&#38144;&#21830;IP/&#31471;&#21475;';
 
 ?>

@@ -1,15 +1,15 @@
 <?php
 /**
- * This file is part of the SysCP project. 
- * Copyright (c) 2003-2006 the SysCP Project. 
- * 
- * For the full copyright and license information, please view the COPYING 
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Project.
+ *
+ * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
- * 
+ *
  * @author     Florian Lippert <flo@redenswert.de>
  * @copyright  (c) the authors
- * @package    Org.Syscp.Core
+ * @package    Syscp.Misc
  * @subpackage Config
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @version    $Id$
@@ -40,7 +40,7 @@
 	define('TABLE_PANEL_IPSANDPORTS',     'panel_ipsandports'    );
 	define( 'TABLE_PANEL_HOOKS',          'panel_hooks'          );
 	/**#@-*/
-	
+
 //	$version = '1.3.0-dev1';
 
 ?>

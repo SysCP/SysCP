@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# This script is executed by "/etc/init.d/mysql" on every (re)start.
+# 
+# Changes to this file will be preserved when updating the Debian package.
+#
+
+echo "Linking mysqld.sock to the postfix-jail."
+if [ -x /var/spool/postfix/var/run/mysqld/mysqld.sock ] ; then
+  rm /var/spool/postfix/var/run/mysqld/mysqld.sock
+fi
+ln /var/run/mysqld/mysqld.sock /var/spool/postfix/var/run/mysqld/mysqld.sock
+
+source /usr/share/mysql/debian-start.inc.sh
+
+MYADMIN="/usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf"
+MYCHECK="/usr/bin/mysqlcheck --defaults-file=/etc/mysql/debian.cnf"
+MYCHECK_SUBJECT="WARNING: mysqlcheck has found corrupt tables"
+MYCHECK_PARAMS="--all-databases --fast --silent"
+
+# Put commands in the background if they should not block the server start.
+(
+  mycheck;
+) &
+
+exit 0

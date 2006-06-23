@@ -1,37 +1,37 @@
 <?php
 /**
- * This file is part of the SysCP project. 
- * Copyright (c) 2003-2006 the SysCP Project. 
- * 
- * For the full copyright and license information, please view the COPYING 
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Project.
+ *
+ * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
- * 
+ *
  * @author     Martin Burchert <eremit@syscp.org>
  * @author     Michael Dürgner <michael@duergner.com>
  * @copyright  (c) the authors
- * @package    Org.Syscp.Core
- * @subpackage Hooks
+ * @package    Syscp.Modules
+ * @subpackage Apache
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @version    $Id: class_idna_convert_wrapper.php 425 2006-03-18 09:48:20Z martin $
  */
- 
+
 /**
- * The apache hook implementation. 
- * 
- * This hook implements the apache specific functions regarding the 
+ * The apache hook implementation.
+ *
+ * This hook implements the apache specific functions regarding the
  * rewriting of the vhosts.conf file.
  *
- * @package    Org.Syscp.Core
- * @subpackage Hooks
+ * @package    Syscp.Modules
+ * @subpackage Apache
  *
  * @author     Martin Burchert <martin.burchert@syscp.org>
  * @version    1.0
  */
-class Syscp_Hooks_Apache extends Syscp_BaseHook 
+class Syscp_Hooks_Apache extends Syscp_BaseHook
 {
 	/**
-	 * Filename of the file this hook is implemented in. 
+	 * Filename of the file this hook is implemented in.
 	 * Consider this variable to be class specific constant.
 	 *
 	 * @var    string
@@ -47,15 +47,15 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 	 * @access private
 	 */
 	var $CLASS; // CONST later
-	
+
 	/**
 	 * Class Constructor
 	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @return  Org_Syscp_Core_Hooks_Apache
 	 */
 	function __construct()
@@ -63,102 +63,102 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 		$this->FILE  = 'lib/classes/Syscp/Hooks/Apache.class.php';
 		$this->CLASS = __CLASS__;
 	}
-	
+
 	/**
 	 * core.deleteCustomer Hook
-	 * 
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
+	 *
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
 	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function deleteCustomer( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildVhosts', $params );
 	}
-	
+
 	/**
 	 * core.deactivateCustomer Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function deactivateCustomer( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildVhosts', $params );
 	}
-	
+
 	/**
 	 * core.createDomain Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function createDomain( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildVhosts', $params );
 	}
-	
+
 	/**
 	 * core.deleteDomain Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function deleteDomain( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildVhosts', $params );
 	}
-	
+
 	/**
 	 * core.updateDomain Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
-	 * 
+	 *
 	 * @todo Implement this function
 	 */
 	function updateDomain( $params = array() )
@@ -169,16 +169,16 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 	/**
 	 * core.createIPPort Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function createIPPort( $params = array() )
@@ -189,16 +189,16 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 	/**
 	 * core.updateIPPort Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function updateIPPort( $params = array() )
@@ -209,96 +209,96 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 	/**
 	 * core.createHTPasswd Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function createHTPasswd( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildDiroptions', $params );
 	}
-	
+
 	/**
 	 * core.updateHTPasswd Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function updateHTPasswd( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildDiroptions', $params );
 	}
-	
+
 	/**
 	 * core.deleteHTPasswd Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function deleteHTPasswd( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildDiroptions', $params );
 	}
-	
+
 	/**
 	 * core.createHTAccess Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function createHTAccess( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildDiroptions', $params );
 	}
-	
+
 	/**
 	 * core.updateHTAccess Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function updateHTAccess( $params = array() )
@@ -309,213 +309,263 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 	/**
 	 * core.deleteHTAccess Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function deleteHTAccess( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildDiroptions', $params );
 	}
-	
+
 	/**
 	 * core.deleteIPPort Hook
 	 *
-	 * This hook basically only schedules the cronRebuildVhosts() function 
-	 * call for the backend. 
-	 * 
+	 * This hook basically only schedules the cronRebuildVhosts() function
+	 * call for the backend.
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
 	 */
 	function deleteIPPort( $params = array() )
 	{
 		$this->_hooks->schedule( $this->FILE, $this->CLASS, 'cronRebuildVhosts', $params );
 	}
-	
+
 	/**
-	 * This method should _ONLY_ be called from the backend cronscript. 
-	 * 
-	 * This method creates a new vhosts.conf file and stores it at the 
+	 * This method should _ONLY_ be called from the backend cronscript.
+	 *
+	 * This method creates a new vhosts.conf file and stores it at the
 	 * places configured in $config.
 	 *
+	 * This method has been reimplemented 2006/06/15 (martin)
+	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
-	 * 
-	 * @todo Reimplement this function to use templates later on. 
 	 */
-	function cronRebuildVhosts( $params = array() )
+	public function cronRebuildVhosts($params = array())
 	{
 		// load the config and db vars from our attributes
 		$config = $this->_config;
 		$db     = $this->_db;
 		$log    = $this->_log;
-		
-		$log->info( '-- cronRebuildVhosts: Creating new vhosts.conf' );
-		$vhosts_file = '# '.$config->get('system.apacheconf_directory') . 
-		               $config->get('system.apacheconf_filename') . "\n" . 
-		               '# Created ' . date('d.m.Y H:i') . "\n" . 
-		               '# Do NOT manually edit this file, all changes will be ' .
-		               ' deleted after the next domain change at the panel.' . "\n" .
-		               "\n";
 
-		if (file_exists($config->get('system.apacheconf_directory').'diroptions.conf'))
+		// switching user log facility to apachehook
+		$log->setUsername('Hook_Apache');
+		$log->info(Syscp_Handler_Log_Interface::FACILITY_USER,
+		           '-- cronRebuildVhosts: Creating new vhosts.conf' );
+
+		// lets build a list of all ip's used
+		$query = 'SELECT `%s`.`id`, CONCAT(`%s`.`ip`,\':\',`%s`.`port`) AS `ipandport` '
+		       . 'FROM `%s` '
+		       . 'LEFT JOIN `%s` ON (`%s`.`ipandport` = `%s`.`id`) '
+		       . 'ORDER BY `%s`.`ip` ASC';
+		$query = sprintf($query, TABLE_PANEL_IPSANDPORTS,
+		                         TABLE_PANEL_IPSANDPORTS, TABLE_PANEL_IPSANDPORTS,
+		                         TABLE_PANEL_DOMAINS,     TABLE_PANEL_IPSANDPORTS,
+		                         TABLE_PANEL_DOMAINS,     TABLE_PANEL_IPSANDPORTS,
+		                         TABLE_PANEL_IPSANDPORTS);
+		$result = $db->query($query);
+		$ipList = array();
+		while(false !== ($row = $db->fetchArray($result)))
 		{
-			$log->info( '-- cronRebuildVhosts: Writing diroptions include' );
-			$vhosts_file .= 'Include ' . $config->get('system.apacheconf_directory') . 
-			                'diroptions.conf' . "\n\n";
+			$ipList[$row['id']] = $row['ipandport'];
 		}
-
-		$result_ipsandports=$db->query("SELECT CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) ORDER BY `ip`.`ip` ASC");
-		$ipandportarray = array();
-		while($ipandportresult=$db->fetch_array($result_ipsandports))
+		// check for diroptions
+		$hasDiroptions = false;
+		if (Syscp::isReadableFile($config->get('system.apacheconf_directory').'diroptions.conf'))
 		{
-			$ipandportarray[$ipandportresult['ipandport']] = $ipandportresult['ipandport'];
+			$hasDiroptions = true;
 		}
-		foreach($ipandportarray as $ipandport)
+		// load all non deactivated non alias domains
+		$result = $db->query('SELECT * '
+		                    .'FROM `'.TABLE_PANEL_DOMAINS.'` '
+		                    .'WHERE `deactivated` <> \'1\' '
+		                    .'  AND `aliasdomain` IS NULL');
+		while(false !== ($row = $db->fetchArray($result)))
 		{
-			$vhosts_file.='NameVirtualHost '.$ipandport."\n";
-		}
-		$vhosts_file.="\n";
+			// we need some additonal information regarding this domain, query
+			// them from the database. This could be done using one big query
+			// but it's more easy to maintain if we split the information
+			// gathering into several smaller queries
 
-		$log->info( '-- cronRebuildVhosts: DummyHost written' );
-		$vhosts_file.='# DummyHost for DefaultSite'."\n";
-		$vhosts_file.='<VirtualHost '.$config->get('system.ipaddress').':80>'."\n";
-		$vhosts_file.='ServerName '.$config->get('system.hostname')."\n";
-		$vhosts_file.='</VirtualHost>'."\n"."\n";
-
-		$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`deactivated` <> '1' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
-		while($domain=$db->fetch_array($result_domains))
-		{
-			$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
-			$vhosts_file.='<VirtualHost '.$domain['ipandport'].'>'."\n";
-			$vhosts_file.='  ServerName '.$domain['domain']."\n";
-
-			$server_alias = '';
-			$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$domain['id'].'\'');
-			while(($alias_domain=$db->fetch_array($alias_domains)) !== false)
+			// we check if the customer data of this domain has already been
+			// cached by a previous subQuery
+			if(!isset($cache['customer'][$row['customerid']]))
 			{
-				$server_alias .= ' '.$alias_domain['domain'].' '.(($alias_domain['iswildcarddomain']==1) ? '*' : 'www').'.'.$alias_domain['domain'];
-			}
-			if($domain['iswildcarddomain'] == '1')
-			{
-				$alias = '*';
+				// it's not fetch from the database
+				$subQuery = 'SELECT * FROM `%s` WHERE `customerid` = \'%s\'';
+				$subQuery = sprintf($subQuery, TABLE_PANEL_CUSTOMERS,
+				                               $row['customerid']);
+				$customer = $db->queryFirst($subQuery);
+				// additionally store in cache
+				$cache['customer'][$row['customerid']] = $customer;
 			}
 			else
 			{
-				$alias = 'www';
+				// fetch from cache
+				$customer = $cache['customer'][$row['customerid']];
 			}
-			$vhosts_file.='  ServerAlias '.$alias.'.'.$domain['domain'].$server_alias."\n";
-			$vhosts_file.='  ServerAdmin '.$domain['email']."\n";
-
-			if(preg_match('/^https?\:\/\//', $domain['documentroot']))
+			// put customerdata into the customer subarray
+			$row['customer'] = $customer;
+			// check if the documentroot is a redirection addr.
+			$row['redirectTo'] = false;
+			if(preg_match('/^https?\:\/\//', $row['documentroot']))
 			{
-				$vhosts_file.='  Redirect / '.$domain['documentroot']."\n";
+				$row['redirectTo'] = $row['documentroot'];
 			}
-			else
+			// resolve ip and port
+			$row['ipandport'] = $ipList[$row['ipandport']];
+			// load all aliasdomains to this one
+			//   all aliases will be put in $aliases and
+			//   later directly given to the domain row, should
+			//   the template care about the rest.
+			$aliases   = array();
+			// query database
+			$subQuery  = 'SELECT `domain`, `iswildcarddomain` '
+			           . 'FROM `%s` '
+			           . 'WHERE `aliasdomain`=\'%s\'';
+			$subQuery  = sprintf($subQuery, TABLE_PANEL_DOMAINS, $row['id']);
+			$subResult = $db->query($subQuery);
+			// iterate result
+			while (false !== ($subRow = $db->fetchArray($subResult)))
 			{
-				$domain['documentroot'] = makeCorrectDir ($domain['documentroot']);
-				$vhosts_file.='  DocumentRoot "'.$domain['documentroot']."\"\n";
- 				if($domain['openbasedir'] == '1')
- 				{
-					$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot']."\"\n";
- 				}
- 				if($domain['safemode'] == '1')
- 				{
- 					$vhosts_file.='  php_admin_flag safe_mode On '."\n";
- 				}
-				if($domain['safemode'] == '0')
+				// put resulting domain directly to aliases
+				$aliases[] = $subRow['domain'];
+				// check if resulting domain is a wildcarddomain
+				if ($subRow['iswildcarddomain'] == 1)
 				{
-					$vhosts_file.='  php_admin_flag safe_mode Off '."\n";
-				}
-
-				if(!is_dir($domain['documentroot']))
- 				{					
- 					safe_exec('mkdir -p "'.$domain['documentroot'].'"');
-					safe_exec('chown -R '.$domain['guid'].':'.$domain['guid'].' "'.$domain['documentroot'].'"');
-				}
-				if($domain['speciallogfile'] == '1')
-				{
-					if($domain['parentdomainid'] == '0')
-					{
-						$speciallogfile = '-'.$domain['domain'];
-						$vhosts_file .= '   Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['domain']."\"\n";
-					}
-					else
-					{
-						$speciallogfile = '-'.$domain['parentdomain'];
-						$vhosts_file .= '   Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\"\n";
-					}
+					// it is, additionally put a wildcard entry to aliases
+					$aliases[] = '*.'.$subRow['domain'];
 				}
 				else
 				{
-					$speciallogfile = '';
+					// it's not, only put the default www entry to aliases
+					$aliases[] = 'www.'.$subRow['domain'];
 				}
-				$vhosts_file.='  ErrorLog "'.$config->get('system.logfiles_directory').$domain['loginname'].$speciallogfile.'-error.log'."\"\n";
-				$vhosts_file.='  CustomLog "'.$config->get('system.logfiles_directory').$domain['loginname'].$speciallogfile.'-access.log" combined'."\n";
 			}
-			$vhosts_file.=stripslashes($domain['specialsettings'])."\n";
-			$vhosts_file.='</VirtualHost>'."\n";
-			$vhosts_file.="\n";
-			$log->info( sprintf('-- cronRebuildVhosts: Domain %s written', $domain['domain']) );
+			// now lets check the domain itself
+			if ($row['iswildcarddomain'] == 1)
+			{
+				$aliases[] = '*.'.$row['domain'];
+			}
+			else
+			{
+				$aliases[] = 'www.'.$row['domain'];
+			}
+			// store the aliases
+			$row['aliases'] = $aliases;
+			// the specialsettings
+			$row['specialsettings'] = stripslashes($row['specialsettings']);
+
+			// we need to enfore the existance of the domains documentroot
+			if(!is_dir($row['documentroot']))
+ 			{
+ 				Syscp::exec('mkdir -p "'.$row['documentroot'].'"');
+				Syscp::exec('chown -R '.$row['customer']['guid'].':'.$row['customer']['guid'].
+				            ' "'.$row['documentroot'].'"');
+ 			}
+ 			// put the location of the traffic log
+			$row['trafficLog'] = SYSCP_PATH_BASE.'logs/apache2-traffic/'.$row['customer']['loginname'].'.log';
+
+			$domains[$row['id']] = $row;
 		}
-		$vhosts_file_handler = fopen( $config->get('system.apacheconf_directory') . 
+		// we have loaded all domains, we need to iterate the domains
+		// and make the resolve parentdomainid to parentdomain, either
+		// with the domain name of the parentdomain or with the name
+		// of the domain itself.
+		foreach($domains as $id => $row)
+		{
+			if($row['parentdomainid'] != 0)
+			{
+				$row['parentdomain'] = $domains[$row['parentdomainid']]['domain'];
+			}
+			else
+			{
+				$row['parentdomain'] = $row['domain'];
+			}
+		}
+		//print_r($domains);
+		if(!file_exists(SYSCP_PATH_BASE.'logs/apache2-traffic/'))
+		{
+			Syscp::exec('mkdir -p '.SYSCP_PATH_BASE.'logs/apache2-traffic/');
+		}
+
+		$this->TemplateHandler->set('domains', $domains);
+		$this->TemplateHandler->set('ipList', $ipList);
+		$this->TemplateHandler->set('hasDiroptions', $hasDiroptions);
+		$this->TemplateHandler->set('now', date('d.m.Y H:i'));
+		$this->TemplateHandler->setTemplate(SYSCP_PATH_BASE.'etc/apache-vhosts.tpl');
+
+		$vhosts_file = $this->TemplateHandler->fetch();
+
+		$vhosts_file_handler = fopen( $config->get('system.apacheconf_directory') .
 		                              $config->get('system.apacheconf_filename'), 'w');
 		fwrite($vhosts_file_handler, $vhosts_file);
 		fclose($vhosts_file_handler);
-		$log->info( '-- cronRebuildVhosts: Restarting Apache...' );
-		safe_exec($config->get('system.apachereload_command'));
+
+		$log->info(Syscp_Handler_Log_Interface::FACILITY_USER,
+		           '-- cronRebuildVhosts: Calling OnNewVhostsFile Hook...' );
+		$this->_hooks->call('OnNewVhostsFile', array());
+
+
+		$log->info(Syscp_Handler_Log_Interface::FACILITY_USER,
+		           '-- cronRebuildVhosts: Restarting Apache...' );
+		Syscp::exec($config->get('system.apachereload_command'));
 	}
-	
+
 	/**
-	 * This method should _ONLY_ be called from the backend cronscript. 
-	 * 
-	 * This method creates a new diroptions.conf file and stores it at the 
+	 * This method should _ONLY_ be called from the backend cronscript.
+	 *
+	 * This method creates a new diroptions.conf file and stores it at the
 	 * places configured in $config.
 	 *
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @since   1.0
 	 * @access  public
-	 * 
+	 *
 	 * @param   array  $params  Parameters to be used in this hook call
-	 * 
+	 *
 	 * @return  void
-	 * 
-	 * @todo Reimplement this function to use templates later on. 
+	 *
+	 * @todo Reimplement this function to use templates later on.
 	 */
 	function cronRebuildDiroptions( $params = array() )
 	{
 		$config = $this->_config;
 		$db     = $this->_db;
 		$log    = $this->_log;
+		$log->setUsername('Hook_Apache');
 
 		if ( isset( $params['path'] ) )
 		{
 			$path = $params['path'];
-			$log->info( sprintf( '-- cronRebuildDiroptions: Creating diroption for %s', 
-			                     $path ) );
+			$log->info(Syscp_Handler_Log_Interface::FACILITY_USER,
+			           sprintf('-- cronRebuildDiroptions: Creating diroption for %s',
+			                   $path ) );
 //				fwrite( $debugHandler, '  cron_tasks: Task3 - Path: '.$path);
-				
+
 			if (!is_dir($path))
 			{
 				$db->query(
@@ -527,7 +577,7 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 					'WHERE `path` = "'.$path.'"'
 				);
 			}
-				
+
 			$diroptions_file = '';
 			$diroptions_file = '# '.$config->get('system.apacheconf_directory').'diroptions.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next dir options change at the panel.'."\n"."\n";
 			$result = $db->query(
@@ -552,7 +602,7 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 				$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
 				$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
 			}
-				
+
 			$htpasswd_files = array();
 			foreach($diroptions as $row_diroptions)
 			{
@@ -583,7 +633,7 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 				{
 					$diroptions_file .= '  ErrorDocument 500 "'.$row_diroptions['error500path']."\"\n";
 				}
-					
+
 				if(count($row_diroptions['htpasswds']) > 0)
 				{
 					$htpasswd_file = '';
@@ -602,8 +652,8 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 					$diroptions_file .= '  AuthName "Restricted Area"'."\n";
 					$diroptions_file .= '  AuthUserFile '.$htpasswd_filename."\n";
 					$diroptions_file .= '  require valid-user'."\n";
-					
-					if(!file_exists($config->get('system.apacheconf_directory').'htpasswd/')) 
+
+					if(!file_exists($config->get('system.apacheconf_directory').'htpasswd/'))
 					{
 						$umask = umask();
 						umask( 0000 );
@@ -612,8 +662,9 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 					}
 					elseif(!is_dir($config->get('system.apacheconf_directory').'htpasswd/'))
 					{
-						$log->err( sprintf( '%shtpasswd/ is not a directory, directory protection disabled!', 
-						                    $config->get('system.aacheconf_directory') ) );
+						$log->warning(Syscp_Handler_Log_Interface::FACILITY_USER,
+						             sprintf('%shtpasswd/ is not a directory, directory protection disabled!',
+						             $config->get('system.apacheconf_directory') ) );
 						echo 'WARNING!!! ' . $config->get('system.apacheconf_directory').'htpasswd/ is not a directory. htpasswd directory protection is disabled!!!' ;
 					}
 					if(file_exists($config->get('system.apacheconf_directory').'htpasswd/') && is_dir($config->get('system.apacheconf_directory').'htpasswd/'))
@@ -628,22 +679,25 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
 			$diroptions_file_handler = fopen($config->get('system.apacheconf_directory').'diroptions.conf', 'w');
 			fwrite($diroptions_file_handler, $diroptions_file);
 			fclose($diroptions_file_handler);
-			$log->info( '-- cronRebuildDiroptions: restarting apache...' );
-			safe_exec($config->get('system.apachereload_command'));
-				
+			$log->info(Syscp_Handler_Log_Interface::FACILITY_USER,
+			           '-- cronRebuildDiroptions: restarting apache...' );
+			Syscp::exec($config->get('system.apachereload_command'));
+
 			if(file_exists($config->get('system.apacheconf_directory').'htpasswd/') && is_dir($config->get('system.apacheconf_directory').'htpasswd/'))
 			{
 				$htpasswd_file_dirhandle = opendir($config->get('system.apacheconf_directory').'htpasswd/');
-				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle))) 
+				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle)))
 				{
-					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files) && file_exists($config->get('system.apacheconf_directory').'htpasswd/'.$htpasswd_filename)) 
+					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files) && file_exists($config->get('system.apacheconf_directory').'htpasswd/'.$htpasswd_filename))
 					{
 						unlink($config->get('system.apacheconf_directory').'htpasswd/'.$htpasswd_filename);
 					}
 				}
 			}
-		}		
+		}
 	}
+
+
 }
 
 ?>
