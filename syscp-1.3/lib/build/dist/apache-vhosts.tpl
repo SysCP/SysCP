@@ -48,7 +48,7 @@ NameVirtualHost {$item}
 	### DON'T REMOVE THIS PART EITHER
 	# this line can be used by modules to find domains in the vhost file
 	# to add custom entries into the vhost.
-	### VHOST:{domain.id}:{$domain.domain}:{$domain.customerid}:{$domain.customer.loginname}
+	### VHOST:{$domain.id}:{$domain.domain}:{$domain.customerid}:{$domain.customer.loginname}
 
 </VirtualHost>
 
