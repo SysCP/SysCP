@@ -132,7 +132,8 @@
 					$sortkey .= $part.'.';
 				}
 				$domain_array[$sortkey] = $row;
- 			}
+			}
+			ksort ($domain_array);
 			$domain_id_array=array();
 			foreach($domain_array as $sortkey => $row)
 			{
