@@ -20,7 +20,8 @@
 	// prevent syscp pages from being cached 
 	header ("Cache-Control: no-cache, must-revalidate");
 	header ("Pragma: no-cache");
-       
+	header ("Content-type: text/html; charset=ISO-8859-1");
+
 	/**
 	 * Register Globals Security Fix
 	 * - unsetting every variable registered in $_REQUEST and as variable itself
