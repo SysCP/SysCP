@@ -1,6 +1,7 @@
 <html>
 <head>
 <link href="templates/main.css" rel="stylesheet" type="text/css">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 <title>SysCP</title>
 </head>
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
