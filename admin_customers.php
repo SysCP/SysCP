@@ -56,7 +56,7 @@
 
 			$customers='';
 			$result=$db->query(
-				"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " .
+				"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " .
 				"FROM `".TABLE_PANEL_CUSTOMERS."` `c`, `".TABLE_PANEL_ADMINS."` `a` " .
 				"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '{$userinfo['adminid']}' AND " )."`c`.`adminid`=`a`.`adminid` " .
 				"ORDER BY `c`.`$sortby` $sortorder");
@@ -281,11 +281,12 @@
 						exit;
 					}
 
-					if($name == '')
+					// Either $name and $firstname or the $company must be inserted
+					if($name == '' && $company == '')
 					{
 						standard_error(array('stringisempty','myname'));
 					}
-					elseif($firstname=='')
+					elseif($firstname=='' && $company == '')
 					{
 						standard_error(array('stringisempty','myfirstname'));
 					}
@@ -531,11 +532,12 @@
 						exit;
 					}
 
-					if($name == '')
+					// Either $name and $firstname or the $company must be inserted
+					if($name == '' && $company == '')
 					{
 						standard_error(array('stringisempty','myname'));
 					}
-					elseif($firstname=='')
+					elseif($firstname=='' && $company == '')
 					{
 						standard_error(array('stringisempty','myfirstname'));
 					}

@@ -401,4 +401,7 @@ $lng['domain']['openbasedirpath'] = 'OpenBasedir-Pfad';
 $lng['domain']['docroot'] = 'Oben eingegebener Pfad';
 $lng['domain']['homedir'] = 'Heimverzeichnis';
 
+$lng['admin']['valuemandatory'] = 'Dieses Feld muss ausgef&uuml;llt werden';
+$lng['admin']['valuemandatorycompany'] = 'Entweder "Name" und "Vorname" oder "Firma" muss ausgef&uuml;llt werden';
+
 ?>

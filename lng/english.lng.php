@@ -401,4 +401,7 @@ $lng['domain']['openbasedirpath'] = 'OpenBasedir-path';
 $lng['domain']['docroot'] = 'Path from field above';
 $lng['domain']['homedir'] = 'Home directory';
 
+$lng['admin']['valuemandatory'] = 'This value is mandatory';
+$lng['admin']['valuemandatorycompany'] = 'Either "name" and "firstname" or "company" must be filled';
+
 ?>
