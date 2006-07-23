@@ -405,4 +405,8 @@ $lng['admin']['valuemandatory'] = 'Dieses Feld muss ausgef&uuml;llt werden';
 $lng['admin']['valuemandatorycompany'] = 'Entweder "Name" und "Vorname" oder "Firma" muss ausgef&uuml;llt werden';
 
 $lng['menue']['main']['username'] = 'Angemeldet als: ';
+
+$lng['panel']['urloverridespath'] = 'URL (&uuml;berschreibt Pfad)';
+$lng['panel']['pathorurl'] = 'Pfad oder URL';
+
 ?>

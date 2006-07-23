@@ -236,7 +236,15 @@
 						$aliasdomain_check = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`,`'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`customerid`=\''.$userinfo['customerid'].'\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\''.$userinfo['customerid'].'\' AND `d`.`id`=\''.$aliasdomain.'\'');
 					}
 
-					$path=addslashes($_POST['path']);
+					if( isset($_POST['url']) && $_POST['url'] != '' && preg_match('/^https?\:\/\//', $_POST['url']) )
+					{
+						$path = addslashes($_POST['url']);
+					}
+					else
+					{
+						$path = addslashes($_POST['path']);	
+					}
+
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
 						$path=makeCorrectDir($path);
@@ -334,7 +342,15 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$path=addslashes($_POST['path']);
+					if( isset($_POST['url']) && $_POST['url'] != '' && preg_match('/^https?\:\/\//', $_POST['url']) )
+					{
+						$path = addslashes($_POST['url']);
+					}
+					else
+					{
+						$path = addslashes($_POST['path']);	
+					}
+
 					$aliasdomain = intval($_POST['alias']);
 
 					if(!preg_match('/^https?\:\/\//', $path))
@@ -421,9 +437,21 @@
 					{
 						$domains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id'],$result['aliasdomain']);
 					}
-					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
-					                             $userinfo['guid'], $settings['panel']['pathedit'],
-					                             $result['documentroot'] );
+
+					if(preg_match('/^https?\:\/\//', $result['documentroot']) && $settings['panel']['pathedit'] == 'Dropdown')
+					{
+						$urlvalue = $result['documentroot'];
+						$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'],
+						                             $userinfo['guid'], $settings['panel']['pathedit']);
+					}
+					else
+					{
+						$urlvalue = '';
+						$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'],
+						                             $userinfo['guid'], $settings['panel']['pathedit'],
+						                             $result['documentroot'] );
+					}
+					
 //					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
 					$iswildcarddomain=makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);

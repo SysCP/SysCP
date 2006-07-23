@@ -16,10 +16,18 @@ $header
        <td class="maintable">{$lng['domains']['aliasdomain']}:</td>
        <td class="maintable" nowrap><select name="alias">$domains</select></td>
       </tr></if>
-      <tr>
+      <if $settings['panel']['pathedit'] == 'Manual'><tr>
        <td class="maintable">{$lng['panel']['path']}:</td>
        <td class="maintable">{$pathSelect}</td>
+      </tr></if>
+      <if $settings['panel']['pathedit'] == 'Dropdown'><tr>
+       <td class="maintable">{$lng['panel']['pathorurl']}:</td>
+       <td class="maintable">{$pathSelect}</td>
       </tr>
+      <tr>
+       <td class="maintable">{$lng['panel']['urloverridespath']}:</td>
+       <td class="maintable"><input type="text" name="url" value="{$urlvalue}" size="30" /></td>
+      </tr></if>
       <if $result['parentdomainid'] == '0' && $userinfo['subdomains'] != '0' ><tr>
        <td class="maintable">{$lng['domains']['wildcarddomain']}</td>
        <td class="maintable">$iswildcarddomain</td>
