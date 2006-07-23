@@ -562,6 +562,8 @@ INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;templates;templat
 INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_templates.nourl', 'admin;templates;email', 'admin_templates.php?page=email', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (31, 'admin', 'admin_server.nourl', 'admin;rebuildconf', 'admin_settings.php?page=rebuildconfigs', '30', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (32, 'admin', 'admin_server.nourl', 'admin;ipsandports;ipsandports', 'admin_ipsandports.php?page=ipsandports', '40', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (33, 'admin', 'admin_index.php', 'menue;main;username', 'admin_index.nourl', '5', '', 0);
+INSERT INTO `panel_navigation` VALUES (34, 'customer', 'customer_index.php', 'menue;main;username', 'customer_index.nourl', '5', '', 0);
 
 
 # --------------------------------------------------------
