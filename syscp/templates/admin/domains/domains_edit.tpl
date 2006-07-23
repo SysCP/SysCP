@@ -10,7 +10,7 @@ $header
       </tr>
       <tr>
        <td class="maintable">{$lng['admin']['customer']}:</td>
-       <td class="maintable" nowrap>{$result['name']} {$result['firstname']} ({$result['loginname']})</td>
+       <td class="maintable" nowrap><if $result['name'] != '' && $result['firstname'] != ''>{$result['name']}, {$result['firstname']}</if><if $result['name'] != '' && $result['firstname'] != '' && $result['company'] != ''> | </if><if $result['company'] != ''>{$result['company']}</if> ({$result['loginname']})</td>
       </tr>
       <tr>
        <td class="maintable">Domain:</td>

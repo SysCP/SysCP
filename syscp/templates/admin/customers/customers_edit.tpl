@@ -17,15 +17,15 @@ $header
        <td class="maintable" nowrap>{$result['documentroot']}</td>
       </tr>
       <tr>
-       <td class="maintable">{$lng['customer']['name']}: *</td>
+       <td class="maintable">{$lng['customer']['name']}: **</td>
        <td class="maintable" nowrap><input type="text" name="name" value="{$result['name']}"></td>
       </tr>
       <tr>
-       <td class="maintable">{$lng['customer']['firstname']}: *</td>
+       <td class="maintable">{$lng['customer']['firstname']}: **</td>
        <td class="maintable" nowrap><input type="text" name="firstname" value="{$result['firstname']}"></td>
       </tr>
       <tr>
-       <td class="maintable">{$lng['customer']['company']}:</td>
+       <td class="maintable">{$lng['customer']['company']}: **</td>
        <td class="maintable" nowrap><input type="text" name="company" value="{$result['company']}"></td>
       </tr>
       <tr>
@@ -106,6 +106,15 @@ $header
       </tr>
       <tr>
        <td class="maintable" colspan=2 align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['panel']['save']}"></td>
+      </tr>
+     </table>
+    <br />
+     <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
+      <tr>
+       <td class="maintable">*: {$lng['admin']['valuemandatory']}</td>
+      </tr>
+      <tr>
+       <td class="maintable">**: {$lng['admin']['valuemandatorycompany']}</td>
       </tr>
      </table>
     </form>

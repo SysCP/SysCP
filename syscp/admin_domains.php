@@ -56,7 +56,7 @@
 
 			$domains='';
 			$result=$db->query(
-				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `ad`.`domain` AS `alias` " .
+				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `ad`.`domain` AS `alias` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
@@ -93,7 +93,7 @@
 				}
 				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
 				$result=$db->query(
-					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `ad`.`domain` AS `alias` " .
+					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `ad`.`domain` AS `alias` " .
 					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 					"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
@@ -362,10 +362,24 @@
 				else
 				{
 					$customers='';
-					$result_customers=$db->query("SELECT `customerid`, `loginname`, `name`, `firstname` FROM `".TABLE_PANEL_CUSTOMERS."` ".( $userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '{$userinfo['adminid']}' ")." ORDER BY `name` ASC");
+					$result_customers=$db->query("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `".TABLE_PANEL_CUSTOMERS."` ".( $userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '{$userinfo['adminid']}' ")." ORDER BY `name` ASC");
 					while($row_customer=$db->fetch_array($result_customers))
 					{
-						$customers.=makeoption($row_customer['name'].' '.$row_customer['firstname'].' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+						if ($row_customer['company'] == '')
+						{
+							$customers.=makeoption($row_customer['name'].', '.$row_customer['firstname'].' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+						}
+						else
+						{
+							if($row_customer['name'] != '' && $row_customer['firstname'] != '')
+							{
+								$customers.=makeoption($row_customer['name'].', '.$row_customer['firstname'].' | '. $row_customer['company'] .' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+							}
+							else
+							{
+								$customers.=makeoption($row_customer['company'] .' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+							}
+						}
 					}
 					$ipsandports='';
 					$result_ipsandports=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
@@ -409,7 +423,7 @@
 		elseif($action=='edit' && $id!=0)
 		{
 			$result=$db->query_first(
-				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`ipandport`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`loginname`, `c`.`name`, `c`.`firstname` " .
+				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`ipandport`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 				"WHERE `d`.`parentdomainid`='0' AND `d`.`id`='$id'".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")
