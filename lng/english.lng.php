@@ -404,4 +404,5 @@ $lng['domain']['homedir'] = 'Home directory';
 $lng['admin']['valuemandatory'] = 'This value is mandatory';
 $lng['admin']['valuemandatorycompany'] = 'Either "name" and "firstname" or "company" must be filled';
 
+$lng['menue']['main']['username'] = 'Logged in as: ';
 ?>

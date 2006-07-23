@@ -871,5 +871,28 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn2';
 	}
+	if( $settings['panel']['version'] == '1.2.13-svn2' )
+	{
+		// Show the logged-in username in "overview"
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'(`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)' .
+			'VALUES (\'admin\', \'admin_index.php\', \'menue;main;username\', \'admin_index.nourl\', \'5\', \'\', 0)'
+		);
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'(`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)' .
+			'VALUES (\'customer\', \'customer_index.php\', \'menue;main;username\', \'customer_index.nourl\', \'5\', \'\', 0)'
+		);
 
+		// set new version 
+		$query = 
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.13-svn3\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.13-svn3';
+	}
 ?>

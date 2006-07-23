@@ -285,7 +285,15 @@
 	 * Initialize Template Engine
 	 */
 	$templatecache = array(); 
-	
+
+	/**
+	 * Logic moved out of lng-file
+	 */
+	if(isset ($userinfo['loginname']) && $userinfo['loginname'] != '')
+	{
+		$lng['menue']['main']['username'] .= $userinfo['loginname'];
+	}
+
 	/**
 	 * Fills variables for navigation, header and footer
 	 */

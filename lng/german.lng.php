@@ -404,4 +404,5 @@ $lng['domain']['homedir'] = 'Heimverzeichnis';
 $lng['admin']['valuemandatory'] = 'Dieses Feld muss ausgef&uuml;llt werden';
 $lng['admin']['valuemandatorycompany'] = 'Entweder "Name" und "Vorname" oder "Firma" muss ausgef&uuml;llt werden';
 
+$lng['menue']['main']['username'] = 'Angemeldet als: ';
 ?>
