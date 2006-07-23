@@ -1194,6 +1194,7 @@
 			else
 			{
 				$field = $lng['panel']['dirsmissing'];
+				$field .= '<input type="hidden" name="path" value="/" />';
 			}
 		}
 		return $field;

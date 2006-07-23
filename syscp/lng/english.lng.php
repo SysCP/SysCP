@@ -405,4 +405,8 @@ $lng['admin']['valuemandatory'] = 'This value is mandatory';
 $lng['admin']['valuemandatorycompany'] = 'Either "name" and "firstname" or "company" must be filled';
 
 $lng['menue']['main']['username'] = 'Logged in as: ';
+
+$lng['panel']['urloverridespath'] = 'URL (overrides path)';
+$lng['panel']['pathorurl'] = 'Path or URL';
+
 ?>

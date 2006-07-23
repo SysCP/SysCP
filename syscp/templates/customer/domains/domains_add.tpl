@@ -19,6 +19,10 @@ $header
        <td class="maintable">{$lng['panel']['path']}:</td>
        <td class="maintable">{$pathSelect}</td>
       </tr>
+      <if $settings['panel']['pathedit'] == 'Dropdown'><tr>
+       <td class="maintable">{$lng['panel']['urloverridespath']}:</td>
+       <td class="maintable"><input type="text" name="url" value="" size="30" /></td>
+      </tr></if>
       <tr>
        <td class="maintable">{$lng['domain']['openbasedirpath']}:</td>
        <td class="maintable" nowrap><select name="openbasedir_path">$openbasedir</select></td>
