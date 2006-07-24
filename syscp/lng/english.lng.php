@@ -409,4 +409,19 @@ $lng['menue']['main']['username'] = 'Logged in as: ';
 $lng['panel']['urloverridespath'] = 'URL (overrides path)';
 $lng['panel']['pathorurl'] = 'Path or URL';
 
+$lng['error']['sessiontimeoutiswrong'] = 'Only numerical &quot;Session Timeout&quot; is allowed.';
+$lng['error']['maxloginattemptsiswrong'] = 'Only numerical &quot;Max Login Attempts&quot; are allowed.';
+$lng['error']['deactivatetimiswrong'] = 'Only numerical &quot;Deactivate Time&quot; is allowed.';
+$lng['error']['accountprefixiswrong'] = 'The &quopt;Customerprefix&quot; is wrong.';
+$lng['error']['mysqlprefixiswrong'] = 'The &quot;SQL Prefix&quot; is wrong.';
+$lng['error']['ftpprefixiswrong'] = 'The &quot;FTP Prefix&quot; is wrong.';
+$lng['error']['ipiswrong'] = 'The &quot;IP-Address&quot; is wrong. Only a valid IP-addresses is allowed.';
+$lng['error']['vmailuidiswrong'] = 'The &quot;Mails-uid&quot; is wrong. Only a numerical UID is allowed.';
+$lng['error']['vmailgidiswrong'] = 'The &quot;Mails-gid&quot; is wrong. Only a numerical GID is allowed.';
+$lng['error']['adminmailiswrong'] = 'The &quot;Sender-address&quot; is wrong. Only a valid email-address is allowed.';
+$lng['error']['pagingiswrong'] = 'The &quot;Entires per Page&quot;-value is wrong. Only numerical characters are allowed.';
+$lng['error']['phpmyadminiswrong'] = 'The phpmyadmin-link is not a valid link.';
+$lng['error']['webmailiswrong'] = 'The WebMail-link is not a valid link.';
+$lng['error']['webftpiswrong'] = 'The WebFTP-link is not a valid link.';
+
 ?>
