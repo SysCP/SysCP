@@ -224,6 +224,18 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/','/^https?\:\/\//'),'',addslashes($_POST['subdomain'])));
+					/* Rules for subdomains:
+					 * - At least two characters
+					 * - Valid characters: a-z, 0-9, ".", "-" and "_"
+					 * - First character must be a-z or 0-9
+					 * - Case-insensitiv
+					 */
+					// TODO: Merge this check with the one around line 287?
+					if(!preg_match("/^[a-z0-9](?:[a-z0-9-_]+\.)+$/i", $subdomain))
+					{
+						standard_error('subdomainiswrong', $subdomain);
+						exit;
+					}
 					$domain=$idna_convert->encode(addslashes($_POST['domain']));
 					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 					$completedomain=$subdomain.'.'.$domain;

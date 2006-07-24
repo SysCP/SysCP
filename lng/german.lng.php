@@ -409,4 +409,19 @@ $lng['menue']['main']['username'] = 'Angemeldet als: ';
 $lng['panel']['urloverridespath'] = 'URL (&uuml;berschreibt Pfad)';
 $lng['panel']['pathorurl'] = 'Pfad oder URL';
 
+$lng['error']['sessiontimeoutiswrong'] = '&quot;Session-Timeout&quot; muss ein numerischer Wert sein.';
+$lng['error']['maxloginattemptsiswrong'] = '&quot;Maximale Loginversuche&quot; muss ein numerischer Wert sein.';
+$lng['error']['deactivatetimiswrong'] = '&quot;L&auml;nge der Deaktivierung&quot; muss numerisch sein.';
+$lng['error']['accountprefixiswrong'] = 'Das &quot;Kundenprefix&quot; ist falsch.';
+$lng['error']['mysqlprefixiswrong'] = 'Das &quot;SQL-Prefix&quot; ist falsch.';
+$lng['error']['ftpprefixiswrong'] = 'Das &quot;FTP-Prefix&quot; ist falsch.';
+$lng['error']['systemipiswrong'] = 'Die &quot;IP-Adresse&quot; ist falsch. Es ist nur eine g&uuml;ltige IP-Adressen erlaubt.';
+$lng['error']['vmailuidiswrong'] = 'Die &quot;Mails-UID&quot; ist falsch. Nur eine numerische UID ist erlaubt.';
+$lng['error']['vmailgidiswrong'] = 'Die &quot;Mails-GID&quot; ist falsch. Nur eine numerische GID ist erlaubt.';
+$lng['error']['adminmailiswrong'] = 'Die &quot;Absenderadresse&quot; ist fehlerhaft. Es ist nur eine g&uuml;ltige EMail-Adresse erlaubt';
+$lng['error']['pagingiswrong'] = 'Die &quot;Eintr&auml;ge pro Seite&quot;-Einstellung ist falsch. Nur numerische Zeichen sind erlaubt.';
+$lng['error']['phpmyadminiswrong'] = 'Die &quot;phpMyAdmin-URL&quot ist keine g&uuml;ltige URL.';
+$lng['error']['webmailiswrong'] = 'Die &quot;WebMail-URL&quot ist keine g&uuml;ltige URL.';
+$lng['error']['webftpiswrong'] = 'Die &quot;WebFTP-URL&quot ist keine g&uuml;ltige URL.';
+
 ?>
