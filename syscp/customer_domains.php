@@ -231,7 +231,7 @@
 					 * - Case-insensitiv
 					 */
 					// TODO: Merge this check with the one around line 287?
-					if(!preg_match("/^[a-z0-9](?:[a-z0-9-_]+\.)+$/i", $subdomain))
+					if(!preg_match("/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i", $subdomain))
 					{
 						standard_error('subdomainiswrong', $subdomain);
 						exit;
