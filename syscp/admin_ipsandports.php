@@ -38,122 +38,104 @@
 	{
 		if($action=='')
 		{
-			if(isset($_POST['send']) && $_POST['send']=='send')
+			$ipsandports='';
+			$result=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
+			while($row=$db->fetch_array($result))
 			{
-				$defaultid = intval($_POST['defaultipandport']);
+				$row = htmlentities_array( $row );
+				eval("\$ipsandports.=\"".getTemplate("ipsandports/ipsandports_ipandport")."\";");
+			}
+			eval("echo \"".getTemplate("ipsandports/ipsandports")."\";");
+		}
 
-				if($defaultid=='')
+		elseif($action=='delete' && $id!=0)
+		{
+			$result=$db->query_first("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+			if( isset( $result['id'] ) && $result['id'] == $id )
+			{
+				$result_checkdomain=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE `ipandport`='$id'");
+				if($result_checkdomain['id']=='')
 				{
-					standard_error('myipdefault');
+					if($result['id']!=$settings['system']['defaultip'])
+					{
+						$result_sameipotherport=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
+
+						if( ( $result['ip']!=$settings['system']['ipaddress'] ) || ( $result['ip']==$settings['system']['ipaddress'] && $result_sameipotherport['id']!='' ) )
+						{
+							$result=$db->query_first("SELECT `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+							if($result['ip']!='')
+							{
+								if(isset($_POST['send']) && $_POST['send']=='send')
+								{
+									$db->query("DELETE FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+
+									inserttask('1');
+									inserttask('4');
+
+									redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+								}
+								else
+								{
+									ask_yesno('admin_ip_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['ip'].':'.$result['port']);
+								}
+							}
+						}
+						else
+						{
+							standard_error('cantdeletesystemip');
+						}
+					}
+					else
+					{
+						standard_error('cantdeletedefaultip');
+					}
 				}
 				else
 				{
-					$db->query("UPDATE `".TABLE_PANEL_IPSANDPORTS."` SET `default` = '0' WHERE `default` = '1'");
-					$db->query("UPDATE `".TABLE_PANEL_IPSANDPORTS."` SET `default` = '1' WHERE `id`='$defaultid'");
+					standard_error('ipstillhasdomains');
+				}
+			}
+		}
+
+		elseif($action=='add')
+		{
+			if(isset($_POST['send']) && $_POST['send']=='send')
+			{
+				$ip = addslashes($_POST['ip']);
+				$port = intval($_POST['port']);
+
+				$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='$ip' AND `port`='$port'");
+
+				if($ip=='')
+				{
+					standard_error(array('stringisempty','myipaddress'));
+				}
+				elseif(!preg_match("/^\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/", $ip))
+				{
+					standard_error('ipiswrong');
+				}
+				elseif($port==0 || !preg_match("/^[0-9]{1,5}$/i", $port))
+				{
+					standard_error(array('stringisempty','myport'));
+				}
+				elseif($result_checkfordouble['id']!='')
+				{
+					standard_error('myipnotdouble');
+				}
+				else
+				{
+					$db->query("INSERT INTO `".TABLE_PANEL_IPSANDPORTS."` (`ip`, `port`) VALUES ('$ip', '$port')");
+
+					inserttask('1');
+					inserttask('4');
 
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
 			else
 			{
-				$ipsandports='';
-				$ipsandports_default='';
-				$ipsandports_default_id='';
-				$result=$db->query("SELECT `id`, `ip`, `port`, `default` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
-				while($row=$db->fetch_array($result))
-				{
-					if($row['default']=='1')
-					{
-						$ipsandports_default_id = $row['id'];
-					}
-					$ipsandports_default.=makeoption($row['ip'].':'.$row['port'],$row['id'],$ipsandports_default_id);
-					eval("\$ipsandports.=\"".getTemplate("ipsandports/ipsandports_ipandport")."\";");
-				}
-				eval("echo \"".getTemplate("ipsandports/ipsandports")."\";");
+				eval("echo \"".getTemplate("ipsandports/ipsandports_add")."\";");
 			}
-		}
-
-		elseif($action=='delete' && $id!=0)
-		{
-			$result=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE `ipandport`='$id'");
-			if($result['id']=='')
-			{
-				$result=$db->query_first("SELECT `default` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
-				if($result['default']=='0')
-				{
-					$result=$db->query_first("SELECT `ip` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
-					$result2=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
-					if( ( $result['ip']!=$settings['system']['ipaddress'] ) || ( $result['ip']==$settings['system']['ipaddress'] && $result2['id']!='' ) )
-					{
-						$result=$db->query_first("SELECT `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
-						if($result['ip']!='')
-						{
-							if(isset($_POST['send']) && $_POST['send']=='send')
-							{
-								$db->query("DELETE FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
-
-								inserttask('1');
-								inserttask('4');
-
-								redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
-							}
-							else
-							{
-								ask_yesno('admin_ip_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['ip'].':'.$result['port']);
-							}
-						}
-					}
-					else
-					{
-						standard_error('cantdeletesystemip');
-					}
-				}
-				else
-				{
-					standard_error('cantdeletedefaultip');
-				}
-			}
-			else
-			{
-				standard_error('ipstillhasdomains');
-			}
-		}
-
-		elseif($action=='add')
-		{
-				if(isset($_POST['send']) && $_POST['send']=='send')
-				{
-					$ip = addslashes($_POST['ip']);
-					$port = intval($_POST['port']);
-
-					$result=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='$ip' AND `port`='$port'");
-
-					if($ip=='')
-					{
-						standard_error(array('stringisempty','myipaddress'));
-					}
-					elseif($port=='')
-					{
-						standard_error(array('stringisempty','myport'));
-					}
-					elseif($result['id']!='')
-					{
-						standard_error('myipnotdouble');
-					}
-					else
-					{
-						$db->query("INSERT INTO `".TABLE_PANEL_IPSANDPORTS."` (`ip`, `port`) VALUES ('$ip', '$port')");
-
-						inserttask('1');
-						inserttask('4');
-
-						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
-					}
-				}
-				else
-				{
-					eval("echo \"".getTemplate("ipsandports/ipsandports_add")."\";");
-				}
 		}
 
 		elseif($action=='edit' && $id!=0)
@@ -166,22 +148,26 @@
 					$ip = addslashes($_POST['ip']);
 					$port = intval($_POST['port']);
 
-					$result2=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='$ip' AND `port`='$port'");
-					$result3=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
+					$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='$ip' AND `port`='$port'");
+					$result_sameipotherport=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
 
 					if($ip=='')
 					{
 						standard_error(array('stringisempty','myipaddress'));
 					}
-					elseif($port=='')
+					elseif(!preg_match("/^\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/", $ip))
+					{
+						standard_error('ipiswrong');
+					}
+					elseif($port==0 || !preg_match("/^[0-9]{1,5}$/i", $port))
 					{
 						standard_error(array('stringisempty','myport'));
 					}
-					elseif($result['ip']!=$ip && $result['ip']==$settings['system']['ipaddress'] && $result3['id']=='')
+					elseif($result['ip']!=$ip && $result['ip']==$settings['system']['ipaddress'] && $result_sameipotherport['id']=='')
 					{
 						standard_error('cantchangesystemip');
 					}
-					elseif($result2['id']!='' && $result2['id']!=$id)
+					elseif($result_checkfordouble['id']!='' && $result_checkfordouble['id']!=$id)
 					{
 						standard_error('myipnotdouble');
 					}
@@ -197,6 +183,7 @@
 				}
 				else
 				{
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("ipsandports/ipsandports_edit")."\";");
 				}
 			}

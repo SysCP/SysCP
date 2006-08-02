@@ -120,35 +120,16 @@
 			if($_POST['system_ipaddress']!=$settings['system']['ipaddress'])
 			{
 				$value=addslashes($_POST['system_ipaddress']);
-				if(!preg_match("/^\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/", $value))
+
+				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$value."'"); 
+
+				if( $db->num_rows( $result_ipandport ) == 0 )
 				{
 					standard_error('ipiswrong');
 					exit;
 				}
+
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
-
-				// FLO[06-06-20]: This could be made more fashionable in my opinion...
-				$ipandport = $db->query('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `ip`=\''.$value.'\' AND `port`=\'80\''); 
-				if($db->num_rows($ipandport) > 0) {
-					$ipandport = $db->fetch_array($ipandport);
-					$ipandport = intval($ipandport['id']);
-				}
-				else
-				{
-					$ipandport = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `ip`=\''.$value.'\'');
-					$ipandport = intval($ipandport['id']);
-				}
-
-				$customerstddomains = $db->query('SELECT `standardsubdomain` FROM `'.TABLE_PANEL_CUSTOMERS.'` WHERE `standardsubdomain` <> \'0\'');
-				$ids = array();
-				while($row = $db->fetch_array($customerstddomains))
-				{
-					$ids[] = $row['standardsubdomain'];
-				}
-				if(count($ids) > 0)
-				{
-					$db->query('UPDATE `'.TABLE_PANEL_DOMAINS.'` SET `ipandport`=\''.$ipandport.'\' WHERE `id` IN ('.join(',',$ids).')');
-				}
 
 				inserttask('1');
 
@@ -182,6 +163,32 @@
 
 					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$mysql_access_host' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
 				}
+			}
+
+			if($_POST['system_defaultip']!=$settings['system']['defaultip'])
+			{
+				$value=addslashes($_POST['system_defaultip']);
+
+				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".$value."'"); 
+
+				if( $db->num_rows( $result_ipandport ) == 0 )
+				{
+					standard_error('ipiswrong');
+					exit;
+				}
+
+				$customerstddomains = $db->query('SELECT `d`.`id` FROM `'.TABLE_PANEL_CUSTOMERS.'` `c` LEFT JOIN `'.TABLE_PANEL_DOMAINS.'` `d` ON `d`.`id` = `c`.`standardsubdomain` WHERE `c`.`standardsubdomain` <> \'0\' && `d`.`ipandport` = \''.$settings['system']['defaultip'].'\' ');
+				$ids = array();
+				while($row = $db->fetch_array($customerstddomains))
+				{
+					$ids[] = $row['id'];
+				}
+				if(count($ids) > 0)
+				{
+					$db->query('UPDATE `'.TABLE_PANEL_DOMAINS.'` SET `ipandport`=\''.$value.'\' WHERE `id` IN ('.join(',',$ids).')');
+				}
+
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='defaultip'");
 			}
 
 			if($_POST['system_hostname']!=$settings['system']['hostname'])
@@ -324,7 +331,7 @@
 							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'SET `url`="'.$value.'" ' .
 							'WHERE `lang` = "menue;mysql;phpmyadmin"';
-					} 
+					}
 				}
 				else
 				{
@@ -335,7 +342,7 @@
 						'WHERE `area`=\'customer\' AND `parent_url`=\'customer_mysql.php\'';
 					$max=$db->query_first($query);
 					$new=floor($max['max']/10)+10;
-					
+
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
 						'SET `lang`       = "menue;mysql;phpmyadmin", ' .
@@ -375,7 +382,7 @@
 							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'SET `url`="'.$value.'" ' .
 							'WHERE `lang` = "menue;email;webmail"';
-					} 
+					}
 				}
 				else
 				{
@@ -386,7 +393,7 @@
 						'WHERE `area`=\'customer\' AND `parent_url`=\'customer_email.php\'';
 					$max=$db->query_first($query);
 					$new=floor($max['max']/10)+10;
-					
+
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
 						'SET `lang`       = "menue;email;webmail", ' .
@@ -426,7 +433,7 @@
 							'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'SET `url`="'.$value.'" ' .
 							'WHERE `lang` = "menue;ftp;webftp"';
-					} 
+					}
 				}
 				else
 				{
@@ -437,7 +444,7 @@
 						'WHERE `area`=\'customer\' AND `parent_url`=\'customer_ftp.php\'';
 					$max=$db->query_first($query);
 					$new=floor($max['max']/10)+10;
-					
+
 					$query =
 						'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
 						'SET `lang`       = "menue;ftp;webftp", ' .
@@ -455,50 +462,52 @@
 		}
 		else
 		{
-			// query the whole table
+			// build the languages list
 			$query =
 				'SELECT * ' .
- 				'FROM `'.TABLE_PANEL_LANGUAGE.'` ';
- 			$result = $db->query($query);
- 			// presort languages
-			$langs2 = "";
- 			while ($row = $db->fetch_array($result))
- 			{
-				$langs2[$row['language']] = $row['language'];
- 			} 
-			// buildup $languages2 for the login screen
-			$languages2 = "";
-			foreach ($langs2 as $key => $value)
- 			{
-				$languages2 .= makeoption($key,$value,$settings['panel']['standardlanguage']);
- 			}
+				'FROM `'.TABLE_PANEL_LANGUAGE.'` ';
+			$result = $db->query($query);
+			$languages_array = array();
+			$languages = '';
+			while ($row = $db->fetch_array($result))
+			{
+				if( !isset( $languages_array[$row['language']] ) && !in_array( $row['language'], $languages_array ) )
+				{
+					$languages_array[$row['language']] = $row['language'];
+					$languages .= makeoption($row['language'],$row['language'],$settings['panel']['standardlanguage']);
+				}
+			} 
 
-			// build the IP addresses list
-			$result=$db->query('SELECT `ip` FROM `'.TABLE_PANEL_IPSANDPORTS.'` ORDER BY `ip` ASC');
-			$system_ipaddress_array='';
+			// build the IP addresses lists
+			$result=$db->query('SELECT `id`, `ip`, `port` FROM `'.TABLE_PANEL_IPSANDPORTS.'` ORDER BY `ip` ASC, `port` ASC');
+			$system_ipaddress_array=array();
+			$system_ipaddress='';
+			$system_defaultip='';
 			while($row=$db->fetch_array($result))
 			{
-				$system_ipaddress_array[$row['ip']] = $row['ip'];
-			}
-			$system_ipaddress='';
-			foreach($system_ipaddress_array as $key => $value)
-			{
-				$system_ipaddress.=makeoption($key,$value,$settings['system']['ipaddress']);
+				if( !isset( $system_ipaddress_array[$row['ip']] ) && !in_array( $row['ip'], $system_ipaddress_array ) )
+				{
+					$system_ipaddress_array[$row['ip']] = $row['ip'];
+					$system_ipaddress.=makeoption($row['ip'],$row['ip'],$settings['system']['ipaddress']);
+				}
+				$system_defaultip.=makeoption($row['ip'].':'.$row['port'],$row['id'],$settings['system']['defaultip']);
 			}
 
+			// build the pathedit list
 			$pathedit='';
- 			foreach (array('Manual','Dropdown') as $method)
+			foreach (array('Manual','Dropdown') as $method)
 			{
 				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit']);
 			}
-			
+
+			$settings = htmlentities_array( $settings );
 			eval("echo \"".getTemplate("settings/settings")."\";");
 		}
 	}
 
 	elseif ( $page == 'rebuildconfigs' && $userinfo['change_serversettings'] == '1')
 	{
-		if ( $_POST['send'] && $_POST['send'] == 'send' )
+		if ( isset( $_POST['send'] ) && $_POST['send'] == 'send' )
 		{
 			inserttask('1');
 			inserttask('4');
@@ -506,9 +515,8 @@
 		}
 		else
 		{
-			ask_yesno('admin_configs_reallyrebuild', $filename, 'id='.$id.';page='.$page );
+			ask_yesno('admin_configs_reallyrebuild', $filename, array( 'page' => $page ) );
 		}
-			
 	}
-	
+
 ?>

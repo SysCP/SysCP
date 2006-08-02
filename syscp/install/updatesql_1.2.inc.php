@@ -895,4 +895,30 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn3';
 	}
+	if( $settings['panel']['version'] == '1.2.13-svn3' )
+	{
+		$result = $db->query_first(
+			'SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `default` = \'1\' '
+		);
+		$defaultip=$result['id'];
+
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'system\', ' .
+			'    `varname`      = \'defaultip\', ' .
+			'    `value`        = \''.$defaultip.'\' '
+		);
+
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_IPSANDPORTS.'` DROP `default` ');
+
+		// set new version 
+		$query = 
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.13-svn4\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.13-svn4';
+	}
 ?>

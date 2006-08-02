@@ -94,7 +94,7 @@
 				}
 				else
 				{
-					ask_yesno('admin_template_reallydelete', $filename, "subjectid=$subjectid;mailbodyid=$mailbodyid;page=$page;action=$action", $result['language'].' - '.$lng['admin']['templates'][str_replace('_subject','',$result['varname'])]);
+					ask_yesno('admin_template_reallydelete', $filename, array( 'subjectid' => $subjectid, 'mailbodyid' => $mailbodyid, 'page' => $page, 'action' => $action ), $result['language'].' - '.$lng['admin']['templates'][str_replace('_subject','',$result['varname'])]);
 				}
 			}
 		}
@@ -225,10 +225,14 @@
 				}
 				else
 				{
+					$result = htmlentities_array( $result );
 					$template=$lng['admin']['templates'][str_replace('_subject','',$result['varname'])];
 					$subject=$result['value'];
+
 					$result=$db->query_first("SELECT `language`, `varname`, `value` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `id`='$mailbodyid'");
+					$result = htmlentities_array( $result );
 					$mailbody=$result['value'];
+
 					eval("echo \"".getTemplate("templates/templates_edit")."\";");
 				}
 			}

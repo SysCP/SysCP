@@ -50,9 +50,13 @@
 				"       `d`.`caneditdomain`, " .
 				"       `d`.`iswildcarddomain`, " .
 				"       `d`.`parentdomainid`, " .
-				"		`ad`.`domain` AS `aliasdomain` " .
+				"       `ad`.`id` AS `aliasdomainid`, " .
+				"       `ad`.`domain` AS `aliasdomain`, " .
+				"       `da`.`id` AS `domainaliasid`, " .
+				"       `da`.`domain` AS `domainalias` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
 				"WHERE `d`.`customerid`='".$userinfo['customerid']."' " .
 				"  AND `d`.`id` <> ".$userinfo['standardsubdomain']
 			);
@@ -94,9 +98,13 @@
 					"       `d`.`caneditdomain`, " .
 					"       `d`.`iswildcarddomain`, " .
 					"       `d`.`parentdomainid`, " .
-					"		`ad`.`domain` AS `aliasdomain` " .
+					"       `ad`.`id` AS `aliasdomainid`, " .
+					"       `ad`.`domain` AS `aliasdomain`, " .
+					"       `da`.`id` AS `domainaliasid`, " .
+					"       `da`.`domain` AS `domainalias` " .
 					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
 					"WHERE `d`.`customerid`='".$userinfo['customerid']."' " .
 					"  AND `d`.`id` <> ".$userinfo['standardsubdomain'] .
 					" LIMIT $pagestart , ".$settings['panel']['paging'].";"
@@ -118,12 +126,14 @@
 			{
 				$paging = "";
 			}
- 			$parentdomains_count=0;
- 			$domains_count=0;
- 			$domain_array=array();
+			$parentdomains_count=0;
+			$domains_count=0;
+			$domain_array=array();
 			while( $row = $db->fetch_array($result) )
- 			{
- 				$row['domain'] = $idna_convert->decode($row['domain']);
+			{
+				$row['domain'] = $idna_convert->decode($row['domain']);
+				$row['aliasdomain'] = $idna_convert->decode($row['aliasdomain']);
+				$row['domainalias'] = $idna_convert->decode($row['domainalias']);
 				$domainparts = explode('.',$row['domain']);
 				$domainparts = array_reverse($domainparts);
 				$sortkey = '';
@@ -159,24 +169,19 @@
 				$domain_array=array_merge($domain_array,$subarray);
 			}
 			$parentdomainid = 0;
- 			foreach($domain_array as $row)
- 			{
- 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
+			foreach($domain_array as $row)
+			{
+				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
 
+				$row = htmlentities_array( $row );
 				if ($row['parentdomainid'] == 0)
 				{
 					eval("\$domains.=\"".getTemplate("domains/domains_delimiter")."\";");
 				}
-				$aliasdomain=false;
-				$result=$db->query_first('SELECT COUNT(`id`) AS `count` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$row['id'].'\'');
-				if($result['count'] > 0)
-				{
-					$aliasdomain=true;
-				}
+				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 
- 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
- 				if($row['parentdomainid'] == '0' && $row['iswildcarddomain'] != '1' && $row['caneditdomain'] == '1')
- 				{
+				if($row['parentdomainid'] == '0' && $row['iswildcarddomain'] != '1' && $row['caneditdomain'] == '1')
+				{
 					$parentdomains_count++;
 				}
 				$domains_count++;
@@ -208,7 +213,7 @@
 				}
 				else
 				{
-					ask_yesno('domains_reallydelete', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['domain']));
+					ask_yesno('domains_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $idna_convert->decode($result['domain']));
 				}
 			}
 			else
@@ -471,6 +476,7 @@
 					$openbasedir=makeoption($lng['domain']['docroot'],0,$result['openbasedir_path'])
 					            .makeoption($lng['domain']['homedir'],1,$result['openbasedir_path']);
 
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("domains/domains_edit")."\";");
 				}
 			}

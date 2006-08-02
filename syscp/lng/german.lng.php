@@ -387,7 +387,6 @@ $lng['admin']['ipsandports']['edit'] = 'IP/Port bearbeiten';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
-$lng['admin']['ipsandports']['default'] = 'Standard Reseller IP/Port'; 
 
 // ADDED IN 1.2.13-rc3
 $lng['error']['cantchangesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie noch eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
@@ -423,5 +422,11 @@ $lng['error']['pagingiswrong'] = 'Die &quot;Eintr&auml;ge pro Seite&quot;-Einste
 $lng['error']['phpmyadminiswrong'] = 'Die &quot;phpMyAdmin-URL&quot ist keine g&uuml;ltige URL.';
 $lng['error']['webmailiswrong'] = 'Die &quot;WebMail-URL&quot ist keine g&uuml;ltige URL.';
 $lng['error']['webftpiswrong'] = 'Die &quot;WebFTP-URL&quot ist keine g&uuml;ltige URL.';
+
+$lng['domains']['hasaliasdomains'] = 'Hat Aliasdomain(s)';
+$lng['domains']['istopleveldomain'] = 'Ist Top-Level-Domain';
+
+$lng['serversettings']['defaultip']['title'] = 'Standard IP/Port'; 
+$lng['serversettings']['defaultip']['description'] = 'Welche IP/Port-Kombination soll standardm&auml;&szlig;ig verwendet werden?'; 
 
 ?>

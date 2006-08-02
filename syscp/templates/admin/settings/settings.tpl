@@ -44,6 +44,10 @@ $header
        <td class="maintable" nowrap><select name="system_ipaddress">$system_ipaddress</select></td>
       </tr>
       <tr>
+       <td class="maintable" align="right"><b>{$lng['serversettings']['defaultip']['title']}:</b><br />{$lng['serversettings']['defaultip']['description']}</td>
+       <td class="maintable" nowrap><select name="system_defaultip">$system_defaultip</select></td>
+      </tr>
+      <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['hostname']['title']}:</b><br />{$lng['serversettings']['hostname']['description']}</td>
        <td class="maintable" nowrap><input type="text" name="system_hostname" value="{$settings['system']['hostname']}"></td>
       </tr>
@@ -93,7 +97,7 @@ $header
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['login']['language']}:</b><br />{$lng['serversettings']['language']['description']}</td>
-       <td class="maintable" nowrap><select name="panel_standardlanguage">$languages2</select></td>
+       <td class="maintable" nowrap><select name="panel_standardlanguage">$languages</select></td>
       </tr>
       <tr>
        <td class="maintable" align="right"><b>{$lng['serversettings']['pathedit']['title']}:</b><br />{$lng['serversettings']['pathedit']['description']}</td>

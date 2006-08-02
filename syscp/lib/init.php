@@ -115,6 +115,17 @@
 	require('./lib/functions.php');
 
 	/**
+	 * Clean all superglobals which contain user input from too many slashes
+	 * (we always rely on magic_quotes_gpc being set to off, so removing them
+	 * all is save) and from htmlentities
+	 */
+	foreach( array( '_REQUEST', '_GET', '_POST', '_COOKIE' ) as $superglobal )
+	{
+		$$superglobal = html_entity_decode_array( stripslashes_array( $$superglobal, '', true ), '', true );
+	}
+	unset( $superglobal );
+
+	/**
 	 * Selects settings from MySQL-Table
 	 */
 	$settings = Array() ;

@@ -252,6 +252,7 @@ CREATE TABLE `panel_domains` (
   `zonefile` varchar(255) NOT NULL default '',
   `parentdomainid` int(11) unsigned NOT NULL default '0',
   `openbasedir` tinyint(1) NOT NULL default '0',
+  `openbasedir_path` tinyint(1) NOT NULL default '0',
   `safemode` tinyint(1) NOT NULL default '0',
   `speciallogfile` tinyint(1) NOT NULL default '0',
   `specialsettings` text NOT NULL,
@@ -276,7 +277,6 @@ CREATE TABLE `panel_ipsandports` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `ip` varchar(15) NOT NULL default '',
   `port` int(5) NOT NULL default '80',
-  `default` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 
@@ -410,6 +410,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (31, 'system', 'apacheconf_filename', 'vhosts.conf');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (32, 'system', 'lastcronrun', '');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (33, 'panel', 'paging', '20');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (34, 'system', 'defaultip', '0');
 
 # --------------------------------------------------------
 
