@@ -469,13 +469,23 @@
 		         '  AND `varname` = \'lastcronrun\'';
 		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
-		 		
+
 		// and lets insert the default ip and port
-		$db->query('INSERT INTO `panel_ipsandports`      ' .
-		           ' SET `ip`      = \''.$serverip.'\',  ' .
-		           '     `port`    = \'80\',             ' .
-		           '     `default` = \'1\'               ');
-		           
+		$query = 'INSERT INTO `%s` ' .
+		         ' SET `ip`   = \'%s\', ' .
+		         '     `port` = \'80\' ';
+		$query = sprintf( $query, TABLE_PANEL_IPSANDPORTS, $serverip );
+		$db->query($query);
+
+		$defaultip = $db->insert_id();
+		// insert the defaultip
+		$query = 'UPDATE `%s` ' .
+		         'SET `value` = \'%s\' ' .
+		         'WHERE `settinggroup` = \'system\' ' .
+		         '  AND `varname` = \'defaultip\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS, $defaultip );
+		$db->query($query);
+
 		status_message('green', 'OK');
 
 		//last but not least create the main admin

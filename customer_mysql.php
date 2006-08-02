@@ -46,6 +46,7 @@
 			$mysqls='';
 			while($row=$db->fetch_array($result))
 			{
+				$row = htmlentities_array( $row );
 				eval("\$mysqls.=\"".getTemplate("mysql/mysqls_database")."\";");
 			}
 			$mysqls_count = $db->num_rows($result);
@@ -90,7 +91,7 @@
 				}
 				else 
 				{
-					ask_yesno('mysql_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['databasename']);
+					ask_yesno('mysql_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['databasename']);
 				}
 			}
 		}

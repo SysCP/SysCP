@@ -94,6 +94,7 @@
 			while($row=$db->fetch_array($result))
 			{
 				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['homedir']);
+				$row = htmlentities_array( $row );
 				eval("\$accounts.=\"".getTemplate("ftp/accounts_account")."\";");
 			}
 			$ftps_count = $db->num_rows($result);
@@ -121,11 +122,11 @@
 						$resetaccnumber='';
 					}
 					$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`-1 $resetaccnumber WHERE `customerid`='".$userinfo['customerid']."'");
-            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
-					ask_yesno('ftp_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['username']);
+					ask_yesno('ftp_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['username']);
 				}
 			}
 			else
@@ -171,13 +172,13 @@
 //						$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`+1, `ftp_lastaccountnumber`=`ftp_lastaccountnumber`+1 WHERE `customerid`='".$userinfo['customerid']."'");
 //						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$uid' WHERE settinggroup='ftp' AND varname='lastguid'");
-            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
 				{
 					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
-					                             $userinfo['guid'], $settings['panel']['pathedit'] );				
+					                             $userinfo['guid'], $settings['panel']['pathedit'] );
 					eval("echo \"".getTemplate("ftp/accounts_add")."\";");
 				}
 			}
@@ -199,10 +200,11 @@
 					else
 					{
 						$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
-            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
-				else {
+				else
+				{
 					eval("echo \"".getTemplate("ftp/accounts_edit")."\";");
 				}
 			}

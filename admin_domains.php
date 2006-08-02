@@ -56,10 +56,11 @@
 
 			$domains='';
 			$result=$db->query(
-				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `ad`.`domain` AS `alias` " .
+				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `da`.`id` AS `domainaliasid`, `da`.`domain` AS `domainalias` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
 				"LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) " .
 				"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
 				"ORDER BY `$sortby` $sortorder"
@@ -93,10 +94,11 @@
 				}
 				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
 				$result=$db->query(
-					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `ad`.`domain` AS `alias` " .
+					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `da`.`id` AS `domainaliasid`, `da`.`domain` AS `domainalias` " .
 					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 					"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
 					"LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) " .
 					"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
 					"ORDER BY `$sortby` $sortorder " .
@@ -123,30 +125,14 @@
 			while($row=$db->fetch_array($result))
 			{
 				$row['domain'] = $idna_convert->decode($row['domain']);
+				$row['aliasdomain'] = $idna_convert->decode($row['aliasdomain']);
+				$row['domainalias'] = $idna_convert->decode($row['domainalias']);
 				$domain_array[$row['domain']] = $row;
 			}
-//			ksort($domain_array);
+			ksort($domain_array);
 			foreach($domain_array as $row)
 			{
-				$standardsubdomain = false;
-				// --- martin @ 03.08.2005 ---------------------------------------------------------
-				// changed query variable not to collide with an elemental config variable
-				$query = 
-					'SELECT `customerid` ' .
-					'FROM   `'.TABLE_PANEL_CUSTOMERS.'` ' .
-					'WHERE  `standardsubdomain` = \''.$row['id'].'\'';
-				$result = $db->query_first( $query );
-				// ---------------------------------------------------------------------------------
-				if(isset($result['customerid']))
-				{
-					$standardsubdomain = true;
-				}
-				$aliasdomain=false;
-				$result=$db->query_first('SELECT COUNT(`id`) AS `count` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$row['id'].'\'');
-				if($result['count'] > 0)
-				{
-					$aliasdomain=true;
-				}
+				$row = htmlentities_array( $row );
 				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 			}
 			eval("echo \"".getTemplate("domains/domains")."\";");
@@ -196,7 +182,7 @@
 				}
 				else
 				{
-					ask_yesno('admin_domain_reallydelete', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['domain']));
+					ask_yesno('admin_domain_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $idna_convert->decode($result['domain']));
 				}
 			}
 		}
@@ -223,7 +209,14 @@
 						$safemode = intval($_POST['safemode']);
 						$speciallogfile = intval($_POST['speciallogfile']);
 						$specialsettings = str_replace("\r\n", "\n", $_POST['specialsettings']);
+
 						$ipandport = intval($_POST['ipandport']);
+						$ipandport_check = $db->query_first( "SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id` = '".$ipandport."' " );
+						if( !isset( $ipandport_check['id'] ) || $ipandport_check['id'] == '0' )
+						{
+							$ipandport = $settings['system']['defaultip'];
+						}
+
 						if(isset($_POST['documentroot']) && $_POST['documentroot'] != '')
 						{
 							if ( substr($_POST['documentroot'],0,1) != '/' )
@@ -245,8 +238,7 @@
 						$safemode = '1';
 						$speciallogfile = '1';
 						$specialsettings = '';
-						$ipandport = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `default`=\'1\'');
-						$ipandport = intval($ipandport['id']);
+						$ipandport = $settings['system']['defaultip'];
 					}
 					if(!preg_match('/^https?\:\/\//', $documentroot))
 					{
@@ -321,31 +313,22 @@
 						    && (!isset($_POST['reallydoit']) 
 						       || $_POST['reallydoit'] != 'reallydoit') )
 						{
-							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "page=$page;action=$action;domain=$domain;documentroot=$documentroot;customerid=$customerid;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;speciallogfile=$speciallogfile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
+							ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, array( 'page' => $page, 'action' => $action, 'domain' => $domain, 'documentroot' => $documentroot, 'customerid' => $customerid, 'alias' => $aliasdomain, 'isbinddomain' => $isbinddomain, 'isemaildomain' => $isemaildomain, 'subcanemaildomain' => $subcanemaildomain, 'caneditdomain' => $caneditdomain, 'zonefile' => $zonefile, 'speciallogfile' => $speciallogfile, 'openbasedir' => $openbasedir, 'ipandport' => $ipandport, 'safemode' => $safemode, 'specialsettings' => $specialsettings, 'reallydoit' => 'reallydoit' ));
 							exit;
 						}
 						$pattern = sprintf('^%s', $customer['documentroot']);
 						if( !ereg($pattern,$documentroot) 
 						    && ( !isset($_POST['reallydocroot'] ) 
-						       || $_POST['reallydocroot'] != 'reallydocroot') )
+						       || $_POST['reallydocroot'] != 'reallydocroot') 
+						    && !preg_match('/^https?\:\/\//', $documentroot) )
 						{
-							$params = "page=$page;action=$action;domain=$domain;documentroot=$documentroot;customerid=$customerid;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;speciallogfile=$speciallogfile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).';reallydocroot=reallydocroot';
+							$params = array( 'page' => $page, 'action' => $action, 'domain' => $domain, 'documentroot' => $documentroot, 'customerid' => $customerid, 'alias' => $aliasdomain, 'isbinddomain' => $isbinddomain, 'isemaildomain' => $isemaildomain, 'subcanemaildomain' => $subcanemaildomain, 'caneditdomain' => $caneditdomain, 'zonefile' => $zonefile, 'speciallogfile' => $speciallogfile, 'openbasedir' => $openbasedir, 'ipandport' => $ipandport, 'safemode' => $safemode, 'specialsettings' => $specialsettings, 'reallydocroot' => 'reallydocroot' );
 							if ( isset($_POST['reallydoit']) )
 							{
-								$params .= ';reallydoit=reallydoit';
+								$params['reallydoit'] = 'reallydoit';
 							}
 							ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params );
 							exit;
-						  	
-						}
-
-						if( isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit' )
-						{
-							$specialsettings = urldecode($specialsettings);
-						}
-						if( isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' )
-						{
-							$specialsettings = urldecode($specialsettings);
 						}
 
 						$specialsettings = addslashes($specialsettings);
@@ -383,10 +366,9 @@
 					}
 					$ipsandports='';
 					$result_ipsandports=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
-					$result_ipsandports_default=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `default` = '1'");
 					while($row_ipandport=$db->fetch_array($result_ipsandports))
 					{
-						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'],$row_ipandport['id'],$result_ipsandports_default['id']);
+						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'],$row_ipandport['id'],$settings['system']['defaultip']);
 					}
 					$standardsubdomains=array();
 					$result_standardsubdomains=$db->query('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`, `'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`id`=`c`.`standardsubdomain`');
@@ -415,6 +397,7 @@
 					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
 					$safemode=makeyesno('safemode', '1', '0', '1');
 					$speciallogfile=makeyesno('speciallogfile', '1', '0', '0');
+
 					eval("echo \"".getTemplate("domains/domains_add")."\";");
 				}
 			}
@@ -447,7 +430,13 @@
 						$openbasedir = intval($_POST['openbasedir']);
 						$safemode = intval($_POST['safemode']);
 						$specialsettings = str_replace("\r\n", "\n", $_POST['specialsettings']);
+
 						$ipandport = intval($_POST['ipandport']);
+						$ipandport_check = $db->query_first( "SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id` = '".$ipandport."' " );
+						if( !isset( $ipandport_check['id'] ) || $ipandport_check['id'] == '0' )
+						{
+							$ipandport = $settings['system']['defaultip'];
+						}
 
 						$documentroot = addslashes($_POST['documentroot']);
 						if($documentroot=='')
@@ -507,31 +496,22 @@
 					
 					if(($openbasedir == '0' || $safemode == '0') && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit') && $userinfo['change_serversettings'] == '1')
 					{
-						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, "id=$id;page=$page;action=$action;documentroot=$documentroot;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).";reallydoit=reallydoit");
+						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action, 'documentroot' => $documentroot, 'alias' => $aliasdomain, 'isbinddomain' => $isbinddomain, 'isemaildomain' => $isemaildomain, 'subcanemaildomain' => $subcanemaildomain, 'caneditdomain' => $caneditdomain, 'zonefile' => $zonefile, 'openbasedir' => $openbasedir, 'ipandport' => $ipandport, 'safemode' => $safemode, 'specialsettings' => $specialsettings, 'reallydoit' => 'reallydoit' ));
 						exit;
 					}
 					$pattern = sprintf('^%s', $customer['documentroot']);
 					if( !ereg($pattern,$documentroot) 
 					    && ( !isset($_POST['reallydocroot'] ) 
-					       || $_POST['reallydocroot'] != 'reallydocroot') )
+					       || $_POST['reallydocroot'] != 'reallydocroot') 
+					    && !preg_match('/^https?\:\/\//', $documentroot) )
 					{
-						$params = "id=$id;page=$page;action=$action;documentroot=$documentroot;alias=$aliasdomain;isbinddomain=$isbinddomain;isemaildomain=$isemaildomain;subcanemaildomain=$subcanemaildomain;caneditdomain=$caneditdomain;zonefile=$zonefile;openbasedir=$openbasedir;ipandport=$ipandport;safemode=$safemode;specialsettings=".urlencode($specialsettings).';reallydocroot=reallydocroot';
+						$params = array( 'id' => $id, 'page' => $page, 'action' => $action, 'documentroot' => $documentroot, 'alias' => $aliasdomain, 'isbinddomain' => $isbinddomain, 'isemaildomain' => $isemaildomain, 'subcanemaildomain' => $subcanemaildomain, 'caneditdomain' => $caneditdomain, 'zonefile' => $zonefile, 'openbasedir' => $openbasedir, 'ipandport' => $ipandport, 'safemode' => $safemode, 'specialsettings' => $specialsettings, 'reallydocroot' => 'reallydocroot' );
 						if ( isset($_POST['reallydoit']) )
 						{
-							$params .= ';reallydoit=reallydoit';
+							$params['reallydoit'] = 'reallydoit';
 						}
 						ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params );
 						exit;
-					  	
-					}
-
-					if( isset($_POST['reallydoit']) && $_POST['reallydoit'] == 'reallydoit' )
-					{
-						$specialsettings = urldecode($specialsettings);
-					}
-					if( isset( $_POST['reallydocroot']) && $_POST['reallydocroot'] == 'reallydocroot' )
-					{
-						$specialsettings = urldecode($specialsettings);
 					}
 
 					if($documentroot != $result['documentroot'] || $ipandport != $result['ipandport'] || $openbasedir != $result['openbasedir'] || $safemode != $result['safemode'] || $specialsettings != $result['specialsettings'])
@@ -577,6 +557,8 @@
 					$openbasedir=makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 					$safemode=makeyesno('safemode', '1', '0', $result['safemode']);
 					$speciallogfile=($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
+
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("domains/domains_edit")."\";");
 				}
 			}

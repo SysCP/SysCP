@@ -62,9 +62,11 @@
 	{
 		global $db, $tpl, $userinfo, $s, $header, $footer, $lng;
 
+		$replacer = htmlentities( html_entity_decode_complete( stripslashes_complete( $replacer ) ) );
+
 		if(!is_array($errors))
 		{
-			$errors = Array ($errors);
+			$errors = array ($errors);
 		}
 
 		$error = '';
@@ -106,48 +108,70 @@
 	 */
 	function makeyesno($name,$yesvalue,$novalue="",$yesselected="")
 	{
- 		global $lng;
- 		if($yesselected)
- 		{
+		global $lng;
+		if($yesselected)
+		{
 			$yeschecked=' checked="checked"';
- 			$nochecked='';
- 		}
-  		else
- 		{
- 			$yeschecked='';
+			$nochecked='';
+		}
+		else
+		{
+			$yeschecked='';
 			$nochecked=' checked="checked"';
- 		}
- 		$code="<b>".$lng['panel']['yes']."</b> <input type=\"radio\" name=\"$name\" value=\"$yesvalue\"$yeschecked /> &nbsp; \n<b>".$lng['panel']['no']."</b> <input type=\"radio\" name=\"$name\" value=\"$novalue\"$nochecked /> ";
-  		return $code;
- 	}
+		}
+		$code="<b>".$lng['panel']['yes']."</b> <input type=\"radio\" name=\"$name\" value=\"$yesvalue\"$yeschecked /> &nbsp; \n<b>".$lng['panel']['no']."</b> <input type=\"radio\" name=\"$name\" value=\"$novalue\"$nochecked /> ";
+		return $code;
+	}
 
 	/**
 	 * Prints Question on screen
 	 *
 	 * @param string The question
 	 * @param string File which will be called with POST if user clicks yes
-	 * @param string Values which will be given to $yesfile. Format: 'variable1=value1;variable2=value2;variable3=value3'
+	 * @param array Values which will be given to $yesfile. Format: array(variable1=>value1, variable2=>value2, variable3=>value3)
 	 * @param string Name of the target eg Domain or eMail address etc.
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	function ask_yesno ( $text , $yesfile , $params = '' , $targetname = '')
+	function ask_yesno ( $text , $yesfile , $params = array() , $targetname = '')
 	{
 		global $userinfo , $tpl , $db , $s , $header , $footer , $lng ;
-		$hiddenparams = '' ;
-		if ( isset ( $params ) )
+
+/*
+		// For compatibility reasons (if $params contains a string like "field1=value1;field2=value2") this will convert it into a usable array
+		if(!is_array($params))
 		{
-			$params = explode ( ';' , $params ) ;
- 			while ( list ( ,$param ) =each ( $params ) )
- 			{
- 				$param = explode ( '=' , $param ) ;
-				$hiddenparams .= "<input type=\"hidden\" name=\"$param[0]\" value=\"$param[1]\" />\n" ;
- 			}
- 		}
- 		if ( isset ( $lng['question'][$text] ) )
- 		{
+			$params_tmp=explode(';',$params);
+			unset($params);
+			$params=array();
+			while(list(,$param_tmp)=each($params_tmp))
+			{
+				$param_tmp=explode('=',$param_tmp);
+				$params[$param_tmp[0]]=$param_tmp[1];
+			}
+		}
+*/
+
+		/**
+		 * Yes, looks strange, but we are going to eliminate all entities before we add one clear level of entities
+		 * (parameter $complete is set true in both html_entity_decode_array and stripslashes_array)
+		 */
+		$params = htmlentities_array( html_entity_decode_array( stripslashes_array( $params, '', true ), '', true ) );
+
+		$hiddenparams='';
+		if(is_array($params))
+		{
+			foreach($params as $field => $value )
+			{
+				$hiddenparams.='<input type="hidden" name="'.$field.'" value="'.$value.'" />'."\n";
+			}
+		}
+
+		if ( isset ( $lng['question'][$text] ) )
+		{
 			$text = $lng['question'][$text] ;
 		}
 		$text = str_replace ( '%s' , $targetname , $text ) ;
+
 		eval ( "echo \"".getTemplate('misc/question_yesno','1')."\";" ) ;
 	}
 
@@ -166,12 +190,12 @@
 		{
 			$selected='selected="selected"';
 		}
- 		else
+		else
 		{
 			$selected='';
 		}
- 		$option="<option value=\"$value\" $selected >$title</option>";
- 		return $option;
+		$option='<option value="'.$value.'" '.$selected.' >'.$title.'</option>';
+		return $option;
 	}
 
 	/**
@@ -199,7 +223,7 @@
 		{
 			foreach( $get_variables as $key => $value )
 			{
-				$params[] = $key . '=' . $value;				
+				$params[] = $key . '=' . $value;
 			}
 
 			$params = '?' . implode($params, '&' );
@@ -220,8 +244,8 @@
 				{
 					$protocol = 'http://';
 				}
- 				$host = $_SERVER['HTTP_HOST'];
- 				
+				$host = $_SERVER['HTTP_HOST'];
+				
 				if ( dirname( $_SERVER['PHP_SELF'] ) == '/' )
 				{
 					$path     = '/';
@@ -230,9 +254,9 @@
 				{
 					$path     = dirname($_SERVER['PHP_SELF']) . '/';
 				}
- 			}
+			}
 			header ( 'Location: ' . $protocol . $host . $path . $destination . $params ) ;
- 		}
+		}
 
 		return false;
 	}
@@ -246,6 +270,7 @@
 	 */
 	function array_trim($source)
 	{
+		$returnval = array();
 		if(is_array($source))
 		{
 			while(list($var,$val)=each($source))
@@ -261,33 +286,28 @@
 	}
 
 	/**
-	 * Replaces Strings in an array, with the advantage that you can select which fields should be str_replace'd
+	 * Replaces Strings in an array, with the advantage that you
+	 * can select which fields should be str_replace'd
 	 *
 	 * @param mixed String or array of strings to search for
 	 * @param mixed String or array to replace with
 	 * @param array The subject array
-	 * @param string The fields which should be checked for, seperated by spaces
+	 * @param string The fields which should be checked for, separated by spaces
 	 * @return array The str_replace'd array
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	 function str_replace_array($search, $replace, $subject, $fields = '')
-	 {
+	function str_replace_array($search, $replace, $subject, $fields = '')
+	{
 		if(is_array($subject))
 		{
-			$fields = explode(' ', $fields);
-			if(is_array($fields) && !empty($fields))
+			$fields = array_trim(explode(' ', $fields));
+
+			foreach( $subject as $field => $value )
 			{
-				while(list(,$field)=each($fields))
+				if( ( !is_array($fields) || empty($fields) ) || (is_array($fields) && !empty($fields) && in_array($field, $fields) ) )
 				{
-					if($field != '')
-					{
-						$subject[$field] = str_replace($search, $replace, $subject[$field]);
-					}
+					$subject[$field] = str_replace($search, $replace, $subject[$field]);
 				}
-			}
-			else
-			{
-				$subject = str_replace($search, $replace, $subject);
 			}
 		}
 		else
@@ -295,7 +315,139 @@
 			$subject = str_replace($search, $replace, $subject);
 		}
 		return $subject;
-	 }
+	}
+
+	/**
+	 * Wrapper around htmlentities to handle arrays, with the advantage that you
+	 * can select which fields should be handled by htmlentities
+	 *
+	 * @param array The subject array
+	 * @param string The fields which should be checked for, separated by spaces
+	 * @param int See php documentation about this
+	 * @param string See php documentation about this
+	 * @return array The array with htmlentitie'd strings
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function htmlentities_array($subject, $fields = '', $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1')
+	{
+		if(is_array($subject))
+		{
+			if( !is_array( $fields ) )
+			{
+				$fields = array_trim(explode(' ', $fields));
+			}
+
+			foreach( $subject as $field => $value )
+			{
+				if( ( !is_array($fields) || empty($fields) ) || (is_array($fields) && !empty($fields) && in_array($field, $fields) ) )
+				{
+					/**
+					 * Just call ourselve to manage multi-dimensional arrays
+					 */
+					$subject[$field] = htmlentities_array( $subject[$field], $fields, $quote_style, $charset );
+				}
+			}
+		}
+		else
+		{
+			$subject = htmlentities( $subject, $quote_style, $charset );
+		}
+		return $subject;
+	}
+
+	/**
+	 * Wrapper around html_entity_decode to handle arrays, with the advantage that you
+	 * can select which fields should be handled by htmlentities and with advantage,
+	 * that you can eliminate all html entities by setting complete=true
+	 *
+	 * @param array The subject array
+	 * @param string The fields which should be checked for, separated by spaces
+	 * @param bool Select true to use html_entity_decode_complete instead of html_entity_decode
+	 * @param int See php documentation about this
+	 * @param string See php documentation about this
+	 * @return array The array with html_entity_decode'd strings
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function html_entity_decode_array($subject, $fields = '', $complete = false, $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1')
+	{
+		if(is_array($subject))
+		{
+			if( !is_array( $fields ) )
+			{
+				$fields = array_trim(explode(' ', $fields));
+			}
+
+			foreach( $subject as $field => $value )
+			{
+				if( ( !is_array($fields) || empty($fields) ) || (is_array($fields) && !empty($fields) && in_array($field, $fields) ) )
+				{
+					/**
+					 * Just call ourselve to manage multi-dimensional arrays
+					 */
+					$subject[$field] = html_entity_decode_array( $subject[$field], $fields, $complete, $quote_style, $charset );
+				}
+			}
+		}
+		else
+		{
+			if( $complete == true )
+			{
+				$subject = html_entity_decode_complete( $subject, $quote_style, $charset );
+			}
+			else
+			{
+				$subject = _html_entity_decode( $subject, $quote_style, $charset );
+			}
+		}
+		return $subject;
+	}
+
+	/**
+	 * Wrapper around stripslashes to handle arrays, with the advantage that you
+	 * can select which fields should be handled by htmlentities and with advantage,
+	 * that you can eliminate all slashes by setting complete=true
+	 *
+	 * @param array The subject array
+	 * @param int See php documentation about this
+	 * @param string See php documentation about this
+	 * @param string The fields which should be checked for, separated by spaces
+	 * @param bool Select true to use stripslashes_complete instead of stripslashes
+	 * @return array The array with stripslashe'd strings
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function stripslashes_array($subject, $fields = '', $complete = false)
+	{
+		if(is_array($subject))
+		{
+			if( !is_array( $fields ) )
+			{
+				$fields = array_trim(explode(' ', $fields));
+			}
+
+			foreach( $subject as $field => $value )
+			{
+				if( ( !is_array($fields) || empty($fields) ) || (is_array($fields) && !empty($fields) && in_array($field, $fields) ) )
+				{
+					/**
+					 * Just call ourselve to manage multi-dimensional arrays
+					 */
+					$subject[$field] = stripslashes_array( $subject[$field], $fields, $complete );
+				}
+			}
+		}
+		else
+		{
+			if( $complete == true )
+			{
+				$subject = stripslashes_complete( $subject );
+			}
+			else
+			{
+				$subject = stripslashes( $subject );
+			}
+		}
+		return $subject;
+	}
 
 	/**
 	 * Returns if an emailaddress is in correct format or not
@@ -520,7 +672,7 @@
 		{
 			$filename = '/'.$filename;
 		}
- 
+
 		$filename = makeSecurePath ( $filename ) ;
 
 		return $filename;
@@ -553,7 +705,7 @@
 
 	/**
 	 * Function which updates all counters of used ressources in panel_admins and panel_customers
-	 * 
+	 *
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
 	function updateCounters ()
@@ -782,7 +934,7 @@
 
 	/******************************************************
 	 * Wrapper around the exec command.
-	 * 
+	 *
 	 * @author Martin Burchert <eremit@adm1n.de>
 	 * @version 1.2
 	 * @param string exec_string String to be executed
@@ -845,10 +997,10 @@
 		exec($exec_string, $return);
 		return $return;
 	}
-	
+
 	/******************************************************
 	 * Navigation generator
-	 * 
+	 *
 	 * @author Martin Burchert <eremit@adm1n.de>
 	 * @version 1.0
 	 * @param string s The session-id of the user
@@ -932,11 +1084,11 @@
 		}
 		return $return;
 	}
-	
+
 	/**
 	 * Processes a navigation entry in the database. It generates the correct
 	 * link and language.
-	 * 
+	 *
 	 * @param string The sessionid.
 	 * @param array The data recieved during the mysql query.
 	 * @return array The processed data.
@@ -981,7 +1133,7 @@
 		
 		return $data;
 	}
-	
+
 	/**
 	 * Returns if an username is in correct format or not.
 	 * A username is valid if it would be a username that is accepted by the
@@ -994,7 +1146,7 @@
 	function check_username($username) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*[a-zA-Z0-9\-\_\$]$/",$username);
 	}
-	
+
 	/**
 	 * Returns if an username_prefix is in correct format or not.
 	 * A username_prefix is valid if the resulting username would be a username
@@ -1007,7 +1159,7 @@
 	function check_username_prefix($username_prefix) {
 		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*$/",$username_prefix);
 	}
-	
+
 	/**
 	 * Returns if a mysql_prefix is in correct format or not.
 	 *
@@ -1018,7 +1170,7 @@
 	function check_mysql_prefix($mysql_prefix) {
 		return preg_match("/^[a-zA-Z0-9\-\_]+$/",$mysql_prefix);
 	}
-	
+
 	/**
 	 * Returns an integer of the given value which isn't negative.
 	 * Returns -1 if the given value was -1.
@@ -1036,6 +1188,7 @@
 		}
 		return $the_value ;
 	}
+
 	/**
 	 * Returns a double of the given value which isn't negative.
 	 * Returns -1 if the given value was -1.
@@ -1053,11 +1206,11 @@
 		}
 		return $the_value ;
 	}
-	
+
 	/**
 	 * Replaces all occurences of variables defined in the second argument
 	 * in the first argument with their values.
-	 * 
+	 *
 	 * @param string The string that should be searched for variables
 	 * @param array The array containing the variables with their values
 	 * @return string The submitted string with the variables replaced.
@@ -1082,13 +1235,13 @@
 		$text = str_replace ( '\n', "\n" , $text ) ;
 		return $text;
 	}
-	
+
 	/**
 	 * Wrapper for the html_entity_decode function as this function is not
 	 * present in Woody's PHP 4.1.2. In Sarge the html_entity_decode function
 	 * shipped with PHP is used, for Woody own code is used.
-	 * 
-	 * @param string The string in which the html entites should be decoded.
+	 *
+	 * @param string The string in which the html entities should be decoded.
 	 * @return string The decoded string
 	 * @author Michael Duergner
 	 */
@@ -1105,11 +1258,43 @@
 			return strtr($string,$trans_table);
 		}
 	}
-	
+
+	/**
+	 * Calls html_entity_decode in a loop until the result doesn't differ from original anymore
+	 *
+	 * @param string The string in which the html entities should be eliminated.
+	 * @return string The cleaned string
+	 * @author Florian Lippert <flo@syscp.org>
+	 */
+	function html_entity_decode_complete( $string )
+	{
+		while( $string != _html_entity_decode( $string ) )
+		{
+			$string = _html_entity_decode( $string );
+		}
+		return $string;
+	}
+
+	/**
+	 * Calls stripslashes in a loop until the result doesn't differ from original anymore
+	 *
+	 * @param string The string in which the slashes should be eliminated.
+	 * @return string The cleaned string
+	 * @author Florian Lippert <flo@syscp.org>
+	 */
+	function stripslashes_complete( $string )
+	{
+		while( $string != stripslashes( $string ) )
+		{
+			$string = stripslashes( $string );
+		}
+		return $string;
+	}
+
 	/**
 	 * Check if the submitted string is a valid domainname, i.e.
 	 * it consists only of the following characters ([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}
-	 * 
+	 *
 	 * @param string The domainname which should be checked.
 	 * @return boolean True if the domain is valid, false otherwise
 	 * @author Michael Duergner
@@ -1121,20 +1306,20 @@
 
 	/**
 	 * Returns an array of found directories
-	 *  
+	 *
 	 * This function checks every found directory if they match either $uid or $gid, if they do
 	 * the found directory is valid. It uses recursive function calls to find subdirectories. Due
 	 * to the recursive behauviour this function may consume much memory. 
-	 *  
+	 *
 	 * @param  string   path       The path to start searching in
 	 * @param  integer  uid        The uid which must match the found directories
 	 * @param  integer  gid        The gid which must match the found direcotries
 	 * @param  array    _fileList  recursive transport array !for internal use only!
 	 * @return array    Array of found valid pathes
-	 * 
+	 *
 	 * @author Martin Burchert  <martin.burchert@syscp.de>
 	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
-	 */	
+	 */
 	function findDirs ( $path, $uid, $gid, $_fileList = array() )
 	{
 		$dh = opendir( $path );
@@ -1158,13 +1343,13 @@
 
 	/**
 	 * Returns a valid html tag for the choosen $fieldType for pathes 
-	 * 
+	 *
 	 * @param  string   path       The path to start searching in
 	 * @param  integer  uid        The uid which must match the found directories
 	 * @param  integer  gid        The gid which must match the found direcotries
 	 * @param  string   fieldType  Either "Manual" or "Dropdown"
 	 * @return string   The html tag for the choosen $fieldType
-	 * 
+	 *
 	 * @author Martin Burchert  <martin.burchert@syscp.de>
 	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
 	 */	
@@ -1199,4 +1384,5 @@
 		}
 		return $field;
 	}
+
 ?>

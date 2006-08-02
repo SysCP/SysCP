@@ -129,6 +129,7 @@
 
 				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 
+				$row = htmlentities_array( $row );
 				eval("\$customers.=\"".getTemplate("customers/customers_customer")."\";");
 			}
 			eval("echo \"".getTemplate("customers/customers")."\";");
@@ -224,7 +225,7 @@
 				}
 				else
 				{
-					ask_yesno('admin_customer_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['loginname']);
+					ask_yesno('admin_customer_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['loginname']);
 				}
 			}
 		}
@@ -429,13 +430,10 @@
 						);
 						
 						if($createstdsubdomain == '1') {
-							$ipandport = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_IPSANDPORTS.'` WHERE `default`=\'1\''); 
-							$ipandport = intval($ipandport['id']);
-
 							$db->query(
 								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
 								"(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '-1', '$ipandport', '$documentroot', '', '0', '0', '1', '1', '0', '')"
+								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '-1', '".$settings['system']['defaultip']."', '$documentroot', '', '0', '0', '1', '1', '0', '')"
 							);
 							$domainid=$db->insert_id();
 							$db->query(
@@ -462,7 +460,7 @@
 							mail("$firstname $name <$email>",$mail_subject,$mail_body,"From: {$userinfo['name']} <{$userinfo['email']}>\r\n");
 						}
 
-    					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -566,8 +564,8 @@
 						{
 							$db->query(
 								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
-								"(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-								"VALUES ('{$result['loginname']}.{$settings['system']['hostname']}', '{$result['customerid']}', '{$userinfo['adminid']}', '{$result['documentroot']}', '', '0', '0', '1', '1', '0', '')"
+								"(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
+								"VALUES ('{$result['loginname']}.{$settings['system']['hostname']}', '{$result['customerid']}', '{$userinfo['adminid']}', '-1', '".$settings['system']['defaultip']."', '{$result['documentroot']}', '', '0', '0', '1', '1', '0', '')"
 							);
 							$domainid=$db->insert_id();
 							$db->query(
@@ -693,7 +691,7 @@
 						$admin_update_query .= " WHERE `adminid` = '{$result['adminid']}'";
 						$db->query( $admin_update_query );
 
-    					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -708,6 +706,8 @@
 					$result['email'] = $idna_convert->decode($result['email']);
 					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', (($result['standardsubdomain'] != '0') ? '1' : '0'));
 					$deactivated=makeyesno('deactivated', '1', '0', $result['deactivated']);
+
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("customers/customers_edit")."\";");
 				}
 			}

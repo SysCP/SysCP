@@ -46,6 +46,7 @@
 			while($row=$db->fetch_array($result))
 			{
 				$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
+				$row = htmlentities_array( $row );
 				eval("\$htpasswds.=\"".getTemplate("extras/htpasswds_htpasswd")."\";");
 			}
 			eval("echo \"".getTemplate("extras/htpasswds")."\";");
@@ -60,11 +61,11 @@
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					inserttask('3',$result['path']);
-           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
-					ask_yesno('extras_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['username'] . ' (' . str_replace($userinfo['documentroot'],'',$result['path']) . ')' );
+					ask_yesno('extras_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['username'] . ' (' . str_replace($userinfo['documentroot'],'',$result['path']) . ')' );
 				}
 			}
 		}
@@ -87,7 +88,7 @@
 				{
 					$password = addslashes(crypt($_POST['password']));
 				}
-                $passwordtest=$_POST['password'];
+				$passwordtest=$_POST['password'];
 
 				if(!$_POST['path'])
 				{
@@ -117,7 +118,7 @@
 				{
 					$db->query("INSERT INTO `".TABLE_PANEL_HTPASSWDS."` (`customerid`, `username`, `password`, `path`) VALUES ('".$userinfo['customerid']."', '$username', '$password', '$path')");
 					inserttask('3',$path);
-           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
 			else 
@@ -153,12 +154,14 @@
 					{
 						$db->query("UPDATE `".TABLE_PANEL_HTPASSWDS."` SET `password`='$password' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						inserttask('3',$result['path']);
-            			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
 				{
 					$result['path']=str_replace($userinfo['documentroot'],'',$result['path']);
+
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("extras/htpasswds_edit")."\";");
 				}
 			}
@@ -176,6 +179,8 @@
 				$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
 				$row['options_indexes'] = str_replace('1', $lng['panel']['yes'], $row['options_indexes']);
 				$row['options_indexes'] = str_replace('0', $lng['panel']['no'], $row['options_indexes']);
+
+				$row = htmlentities_array( $row );
 				eval("\$htaccess.=\"".getTemplate("extras/htaccess_htaccess")."\";");
 			}
 			eval("echo \"".getTemplate("extras/htaccess")."\";");
@@ -189,11 +194,11 @@
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 					inserttask('3', $result['path']);
-           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
-					ask_yesno('extras_reallydelete_pathoptions', $filename, "id=$id;page=$page;action=$action", str_replace($userinfo['documentroot'],'',$result['path']) );
+					ask_yesno('extras_reallydelete_pathoptions', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), str_replace($userinfo['documentroot'],'',$result['path']) );
 				}
 			}
 		}
@@ -202,69 +207,74 @@
 			if( (isset($_POST['send'])) && ($_POST['send']=='send') )
 			{
 				$path            = makeCorrectDir(addslashes($_POST['path']));
-                $userpath        = $path;
+				$userpath        = $path;
 				$path            = $userinfo['documentroot'].$path;
 				$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
-					if(!$_POST['path'])
-					{
-						standard_error('invalidpath');
-					}
-					if (    ($_POST['error404path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error404path']) )
-					   )
-					{
-						$error404path = $_POST['error404path'];
-					}
-					else
-					{
-						standard_error('mustbeurl');
-					}
-					if (    ($_POST['error403path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error403path']) )
-					   )
-					{
-						$error403path = $_POST['error403path'];
-					}
-					else
-					{
-						standard_error('mustbeurl');
-					}
-					if (    ($_POST['error500path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error500path']) )
-					   )
-					{
-						$error500path = $_POST['error500path'];
-					}
-					else
-					{
-						standard_error('mustbeurl');
-					}
-//					if (    ($_POST['error401path'] == '')
-//					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
-//					   )
-//					{
-//						$error401path = $_POST['error401path'];
-//					}
-//					else
-//					{
-//						standard_error('mustbeurl');
-//					}
 
-					if (!is_dir($path))
-					{
-						standard_error('directorymustexist',$userpath);
-					}
-					elseif ($path_dupe_check['path'] == $path)
-					{
-						standard_error('errordocpathdupe',$userpath);
-					}
-					elseif ($path == '')
-					{
-						standard_error('patherror');
-					}
+				if(!$_POST['path'])
+				{
+					standard_error('invalidpath');
+				}
+				if (    ($_POST['error404path'] == '')
+				     || (preg_match('/^https?\:\/\//', $_POST['error404path']) )
+				   )
+				{
+					$error404path = $_POST['error404path'];
+				}
 				else
 				{
+					standard_error('mustbeurl');
+				}
+				if (    ($_POST['error403path'] == '')
+				     || (preg_match('/^https?\:\/\//', $_POST['error403path']) )
+				   )
+				{
+					$error403path = $_POST['error403path'];
+				}
+				else
+				{
+					standard_error('mustbeurl');
+				}
 
+				if (    ($_POST['error500path'] == '')
+				     || (preg_match('/^https?\:\/\//', $_POST['error500path']) )
+				   )
+				{
+					$error500path = $_POST['error500path'];
+				}
+				else
+				{
+					standard_error('mustbeurl');
+				}
+
+/*
+				if (    ($_POST['error401path'] == '')
+				     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+				   )
+				{
+					$error401path = $_POST['error401path'];
+				}
+				else
+				{
+					standard_error('mustbeurl');
+				}
+*/
+
+				if (!is_dir($path))
+				{
+					standard_error('directorymustexist',$userpath);
+				}
+				elseif ($path_dupe_check['path'] == $path)
+				{
+					standard_error('errordocpathdupe',$userpath);
+				}
+				elseif ($path == '')
+				{
+					standard_error('patherror');
+				}
+
+				else
+				{
 					$db->query(
 						'INSERT INTO `'.TABLE_PANEL_HTACCESS.'` ' .
 						'       (`customerid`, ' .
@@ -285,17 +295,18 @@
 						'       )'
 					);
 					inserttask('3',$path);
-           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
 			else
 			{
 				$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
-				                             $userinfo['guid'], $settings['panel']['pathedit'] );				
+				                             $userinfo['guid'], $settings['panel']['pathedit'] );
 				$options_indexes = makeyesno('options_indexes','1','0','1');
 				eval("echo \"".getTemplate("extras/htaccess_add")."\";");
 			}
 		}
+
 		elseif ( ($action=='edit') && ($id != 0) )
 		{
 			$result = $db->query_first(
@@ -347,16 +358,19 @@
 					{
 						standard_error('mustbeurl');
 					}
-//					if (    ($_POST['error401path'] == '')
-//					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
-//					   )
-//					{
-//						$error401path = $_POST['error401path'];
-//					}
-//					else
-//					{
-//						standard_error('mustbeurl');
-//					}
+
+/*
+					if (    ($_POST['error401path'] == '')
+					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+					   )
+					{
+						$error401path = $_POST['error401path'];
+					}
+					else
+					{
+						standard_error('mustbeurl');
+					}
+*/
 
 					if (    ($option_indexes != $result['options_indexes'])
 					     || ($error404path   != $result['error404path'])
@@ -377,7 +391,7 @@
 							'  AND `id` = "'.$id.'"'
 						);
 					}
-           			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
@@ -387,6 +401,8 @@
 //					$result['error401path'] = $result['error401path'];
 					$result['error500path'] = $result['error500path'];
 					$options_indexes = makeyesno('options_indexes', '1', '0', $result['options_indexes']);
+
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("extras/htaccess_edit")."\";");
 				}
 			}

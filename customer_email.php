@@ -85,6 +85,8 @@
 				{
 					$row['destination'] = substr ( $row['destination'] , 0, 32 ) . '... (' . $destinations_count . ')' ;
 				}
+
+				$row = htmlentities_array( $row );
 				eval("\$accounts.=\"".getTemplate("email/emails_email")."\";");
 			}
 			$emaildomains_count=$db->query_first("SELECT COUNT(`id`) AS `count` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
@@ -122,7 +124,7 @@
 				}
 				else
 				{
-					ask_yesno('email_reallydelete', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['email_full']));
+					ask_yesno('email_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $idna_convert->decode($result['email_full']));
 				}
 			}
 		}
@@ -226,6 +228,8 @@
 					$result['destination'][$dest_id] = $destination;
 				}
 				$destinations_count = count ($result['destination']);
+
+				$result = htmlentities_array( $result );
 				eval("echo \"".getTemplate("email/emails_edit")."\";");
 			}
 		}
@@ -301,13 +305,14 @@
 							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$userinfo['def_language'].'\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_mailbody\'');
 							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['pop_success']['mailbody']),$replace_arr));
 							mail("$email_full",$mail_subject,$mail_body,"From: {$admin['name']} <{$admin['email']}>\r\n");
-	
-        					redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
+
+							redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 						}
 					}
 					else
 					{
 						$result['email_full'] = $idna_convert->decode($result['email_full']);
+						$result = htmlentities_array( $result );
 						eval("echo \"".getTemplate("email/account_add")."\";");
 					}
 				}
@@ -334,12 +339,13 @@
 					else
 					{
 						$result=$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `password` = '$password', `password_enc`=ENCRYPT('$password') WHERE `customerid`='".$userinfo['customerid']."' AND `id`='".$result['popaccountid']."'");
-       					redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
+						redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 					}
 				}
 				else
 				{
 					$result['email_full'] = $idna_convert->decode($result['email_full']);
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("email/account_changepw")."\";");
 				}
 			}
@@ -360,7 +366,7 @@
 				}
 				else
 				{
-					ask_yesno('email_reallydelete_account', $filename, "id=$id;page=$page;action=$action", $idna_convert->decode($result['email_full']));
+					ask_yesno('email_reallydelete_account', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $idna_convert->decode($result['email_full']));
 				}
 			}
 		}
@@ -397,19 +403,19 @@
 							standard_error('destinationalreadyexist',$destination);
 						}
 
-
 						else
 						{
 							$result['destination'] .= ' ' . $destination;
 							$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 							$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_forwarders_used` = `email_forwarders_used` + 1 WHERE `customerid`='".$userinfo['customerid']."'");
 
-        					redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
+							redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 						}
 					}
 					else
 					{
 						$result['email_full'] = $idna_convert->decode($result['email_full']);
+						$result = htmlentities_array( $result );
 						eval("echo \"".getTemplate("email/forwarder_add")."\";");
 					}
 				}
@@ -452,11 +458,11 @@
 						$result['destination'] = str_replace ( $forwarder , '' , $result['destination'] ) ;
 						$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".makeCorrectDestination($result['destination'])."' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `email_forwarders_used` = `email_forwarders_used` - 1 WHERE `customerid`='".$userinfo['customerid']."'");
-       					redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
+						redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 					}
 					else
 					{
-						ask_yesno('email_reallydelete_forwarder', $filename, "id=$id;forwarderid=$forwarderid;page=$page;action=$action", $idna_convert->decode($result['email_full']) . ' -> ' . $idna_convert->decode($forwarder));
+						ask_yesno('email_reallydelete_forwarder', $filename, array( 'id' => $id, 'forwarderid' => $forwarderid, 'page' => $page, 'action' => $action ), $idna_convert->decode($result['email_full']) . ' -> ' . $idna_convert->decode($forwarder));
 					}
 				}
 			}

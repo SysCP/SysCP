@@ -387,7 +387,6 @@ $lng['admin']['ipsandports']['edit'] = 'Edit IP/Port';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
-$lng['admin']['ipsandports']['default'] = 'Default reseller IP/Port';
 
 // ADDED IN 1.2.13-rc3
 $lng['error']['cantchangesystemip'] = 'You cannot change the last system IP, either create another new IP/Port combination for the system IP or change the system IP.';
@@ -423,5 +422,11 @@ $lng['error']['pagingiswrong'] = 'The &quot;Entries per Page&quot;-value is wron
 $lng['error']['phpmyadminiswrong'] = 'The phpmyadmin-link is not a valid link.';
 $lng['error']['webmailiswrong'] = 'The WebMail-link is not a valid link.';
 $lng['error']['webftpiswrong'] = 'The WebFTP-link is not a valid link.';
+
+$lng['domains']['hasaliasdomains'] = 'Has alias domain(s)';
+$lng['domains']['istopleveldomain'] = 'Is top level domain';
+
+$lng['serversettings']['defaultip']['title'] = 'Default IP/Port';
+$lng['serversettings']['defaultip']['description'] = 'What\'s the default IP/Port combination?';
 
 ?>

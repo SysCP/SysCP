@@ -97,7 +97,7 @@
 		$cronlastrun = date("d.m.Y H:i:s", $settings['system']['lastcronrun']);
 		eval("echo \"".getTemplate("index/index")."\";");
 	}
-	
+
 	elseif($page=='change_password')
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
@@ -131,7 +131,7 @@
 			else
 			{
 				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `password`='".md5($new_password)."' WHERE `adminid`='".$userinfo['adminid']."' AND `password`='".md5($old_password)."'");
-		    	redirectTo ( $filename , Array ( 's' => $s ) ) ;
+				redirectTo ( $filename , Array ( 's' => $s ) ) ;
 			}
 		}
 		else {

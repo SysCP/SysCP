@@ -116,6 +116,7 @@
 
 				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 
+				$row = htmlentities_array( $row );
 				eval("\$admins.=\"".getTemplate("admins/admins_admin")."\";");
 			}
 			eval("echo \"".getTemplate("admins/admins")."\";");
@@ -141,8 +142,9 @@
 
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
-				else {
-					ask_yesno('admin_admin_reallydelete', $filename, "id=$id;page=$page;action=$action", $result['loginname']);
+				else
+				{
+					ask_yesno('admin_admin_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['loginname']);
 				}
 			}
 		}
@@ -312,7 +314,7 @@
 
 						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `name`='$name', `email`='$email', `def_language`='$def_language', `change_serversettings` = '$change_serversettings', `customers` = '$customers', `customers_see_all` = '$customers_see_all', `domains` = '$domains', `domains_see_all` = '$domains_see_all', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `adminid`='$id'");
 
-    					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
@@ -329,6 +331,8 @@
 					$customers_see_all=makeyesno('customers_see_all', '1', '0', $result['customers_see_all']);
 					$domains_see_all=makeyesno('domains_see_all', '1', '0', $result['domains_see_all']);
 					$deactivated=makeyesno('deactivated', '1', '0', $result['deactivated']);
+
+					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("admins/admins_edit")."\";");
 				}
 			}
