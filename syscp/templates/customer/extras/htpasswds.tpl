@@ -1,14 +1,18 @@
 $header
-    <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-     <tr>
-      <td colspan="4" class="title">{$lng['menue']['extras']['directoryprotection']}</td>
-     </tr>
-     <tr>
-      <td class="maintable">{$lng['login']['username']}</td><td class="maintable">{$lng['panel']['path']}</td><td class="maintable" colspan="2">&nbsp;</td>
-     </tr>
-     $htpasswds
-     <tr>
-      <td class="maintable" colspan="4"><a href="$filename?page=htpasswds&action=add&s=$s">{$lng['extras']['directoryprotection_add']}</a></td>
-     </tr>
-    </table>
+	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
+		<tr>
+			<td class="maintitle" colspan="4"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['extras']['directoryprotection']}</b></td>
+		</tr>
+		<tr>
+			<td class="field_display_border_left">{$lng['login']['username']}</td>
+			<td class="field_display">{$lng['panel']['path']}</td>
+			<td class="field_display" colspan="2">&nbsp;</td>
+		</tr>
+		$htpasswds
+		<tr>
+			<td class="field_display_border_left" colspan="4"><a href="$filename?page=htpasswds&amp;action=add&amp;s=$s">{$lng['extras']['directoryprotection_add']}</a></td>
+		</tr>
+	</table>
+	<br />
+	<br />
 $footer

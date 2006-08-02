@@ -1,10 +1,12 @@
 $header
-    <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-     <tr>
-      <td class="title">{$lng['menue']['extras']['extras']}</td>
-     </tr>
-     <tr>
-      <td class="maintable">{$lng['extras']['description']}</td>
-     </tr>
-    </table>
+	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
+		<tr>
+			<td class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['extras']['extras']}</b></td>
+		</tr>
+		<tr>
+			<td class="field_name_border_left">{$lng['extras']['description']}</td>
+		</tr>
+	</table>
+	<br />
+	<br />
 $footer

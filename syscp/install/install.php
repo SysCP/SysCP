@@ -80,42 +80,55 @@
 	function page_header()
 	{
 ?>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link href="../templates/main.css" rel="stylesheet" type="text/css">
-<title>SysCP Installation</title>
+	<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+	<link rel="stylesheet" href="../templates/main.css" type="text/css" />
+	<title>SysCP</title>
 </head>
-<body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
-<!--
-    We request you retain the full copyright notice below including the link to www.syscp.de.
-    This not only gives respect to the large amount of time given freely by the developers
-    but also helps build interest, traffic and use of SysCP. If you refuse
-    to include even this then support on our forums may be affected.
-    The SysCP Team : 2003-2005
-    Template made by Kirill Bauer.
-// -->
-  <div style="position:absolute; top:10px; right:10px">SysCP Installer &copy; 2003-2005 by <a href="http://www.syscp.de/" target="_blank">the SysCP Team</a></div>
-  <table border="0" width="100%" cellspacing="0" cellpadding="0">
-    <tr>
-      <td width="800"><img src="../images/header.gif" width="800" height="89"></td>
-      <td background="../images/header_r.gif">&nbsp;</td>
-    </tr>
-  </table>
-  <table border="0" width="100%" cellspacing="0" cellpadding="0" height="100%">
-   <tr>
-     <td width="240" valign="top" background="../images/background_l.gif">&nbsp;</td>
-     <td background="../images/background_m.gif" width="2">&nbsp;</td>
-     <td background="../images/background_r.gif" class="maintable" valign="top"><br /><br />
+	<body style="margin: 0; padding: 0;" onload="document.loginform.loginname.focus()">
+		<!--
+			We request you retain the full copyright notice below including the link to www.syscp.org.
+			This not only gives respect to the large amount of time given freely by the developers
+			but also helps build interest, traffic and use of SysCP. If you refuse
+			to include even this then support on our forums may be affected.
+			The SysCP Team : 2003-2006
+		// -->
+		<!--
+			Templates by Luca Piona (info@havanastudio.ch) and Luca Longinotti (chtekk@gentoo.org)
+		// -->
+		<table cellspacing="0" cellpadding="0" border="0" width="100%">
+			<tr>
+				<td width="800"><img src="../images/header.gif" width="800" height="90" alt="" /></td>
+				<td class="header">&nbsp;</td>
+			</tr>
+		</table>
+		<table cellspacing="0" cellpadding="0" border="0" width="100%">
+			<tr>
+				<td valign="top" bgcolor="#FFFFFF">
+				<br />
+				<br />
 <?php
 	}
 
 	function page_footer()
 	{
 ?>
-       </td>
-    </tr>
-  </table>
-</body>
+				</td>
+			</tr>
+		</table>
+		<table cellspacing="0" cellpadding="0" border="0" width="100%">
+			<tr>
+				<td width="100%" class="footer">
+					<br />SysCP &copy; 2003-2006 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
+					<br />&nbsp;
+					<br /><a href="http://validator.w3.org/check?uri=referer" target="_blank"><img src="../images/valid-xhtml10.gif" alt="Valid XHTML 1.0 Transitional" height="15" width="80" border="0" /></a>&nbsp;&nbsp;<a href="http://jigsaw.w3.org/css-validator/" target="_blank"><img style="border:0;width:80px;height:15px" src="../images/valid-css.gif" alt="Valid CSS!" border="0" /></a>
+					<br />&nbsp;
+				</td>
+			</tr>
+		</table>
+	</body>
 </html>
 <?php
 	}
@@ -124,7 +137,7 @@
 	{
 		if($case == 'begin')
 		{
-			echo "\t\t<tr>\n\t\t\t<td class=\"maintable\">$text";
+			echo "\t\t<tr>\n\t\t\t<td class=\"main_field_name\">$text";
 		}
 		else
 		{
@@ -404,9 +417,9 @@
 	{
 		page_header();
 ?>
-	<table celllpadding="5" cellspacing="0" border="0" align="center" class="maintable">
+	<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
 		<tr>
-			<td class="maintable" align="center" style="font-size: 18pt;">SysCP Installation</td>
+			<td class="maintitle"><b><img src="../images/title.gif" alt="" />&nbsp;SysCP Installation</b></td>
 		</tr>
 <?php
 		//first test if we can access the database server with the given root user and password
@@ -523,13 +536,18 @@
 		else
 		{
 			status_message('red', $lng['install']['creating_configfile_failed']);
-			echo "\t\t<tr>\n\t\t\t<td class=\"maintable\"><p style=\" margin-left:150px;  margin-right:150px; padding: 9px; border:1px solid #999;\">".nl2br(htmlspecialchars($userdata))."</p></td>\n\t\t</tr>\n";
+			echo "\t\t<tr>\n\t\t\t<td class=\"main_field_name\"><p>".nl2br(htmlspecialchars($userdata))."</p></td>\n\t\t</tr>\n";
 		}
 ?>
 		<tr>
-			<td class="maintable" align="center"><br /><?php echo $lng['install']['syscp_succ_installed']; ?><br /><a href="../index.php"><?php echo $lng['install']['click_here_to_login']; ?></a></td>
+			<td class="main_field_display" align="center">
+				<?php echo $lng['install']['syscp_succ_installed']; ?><br />
+				<a href="../index.php"><?php echo $lng['install']['click_here_to_login']; ?></a>
+			</td>
 		</tr>
-	</table><br />
+	</table>
+	<br />
+	<br />
 <?php
 		page_footer();
 	}
@@ -537,87 +555,99 @@
 	{
 		page_header();
 ?>
-	<table celllpadding="5" cellspacing="0" border="0" align="center" class="maintable">
-		<tr>
-			<td class="maintable"><?php echo $lng['install']['language']; ?>: </td>
-			<td class="maintable" align="left"><form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="get"><select name="language"><?php
-				$language_options = '';
-				while(list($language_file, $language_name) = each($languages))
-				{
-					$language_options .= makeoption($language_name, $language_file, $language);
-				}
-				echo $language_options;
-			?></select> <input type="submit" name="choselang" value="Go" /></form></td>
-		</tr>
-	</table><br />
-	<table celllpadding="5" cellspacing="0" border="0" align="center" class="maintable">
-		<tr>
-			<td class="maintable" align="center" style="font-size: 18pt;"><?php echo $lng['install']['welcome']; ?></td>
-		</tr>
-		<tr>
-			<td class="maintable"><?php echo $lng['install']['welcometext']; ?></td>
-		</tr>
-	</table><br />
+	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="get">
+		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_40">
+			<tr>
+				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['welcome']; ?></b></td>
+			</tr>
+			<tr>
+				<td class="main_field_name" colspan="2"><?php echo $lng['install']['welcometext']; ?></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><?php echo $lng['install']['language']; ?>: </td>
+				<td class="main_field_display" nowrap="nowrap">
+					<select name="language" class="dropdown_noborder"><?php
+					$language_options = '';
+					while(list($language_file, $language_name) = each($languages))
+					{
+						$language_options .= "\n\t\t\t\t\t\t".makeoption($language_name, $language_file, $language);
+					}
+					echo $language_options;
+				?>
+
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_confirm" colspan="2">
+					<input class="bottom" type="submit" name="chooselang" value="Go" />
+				</td>
+			</tr>
+		</table>
+	</form>
+	<br />
 	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-	<table celllpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-		<tr>
-		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 3px;"><b><?php echo $lng['install']['database']; ?></b></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_hostname']; ?>:</td>
-		 <td class="maintable"><input type="text" name="mysql_host" value="<?php echo $mysql_host; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"><?php echo $lng['install']['mysql_database']; ?>:</td>
-		 <td class="maintable"><input type="text" name="mysql_database" value="<?php echo $mysql_database; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_user']; ?>:</td>
-		 <td class="maintable"><input type="text" name="mysql_unpriv_user" value="<?php echo $mysql_unpriv_user; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $mysql_unpriv_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_pass']; ?>:</td>
-		 <td class="maintable"><input type="password" name="mysql_unpriv_pass" value="<?php echo $mysql_unpriv_pass; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_root_user']; ?>:</td>
-		 <td class="maintable"><input type="text" name="mysql_root_user" value="<?php echo $mysql_root_user; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $mysql_root_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_root_pass']; ?>:</td>
-		 <td class="maintable"><input type="password" name="mysql_root_pass" value="<?php echo $mysql_root_pass; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 7px;"><b><?php echo $lng['install']['admin_account']; ?></b></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"><?php echo $lng['install']['admin_user']; ?>:</td>
-		 <td class="maintable"><input type="text" name="admin_user" value="<?php echo $admin_user; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && ($admin_pass1 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass']; ?>:</td>
-		 <td class="maintable"><input type="password" name="admin_pass1" value="<?php echo $admin_pass1; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && ($admin_pass2 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass_confirm']; ?>:</td>
-		 <td class="maintable"><input type="password" name="admin_pass2" value="<?php echo $admin_pass2; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" colspan="2" align="center" style="font-size: 15px; padding-top: 7px;"><b><?php echo $lng['install']['serversettings']; ?></b></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $servername == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['servername']; ?>:</td>
-		 <td class="maintable"><input type="text" name="servername" value="<?php echo $servername; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['serverip']; ?>:</td>
-		 <td class="maintable"><input type="text" name="serverip" value="<?php echo $serverip; ?>"></td>
-		</tr>
-		<tr>
-		 <td class="maintable" align="right" colspan="2" style=" padding-top: 10px;"><input type="hidden" name="language" value="<?php echo $language; ?>"><input type="hidden" name="installstep" value="1"><input type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"></td>
-		</tr>
-	</table>
-	</form><br />
+		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_40">
+			<tr>
+				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['database']; ?></b></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><?php echo $lng['install']['mysql_hostname']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="mysql_host" value="<?php echo $mysql_host; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><?php echo $lng['install']['mysql_database']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="mysql_database" value="<?php echo $mysql_database; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_user']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="mysql_unpriv_user" value="<?php echo $mysql_unpriv_user; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $mysql_unpriv_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_pass']; ?>:</td>
+				<td class="main_field_display"><input type="password" name="mysql_unpriv_pass" value="<?php echo $mysql_unpriv_pass; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_root_user']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="mysql_root_user" value="<?php echo $mysql_root_user; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $mysql_root_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_root_pass']; ?>:</td>
+				<td class="main_field_display"><input type="password" name="mysql_root_pass" value="<?php echo $mysql_root_pass; ?>"></td>
+			</tr>
+			<tr>
+				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['admin_account']; ?></b></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><?php echo $lng['install']['admin_user']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="admin_user" value="<?php echo $admin_user; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && ($admin_pass1 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass']; ?>:</td>
+				<td class="main_field_display"><input type="password" name="admin_pass1" value="<?php echo $admin_pass1; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && ($admin_pass2 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass_confirm']; ?>:</td>
+				<td class="main_field_display"><input type="password" name="admin_pass2" value="<?php echo $admin_pass2; ?>"></td>
+			</tr>
+			<tr>
+				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['serversettings']; ?></b></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $servername == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['servername']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="servername" value="<?php echo $servername; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['serverip']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="serverip" value="<?php echo $serverip; ?>"></td>
+			</tr>
+			<tr>
+				<td class="main_field_confirm" colspan="2"><input type="hidden" name="language" value="<?php echo $language; ?>"><input type="hidden" name="installstep" value="1"><input class="bottom" type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"></td>
+			</tr>
+		</table>
+	</form>
+	<br />
+	<br />
 <?php
 		page_footer();
 	}

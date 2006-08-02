@@ -1,19 +1,20 @@
 $header
-   <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-    <tr>
-     <td colspan="20" class="title">{$lng['admin']['templates']['templates']}</td>
-    </tr>
-    <if $add><tr>
-     <td colspan="20" class="maintable"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['templates']['template_add']}</a></td>
-    </tr></if>
-    <tr>
-     <td class="maintable">{$lng['login']['language']}</td>
-     <td class="maintable">{$lng['admin']['templates']['action']}</td>
-     <td class="maintable" colspan="2">&nbsp;</td>
-    </tr>
-    $templates
-    <if $add><tr>
-     <td colspan="20" class="maintable"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['templates']['template_add']}</a></td>
-    </tr></if>
-   </table>
+	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
+		<tr>
+			<td colspan="4" class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['templates']['templates']}</b></td>
+		</tr>
+		<tr>
+			<td class="field_display_border_left">{$lng['login']['language']}</td>
+			<td class="field_display">{$lng['admin']['templates']['action']}</td>
+			<td class="field_display" colspan="2">&nbsp;</td>
+		</tr>
+		$templates
+		<if $add>
+		<tr>
+			<td colspan="4" class="field_display_border_left"><a href="$filename?page=$page&amp;action=add&amp;s=$s">{$lng['admin']['templates']['template_add']}</a></td>
+		</tr>
+		</if>
+	</table>
+	<br />
+	<br />
 $footer

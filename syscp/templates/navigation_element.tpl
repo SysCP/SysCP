@@ -1,11 +1,12 @@
-       <br />
-       <table border="0" width="200" cellspacing="0" cellpadding="0" align="center">
-         <tr>
-           <td background="images/menu_h.gif" height="26" class="menu" align="center">$completeLink_ElementTitle</td>
-         </tr><tr>
-           <td background="images/menu_m.gif" class="menu">$navigation_links</td>
-         </tr><tr>
-           <td background="images/menu_f.gif" height="11"></td>
-         </tr>
-       </table>
- 
+<br />
+<table cellspacing="0" cellpadding="0" border="0" width="200" align="center">
+	<tr>
+		<td class="section"><b>&nbsp;&nbsp;<img src="images/title.gif" alt="" />&nbsp;$completeLink_ElementTitle</b></td>
+	</tr>
+	<tr>
+		<td class="subsection"><br />$navigation_links</td>
+	</tr>
+	<tr>
+		<td class="endsection">&nbsp;</td>
+	</tr>
+</table>

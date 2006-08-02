@@ -1,10 +1,12 @@
 $header
-    <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-     <tr>
-      <td class="title">{$lng['menue']['mysql']['mysql']}</td>
-     </tr>
-     <tr>
-      <td class="maintable">{$lng['mysql']['description']}</i></b></td>
-     </tr>
-    </table>
+	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
+		<tr>
+			<td class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['mysql']['mysql']}</b></td>
+		</tr>
+		<tr>
+			<td class="field_name_border_left">{$lng['mysql']['description']}</td>
+		</tr>
+	</table>
+	<br />
+	<br />
 $footer
