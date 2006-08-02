@@ -20,7 +20,7 @@
 /**
  * Begin
  */
-$lng['install']['language'] = 'Language';
+$lng['install']['language'] = 'Installation - Language';
 $lng['install']['welcome'] = 'Welcome to SysCP Installation';
 $lng['install']['welcometext'] = 'Thank you for choosing SysCP. Please fill out the following fields with the required information to start the installation.<br /><b>Attantion:</b> If the database you chose for SysCP already exists on your System, it will be erased with all containing data!';
 $lng['install']['database'] = 'Database';

@@ -1,18 +1,23 @@
 $header
-    <form method="post" action="$filename">
-     <input type="hidden" name="s" value="$s">
-     <input type="hidden" name="page" value="$page">
-     <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-      <tr>
-       <td colspan="2" class="title">{$lng['menue']['main']['changelanguage']}</td>
-      </tr>
-      <tr>
-       <td class="maintable" align="right" nowrap>{$lng['login']['language']}:</td>
-       <td class="maintable"><select name="def_language">$language_options</select></td>
-      </tr>
-      <tr>
-       <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{$lng['menue']['main']['changelanguage']}"></td>
-      </tr>
-     </table>
-    </form>
+	<form method="post" action="$filename">
+	<input type="hidden" name="s" value="$s" />
+	<input type="hidden" name="page" value="$page" />
+		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_60">
+			<tr>
+				<td class="none" rowspan="4"><img src="images/changelanguage.gif" alt="" /></td>
+			</tr>
+			<tr>
+				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['main']['changelanguage']}</b></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['login']['language']}</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="def_language">$language_options</select></td>
+			</tr>
+			<tr>
+				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['menue']['main']['changelanguage']}" /></td>
+			</tr>
+		</table>
+	</form>
+	<br />
+	<br />
 $footer

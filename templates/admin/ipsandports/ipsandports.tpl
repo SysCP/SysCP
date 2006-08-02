@@ -1,16 +1,18 @@
 $header
-    <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-    <tr>
-     <td colspan="4" class="title">{$lng['admin']['ipsandports']['ipsandports']}</td>
-    </tr>
-    <tr>
-     <td class="maintable">ID</td>
-     <td class="maintable">{$lng['admin']['ipsandports']['ipandport']}</td>
-     <td class="maintable" colspan="2">&nbsp;</td>
-    </tr>
-    $ipsandports
-    <tr>
-     <td class="maintable" colspan="4"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['ipsandports']['add']}</a></td>
-    </tr>
-   </table>
+	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable_60">
+		<tr>
+			<td class="maintitle" colspan="4"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['ipsandports']['ipsandports']}</b></td>
+		</tr>
+		<tr>
+			<td class="field_display_border_left">ID</td>
+			<td class="field_display">{$lng['admin']['ipsandports']['ipandport']}</td>
+			<td class="field_display" colspan="2">&nbsp;</td>
+		</tr>
+		$ipsandports
+		<tr>
+			<td class="field_display_border_left" colspan="4"><a href="$filename?page=$page&amp;action=add&amp;s=$s">{$lng['admin']['ipsandports']['add']}</a></td>
+		</tr>
+	</table>
+	<br />
+	<br />
 $footer

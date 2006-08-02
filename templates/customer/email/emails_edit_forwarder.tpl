@@ -1,1 +1,2 @@
-$destination [<a href="$filename?page=forwarders&action=delete&id={$result['id']}&forwarderid={$forwarderid}&s=$s">{$lng['panel']['delete']}</a>]<br /> 
+$destination [<a href="$filename?page=forwarders&amp;action=delete&amp;id={$result['id']}&amp;forwarderid={$forwarderid}&amp;s=$s">{$lng['panel']['delete']}</a>]
+<br />

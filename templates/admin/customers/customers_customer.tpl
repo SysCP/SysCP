@@ -1,12 +1,18 @@
-     <tr>
-      <td class="maintable"><a href="$filename?s=$s&page=$page&action=su&id={$row['customerid']}" target="_blank">{$row['loginname']}</a></td>
-      <if $userinfo['customers_see_all']><td class="maintable">{$row['adminname']}</td></if>
-      <td class="maintable"><if $row['name'] != '' && $row['firstname'] != ''>{$row['name']}<br />{$row['firstname']}</if><if ($row['name'] == '' || $row['firstname'] == '') && $row['company'] != ''>{$row['company']}</if></td>
-      <td class="maintable">{$row['domains']}</td>
-      <td class="maintable"><span<if $row['diskspace'] < $row['diskspace_used'] && $row['diskspace'] != 'UL'> style="color:red"</if>>{$row['diskspace_used']}/{$row['diskspace']}</span> (MB)<br /><span<if $row['traffic'] < $row['traffic_used'] && $row['traffic'] != 'UL'> style="color:red"</if>>{$row['traffic_used']}/{$row['traffic']}</span> (GB)</td>
-      <td class="maintable">{$row['mysqls_used']}/{$row['mysqls']}<br />{$row['ftps_used']}/{$row['ftps']}</td>
-      <td class="maintable">{$row['emails_used']}/{$row['emails']}<br />{$row['subdomains_used']}/{$row['subdomains']}</td>
-      <td class="maintable">{$row['email_accounts_used']}/{$row['email_accounts']}<br />{$row['email_forwarders_used']}/{$row['email_forwarders']}</td>
-      <td class="maintable">{$row['deactivated']}</td>
-      <td class="maintable"><a href="$filename?s=$s&page=$page&action=delete&id={$row['customerid']}">{$lng['panel']['delete']}</a><br /><a href="$filename?s=$s&page=$page&action=edit&id={$row['customerid']}">{$lng['panel']['edit']}</a></td>
-     </tr>
+<tr>
+	<td class="field_name_border_left"><a href="$filename?s=$s&amp;page=$page&amp;action=su&amp;id={$row['customerid']}" target="_blank">{$row['loginname']}</a></td>
+	<if $userinfo['customers_see_all']>
+	<td class="field_name">{$row['adminname']}</td>
+	</if>
+	<td class="field_name"><if $row['name'] != '' && $row['firstname'] != ''>{$row['name']}<br />{$row['firstname']}</if><if ($row['name'] == '' || $row['firstname'] == '') && $row['company'] != ''>{$row['company']}</if></td>
+	<td class="field_name">{$row['domains']}</td>
+	<td class="field_name">
+	<span<if $row['diskspace'] < $row['diskspace_used'] && $row['diskspace'] != 'UL'> style="color:red"</if><if $row['diskspace_used'] < $row['diskspace'] || $row['diskspace'] == 'UL'> style="color:green"</if>><b>{$row['diskspace_used']}</b>/<b><font color="#FD6204">{$row['diskspace']}</font></b></span> (MB)
+	<br />
+	<span<if $row['traffic'] < $row['traffic_used'] && $row['traffic'] != 'UL'> style="color:red"</if><if $row['traffic_used'] < $row['traffic'] || $row['traffic'] == 'UL'> style="color:green"</if>><b>{$row['traffic_used']}</b>/<b><font color="#FD6204">{$row['traffic']}</font></b></span> (GB)
+	</td>
+	<td class="field_name"><b><font color="green">{$row['mysqls_used']}</font></b>/<b><font color="#FD6204">{$row['mysqls']}</font></b><br /><b><font color="green">{$row['ftps_used']}</font></b>/<b><font color="#FD6204">{$row['ftps']}</font></b></td>
+	<td class="field_name"><b><font color="green">{$row['emails_used']}</font></b>/<b><font color="#FD6204">{$row['emails']}</font></b><br /><b><font color="green">{$row['subdomains_used']}</font></b>/<b><font color="#FD6204">{$row['subdomains']}</font></b></td>
+	<td class="field_name"><b><font color="green">{$row['email_accounts_used']}</font></b>/<b><font color="#FD6204">{$row['email_accounts']}</font></b><br /><b><font color="green">{$row['email_forwarders_used']}</font></b>/<b><font color="#FD6204">{$row['email_forwarders']}</font></b></td>
+	<td class="field_name"><center>{$row['deactivated']}</center></td>
+	<td class="field_name"><a href="$filename?s=$s&amp;page=$page&amp;action=delete&amp;id={$row['customerid']}">{$lng['panel']['delete']}</a><br /><a href="$filename?s=$s&amp;page=$page&amp;action=edit&amp;id={$row['customerid']}">{$lng['panel']['edit']}</a></td>
+</tr>

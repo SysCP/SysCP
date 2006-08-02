@@ -1,27 +1,32 @@
 $header
-    <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-    <tr>
-     <td colspan="20" class="title">{$lng['admin']['domains']}</td>
-    </tr>
-    <if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 15 < $userinfo['domains_used']><tr>
-     <td class="maintable" colspan="20"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['domain_add']}</a></td>
-    </tr></if>
-    <if 0 < $pages><tr>
-     <td colspan="20" class="maintable">{$paging}</td>
-    </tr></if>
-    <tr>
-     <td class="maintable">ID</td>
-     <td class="maintable">Domain</td>
-     <td class="maintable">{$lng['admin']['ipsandports']['ip']}</td>
-     <td class="maintable">{$lng['admin']['customer']}</td>
-     <td class="maintable" colspan="2">&nbsp;</td>
-    </tr>
-    $domains
-    <if 0 < $pages><tr>
-     <td colspan="20" class="maintable">{$paging}</td>
-    </tr></if>
-    <if $userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1'><tr>
-     <td class="maintable" colspan="20"><a href="$filename?page=$page&action=add&s=$s">{$lng['admin']['domain_add']}</a></td>
-    </tr></if>
-   </table>
+	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
+		<tr>
+			<td class="maintitle" colspan="6"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domains']}</b></td>
+		</tr>
+		<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 15 < $userinfo['domains_used']>
+		<tr>
+			<td class="field_display_border_left" colspan="6"><a href="$filename?page=$page&amp;action=add&amp;s=$s">{$lng['admin']['domain_add']}</a></td>
+		</tr>
+		</if>
+		<tr>
+			<td class="field_display_border_left">ID&nbsp;&nbsp;<a href="admin_domains.php?page=domains&amp;sortby=id&amp;sortorder=desc&amp;s=$s"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="admin_domains.php?page=domains&amp;sortby=id&amp;sortorder=asc&amp;s=$s"><img src="images/order_asc.gif" border="0" alt="" /></a></td>
+			<td class="field_display">Domain&nbsp;&nbsp;<a href="admin_domains.php?page=domains&amp;sortby=domain&amp;sortorder=desc&amp;s=$s"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="admin_domains.php?page=domains&amp;sortby=domain&amp;sortorder=asc&amp;s=$s"><img src="images/order_asc.gif" border="0" alt="" /></a></td>
+			<td class="field_display">{$lng['admin']['ipsandports']['ip']}&nbsp;&nbsp;<a href="admin_domains.php?page=domains&amp;sortby=ip&amp;sortorder=desc&amp;s=$s"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="admin_domains.php?page=domains&amp;sortby=ip&amp;sortorder=asc&amp;s=$s"><img src="images/order_asc.gif" border="0" alt="" /></a></td>
+			<td class="field_display">{$lng['admin']['customer']}&nbsp;&nbsp;<a href="admin_domains.php?page=domains&amp;sortby=loginname&amp;sortorder=desc&amp;s=$s"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="admin_domains.php?page=domains&amp;sortby=loginname&amp;sortorder=asc&amp;s=$s"><img src="images/order_asc.gif" border="0" alt="" /></a></td>
+			<td class="field_display" colspan="2">&nbsp;</td>
+		</tr>
+		$domains
+		<if 0 < $pages>
+		<tr>
+			<td colspan="6" class="field_display">{$paging}</td>
+		</tr>
+		</if>
+		<if $userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1'>
+		<tr>
+			<td class="field_display_border_left" colspan="6"><a href="$filename?page=$page&amp;action=add&amp;s=$s">{$lng['admin']['domain_add']}</a></td>
+		</tr>
+		</if>
+	</table>
+	<br />
+	<br />
 $footer
