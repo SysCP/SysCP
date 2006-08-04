@@ -1,6 +1,6 @@
-     <tr>
-      <td class="maintable">{$language}</td>
-      <td class="maintable">{$template}</td>
-      <td class="maintable"><a href="$filename?s=$s&page=$page&action=delete&subjectid=$subjectid&mailbodyid=$mailbodyid">{$lng['panel']['delete']}</a></td>
-      <td class="maintable"><a href="$filename?s=$s&page=$page&action=edit&subjectid=$subjectid&mailbodyid=$mailbodyid">{$lng['panel']['edit']}</a></td>
-     </tr>
+		<tr>
+			<td class="field_name_border_left">{$language}</td>
+			<td class="field_name">{$template}</td>
+			<td class="field_name"><a href="$filename?s=$s&amp;page=$page&amp;action=delete&amp;subjectid=$subjectid&amp;mailbodyid=$mailbodyid">{$lng['panel']['delete']}</a></td>
+			<td class="field_name"><a href="$filename?s=$s&amp;page=$page&amp;action=edit&amp;subjectid=$subjectid&amp;mailbodyid=$mailbodyid">{$lng['panel']['edit']}</a></td>
+		</tr>
