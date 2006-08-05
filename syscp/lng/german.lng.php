@@ -429,4 +429,6 @@ $lng['domains']['istopleveldomain'] = 'Ist Top-Level-Domain';
 $lng['serversettings']['defaultip']['title'] = 'Standard IP/Port'; 
 $lng['serversettings']['defaultip']['description'] = 'Welche IP/Port-Kombination soll standardm&auml;&szlig;ig verwendet werden?'; 
 
+$lng['domains']['statstics'] = 'Statistiken';
+
 ?>

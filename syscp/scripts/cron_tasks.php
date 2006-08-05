@@ -141,17 +141,21 @@
 						if($domain['parentdomainid'] == '0')
 						{
 							$speciallogfile = '-'.$domain['domain'];
-							$vhosts_file .= '   Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['domain']."\"\n";
+							$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['domain']."\"\n";
 						}
 						else
 						{
 							$speciallogfile = '-'.$domain['parentdomain'];
-							$vhosts_file .= '   Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\"\n";
+							$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\"\n";
 						}
 					}
 					else
 					{
 						$speciallogfile = '';
+						if( $domain['customerroot'] != $domain['documentroot'])
+						{
+							$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer"'."\n";
+						}
 					}
 					$vhosts_file.='  ErrorLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\"\n";
 					$vhosts_file.='  CustomLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log" combined'."\n";

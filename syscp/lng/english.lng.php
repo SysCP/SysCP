@@ -429,4 +429,6 @@ $lng['domains']['istopleveldomain'] = 'Is top level domain';
 $lng['serversettings']['defaultip']['title'] = 'Default IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'What\'s the default IP/Port combination?';
 
+$lng['domains']['statstics'] = 'Usage Statistics';
+
 ?>
