@@ -18,15 +18,15 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['extras']['errordocument404path']}:</b><br />{$lng['panel']['emptyfordefault']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="error404path" value="{$result['error404path']}" maxlength="50" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="error404path" value="{$result['error404path']}" size="30" maxlength="255" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['extras']['errordocument403path']}:</b><br />{$lng['panel']['emptyfordefault']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="error403path" value="{$result['error403path']}"  maxlength="50" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="error403path" value="{$result['error403path']}" size="30" maxlength="255" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['extras']['errordocument500path']}:</b><br />{$lng['panel']['emptyfordefault']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="error500path" value="{$result['error500path']}"  maxlength="50" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="error500path" value="{$result['error500path']}" size="30" maxlength="255" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['extras']['pathoptions_edit']}" /></td>
