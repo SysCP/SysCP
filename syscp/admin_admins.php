@@ -23,7 +23,7 @@
 	 * Include our init.php, which manages Sessions, Language etc.
 	 */
 	require("./lib/init.php");
-	
+
 	if(isset($_POST['id']))
 	{
 		$id=intval($_POST['id']);
@@ -93,11 +93,11 @@
 				{
 					if ($count == $pageno)
 					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
+						$paging .= "<a href=\"$filename?s=$s&amp;page=$page&amp;no=$count\"><b>$count</b></a>&nbsp;";
 					}
 					else
 					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
+						$paging .= "<a href=\"$filename?s=$s&amp;page=$page&amp;no=$count\">$count</a>&nbsp;";
 					}
 				}
 			}
@@ -121,7 +121,21 @@
 			}
 			eval("echo \"".getTemplate("admins/admins")."\";");
 		}
-
+		elseif($action=='su' && $id != 1 && $userinfo['userid'] == '1')
+		{
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid` = '$id'; ");
+			if($result['loginname'] != '')
+			{
+				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`={$userinfo['userid']}");
+				$s = md5(uniqid(microtime(),1));
+				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('$s', '$id', '{$result['ipaddress']}', '{$result['useragent']}', '" . time() . "', '{$result['language']}', '1')");
+				redirectTo ( 'admin_index.php' , Array ( 's' => $s ) ) ;
+			}
+			else
+			{
+				redirectTo ( 'index.php' , Array ( 'action' => 'login' ) ) ;
+			}
+		}
 		elseif($action=='delete' && $id!=0)
 		{
 			if($id == '1')
@@ -298,7 +312,7 @@
 						{
 							$deactivated = '0';
 						}
-						
+
 						if($customers_see_all != '1')
 						{
 							$customers_see_all = '0';
