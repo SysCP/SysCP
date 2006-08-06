@@ -921,4 +921,21 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn4';
 	}
+	if( $settings['panel']['version'] == '1.2.13-svn4' )
+	{
+		$db->query(
+			'ALTER TABLE `'.TABLE_PANEL_SESSIONS.'` ' .
+			' ADD `lastpaging` VARCHAR( 255 ) NOT NULL AFTER `lastactivity` '
+		);
+
+		// set new version 
+		$query = 
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.13-svn5\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.13-svn5';
+	}
 ?>

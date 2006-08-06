@@ -4,7 +4,7 @@
 	<td class="field_name">{$row['adminname']}</td>
 	</if>
 	<td class="field_name"><if $row['name'] != '' && $row['firstname'] != ''>{$row['name']}<br />{$row['firstname']}</if><if ($row['name'] == '' || $row['firstname'] == '') && $row['company'] != ''>{$row['company']}</if></td>
-	<td class="field_name">{$row['domains']}</td>
+	<td class="field_name"><if $row['domains'] != 0><a href="admin_domains.php?s=$s&amp;page=domains&amp;searchfield=c.loginname&amp;searchtext={$row['loginname']}">{$row['domains']}</a><else>{$row['domains']}</if></td>
 	<td class="field_name">
 	<span<if $row['diskspace'] < $row['diskspace_used'] && $row['diskspace'] != 'UL'> style="color:red"</if><if $row['diskspace_used'] < $row['diskspace'] || $row['diskspace'] == 'UL'> style="color:green"</if>><b>{$row['diskspace_used']}</b>/<b><font color="#FD6204">{$row['diskspace']}</font></b></span> (MB)
 	<br />

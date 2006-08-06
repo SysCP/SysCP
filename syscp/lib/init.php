@@ -115,6 +115,11 @@
 	require('./lib/functions.php');
 
 	/**
+	 * Includes the Paging class
+	 */
+	require('./lib/class_paging.php');
+
+	/**
 	 * Clean all superglobals which contain user input from too many slashes
 	 * (we always rely on magic_quotes_gpc being set to off, so removing them
 	 * all is save) and from htmlentities

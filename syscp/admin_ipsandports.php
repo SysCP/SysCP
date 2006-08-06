@@ -38,12 +38,34 @@
 	{
 		if($action=='')
 		{
+			$fields = array(
+								'ip' => $lng['admin']['ipsandports']['ip'],
+								'port' => $lng['admin']['ipsandports']['port']
+							);
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_IPSANDPORTS, $fields, $settings['panel']['paging'] );
+
 			$ipsandports='';
-			$result=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
+			$result=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` " . 
+				$paging->getSqlWhere( false )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
+			);
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
+			$i = 0;
+			$count = 0;
 			while($row=$db->fetch_array($result))
 			{
-				$row = htmlentities_array( $row );
-				eval("\$ipsandports.=\"".getTemplate("ipsandports/ipsandports_ipandport")."\";");
+				if( $paging->checkDisplay( $i ) )
+				{
+					$row = htmlentities_array( $row );
+					eval("\$ipsandports.=\"".getTemplate("ipsandports/ipsandports_ipandport")."\";");
+					$count++;
+				}
+				$i++;
 			}
 			eval("echo \"".getTemplate("ipsandports/ipsandports")."\";");
 		}

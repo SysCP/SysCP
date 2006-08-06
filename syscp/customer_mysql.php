@@ -42,12 +42,35 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query( "SELECT `id`, `databasename`, `description` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . $userinfo['customerid'] . "' ORDER BY `databasename` ASC" );
+			$fields = array(
+								'databasename' => $lng['mysql']['databasename'],
+								'description' => $lng['mysql']['databasedescription']
+							);
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_DATABASES, $fields, $settings['panel']['paging'] );
+
+			$result=$db->query(
+				"SELECT `id`, `databasename`, `description` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . $userinfo['customerid'] . "' " . 
+				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
+			);
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
+			$i = 0;
+			$count = 0;
 			$mysqls='';
 			while($row=$db->fetch_array($result))
 			{
-				$row = htmlentities_array( $row );
-				eval("\$mysqls.=\"".getTemplate("mysql/mysqls_database")."\";");
+				if( $paging->checkDisplay( $i ) )
+				{
+					$row = htmlentities_array( $row );
+					eval("\$mysqls.=\"".getTemplate("mysql/mysqls_database")."\";");
+					$count++;
+				}
+				$i++;
 			}
 			$mysqls_count = $db->num_rows($result);
 

@@ -201,8 +201,8 @@ $lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
 $lng['error']['mydomain'] = '\'Domain\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
 $lng['error']['loginnameexists']= 'Der Login-Name %s existiert bereits.';
-$lng['error']['emailiswrong']= 'Die E-Mail-Adresse %s beinhaltet ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
-$lng['error']['loginnameiswrong']= 'Der Login-Name %s beinhaltet ung&uuml;ltige Zeichen.';
+$lng['error']['emailiswrong']= 'Die E-Mail-Adresse %s enth&auml;lt ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
+$lng['error']['loginnameiswrong']= 'Der Login-Name %s enth&auml;lt ung&uuml;ltige Zeichen.';
 $lng['error']['userpathcombinationdupe']='Kombination aus Benutzername und Pfad existiert bereits.';
 $lng['error']['patherror']='allgemeiner Fehler! Pfad darf nicht leer sein.';
 $lng['error']['errordocpathdupe']='Option f&uuml;r Pfad %s existiert bereits.';
@@ -214,7 +214,7 @@ $lng['error']['nomailbodycreate']='Sie m&uuml;ssen einen E-Mail-Text eingeben.';
 $lng['error']['templatenotfound']='Template wurde nicht gefunden.';
 $lng['error']['alltemplatesdefined']='Sie k&ouml;nnen keine weiteren Templates anlegen, da bereits alle Sprachen mit Templates versorgt sind.';
 $lng['error']['wwwnotallowed']='Ihre Subdomain darf nicht www heissen.';
-$lng['error']['subdomainiswrong']='Die Subdomain %s beinhaltet ung&uuml;ltige Zeichen.';
+$lng['error']['subdomainiswrong']='Die Subdomain %s enth&auml;lt ung&uuml;ltige Zeichen.';
 $lng['error']['domaincantbeempty']='Der Domain-Name darf nicht leer sein.';
 $lng['error']['domainexistalready']='Die Domain %s existiert bereits.';
 $lng['error']['domainisaliasorothercustomer']='Die ausgew&auml;hlte Aliasdomain ist entweder selber eine Aliasdomain oder geh&ouml;t zu einem anderen Kunden.';
@@ -223,7 +223,7 @@ $lng['error']['maindomainnonexist']='Die Haupt-Domain %s existiert nicht.';
 $lng['error']['destinationnonexist']='Bitte geben Sie Ihre Weiterleitungsadresse im Feld \'Nach\' ein.';
 $lng['error']['destinationalreadyexistasmail']='Die Weiterleitung zu %s exisitiert bereits als aktive E-Mail-Adresse.';
 $lng['error']['destinationalreadyexist']='Es gibt bereits eine Weiterleitung nach %s .';
-$lng['error']['destinationiswrong']= 'Die Weiterleitungsadresse-Adresse %s beinhaltet ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
+$lng['error']['destinationiswrong']= 'Die Weiterleitungsadresse-Adresse %s enth&auml;lt ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
 $lng['error']['domainname']=$lng['domains']['domainname'];
 
 /**
@@ -430,5 +430,11 @@ $lng['serversettings']['defaultip']['title'] = 'Standard IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'Welche IP/Port-Kombination soll standardm&auml;&szlig;ig verwendet werden?'; 
 
 $lng['domains']['statstics'] = 'Statistiken';
+
+$lng['panel']['ascending'] = 'aufsteigend';
+$lng['panel']['decending'] = 'absteigend';
+
+$lng['panel']['search'] = 'Suche';
+$lng['panel']['used'] = 'benutzt';
 
 ?>

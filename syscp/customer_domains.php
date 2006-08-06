@@ -41,6 +41,12 @@
 	{
 		if($action=='')
 		{
+			$fields = array(
+								'd.domain' => $lng['domains']['domainname'],
+								'd.documentroot' => $lng['panel']['path']
+							);
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'] );
+
 			$result = $db->query(
 				"SELECT `d`.`id`, " .
 				"       `d`.`customerid`, " .
@@ -58,74 +64,17 @@
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
 				"WHERE `d`.`customerid`='".$userinfo['customerid']."' " .
-				"  AND `d`.`id` <> ".$userinfo['standardsubdomain']
+				"  AND `d`.`id` <> ".$userinfo['standardsubdomain']." " .
+				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
- 			$domains='';
-			$rows = $db->num_rows($result);
-			if ($settings['panel']['paging'] > 0)
-			{
-				$pages = intval($rows / $settings['panel']['paging']);
-			}
-			else
-			{
-				$pages = 0;
-			}
-			if ($pages != 0)
-			{
-				if(isset($_GET['no']))
-				{
-					$pageno = intval($_GET['no']);
-				}
-				else
-				{
-					$pageno = 1;
-				}
-				if ($pageno > $pages)
-				{
-					$pageno = $pages + 1;
-				}
-				elseif ($pageno < 1)
-				{
-					$pageno = 1;
-				}
-				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
-				$result=$db->query(
-					"SELECT `d`.`id`, " .
-					"       `d`.`customerid`, " .
-					"       `d`.`domain`, " .
-					"       `d`.`documentroot`, " .
-					"       `d`.`isemaildomain`, " .
-					"       `d`.`caneditdomain`, " .
-					"       `d`.`iswildcarddomain`, " .
-					"       `d`.`parentdomainid`, " .
-					"       `ad`.`id` AS `aliasdomainid`, " .
-					"       `ad`.`domain` AS `aliasdomain`, " .
-					"       `da`.`id` AS `domainaliasid`, " .
-					"       `da`.`domain` AS `domainalias` " .
-					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
-					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
-					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
-					"WHERE `d`.`customerid`='".$userinfo['customerid']."' " .
-					"  AND `d`.`id` <> ".$userinfo['standardsubdomain'] .
-					" LIMIT $pagestart , ".$settings['panel']['paging'].";"
-				);
-				$paging = '';
-				for ($count = 1; $count <= $pages+1; $count++)
-				{
-					if ($count == $pageno)
-					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
-					}
-					else
-					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
-					}
-				}
-			}
-			else
-			{
-				$paging = "";
-			}
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
+			$domains='';
 			$parentdomains_count=0;
 			$domains_count=0;
 			$domain_array=array();
@@ -134,6 +83,13 @@
 				$row['domain'] = $idna_convert->decode($row['domain']);
 				$row['aliasdomain'] = $idna_convert->decode($row['aliasdomain']);
 				$row['domainalias'] = $idna_convert->decode($row['domainalias']);
+
+				if($row['parentdomainid'] == '0' && $row['iswildcarddomain'] != '1' && $row['caneditdomain'] == '1')
+				{
+					$parentdomains_count++;
+				}
+				$domains_count++;
+
 				$domainparts = explode('.',$row['domain']);
 				$domainparts = array_reverse($domainparts);
 				$sortkey = '';
@@ -162,29 +118,41 @@
 				}
 			}
 			$domain_array=array();
-			ksort($domain_sort_array);
-			foreach($domain_sort_array as $subarray)
+
+			if( $paging->sortfield == 'd.domain' && $paging->sortorder == 'asc' )
 			{
-				ksort($subarray);
-				$domain_array=array_merge($domain_array,$subarray);
+				ksort($domain_sort_array);
 			}
-			$parentdomainid = 0;
-			foreach($domain_array as $row)
+			elseif( $paging->sortfield == 'd.domain' && $paging->sortorder == 'desc' )
 			{
-				$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
+				krsort($domain_sort_array);
+			}
 
-				$row = htmlentities_array( $row );
-				if ($row['parentdomainid'] == 0)
+			$i = 0;
+			foreach($domain_sort_array as $sortkey => $domain_array)
+			{
+				if( $paging->checkDisplay( $i ) )
 				{
+					$row = htmlentities_array( $domain_array[$sortkey] );
 					eval("\$domains.=\"".getTemplate("domains/domains_delimiter")."\";");
-				}
-				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
 
-				if($row['parentdomainid'] == '0' && $row['iswildcarddomain'] != '1' && $row['caneditdomain'] == '1')
-				{
-					$parentdomains_count++;
+					if( $paging->sortfield == 'd.domain' && $paging->sortorder == 'asc' )
+					{
+						ksort($domain_array);
+					}
+					elseif( $paging->sortfield == 'd.domain' && $paging->sortorder == 'desc' )
+					{
+						krsort($domain_array);
+					}
+
+					foreach( $domain_array as $row )
+					{
+						$row['documentroot']=str_replace($userinfo['documentroot'],'',$row['documentroot']);
+						$row = htmlentities_array( $row );
+						eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
+					}
 				}
-				$domains_count++;
+				$i+=count( $domain_array );
 			}
 
 			eval("echo \"".getTemplate("domains/domainlist")."\";");
@@ -229,24 +197,12 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/','/^https?\:\/\//'),'',addslashes($_POST['subdomain'])));
-					/* Rules for subdomains:
-					 * - At least two characters
-					 * - Valid characters: a-z, 0-9, ".", "-" and "_"
-					 * - First character must be a-z or 0-9
-					 * - Case-insensitiv
-					 */
-					// TODO: Merge this check with the one around line 287?
-					if(!preg_match("/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i", $subdomain))
-					{
-						standard_error('subdomainiswrong', $subdomain);
-						exit;
-					}
 					$domain=$idna_convert->encode(addslashes($_POST['domain']));
 					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$completedomain' AND `customerid`='".$userinfo['customerid']."' AND `caneditdomain` = '1'");
 					$aliasdomain = intval($_POST['alias']);
-					
+
 					$aliasdomain_check=array('id' => 0);
 					if($aliasdomain!=0)
 					{
@@ -295,9 +251,15 @@
 					{
 						standard_error('wwwnotallowed');
 					}
-					elseif(preg_match('/.*\..*/',$subdomain))
+					/* Rules for subdomains:
+					 * - At least two characters
+					 * - Valid characters: a-z, 0-9, ".", "-" and "_"
+					 * - First character must be a-z or 0-9
+					 * - Case-insensitiv
+					 */
+					elseif(!preg_match("/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i", $subdomain))
 					{
-						standard_error('subdomainiswrong',$subdomain);
+						standard_error('subdomainiswrong', $subdomain);
 					}
 					elseif($domain=='')
 					{

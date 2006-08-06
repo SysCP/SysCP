@@ -37,90 +37,35 @@
 	{
 		if($action=='')
 		{
-			if(isset($_GET['sortby']))
-			{
-				$sortby=addslashes($_GET['sortby']);
-			}
-			else
-			{
-				$sortby='domain';
-			}
-			if(isset($_GET['sortorder']) && strtolower($_GET['sortorder'])=='desc')
-			{
-				$sortorder='DESC';
-			}
-			else
-			{
-				$sortorder='ASC';
-			}
+			$fields = array(
+								'd.domain' => $lng['domains']['domainname'],
+								'ip.ip' => $lng['admin']['ipsandports']['ip'],
+								'ip.port' => $lng['admin']['ipsandports']['port'],
+								'c.name' => $lng['customer']['name'],
+								'c.firstname' => $lng['customer']['firstname'],
+								'c.company' => $lng['customer']['company'],
+								'c.loginname' => $lng['login']['username']
+							);
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'] );
 
 			$domains='';
 			$result=$db->query(
-				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `da`.`id` AS `domainaliasid`, `da`.`domain` AS `domainalias` " .
+				"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `da`.`id` AS `domainaliasid`, `da`.`domain` AS `domainalias`, `ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port` " .
 				"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
 				"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
 				"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
 				"LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) " .
-				"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
-				"ORDER BY `$sortby` $sortorder"
+				"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")." ".
+				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
-			$rows = $db->num_rows($result);
-			if ($settings['panel']['paging'] > 0)
-			{
-				$pages = intval($rows / $settings['panel']['paging']);
-			}
-			else
-			{
-				$pages = 0;
-			}
-			if ($pages != 0)
-			{
-				if(isset($_GET['no']))
-				{
-					$pageno = intval($_GET['no']);
-				}
-				else
-				{
-					$pageno = 1;
-				}
-				if ($pageno > $pages)
-				{
-					$pageno = $pages + 1;
-				}
-				elseif ($pageno < 1)
-				{
-					$pageno = 1;
-				}
-				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
-				$result=$db->query(
-					"SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `da`.`id` AS `domainaliasid`, `da`.`domain` AS `domainalias` " .
-					"FROM `".TABLE_PANEL_DOMAINS."` `d` " .
-					"LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) " .
-					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
-					"LEFT JOIN `".TABLE_PANEL_DOMAINS."` `da` ON `da`.`aliasdomain`=`d`.`id` " .
-					"LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) " .
-					"WHERE `d`.`parentdomainid`='0' ".( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '{$userinfo['adminid']}' ")."" .
-					"ORDER BY `$sortby` $sortorder " .
-					"LIMIT $pagestart , ".$settings['panel']['paging'].";"
-				);
-				$paging = '';
-				for ($count = 1; $count <= $pages+1; $count++)
-				{
-					if ($count == $pageno)
-					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
-					}
-					else
-					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
-					}
-				}
-			}
-			else
-			{
-				$paging = "";
-			}
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
 			$domain_array=array();
 			while($row=$db->fetch_array($result))
 			{
@@ -129,11 +74,30 @@
 				$row['domainalias'] = $idna_convert->decode($row['domainalias']);
 				$domain_array[$row['domain']] = $row;
 			}
-			ksort($domain_array);
+
+			/**
+			 * We need ksort/krsort here to make sure idna-domains are also sorted correctly
+			 */
+			if( $paging->sortfield == 'd.domain' && $paging->sortorder == 'asc' )
+			{
+				ksort( $domain_array );
+			}
+			elseif( $paging->sortfield == 'd.domain' && $paging->sortorder == 'desc' )
+			{
+				krsort( $domain_array );
+			}
+
+			$i = 0;
+			$count = 0;
 			foreach($domain_array as $row)
 			{
-				$row = htmlentities_array( $row );
-				eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
+				if( $paging->checkDisplay( $i ) )
+				{
+					$row = htmlentities_array( $row );
+					eval("\$domains.=\"".getTemplate("domains/domains_domain")."\";");
+					$count++;
+				}
+				$i++;
 			}
 			eval("echo \"".getTemplate("domains/domains")."\";");
 		}
