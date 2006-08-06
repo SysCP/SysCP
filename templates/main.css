@@ -179,6 +179,16 @@ input.bottom { /*input.bottone*/
 	border-top			: none;
 }
 
+.field_name_search {
+	background-color	: #EBECF5;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
+	border-top			: none;
+	border-left			: none;
+	text-align			: right;
+}
+
 .main_field_display { /*install_campodisplay*/
 	width				: 6%;
 	background-color	: #C6DEFF;
@@ -194,6 +204,16 @@ input.bottom { /*input.bottone*/
 	border-width		: 1px;
 	border-top			: none;
 	border-left			: none;
+}
+
+.field_display_search {
+	background-color	: #C6DEFF;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
+	border-top			: none;
+	border-left			: none;
+	text-align			: right;
 }
 
 .field_display_border_left { /*campodisplay_bordosx*/
@@ -242,4 +262,22 @@ textarea.textarea_border { /*textarea_bordo*/
 	font-weight			: bold;
 	border				: 1px solid #B7B7B7;
 	background-color	: #C6DEFF;
+}
+
+.maintitle_search_left {
+	background-color	: #ABC9E8;
+	border-color		: #000000;
+	border-style		: solid;
+	border-width		: 1px;
+	border-right-width	: 0px;
+	text-align			: left;
+}
+
+.maintitle_search_right {
+	background-color	: #ABC9E8;
+	border-color		: #000000;
+	border-style		: solid;
+	border-width		: 1px;
+	border-left-width	: 0px;
+	text-align			: right;
 }

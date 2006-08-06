@@ -37,100 +37,76 @@
 	{
 		if($action=='')
 		{
-			if(isset($_GET['sortby']))
-			{
-				$sortby=addslashes($_GET['sortby']);
-			}
-			else
-			{
-				$sortby='loginname';
-			}
-			if(isset($_GET['sortorder']) && strtolower($_GET['sortorder'])=='desc')
-			{
-				$sortorder='DESC';
-			}
-			else
-			{
-				$sortorder='ASC';
-			}
+			$fields = array(
+								'c.loginname' => $lng['login']['username'],
+								'a.loginname' => $lng['admin']['admin'],
+								'c.name' => $lng['customer']['name'],
+								'c.firstname' => $lng['customer']['firstname'],
+								'c.company' => $lng['customer']['company'],
+								'c.diskspace' => $lng['customer']['diskspace'],
+								'c.diskspace_used' => $lng['customer']['diskspace'] . ' (' . $lng['panel']['used'] . ')',
+								'c.traffic' => $lng['customer']['traffic'],
+								'c.traffic_used' => $lng['customer']['traffic'] . ' (' . $lng['panel']['used'] . ')',
+								'c.mysqls' => $lng['customer']['mysqls'],
+								'c.mysqls_used' => $lng['customer']['mysqls'] . ' (' . $lng['panel']['used'] . ')',
+								'c.ftps' => $lng['customer']['ftps'],
+								'c.ftps_used' => $lng['customer']['ftps'] . ' (' . $lng['panel']['used'] . ')',
+								'c.subdomains' => $lng['customer']['subdomains'],
+								'c.subdomains_used' => $lng['customer']['subdomains'] . ' (' . $lng['panel']['used'] . ')',
+								'c.emails' => $lng['customer']['emails'],
+								'c.emails_used' => $lng['customer']['emails'] . ' (' . $lng['panel']['used'] . ')',
+								'c.email_accounts' => $lng['customer']['accounts'],
+								'c.email_accounts_used' => $lng['customer']['accounts'] . ' (' . $lng['panel']['used'] . ')',
+								'c.email_forwarders' => $lng['customer']['forwarders'],
+								'c.email_forwarders_used' => $lng['customer']['forwarders'] . ' (' . $lng['panel']['used'] . ')',
+								'c.deactivated' => 'Active'
+							);
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_CUSTOMERS, $fields, $settings['panel']['paging'] );
 
 			$customers='';
 			$result=$db->query(
 				"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " .
 				"FROM `".TABLE_PANEL_CUSTOMERS."` `c`, `".TABLE_PANEL_ADMINS."` `a` " .
 				"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '{$userinfo['adminid']}' AND " )."`c`.`adminid`=`a`.`adminid` " .
-				"ORDER BY `c`.`$sortby` $sortorder");
-			$rows = $db->num_rows($result);
-			if ($settings['panel']['paging'] > 0)
-			{
-				$pages = intval($rows / $settings['panel']['paging']);
-			}
-			else
-			{
-				$pages = 0;
-			}
-			if ($pages != 0)
-			{
-				if(isset($_GET['no']))
-				{
-					$pageno = intval($_GET['no']);
-				}
-				else
-				{
-					$pageno = 1;
-				}
-				if ($pageno > $pages)
-				{
-					$pageno = $pages + 1;
-				}
-				elseif ($pageno < 1)
-				{
-					$pageno = 1;
-				}
-				$pagestart = ($pageno - 1) * $settings['panel']['paging'];
-				$result=$db->query(
-					"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " .
-					"FROM `".TABLE_PANEL_CUSTOMERS."` `c`, `".TABLE_PANEL_ADMINS."` `a` " .
-					"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '{$userinfo['adminid']}' AND " )."`c`.`adminid`=`a`.`adminid` " .
-					"ORDER BY `c`.`$sortby` $sortorder " .
-					"LIMIT $pagestart , ".$settings['panel']['paging'].";"
-				);
-				$paging = '';
-				for ($count = 1; $count <= $pages+1; $count++)
-				{
-					if ($count == $pageno)
-					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\"><b>$count</b></a>&nbsp;";
-					}
-					else
-					{
-						$paging .= "<a href=\"$filename?s=$s&page=$page&no=$count\">$count</a>&nbsp;";
-					}
-				}
-			}
-			else
-			{
-				$paging = "";
-			}
+				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
+			);
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng, true );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
+			$i = 0;
+			$count = 0;
 			while($row=$db->fetch_array($result))
 			{
-				$domains=$db->query_first(
-					"SELECT COUNT(`id`) AS `domains` " .
-					"FROM `".TABLE_PANEL_DOMAINS."` " .
-					"WHERE `customerid`='".$row['customerid']."' AND `parentdomainid`='0' AND `id` <> '" . $row['standardsubdomain'] . "' "
-				);
-				$row['domains']=$domains['domains'];
-				$row['traffic_used']=round($row['traffic_used']/(1024*1024),4);
-				$row['traffic']=round($row['traffic']/(1024*1024),4);
-				$row['diskspace_used']=round($row['diskspace_used']/1024,2);
-				$row['diskspace']=round($row['diskspace']/1024,2);
-				$row['deactivated'] = str_replace('0', $lng['panel']['yes'], $row['deactivated']);
-				$row['deactivated'] = str_replace('1', $lng['panel']['no'], $row['deactivated']);
+				if( $paging->checkDisplay( $i ) )
+				{
+					$domains=$db->query_first(
+						"SELECT COUNT(`id`) AS `domains` " .
+						"FROM `".TABLE_PANEL_DOMAINS."` " .
+						"WHERE `customerid`='".$row['customerid']."' AND `parentdomainid`='0' AND `id` <> '" . $row['standardsubdomain'] . "' "
+					);
+					$row['domains']=intval($domains['domains']);
+					if( $row['standardsubdomain'] != '0' )
+					{
+						$row['domains']++;
+					}
+					$row['traffic_used']=round($row['traffic_used']/(1024*1024),4);
+					$row['traffic']=round($row['traffic']/(1024*1024),4);
+					$row['diskspace_used']=round($row['diskspace_used']/1024,2);
+					$row['diskspace']=round($row['diskspace']/1024,2);
+					$row['deactivated'] = str_replace('0', $lng['panel']['yes'], $row['deactivated']);
+					$row['deactivated'] = str_replace('1', $lng['panel']['no'], $row['deactivated']);
 
-				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
+					$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 
-				$row = htmlentities_array( $row );
-				eval("\$customers.=\"".getTemplate("customers/customers_customer")."\";");
+					$row = htmlentities_array( $row );
+					eval("\$customers.=\"".getTemplate("customers/customers_customer")."\";");
+					$count++;
+				}
+				$i++;
 			}
 			eval("echo \"".getTemplate("customers/customers")."\";");
 		}

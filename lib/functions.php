@@ -44,7 +44,8 @@
 			{
 				$templatefile='<!-- TEMPLATE NOT FOUND: '.$filename.' -->';
 			}
-			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
+//			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
+			$templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis',"\".( (\\1) ? (\"\\2\") : (\"\\4\") ).\"", $templatefile);
 			$templatecache[$template] = $templatefile;
 		}
 		return $templatecache[$template];

@@ -1,21 +1,29 @@
 $header
-	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
-		<tr>
-			<td class="maintitle" colspan="7"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['extras']['pathoptions']}</b></td>
-		</tr>
-		<tr>
-			<td class="field_name_border_left">{$lng['panel']['path']}</td>
-			<td class="field_name">{$lng['extras']['view_directory']}</td>
-			<td class="field_name">{$lng['extras']['error404path']}</td>
-			<td class="field_name">{$lng['extras']['error403path']}</td>
-			<td class="field_name">{$lng['extras']['error500path']}</td>
-			<td class="field_name" colspan="2">&nbsp;</td>
-		</tr>
-		$htaccess
-		<tr>
-			<td class="field_name_border_left" colspan="7"><a href="$filename?page=htaccess&amp;action=add&amp;s=$s">{$lng['extras']['pathoptions_add']}</a></td>
-		</tr>
-	</table>
+	<form action="$filename?s=$s&amp;page=$page" method="post">
+		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
+			<tr>
+				<td class="maintitle_search_left"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['extras']['pathoptions']}</b></td>
+				<td class="maintitle_search_right" colspan="6">{$searchcode}</td>
+			</tr>
+			<tr>
+				<td class="field_display_border_left">{$lng['panel']['path']}&nbsp;&nbsp;{$arrowcode['path']}</td>
+				<td class="field_display">{$lng['extras']['view_directory']}&nbsp;&nbsp;{$arrowcode['options_indexes']}</td>
+				<td class="field_display">{$lng['extras']['error404path']}&nbsp;&nbsp;{$arrowcode['error404path']}</td>
+				<td class="field_display">{$lng['extras']['error403path']}&nbsp;&nbsp;{$arrowcode['error403path']}</td>
+				<td class="field_display">{$lng['extras']['error500path']}&nbsp;&nbsp;{$arrowcode['error500path']}</td>
+				<td class="field_display_search" colspan="2">{$sortcode}</td>
+			</tr>
+			$htaccess
+			<if $pagingcode != ''>
+			<tr>
+				<td class="field_display_border_left" colspan="7" style=" text-align: center; ">{$pagingcode}</td>
+			</tr>
+			</if>
+			<tr>
+				<td class="field_display_border_left" colspan="7"><a href="$filename?page=htaccess&amp;action=add&amp;s=$s">{$lng['extras']['pathoptions_add']}</a></td>
+			</tr>
+		</table>
+	</form>
 	<br />
 	<br />
 $footer

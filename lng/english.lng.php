@@ -431,4 +431,10 @@ $lng['serversettings']['defaultip']['description'] = 'What\'s the default IP/Por
 
 $lng['domains']['statstics'] = 'Usage Statistics';
 
+$lng['panel']['ascending'] = 'ascending';
+$lng['panel']['decending'] = 'decending';
+
+$lng['panel']['search'] = 'Search';
+$lng['panel']['used'] = 'used';
+
 ?>

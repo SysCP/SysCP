@@ -41,13 +41,36 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' ORDER BY `username` ASC");
+			$fields = array(
+								'username' => $lng['login']['username'],
+								'path' => $lng['panel']['path']
+							);
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTPASSWDS, $fields, $settings['panel']['paging'] );
+
+			$result=$db->query(
+				"SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' " . 
+				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
+			);
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
+			$i = 0;
+			$count = 0;
 			$htpasswds='';
 			while($row=$db->fetch_array($result))
 			{
-				$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
-				$row = htmlentities_array( $row );
-				eval("\$htpasswds.=\"".getTemplate("extras/htpasswds_htpasswd")."\";");
+				if( $paging->checkDisplay( $i ) )
+				{
+					$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
+					$row = htmlentities_array( $row );
+					eval("\$htpasswds.=\"".getTemplate("extras/htpasswds_htpasswd")."\";");
+					$count++;
+				}
+				$i++;
 			}
 			eval("echo \"".getTemplate("extras/htpasswds")."\";");
 		}
@@ -172,16 +195,42 @@
 	{
 		if($action=='')
 		{
-			$result=$db->query("SELECT * FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".$userinfo['customerid']."'");
+			$fields = array(
+								'path' => $lng['panel']['path'],
+								'options_indexes' => $lng['extras']['view_directory'],
+								'error404path' => $lng['extras']['error404path'],
+								'error403path' => $lng['extras']['error403path'],
+								'error500path' => $lng['extras']['error500path']
+							);
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTACCESS, $fields, $settings['panel']['paging'] );
+
+			$result=$db->query(
+				"SELECT `id`, `path`, `options_indexes`, `error404path`, `error403path`, `error500path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".$userinfo['customerid']."' ". 
+				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
+			);
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
+			$i = 0;
+			$count = 0;
 			$htaccess = '';
 			while($row=$db->fetch_array($result))
 			{
-				$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
-				$row['options_indexes'] = str_replace('1', $lng['panel']['yes'], $row['options_indexes']);
-				$row['options_indexes'] = str_replace('0', $lng['panel']['no'], $row['options_indexes']);
+				if( $paging->checkDisplay( $i ) )
+				{
+					$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
+					$row['options_indexes'] = str_replace('1', $lng['panel']['yes'], $row['options_indexes']);
+					$row['options_indexes'] = str_replace('0', $lng['panel']['no'], $row['options_indexes']);
 
-				$row = htmlentities_array( $row );
-				eval("\$htaccess.=\"".getTemplate("extras/htaccess_htaccess")."\";");
+					$row = htmlentities_array( $row );
+					eval("\$htaccess.=\"".getTemplate("extras/htaccess_htaccess")."\";");
+					$count++;
+				}
+				$i++;
 			}
 			eval("echo \"".getTemplate("extras/htaccess")."\";");
 		}

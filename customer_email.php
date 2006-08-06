@@ -42,52 +42,73 @@
 	{
 		if($action=='')
 		{
+			$fields = array(
+								'd.domain' => $lng['domains']['domainname'],
+								'm.email_full' => $lng['emails']['emailaddress'],
+								'm.destination' => $lng['emails']['forwarders']
+							);
+			$paging = new paging( $userinfo, $db, TABLE_MAIL_VIRTUAL, $fields, $settings['panel']['paging'] );
+
 			$result = $db->query(
-				'SELECT `'.TABLE_MAIL_VIRTUAL.'`.`id`, ' .
-				'       `'.TABLE_MAIL_VIRTUAL.'`.`domainid`, ' .
-				'       `'.TABLE_MAIL_VIRTUAL.'`.`email`, ' .
-				'       `'.TABLE_MAIL_VIRTUAL.'`.`email_full`, ' .
-				'       `'.TABLE_MAIL_VIRTUAL.'`.`iscatchall`, ' .
-				'       `'.TABLE_MAIL_VIRTUAL.'`.`destination`, ' .
-				'       `'.TABLE_MAIL_VIRTUAL.'`.`popaccountid`, ' .
-				'       `'.TABLE_PANEL_DOMAINS.'`.`domain` ' .
-				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
-				'LEFT JOIN `'.TABLE_PANEL_DOMAINS.'` ' .
-				'  ON (`'.TABLE_MAIL_VIRTUAL.'`.`domainid` = `'.TABLE_PANEL_DOMAINS.'`.`id`)' .
-				'WHERE `'.TABLE_MAIL_VIRTUAL.'`.`customerid`="'.$userinfo['customerid'].'" ' .
-				'ORDER BY `domainid`, `email` ASC'
+				'SELECT `m`.`id`, ' .
+				'       `m`.`domainid`, ' .
+				'       `m`.`email`, ' .
+				'       `m`.`email_full`, ' .
+				'       `m`.`iscatchall`, ' .
+				'       `m`.`destination`, ' .
+				'       `m`.`popaccountid`, ' .
+				'       `d`.`domain` ' .
+				'FROM `'.TABLE_MAIL_VIRTUAL.'` `m` ' .
+				'LEFT JOIN `'.TABLE_PANEL_DOMAINS.'` `d` ' .
+				'  ON (`m`.`domainid` = `d`.`id`)' .
+				'WHERE `m`.`customerid`="'.$userinfo['customerid'].'" ' .
+				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
- 			$accounts='';
+			$paging->setEntries( $db->num_rows($result) );
+
+			$sortcode = $paging->getHtmlSortCode( $lng );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$searchcode = $paging->getHtmlSearchCode( $lng );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+
+			$i = 0;
+			$count = 0;
+			$accounts='';
 			$emails_count=0;
 			$domainname = '';
- 			while($row = $db->fetch_array($result))
- 			{
-				if ($domainname != $idna_convert->decode($row['domain']))
+			while($row = $db->fetch_array($result))
+			{
+				if( $paging->checkDisplay( $i ) )
 				{
-					$domainname = $idna_convert->decode($row['domain']);
-					eval("\$accounts.=\"".getTemplate("email/emails_domain")."\";");
-				}
-				$emails_count++;
-				$row['email'] = $idna_convert->decode($row['email']);
-				$row['email_full'] = $idna_convert->decode($row['email_full']);
-				$row['destination'] = explode ( ' ', $row['destination'] ) ;
-				while ( list ( $dest_id , $destination ) = each ( $row['destination'] ) )
-				{
-					$row['destination'][$dest_id] = $idna_convert->decode($row['destination'][$dest_id]);
-					if ( $row['destination'][$dest_id] == $row['email_full'] )
+					if ($domainname != $idna_convert->decode($row['domain']))
 					{
-						unset ( $row['destination'][$dest_id] ) ;
+						$domainname = $idna_convert->decode($row['domain']);
+						eval("\$accounts.=\"".getTemplate("email/emails_domain")."\";");
 					}
-				}
-				$destinations_count = count ($row['destination']);
-				$row['destination'] = implode ( ', ', $row['destination'] ) ;
-				if ( strlen ($row['destination']) > 35 )
-				{
-					$row['destination'] = substr ( $row['destination'] , 0, 32 ) . '... (' . $destinations_count . ')' ;
-				}
+					$emails_count++;
+					$row['email'] = $idna_convert->decode($row['email']);
+					$row['email_full'] = $idna_convert->decode($row['email_full']);
+					$row['destination'] = explode ( ' ', $row['destination'] ) ;
+					while ( list ( $dest_id , $destination ) = each ( $row['destination'] ) )
+					{
+						$row['destination'][$dest_id] = $idna_convert->decode($row['destination'][$dest_id]);
+						if ( $row['destination'][$dest_id] == $row['email_full'] )
+						{
+							unset ( $row['destination'][$dest_id] ) ;
+						}
+					}
+					$destinations_count = count ($row['destination']);
+					$row['destination'] = implode ( ', ', $row['destination'] ) ;
+					if ( strlen ($row['destination']) > 35 )
+					{
+						$row['destination'] = substr ( $row['destination'] , 0, 32 ) . '... (' . $destinations_count . ')' ;
+					}
 
-				$row = htmlentities_array( $row );
-				eval("\$accounts.=\"".getTemplate("email/emails_email")."\";");
+					$row = htmlentities_array( $row );
+					eval("\$accounts.=\"".getTemplate("email/emails_email")."\";");
+					$count++;
+				}
+				$i++;
 			}
 			$emaildomains_count=$db->query_first("SELECT COUNT(`id`) AS `count` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
 			$emaildomains_count=$emaildomains_count['count'];

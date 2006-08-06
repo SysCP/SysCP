@@ -345,6 +345,7 @@ CREATE TABLE `panel_sessions` (
   `ipaddress` varchar(16) NOT NULL default '',
   `useragent` varchar(255) NOT NULL default '',
   `lastactivity` int(11) unsigned NOT NULL default '0',
+  `lastpaging` varchar(255) NOT NULL default '',
   `language` varchar(64) NOT NULL default '',
   `adminsession` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`hash`),
