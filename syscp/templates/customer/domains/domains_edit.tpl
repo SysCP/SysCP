@@ -17,11 +17,11 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><select class="tendina_nobordo" name="alias">$domains</select></td>
 			</tr></if>
 			 <if $settings['panel']['pathedit'] != 'Dropdown'><tr>
-				<td class="main_field_name">{$lng['panel']['path']}:</td>
+				<td class="main_field_name">{$lng['panel']['pathorurl']}:</td>
 				<td class="main_field_display" nowrap="nowrap">{$pathSelect}</td>
 			</tr></if>
 			<if $settings['panel']['pathedit'] == 'Dropdown'><tr>
-				<td class="main_field_name">{$lng['panel']['pathorurl']}:</td>
+				<td class="main_field_name">{$lng['panel']['path']}:</td>
 				<td class="main_field_display">{$pathSelect}</td>
 			</tr>
 			<tr>
