@@ -156,13 +156,13 @@
 			}
 			$this->userinfo['lastpaging']['searchfield'] = $this->searchfield;
 
-			if( isset( $_REQUEST['searchtext'] ) && ( preg_match( "/^[0-9a-zA-Z\*\.]+$/", $_REQUEST['searchtext'] ) || $_REQUEST['searchtext'] === '' ) )
+			if( isset( $_REQUEST['searchtext'] ) && ( preg_match( "/^[0-9a-zA-ZäÄöÖüÜ\-\*\.]+$/", $_REQUEST['searchtext'] ) || $_REQUEST['searchtext'] === '' ) )
 			{
 				$this->searchtext = $_REQUEST['searchtext'];
 			}
 			else
 			{
-				if( $checklastpaging && isset( $this->userinfo['lastpaging']['searchtext'] ) && preg_match( "/^[0-9a-zA-Z\*\.]+$/", $this->userinfo['lastpaging']['searchtext'] ) )
+				if( $checklastpaging && isset( $this->userinfo['lastpaging']['searchtext'] ) && preg_match( "/^[0-9a-zA-ZäÄöÖüÜ\-\*\.]+$/", $this->userinfo['lastpaging']['searchtext'] ) )
 				{
 					$this->searchtext = $this->userinfo['lastpaging']['searchtext'];
 				}
