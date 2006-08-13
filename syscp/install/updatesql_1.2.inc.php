@@ -950,4 +950,19 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc1';
 	}
+	if( $settings['panel']['version'] == '1.2.14-rc1' )
+	{
+		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`id`, `language`, `file`) VALUES (8, 'Russian', 'lng/russian.lng.php');");
+
+		// set new version 
+		$query = 
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.14-rc1-svn1\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.14-rc1-svn1';
+	}
+
 ?>

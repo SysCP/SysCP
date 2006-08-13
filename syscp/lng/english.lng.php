@@ -21,6 +21,7 @@
 /**
  * Global
  */
+$lng['translator'] = '';
 $lng['panel']['edit'] = 'edit';
 $lng['panel']['delete'] = 'delete';
 $lng['panel']['create'] = 'create';
@@ -33,6 +34,7 @@ $lng['panel']['path'] = 'Path';
 $lng['panel']['toggle'] = 'Toggle';
 $lng['panel']['next'] = 'next';
 $lng['panel']['dirsmissing'] = 'Can not find or read the directory!';
+$lng['panel']['translator'] = 'Translator';
 
 /**
  * Login

@@ -13,7 +13,7 @@ $header
 				<td class="field_display">MySQL<br />FTP</td>
 				<td class="field_display">eMails<br />Subdomains</td>
 				<td class="field_display">Accounts<br />Forwarders</td>
-				<td class="field_display">Active<br />{$arrowcode['deactivated']}</td>
+				<td class="field_display">{$lng['admin']['deactivated']}<br />{$arrowcode['deactivated']}</td>
 				<td class="field_display_search">{$sortcode}</td>
 			</tr>
 			$admins

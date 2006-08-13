@@ -21,6 +21,7 @@
 /**
  * Global
  */
+$lng['translator'] = 'Jordi Romero';
 $lng['panel']['edit'] = 'editar';
 $lng['panel']['delete'] = 'esborrar';
 $lng['panel']['create'] = 'crear';

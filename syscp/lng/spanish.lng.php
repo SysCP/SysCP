@@ -22,6 +22,7 @@
 /**
  * Global
  */
+$lng['translator'] = 'Carlo Pedro Woedl, Ron Brand';
 $lng['panel']['edit'] = 'modificar';
 $lng['panel']['delete'] = 'borar';
 $lng['panel']['create'] = 'crear';

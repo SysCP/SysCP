@@ -22,6 +22,7 @@
 /**
  * Global
  */
+$lng['translator'] = 'Tim Zielosko, Aldo Reset';
 $lng['panel']['edit'] = 'Modifier';
 $lng['panel']['delete'] = 'Effacer';
 $lng['panel']['create'] = 'Ajouter';

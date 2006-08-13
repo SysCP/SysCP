@@ -593,6 +593,7 @@ INSERT INTO `panel_languages` VALUES (4, 'Chinese', 'lng/zh-cn.lng.php');
 INSERT INTO `panel_languages` VALUES (5, 'Catalan', 'lng/catalan.lng.php');
 INSERT INTO `panel_languages` VALUES (6, 'Espa&ntilde;ol', 'lng/spanish.lng.php');
 INSERT INTO `panel_languages` VALUES (7, 'Portugu&ecirc;s', 'lng/portugues.lng.php');
+INSERT INTO `panel_languages` VALUES (8, 'Russian', 'lng/russian.lng.php');
 
 
 # --------------------------------------------------------
