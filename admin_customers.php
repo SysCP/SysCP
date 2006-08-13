@@ -59,7 +59,7 @@
 								'c.email_accounts_used' => $lng['customer']['accounts'] . ' (' . $lng['panel']['used'] . ')',
 								'c.email_forwarders' => $lng['customer']['forwarders'],
 								'c.email_forwarders_used' => $lng['customer']['forwarders'] . ' (' . $lng['panel']['used'] . ')',
-								'c.deactivated' => 'Active'
+								'c.deactivated' => $lng['admin']['deactivated']
 							);
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_CUSTOMERS, $fields, $settings['panel']['paging'] );
 
@@ -86,19 +86,14 @@
 					$domains=$db->query_first(
 						"SELECT COUNT(`id`) AS `domains` " .
 						"FROM `".TABLE_PANEL_DOMAINS."` " .
-						"WHERE `customerid`='".$row['customerid']."' AND `parentdomainid`='0' AND `id` <> '" . $row['standardsubdomain'] . "' "
+						"WHERE `customerid`='".$row['customerid']."' AND `parentdomainid`='0' "
 					);
 					$row['domains']=intval($domains['domains']);
-					if( $row['standardsubdomain'] != '0' )
-					{
-						$row['domains']++;
-					}
+
 					$row['traffic_used']=round($row['traffic_used']/(1024*1024),4);
 					$row['traffic']=round($row['traffic']/(1024*1024),4);
 					$row['diskspace_used']=round($row['diskspace_used']/1024,2);
 					$row['diskspace']=round($row['diskspace']/1024,2);
-					$row['deactivated'] = str_replace('0', $lng['panel']['yes'], $row['deactivated']);
-					$row['deactivated'] = str_replace('1', $lng['panel']['no'], $row['deactivated']);
 
 					$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 

@@ -56,7 +56,7 @@
 								'email_accounts_used' => $lng['customer']['accounts'] . ' (' . $lng['panel']['used'] . ')',
 								'email_forwarders' => $lng['customer']['forwarders'],
 								'email_forwarders_used' => $lng['customer']['forwarders'] . ' (' . $lng['panel']['used'] . ')',
-								'deactivated' => 'Active'
+								'deactivated' => $lng['admin']['deactivated']
 							);
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_ADMINS, $fields, $settings['panel']['paging'] );
 
@@ -81,8 +81,6 @@
 					$row['traffic']=round($row['traffic']/(1024*1024),4);
 					$row['diskspace_used']=round($row['diskspace_used']/1024,2);
 					$row['diskspace']=round($row['diskspace']/1024,2);
-					$row['deactivated'] = str_replace('0', $lng['panel']['yes'], $row['deactivated']);
-					$row['deactivated'] = str_replace('1', $lng['panel']['no'], $row['deactivated']);
 
 					$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 

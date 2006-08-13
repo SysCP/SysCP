@@ -21,6 +21,7 @@
 /**
  * Global
  */
+$lng['translator'] = 'Ricardo Luiz Costa';
 $lng['panel']['edit'] = 'Editar';
 $lng['panel']['delete'] = 'Deletar';
 $lng['panel']['create'] = 'Criar';

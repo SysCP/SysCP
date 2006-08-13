@@ -22,6 +22,7 @@
 /**
  * Global
  */
+$lng['translator'] = 'Jackie Zhang, Wang Changyi, Patrick Brueckner';
 $lng['panel']['edit'] = '&#32534;&#36753;';
 $lng['panel']['delete'] = '&#21024;&#38500;';
 $lng['panel']['create'] = '&#21019;&#24314;';

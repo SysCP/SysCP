@@ -21,6 +21,7 @@
 /**
  * Global
  */
+$lng['translator'] = '';
 $lng['panel']['edit'] = 'bearbeiten';
 $lng['panel']['delete'] = 'l&ouml;schen';
 $lng['panel']['create'] = 'anlegen';
@@ -33,6 +34,7 @@ $lng['panel']['path'] = 'Pfad';
 $lng['panel']['toggle'] = 'Umschalten';
 $lng['panel']['next'] = 'weiter';
 $lng['panel']['dirsmissing'] = 'Verzeichnisse nicht verf&uuml;gbar oder lesbar';
+$lng['panel']['translator'] = '&Uuml;bersetzung';
 
 /**
  * Login
