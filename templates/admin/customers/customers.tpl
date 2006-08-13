@@ -16,11 +16,11 @@ $header
 				<td class="field_display">{$lng['admin']['admin']}<br />{$arrowcode['a.loginname']}</td>
 				</if>
 				<td class="field_display">{$lng['customer']['name']}&nbsp;&nbsp;{$arrowcode['c.name']}<br />{$lng['customer']['firstname']}&nbsp;&nbsp;{$arrowcode['c.firstname']}</td>
-				<td class="field_display">Domains</td>
-				<td class="field_display">Space<br />Traffic</td>
-				<td class="field_display">MySQL<br />FTP</td>
-				<td class="field_display">eMails<br />Subdomains</td>
-				<td class="field_display">Accounts<br />Forwarders</td>
+				<td class="field_display">{$lng['customer']['domains']}</td>
+				<td class="field_display">{$lng['customer']['diskspace']}<br />{$lng['customer']['traffic']}</td>
+				<td class="field_display">{$lng['customer']['mysqls']}<br />{$lng['customer']['ftps']}</td>
+				<td class="field_display">{$lng['customer']['emails']}<br />{$lng['customer']['subdomains']}</td>
+				<td class="field_display">{$lng['customer']['accounts']}<br />{$lng['customer']['forwarders']}</td>
 				<td class="field_display">{$lng['admin']['deactivated']}<br />{$arrowcode['c.deactivated']}</td>
 				<td class="field_display_search">{$sortcode}</td>
 			</tr>
