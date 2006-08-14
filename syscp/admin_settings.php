@@ -121,7 +121,7 @@
 			{
 				$value=addslashes($_POST['system_ipaddress']);
 
-				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$value."'"); 
+				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$value."'");
 
 				if( $db->num_rows( $result_ipandport ) == 0 )
 				{
@@ -155,7 +155,7 @@
 					$db_root->query("UPDATE `mysql`.`db` SET `HOST` = '$mysql_access_host' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $settings['system']['mysql_access_host'] . "';");
 					$db_root->query("UPDATE `mysql`.`tables_priv` SET `HOST` = '$mysql_access_host' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $settings['system']['mysql_access_host'] . "';");
 					$db_root->query("UPDATE `mysql`.`columns_priv` SET `HOST` = '$mysql_access_host' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $settings['system']['mysql_access_host'] . "';");
-	
+
 					// Clean up and disconnect
 					$db_root->query("FLUSH PRIVILEGES;");
 					$db_root->close();
@@ -169,7 +169,7 @@
 			{
 				$value=addslashes($_POST['system_defaultip']);
 
-				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".$value."'"); 
+				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".$value."'");
 
 				if( $db->num_rows( $result_ipandport ) == 0 )
 				{
@@ -213,6 +213,14 @@
 				$value=addslashes($_POST['system_apacheconf_directory']);
 				$value=makeCorrectDir($value);
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='apacheconf_directory'");
+				inserttask('1');
+			}
+
+			if($_POST['system_apacheconf_filename']!=$settings['system']['apacheconf_filename'])
+			{
+				$value=addslashes($_POST['system_apacheconf_filename']);
+				$value=htmlentities($value);
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='apacheconf_filename'");
 				inserttask('1');
 			}
 
@@ -320,7 +328,7 @@
 					if ($value == '')
 					{
 						//delete
-						$query = 
+						$query =
 							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'WHERE `lang` = "menue;mysql;phpmyadmin"';
 					}
@@ -371,7 +379,7 @@
 					if ($value == '')
 					{
 						//delete
-						$query = 
+						$query =
 							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'WHERE `lang` = "menue;email;webmail"';
 					}
@@ -422,7 +430,7 @@
 					if ($value == '')
 					{
 						//delete
-						$query = 
+						$query =
 							'DELETE FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
 							'WHERE `lang` = "menue;ftp;webftp"';
 					}
@@ -476,7 +484,7 @@
 					$languages_array[$row['language']] = $row['language'];
 					$languages .= makeoption($row['language'],$row['language'],$settings['panel']['standardlanguage']);
 				}
-			} 
+			}
 
 			// build the IP addresses lists
 			$result=$db->query('SELECT `id`, `ip`, `port` FROM `'.TABLE_PANEL_IPSANDPORTS.'` ORDER BY `ip` ASC, `port` ASC');
