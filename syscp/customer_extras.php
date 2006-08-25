@@ -48,7 +48,7 @@
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTPASSWDS, $fields, $settings['panel']['paging'] );
 
 			$result=$db->query(
-				"SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' " . 
+				"SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' " . 
 				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
 			$paging->setEntries( $db->num_rows($result) );
@@ -77,12 +77,12 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `customerid`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `customerid`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
 			if(isset($result['username']) && $result['username']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+					$db->query("DELETE FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='$id'");
 					inserttask('3',$result['path']);
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
@@ -97,19 +97,20 @@
 		{
 			if(isset($_POST['send']) && $_POST['send']=='send')
 			{
-				$path=makeCorrectDir(addslashes($_POST['path']));
+				$path=makeCorrectDir(validate($_POST['path'], 'path'));
 				$userpath=$path;
 				$path=$userinfo['documentroot'].$path;
-				$username=addslashes($_POST['username']);
-				$username_path_check=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `username`='$username' AND `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
+				$username=validate($_POST['username'], 'username');
+				validate($_POST['password'], 'password');
+				$username_path_check=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `username`='".$db->escape($username)."' AND `path`='".$db->escape($path)."' AND `customerid`='".(int)$userinfo['customerid']."'");
 				if ( CRYPT_STD_DES == 1 )
 				{
 					$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
-					$password = addslashes(crypt($_POST['password'], $saltfordescrypt));
+					$password = crypt($_POST['password'], $saltfordescrypt);
 				}
 				else
 				{
-					$password = addslashes(crypt($_POST['password']));
+					$password = crypt($_POST['password']);
 				}
 				$passwordtest=$_POST['password'];
 
@@ -139,7 +140,7 @@
 				}
 				else
 				{
-					$db->query("INSERT INTO `".TABLE_PANEL_HTPASSWDS."` (`customerid`, `username`, `password`, `path`) VALUES ('".$userinfo['customerid']."', '$username', '$password', '$path')");
+					$db->query("INSERT INTO `".TABLE_PANEL_HTPASSWDS."` (`customerid`, `username`, `password`, `path`) VALUES ('".(int)$userinfo['customerid']."', '".$db->escape($username)."', '".$db->escape($password)."', '".$db->escape($path)."')");
 					inserttask('3',$path);
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
@@ -154,19 +155,20 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
 			if(isset($result['username']) && $result['username']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
+					validate($_POST['password']);
 					if ( CRYPT_STD_DES == 1 )
 					{
 						$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
-						$password = addslashes(crypt($_POST['password'], $saltfordescrypt));
+						$password = crypt($_POST['password'], $saltfordescrypt);
 					}
 					else
 					{
-						$password = addslashes(crypt($_POST['password']));
+						$password = crypt($_POST['password']);
 					}
 					$passwordtest=$_POST['password'];
 					if ($passwordtest=='')
@@ -175,14 +177,17 @@
 					}
 					else
 					{
-						$db->query("UPDATE `".TABLE_PANEL_HTPASSWDS."` SET `password`='$password' WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_HTPASSWDS."` SET `password`='".$db->escape($password)."' WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
 						inserttask('3',$result['path']);
 						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
 				{
-					$result['path']=str_replace($userinfo['documentroot'],'',$result['path']);
+					if (strpos($result['path'], $userinfo['documentroot']) === 0)
+					{
+						$result['path']=substr($result['path'], strlen($userinfo['documentroot']));
+					}
 
 					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("extras/htpasswds_edit")."\";");
@@ -205,7 +210,7 @@
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTACCESS, $fields, $settings['panel']['paging'] );
 
 			$result=$db->query(
-				"SELECT `id`, `path`, `options_indexes`, `error404path`, `error403path`, `error500path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".$userinfo['customerid']."' ". 
+				"SELECT `id`, `path`, `options_indexes`, `error404path`, `error403path`, `error500path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".(int)$userinfo['customerid']."' ". 
 				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
 			$paging->setEntries( $db->num_rows($result) );
@@ -222,7 +227,10 @@
 			{
 				if( $paging->checkDisplay( $i ) )
 				{
-					$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
+					if (strpos($row['path'], $userinfo['documentroot']) === 0)
+					{
+						$row['path']=substr($row['path'], strlen($userinfo['documentroot']));
+					}
 					$row['options_indexes'] = str_replace('1', $lng['panel']['yes'], $row['options_indexes']);
 					$row['options_indexes'] = str_replace('0', $lng['panel']['no'], $row['options_indexes']);
 
@@ -236,12 +244,12 @@
 		}
 		elseif($action=='delete' && $id!=0)
 		{
-			$result = $db->query_first("SELECT * FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+			$result = $db->query_first("SELECT * FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
 			if(isset($result['customerid']) && $result['customerid']!='' && $result['customerid'] == $userinfo['customerid'])
 			{
 				if (isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
+					$db->query("DELETE FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
 					inserttask('3', $result['path']);
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
@@ -255,17 +263,17 @@
 		{
 			if( (isset($_POST['send'])) && ($_POST['send']=='send') )
 			{
-				$path            = makeCorrectDir(addslashes($_POST['path']));
+				$path            = makeCorrectDir(validate($_POST['path'], 'path'));
 				$userpath        = $path;
 				$path            = $userinfo['documentroot'].$path;
-				$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path`='$path' AND `customerid`='".$userinfo['customerid']."'");
+				$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `path`='".$db->escape($path)."' AND `customerid`='".(int)$userinfo['customerid']."'");
 
 				if(!$_POST['path'])
 				{
 					standard_error('invalidpath');
 				}
-				if (    ($_POST['error404path'] == '')
-				     || (preg_match('/^https?\:\/\//', $_POST['error404path']) )
+				if (    ($_POST['error404path'] === '')
+				     || (verify_url($_POST['error404path']) )
 				   )
 				{
 					$error404path = $_POST['error404path'];
@@ -274,8 +282,8 @@
 				{
 					standard_error('mustbeurl');
 				}
-				if (    ($_POST['error403path'] == '')
-				     || (preg_match('/^https?\:\/\//', $_POST['error403path']) )
+				if (    ($_POST['error403path'] === '')
+				     || (verify_url($_POST['error403path']) )
 				   )
 				{
 					$error403path = $_POST['error403path'];
@@ -285,8 +293,8 @@
 					standard_error('mustbeurl');
 				}
 
-				if (    ($_POST['error500path'] == '')
-				     || (preg_match('/^https?\:\/\//', $_POST['error500path']) )
+				if (    ($_POST['error500path'] === '')
+				     || (verify_url($_POST['error500path']) )
 				   )
 				{
 					$error500path = $_POST['error500path'];
@@ -297,8 +305,8 @@
 				}
 
 /*
-				if (    ($_POST['error401path'] == '')
-				     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+				if (    ($_POST['error401path'] === '')
+				     || (verify_url($_POST['error401path']) )
 				   )
 				{
 					$error401path = $_POST['error401path'];
@@ -334,13 +342,13 @@
 //						'        `error401path`, ' .
 						'        `error500path` ' .
 						'       ) ' .
-						'VALUES ("'.$userinfo['customerid'].'", ' .
-						'        "'.$path.'", ' .
-						'        "'.$_POST['options_indexes'].'", ' .
-						'        "'.$error404path.'", ' .
-						'        "'.$error403path.'", ' .
-//						'        "'.$error401path.'", ' .
-						'        "'.$error500path.'" ' .
+						'VALUES ("'.(int)$userinfo['customerid'].'", ' .
+						'        "'.$db->escape($path).'", ' .
+						'        "'.$db->escape($_POST['options_indexes'] == '1' ? '1' : '0').'", ' .
+						'        "'.$db->escape($error404path).'", ' .
+						'        "'.$db->escape($error403path).'", ' .
+//						'        "'.$db->escape($error401path).'", ' .
+						'        "'.$db->escape($error500path).'" ' .
 						'       )'
 					);
 					inserttask('3',$path);
@@ -361,8 +369,8 @@
 			$result = $db->query_first(
 				'SELECT * ' .
 				'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
-				'WHERE `customerid` = "'.$userinfo['customerid'].'" ' .
-				'  AND `id`         = "'.$id.'"'
+				'WHERE `customerid` = "'.(int)$userinfo['customerid'].'" ' .
+				'  AND `id`         = "'.(int)$id.'"'
 			);
 
 			if (    (isset($result['customerid']))
@@ -377,8 +385,8 @@
 					{
 						$option_indexes = '0';
 					}
-					if (    ($_POST['error404path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error404path']) )
+					if (    ($_POST['error404path'] === '')
+					     || (verify_url($_POST['error404path']) )
 					   )
 					{
 						$error404path = $_POST['error404path'];
@@ -387,8 +395,8 @@
 					{
 						standard_error('mustbeurl');
 					}
-					if (    ($_POST['error403path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error403path']) )
+					if (    ($_POST['error403path'] === '')
+					     || (verify_url($_POST['error403path']) )
 					   )
 					{
 						$error403path = $_POST['error403path'];
@@ -397,8 +405,8 @@
 					{
 						standard_error('mustbeurl');
 					}
-					if (    ($_POST['error500path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error500path']) )
+					if (    ($_POST['error500path'] === '')
+					     || (verify_url($_POST['error500path']) )
 					   )
 					{
 						$error500path = $_POST['error500path'];
@@ -409,8 +417,8 @@
 					}
 
 /*
-					if (    ($_POST['error401path'] == '')
-					     || (preg_match('/^https?\:\/\//', $_POST['error401path']) )
+					if (    ($_POST['error401path'] === '')
+					     || (verify_url($_POST['error401path']) )
 					   )
 					{
 						$error401path = $_POST['error401path'];
@@ -431,20 +439,23 @@
 						inserttask('3', $result['path']);
 						$db->query(
 							'UPDATE `'.TABLE_PANEL_HTACCESS.'` ' .
-							'SET `options_indexes` = "'.$option_indexes.'",' .
-							'    `error404path`    = "'.$error404path.'", ' .
-							'    `error403path`    = "'.$error403path.'", ' .
-//							'    `error401path`    = "'.$error401path.'", ' .
-							'    `error500path`    = "'.$error500path.'" ' .
-							'WHERE `customerid` = "'.$userinfo['customerid'].'" ' .
-							'  AND `id` = "'.$id.'"'
+							'SET `options_indexes` = "'.$db->escape($option_indexes).'",' .
+							'    `error404path`    = "'.$db->escape($error404path).'", ' .
+							'    `error403path`    = "'.$db->escape($error403path).'", ' .
+//							'    `error401path`    = "'.$db->escape($error401path).'", ' .
+							'    `error500path`    = "'.$db->escape($error500path).'" ' .
+							'WHERE `customerid` = "'.(int)$userinfo['customerid'].'" ' .
+							'  AND `id` = "'.(int)$id.'"'
 						);
 					}
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{
-					$result['path']         = str_replace($userinfo['documentroot'], '', $result['path']);
+					if (strpos($result['path'], $userinfo['documentroot']) === 0)
+					{
+						$result['path'] = substr($result['path'], strlen($userinfo['documentroot']));
+					}
 					$result['error404path'] = $result['error404path'];
 					$result['error403path'] = $result['error403path'];
 //					$result['error401path'] = $result['error401path'];

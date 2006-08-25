@@ -93,7 +93,7 @@
 					$this->link_id=@mysql_connect($this->server,$this->user,'');
 					if($this->link_id)
 					{
-						$this->query("SET PASSWORD = PASSWORD('".$this->password."')");
+						$this->query("SET PASSWORD = PASSWORD('".$this->escape($this->password)."')");
 					}
 					else
 					{
@@ -121,6 +121,17 @@
 		function close()
 		{
 			return @mysql_close($this->link_id);
+		}
+		
+		/**
+		 * Escapes user input to be used in mysql queries
+		 * 
+		 * @param string $input
+		 * @return string escaped string
+		 */
+		function escape($input)
+		{
+			return mysql_real_escape_string($input, $this->link_id);
 		}
 
 		/**

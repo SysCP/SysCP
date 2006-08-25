@@ -34,7 +34,6 @@ $lng['panel']['path'] = 'Path';
 $lng['panel']['toggle'] = 'Toggle';
 $lng['panel']['next'] = 'next';
 $lng['panel']['dirsmissing'] = 'Can not find or read the directory!';
-$lng['panel']['translator'] = 'Translator';
 
 /**
  * Login
@@ -403,7 +402,7 @@ $lng['domain']['docroot'] = 'Path from field above';
 $lng['domain']['homedir'] = 'Home directory';
 
 $lng['admin']['valuemandatory'] = 'This value is mandatory';
-$lng['admin']['valuemandatorycompany'] = 'Either "name" and "firstname" or "company" must be filled';
+$lng['admin']['valuemandatorycompany'] = 'Either &quot;name&quot; and &quot;firstname&quot; or &quot;company&quot; must be filled';
 
 $lng['menue']['main']['username'] = 'Logged in as: ';
 
@@ -413,7 +412,7 @@ $lng['panel']['pathorurl'] = 'Path or URL';
 $lng['error']['sessiontimeoutiswrong'] = 'Only numerical &quot;Session Timeout&quot; is allowed.';
 $lng['error']['maxloginattemptsiswrong'] = 'Only numerical &quot;Max Login Attempts&quot; are allowed.';
 $lng['error']['deactivatetimiswrong'] = 'Only numerical &quot;Deactivate Time&quot; is allowed.';
-$lng['error']['accountprefixiswrong'] = 'The &quopt;Customerprefix&quot; is wrong.';
+$lng['error']['accountprefixiswrong'] = 'The &quot;Customerprefix&quot; is wrong.';
 $lng['error']['mysqlprefixiswrong'] = 'The &quot;SQL Prefix&quot; is wrong.';
 $lng['error']['ftpprefixiswrong'] = 'The &quot;FTP Prefix&quot; is wrong.';
 $lng['error']['ipiswrong'] = 'The &quot;IP-Address&quot; is wrong. Only a valid IP-address is allowed.';
@@ -438,5 +437,11 @@ $lng['panel']['decending'] = 'decending';
 
 $lng['panel']['search'] = 'Search';
 $lng['panel']['used'] = 'used';
+
+// ADDED IN 1.2.14-rc3
+$lng['panel']['translator'] = 'Translator';
+
+// ADDED IN 1.2.14-rc4
+$lng['error']['stringformaterror'] = 'The value for the field &quot;%s&quot; is not in the expected format.';
 
 ?>

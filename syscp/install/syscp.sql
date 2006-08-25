@@ -176,8 +176,8 @@ CREATE TABLE `panel_customers` (
   `email` varchar(255) NOT NULL default '',
   `customernumber` varchar(255) NOT NULL default '',
   `def_language` varchar(255) NOT NULL default '',
-  `diskspace` int(15) NOT NULL default '0',
-  `diskspace_used` int(15) NOT NULL default '0',
+  `diskspace` bigint(30) NOT NULL default '0',
+  `diskspace_used` bigint(30) NOT NULL default '0',
   `mysqls` int(15) NOT NULL default '0',
   `mysqls_used` int(15) NOT NULL default '0',
   `emails` int(15) NOT NULL default '0',
@@ -190,8 +190,8 @@ CREATE TABLE `panel_customers` (
   `ftps_used` int(15) NOT NULL default '0',
   `subdomains` int(15) NOT NULL default '0',
   `subdomains_used` int(15) NOT NULL default '0',
-  `traffic` int(15) NOT NULL default '0',
-  `traffic_used` int(15) NOT NULL default '0',
+  `traffic` bigint(30) NOT NULL default '0',
+  `traffic_used` bigint(30) NOT NULL default '0',
   `documentroot` varchar(255) NOT NULL default '',
   `standardsubdomain` int(11) NOT NULL default '0',
   `guid` int(5) NOT NULL default '0',
@@ -594,6 +594,8 @@ INSERT INTO `panel_languages` VALUES (5, 'Catalan', 'lng/catalan.lng.php');
 INSERT INTO `panel_languages` VALUES (6, 'Espa&ntilde;ol', 'lng/spanish.lng.php');
 INSERT INTO `panel_languages` VALUES (7, 'Portugu&ecirc;s', 'lng/portugues.lng.php');
 INSERT INTO `panel_languages` VALUES (8, 'Russian', 'lng/russian.lng.php');
+INSERT INTO `panel_languages` VALUES (9, 'Danish', 'lng/danish.lng.php');
+INSERT INTO `panel_languages` VALUES (10, 'Italian', 'lng/italian.lng.php');
 
 
 # --------------------------------------------------------

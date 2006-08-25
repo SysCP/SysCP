@@ -38,14 +38,14 @@
 			$filename = './templates/'.$template.'.tpl';
 			if(file_exists($filename))
 			{
-				$templatefile=str_replace("\"","\\\"",implode(file($filename),''));
+				$templatefile=addcslashes(file_get_contents($filename), '"');
 			}
 			else
 			{
 				$templatefile='<!-- TEMPLATE NOT FOUND: '.$filename.' -->';
 			}
 //			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
-			$templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis',"\".( (\\1) ? (\"\\2\") : (\"\\4\") ).\"", $templatefile);
+			$templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis','".( ($1) ? ("$2") : ("$4") )."', $templatefile);
 			$templatecache[$template] = $templatefile;
 		}
 		return $templatecache[$template];
@@ -63,7 +63,7 @@
 	{
 		global $db, $tpl, $userinfo, $s, $header, $footer, $lng;
 
-		$replacer = htmlentities( html_entity_decode_complete( stripslashes_complete( $replacer ) ) );
+		$replacer = htmlentities( $replacer );
 
 		if(!is_array($errors))
 		{
@@ -76,7 +76,7 @@
 			if(isset($lng['error'][$single_error]))
 			{
 				$single_error = $lng['error'][$single_error];
-				$single_error = str_replace ( '%s' , $replacer , $single_error ) ;
+				$single_error = strtr($single_error, array('%s' => $replacer));
 			}
 			else
 			{
@@ -84,9 +84,9 @@
 				break;
 			}
 
-			if(!isset($error))
+			if(empty($error))
 			{
-				$error = $single_error ;
+				$error = $single_error;
 			}
 			else
 			{
@@ -98,7 +98,7 @@
 	}
 
 	/**
-	 * Returns HTML Code for two radio buttons with two choices: yes and no 
+	 * Returns HTML Code for two radio buttons with two choices: yes and no
 	 *
 	 * @param string Name of HTML-Variable
 	 * @param string Value which will be returned if user chooses yes
@@ -152,18 +152,12 @@
 		}
 */
 
-		/**
-		 * Yes, looks strange, but we are going to eliminate all entities before we add one clear level of entities
-		 * (parameter $complete is set true in both html_entity_decode_array and stripslashes_array)
-		 */
-		$params = htmlentities_array( html_entity_decode_array( stripslashes_array( $params, '', true ), '', true ) );
-
 		$hiddenparams='';
 		if(is_array($params))
 		{
 			foreach($params as $field => $value )
 			{
-				$hiddenparams.='<input type="hidden" name="'.$field.'" value="'.$value.'" />'."\n";
+				$hiddenparams.='<input type="hidden" name="'.htmlspecialchars($field).'" value="'.htmlspecialchars($value).'" />'."\n";
 			}
 		}
 
@@ -171,7 +165,7 @@
 		{
 			$text = $lng['question'][$text] ;
 		}
-		$text = str_replace ( '%s' , $targetname , $text ) ;
+		$text = strtr( $text, array('%s' => $targetname ) );
 
 		eval ( "echo \"".getTemplate('misc/question_yesno','1')."\";" ) ;
 	}
@@ -182,18 +176,28 @@
 	 * @param string The caption
 	 * @param string The Value which will be returned
 	 * @param string Values which will be selected by default.
+	 * @param bool Whether the title may contain html or not
+	 * @param bool Whether the value may contain html or not
 	 * @return string HTML Code
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	function makeoption($title,$value,$selvalue="")
+	function makeoption($title,$value,$selvalue=NULL,$title_trusted=false,$value_trusted=false)
 	{
-		if($value==$selvalue)
+		if($selvalue !== NULL && $value==$selvalue)
 		{
 			$selected='selected="selected"';
 		}
 		else
 		{
 			$selected='';
+		}
+		if (!$title_trusted)
+		{
+			$title=htmlspecialchars($title);
+		}
+		if (!$value_trusted)
+		{
+			$value=htmlspecialchars($value);
 		}
 		$option='<option value="'.$value.'" '.$selected.' >'.$title.'</option>';
 		return $option;
@@ -204,17 +208,17 @@
 	 *
 	 * @param   string   Destination
 	 * @param   array    Get-Variables
-	 * @param   boolean  if the target we are creating for a redirect 
+	 * @param   boolean  if the target we are creating for a redirect
 	 *                   should be a relative or an absolute url
-	 * 
+	 *
 	 * @return  boolean  false if params is not an array
-	 * 
+	 *
 	 * @author  Florian Lippert <flo@redenswert.de>
 	 * @author  Martin Burchert <eremit@syscp.org>
-	 * 
+	 *
 	 * @changes martin@2005-01-29
 	 *          - added isRelative parameter
-	 *          - speed up the url generation 
+	 *          - speed up the url generation
 	 *          - fixed bug #91
 	 */
 	function redirectTo ( $destination , $get_variables = array(), $isRelative = false )
@@ -224,39 +228,40 @@
 		{
 			foreach( $get_variables as $key => $value )
 			{
-				$params[] = $key . '=' . $value;
+				$params[] = urlencode($key) . '=' . urlencode($value);
 			}
 
 			$params = '?' . implode($params, '&' );
 
 			if ( $isRelative )
-			{	
+			{
 				$protocol = '';
 				$host     = '';
 				$path     = './';
 			}
-			else 
+			else
 			{
 				if ( isset( $_SERVER['HTTPS'] ) && strtolower($_SERVER['HTTPS']) == 'on' )
 				{
 					$protocol = 'https://';
 				}
-				else 
+				else
 				{
 					$protocol = 'http://';
 				}
 				$host = $_SERVER['HTTP_HOST'];
-				
+
 				if ( dirname( $_SERVER['PHP_SELF'] ) == '/' )
 				{
 					$path     = '/';
 				}
-				else 
+				else
 				{
 					$path     = dirname($_SERVER['PHP_SELF']) . '/';
 				}
 			}
 			header ( 'Location: ' . $protocol . $host . $path . $destination . $params ) ;
+			exit;
 		}
 
 		return false;
@@ -461,21 +466,38 @@
 	{
 		$email=strtolower($email);
 
-		$returncode_preg = preg_match("/^([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,}))/si",$email) ;
-		$returncode_space = false ;
-		if ( !strstr ( $email , ' ' ) )
-		{
-			$returncode_space = true ;
-		}
+		return (bool)preg_match('/^([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,}))$/si',$email);
+	}
 
-		if ( $returncode_preg == true && $returncode_space == true)
+	/**
+	 * Returns whether a URL is in a correct format or not
+	 *
+	 * @param string URL to be tested
+	 * @return bool
+	 * @author Christian Hoffmann
+	 */
+	function verify_url($url)
+	{
+		return (bool)preg_match('!^https?://[a-z0-9öüäÖÜÄ\.\-/\?&=%\+#]+$!i', $url);
+	}
+
+	/**
+	 * Validates the given string by matching against the pattern, prints an error on failure and exits
+	 *
+	 * @param string $str the string to be tested (user input)
+	 * @param string the $fieldname to be used in error messages
+	 * @param string $pattern the regular expression to be used for testing
+	 * @param string language id for the error
+	 * @return string the clean string
+	 */
+	function validate($str, $fieldname, $pattern = '/^[^\r\n\0]*$/', $lng = 'stringformaterror')
+	{
+		if (preg_match($pattern, $str))
 		{
-			return true ;
+			return $str;
 		}
-		else
-		{
-			return false ;
-		}
+		standard_error($lng,$fieldname);
+		exit;
 	}
 
 	/**
@@ -516,7 +538,7 @@
 				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
 				'(`type`, `data`) ' .
 				'VALUES ' .
-				'("2", "' . addslashes($data) . '")'
+				'("2", "' . $db->escape($data) . '")'
 			);
 		}
 		elseif($type=='3' && $param1!='')
@@ -529,7 +551,7 @@
 				'SELECT `type` ' .
 				'FROM `' . TABLE_PANEL_TASKS . '` ' .
 				'WHERE `type`="3" ' .
-				'AND `data`="' . addslashes($data) .'"'
+				'AND `data`="' . $db->escape($data) .'"'
 			);
 
 			if($result['type']=='')
@@ -538,7 +560,7 @@
 					'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
 					'(`type`, `data`) ' .
 					'VALUES ' .
-					'("3", "' . addslashes($data) . '")'
+					'("3", "' . $db->escape($data) . '")'
 				);
 			}
 		}
@@ -592,12 +614,10 @@
 			{
 				safe_exec('mkdir -p "'.$outputdir.'"');
 			}
-			safe_exec('webalizer -n "'.$caption.'" -o "'.$outputdir.'" "'.$settings['system']['logfiles_directory'].$logfile.'-access.log"');
+			safe_exec('webalizer -n '.escapeshellarg($caption).' -o '.escapeshellarg($outputdir).' '.
+				escapeshellarg($settings['system']['logfiles_directory'].$logfile.'-access.log'));
 
-			$webalizer_hist_size=@filesize($outputdir.'webalizer.hist');
-			$webalizer_hist_num=@fopen($outputdir.'webalizer.hist','r');
-			$webalizer_hist=@fread($webalizer_hist_num,$webalizer_hist_size);
-			@fclose($webalizer_hist_num);
+			$webalizer_hist=@file_get_contents($outputdir.'webalizer.hist');
 			$webalizer_hist_rows=explode("\n",$webalizer_hist);
 			while(list(,$webalizer_hist_row)=each($webalizer_hist_rows))
 			{
@@ -611,12 +631,12 @@
 					$webalizer_hist_row=explode(' ',$webalizer_hist_row);
 					if($webalizer_hist_row['0'] == $month && $webalizer_hist_row['1'] == $year)
 					{
-						$httptraffic = $webalizer_hist_row['5'];
+						$httptraffic = floatval($webalizer_hist_row['5']);
 					}
 				}
 			}
 		}
-		return $httptraffic;
+		return floatval($httptraffic);
 	}
 
 	/**
@@ -628,15 +648,15 @@
 	 */
 	function makeSecurePath($path)
 	{
-		$search = Array ('/(\/)+/', '/(\.)+/');
-		$replace = Array ('/', '.');
+		$search = Array ('#/+#', '#\.+#', '#\0+#');
+		$replace = Array ('/', '.', '');
 		$path = preg_replace($search, $replace, $path);
 
 		return $path;
 	}
 
 	/**
-	 * Function which returns a correct dirname, means to add slashes at the beginning and at the end if there weren't none
+	 * Function which returns a correct dirname, means to add slashes at the beginning and at the end if there weren't some
 	 *
 	 * @param string The dirname
 	 * @return string The corrected dirname
@@ -659,7 +679,7 @@
 	}
 
 	/**
-	 * Function which returns a correct filename, means to add a slash at the beginning if there weren't none
+	 * Function which returns a correct filename, means to add a slash at the beginning if there wasn't one
 	 *
 	 * @param string filename the filename
 	 * @return string the corrected filename
@@ -688,10 +708,10 @@
 	 */
 	function makeCorrectDestination($destination)
 	{
-		$search   = '/(\ )+/' ;
+		$search   = '/ +/';
 		$replace  = ' ';
 		$destination = preg_replace($search, $replace, $destination);
-		
+
 		if ( substr($destination, 0, 1) == ' ' )
 		{
 			$destination = substr ( $destination , 1 ) ;
@@ -801,19 +821,19 @@
 			$customer_mysqls = $db->query_first(
 				'SELECT COUNT(*) AS `number_mysqls` ' .
 				'FROM `'.TABLE_PANEL_DATABASES.'` ' .
-				'WHERE `customerid` = "'.$customer['customerid'].'"'
+				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
 
 			$customer_emails = $db->query_first(
 				'SELECT COUNT(*) AS `number_emails` ' .
 				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
-				'WHERE `customerid` = "'.$customer['customerid'].'"'
+				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
 
 			$customer_emails_result = $db->query(
 				'SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` ' .
 				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
-				'WHERE `customerid` = "'.$customer['customerid'].'" '
+				'WHERE `customerid` = "'.(int)$customer['customerid'].'" '
 			);
 
 			$customer_email_forwarders = 0;
@@ -835,25 +855,25 @@
 			$customer_ftps = $db->query_first(
 				'SELECT COUNT(*) AS `number_ftps` ' .
 				'FROM `'.TABLE_FTP_USERS.'` ' .
-				'WHERE `customerid` = "'.$customer['customerid'].'"'
+				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
 
 			$customer_subdomains = $db->query_first(
 				'SELECT COUNT(*) AS `number_subdomains` ' .
 				'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
-				'WHERE `customerid` = "'.$customer['customerid'].'" ' .
+				'WHERE `customerid` = "'.(int)$customer['customerid'].'" ' .
 				'AND `parentdomainid` <> "0"'
 			);
 
 			$db->query(
 				'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
-				'SET `mysqls_used` = "'.$customer_mysqls['number_mysqls'].'", ' .
-				'    `emails_used` = "'.$customer_emails['number_emails'].'", ' .
-				'    `email_accounts_used` = "'.$customer_email_accounts.'", ' .
-				'    `email_forwarders_used` = "'.$customer_email_forwarders.'", ' .
-				'    `ftps_used` = "'.($customer_ftps['number_ftps']-1).'", ' .
-				'    `subdomains_used` = "'.$customer_subdomains['number_subdomains'].'" ' .
-				'WHERE `customerid` = "'.$customer['customerid'].'"'
+				'SET `mysqls_used` = "'.(int)$customer_mysqls['number_mysqls'].'", ' .
+				'    `emails_used` = "'.(int)$customer_emails['number_emails'].'", ' .
+				'    `email_accounts_used` = "'.(int)$customer_email_accounts.'", ' .
+				'    `email_forwarders_used` = "'.(int)$customer_email_forwarders.'", ' .
+				'    `ftps_used` = "'.(int)($customer_ftps['number_ftps']-1).'", ' .
+				'    `subdomains_used` = "'.(int)$customer_subdomains['number_subdomains'].'" ' .
+				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
 		}
 
@@ -869,13 +889,13 @@
 			$admin_customers = $db->query_first(
 				'SELECT COUNT(*) AS `number_customers` ' .
 				'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
-				'WHERE `adminid` = "'.$admin['adminid'].'"'
+				'WHERE `adminid` = "'.(int)$admin['adminid'].'"'
 			);
 
 			$admin_domains = $db->query_first(
 				'SELECT COUNT(*) AS `number_domains` ' .
 				'FROM `'.TABLE_PANEL_DOMAINS.'` ' .
-				'WHERE `adminid` = "'.$admin['adminid'].'" ' . 
+				'WHERE `adminid` = "'.(int)$admin['adminid'].'" ' .
 				'AND `isemaildomain` = "1"'
 			);
 
@@ -918,17 +938,17 @@
 
 			$db->query(
 				'UPDATE `'.TABLE_PANEL_ADMINS.'` ' .
-				'SET `customers_used` = "'.$admin_customers['number_customers'].'", ' .
-				'    `diskspace_used` = "'.$admin_resources[$admin['adminid']]['diskspace_used'].'", ' .
-				'    `mysqls_used` = "'.$admin_resources[$admin['adminid']]['mysqls_used'].'", ' .
-				'    `emails_used` = "'.$admin_resources[$admin['adminid']]['emails_used'].'", ' .
-				'    `email_accounts_used` = "'.$admin_resources[$admin['adminid']]['email_accounts_used'].'", ' .
-				'    `email_forwarders_used` = "'.$admin_resources[$admin['adminid']]['email_forwarders_used'].'", ' .
-				'    `ftps_used` = "'.$admin_resources[$admin['adminid']]['ftps_used'].'", ' .
-				'    `subdomains_used` = "'.$admin_resources[$admin['adminid']]['subdomains_used'].'", ' .
-				'    `traffic_used` = "'.$admin_resources[$admin['adminid']]['traffic_used'].'", ' .
-				'    `domains_used` = "'.$admin_domains['number_domains'].'" ' .
-				'WHERE `adminid` = "'.$admin['adminid'].'"'
+				'SET `customers_used` = "'.(int)$admin_customers['number_customers'].'", ' .
+				'    `diskspace_used` = "'.(int)$admin_resources[$admin['adminid']]['diskspace_used'].'", ' .
+				'    `mysqls_used` = "'.(int)$admin_resources[$admin['adminid']]['mysqls_used'].'", ' .
+				'    `emails_used` = "'.(int)$admin_resources[$admin['adminid']]['emails_used'].'", ' .
+				'    `email_accounts_used` = "'.(int)$admin_resources[$admin['adminid']]['email_accounts_used'].'", ' .
+				'    `email_forwarders_used` = "'.(int)$admin_resources[$admin['adminid']]['email_forwarders_used'].'", ' .
+				'    `ftps_used` = "'.(int)$admin_resources[$admin['adminid']]['ftps_used'].'", ' .
+				'    `subdomains_used` = "'.(int)$admin_resources[$admin['adminid']]['subdomains_used'].'", ' .
+				'    `traffic_used` = "'.(int)$admin_resources[$admin['adminid']]['traffic_used'].'", ' .
+				'    `domains_used` = "'.(int)$admin_domains['number_domains'].'" ' .
+				'WHERE `adminid` = "'.(int)$admin['adminid'].'"'
 			);
 		}
 	}
@@ -943,7 +963,7 @@
 	 *
 	 * History:
 	 ******************************************************
-	 * 1.0 : Initial Version 
+	 * 1.0 : Initial Version
 	 * 1.1 : Added |,&,>,<,`,*,$,~,? as security breaks.
 	 * 1.2 : Removed * as security break
 	 ******************************************************/
@@ -951,7 +971,7 @@
 	{
 		global $settings;
 		//
-		// define allowed system commands 
+		// define allowed system commands
 		//
 		$allowed_commands = array(
 			'touch', 'chown', 'mkdir', 'webalizer', 'cp', 'du', 'chmod',
@@ -969,23 +989,25 @@
 			(stristr($exec_string,'$')) or
 			(stristr($exec_string,'~')) or
 			(stristr($exec_string,'?')) )
-		{ 
-			die ("SECURITY CHECK FAILED!\n' The execute string $exec_string is a possible security risk!\nPlease check your whole server for security problems by hand!\n");
+		{
+			die ('SECURITY CHECK FAILED!'."\n".'The execute string "'.htmlspecialchars($exec_string).
+				'" is a possible security risk!'."\n".'Please check your whole server for security problems by hand!'."\n");
 		}
 		//
-		// check if command is allowed here 
-		//	
-		$allowed = false;
-		foreach ($allowed_commands as $key => $value)
+		// check if command is allowed here
+		//
+		if ($command_endpos = strpos($exec_string, ' '))
 		{
-			if ($allowed == false)
-			{
-				$allowed = stristr($exec_string, $value);
-			}
+			$command = substr($exec_string, 0, $command_endpos);
 		}
-		if ($allowed == false)
+		else
 		{
-			die("SECURITY CHECK FAILED!\nYour command '$exec_string' is not allowed!\nPlease check your whole server for security problems by hand!\n");
+			$command = $exec_string;
+		}
+		if (!in_array($command, $allowed_commands))
+		{
+			die('SECURITY CHECK FAILED!'."\n".'Your command "'.htmlspecialchars($exec_string).'" is not allowed!'.
+				"\n".'Please check your whole server for security problems by hand!'."\n");
 		}
 		//
 		// execute the command and return output
@@ -1010,21 +1032,21 @@
 	 *
 	 * History:
 	 ******************************************************
-	 * 1.0 : Initial Version 
+	 * 1.0 : Initial Version
 	 * 1.1 : Added new_window and required_resources (flo)
 	 ******************************************************/
 	function getNavigation($s, $userinfo)
 	{
 		global $db, $lng;
-		
+
 		$return = '';
 		//
 		// query database
 		//
-		$query  = 
+		$query  =
 			'SELECT * ' .
 			'FROM `'.TABLE_PANEL_NAVIGATION.'` ' .
-			'WHERE `area`=\''.AREA.'\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 
+			'WHERE `area`=\''.$db->escape(AREA).'\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' .
 			'ORDER BY `order`, `id` ASC' ;
 		$result = $db->query($query);
 		//
@@ -1036,13 +1058,13 @@
 			{
 				$row['parent_url'] = $row['url'] ;
 				$row['isparent'] = 1;
-				
+
 				$nav[$row['parent_url']][] = _createNavigationEntry($s,$row);
-				
-				$subQuery = 
+
+				$subQuery =
 					'SELECT * '.
 					'FROM `'.TABLE_PANEL_NAVIGATION.'` '.
-					'WHERE `area`=\''.AREA.'\' AND `parent_url`=\''.$row['url'].'\' ' . 
+					'WHERE `area`=\''.$db->escape(AREA).'\' AND `parent_url`=\''.$db->escape($row['url']).'\' ' .
 					'ORDER BY `order`, `id` ASC' ;
 				$subResult = $db->query($subQuery);
 				while($subRow = $db->fetch_array($subResult))
@@ -1060,7 +1082,7 @@
 		//
 		if ( (isset($nav)) && (sizeof($nav) > 0))
 		{
-			foreach ($nav as $parent_url => $row) 
+			foreach ($nav as $parent_url => $row)
 			{
 				$navigation_links = '';
 				foreach ($row as $id => $navElem )
@@ -1097,9 +1119,9 @@
 	function _createNavigationEntry($s, $data)
 	{
 		global $db, $lng;
-		
+
 		// get corect lang string
-		$lngArr = split ( ';' , $data['lang'] ) ;
+		$lngArr = explode ( ';' , $data['lang'] ) ;
 		$data['text'] = $lng;
 		foreach ($lngArr as $lKey => $lValue)
 		{
@@ -1111,9 +1133,9 @@
 			if ( !preg_match('/^https?\:\/\//', $data['url'] ) && ( isset($s) && $s != '' ) )
 			{
 				// generate sid with ? oder &
-				if ( preg_match('/\?/' , $data['url'] ) )
+				if ( strpos($data['url'], '?') !== false )
 				{
-					$data['url'] .= '&amp;s='.$s;
+					$data['url'] .= '&s='.$s;
 				}
 				else
 				{
@@ -1125,13 +1147,13 @@
 			{
 				$target = ' target="_blank"';
 			}
-			$data['completeLink'] = '<a href="' . $data['url'] . '"' . $target . ' class="menu">' . $data['text'] . '</a>' ;
+			$data['completeLink'] = '<a href="' . htmlspecialchars($data['url']) . '"' . $target . ' class="menu">' . $data['text'] . '</a>' ;
 		}
 		else
 		{
 			$data['completeLink'] = $data['text'];
 		}
-		
+
 		return $data;
 	}
 
@@ -1142,10 +1164,10 @@
 	 *
 	 * @param string The username to check
 	 * @return bool Correct or not
-	 * @author Michael D?rgner <michael@duergner.com>
+	 * @author Michael Duergner <michael@duergner.com>
 	 */
 	function check_username($username) {
-		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*[a-zA-Z0-9\-\_\$]$/",$username);
+		return preg_match('/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/',$username);
 	}
 
 	/**
@@ -1238,9 +1260,7 @@
 	}
 
 	/**
-	 * Wrapper for the html_entity_decode function as this function is not
-	 * present in Woody's PHP 4.1.2. In Sarge the html_entity_decode function
-	 * shipped with PHP is used, for Woody own code is used.
+	 * Was a wrapper, now only for compatibility there
 	 *
 	 * @param string The string in which the html entities should be decoded.
 	 * @return string The decoded string
@@ -1248,16 +1268,7 @@
 	 */
 	function _html_entity_decode($string)
 	{
-		if(function_exists('html_entity_decode'))
-		{
-			return html_entity_decode($string);
-		}
-		else
-		{
-			$trans_table = get_html_translation_table(HTML_ENTITIES);
-			$trans_table = array_flip($trans_table);
-			return strtr($string,$trans_table);
-		}
+		return html_entity_decode($string);
 	}
 
 	/**
@@ -1300,7 +1311,7 @@
 	 * @return boolean True if the domain is valid, false otherwise
 	 * @author Michael Duergner
 	 */
-	function check_domain($domainname) 
+	function check_domain($domainname)
 	{
 		return preg_match('/^([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}$/i',$domainname);
 	}
@@ -1310,7 +1321,7 @@
 	 *
 	 * This function checks every found directory if they match either $uid or $gid, if they do
 	 * the found directory is valid. It uses recursive function calls to find subdirectories. Due
-	 * to the recursive behauviour this function may consume much memory. 
+	 * to the recursive behauviour this function may consume much memory.
 	 *
 	 * @param  string   path       The path to start searching in
 	 * @param  integer  uid        The uid which must match the found directories
@@ -1327,7 +1338,7 @@
 		while ( false !== ( $file = readdir( $dh ) ) )
 		{
 			if ( $file == '.' && (    fileowner( $path.'/'.$file ) == $uid
-			                       || filegroup( $path.'/'.$file ) == $gid 
+			                       || filegroup( $path.'/'.$file ) == $gid
 			                     )
 			   )
 			{
@@ -1340,10 +1351,10 @@
 		}
 		closedir( $dh );
 		return $_fileList;
-	}	
+	}
 
 	/**
-	 * Returns a valid html tag for the choosen $fieldType for pathes 
+	 * Returns a valid html tag for the choosen $fieldType for pathes
 	 *
 	 * @param  string   path       The path to start searching in
 	 * @param  integer  uid        The uid which must match the found directories
@@ -1353,16 +1364,16 @@
 	 *
 	 * @author Martin Burchert  <martin.burchert@syscp.de>
 	 * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
-	 */	
+	 */
 	function makePathfield( $path, $uid, $gid, $fieldType, $value='' )
 	{
-		global $lng; 
-		
+		global $lng;
+
 		$value = str_replace( $path, '', $value );
 		$field = '';
 		if ( $fieldType == 'Manual' )
 		{
-			$field = '<input type="text" name="path" value="'.$value.'" size="30" />';
+			$field = '<input type="text" name="path" value="'.htmlspecialchars($value).'" size="30" />';
 		}
 		elseif ( $fieldType == 'Dropdown' )
 		{

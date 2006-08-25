@@ -33,10 +33,11 @@
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
 		{
-			$loginname = addslashes($_POST['loginname']);
-			$password = addslashes($_POST['password']);
+			$loginname = validate($_POST['loginname'], 'loginname');
+			$password = validate($_POST['password'], 'password');
 
-			$row = $db->query_first("SELECT `loginname` AS `customer` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname`='$loginname'");
+			$row = $db->query_first("SELECT `loginname` AS `customer` FROM `".TABLE_PANEL_CUSTOMERS.
+				"` WHERE `loginname`='".$db->escape($loginname)."'");
 			if ($row['customer'] == $loginname)
 			{
 				$table = "`".TABLE_PANEL_CUSTOMERS."`";
@@ -45,7 +46,8 @@
 			}
 			else
 			{
-				$row = $db->query_first("SELECT `loginname` AS `admin` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='$loginname'");
+				$row = $db->query_first("SELECT `loginname` AS `admin` FROM `".TABLE_PANEL_ADMINS.
+					"` WHERE `loginname`='".$db->escape($loginname)."'");
 				if ($row['admin'] == $loginname)
 				{
 					$table = "`".TABLE_PANEL_ADMINS."`";
@@ -59,7 +61,7 @@
 				}
 			}
 
-			$userinfo = $db->query_first("SELECT * FROM $table WHERE `loginname`='$loginname'");
+			$userinfo = $db->query_first("SELECT * FROM $table WHERE `loginname`='".$db->escape($loginname)."'");
 			if ($userinfo['loginfail_count'] >= $settings['login']['maxloginattempts'] && $userinfo['lastlogin_fail'] > (time()-$settings['login']['deactivatetime']))
 			{
 				standard_error('login_blocked');
@@ -69,14 +71,14 @@
 			{
 				// login correct
 				// reset loginfail_counter, set lastlogin_succ
-				$db->query("UPDATE $table SET `lastlogin_succ`='".time()."', `loginfail_count`='0' WHERE `$uid`='".$userinfo[$uid]."'");
+				$db->query("UPDATE $table SET `lastlogin_succ`='".time()."', `loginfail_count`='0' WHERE `$uid`='".(int)$userinfo[$uid]."'");
 				$userinfo['userid'] = $userinfo[$uid];
 				$userinfo['adminsession'] = $adminsession;
 			}
 			else
 			{
 				// login incorrect
-				$db->query("UPDATE $table SET `lastlogin_fail`='".time()."', `loginfail_count`=`loginfail_count`+1 WHERE `$uid`='".$userinfo[$uid]."'");
+				$db->query("UPDATE $table SET `lastlogin_fail`='".time()."', `loginfail_count`=`loginfail_count`+1 WHERE `$uid`='".(int)$userinfo[$uid]."'");
 				unset($userinfo);
 				standard_error('login');
 				exit;
@@ -88,7 +90,7 @@
 				
 				if(isset($_POST['language']))
 				{
-					$language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['language'] ) ) ) ;
+					$language = validate($_POST['language'], 'language');
 					if($language == 'profile')
 					{
 						$language = $userinfo['def_language'];
@@ -103,8 +105,10 @@
 					$language = $settings['panel']['standardlanguage'];
 				}
 
-				$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['userid']}' AND `adminsession` = '{$userinfo['adminsession']}'");
-				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('$s', '{$userinfo['userid']}', '".addslashes($remote_addr)."', '".addslashes($http_user_agent)."', '".time()."', '$language', '{$userinfo['adminsession']}')");
+				$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '".(int)$userinfo['userid']."' AND `adminsession` = '".$db->escape($userinfo['adminsession'])."'");
+				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('".
+					$db->escape($s)."', '".(int)$userinfo['userid']."', '".$db->escape($remote_addr)."', '".
+					$db->escape($http_user_agent)."', '".time()."', '".$db->escape($language)."', '".$db->escape($userinfo['adminsession'])."')");
 				
 				if($userinfo['adminsession'] == '1')
 				{

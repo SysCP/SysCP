@@ -26,7 +26,7 @@
 
 	if($action == 'logout')
 	{
-		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['adminid']}' AND `adminsession` = '1'");
+		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '".(int)$userinfo['adminid']."' AND `adminsession` = '1'");
 		redirectTo ( 'index.php' ) ;
 		exit;
 	}
@@ -51,10 +51,10 @@
 				SUM(`ftps_used`) AS `ftps_used`,
 				SUM(`subdomains_used`) AS `subdomains_used`,
 				SUM(`traffic_used`) AS `traffic_used`
-				FROM `".TABLE_PANEL_CUSTOMERS."`".( $userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '{$userinfo['adminid']}' "));
+				FROM `".TABLE_PANEL_CUSTOMERS."`".( $userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '".(int)$userinfo['adminid']."' "));
 		$overview['traffic_used']=round($overview['traffic_used']/(1024*1024),4);
 		$overview['diskspace_used']=round($overview['diskspace_used']/1024,2);
-		$number_domains = $db->query_first("SELECT COUNT(*) AS `number_domains` FROM `".TABLE_PANEL_DOMAINS."` WHERE `parentdomainid`='0'".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
+		$number_domains = $db->query_first("SELECT COUNT(*) AS `number_domains` FROM `".TABLE_PANEL_DOMAINS."` WHERE `parentdomainid`='0'".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '".(int)$userinfo['adminid']."' "));
 		$overview['number_domains'] = $number_domains['number_domains'];
 
 		$phpversion = phpversion();
@@ -78,13 +78,13 @@
 			else
 			{
 				$lookfornewversion_lable = $lng['admin']['lookfornewversion']['error'];
-				$lookfornewversion_link = "$filename?s=$s&amp;page=$page&amp;lookfornewversion=yes";
+				$lookfornewversion_link = htmlspecialchars($filename.'?s='.urlencode($s).'&page='.urlencode($page).'&lookfornewversion=yes');
 			}
 		}
 		else
 		{
 			$lookfornewversion_lable = $lng['admin']['lookfornewversion']['clickhere'];
-			$lookfornewversion_link = "$filename?s=$s&amp;page=$page&amp;lookfornewversion=yes";
+			$lookfornewversion_link = htmlspecialchars($filename.'?s='.urlencode($s).'&page='.urlencode($page).'&lookfornewversion=yes');
 		}
 
 		$userinfo['diskspace']=round($userinfo['diskspace']/1024,4);
@@ -102,14 +102,14 @@
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
 		{
-			$old_password=addslashes($_POST['old_password']);
+			$old_password=validate($_POST['old_password'], 'old password');
 			if(md5($old_password) != $userinfo['password'])
 			{
 				standard_error('oldpasswordnotcorrect');
 				exit;
 			}
-			$new_password=addslashes($_POST['new_password']);
-			$new_password_confirm=addslashes($_POST['new_password_confirm']);
+			$new_password=validate($_POST['new_password'], 'new password');
+			$new_password_confirm=validate($_POST['new_password_confirm'], 'new password confirm');
 
 			if($old_password=='')
 			{
@@ -130,7 +130,7 @@
 
 			else
 			{
-				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `password`='".md5($new_password)."' WHERE `adminid`='".$userinfo['adminid']."' AND `password`='".md5($old_password)."'");
+				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `password`='".md5($new_password)."' WHERE `adminid`='".(int)$userinfo['adminid']."' AND `password`='".md5($old_password)."'");
 				redirectTo ( $filename , Array ( 's' => $s ) ) ;
 			}
 		}
@@ -143,11 +143,11 @@
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
 		{
-			$def_language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['def_language'] ) ) ) ;
+			$def_language = validate($_POST['def_language'], 'default language');
 			if(isset($languages[$def_language]))
 			{
-				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `def_language`='".$def_language."' WHERE `adminid`='".$userinfo['adminid']."'");
-				$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".$def_language."' WHERE `hash`='".$s."'");
+				$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `def_language`='".$db->escape($def_language)."' WHERE `adminid`='".(int)$userinfo['adminid']."'");
+				$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".$db->escape($def_language)."' WHERE `hash`='".$db->escape($s)."'");
 			}
 			redirectTo ( $filename , Array ( 's' => $s ) ) ;
 		}
@@ -156,7 +156,7 @@
 			$language_options = '';
 			while(list($language_file, $language_name) = each($languages))
 			{
-				$language_options .= makeoption($language_name, $language_file, $userinfo['def_language']);
+				$language_options .= makeoption($language_name, $language_file, $userinfo['def_language'], true);
 			}
 			eval("echo \"".getTemplate("index/change_language")."\";");
 		}

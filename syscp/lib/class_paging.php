@@ -156,13 +156,13 @@
 			}
 			$this->userinfo['lastpaging']['searchfield'] = $this->searchfield;
 
-			if( isset( $_REQUEST['searchtext'] ) && ( preg_match( "/^[0-9a-zA-ZäÄöÖüÜ\-\*\.]+$/", $_REQUEST['searchtext'] ) || $_REQUEST['searchtext'] === '' ) )
+			if( isset( $_REQUEST['searchtext'] ) && ( preg_match( "/^[0-9a-zA-ZöüäÖÜÄ\-\*\.]+$/", $_REQUEST['searchtext'] ) || $_REQUEST['searchtext'] === '' ) )
 			{
 				$this->searchtext = $_REQUEST['searchtext'];
 			}
 			else
 			{
-				if( $checklastpaging && isset( $this->userinfo['lastpaging']['searchtext'] ) && preg_match( "/^[0-9a-zA-ZäÄöÖüÜ\-\*\.]+$/", $this->userinfo['lastpaging']['searchtext'] ) )
+				if( $checklastpaging && isset( $this->userinfo['lastpaging']['searchtext'] ) && preg_match( "/^[0-9a-zA-ZöüäÖÜÄ\-\*\.]+$/", $this->userinfo['lastpaging']['searchtext'] ) )
 				{
 					$this->searchtext = $this->userinfo['lastpaging']['searchtext'];
 				}
@@ -171,6 +171,7 @@
 					$this->searchtext = '';
 				}
 			}
+
 			$this->userinfo['lastpaging']['searchtext'] = $this->searchtext;
 
 			if( isset( $_REQUEST['pageno'] ) && intval( $_REQUEST['pageno'] ) != 0 )
@@ -191,12 +192,12 @@
 			$this->userinfo['lastpaging']['pageno'] = $this->pageno;
 
 			$query = 'UPDATE `'.TABLE_PANEL_SESSIONS.'` ' .
-					 'SET `lastpaging`="' . addslashes( serialize( $this->userinfo['lastpaging'] ) ) . '" ' .
-					 'WHERE `hash`="' . $userinfo['hash'] . '" ' .
-					 '  AND `userid` = "' . $userinfo['userid'] . '" ' .
-					 '  AND `ipaddress` = "' . $userinfo['ipaddress'] . '" ' .
-					 '  AND `useragent` = "' . $userinfo['useragent'] . '" ' .
-					 '  AND `adminsession` = "' . $userinfo['adminsession'] . '" ';
+					 'SET `lastpaging`="' . $this->db->escape( serialize( $this->userinfo['lastpaging'] ) ) . '" ' .
+					 'WHERE `hash`="' . $this->db->escape($userinfo['hash']) . '" ' .
+					 '  AND `userid` = "' . $this->db->escape($userinfo['userid']) . '" ' .
+					 '  AND `ipaddress` = "' . $this->db->escape($userinfo['ipaddress']) . '" ' .
+					 '  AND `useragent` = "' . $this->db->escape($userinfo['useragent']) . '" ' .
+					 '  AND `adminsession` = "' . $this->db->escape($userinfo['adminsession']) . '" ';
 			$this->db->query($query);
 		}
 
@@ -264,7 +265,7 @@
 
 				$searchtext = str_replace( '*', '%', $this->searchtext );
 
-				$condition .= $searchfield . ' LIKE "' . $searchtext . '" ';
+				$condition .= $searchfield . ' LIKE "' . $this->db->escape($searchtext) . '" ';
 			}
 			else
 			{
@@ -297,7 +298,7 @@
 			$sortfield = implode( '.', $sortfield );
 
 			$sortorder = strtoupper( $this->sortorder );
-
+			
 			return 'ORDER BY ' . $sortfield . ' ' . $sortorder;
 		}
 
@@ -347,14 +348,14 @@
 		{
 			if( $field != '' && isset( $this->fields[$field] ) )
 			{
-				$arrowcode = '<a href="' . $baseurl . '&amp;sortfield=' . $field . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . $baseurl . '&amp;sortfield=' . $field . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
+				$arrowcode = '<a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($field) . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($field) . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
 			}
 			else
 			{
 				$arrowcode = array();
 				foreach( $this->fields as $fieldname => $fieldcaption )
 				{
-					$arrowcode[$fieldname] = '<a href="' . $baseurl . '&amp;sortfield=' . $fieldname . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . $baseurl . '&amp;sortfield=' . $fieldname . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
+					$arrowcode[$fieldname] = '<a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($fieldname) . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($fieldname) . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
 				}
 			}
 			return $arrowcode;
@@ -373,7 +374,7 @@
 			{
 				$sortcode .= makeoption( $fieldcaption, $fieldname, $this->searchfield );
 			}
-			$sortcode .= '</select>&nbsp;<input type="text" name="searchtext" value="' . $this->searchtext . '" />&nbsp;<input type="submit" name="Go" value="Go" />';
+			$sortcode .= '</select>&nbsp;<input type="text" name="searchtext" value="' . htmlspecialchars($this->searchtext) . '" />&nbsp;<input type="submit" name="Go" value="Go" />';
 			return $sortcode;
 		}
 
@@ -404,13 +405,13 @@
 					$stop = $pages;
 				}
 
-				$pagingcode = '<a href="' . $baseurl . '&amp;pageno=1">&laquo;</a> <a href="' . $baseurl . '&amp;pageno=' . ( ( intval( $this->pageno ) - 1 ) == 0 ? '1' : intval( $this->pageno ) - 1 ) . '">&lt;</a> ';
+				$pagingcode = '<a href="' . htmlspecialchars($baseurl) . '&amp;pageno=1">&laquo;</a> <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . ( ( intval( $this->pageno ) - 1 ) == 0 ? '1' : intval( $this->pageno ) - 1 ) . '">&lt;</a> ';
 
 				for( $i = $start; $i <= $stop; $i++ )
 				{
 					if( $i != $this->pageno )
 					{
-						$pagingcode .= ' <a href="' . $baseurl . '&amp;pageno=' . $i . '">' . $i . '</a> ';
+						$pagingcode .= ' <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . $i . '">' . $i . '</a> ';
 					}
 					else
 					{
@@ -418,7 +419,7 @@
 					}
 				}
 
-				$pagingcode .= ' <a href="' . $baseurl . '&amp;pageno=' . ( ( intval( $this->pageno ) + 1 ) > $pages ? $pages : intval( $this->pageno ) + 1 ) . '">&gt;</a> <a href="' . $baseurl . '&amp;pageno=' . $pages . '">&raquo;</a>';
+				$pagingcode .= ' <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . ( ( intval( $this->pageno ) + 1 ) > $pages ? $pages : intval( $this->pageno ) + 1 ) . '">&gt;</a> <a href="' . $baseurl . '&amp;pageno=' . $pages . '">&raquo;</a>';
 			}
 			else
 			{

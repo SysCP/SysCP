@@ -72,24 +72,24 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".(int)$id."'");
 			if( isset( $result['id'] ) && $result['id'] == $id )
 			{
-				$result_checkdomain=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE `ipandport`='$id'");
+				$result_checkdomain=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_DOMAINS."` WHERE `ipandport`='".(int)$id."'");
 				if($result_checkdomain['id']=='')
 				{
 					if($result['id']!=$settings['system']['defaultip'])
 					{
-						$result_sameipotherport=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
+						$result_sameipotherport=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$db->escape($result['ip'])."' AND `id`!='".(int)$id."'");
 
 						if( ( $result['ip']!=$settings['system']['ipaddress'] ) || ( $result['ip']==$settings['system']['ipaddress'] && $result_sameipotherport['id']!='' ) )
 						{
-							$result=$db->query_first("SELECT `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+							$result=$db->query_first("SELECT `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".(int)$id."'");
 							if($result['ip']!='')
 							{
 								if(isset($_POST['send']) && $_POST['send']=='send')
 								{
-									$db->query("DELETE FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+									$db->query("DELETE FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".(int)$id."'");
 
 									inserttask('1');
 									inserttask('4');
@@ -123,30 +123,18 @@
 		{
 			if(isset($_POST['send']) && $_POST['send']=='send')
 			{
-				$ip = addslashes($_POST['ip']);
-				$port = intval($_POST['port']);
+				$ip = validate($_POST['ip'], 'ip', '/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', 'ipiswrong');
+				$port = validate($_POST['port'], 'port', '/^[1-9][0-9]{0,4}$/', array('stringisempty','myport'));
 
-				$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='$ip' AND `port`='$port'");
+				$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$db->escape($ip)."' AND `port`='".(int)$port."'");
 
-				if($ip=='')
-				{
-					standard_error(array('stringisempty','myipaddress'));
-				}
-				elseif(!preg_match("/^\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/", $ip))
-				{
-					standard_error('ipiswrong');
-				}
-				elseif($port==0 || !preg_match("/^[0-9]{1,5}$/i", $port))
-				{
-					standard_error(array('stringisempty','myport'));
-				}
-				elseif($result_checkfordouble['id']!='')
+				if($result_checkfordouble['id']!='')
 				{
 					standard_error('myipnotdouble');
 				}
 				else
 				{
-					$db->query("INSERT INTO `".TABLE_PANEL_IPSANDPORTS."` (`ip`, `port`) VALUES ('$ip', '$port')");
+					$db->query("INSERT INTO `".TABLE_PANEL_IPSANDPORTS."` (`ip`, `port`) VALUES ('".$db->escape($ip)."', '".(int)$port."')");
 
 					inserttask('1');
 					inserttask('4');
@@ -162,30 +150,18 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='$id'");
+			$result=$db->query_first("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".(int)$id."'");
 			if($result['ip']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$ip = addslashes($_POST['ip']);
-					$port = intval($_POST['port']);
+					$ip = validate($_POST['ip'], 'ip', '/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', 'ipiswrong');
+					$port = validate($_POST['port'], 'port', '/^[1-9][0-9]{0,4}$/', array('stringisempty','myport'));
+					
+					$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$db->escape($ip)."' AND `port`='".(int)$port."'");
+					$result_sameipotherport=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$db->escape($result['ip'])."' AND `id`!='".(int)$id."'");
 
-					$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='$ip' AND `port`='$port'");
-					$result_sameipotherport=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$result['ip']."' AND `id`!='$id'");
-
-					if($ip=='')
-					{
-						standard_error(array('stringisempty','myipaddress'));
-					}
-					elseif(!preg_match("/^\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/", $ip))
-					{
-						standard_error('ipiswrong');
-					}
-					elseif($port==0 || !preg_match("/^[0-9]{1,5}$/i", $port))
-					{
-						standard_error(array('stringisempty','myport'));
-					}
-					elseif($result['ip']!=$ip && $result['ip']==$settings['system']['ipaddress'] && $result_sameipotherport['id']=='')
+					if($result['ip']!=$ip && $result['ip']==$settings['system']['ipaddress'] && $result_sameipotherport['id']=='')
 					{
 						standard_error('cantchangesystemip');
 					}
@@ -195,7 +171,7 @@
 					}
 					else
 					{
-						$db->query("UPDATE `".TABLE_PANEL_IPSANDPORTS."` SET `ip`='$ip', `port`='$port' WHERE `id`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_IPSANDPORTS."` SET `ip`='".$db->escape($ip)."', `port`='".(int)$port."' WHERE `id`='".(int)$id."'");
 
 						inserttask('1');
 						inserttask('4');

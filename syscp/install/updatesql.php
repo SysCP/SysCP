@@ -38,7 +38,7 @@
 	$result=$db->query("SELECT `settinggroup`, `varname`, `value` FROM `".TABLE_PANEL_SETTINGS."`");
 	while($row=$db->fetch_array($result))
 	{
-		$settings["$row[settinggroup]"]["$row[varname]"]=$row['value'];
+		$settings[$row['settinggroup']][$row['varname']]=$row['value'];
 	}
 	unset($row);
 	unset($result);

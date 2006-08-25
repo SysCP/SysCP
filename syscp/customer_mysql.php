@@ -49,7 +49,7 @@
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_DATABASES, $fields, $settings['panel']['paging'] );
 
 			$result=$db->query(
-				"SELECT `id`, `databasename`, `description` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . $userinfo['customerid'] . "' " . 
+				"SELECT `id`, `databasename`, `description` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' " . 
 				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
 			$paging->setEntries( $db->num_rows($result) );
@@ -79,7 +79,7 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first( 'SELECT `id`, `databasename` FROM `' . TABLE_PANEL_DATABASES . '` WHERE `customerid`="' . $userinfo['customerid'] . '" AND `id`="' . $id . '"' );
+			$result=$db->query_first( 'SELECT `id`, `databasename` FROM `' . TABLE_PANEL_DATABASES . '` WHERE `customerid`="' . (int)$userinfo['customerid'] . '" AND `id`="' . (int)$id . '"' );
 			if(isset($result['databasename']) && $result['databasename'] != '')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
@@ -88,16 +88,16 @@
 					$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 					unset($db_root->password);
 
-					$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $result['databasename'] . '`@' . $settings['system']['mysql_access_host'] . ';' );
-					$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $result['databasename'] ) . '` . * FROM `' . $result['databasename'] . '`@' . $settings['system']['mysql_access_host'] . ';' );
-					$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $result['databasename'] . '" AND `Host` = "' . $settings['system']['mysql_access_host'] . '"' );
-					$db_root->query( 'DROP DATABASE IF EXISTS `' . $result['databasename'] . '`' );
+					$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $db->escape($result['databasename']) . '`@' . $db->escape($settings['system']['mysql_access_host']));
+					$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $db->escape($result['databasename']) ) . '` . * FROM `' . $db->escape($result['databasename']) . '`@' . $db->escape($settings['system']['mysql_access_host']));
+					$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $db->escape($result['databasename']) . '" AND `Host` = "' . $db->escape($settings['system']['mysql_access_host']) . '"' );
+					$db_root->query( 'DROP DATABASE IF EXISTS `' . $db->escape($result['databasename']) . '`' );
 					$db_root->query( 'FLUSH PRIVILEGES' );
 
 					$db_root->close();
 					// End root-session
 	
-					$db->query( 'DELETE FROM `' . TABLE_PANEL_DATABASES . '` WHERE `customerid`="' . $userinfo['customerid'] . '" AND `id`="' . $id . '"' );
+					$db->query( 'DELETE FROM `' . TABLE_PANEL_DATABASES . '` WHERE `customerid`="' . (int)$userinfo['customerid'] . '" AND `id`="' . (int)$id . '"' );
 
 					if($userinfo['mysqls_used']=='1')
 					{
@@ -108,7 +108,7 @@
 						$resetaccnumber='';
 					}
 
-					$result=$db->query( 'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`-1 ' . $resetaccnumber . 'WHERE `customerid`="' . $userinfo['customerid'] .'"' );
+					$result=$db->query( 'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`-1 ' . $resetaccnumber . 'WHERE `customerid`="' . (int)$userinfo['customerid'] .'"' );
 
     				redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
@@ -125,7 +125,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$password=addslashes($_POST['password']);
+					$password=validate($_POST['password'], 'password');
 					if($password=='')
 					{
 						standard_error(array('stringisempty','mypassword'));
@@ -138,18 +138,18 @@
 						$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 						unset($db_root->password);
 
-						$db_root->query( 'CREATE DATABASE `' . $username . '`' );
-						$db_root->query( 'GRANT ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $username ) . '`.* TO `' . $username . '`@' . $settings['system']['mysql_access_host'] . ' IDENTIFIED BY \'password\'' );
-						$db_root->query( 'SET PASSWORD FOR `' . $username .'`@' . $settings['system']['mysql_access_host'] . ' = PASSWORD(\'' . $password . '\')' );
+						$db_root->query( 'CREATE DATABASE `' . $db->escape($username) . '`' );
+						$db_root->query( 'GRANT ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $db->escape($username) ) . '`.* TO `' . $db->escape($username) . '`@' . $db->escape($settings['system']['mysql_access_host']) . ' IDENTIFIED BY \'password\'' );
+						$db_root->query( 'SET PASSWORD FOR `' . $db->escape($username) .'`@' . $db->escape($settings['system']['mysql_access_host']) . ' = PASSWORD(\'' . $db->escape($password) . '\')' );
 						$db_root->query( 'FLUSH PRIVILEGES' );
 
 						$db_root->close();
 						// End root-session
 
 						// Statement modifyed for Database description -- PH 2004-11-29
-						$databasedescription=addslashes($_POST['description']);
-						$result=$db->query( 'INSERT INTO `' . TABLE_PANEL_DATABASES . '` (`customerid`, `databasename`, `description`) VALUES ("' . $userinfo['customerid'] .'", "' . $username .'", "' . $databasedescription .'")' );
-						$result=$db->query( 'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`+1, `mysql_lastaccountnumber`=`mysql_lastaccountnumber`+1 WHERE `customerid`="' . $userinfo['customerid'] . '"' );
+						$databasedescription=validate($_POST['description'], 'description');
+						$result=$db->query( 'INSERT INTO `' . TABLE_PANEL_DATABASES . '` (`customerid`, `databasename`, `description`) VALUES ("' . (int)$userinfo['customerid'] .'", "' . $db->escape($username) .'", "' . $db->escape($databasedescription) .'")' );
+						$result=$db->query( 'UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`+1, `mysql_lastaccountnumber`=`mysql_lastaccountnumber`+1 WHERE `customerid`="' . (int)$userinfo['customerid'] . '"' );
 
         				redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
@@ -169,14 +169,14 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					// Only change Password if it is set, do nothing if it is empty! -- PH 2004-11-29
-					$password=addslashes($_POST['password']);
+					$password=validate($_POST['password'], 'password');
 					if($password!='')
 					{
 						// Begin root-session
 						$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 						unset($db_root->password);
 
-						$db_root->query('SET PASSWORD FOR `'.$result['databasename'].'`@' . $settings['system']['mysql_access_host'] . ' = PASSWORD(\'' . $password .'\')');
+						$db_root->query('SET PASSWORD FOR `'.$db->escape($result['databasename']).'`@' . $db->escape($settings['system']['mysql_access_host']) . ' = PASSWORD(\'' . $db->escape($password) .'\')');
 						$db_root->query('FLUSH PRIVILEGES');
 
 						$db_root->close();
@@ -184,8 +184,8 @@
 					}
 
 					// Update the Database description -- PH 2004-11-29
-					$databasedescription=addslashes($_POST['description']);
-					$result=$db->query( 'UPDATE `' . TABLE_PANEL_DATABASES . '` SET `description`="' . $databasedescription . '" WHERE `customerid`="' . $userinfo['customerid'] . '" AND `id`="' . $id . '"');
+					$databasedescription=validate($_POST['description'], 'description');
+					$result=$db->query( 'UPDATE `' . TABLE_PANEL_DATABASES . '` SET `description`="' . $db->escape($databasedescription) . '" WHERE `customerid`="' . (int)$userinfo['customerid'] . '" AND `id`="' . (int)$id . '"');
 
         			redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
