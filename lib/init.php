@@ -69,21 +69,21 @@
 
 	// we will try to unset most of the $sql information if they are not needed
 	// by the calling script
-	if ( basename( $_SERVER['PHP_SELF'] ) == 'admin_configfiles.php' )
+	if ( $filename == 'admin_configfiles.php' )
 	{
 		// Configfiles needs host, user, db 
 		unset( $sql['root_user']     );
 		unset( $sql['root_password'] );
 	}
-	elseif (    basename( $_SERVER['PHP_SELF'] ) == 'customer_mysql.php'
-	         || basename( $_SERVER['PHP_SELF'] ) == 'admin_customers.php' )
+	elseif (    $filename == 'customer_mysql.php'
+	         || $filename == 'admin_customers.php' )
 	{
 		// customer mysql needs root pw, root user, host for database creation
 		// admin customers needs it for database deletion
 		unset( $sql['user'] );
 		unset( $sql['db']   ); 
 	}
-	elseif ( basename( $_SERVER['PHP_SELF'] ) == 'admin_settings.php' )
+	elseif ( $filename == 'admin_settings.php' )
 	{
 		// admin settings needs the  host, user, root user, root pw
 		unset( $sql['db']            );
@@ -120,15 +120,21 @@
 	require('./lib/class_paging.php');
 
 	/**
-	 * Clean all superglobals which contain user input from too many slashes
-	 * (we always rely on magic_quotes_gpc being set to off, so removing them
-	 * all is save) and from htmlentities
+	 * Reverse magic_quotes_gpc=on to have clean GPC data again
 	 */
-	foreach( array( '_REQUEST', '_GET', '_POST', '_COOKIE' ) as $superglobal )
-	{
-		$$superglobal = html_entity_decode_array( stripslashes_array( $$superglobal, '', true ), '', true );
+	if (get_magic_quotes_gpc()) {
+		$in = array(&$_GET, &$_POST, &$_COOKIE);
+		while (list($k,$v) = each($in)) {
+			foreach ($v as $key => $val) {
+				if (!is_array($val)) {
+					$in[$k][$key] = stripslashes($val);
+					continue;
+				}
+				$in[] =& $in[$k][$key];
+			}
+		}
+		unset($in);
 	}
-	unset( $superglobal );
 
 	/**
 	 * Selects settings from MySQL-Table
@@ -138,11 +144,11 @@
 	while($row = $db->fetch_array($result))
 	{
 		if(($row['settinggroup'] == 'system' && $row['varname'] == 'hostname') || ($row['settinggroup'] == 'panel' && $row['varname'] == 'adminmail')) {
-			$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $idna_convert->decode($row['value']);
+			$settings[$row['settinggroup']][$row['varname']] = $idna_convert->decode($row['value']);
 		}
 		else
 		{
-			$settings["{$row['settinggroup']}"]["{$row['varname']}"] = $row['value'];
+			$settings[$row['settinggroup']][$row['varname']] = $row['value'];
 		}
 	}
 	unset($row);
@@ -157,8 +163,8 @@
 	/**
 	 * SESSION MANAGEMENT
 	 */
-	$remote_addr = htmlspecialchars($_SERVER['REMOTE_ADDR']);
-	$http_user_agent = htmlspecialchars($_SERVER['HTTP_USER_AGENT']);
+	$remote_addr = $_SERVER['REMOTE_ADDR'];
+	$http_user_agent = $_SERVER['HTTP_USER_AGENT'];
 	unset($userinfo);
 	unset($userid);
 	unset($customerid);
@@ -182,7 +188,7 @@
 	}
 
 	$timediff = time() - $settings['session']['sessiontimeout'];
-	$db->query( 'DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `lastactivity` < "' . $timediff . '"' ) ;
+	$db->query( 'DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `lastactivity` < "' . (int)$timediff . '"' ) ;
 
 	$userinfo = Array();
 	if(isset($s) && $s != "" && $nosession != 1)
@@ -202,11 +208,11 @@
 			$adminsession = '0' ;
 		}
 
-		$query .= 'WHERE `s`.`hash`="'.addslashes($s).'" ' .
-			'AND `s`.`ipaddress`="'.addslashes($remote_addr).'" ' .
-			'AND `s`.`useragent`="'.addslashes($http_user_agent).'" ' .
-			'AND `s`.`lastactivity` > "'.$timediff.'" ' .
-			'AND `s`.`adminsession` = "' . $adminsession . '"';
+		$query .= 'WHERE `s`.`hash`="'.$db->escape($s).'" ' .
+			'AND `s`.`ipaddress`="'.$db->escape($remote_addr).'" ' .
+			'AND `s`.`useragent`="'.$db->escape($http_user_agent).'" ' .
+			'AND `s`.`lastactivity` > "'.(int)$timediff.'" ' .
+			'AND `s`.`adminsession` = "' . $db->escape($adminsession) . '"';
 
 		$userinfo = $db->query_first($query);
 
@@ -220,8 +226,8 @@
 		{
 			$query = 'UPDATE `'.TABLE_PANEL_SESSIONS.'` ' .
 				'SET `lastactivity`="' . time() . '" ' .
-				'WHERE `hash`="' . addslashes($s) . '" ' .
-				'AND `adminsession` = "' . $adminsession . '"';
+				'WHERE `hash`="' . $db->escape($s) . '" ' .
+				'AND `adminsession` = "' . $db->escape($adminsession) . '"';
 
 			$db->query($query);
 
@@ -262,7 +268,7 @@
 	{
 		if(isset($_GET['language']) && isset($languages[$_GET['language']]))
 		{
-			$language = addslashes($_GET['language']);
+			$language = $_GET['language'];
 		}
 		else
 		{

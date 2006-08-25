@@ -26,7 +26,7 @@
 
 	if($action == 'logout')
 	{
-		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '{$userinfo['customerid']}' AND `adminsession` = '0'");
+		$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid` = '".(int)$userinfo['customerid']."' AND `adminsession` = '0'");
 		redirectTo ( 'index.php' ) ;
 		exit;
 	}
@@ -34,7 +34,7 @@
 	if($page=='overview')
 	{
 		$domains = '';
-		$result=$db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `parentdomainid`='0' AND `id` <> '" . $userinfo['standardsubdomain'] . "' ");
+		$result=$db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `parentdomainid`='0' AND `id` <> '" . (int)$userinfo['standardsubdomain'] . "' ");
 		while($row=$db->fetch_array($result))
 		{
 			$row['domain'] = $idna_convert->decode($row['domain']);
@@ -69,14 +69,14 @@
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
 		{
-			$old_password=addslashes($_POST['old_password']);
+			$old_password=validate($_POST['old_password'], 'old password');
 			if(md5($old_password) != $userinfo['password'])
 			{
 				standard_error('oldpasswordnotcorrect');
 				exit;
 			}
-			$new_password=addslashes($_POST['new_password']);
-			$new_password_confirm=addslashes($_POST['new_password_confirm']);
+			$new_password=validate($_POST['new_password'], 'new password');
+			$new_password_confirm=validate($_POST['new_password_confirm'], 'new password confirm');
 
 			if($old_password=='')
 			{
@@ -97,10 +97,10 @@
 
 			else
 			{
-				$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `password`='".md5($new_password)."' WHERE `customerid`='".$userinfo['customerid']."' AND `password`='".md5($old_password)."'");
+				$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `password`='".md5($new_password)."' WHERE `customerid`='".(int)$userinfo['customerid']."' AND `password`='".md5($old_password)."'");
 				if(isset($_POST['change_main_ftp']) && $_POST['change_main_ftp']=='true')
 				{
-					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('$new_password') WHERE `customerid`='".$userinfo['customerid']."' AND `username`='".$userinfo['loginname']."'");
+					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('".$db->escape($new_password)."') WHERE `customerid`='".(int)$userinfo['customerid']."' AND `username`='".$db->escape($userinfo['loginname'])."'");
 				}
 				redirectTo ( $filename , Array ( 's' => $s ) ) ;
 			}
@@ -115,11 +115,11 @@
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')
 		{
-			$def_language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['def_language'] ) ) ) ;
+			$def_language = validate($_POST['def_language'], 'default language');
 			if(isset($languages[$def_language]))
 			{
-				$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `def_language`='".$def_language."' WHERE `customerid`='".$userinfo['customerid']."'");
-				$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".$def_language."' WHERE `hash`='".$s."'");
+				$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `def_language`='".$db->escape($def_language)."' WHERE `customerid`='".(int)$userinfo['customerid']."'");
+				$db->query("UPDATE `".TABLE_PANEL_SESSIONS."` SET `language`='".$db->escape($def_language)."' WHERE `hash`='".$db->escape($s)."'");
 			}
 			redirectTo ( $filename , Array ( 's' => $s ) ) ;
 		}

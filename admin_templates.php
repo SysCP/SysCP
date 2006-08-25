@@ -45,7 +45,7 @@
 			);
 			
 			$templates_array=array();
-			$result=$db->query("SELECT `id`, `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='{$userinfo['adminid']}' AND `templategroup`='mails' ORDER BY `language`, `varname`");
+			$result=$db->query("SELECT `id`, `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".(int)$userinfo['adminid']."' AND `templategroup`='mails' ORDER BY `language`, `varname`");
 			while($row=$db->fetch_array($result))
 			{
 				$parts=array();
@@ -68,7 +68,7 @@
 			while(list($language_file, $language_name) = each($languages))
 			{
 				$templates_done=array();
-				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$language_name.'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
+				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\''.$db->escape($language_name).'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
 				while(($row=$db->fetch_array($result))!=false)
 				{
 					$templates_done[]=str_replace('_subject','',$row['varname']);
@@ -84,12 +84,12 @@
 
 		elseif($action=='delete' && $subjectid!=0 && $mailbodyid!=0)
 		{
-			$result=$db->query_first("SELECT `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
+			$result=$db->query_first("SELECT `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".(int)$userinfo['adminid']."' AND `id`='".(int)$subjectid."'");
 			if($result['varname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND (`id`='$subjectid' OR `id`='$mailbodyid')");
+					$db->query("DELETE FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".(int)$userinfo['adminid']."' AND (`id`='".(int)$subjectid."' OR `id`='".(int)$mailbodyid."')");
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
@@ -107,10 +107,10 @@
 			);
 			if(isset($_POST['prepare']) && $_POST['prepare']=='prepare')
 			{
-				$language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['language'] ) ) ) ;
+				$language = validate($_POST['language'], 'language');
 				
 				$templates=array();
-				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$language.'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
+				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\''.$db->escape($language).'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
 				while(($row=$db->fetch_array($result))!=false)
 				{
 					$templates[]=str_replace('_subject','',$row['varname']);
@@ -119,39 +119,27 @@
 				
 				$template_options='';
 				foreach($templates as $template) {
-					$template_options.=makeoption($lng['admin']['templates'][$template],$template);
+					$template_options.=makeoption($lng['admin']['templates'][$template],$template,NULL,true);
 				}
 				eval("echo \"".getTemplate("templates/templates_add_2")."\";");
 				
 			}
 			else if(isset($_POST['send']) && $_POST['send']=='send')
 			{
-				$language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['language'] ) ) ) ;
-				$template = addslashes($_POST['template']);
-				$subject = htmlentities(addslashes($_POST['subject']));
-				$mailbody = htmlentities(addslashes($_POST['mailbody']));
+				$language = validate($_POST['language'], 'language', '/^[^\r\n\0"\']+$/', 'nolanguageselect');
+				$template = validate($_POST['template'], 'template');
+				$subject = validate($_POST['subject'], 'subject', '/^[^\r\n\0]+$/', 'nosubjectcreate');
+				$mailbody = validate($_POST['mailbody'], 'mailbody', '/^[^\0]+$/', 'nomailbodycreate');
 
 				$templates=array();
-				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$language.'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
+				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\''.$db->escape($language).'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
 				while(($row=$db->fetch_array($result))!=false)
 				{
 					$templates[]=str_replace('_subject','',$row['varname']);
 				}
 				$templates=array_diff($available_templates,$templates);
 
-				if($language == '')
-				{
-					standard_error('nolanguageselect');
-				}
-				elseif($subject == '')
-				{
-					standard_error('nosubjectcreate');
-				}
-				elseif($mailbody == '')
-				{
-					standard_error('nomailbodycreate');
-				}
-				elseif(array_search($template,$templates) === false)
+				if(array_search($template,$templates) === false)
 				{
 					standard_error('templatenotfound');
 				}
@@ -160,9 +148,9 @@
 				{
 
 					$result=$db->query("INSERT INTO `".TABLE_PANEL_TEMPLATES."` (`adminid`, `language`, `templategroup`, `varname`, `value`)
-					                   VALUES ('{$userinfo['adminid']}', '$language', 'mails', '".$template."_subject','$subject')");
+					                   VALUES ('".(int)$userinfo['adminid']."', '".$db->escape($language)."', 'mails', '".$db->escape($template)."_subject','".$db->escape($subject)."')");
 					$result=$db->query("INSERT INTO `".TABLE_PANEL_TEMPLATES."` (`adminid`, `language`, `templategroup`, `varname`, `value`)
-					                   VALUES ('{$userinfo['adminid']}', '$language', 'mails', '".$template."_mailbody','$mailbody')");
+					                   VALUES ('".(int)$userinfo['adminid']."', '".$db->escape($language)."', 'mails', '".$db->escape($template)."_mailbody','".$db->escape($mailbody)."')");
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
@@ -173,7 +161,7 @@
 				while(list($language_file, $language_name) = each($languages))
 				{
 					$templates=array();
-					$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$language_name.'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
+					$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\''.$db->escape($language_name).'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
 					while(($row=$db->fetch_array($result))!=false)
 					{
 						$templates[]=str_replace('_subject','',$row['varname']);
@@ -198,30 +186,18 @@
 
 		elseif($action=='edit')
 		{
-			$result=$db->query_first("SELECT `language`, `varname`, `value` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
+			$result=$db->query_first("SELECT `language`, `varname`, `value` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".(int)$userinfo['adminid']."' AND `id`='".(int)$subjectid."'");
 			if($result['varname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$subject = htmlentities(addslashes($_POST['subject']));
-					$mailbody = htmlentities(addslashes($_POST['mailbody']));
+					$subject = validate($_POST['subject'], 'subject', '/^[^\r\n\0]+$/', 'nosubjectcreate');
+					$mailbody = validate($_POST['mailbody'], 'mailbody', '/^[^\0]+$/', 'nomailbodycreate');
 
-					if($subject == '')
-					{
-						standard_error('nosubjectcreate');
-					}
-					elseif($mailbody == '')
-					{
-						standard_error('nomailbodycreate');
-					}
+					$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='".$db->escape($subject)."' WHERE `adminid`='".(int)$userinfo['adminid']."' AND `id`='".(int)$subjectid."'");
+					$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='".$db->escape($mailbody)."' WHERE `adminid`='".(int)$userinfo['adminid']."' AND `id`='".(int)$mailbodyid."'");
 
-					else
-					{
-						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$subject' WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$subjectid'");
-						$db->query("UPDATE `".TABLE_PANEL_TEMPLATES."` SET `value`='$mailbody' WHERE `adminid`='".$userinfo['adminid']."' AND `id`='$mailbodyid'");
-
-    					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
-					}
+					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
 				{

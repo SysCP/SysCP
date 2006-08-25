@@ -133,8 +133,8 @@
 
 					if(!is_dir($domain['documentroot']))
 					{
-						safe_exec('mkdir -p "'.$domain['documentroot'].'"');
-						safe_exec('chown -R '.$domain['guid'].':'.$domain['guid'].' "'.$domain['documentroot'].'"');
+						safe_exec('mkdir -p '.escapeshellarg($domain['documentroot']).'"');
+						safe_exec('chown -R '.(int)$domain['guid'].':'.(int)$domain['guid'].' '.escapeshellarg($domain['documentroot']).'');
 					}
 					if($domain['speciallogfile'] == '1')
 					{
@@ -160,7 +160,7 @@
 					$vhosts_file.='  ErrorLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\"\n";
 					$vhosts_file.='  CustomLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log" combined'."\n";
 				}
-				$vhosts_file.=stripslashes($domain['specialsettings'])."\n";
+				$vhosts_file.=$domain['specialsettings']."\n";
 				$vhosts_file.='</VirtualHost>'."\n";
 				$vhosts_file.="\n";
 			}
@@ -181,11 +181,11 @@
 			fwrite( $debugHandler, '  cron_tasks: Task2 started - create new home');
 			if(is_array($row['data']))
 			{
-				safe_exec('mkdir -p "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer"');
-				safe_exec('mkdir -p "'.$settings['system']['vmail_homedir'].$row['data']['loginname'].'"');
-				safe_exec('cp -a '.$pathtophpfiles.'/templates/misc/standardcustomer/* "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'/"');
-				safe_exec('chown -R '.$row['data']['uid'].':'.$row['data']['gid'].' "'.$settings['system']['documentroot_prefix'].$row['data']['loginname'].'"');
-				safe_exec('chown -R '.$settings['system']['vmail_uid'].':'.$settings['system']['vmail_gid'].' "'.$settings['system']['vmail_homedir'].$row['data']['loginname'].'"');
+				safe_exec('mkdir -p '.escapeshellarg($settings['system']['documentroot_prefix'].$row['data']['loginname'].'/webalizer'));
+				safe_exec('mkdir -p '.escapeshellarg($settings['system']['vmail_homedir'].$row['data']['loginname']));
+				safe_exec('cp -a '.$pathtophpfiles.'/templates/misc/standardcustomer/* '.escapeshellarg($settings['system']['documentroot_prefix'].$row['data']['loginname'].'/'));
+				safe_exec('chown -R '.(int)$row['data']['uid'].':'.(int)$row['data']['gid'].' '.escapeshellarg($settings['system']['documentroot_prefix'].$row['data']['loginname']));
+				safe_exec('chown -R '.(int)$settings['system']['vmail_uid'].':'.(int)$settings['system']['vmail_gid'].' '.escapeshellarg($settings['system']['vmail_homedir'].$row['data']['loginname']));
 			}
 		}
 
@@ -204,11 +204,11 @@
 				{
 					$db->query(
 						'DELETE FROM `'.TABLE_PANEL_HTACCESS.'` ' .
-						'WHERE `path` = "'.$path.'"'
+						'WHERE `path` = "'.$db->escape($path).'"'
 					);
 					$db->query(
 						'DELETE FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
-						'WHERE `path` = "'.$path.'"'
+						'WHERE `path` = "'.$db->escape($path).'"'
 					);
 				}
 				
@@ -366,7 +366,7 @@
 		
 		foreach( $resultIDs as $id )
 		{
-			$where[] = '`id`=\''.$id.'\'';
+			$where[] = '`id`=\''.(int)$id.'\'';
 		}
 		$where = implode( $where, ' OR ');
 		$db->query("DELETE FROM `".TABLE_PANEL_TASKS."` WHERE ".$where);

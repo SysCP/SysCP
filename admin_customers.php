@@ -67,7 +67,7 @@
 			$result=$db->query(
 				"SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " .
 				"FROM `".TABLE_PANEL_CUSTOMERS."` `c`, `".TABLE_PANEL_ADMINS."` `a` " .
-				"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '{$userinfo['adminid']}' AND " )."`c`.`adminid`=`a`.`adminid` " .
+				"WHERE ".( $userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '".(int)$userinfo['adminid']."' AND " )."`c`.`adminid`=`a`.`adminid` " .
 				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
 			$paging->setEntries( $db->num_rows($result) );
@@ -86,7 +86,7 @@
 					$domains=$db->query_first(
 						"SELECT COUNT(`id`) AS `domains` " .
 						"FROM `".TABLE_PANEL_DOMAINS."` " .
-						"WHERE `customerid`='".$row['customerid']."' AND `parentdomainid`='0' "
+						"WHERE `customerid`='".(int)$row['customerid']."' AND `parentdomainid`='0' "
 					);
 					$row['domains']=intval($domains['domains']);
 
@@ -108,12 +108,12 @@
 
 		elseif($action=='su' && $id!=0)
 		{
-			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='".(int)$id."' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '".(int)$userinfo['adminid']."' "));
 			if($result['loginname']!='')
 			{
-				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`={$userinfo['userid']}");
+				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='".(int)$userinfo['userid']."'");
 				$s = md5(uniqid(microtime(),1));
-				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('$s', '$id', '{$result['ipaddress']}', '{$result['useragent']}', '" . time() . "', '{$result['language']}', '0')");
+				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('".$db->escape($s)."', '".(int)$id."', '".$db->escape($result['ipaddress'])."', '".$db->escape($result['useragent'])."', '" . time() . "', '".$db->escape($result['language'])."', '0')");
 				redirectTo ( 'customer_index.php' , Array ( 's' => $s ) ) ;
 			}
 			else
@@ -124,69 +124,69 @@
 
 		elseif($action=='delete' && $id!=0)
 		{
-			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' "));
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='".(int)$id."' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '".$db->escape($userinfo['adminid'])."' "));
 			if($result['loginname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$databases=$db->query("SELECT * FROM ".TABLE_PANEL_DATABASES." WHERE customerid='$id'");
+					$databases=$db->query("SELECT * FROM ".TABLE_PANEL_DATABASES." WHERE customerid='".(int)$id."'");
 					$db_root=new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
 					unset($db_root->password);
 					while($row_database=$db->fetch_array($databases))
 					{
-						$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $row_database['databasename'] . '`@' . $settings['system']['mysql_access_host'] . ';' );
-						$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $row_database['databasename'] ) . '` . * FROM `' . $row_database['databasename'] . '`@' . $settings['system']['mysql_access_host'] . ';' );
-						$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $row_database['databasename'] . '" AND `Host` = "' . $settings['system']['mysql_access_host'] . '"' );
-						$db_root->query( 'DROP DATABASE IF EXISTS `' . $row_database['databasename'] . '`' );
+						$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $db->escape($row_database['databasename']) . '`@' . $db->escape($settings['system']['mysql_access_host']) );
+						$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $db->escape($row_database['databasename']) ) . '` . * FROM `' . $db->escape($row_database['databasename']) . '`@' . $db->escape($settings['system']['mysql_access_host']) );
+						$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $db->escape($row_database['databasename']) . '" AND `Host` = "' . $db->escape($settings['system']['mysql_access_host']) . '"' );
+						$db_root->query( 'DROP DATABASE IF EXISTS `' . $db->escape($row_database['databasename']) . '`' );
 					}
 					$db_root->query('FLUSH PRIVILEGES;');
 					$db_root->close();
 
-					$db->query("DELETE FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_PANEL_DATABASES."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='".(int)$id."'");
+					$db->query("DELETE FROM `".TABLE_PANEL_DATABASES."` WHERE `customerid`='".(int)$id."'");
+					$db->query("DELETE FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".(int)$id."'");
 					$domains_deleted = $db->affected_rows();
-					$db->query("DELETE FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='$id' AND `adminsession` = '0'");
-					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$id."'");
+					$db->query("DELETE FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='".(int)$id."' AND `adminsession` = '0'");
+					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC."` WHERE `customerid`='".(int)$id."'");
 
-					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_MAIL_USERS."` WHERE `customerid`='".(int)$id."'");
+					$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `customerid`='".(int)$id."'");
 
-					$db->query("DELETE FROM `".TABLE_FTP_GROUPS."` WHERE `customerid`='$id'");
-					$db->query("DELETE FROM `".TABLE_FTP_USERS."` WHERE `customerid`='$id'");
+					$db->query("DELETE FROM `".TABLE_FTP_GROUPS."` WHERE `customerid`='".(int)$id."'");
+					$db->query("DELETE FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".(int)$id."'");
 
 					$admin_update_query = "UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` - 1 ";
-					$admin_update_query .= ", `domains_used` = `domains_used` - 0".($domains_deleted - $result['subdomains_used']) ;
+					$admin_update_query .= ", `domains_used` = `domains_used` - 0".(int)($domains_deleted - $result['subdomains_used']) ;
 					if ( $result['mysqls'] != '-1' )
 					{
-						$admin_update_query .= ", `mysqls_used` = `mysqls_used` - 0".$result['mysqls'];
+						$admin_update_query .= ", `mysqls_used` = `mysqls_used` - 0".(int)$result['mysqls'];
 					}
 					if ( $result['emails'] != '-1' )
 					{
-						$admin_update_query .= ", `emails_used` = `emails_used` - 0".$result['emails'];
+						$admin_update_query .= ", `emails_used` = `emails_used` - 0".(int)$result['emails'];
 					}
 					if ( $result['email_accounts'] != '-1' )
 					{
-						$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` - 0".$result['email_accounts'];
+						$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` - 0".(int)$result['email_accounts'];
 					}
 					if ( $result['email_forwarders'] != '-1' )
 					{
-						$admin_update_query .= ", `email_forwarders_used` = `email_forwarders_used` - 0".$result['email_forwarders'];
+						$admin_update_query .= ", `email_forwarders_used` = `email_forwarders_used` - 0".(int)$result['email_forwarders'];
 					}
 					if ( $result['subdomains'] != '-1' )
 					{
-						$admin_update_query .= ", `subdomains_used` = `subdomains_used` - 0".$result['subdomains'];
+						$admin_update_query .= ", `subdomains_used` = `subdomains_used` - 0".(int)$result['subdomains'];
 					}
 					if ( $result['ftps'] != '-1' )
 					{
-						$admin_update_query .= ", `ftps_used` = `ftps_used` - 0".$result['ftps'];
+						$admin_update_query .= ", `ftps_used` = `ftps_used` - 0".(int)$result['ftps'];
 					}
 					if ( ($result['diskspace']/1024) != '-1' )
 					{
-						$admin_update_query .= ", `diskspace_used` = `diskspace_used` - 0".$result['diskspace'];
+						$admin_update_query .= ", `diskspace_used` = `diskspace_used` - 0".(int)$result['diskspace'];
 					}
-					$admin_update_query .= " WHERE `adminid` = '{$result['adminid']}'";
+					$admin_update_query .= " WHERE `adminid` = '".(int)$result['adminid']."'";
 					$db->query( $admin_update_query );
 
 					inserttask('1');
@@ -207,17 +207,17 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$name = addslashes ( $_POST['name'] ) ;
-					$firstname = addslashes ( $_POST['firstname'] ) ;
-					$company = addslashes ( $_POST['company'] ) ;
-					$street = addslashes ( $_POST['street'] ) ;
-					$zipcode = addslashes($_POST['zipcode'] ) ;
-					$city = addslashes ( $_POST['city'] ) ;
-					$phone = addslashes ( $_POST['phone'] ) ;
-					$fax = addslashes ( $_POST['fax'] ) ;
-					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
-					$customernumber = addslashes ( $_POST['customernumber'] ) ;
-					$def_language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['def_language'] ) ) ) ;
+					$name = validate($_POST['name'], 'name');
+					$firstname = validate($_POST['firstname'], 'first name');
+					$company = validate($_POST['company'], 'company');
+					$street = validate($_POST['street'], 'street');
+					$zipcode = validate($_POST['zipcode'], 'zipcode', '/^[0-9 \-A-Z]*$/');
+					$city = validate($_POST['city'], 'city');
+					$phone = validate($_POST['phone'], 'phone', '/^[0-9\- \+]*$/');
+					$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+]*$/');
+					$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
+					$customernumber = validate($_POST['customernumber'], 'customer number', '/^[a-z0-9 \-]*$/i');
+					$def_language = validate($_POST['def_language'], 'default language');
 					$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
@@ -227,7 +227,7 @@
 					$ftps = intval_ressource ( $_POST['ftps'] ) ;
 					$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
 					$createstdsubdomain = intval ( $_POST['createstdsubdomain'] ) ;
-					$password = addslashes ( $_POST['password'] ) ;
+					$password = validate($_POST['password'], 'password') ;
 					$sendpassword = intval ( $_POST['sendpassword'] ) ;
 				
 					$diskspace=$diskspace*1024;
@@ -275,10 +275,10 @@
 						if(isset($_POST['loginname']) && $_POST['loginname'] != '')
 						{
 							$accountnumber = intval($settings['system']['lastaccountnumber']);
-							$loginname = addslashes($_POST['loginname']);
+							$loginname = validate($_POST['loginname'], 'loginname', '/^[a-z0-9\-_]+$/i');
 
 							// Accounts which match systemaccounts are not allowed, filtering them
-							if ( preg_match('/^'.$settings['customer']['accountprefix'].'([0-9]+)/', $loginname) )
+							if ( preg_match('/^'.preg_quote($settings['customer']['accountprefix'], '/').'([0-9]+)/', $loginname) )
 							{
 								standard_error('loginnameissystemaccount');
 							}
@@ -290,8 +290,8 @@
 						}
 
 						// Check if the account already exists
-						$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '".$loginname."'");
-						$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '".$loginname."'");
+						$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '".$db->escape($loginname)."'");
+						$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '".$db->escape($loginname)."'");
 
 						if ( $loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname )
 						{
@@ -318,45 +318,52 @@
 						$result=$db->query(
 							"INSERT INTO `".TABLE_PANEL_CUSTOMERS."` ".
 							"(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `standardsubdomain`) ".
-							" VALUES ('{$userinfo['adminid']}', '$loginname', '".md5($password)."', '$name', '$firstname', '$company', '$street', '$zipcode', '$city', '$phone', '$fax', '$email', '$customernumber','$def_language', '$documentroot', '$guid', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls', '0')"
+							" VALUES ('".(int)$userinfo['adminid']."', '".$db->escape($loginname)."', '".md5($password).
+							"', '".$db->escape($name)."', '".$db->escape($firstname)."', '".$db->escape($company).
+							"', '".$db->escape($street)."', '".$db->escape($zipcode)."', '".$db->escape($city)."', '".
+							$db->escape($phone)."', '".$db->escape($fax)."', '".$db->escape($email)."', '".
+							$db->escape($customernumber)."','".$db->escape($def_language)."', '".$db->escape($documentroot).
+							"', '".$db->escape($guid)."', '".$db->escape($diskspace)."', '".$db->escape($traffic).
+							"', '".$db->escape($subdomains)."', '".$db->escape($emails)."', '".$db->escape($email_accounts).
+							"', '".$db->escape($email_forwarders)."', '".$db->escape($ftps)."', '".$db->escape($mysqls)."', '0')"
 							);
 						$customerid=$db->insert_id();
 
 						$admin_update_query = "UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` + 1";
 						if ( $mysqls != '-1' )
 						{
-							$admin_update_query .= ", `mysqls_used` = `mysqls_used` + 0".$mysqls;
+							$admin_update_query .= ", `mysqls_used` = `mysqls_used` + 0".(int)$mysqls;
 						}
 						if ( $emails != '-1' )
 						{
-							$admin_update_query .= ", `emails_used` = `emails_used` + 0".$emails;
+							$admin_update_query .= ", `emails_used` = `emails_used` + 0".(int)$emails;
 						}
 						if ( $email_accounts != '-1' )
 						{
-							$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` + 0".$email_accounts;
+							$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` + 0".(int)$email_accounts;
 						}
 						if ( $email_forwarders != '-1' )
 						{
-							$admin_update_query .= ", `email_forwarders_used` = `email_forwarders_used` + 0".$email_forwarders;
+							$admin_update_query .= ", `email_forwarders_used` = `email_forwarders_used` + 0".(int)$email_forwarders;
 						}
 						if ( $subdomains != '-1' )
 						{
-							$admin_update_query .= ", `subdomains_used` = `subdomains_used` + 0".$subdomains;
+							$admin_update_query .= ", `subdomains_used` = `subdomains_used` + 0".(int)$subdomains;
 						}
 						if ( $ftps != '-1' )
 						{
-							$admin_update_query .= ", `ftps_used` = `ftps_used` + 0".$ftps;
+							$admin_update_query .= ", `ftps_used` = `ftps_used` + 0".(int)$ftps;
 						}
 						if ( ($diskspace/1024) != '-1' )
 						{
-							$admin_update_query .= ", `diskspace_used` = `diskspace_used` + 0".$diskspace;
+							$admin_update_query .= ", `diskspace_used` = `diskspace_used` + 0".(int)$diskspace;
 						}
-						$admin_update_query .= " WHERE `adminid` = '{$userinfo['adminid']}'";
+						$admin_update_query .= " WHERE `adminid` = '".(int)$userinfo['adminid']."'";
 						$db->query( $admin_update_query );
 
 						$db->query(
 							"UPDATE `".TABLE_PANEL_SETTINGS."` " .
-							"SET `value`='$guid' " .
+							"SET `value`='".$db->escape($guid)."' " .
 							"WHERE `settinggroup`='system' AND `varname`='lastguid'"
 						);
 
@@ -364,7 +371,7 @@
 						{
 							$db->query(
 								"UPDATE `".TABLE_PANEL_SETTINGS."` " .
-								"SET `value`='$accountnumber' " .
+								"SET `value`='".$db->escape($accountnumber)."' " .
 								"WHERE `settinggroup`='system' AND `varname`='lastaccountnumber'"
 							);
 						}
@@ -385,32 +392,36 @@
 						$db->query(
 							"INSERT INTO `".TABLE_PANEL_HTPASSWDS."` " .
 							"(`customerid`, `username`, `password`, `path`) " .
-							"VALUES ('$customerid', '$loginname', '$htpasswdPassword', '$path')"
+							"VALUES ('".(int)$customerid."', '".$db->escape($loginname)."', '".$db->escape($htpasswdPassword).
+							"', '".$db->escape($path)."')"
 						);
 						inserttask('3',$path);
 
 						$result=$db->query(
 							"INSERT INTO `".TABLE_FTP_USERS."` " .
 							"(`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) " .
-							"VALUES ('$customerid', '$loginname', ENCRYPT('$password'), '$documentroot/', 'y', '$guid', '$guid')"
+							"VALUES ('".(int)$customerid."', '".$db->escape($loginname)."', ENCRYPT('".$db->escape($password).
+							"'), '".$db->escape($documentroot)."/', 'y', '".(int)$guid."', '".(int)$guid."')"
 						);
 						$result=$db->query(
 							"INSERT INTO `".TABLE_FTP_GROUPS."` " .
 							"(`customerid`, `groupname`, `gid`, `members`) " .
-							"VALUES ('$customerid', '$loginname', '$guid', '$loginname')"
+							"VALUES ('".(int)$customerid."', '".$db->escape($loginname)."', '".$db->escape($guid)."', '".
+							$db->escape($loginname)."')"
 						);
 						
 						if($createstdsubdomain == '1') {
 							$db->query(
 								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
 								"(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-								"VALUES ('$loginname.{$settings['system']['hostname']}', '$customerid', '{$userinfo['adminid']}', '-1', '".$settings['system']['defaultip']."', '$documentroot', '', '0', '0', '1', '1', '0', '')"
+								"VALUES ('".$db->escape($loginname.'.'.$settings['system']['hostname'])."', '".(int)$customerid.
+								"', '".(int)$userinfo['adminid']."', '-1', '".$db->escape($settings['system']['defaultip'])."', '".$db->escape($documentroot)."', '', '0', '0', '1', '1', '0', '')"
 							);
 							$domainid=$db->insert_id();
 							$db->query(
 								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
-								'SET `standardsubdomain`=\''.$domainid.'\' ' .
-								'WHERE `customerid`=\''.$customerid.'\''
+								'SET `standardsubdomain`=\''.(int)$domainid.'\' ' .
+								'WHERE `customerid`=\''.(int)$customerid.'\''
 							);
 							inserttask('1');
 						}
@@ -424,11 +435,11 @@
 								'PASSWORD' => $password
 							);
 							// Get mail templates from database; the ones from 'admin' are fetched for fallback
-							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_subject\'');
+							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\''.$db->escape($def_language).'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_subject\'');
 							$mail_subject=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['createcustomer']['subject']),$replace_arr));
-							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.$userinfo['adminid'].'\' AND `language`=\''.$def_language.'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
+							$result=$db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\''.$db->escape($def_language).'\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
 							$mail_body=_html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['createcustomer']['mailbody']),$replace_arr));
-							mail("$firstname $name <$email>",$mail_subject,$mail_body,"From: {$userinfo['name']} <{$userinfo['email']}>\r\n");
+							mail($firstname.' '.$name.' <'.$email.'>',$mail_subject,$mail_body,'From: '.str_replace(array("\r", "\n"), '', $userinfo['name']).' <'.str_replace(array("\r", "\n"), '', $userinfo['email']).">\r\n");
 						}
 
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
@@ -450,23 +461,23 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='$id' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '{$userinfo['adminid']}' ") );
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid`='".(int)$id."' ".( $userinfo['customers_see_all'] ? '' : " AND `adminid` = '".(int)$userinfo['adminid']."' ") );
 			if($result['loginname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$name = addslashes ( $_POST['name'] ) ;
-					$firstname = addslashes ( $_POST['firstname'] ) ;
-					$company = addslashes ( $_POST['company'] ) ;
-					$street = addslashes ( $_POST['street'] ) ;
-					$zipcode = addslashes ( $_POST['zipcode'] ) ;
-					$city = addslashes ( $_POST['city'] ) ;
-					$phone = addslashes ( $_POST['phone'] ) ;
-					$fax = addslashes ( $_POST['fax'] ) ;
-					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
-					$customernumber = addslashes ( $_POST['customernumber'] ) ;
-					$def_language = addslashes ( htmlentities ( _html_entity_decode ( $_POST['def_language'] ) ) ) ;
-					$newpassword = $_POST['newpassword'];
+					$name = validate($_POST['name'], 'name');
+					$firstname = validate($_POST['firstname'], 'first name');
+					$company = validate($_POST['company'], 'company');
+					$street = validate($_POST['street'], 'street');
+					$zipcode = validate($_POST['zipcode'], 'zipcode', '/^[0-9 \-A-Z]*$/');
+					$city = validate($_POST['city'], 'city');
+					$phone = validate($_POST['phone'], 'phone', '/^[0-9\- \+]*$/');
+					$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+]*$/');
+					$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
+					$customernumber = validate($_POST['customernumber'], 'customer number', '/^[a-z0-9 \-]*$/i');
+					$def_language = validate($_POST['def_language'], 'default language');
+					$newpassword = validate($_POST['newpassword'], 'new password');
 					$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
@@ -536,13 +547,14 @@
 							$db->query(
 								"INSERT INTO `".TABLE_PANEL_DOMAINS."` " .
 								"(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " .
-								"VALUES ('{$result['loginname']}.{$settings['system']['hostname']}', '{$result['customerid']}', '{$userinfo['adminid']}', '-1', '".$settings['system']['defaultip']."', '{$result['documentroot']}', '', '0', '0', '1', '1', '0', '')"
+								"VALUES ('".$db->escape($result['loginname'].'.'.$settings['system']['hostname'])."', '".(int)$result['customerid']."', '".
+								(int)$userinfo['adminid']."', '-1', '".$db->escape($settings['system']['defaultip'])."', '".$db->escape($result['documentroot'])."', '', '0', '0', '1', '1', '0', '')"
 							);
 							$domainid=$db->insert_id();
 							$db->query(
 								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
-								'SET `standardsubdomain`=\''.$domainid.'\' ' .
-								'WHERE `customerid`=\''.$result['customerid'].'\''
+								'SET `standardsubdomain`=\''.(int)$domainid.'\' ' .
+								'WHERE `customerid`=\''.(inT)$result['customerid'].'\''
 							);
 							inserttask('1');
 						}
@@ -550,12 +562,12 @@
 						{
 							$db->query(
 								'DELETE FROM `'.TABLE_PANEL_DOMAINS.'` ' .
-								'WHERE `id`=\''.$result['standardsubdomain'].'\''
+								'WHERE `id`=\''.(int)$result['standardsubdomain'].'\''
 							);
 							$db->query(
 								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
 								'SET `standardsubdomain`=\'0\' ' .
-								'WHERE `customerid`=\''.$result['customerid'].'\''
+								'WHERE `customerid`=\''.(int)$result['customerid'].'\''
 							);
 							inserttask('1');
 						}
@@ -566,13 +578,19 @@
 						}
 						if($deactivated != $result['deactivated'])
 						{
-							$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `postfix`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='$id'");
-							$db->query("UPDATE `".TABLE_FTP_USERS."` SET `login_enabled`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='$id'");
-							$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `deactivated`='$deactivated' WHERE `customerid`='$id'");
+							$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `postfix`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='".(int)$id."'");
+							$db->query("UPDATE `".TABLE_FTP_USERS."` SET `login_enabled`='".( ($deactivated) ? 'N' : 'Y' )."' WHERE `customerid`='".(int)$id."'");
+							$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `deactivated`='".(int)$deactivated."' WHERE `customerid`='".(int)$id."'");
 							inserttask('1');
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='$name', `firstname`='$firstname', `company`='$company', `street`='$street', `zipcode`='$zipcode', `city`='$city', `phone`='$phone', `fax`='$fax', `email`='$email', `customernumber`='$customernumber', `def_language`='$def_language', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `customerid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `name`='".$db->escape($name)."', `firstname`='".$db->escape($firstname).
+							"', `company`='".$db->escape($company)."', `street`='".$db->escape($street)."', `zipcode`='".$db->escape($zipcode)."', `city`='".
+							$db->escape($city)."', `phone`='".$db->escape($phone)."', `fax`='".$db->escape($fax)."', `email`='".$db->escape($email).
+							"', `customernumber`='".(int)$customernumber."', `def_language`='".$db->escape($def_language)."', $updatepassword `diskspace`='".
+							$db->escape($diskspace)."', `traffic`='".$db->escape($traffic)."', `subdomains`='".$db->escape($subdomains)."', `emails`='".
+							$db->escape($emails)."', `email_accounts` = '".$db->escape($email_accounts)."', `email_forwarders`='".$db->escape($email_forwarders).
+							"', `ftps`='".$db->escape($ftps)."', `mysqls`='".$db->escape($mysqls)."', `deactivated`='".$db->escape($deactivated)."' WHERE `customerid`='".(int)$id."'");
 
 						$admin_update_query = "UPDATE `".TABLE_PANEL_ADMINS."` SET `customers_used` = `customers_used` ";
 						if ( $mysqls != '-1' || $result['mysqls'] != '-1' )
@@ -580,11 +598,11 @@
 							$admin_update_query .= ", `mysqls_used` = `mysqls_used` ";
 							if ( $mysqls != '-1' )
 							{
-								$admin_update_query .= " + 0".($mysqls)." ";
+								$admin_update_query .= " + 0".(int)$mysqls." ";
 							}
 							if ( $result['mysqls'] != '-1' )
 							{
-								$admin_update_query .= " - 0".($result['mysqls'])." ";
+								$admin_update_query .= " - 0".(int)$result['mysqls']." ";
 							}
 						}
 						if ( $emails != '-1' || $result['emails'] != '-1' )
@@ -592,11 +610,11 @@
 							$admin_update_query .= ", `emails_used` = `emails_used` ";
 							if ( $emails != '-1' )
 							{
-								$admin_update_query .= " + 0".($emails)." ";
+								$admin_update_query .= " + 0".(int)$emails." ";
 							}
 							if ( $result['emails'] != '-1' )
 							{
-								$admin_update_query .= " - 0".($result['emails'])." ";
+								$admin_update_query .= " - 0".(int)$result['emails']." ";
 							}
 						}
 						if ( $email_accounts != '-1' || $result['email_accounts'] != '-1' )
@@ -604,11 +622,11 @@
 							$admin_update_query .= ", `email_accounts_used` = `email_accounts_used` ";
 							if ( $email_accounts != '-1' )
 							{
-								$admin_update_query .= " + 0".($email_accounts)." ";
+								$admin_update_query .= " + 0".(int)$email_accounts." ";
 							}
 							if ( $result['email_accounts'] != '-1' )
 							{
-								$admin_update_query .= " - 0".($result['email_accounts'])." ";
+								$admin_update_query .= " - 0".(int)$result['email_accounts']." ";
 							}
 						}
 						if ( $email_forwarders != '-1' || $result['email_forwarders'] != '-1' )
@@ -616,11 +634,11 @@
 							$admin_update_query .= ", `email_forwarders_used` = `email_forwarders_used` ";
 							if ( $email_forwarders != '-1' )
 							{
-								$admin_update_query .= " + 0".($email_forwarders)." ";
+								$admin_update_query .= " + 0".(int)$email_forwarders." ";
 							}
 							if ( $result['email_forwarders'] != '-1' )
 							{
-								$admin_update_query .= " - 0".($result['email_forwarders'])." ";
+								$admin_update_query .= " - 0".(int)$result['email_forwarders']." ";
 							}
 						}
 						if ( $subdomains != '-1' || $result['subdomains'] != '-1' )
@@ -628,11 +646,11 @@
 							$admin_update_query .= ", `subdomains_used` = `subdomains_used` ";
 							if ( $subdomains != '-1' )
 							{
-								$admin_update_query .= " + 0".($subdomains)." ";
+								$admin_update_query .= " + 0".(int)$subdomains." ";
 							}
 							if ( $result['subdomains'] != '-1' )
 							{
-								$admin_update_query .= " - 0".($result['subdomains'])." ";
+								$admin_update_query .= " - 0".(int)$result['subdomains']." ";
 							}
 						}
 						if ( $ftps != '-1' || $result['ftps'] != '-1' )
@@ -640,11 +658,11 @@
 							$admin_update_query .= ", `ftps_used` = `ftps_used` ";
 							if ( $ftps != '-1' )
 							{
-								$admin_update_query .= " + 0".($ftps)." ";
+								$admin_update_query .= " + 0".(int)$ftps." ";
 							}
 							if ( $result['ftps'] != '-1' )
 							{
-								$admin_update_query .= " - 0".($result['ftps'])." ";
+								$admin_update_query .= " - 0".(int)$result['ftps']." ";
 							}
 						}
 						if ( ($diskspace/1024) != '-1' || ($result['diskspace']/1024) != '-1' )
@@ -652,14 +670,14 @@
 							$admin_update_query .= ", `diskspace_used` = `diskspace_used` ";
 							if ( ($diskspace/1024) != '-1' )
 							{
-								$admin_update_query .= " + 0".($diskspace)." ";
+								$admin_update_query .= " + 0".(int)$diskspace." ";
 							}
 							if ( ($result['diskspace']/1024) != '-1' )
 							{
-								$admin_update_query .= " - 0".($result['diskspace'])." ";
+								$admin_update_query .= " - 0".(int)$result['diskspace']." ";
 							}
 						}
-						$admin_update_query .= " WHERE `adminid` = '{$result['adminid']}'";
+						$admin_update_query .= " WHERE `adminid` = '".(int)$result['adminid']."'";
 						$db->query( $admin_update_query );
 
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;

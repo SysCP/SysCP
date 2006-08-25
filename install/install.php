@@ -46,7 +46,7 @@
 	 * Include the MySQL-Table-Definitions
 	 */
 	require('../lib/tables.inc.php');
-	
+
 	/**
 	 * Language Managament
 	 */
@@ -54,11 +54,11 @@
 	$standardlanguage = 'english';
 	if(isset($_GET['language']) && isset($languages[$_GET['language']]))
 	{
-		$language = addslashes($_GET['language']);
+		$language = $_GET['language'];
 	}
 	elseif(isset($_POST['language']) && isset($languages[$_POST['language']]))
 	{
-		$language = addslashes($_POST['language']);
+		$language = $_POST['language'];
 	}
 	else
 	{
@@ -144,7 +144,7 @@
 			echo " <span style=\"color:$case;\">$text</span></td>\n\t\t</tr>\n";
 		}
 	}
-	
+
 	//
 	// remove_remarks will strip the sql comment lines out of an uploaded sql file
 	//
@@ -202,12 +202,12 @@
 			{
 				// This is the total number of single quotes in the token.
 				$total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
-				// Counts single quotes that are preceded by an odd number of backslashes, 
+				// Counts single quotes that are preceded by an odd number of backslashes,
 				// which means they're escaped quotes.
 				$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$i], $matches);
 
 				$unescaped_quotes = $total_quotes - $escaped_quotes;
-				
+
 				// If the number of unescaped quotes is even, then the delimiter did NOT occur inside a string literal.
 				if (($unescaped_quotes % 2) == 0)
 				{
@@ -223,20 +223,20 @@
 					$temp = $tokens[$i] . $delimiter;
 					// save memory..
 					$tokens[$i] = "";
-					
-					// Do we have a complete statement yet? 
+
+					// Do we have a complete statement yet?
 					$complete_stmt = false;
-					
+
 					for ($j = $i + 1; (!$complete_stmt && ($j < $token_count)); $j++)
 					{
 						// This is the total number of single quotes in the token.
 						$total_quotes = preg_match_all("/'/", $tokens[$j], $matches);
-						// Counts single quotes that are preceded by an odd number of backslashes, 
+						// Counts single quotes that are preceded by an odd number of backslashes,
 						// which means they're escaped quotes.
 						$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$j], $matches);
 
 						$unescaped_quotes = $total_quotes - $escaped_quotes;
-						
+
 						if (($unescaped_quotes % 2) == 1)
 						{
 							// odd number of unescaped quotes. In combination with the previous incomplete
@@ -246,7 +246,7 @@
 							// save memory.
 							$tokens[$j] = "";
 							$temp = "";
-							
+
 							// exit the loop.
 							$complete_stmt = true;
 							// make sure the outer loop continues at the right point.
@@ -254,13 +254,13 @@
 						}
 						else
 						{
-							// even number of unescaped quotes. We still don't have a complete statement. 
+							// even number of unescaped quotes. We still don't have a complete statement.
 							// (1 odd and 1 even always make an odd)
 							$temp .= $tokens[$j] . $delimiter;
 							// save memory.
 							$tokens[$j] = "";
 						}
-						
+
 					} // for..
 				} // else
 			}
@@ -281,13 +281,13 @@
 	//guess Servername
 	if(!empty($_POST['servername']))
 	{
-		$servername = addslashes($_POST['servername']);
+		$servername = $_POST['servername'];
 	}
 	else
 	{
 		if(!empty($_SERVER['SERVER_NAME']))
 		{
-			$servername = addslashes($_SERVER['SERVER_NAME']);
+			$servername = $_SERVER['SERVER_NAME'];
 		}
 		else
 		{
@@ -298,13 +298,13 @@
 	//guess serverip
 	if(!empty($_POST['serverip']))
 	{
-		$serverip = addslashes($_POST['serverip']);
+		$serverip = $_POST['serverip'];
 	}
 	else
 	{
 		if(!empty($_SERVER['SERVER_ADDR']))
 		{
-			$serverip = addslashes($_SERVER['SERVER_ADDR']);
+			$serverip = $_SERVER['SERVER_ADDR'];
 		}
 		else
 		{
@@ -314,16 +314,16 @@
 
 	if(!empty($_POST['mysql_host']))
 	{
-		$mysql_host = addslashes($_POST['mysql_host']);
+		$mysql_host = $_POST['mysql_host'];
 	}
 	else
 	{
-		$mysql_host = 'localhost';
+		$mysql_host = '127.0.0.1';
 	}
 
 	if(!empty($_POST['mysql_database']))
 	{
-		$mysql_database = addslashes($_POST['mysql_database']);
+		$mysql_database = $_POST['mysql_database'];
 	}
 	else
 	{
@@ -332,7 +332,7 @@
 
 	if(!empty($_POST['mysql_unpriv_user']))
 	{
-		$mysql_unpriv_user = addslashes($_POST['mysql_unpriv_user']);
+		$mysql_unpriv_user = $_POST['mysql_unpriv_user'];
 	}
 	else
 	{
@@ -341,7 +341,7 @@
 
 	if(!empty($_POST['mysql_unpriv_pass']))
 	{
-		$mysql_unpriv_pass = addslashes($_POST['mysql_unpriv_pass']);
+		$mysql_unpriv_pass = $_POST['mysql_unpriv_pass'];
 	}
 	else
 	{
@@ -350,7 +350,7 @@
 
 	if(!empty($_POST['mysql_root_user']))
 	{
-		$mysql_root_user = addslashes($_POST['mysql_root_user']);
+		$mysql_root_user = $_POST['mysql_root_user'];
 	}
 	else
 	{
@@ -359,7 +359,7 @@
 
 	if(!empty($_POST['mysql_root_pass']))
 	{
-		$mysql_root_pass = addslashes($_POST['mysql_root_pass']);
+		$mysql_root_pass = $_POST['mysql_root_pass'];
 	}
 	else
 	{
@@ -368,7 +368,7 @@
 
 	if(!empty($_POST['admin_user']))
 	{
-		$admin_user = addslashes($_POST['admin_user']);
+		$admin_user = $_POST['admin_user'];
 	}
 	else
 	{
@@ -377,7 +377,7 @@
 
 	if(!empty($_POST['admin_pass1']))
 	{
-		$admin_pass1 = addslashes($_POST['admin_pass1']);
+		$admin_pass1 = $_POST['admin_pass1'];
 	}
 	else
 	{
@@ -386,7 +386,7 @@
 
 	if(!empty($_POST['admin_pass2']))
 	{
-		$admin_pass2 = addslashes($_POST['admin_pass2']);
+		$admin_pass2 = $_POST['admin_pass2'];
 	}
 	else
 	{
@@ -430,19 +430,19 @@
 
 		//so first we have to delete the database and the user given for the unpriv-user if they exit
 		status_message('begin', $lng['install']['erasing_old_db']);
-		$db_root->query("DELETE FROM `mysql`.`user` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
-		$db_root->query("DELETE FROM `mysql`.`db` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
-		$db_root->query("DELETE FROM `mysql`.`tables_priv` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
-		$db_root->query("DELETE FROM `mysql`.`columns_priv` WHERE `User` = '$mysql_unpriv_user' AND `Host` = '$mysql_access_host';");
-		$db_root->query("DROP DATABASE IF EXISTS `$mysql_database` ;");
+		$db_root->query("DELETE FROM `mysql`.`user` WHERE `User` = '".$db_root->escape($mysql_unpriv_user)."' AND `Host` = '".$db_root->escape($mysql_access_host)."'");
+		$db_root->query("DELETE FROM `mysql`.`db` WHERE `User` = '".$db_root->escape($mysql_unpriv_user)."' AND `Host` = '".$db_root->escape($mysql_access_host)."'");
+		$db_root->query("DELETE FROM `mysql`.`tables_priv` WHERE `User` = '".$db_root->escape($mysql_unpriv_user)."' AND `Host` = '".$db_root->escape($mysql_access_host)."'");
+		$db_root->query("DELETE FROM `mysql`.`columns_priv` WHERE `User` = '".$db_root->escape($mysql_unpriv_user)."' AND `Host` = '".$db_root->escape($mysql_access_host)."'");
+		$db_root->query("DROP DATABASE IF EXISTS `".$db_root->escape(str_replace('`', '', $mysql_database))."` ;");
 		$db_root->query("FLUSH PRIVILEGES;");
 		status_message('green', 'OK');
 
 		//then we have to create a new user and database for the syscp unprivileged mysql access
 		status_message('begin', $lng['install']['create_mysqluser_and_db']);
-		$db_root->query("CREATE DATABASE `$mysql_database`;");
-		$db_root->query("GRANT ALL PRIVILEGES ON `$mysql_database`.* TO $mysql_unpriv_user@$mysql_access_host IDENTIFIED BY 'password';");
-		$db_root->query("SET PASSWORD FOR $mysql_unpriv_user@$mysql_access_host = PASSWORD('$mysql_unpriv_pass');");
+		$db_root->query("CREATE DATABASE `".$db_root->escape(str_replace('`', '', $mysql_database))."`");
+		$db_root->query("GRANT ALL PRIVILEGES ON `".$db_root->escape(str_replace('`', '', $mysql_database))."`.* TO '".$db_root->escape($mysql_unpriv_user)."'@'".$db_root->escape($mysql_access_host)."' IDENTIFIED BY 'password'");
+		$db_root->query("SET PASSWORD FOR '".$db_root->escape($mysql_unpriv_user)."'@'".$db_root->escape($mysql_access_host)."' = PASSWORD('".$db_root->escape($mysql_unpriv_pass)."')");
 		$db_root->query("FLUSH PRIVILEGES;");
 		status_message('green', 'OK');
 
@@ -453,7 +453,7 @@
 
 		status_message('begin', $lng['install']['importing_data']);
 		$db_schema = './syscp.sql';
-		$sql_query = @fread(@fopen($db_schema, 'r'), @filesize($db_schema));
+		$sql_query = @file_get_contents($db_schema, 'r');
 		$sql_query = remove_remarks($sql_query);
 		$sql_query = split_sql_file($sql_query, ';');
 
@@ -466,15 +466,15 @@
 		}
 		status_message('green', 'OK');
 
-		//now let's chenage the settings in our settings-table
+		//now let's change the settings in our settings-table
 		status_message('begin', $lng['install']['changing_data']);
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = 'admin@$servername' WHERE `settinggroup` = 'panel' AND `varname` = 'adminmail'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$serverip' WHERE `settinggroup` = 'system' AND `varname` = 'ipaddress'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$servername' WHERE `settinggroup` = 'system' AND `varname` = 'hostname'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '$version' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$languages[$language]."' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
-		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$mysql_access_host."' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
-		
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = 'admin@".$db->escape($servername)."' WHERE `settinggroup` = 'panel' AND `varname` = 'adminmail'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$db->escape($serverip)."' WHERE `settinggroup` = 'system' AND `varname` = 'ipaddress'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$db->escape($servername)."' WHERE `settinggroup` = 'system' AND `varname` = 'hostname'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$db->escape($version)."' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$db->escape($languages[$language])."' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
+		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value` = '".$db->escape($mysql_access_host)."' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
+
 		// insert the lastcronrun to be the installation date
 		$query = 'UPDATE `%s` ' .
 		         'SET `value` = UNIX_TIMESTAMP() ' .
@@ -487,7 +487,7 @@
 		$query = 'INSERT INTO `%s` ' .
 		         ' SET `ip`   = \'%s\', ' .
 		         '     `port` = \'80\' ';
-		$query = sprintf( $query, TABLE_PANEL_IPSANDPORTS, $serverip );
+		$query = sprintf( $query, TABLE_PANEL_IPSANDPORTS, $db->escape($serverip) );
 		$db->query($query);
 
 		$defaultip = $db->insert_id();
@@ -496,26 +496,26 @@
 		         'SET `value` = \'%s\' ' .
 		         'WHERE `settinggroup` = \'system\' ' .
 		         '  AND `varname` = \'defaultip\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS, $defaultip );
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS, $db->escape($defaultip) );
 		$db->query($query);
 
 		status_message('green', 'OK');
 
 		//last but not least create the main admin
 		status_message('begin', $lng['install']['adding_admin_user']);
-		$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `customers`, `customers_used`, `customers_see_all`, `domains`, `domains_used`, `domains_see_all`, `change_serversettings`, `diskspace`, `diskspace_used`, `mysqls`, `mysqls_used`, `emails`, `emails_used`, `email_accounts`, `email_accounts_used`, `email_forwarders`, `email_forwarders_used`, `ftps`, `ftps_used`, `subdomains`, `subdomains_used`, `traffic`, `traffic_used`, `deactivated`) VALUES ('".$admin_user."', '".md5($admin_pass1)."', 'Siteadmin', 'admin@$servername', -1, 0, 1, -1, 0, 1, 1, -1024, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1048576, 0, 0);");
+		$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `customers`, `customers_used`, `customers_see_all`, `domains`, `domains_used`, `domains_see_all`, `change_serversettings`, `diskspace`, `diskspace_used`, `mysqls`, `mysqls_used`, `emails`, `emails_used`, `email_accounts`, `email_accounts_used`, `email_forwarders`, `email_forwarders_used`, `ftps`, `ftps_used`, `subdomains`, `subdomains_used`, `traffic`, `traffic_used`, `deactivated`) VALUES ('".$db->escape($admin_user)."', '".md5($admin_pass1)."', 'Siteadmin', 'admin@".$db->escape($servername)."', -1, 0, 1, -1, 0, 1, 1, -1024, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1048576, 0, 0)");
 		status_message('green', 'OK');
 
 		//now we create the userdata.inc.php with the mysql-accounts
 		status_message('begin', $lng['install']['creating_configfile']);
 		$userdata="<?php\n";
 		$userdata.="//automatically generated userdata.inc.php for SysCP\n";
-		$userdata.="\$sql['host']='$mysql_host';\n";
-		$userdata.="\$sql['user']='$mysql_unpriv_user';\n";
-		$userdata.="\$sql['password']='$mysql_unpriv_pass';\n";
-		$userdata.="\$sql['db']='$mysql_database';\n";
-		$userdata.="\$sql['root_user']='$mysql_root_user';\n";
-		$userdata.="\$sql['root_password']='$mysql_root_pass';\n";
+		$userdata.="\$sql['host']='".addcslashes($mysql_host, "'\\")."';\n";
+		$userdata.="\$sql['user']='".addcslashes($mysql_unpriv_user, "'\\")."';\n";
+		$userdata.="\$sql['password']='".addcslashes($mysql_unpriv_pass, "'\\")."';\n";
+		$userdata.="\$sql['db']='".addcslashes($mysql_database, "'\\")."';\n";
+		$userdata.="\$sql['root_user']='".addcslashes($mysql_root_user, "'\\")."';\n";
+		$userdata.="\$sql['root_password']='".addcslashes($mysql_root_pass, "'\\")."';\n";
 		$userdata.="?>";
 
 		//we test now if we can store the userdata.inc.php in ../lib
@@ -555,7 +555,7 @@
 	{
 		page_header();
 ?>
-	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="get">
+	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_40">
 			<tr>
 				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['welcome']; ?></b></td>
@@ -586,63 +586,63 @@
 		</table>
 	</form>
 	<br />
-	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_40">
 			<tr>
 				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['database']; ?></b></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><?php echo $lng['install']['mysql_hostname']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_host" value="<?php echo $mysql_host; ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_host" value="<?php echo htmlspecialchars($mysql_host); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><?php echo $lng['install']['mysql_database']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_database" value="<?php echo $mysql_database; ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_database" value="<?php echo htmlspecialchars($mysql_database); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_user']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_unpriv_user" value="<?php echo $mysql_unpriv_user; ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_unpriv_user" value="<?php echo htmlspecialchars($mysql_unpriv_user); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $mysql_unpriv_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_pass']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="mysql_unpriv_pass" value="<?php echo $mysql_unpriv_pass; ?>"></td>
+				<td class="main_field_display"><input type="password" name="mysql_unpriv_pass" value="<?php echo htmlspecialchars($mysql_unpriv_pass); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_root_user']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_root_user" value="<?php echo $mysql_root_user; ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_root_user" value="<?php echo htmlspecialchars($mysql_root_user); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $mysql_root_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_root_pass']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="mysql_root_pass" value="<?php echo $mysql_root_pass; ?>"></td>
+				<td class="main_field_display"><input type="password" name="mysql_root_pass" value="<?php echo htmlspecialchars($mysql_root_pass); ?>"></td>
 			</tr>
 			<tr>
 				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['admin_account']; ?></b></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><?php echo $lng['install']['admin_user']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="admin_user" value="<?php echo $admin_user; ?>"></td>
+				<td class="main_field_display"><input type="text" name="admin_user" value="<?php echo htmlspecialchars($admin_user); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && ($admin_pass1 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="admin_pass1" value="<?php echo $admin_pass1; ?>"></td>
+				<td class="main_field_display"><input type="password" name="admin_pass1" value="<?php echo htmlspecialchars($admin_pass1); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && ($admin_pass2 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass_confirm']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="admin_pass2" value="<?php echo $admin_pass2; ?>"></td>
+				<td class="main_field_display"><input type="password" name="admin_pass2" value="<?php echo htmlspecialchars($admin_pass2); ?>"></td>
 			</tr>
 			<tr>
 				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['serversettings']; ?></b></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $servername == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['servername']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="servername" value="<?php echo $servername; ?>"></td>
+				<td class="main_field_display"><input type="text" name="servername" value="<?php echo htmlspecialchars($servername); ?>"></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['serverip']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="serverip" value="<?php echo $serverip; ?>"></td>
+				<td class="main_field_display"><input type="text" name="serverip" value="<?php echo htmlspecialchars($serverip); ?>"></td>
 			</tr>
 			<tr>
-				<td class="main_field_confirm" colspan="2"><input type="hidden" name="language" value="<?php echo $language; ?>"><input type="hidden" name="installstep" value="1"><input class="bottom" type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"></td>
+				<td class="main_field_confirm" colspan="2"><input type="hidden" name="language" value="<?php echo htmlspecialchars($language); ?>"><input type="hidden" name="installstep" value="1"><input class="bottom" type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"></td>
 			</tr>
 		</table>
 	</form>

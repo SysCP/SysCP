@@ -70,19 +70,19 @@
 	/**
 	 * Includes the Usersettings eg. MySQL-Username/Passwort etc.
 	 */
-	require("$pathtophpfiles/lib/userdata.inc.php");
+	require($pathtophpfiles.'/lib/userdata.inc.php');
 	fwrite( $debugHandler, 'Userdatas included');
 
 	/**
 	 * Includes the MySQL-Tabledefinitions etc.
 	 */
-	require("$pathtophpfiles/lib/tables.inc.php");
+	require($pathtophpfiles.'/lib/tables.inc.php');
 	fwrite( $debugHandler, 'Table definitions included' );
 
 	/**
 	 * Includes the MySQL-Connection-Class
 	 */
-	require("$pathtophpfiles/lib/class_mysqldb.php");
+	require($pathtophpfiles.'/lib/class_mysqldb.php');
 	fwrite( $debugHandler, 'Database Class has been loaded');
 	$db      = new db($sql['host'],$sql['user'],$sql['password'],$sql['db']);
 	$db_root = new db($sql['host'],$sql['root_user'],$sql['root_password'],'');
@@ -104,7 +104,7 @@
 	$result=$db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FROM `".TABLE_PANEL_SETTINGS."`");
 	while($row=$db->fetch_array($result))
 	{
-		$settings["$row[settinggroup]"]["$row[varname]"]=$row['value'];
+		$settings[$row['settinggroup']][$row['varname']]=$row['value'];
 	}
 	unset($row);
 	unset($result);
@@ -125,7 +125,7 @@
 	/**
 	 * Includes the Functions
 	 */
-	require("$pathtophpfiles/lib/functions.php");
+	require($pathtophpfiles.'/lib/functions.php');
 	fwrite( $debugHandler, 'Functions has been included' );
 
 	/**

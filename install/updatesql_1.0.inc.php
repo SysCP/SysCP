@@ -30,28 +30,28 @@
 	
 	if($settings['panel']['version'] == '1.0.0')
 	{
-		$db->query("INSERT INTO `".TABLE_PANEL_SETTINGS."` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.0.1');");
-		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `openbasedir` TINYINT( 1 ) NOT NULL , ADD `safemode` TINYINT( 1 ) NOT NULL ;");
+		$db->query("INSERT INTO `".TABLE_PANEL_SETTINGS."` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.0.1')");
+		$db->query("ALTER TABLE `".TABLE_PANEL_DOMAINS."` ADD `openbasedir` TINYINT( 1 ) NOT NULL , ADD `safemode` TINYINT( 1 ) NOT NULL");
 		$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `openbasedir`='1', `safemode`='1'");
 		$settings['panel']['version'] = '1.0.1';
 	}
 	if($settings['panel']['version'] == '1.0.1')
 	{
-		$db->query("ALTER TABLE `".TABLE_POSTFIX_USERS."` ADD `domainid` INT( 11 ) NOT NULL AFTER `postfix` ;");
-		$db->query("ALTER TABLE `".TABLE_POSTFIX_VIRTUAL."` ADD `domainid` INT( 11 ) NOT NULL AFTER `destination` ;");
+		$db->query("ALTER TABLE `".TABLE_POSTFIX_USERS."` ADD `domainid` INT( 11 ) NOT NULL AFTER `postfix`");
+		$db->query("ALTER TABLE `".TABLE_POSTFIX_VIRTUAL."` ADD `domainid` INT( 11 ) NOT NULL AFTER `destination`");
 		$result=$db->query("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."`");
 		while($row=$db->fetch_array($result))
 		{
-			$db->query("UPDATE `".TABLE_POSTFIX_USERS."` SET `domainid`='".$row['id']."' WHERE `email` LIKE '%@".$row['domain']."'");
-			$db->query("UPDATE `".TABLE_POSTFIX_VIRTUAL."` SET `domainid`='".$row['id']."' WHERE `email` LIKE '%@".$row['domain']."'");
+			$db->query("UPDATE `".TABLE_POSTFIX_USERS."` SET `domainid`='".(int)$row['id']."' WHERE `email` LIKE '%@".$db->escape($row['domain'])."'");
+			$db->query("UPDATE `".TABLE_POSTFIX_VIRTUAL."` SET `domainid`='".(int)$row['id']."' WHERE `email` LIKE '%@".$db->escape($row['domain'])."'");
 		}
-		$db->query("ALTER TABLE `".TABLE_PANEL_CUSTOMERS."` ADD `createstdsubdomain` TINYINT( 1 ) NOT NULL AFTER `documentroot` ;");
+		$db->query("ALTER TABLE `".TABLE_PANEL_CUSTOMERS."` ADD `createstdsubdomain` TINYINT( 1 ) NOT NULL AFTER `documentroot`");
 		inserttask('1');
 		inserttask('4');	
 
 		$hostname = explode('@',$settings['panel']['adminmail']);
 		$hostname = $hostname[1];
-		$db->query("INSERT INTO `".TABLE_PANEL_SETTINGS."` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', '$hostname');");
+		$db->query("INSERT INTO `".TABLE_PANEL_SETTINGS."` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', '".$db->escape($hostname)."')");
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.0.2' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.0.2';
 	}
@@ -84,14 +84,14 @@
 		$result=$db->query("SELECT `id`, `email` FROM `".TABLE_POSTFIX_USERS."`");
 		while($row=$db->fetch_array($result))
 		{
-			$db->query("UPDATE `".TABLE_POSTFIX_VIRTUAL."` SET `popaccountid`='".$row['id']."' WHERE `email` = '".str_replace($settings['email']['catchallkeyword'], '', $row['email'])."' AND `destination` = '".$row['email']."'");
+			$db->query("UPDATE `".TABLE_POSTFIX_VIRTUAL."` SET `popaccountid`='".(int)$row['id']."' WHERE `email` = '".$db->escape(str_replace($settings['email']['catchallkeyword'], '', $row['email']))."' AND `destination` = '".$db->escape($row['email'])."'");
 		}
 		$result=$db->query("SELECT `id`, `email`, `destination` FROM `".TABLE_POSTFIX_VIRTUAL."` WHERE `popaccountid` = '0'");
 		while($row=$db->fetch_array($result))
 		{
 			if(str_replace($settings['email']['catchallkeyword'], '', $row['email']) != $row['email'])
 			{
-				$db->query("UPDATE `".TABLE_POSTFIX_VIRTUAL."` SET `email` = '".str_replace($settings['email']['catchallkeyword'], '', $row['email'])."' WHERE `id` = '".$row['id']."'");
+				$db->query("UPDATE `".TABLE_POSTFIX_VIRTUAL."` SET `email` = '".$db->escape(str_replace($settings['email']['catchallkeyword'], '', $row['email']))."' WHERE `id` = '".(int)$row['id']."'");
 			}
 		}
 

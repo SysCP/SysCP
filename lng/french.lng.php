@@ -145,7 +145,7 @@ $lng['ftp']['account_add'] = 'Ajouter un acc&egrave;s';
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Ici vous pouvez ajouter et effacer des bases de donn&eacute;es MySQL.<br>Les changements sont tout de suite op&eacute;rant et les banques sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos banques de donn&eacute;es.<br><br>L\'acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c\'est!)<br><br>$connection = mysql_connect("localhost", "<i>Votre identifiant</i>", "<i>Votre mot de passe</i>");<br>mysql_select_db("<i>Le nom de la banque</i>", $connection);';
+$lng['mysql']['description'] = 'Ici vous pouvez ajouter et effacer des bases de donn&eacute;es MySQL.<br>Les changements sont tout de suite op&eacute;rant et les banques sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos banques de donn&eacute;es.<br><br>L\'acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c\'est!)<br><br>$connection = mysql_connect(&quot;localhost&quot;, &quot;<i>Votre identifiant</i>&quot;, &quot;<i>Votre mot de passe</i>&quot;);<br>mysql_select_db(&quot;<i>Le nom de la banque</i>&quot;, $connection);';
 $lng['mysql']['databasename'] = 'Nom de la base';
 $lng['mysql']['databasedescription'] = 'Description de la base';
 $lng['mysql']['database_create'] = 'Ajouter une base de donn&eacute;es';

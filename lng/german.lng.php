@@ -34,7 +34,6 @@ $lng['panel']['path'] = 'Pfad';
 $lng['panel']['toggle'] = 'Umschalten';
 $lng['panel']['next'] = 'weiter';
 $lng['panel']['dirsmissing'] = 'Verzeichnisse nicht verf&uuml;gbar oder lesbar';
-$lng['panel']['translator'] = '&Uuml;bersetzung';
 
 /**
  * Login
@@ -438,5 +437,12 @@ $lng['panel']['decending'] = 'absteigend';
 
 $lng['panel']['search'] = 'Suche';
 $lng['panel']['used'] = 'benutzt';
+
+// ADDED IN 1.2.14-rc3
+$lng['panel']['translator'] = '&Uuml;bersetzung';
+
+// ADDED IN 1.2.14-rc4
+$lng['error']['stringformaterror'] = 'Der Wert des Feldes &quot;%s&quot; ist nicht im erwarteten Format.';
+
 
 ?>

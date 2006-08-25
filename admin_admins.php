@@ -95,12 +95,14 @@
 		}
 		elseif($action=='su' && $id != 1 && $userinfo['userid'] == '1')
 		{
-			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid` = '$id'; ");
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid` = '".(int)$id."'");
 			if($result['loginname'] != '')
 			{
-				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`={$userinfo['userid']}");
+				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='".(int)$userinfo['userid']."'");
 				$s = md5(uniqid(microtime(),1));
-				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('$s', '$id', '{$result['ipaddress']}', '{$result['useragent']}', '" . time() . "', '{$result['language']}', '1')");
+				$db->query("INSERT INTO `".TABLE_PANEL_SESSIONS."` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('".$db->escape($s).
+					"', '".(int)$id."', '".$db->escape($result['ipaddress'])."', '".$db->escape($result['useragent'])."', '" .
+				time() . "', '".$db->escape($result['language'])."', '1')");
 				redirectTo ( 'admin_index.php' , Array ( 's' => $s ) ) ;
 			}
 			else
@@ -115,15 +117,15 @@
 				standard_error('youcantdeletechangemainadmin');
 				exit;
 			}
-			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='$id'");
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='".(int)$id."'");
 			if($result['loginname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$db->query("DELETE FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='$id'");
-					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC_ADMINS."` WHERE `adminid`='$id'");
-					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `adminid` = '1' WHERE `adminid` = '$id'");
-					$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `adminid` = '1' WHERE `adminid` = '$id'");
+					$db->query("DELETE FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='".(int)$id."'");
+					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC_ADMINS."` WHERE `adminid`='".(int)$id."'");
+					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `adminid` = '1' WHERE `adminid` = '".(int)$id."'");
+					$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `adminid` = '1' WHERE `adminid` = '".(int)$id."'");
 					updateCounters () ;
 
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
@@ -139,12 +141,13 @@
 		{
 			if(isset($_POST['send']) && $_POST['send']=='send')
 			{
-				$name = addslashes ( $_POST['name'] ) ;
-				$loginname = addslashes ( $_POST['loginname'] ) ;
-				$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$loginname."'");
-				$password = addslashes ( $_POST['password'] ) ;
-				$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
-				$def_language = addslashes($_POST['def_language']);
+				$name = validate($_POST['name'], 'name');
+				$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
+				$loginname = validate($_POST['loginname'], 'loginname');
+				$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$db->escape($loginname)."'");
+				$password = validate($_POST['password'], 'password');
+				$email = $idna_convert->encode ( validate($_POST['email'], 'email') );
+				$def_language = validate($_POST['def_language'], 'default language');
 				$customers = intval_ressource ( $_POST['customers'] ) ;
 				$domains = intval_ressource ( $_POST['domains'] ) ;
 				$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
@@ -207,7 +210,14 @@
 					}
 
 					$result=$db->query("INSERT INTO `".TABLE_PANEL_ADMINS."` (`loginname`, `password`, `name`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`)
-					                   VALUES ('$loginname', '".md5($password)."', '$name', '$email','$def_language', '$change_serversettings', '$customers', '$customers_see_all', '$domains', '$domains_see_all', '$diskspace', '$traffic', '$subdomains', '$emails', '$email_accounts', '$email_forwarders', '$ftps', '$mysqls')");
+					                   VALUES ('".$db->escape($loginname)."', '".md5($password)."', '".$db->escape($name).
+					                   "', '".$db->escape($email)."','".$db->escape($def_language)."', '".
+					                   $db->escape($change_serversettings)."', '".$db->escape($customers)."', '".
+					                   $db->escape($customers_see_all)."', '".$db->escape($domains)."', '".
+					                   $db->escape($domains_see_all)."', '".$db->escape($diskspace)."', '".
+					                   $db->escape($traffic)."', '".$db->escape($subdomains)."', '".$db->escape($emails).
+					                   "', '".$db->escape($email_accounts)."', '".$db->escape($email_forwarders)."', '".
+					                   $db->escape($ftps)."', '".$db->escape($mysqls)."')");
 					$adminid=$db->insert_id();
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
@@ -233,15 +243,15 @@
 				standard_error('youcantdeletechangemainadmin');
 				exit;
 			}
-			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='$id'");
+			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='".(int)$id."'");
 			if($result['loginname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$name = addslashes ( $_POST['name'] ) ;
-					$newpassword = addslashes ( $_POST['newpassword'] ) ;
-					$email = $idna_convert->encode ( addslashes ( $_POST['email'] ) ) ;
-					$def_language = addslashes($_POST['def_language']);
+					$name = validate($_POST['name'], 'name');
+					$newpassword = validate($_POST['newpassword'], 'new password');
+					$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
+					$def_language = validate($_POST['def_language'], 'default language');
 					$deactivated = intval ( $_POST['deactivated'] ) ;
 					$customers = intval_ressource ( $_POST['customers'] ) ;
 					$domains = intval_ressource ( $_POST['domains'] ) ;
@@ -298,7 +308,16 @@
 							$change_serversettings = '0';
 						}
 
-						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `name`='$name', `email`='$email', `def_language`='$def_language', `change_serversettings` = '$change_serversettings', `customers` = '$customers', `customers_see_all` = '$customers_see_all', `domains` = '$domains', `domains_see_all` = '$domains_see_all', $updatepassword `diskspace`='$diskspace', `traffic`='$traffic', `subdomains`='$subdomains', `emails`='$emails', `email_accounts` = '$email_accounts', `email_forwarders`='$email_forwarders', `ftps`='$ftps', `mysqls`='$mysqls', `deactivated`='$deactivated' WHERE `adminid`='$id'");
+						$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `name`='".$db->escape($name)."', `email`='".
+							$db->escape($email)."', `def_language`='".$db->escape($def_language)."', `change_serversettings` = '".
+							$db->escape($change_serversettings)."', `customers` = '".$db->escape($customers).
+							"', `customers_see_all` = '".$db->escape($customers_see_all)."', `domains` = '".$db->escape($domains).
+							"', `domains_see_all` = '".$db->escape($domains_see_all)."', ".$updatepassword.
+							" `diskspace`='".$db->escape($diskspace)."', `traffic`='".$db->escape($traffic)."', `subdomains`='".
+							$db->escape($subdomains)."', `emails`='".$db->escape($emails)."', `email_accounts` = '".
+							$db->escape($email_accounts)."', `email_forwarders`='".$db->escape($email_forwarders)."', `ftps`='".
+							$db->escape($ftps)."', `mysqls`='".$db->escape($mysqls)."', `deactivated`='".
+							$db->escape($deactivated)."' WHERE `adminid`='".$db->escape($id)."'");
 
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
