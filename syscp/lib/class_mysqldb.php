@@ -244,8 +244,8 @@
 		 */
 		function geterrdescno()
 		{
-			$this->errdesc=mysql_error();
-			$this->errno=mysql_errno();
+			$this->errdesc=mysql_error($this->link_id);
+			$this->errno=mysql_errno($this->link_id);
 			return $this->errno;
 		}
 
@@ -264,15 +264,16 @@
 				$errormsg .= 'mysql error number: '.$this->errno."\n";
 				$errormsg .= 'mysql error desc: '.$this->errdesc."\n";
 			}
-			$errormsg .= 'Script: '.getenv('REQUEST_URI')   ."\n";
-			$errormsg .= 'Referer: '.getenv('HTTP_REFERER') ."\n";
 			$errormsg .= 'Time/date: '.date('d/m/Y h:i A')  ."\n";
-			if( (@php_sapi_name() != 'cli') && (@php_sapi_name() != 'cgi') && (@php_sapi_name() != 'cgi-fcgi') )
+			if( $filename != 'cronscript.php' )
 			{
+				$errormsg .= 'Script: '.htmlspecialchars(getenv('REQUEST_URI'))   ."\n";
+				$errormsg .= 'Referer: '.htmlspecialchars(getenv('HTTP_REFERER')) ."\n";
 				die(nl2br($errormsg));
 			}
 			else
 			{
+				$errormsg .= 'Script: -- Cronscript --' ."\n";
 				die($errormsg);
 			}
 		}
