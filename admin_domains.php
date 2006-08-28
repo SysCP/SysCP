@@ -180,11 +180,11 @@
 						{
 							$ipandport = $settings['system']['defaultip'];
 						}
-						
+
 						validate($_POST['documentroot'], 'documentroot');
 						if(isset($_POST['documentroot']) && $_POST['documentroot'] != '')
 						{
-							if ( substr($_POST['documentroot'],0,1) != '/' )
+							if ( substr($_POST['documentroot'],0,1) != '/' && !preg_match('/^https?\:\/\//', $_POST['documentroot']) )
 							{
 								$documentroot .= '/'.$_POST['documentroot'];
 							}
