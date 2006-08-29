@@ -996,15 +996,15 @@
 		//
 		// check if command is allowed here
 		//
-		if ($command_endpos = strpos($exec_string, ' '))
+		$ok = false;
+		foreach ($allowed_commands as $allowed_command)
 		{
-			$command = substr($exec_string, 0, $command_endpos);
+			if (strpos($exec_string, $allowed_command) == 0 && (strlen($exec_string) === ($allowed_command_pos = strlen($allowed_command)) || substr($exec_string, $allowed_command_pos, 1) === ' '))
+			{
+				$ok = true;
+			}
 		}
-		else
-		{
-			$command = $exec_string;
-		}
-		if (!in_array($command, $allowed_commands))
+		if (!$ok)
 		{
 			die('SECURITY CHECK FAILED!'."\n".'Your command "'.htmlspecialchars($exec_string).'" is not allowed!'.
 				"\n".'Please check your whole server for security problems by hand!'."\n");
