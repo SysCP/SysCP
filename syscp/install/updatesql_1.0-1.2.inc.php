@@ -1,20 +1,17 @@
 <?php
 /**
- * filename: $Source$
- * begin: Sunday, Sep 12, 2004
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2006 the SysCP Team (see authors).
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. This program is distributed in the
- * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code. You can also view the
+ * COPYING file online at http://files.syscp.org/misc/COPYING.txt
  *
- * @author Florian Lippert <flo@redenswert.de>
- * @copyright (C) 2003-2004 Florian Lippert
- * @package System
- * @version $Id$
+ * @copyright  (c) the authors
+ * @author     Florian Lippert <flo@syscp.org>
+ * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
+ * @package    System
+ * @version    $Id$
  */
 
 	/**

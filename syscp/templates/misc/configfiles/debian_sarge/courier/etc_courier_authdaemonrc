@@ -1,4 +1,4 @@
-##VERSION: $Id$
+##VERSION: $Id: authdaemonrc.in,v 1.8 2001/10/07 02:16:22 mrsam Exp $
 #
 # Copyright 2000-2001 Double Precision, Inc.  See COPYING for
 # distribution information.
