@@ -55,9 +55,9 @@
 			$paging->setEntries( $db->num_rows($result) );
 
 			$sortcode = $paging->getHtmlSortCode( $lng );
-			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$arrowcode = $paging->getHtmlArrowCode( $filename . '?page=' . $page . '&s=' . $s );
 			$searchcode = $paging->getHtmlSearchCode( $lng );
-			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&amp;s=' . $s );
+			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&s=' . $s );
 
 			$i = 0;
 			$count = 0;
