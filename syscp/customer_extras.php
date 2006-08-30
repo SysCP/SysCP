@@ -112,7 +112,6 @@
 				{
 					$password = crypt($_POST['password']);
 				}
-				$passwordtest=$_POST['password'];
 
 				if(!$_POST['path'])
 				{
@@ -130,7 +129,7 @@
 				{
 					standard_error('userpathcombinationdupe');
 				}
-				elseif($passwordtest=='')
+				elseif($_POST['password'] == '')
 				{
 					standard_error(array('stringisempty','mypassword'));
 				}
@@ -160,7 +159,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					validate($_POST['password']);
+					validate($_POST['password'], 'password');
 					if ( CRYPT_STD_DES == 1 )
 					{
 						$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
@@ -170,8 +169,7 @@
 					{
 						$password = crypt($_POST['password']);
 					}
-					$passwordtest=$_POST['password'];
-					if ($passwordtest=='')
+					if ($_POST['password'] == '')
 					{
 						standard_error(array('stringisempty','mypassword'));
 					}
