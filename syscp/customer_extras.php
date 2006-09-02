@@ -97,7 +97,7 @@
 				$path=makeCorrectDir(validate($_POST['path'], 'path'));
 				$userpath=$path;
 				$path=$userinfo['documentroot'].$path;
-				$username=validate($_POST['username'], 'username');
+				$username=validate($_POST['username'], 'username', '/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/');
 				validate($_POST['password'], 'password');
 				$username_path_check=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `username`='".$db->escape($username)."' AND `path`='".$db->escape($path)."' AND `customerid`='".(int)$userinfo['customerid']."'");
 				if ( CRYPT_STD_DES == 1 )
