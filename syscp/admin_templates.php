@@ -117,7 +117,7 @@
 				
 				$template_options='';
 				foreach($templates as $template) {
-					$template_options.=makeoption($lng['admin']['templates'][$template],$template,NULL,true);
+					$template_options.=makeoption($lng['admin']['templates'][$template], $template, NULL, true, true);
 				}
 				eval("echo \"".getTemplate("templates/templates_add_2")."\";");
 				
@@ -167,7 +167,7 @@
 					if(count(array_diff($available_templates,$templates))>0)
 					{
 						$add = true;
-						$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
+						$language_options .= makeoption($language_name, $language_file, $userinfo['language'], true, true);
 					}
 				}
 				if($add)

@@ -243,7 +243,6 @@
 						$caneditdomain = '0';
 					}
 
-
 					if($domain=='')
 					{
 						standard_error(array('stringisempty','mydomain'));
@@ -262,7 +261,7 @@
 					}
 					elseif($domain_check['domain'] == $domain)
 					{
-						standard_error('domainalreadyexists',$domain);
+						standard_error('domainalreadyexists', $idna_convert->decode($domain) );
 					}
 					elseif($aliasdomain_check['id']!=$aliasdomain)
 					{
@@ -315,17 +314,17 @@
 					{
 						if ($row_customer['company'] == '')
 						{
-							$customers.=makeoption($row_customer['name'].', '.$row_customer['firstname'].' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+							$customers.=makeoption($row_customer['name'].', '.$row_customer['firstname'].' ('.$row_customer['loginname'].')', $row_customer['customerid'], NULL, true, true);
 						}
 						else
 						{
 							if($row_customer['name'] != '' && $row_customer['firstname'] != '')
 							{
-								$customers.=makeoption($row_customer['name'].', '.$row_customer['firstname'].' | '. $row_customer['company'] .' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+								$customers.=makeoption($row_customer['name'].', '.$row_customer['firstname'].' | '. $row_customer['company'] .' ('.$row_customer['loginname'].')', $row_customer['customerid'], NULL, true, true);
 							}
 							else
 							{
-								$customers.=makeoption($row_customer['company'] .' ('.$row_customer['loginname'].')',$row_customer['customerid']);
+								$customers.=makeoption($row_customer['company'] .' ('.$row_customer['loginname'].')', $row_customer['customerid'], NULL, true, true);
 							}
 						}
 					}
@@ -333,7 +332,7 @@
 					$result_ipsandports=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
 					while($row_ipandport=$db->fetch_array($result_ipsandports))
 					{
-						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'],$row_ipandport['id'],$settings['system']['defaultip']);
+						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'], $row_ipandport['id'], $settings['system']['defaultip'], true, true);
 					}
 					$standardsubdomains=array();
 					$result_standardsubdomains=$db->query('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`, `'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`id`=`c`.`standardsubdomain`');
@@ -349,11 +348,11 @@
 					{
 						$standardsubdomains='';
 					}
-					$domains=makeoption($lng['domains']['noaliasdomain'],0);
+					$domains=makeoption($lng['domains']['noaliasdomain'], 0, NULL, true, true);
 					$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `c`.`loginname` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 ".$standardsubdomains.( $userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '".(int)$userinfo['adminid']."'")." AND `d`.`customerid`=`c`.`customerid` ORDER BY `loginname`, `domain` ASC");
 					while($row_domain=$db->fetch_array($result_domains))
 					{
-						$domains.=makeoption($idna_convert->decode($row_domain['domain']).' ('.$row_domain['loginname'].')',$row_domain['id']);
+						$domains.=makeoption($idna_convert->decode($row_domain['domain']).' ('.$row_domain['loginname'].')', $row_domain['id'], NULL, true, true);
 					}
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', '1');
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', '1');
@@ -508,17 +507,17 @@
 				else
 				{
 					$result['domain'] = $idna_convert->decode($result['domain']);
-					$domains=makeoption($lng['domains']['noaliasdomain'],0,$result['aliasdomain']);
+					$domains=makeoption($lng['domains']['noaliasdomain'], 0, $result['aliasdomain'], true, true);
 					$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 AND `d`.`id`<>'".(int)$result['id']."' AND `c`.`standardsubdomain`<>`d`.`id` AND `d`.`customerid`='".(int)$result['customerid']."' AND `c`.`customerid`=`d`.`customerid` ORDER BY `d`.`domain` ASC");
 					while($row_domain=$db->fetch_array($result_domains))
 					{
-						$domains.=makeoption($idna_convert->decode($row_domain['domain']),$row_domain['id'],$result['aliasdomain']);
+						$domains.=makeoption($idna_convert->decode($row_domain['domain']), $row_domain['id'], $result['aliasdomain'], true, true);
 					}
 					$ipsandports='';
 					$result_ipsandports=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC");
 					while($row_ipandport=$db->fetch_array($result_ipsandports))
 					{
-						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'],$row_ipandport['id'],$result['ipandport']);
+						$ipsandports.=makeoption($row_ipandport['ip'].':'.$row_ipandport['port'], $row_ipandport['id'], $result['ipandport'], true, true);
 					}
 					$result['specialsettings'] = $result['specialsettings'];
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);

@@ -1381,7 +1381,7 @@
 				foreach ( $dirList as $key => $dir )
 				{
 					$dir    = str_replace( $path, '', $dir );
-					$field .= makeoption( $dir, $dir, $value);
+					$field .= makeoption( $dir, $dir, $value );
 				}
 				$field .= '</select>';
 			}

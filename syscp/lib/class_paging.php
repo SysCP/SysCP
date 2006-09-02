@@ -323,12 +323,12 @@
 			$sortcode = '<select class="dropdown_noborder" name="sortfield">';
 			foreach( $this->fields as $fieldname => $fieldcaption )
 			{
-				$sortcode .= makeoption( $fieldcaption, $fieldname, $this->sortfield );
+				$sortcode .= makeoption( $fieldcaption, $fieldname, $this->sortfield, true, true );
 			}
 			$sortcode .= '</select>' . ( $break ? '<br />' : '&nbsp;' ) . '<select class="dropdown_noborder" name="sortorder">';
 			foreach( array( 'asc' => $lng['panel']['ascending'], 'desc' => $lng['panel']['decending'] ) as $sortordertype => $sortorderdescription )
 			{
-				$sortcode .= makeoption( $sortorderdescription, $sortordertype, $this->sortorder );
+				$sortcode .= makeoption( $sortorderdescription, $sortordertype, $this->sortorder, true, true );
 			}
 			$sortcode .= '</select>&nbsp;<input type="submit" name="Go" value="Go" />';
 			return $sortcode;
@@ -369,7 +369,7 @@
 			$sortcode = $lng['panel']['search'] . ': <select class="dropdown_noborder" name="searchfield">';
 			foreach( $this->fields as $fieldname => $fieldcaption )
 			{
-				$sortcode .= makeoption( $fieldcaption, $fieldname, $this->searchfield );
+				$sortcode .= makeoption( $fieldcaption, $fieldname, $this->searchfield, true, true );
 			}
 			$sortcode .= '</select>&nbsp;<input type="text" name="searchtext" value="' . htmlspecialchars($this->searchtext) . '" />&nbsp;<input type="submit" name="Go" value="Go" />';
 			return $sortcode;

@@ -269,7 +269,12 @@
 
 			if($_POST['panel_standardlanguage']!=$settings['panel']['standardlanguage'])
 			{
-				$value = validate($_POST['panel_standardlanguage'], 'standard language', '/^[a-z0-9_\- \+]+$/');
+				$value = htmlentities( $_POST['panel_standardlanguage'] );
+				if( !in_array( $value, $languages ) )
+				{
+					standard_error( 'stringformaterror', 'standard language' );
+					exit;
+				}
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='panel' AND `varname`='standardlanguage'");
 			}
 
@@ -447,7 +452,7 @@
 				if( !isset( $languages_array[$row['language']] ) && !in_array( $row['language'], $languages_array ) )
 				{
 					$languages_array[$row['language']] = $row['language'];
-					$languages .= makeoption($row['language'],$row['language'],$settings['panel']['standardlanguage']);
+					$languages .= makeoption($row['language'], $row['language'], $settings['panel']['standardlanguage'], true, true);
 				}
 			}
 
@@ -461,16 +466,16 @@
 				if( !isset( $system_ipaddress_array[$row['ip']] ) && !in_array( $row['ip'], $system_ipaddress_array ) )
 				{
 					$system_ipaddress_array[$row['ip']] = $row['ip'];
-					$system_ipaddress.=makeoption($row['ip'],$row['ip'],$settings['system']['ipaddress']);
+					$system_ipaddress.=makeoption($row['ip'], $row['ip'], $settings['system']['ipaddress'], true, true);
 				}
-				$system_defaultip.=makeoption($row['ip'].':'.$row['port'],$row['id'],$settings['system']['defaultip']);
+				$system_defaultip.=makeoption($row['ip'].':'.$row['port'], $row['id'], $settings['system']['defaultip'], true, true);
 			}
 
 			// build the pathedit list
 			$pathedit='';
 			foreach (array('Manual','Dropdown') as $method)
 			{
-				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit']);
+				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit'], true, true);
 			}
 
 			$settings = htmlentities_array( $settings );

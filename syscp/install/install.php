@@ -568,7 +568,7 @@
 					$language_options = '';
 					while(list($language_file, $language_name) = each($languages))
 					{
-						$language_options .= "\n\t\t\t\t\t\t".makeoption($language_name, $language_file, $language);
+						$language_options .= "\n\t\t\t\t\t\t".makeoption($language_name, $language_file, $language, true, true);
 					}
 					echo $language_options;
 				?>
