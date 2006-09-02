@@ -447,7 +447,7 @@
 					$language_options = '';
 					while(list($language_file, $language_name) = each($languages))
 					{
-						$language_options .= makeoption($language_name, $language_file, $userinfo['def_language']);
+						$language_options .= makeoption($language_name, $language_file, $userinfo['def_language'], true, true);
 					}
 					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', '1');
 					$sendpassword=makeyesno('sendpassword', '1', '0', '1');
@@ -685,7 +685,7 @@
 					$language_options = '';
 					while(list($language_file, $language_name) = each($languages))
 					{
-						$language_options .= makeoption($language_name, $language_file, $result['def_language']);
+						$language_options .= makeoption($language_name, $language_file, $result['def_language'], true, true);
 					}
 					$result['traffic']=$result['traffic']/(1024*1024);
 					$result['diskspace']=$result['diskspace']/1024;

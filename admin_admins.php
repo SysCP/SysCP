@@ -224,7 +224,7 @@
 				$language_options = '';
 				while(list($language_file, $language_name) = each($languages))
 				{
-					$language_options .= makeoption($language_name, $language_file, $userinfo['language']);
+					$language_options .= makeoption($language_name, $language_file, $userinfo['language'], true, true);
 				}
 				$change_serversettings=makeyesno('change_serversettings', '1', '0', '0');
 				$customers_see_all=makeyesno('customers_see_all', '1', '0', '0');
@@ -327,7 +327,7 @@
 					$language_options = '';
 					while(list($language_file, $language_name) = each($languages))
 					{
-						$language_options .= makeoption($language_name, $language_file, $result['def_language']);
+						$language_options .= makeoption($language_name, $language_file, $result['def_language'], true, true);
 					}
 					$change_serversettings=makeyesno('change_serversettings', '1', '0', $result['change_serversettings']);
 					$customers_see_all=makeyesno('customers_see_all', '1', '0', $result['customers_see_all']);
