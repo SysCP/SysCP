@@ -212,7 +212,7 @@
 					$domains='';
 					while($row=$db->fetch_array($result))
 					{
-						$domains.=makeoption($idna_convert->decode($row['domain']), $row['domain'], NULL, true, true);
+						$domains.=makeoption($idna_convert->decode($row['domain']), $row['domain']);
 					}
 					$iscatchall = makeyesno ( 'iscatchall' , '1' , '0' , '0');
 					eval("echo \"".getTemplate("email/emails_add")."\";");

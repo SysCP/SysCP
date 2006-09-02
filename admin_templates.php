@@ -117,7 +117,7 @@
 				
 				$template_options='';
 				foreach($templates as $template) {
-					$template_options.=makeoption($lng['admin']['templates'][$template], $template, NULL, true, true);
+					$template_options.=makeoption($lng['admin']['templates'][$template], $template, NULL, true);
 				}
 				eval("echo \"".getTemplate("templates/templates_add_2")."\";");
 				

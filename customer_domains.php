@@ -288,17 +288,17 @@
 					$domains='';
 					while($row=$db->fetch_array($result))
 					{
-						$domains.=makeoption($idna_convert->decode($row['domain']), $row['domain'], NULL, true, true);
+						$domains.=makeoption($idna_convert->decode($row['domain']), $row['domain']);
 					}
-					$aliasdomains=makeoption($lng['domains']['noaliasdomain'], 0, NULL, true, true);
+					$aliasdomains=makeoption($lng['domains']['noaliasdomain'], 0, NULL, true);
 					$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`id` <> `c`.`standardsubdomain` AND `d`.`customerid`=`c`.`customerid` AND `d`.`customerid`=".(int)$userinfo['customerid']." ORDER BY `d`.`domain` ASC");
 					while($row_domain=$db->fetch_array($result_domains))
 					{
-						$aliasdomains.=makeoption($idna_convert->decode($row_domain['domain']), $row_domain['id'], NULL, true, true);
+						$aliasdomains.=makeoption($idna_convert->decode($row_domain['domain']), $row_domain['id']);
 					}
 
-					$openbasedir=makeoption($lng['domain']['docroot'], 0, NULL, true, true)
-					            .makeoption($lng['domain']['homedir'], 1, NULL, true, true);
+					$openbasedir=makeoption($lng['domain']['docroot'], 0, NULL, true)
+					            .makeoption($lng['domain']['homedir'], 1, NULL, true);
 
 					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
 					                             $userinfo['guid'], $settings['panel']['pathedit'] );
@@ -406,11 +406,11 @@
 				else
 				{
 					$result['domain'] = $idna_convert->decode($result['domain']);
-					$domains=makeoption($lng['domains']['noaliasdomain'], 0, $result['aliasdomain'], true, true);
+					$domains=makeoption($lng['domains']['noaliasdomain'], 0, $result['aliasdomain'], true);
 					$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`id`<>'".(int)$result['id']."' AND `c`.`standardsubdomain`<>`d`.`id` AND `d`.`customerid`='".(int)$userinfo['customerid']."' AND `c`.`customerid`=`d`.`customerid` ORDER BY `d`.`domain` ASC");
 					while($row_domain=$db->fetch_array($result_domains))
 					{
-						$domains.=makeoption($idna_convert->decode($row_domain['domain']), $row_domain['id'], $result['aliasdomain'], true, true);
+						$domains.=makeoption($idna_convert->decode($row_domain['domain']), $row_domain['id'], $result['aliasdomain']);
 					}
 
 					if(preg_match('/^https?\:\/\//', $result['documentroot']) && $settings['panel']['pathedit'] == 'Dropdown')
@@ -431,8 +431,8 @@
 					$iswildcarddomain=makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
 
-					$openbasedir=makeoption($lng['domain']['docroot'], 0, $result['openbasedir_path'], true, true)
-					            .makeoption($lng['domain']['homedir'], 1, $result['openbasedir_path'], true, true);
+					$openbasedir=makeoption($lng['domain']['docroot'], 0, $result['openbasedir_path'], true)
+					            .makeoption($lng['domain']['homedir'], 1, $result['openbasedir_path'], true);
 
 					$result = htmlentities_array( $result );
 					eval("echo \"".getTemplate("domains/domains_edit")."\";");
