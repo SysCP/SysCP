@@ -62,7 +62,10 @@
 			{
 				if( $paging->checkDisplay( $i ) )
 				{
-					$row['path']=str_replace($userinfo['documentroot'],'',$row['path']);
+					if( strpos( $row['path'], $userinfo['documentroot'] ) === 0 )
+					{
+						$row['path'] = substr( $row['path'], strlen( $userinfo['documentroot'] ) );
+					}
 					$row = htmlentities_array( $row );
 					eval("\$htpasswds.=\"".getTemplate("extras/htpasswds_htpasswd")."\";");
 					$count++;
@@ -85,7 +88,11 @@
 				}
 				else
 				{
-					ask_yesno('extras_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['username'] . ' (' . str_replace($userinfo['documentroot'],'',$result['path']) . ')' );
+					if( strpos( $result['path'], $userinfo['documentroot'] ) === 0 )
+					{
+						$result['path'] = substr( $result['path'], strlen( $userinfo['documentroot'] ) );
+					}
+					ask_yesno('extras_reallydelete', $filename, array( 'id' => $id, 'page' => $page, 'action' => $action ), $result['username'] . ' (' . $result['path'] . ')' );
 				}
 			}
 		}
