@@ -35,7 +35,7 @@
 			$filename = './templates/'.$template.'.tpl';
 			if(file_exists($filename))
 			{
-				$templatefile=addcslashes(file_get_contents($filename), '"');
+				$templatefile=addcslashes(file_get_contents($filename), '"\\');
 			}
 			else
 			{
@@ -1380,7 +1380,10 @@
 				$field   = '<select name="path">';
 				foreach ( $dirList as $key => $dir )
 				{
-					$dir    = str_replace( $path, '', $dir );
+					if( strpos( $dir, $path ) === 0 )
+					{
+						$dir = substr( $dir, strlen( $path ) );
+					}
 					$field .= makeoption( $dir, $dir, $value );
 				}
 				$field .= '</select>';
