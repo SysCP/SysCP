@@ -19,23 +19,23 @@
 	{
 		die('This script will only work in the shell.');
 	}
-	
+
 	$cronscriptDebug = false;
 	$lockdir        = '/var/run/';
 	$lockFilename   = 'syscp_cron.lock-';
 	$lockfName      = $lockFilename.time();
 	$lockfile		= $lockdir.$lockfName;
-	
+
 	// guess the syscp installation path
 	// normally you should not need to modify this script anymore, if your
 	// syscp installation isn't in /var/www/syscp 
+	$pathtophpfiles = '';
 	if( substr($_SERVER['PHP_SELF'], 0, 1) != '/' )
 	{ 
 		$pathtophpfiles = $_SERVER['PWD'];
 	}
 	$pathtophpfiles .= '/'.$_SERVER['PHP_SELF'];
-	$pathtophpfiles = str_replace('/./', '/', $pathtophpfiles );
-	$pathtophpfiles = str_replace('//','/', $pathtophpfiles );
+	$pathtophpfiles = str_replace( array( '/./', '//' ), '/', $pathtophpfiles );
 	$pathtophpfiles = dirname(dirname( $pathtophpfiles ));
 
 	// should the syscp installation guessing not work correctly,
