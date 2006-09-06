@@ -823,7 +823,7 @@
 		$query =
 			'SELECT `loginname`	' .
 			'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' .
-			'WHERE `loginname` LIKE \'' . $db->escsape($settings['customer']['accountprefix']) . '%\';';
+			'WHERE `loginname` LIKE \'' . $db->escape($settings['customer']['accountprefix']) . '%\';';
 		$result = $db->query($query);
 		$lastaccountnumber = 0;
 		while ($row = $db->fetch_array($result))
