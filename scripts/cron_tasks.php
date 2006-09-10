@@ -240,9 +240,9 @@
 				$htpasswd_files = array();
 				foreach($diroptions as $row_diroptions)
 				{
- 					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
- 					if ( isset ( $row_diroptions['options_indexes'] ) && $row_diroptions['options_indexes'] == '1' )
- 					{
+					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
+					if ( isset ( $row_diroptions['options_indexes'] ) && $row_diroptions['options_indexes'] == '1' )
+					{
 						$diroptions_file .= '  Options +Indexes'."\n";
 						fwrite( $debugHandler, '  cron_tasks: Task3 - Setting Options +Indexes');
 					}
@@ -250,14 +250,14 @@
 					{
 						$diroptions_file .= '  Options -Indexes'."\n";
 						fwrite( $debugHandler, '  cron_tasks: Task3 - Setting Options -Indexes');
- 					}
- 					if ( isset ( $row_diroptions['error404path'] ) && $row_diroptions['error404path'] != '')
- 					{
-						$diroptions_file .= '  ErrorDocument 404 "'.$row_diroptions['error404path']."\"\n";
+					}
+					if ( isset ( $row_diroptions['error404path'] ) && $row_diroptions['error404path'] != '')
+					{
+						$diroptions_file .= '  ErrorDocument 404 '.$row_diroptions['error404path']."\n";
 					}
 					if ( isset ( $row_diroptions['error403path'] ) && $row_diroptions['error403path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 403 "'.$row_diroptions['error403path']."\"\n";
+						$diroptions_file .= '  ErrorDocument 403 '.$row_diroptions['error403path']."\n";
 					}
 //					if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
 //					{
@@ -265,7 +265,7 @@
 //					}
 					if ( isset ( $row_diroptions['error500path'] ) && $row_diroptions['error500path'] != '')
 					{
-						$diroptions_file .= '  ErrorDocument 500 "'.$row_diroptions['error500path']."\"\n";
+						$diroptions_file .= '  ErrorDocument 500 '.$row_diroptions['error500path']."\n";
 					}
 					
 					if(count($row_diroptions['htpasswds']) > 0)
