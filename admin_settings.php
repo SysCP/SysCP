@@ -269,7 +269,7 @@
 
 			if($_POST['panel_standardlanguage']!=$settings['panel']['standardlanguage'])
 			{
-				$value = htmlentities( $_POST['panel_standardlanguage'] );
+				$value = $_POST['panel_standardlanguage'];
 				if( !in_array( $value, $languages ) )
 				{
 					standard_error( 'stringformaterror', 'standard language' );
@@ -452,7 +452,7 @@
 				if( !isset( $languages_array[$row['language']] ) && !in_array( $row['language'], $languages_array ) )
 				{
 					$languages_array[$row['language']] = $row['language'];
-					$languages .= makeoption($row['language'], $row['language'], $settings['panel']['standardlanguage'], true, true);
+					$languages .= makeoption($row['language'], $row['language'], $settings['panel']['standardlanguage'], true);
 				}
 			}
 

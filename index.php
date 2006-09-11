@@ -127,7 +127,7 @@
 			$language_options .= makeoption($lng['login']['profile_lng'], 'profile', 'profile', true, true);
 			while(list($language_file, $language_name) = each($languages))
 			{
-				$language_options .= makeoption($language_name, $language_file, 'profile', true, true);
+				$language_options .= makeoption($language_name, $language_file, 'profile', true);
 			}
 			eval("echo \"".getTemplate("login")."\";");
 		}

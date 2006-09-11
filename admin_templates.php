@@ -167,7 +167,7 @@
 					if(count(array_diff($available_templates,$templates))>0)
 					{
 						$add = true;
-						$language_options .= makeoption($language_name, $language_file, $userinfo['language'], true, true);
+						$language_options .= makeoption($language_name, $language_file, $userinfo['language'], true);
 					}
 				}
 				if($add)
