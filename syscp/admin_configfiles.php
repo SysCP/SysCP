@@ -127,6 +127,111 @@
 					)
 				)
 			)
+		),
+		'debian_etch' => Array
+		(
+			'label' => 'Debian 4.0 (Etch)',
+			'daemons' => Array
+			(
+				'apache' => Array
+				(
+					'label' => 'Apache Webserver (HTTP)',
+					'commands' => Array
+					(
+						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+						'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
+						'mkdir -p '.$settings['system']['documentroot_prefix'],
+						'mkdir -p '.$settings['system']['logfiles_directory']
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/apache restart'
+					)
+				),
+				'bind' => Array
+				(
+					'label' => 'Bind9 Nameserver (DNS)',
+					'files' => Array
+					(
+						'etc_bind_default.zone' => '/etc/bind/default.zone'
+					),
+					'commands' => Array
+					(
+						'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
+						'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/bind9 restart'
+					)
+				),
+				'courier' => Array
+				(
+					'label' => 'Courier (POP3/IMAP)',
+					'files' => Array
+					(
+						'etc_courier_authdaemonrc' => '/etc/courier/authdaemonrc',
+						'etc_courier_authmysqlrc' => '/etc/courier/authmysqlrc'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/courier-authdaemon restart',
+						'/etc/init.d/courier-pop restart'
+					)
+				),
+				'postfix' => Array
+				(
+					'label' => 'Postfix (MTA)',
+					'files' => Array
+					(
+						'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+						'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+						'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+						'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+						'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
+					),
+					'commands' => Array
+					(
+						'mkdir -p /etc/postfix/sasl',
+						'mkdir -p /var/spool/postfix/etc/pam.d',
+						'mkdir -p /var/spool/postfix/var/run/mysqld',
+						'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
+						'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
+						'mkdir -p '.$settings['system']['vmail_homedir'],
+						'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/postfix restart'
+					)
+				),
+				'proftpd' => Array
+				(
+					'label' => 'ProFTPd (FTP)',
+					'files' => Array
+					(
+						'etc_proftpd_modules.conf' => '/etc/proftpd/modules.conf',
+						'etc_proftpd_proftpd.conf' => '/etc/proftpd/proftpd.conf'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/proftpd restart'
+					)
+				),
+				'cron' => Array
+				(
+					'label' => 'Crond (cronscript)',
+					'files' => Array
+					(
+						'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
+						'etc_cron.d_syscp' => '/etc/cron.d/syscp'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/cron restart'
+					)
+				)
+			)
 		)
 	);
 
