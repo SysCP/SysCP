@@ -391,9 +391,9 @@
 		$admin_pass2 = '';
 	}
 
-	if($mysql_host == 'localhost')
+	if($mysql_host == 'localhost' || $mysql_host == '127.0.0.1')
 	{
-		$mysql_access_host = 'localhost';
+		$mysql_access_host = $mysql_host;
 	}
 	else
 	{
