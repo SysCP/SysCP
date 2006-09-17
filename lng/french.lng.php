@@ -382,6 +382,48 @@ $lng['admin']['ipsandports']['edit'] = 'Modifier IP/port';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
-$lng['admin']['ipsandports']['default'] = 'IP/port par d&eacute;faut pour les revendeurs';
+
+// ADDED IN 1.2.14-rc1
+$lng['error']['cantchangesystemip'] = 'Vous ne pouvez pas modifier la derni&egrave;re  IP, ni en ajouter une nouvelle.';
+$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Etes vous sure de vouloir diff&eacute;rencier la racine principale de ce domaine de la racine du client ?';
+$lng['admin']['memorylimitdisabled'] = 'D&eacute;sactiv&eacute;';
+$lng['error']['loginnameissystemaccount'] = 'Vous ne pouvez pas cr&eacute;er un compte identique au compte syst&egrave;me, SVP essayer avec un autre nom.';
+$lng['domain']['openbasedirpath'] = 'Chemin OpenBasedir';
+$lng['domain']['docroot'] = 'Identique au Chemin ci-dessus';
+$lng['domain']['homedir'] = 'R&eacute;pertoire Principal';
+$lng['admin']['valuemandatory'] = 'Cette valeur est obligatoire';
+$lng['admin']['valuemandatorycompany'] = 'LE &quot;nom&quot; et le &quot;pr&eacute;nom&quot; ou &quot;entreprise&quot; sont obligatoires';
+$lng['menue']['main']['username'] = 'Connexion en: ';
+$lng['panel']['urloverridespath'] = 'URL (Suplante la valeur Chemin)';
+$lng['panel']['pathorurl'] = 'Chemin ou URL';
+$lng['error']['sessiontimeoutiswrong'] = 'Seule une valeur num&eacute;rique pour &quot;Session Timeout&quot; est autoris&eacute;e.';
+$lng['error']['maxloginattemptsiswrong'] = 'Seule une valeur num&eacute;rique pour &quot;nombre de Connexion maximum&quot; est autoris&eacute;e.';
+$lng['error']['deactivatetimiswrong'] = 'Seule une valeur num&eacute;rique pour Only &quot;D&eacute;sactivation Time&quot; est autoris&eacute;e.';
+$lng['error']['accountprefixiswrong'] = 'Le &quot;Pr&eacute;fixe client&quot; n\'est pas valide.';
+$lng['error']['mysqlprefixiswrong'] = 'Le &quot;Pr&eacute;fixe SQL&quot; n\'est pas valide.';
+$lng['error']['ftpprefixiswrong'] = 'Le &quot;Pr&eacute;fixe FTP&quot; n\'est pas valide.';
+$lng['error']['ipiswrong'] = 'Le &quot;Addresse IP&quot; n\'est pas valide.';
+$lng['error']['vmailuidiswrong'] = 'Le &quot;Mails-uid&quot; est incorrect. Seul un UID num&eacute; est autoris&eacute;.';
+$lng['error']['vmailgidiswrong'] = 'Le &quot;Mails-gid&quot; est incorrect. Seul un GID num&eacute; est autoris&eacute;.';
+$lng['error']['adminmailiswrong'] = 'The &quot;Sender-address&quot; is wrong. Only a valid email-address is allowed.';
+$lng['error']['pagingiswrong'] = 'La valeur &quot;Entri&eacute;es par Page&quot; est incorrecte. Seul les valeurs num&eacute;riques sont autoris&eacute;es.';
+$lng['error']['phpmyadminiswrong'] = 'Le lien pour Phpmyadmin n\est pas valide.';
+$lng['error']['webmailiswrong'] = 'Le lien pour le WebMail n\'est pas valide.';
+$lng['error']['webftpiswrong'] = 'Le lien pour WebFTP n\'est pas valide.';
+$lng['domains']['hasaliasdomains'] = 'Le domaine poss&egrave;de un ou des alias';
+$lng['domains']['istopleveldomain'] = 'C\'est le nom de domaine principal';
+$lng['serversettings']['defaultip']['title'] = 'IP/Port par d&eacute;faut';
+$lng['serversettings']['defaultip']['description'] = 'Quelle est l\'IP/Port par d&eacute;faut ?';
+$lng['domains']['statstics'] = 'Fr&eacute;quentation';
+$lng['panel']['ascending'] = 'ascendant';
+$lng['panel']['decending'] = 'decendant';
+$lng['panel']['search'] = 'Rechercher';
+$lng['panel']['used'] = 'utilis&eacute;';
+
+// ADDED IN 1.2.14-rc3
+$lng['panel']['translator'] = 'Traducteur';
+
+// ADDED IN 1.2.14-rc4
+$lng['error']['stringformaterror'] = 'La valeur pour &quot;%s&quot; n\'est pas dans un format reconnu.';
 
 ?>
