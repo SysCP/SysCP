@@ -241,8 +241,17 @@
 		 */
 		function geterrdescno()
 		{
-			$this->errdesc=mysql_error($this->link_id);
-			$this->errno=mysql_errno($this->link_id);
+			if($this->link_id != 0)
+			{
+				$this->errdesc=mysql_error($this->link_id);
+				$this->errno=mysql_errno($this->link_id);
+			}
+			else
+			{
+				// Maybe we don't have any linkid so let's try to catch at least anything
+				$this->errdesc=mysql_error();
+				$this->errno=mysql_errno();
+			}
 			return $this->errno;
 		}
 
