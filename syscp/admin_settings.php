@@ -133,10 +133,10 @@
 					}
 
 					// Do the update
-					$db_root->query("UPDATE `mysql`.`user` SET `HOST` = '".$db->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db->escape($settings['system']['mysql_access_host']) . "'");
-					$db_root->query("UPDATE `mysql`.`db` SET `HOST` = '".$db->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db->escape($settings['system']['mysql_access_host']) . "'");
-					$db_root->query("UPDATE `mysql`.`tables_priv` SET `HOST` = '".$db->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db->escape($settings['system']['mysql_access_host']) . "'");
-					$db_root->query("UPDATE `mysql`.`columns_priv` SET `HOST` = '".$db->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db->escape($settings['system']['mysql_access_host']) . "'");
+					$db_root->query("UPDATE `mysql`.`user` SET `HOST` = '".$db_root->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
+					$db_root->query("UPDATE `mysql`.`db` SET `HOST` = '".$db_root->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
+					$db_root->query("UPDATE `mysql`.`tables_priv` SET `HOST` = '".$db_root->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
+					$db_root->query("UPDATE `mysql`.`columns_priv` SET `HOST` = '".$db_root->escape($mysql_access_host)."' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
 
 					// Clean up and disconnect
 					$db_root->query("FLUSH PRIVILEGES;");

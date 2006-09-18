@@ -131,10 +131,10 @@
 					unset($db_root->password);
 					while($row_database=$db->fetch_array($databases))
 					{
-						$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $db->escape($row_database['databasename']) . '`@' . $db->escape($settings['system']['mysql_access_host']) );
-						$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $db->escape($row_database['databasename']) ) . '` . * FROM `' . $db->escape($row_database['databasename']) . '`@' . $db->escape($settings['system']['mysql_access_host']) );
-						$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $db->escape($row_database['databasename']) . '" AND `Host` = "' . $db->escape($settings['system']['mysql_access_host']) . '"' );
-						$db_root->query( 'DROP DATABASE IF EXISTS `' . $db->escape($row_database['databasename']) . '`' );
+						$db_root->query( 'REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($row_database['databasename']) . '`@' . $db_root->escape($settings['system']['mysql_access_host']) );
+						$db_root->query( 'REVOKE ALL PRIVILEGES ON `' . str_replace ( '_' , '\_' , $db_root->escape($row_database['databasename']) ) . '` . * FROM `' . $db_root->escape($row_database['databasename']) . '`@' . $db_root->escape($settings['system']['mysql_access_host']) );
+						$db_root->query( 'DELETE FROM `mysql`.`user` WHERE `User` = "' . $db_root->escape($row_database['databasename']) . '" AND `Host` = "' . $db_root->escape($settings['system']['mysql_access_host']) . '"' );
+						$db_root->query( 'DROP DATABASE IF EXISTS `' . $db_root->escape($row_database['databasename']) . '`' );
 					}
 					$db_root->query('FLUSH PRIVILEGES;');
 					$db_root->close();
