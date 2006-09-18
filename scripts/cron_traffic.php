@@ -134,7 +134,7 @@
 			$databases_result=$db->query("SELECT `databasename` FROM `".TABLE_PANEL_DATABASES."` WHERE `customerid`='".(int)$row['customerid']."'");
 			while($database_row=$db->fetch_array($databases_result))
 			{
-				$mysql_usage_result=$db_root->query("SHOW TABLE STATUS FROM `".$db->escape($database_row['databasename'])."`");
+				$mysql_usage_result=$db_root->query("SHOW TABLE STATUS FROM `".$db_root->escape($database_row['databasename'])."`");
 				while($mysql_usage_row=$db_root->fetch_array($mysql_usage_result))
 				{
 					$mysqlusage+=floatval($mysql_usage_row['Data_length']+$mysql_usage_row['Index_length']);
