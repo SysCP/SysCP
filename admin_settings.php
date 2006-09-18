@@ -287,7 +287,7 @@
 			if($_POST['panel_phpmyadmin_url']!=$settings['panel']['phpmyadmin_url'])
 			{
 				$value=$_POST['panel_phpmyadmin_url'];
-				if(!validate_url($value))
+				if(!verify_url($value) && $value != '')
 				{
 					standard_error('phpmyadminiswrong');
 					exit;
@@ -338,7 +338,7 @@
 			if($_POST['panel_webmail_url']!=$settings['panel']['webmail_url'])
 			{
 				$value=$_POST['panel_webmail_url'];
-				if(!validate_url($value))
+				if(!verify_url($value) && $value != '')
 				{
 					standard_error('webmailiswrong');
 					exit;
@@ -389,7 +389,7 @@
 			if($_POST['panel_webftp_url']!=$settings['panel']['webftp_url'])
 			{
 				$value=$_POST['panel_webftp_url'];
-				if(!validate_url($value))
+				if(!verify_url($value) && $value != '')
 				{
 					standard_error('webftpiswrong');
 					exit;
