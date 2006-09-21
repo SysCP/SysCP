@@ -39,7 +39,7 @@ $lng['login']['username'] = 'Username';
 $lng['login']['password'] = 'Password';
 $lng['login']['language'] = 'Language';
 $lng['login']['login'] = 'Login';
-$lng['login']['logout'] = 'logout';
+$lng['login']['logout'] = 'Logout';
 $lng['login']['profile_lng'] = 'Profile language';
 
 /**
@@ -59,9 +59,9 @@ $lng['customer']['customernumber'] = 'Customer ID';
 $lng['customer']['diskspace'] = 'Webspace (MB)';
 $lng['customer']['traffic'] = 'Traffic (GB)';
 $lng['customer']['mysqls'] = 'MySQL-Databases';
-$lng['customer']['emails'] = 'eMail-Addresses';
-$lng['customer']['accounts'] = 'eMail-Accounts';
-$lng['customer']['forwarders'] = 'eMail-Forwarders';
+$lng['customer']['emails'] = 'E-mail-Addresses';
+$lng['customer']['accounts'] = 'E-mail-Accounts';
+$lng['customer']['forwarders'] = 'E-mail-Forwarders';
 $lng['customer']['ftps'] = 'FTP-Accounts';
 $lng['customer']['subdomains'] = 'Sub-Domain(s)';
 $lng['customer']['domains'] = 'Domain(s)';
@@ -73,7 +73,7 @@ $lng['customer']['unlimited'] = 'unlimited';
 $lng['menue']['main']['main'] = 'Main';
 $lng['menue']['main']['changepassword'] = 'Change password';
 $lng['menue']['main']['changelanguage'] = 'Change language';
-$lng['menue']['email']['email'] = 'eMail';
+$lng['menue']['email']['email'] = 'E-mail';
 $lng['menue']['email']['emails'] = 'Addresses';
 $lng['menue']['email']['webmail'] = 'WebMail';
 $lng['menue']['mysql']['mysql'] = 'MySQL';
@@ -116,12 +116,12 @@ $lng['domains']['aliasdomain'] = 'Alias for domain';
 $lng['domains']['noaliasdomain'] = 'No alias domain';
 
 /**
- * eMails
+ * E-mails
  */
-$lng['emails']['description'] = 'Here you can create and change your eMail addresses.<br />An account is like your letterbox in front of your house. If someone sends you an email, it will be dropped into the account.<br /><br />To download your emails use the following settings in your mailprogram: (The data in <i>italics</i> has to be changed to the equivalents you typed in!)<br />Hostname: <b><i>Domainname</i></b><br />Username: <b><i>Account name / eMail address</i></b><br />Password: <b><i>the password you\'ve chosen</i></b>';
-$lng['emails']['emailaddress'] = 'eMail-address';
-$lng['emails']['emails_add'] = 'Create eMail-address';
-$lng['emails']['emails_edit'] = 'Edit eMail-address';
+$lng['emails']['description'] = 'Here you can create and change your e-mail addresses.<br />An account is like your letterbox in front of your house. If someone sends you an email, it will be dropped into the account.<br /><br />To download your emails use the following settings in your mailprogram: (The data in <i>italics</i> has to be changed to the equivalents you typed in!)<br />Hostname: <b><i>Domainname</i></b><br />Username: <b><i>Account name / e-mail address</i></b><br />Password: <b><i>the password you\'ve chosen</i></b>';
+$lng['emails']['emailaddress'] = 'E-mail-address';
+$lng['emails']['emails_add'] = 'Create e-mail-address';
+$lng['emails']['emails_edit'] = 'Edit e-mail-address';
 $lng['emails']['catchall'] = 'Catchall';
 $lng['emails']['iscatchall'] = 'Define as catchall-address?';
 $lng['emails']['account'] = 'Account';
@@ -199,7 +199,7 @@ $lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
 $lng['error']['mydomain'] = '\'Domain\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
 $lng['error']['loginnameexists']= 'Login-Name %s already exists';
-$lng['error']['emailiswrong']= 'eMail-Address %s contains invalid characters or is incomplete';
+$lng['error']['emailiswrong']= 'E-mail-Address %s contains invalid characters or is incomplete';
 $lng['error']['loginnameiswrong']= 'Login-Name %s contains invalid characters';
 $lng['error']['userpathcombinationdupe']='Combination of Username and Path already exists';
 $lng['error']['patherror']='General Error! path cannot be empty';
@@ -216,7 +216,7 @@ $lng['error']['subdomainiswrong']='The subdomain %s contains invalid characters.
 $lng['error']['domaincantbeempty']='The domain-name can not be empty.';
 $lng['error']['domainexistalready']='The domain %s already exists.';
 $lng['error']['domainisaliasorothercustomer']='The selected alias domain is either itself an alias domain or belongs to another customer.';
-$lng['error']['emailexistalready']='The eMail-Address %s already exists.';
+$lng['error']['emailexistalready']='The e-mail-Address %s already exists.';
 $lng['error']['maindomainnonexist']='The main-domain %s does not exist.';
 $lng['error']['destinationnonexist']='Please create your forwarder in the field \'Destination\'.';
 $lng['error']['destinationalreadyexistasmail']='The forwarder to %s already exists as active EMail-Address.';
@@ -227,10 +227,10 @@ $lng['error']['domainname']=$lng['domains']['domainname'];
 /**
  * Questions
  */
-$lng['question']['question'] = 'Securityquestion';
+$lng['question']['question'] = 'Security question';
 $lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete the customer %s? This cannot be undone!';
 $lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete the domain %s?';
-$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to deactivate these Securitysettings (OpenBasedir and/or SafeMode)?';
+$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to deactivate these Security settings (OpenBasedir and/or SafeMode)?';
 $lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete the admin %s? Every customer and domain will be reallocated to the main administrator.';
 $lng['question']['admin_template_reallydelete'] = 'Do you really want to delete the template \'%s\'?';
 $lng['question']['domains_reallydelete'] = 'Do you really want to delete the domain %s?';
@@ -246,7 +246,7 @@ $lng['question']['admin_configs_reallyrebuild'] = 'Do you really want to rebuild
 /**
  * Mails
  */
-$lng['mails']['pop_success']['mailbody'] = 'Hello,\n\nyour Mail account {EMAIL}\nwas set up successfully.\n\nThis is an automatically created\neMail, please do not answer!\n\nYours sincerely, the SysCP-Team';
+$lng['mails']['pop_success']['mailbody'] = 'Hello,\n\nyour Mail account {EMAIL}\nwas set up successfully.\n\nThis is an automatically created\ne-mail, please do not answer!\n\nYours sincerely, the SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'Mail account set up successfully';
 $lng['mails']['createcustomer']['mailbody'] = 'Hello {FIRSTNAME} {NAME},\n\nhere is your account information:\n\nUsername: {USERNAME}\nPassword: {PASSWORD}\n\nThank you,\nthe SysCP-Team';
 $lng['mails']['createcustomer']['subject'] = 'Account information';
@@ -297,7 +297,7 @@ $lng['admin']['templates']['template_edit'] = 'Edit template';
 $lng['admin']['templates']['action'] = 'Action';
 $lng['admin']['templates']['email'] = 'E-Mail';
 $lng['admin']['templates']['subject'] = 'Subject';
-$lng['admin']['templates']['mailbody'] = 'Mailbody';
+$lng['admin']['templates']['mailbody'] = 'Mail body';
 $lng['admin']['templates']['createcustomer'] = 'Welcome mail for new customers';
 $lng['admin']['templates']['pop_success'] = 'Welcome mail for new email accounts';
 $lng['admin']['templates']['template_replace_vars'] = 'Variables to be replaced in the template:';
@@ -312,15 +312,15 @@ $lng['admin']['templates']['EMAIL'] = 'Replaced with the address of the POP3/IMA
  */
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'How long does a user have to be inactive before a session gets invalid (seconds)?';
-$lng['serversettings']['accountprefix']['title'] = 'Customerprefix';
-$lng['serversettings']['accountprefix']['description'] = 'Which prefix should customeraccounts have?';
+$lng['serversettings']['accountprefix']['title'] = 'Customer prefix';
+$lng['serversettings']['accountprefix']['description'] = 'Which prefix should customer accounts have?';
 $lng['serversettings']['mysqlprefix']['title'] = 'SQL Prefix';
 $lng['serversettings']['mysqlprefix']['description'] = 'Which prefix should mysql accounts have?';
 $lng['serversettings']['ftpprefix']['title'] = 'FTP Prefix';
 $lng['serversettings']['ftpprefix']['description'] = 'Which prefix should ftp accounts have?';
 $lng['serversettings']['documentroot_prefix']['title'] = 'Document directory';
 $lng['serversettings']['documentroot_prefix']['description'] = 'Where should all data be stored?';
-$lng['serversettings']['logfiles_directory']['title'] = 'Logfilesdirectory';
+$lng['serversettings']['logfiles_directory']['title'] = 'Logfiles directory';
 $lng['serversettings']['logfiles_directory']['description'] = 'Where should all log files be stored?';
 $lng['serversettings']['ipaddress']['title'] = 'IP-Address';
 $lng['serversettings']['ipaddress']['description'] = 'What\'s the IP-address of this server?';
@@ -343,7 +343,7 @@ $lng['serversettings']['vmail_gid']['description'] = 'Which GroupID should mails
 $lng['serversettings']['vmail_homedir']['title'] = 'Mails-Homedir';
 $lng['serversettings']['vmail_homedir']['description'] = 'Where should all mails be stored?';
 $lng['serversettings']['adminmail']['title'] = 'Sender';
-$lng['serversettings']['adminmail']['description'] = 'What\'s the senderaddress for emails sent from the Panel?';
+$lng['serversettings']['adminmail']['description'] = 'What\'s the sender address for emails sent from the Panel?';
 $lng['serversettings']['phpmyadmin_url']['title'] = 'phpMyAdmin URL';
 $lng['serversettings']['phpmyadmin_url']['description'] = 'What\'s the URL to phpMyAdmin? (have to start with http://)';
 $lng['serversettings']['webmail_url']['title'] = 'WebMail URL';
@@ -417,7 +417,7 @@ $lng['error']['vmailuidiswrong'] = 'The &quot;Mails-uid&quot; is wrong. Only a n
 $lng['error']['vmailgidiswrong'] = 'The &quot;Mails-gid&quot; is wrong. Only a numerical GID is allowed.';
 $lng['error']['adminmailiswrong'] = 'The &quot;Sender-address&quot; is wrong. Only a valid email-address is allowed.';
 $lng['error']['pagingiswrong'] = 'The &quot;Entries per Page&quot;-value is wrong. Only numerical characters are allowed.';
-$lng['error']['phpmyadminiswrong'] = 'The phpmyadmin-link is not a valid link.';
+$lng['error']['phpmyadminiswrong'] = 'The phpMyAdmin-link is not a valid link.';
 $lng['error']['webmailiswrong'] = 'The WebMail-link is not a valid link.';
 $lng['error']['webftpiswrong'] = 'The WebFTP-link is not a valid link.';
 

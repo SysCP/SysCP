@@ -33,7 +33,7 @@ $lng['install']['admin_pass'] = 'Administrator-Passwort';
 $lng['install']['admin_pass_confirm'] = 'Administrator-Passwort (Best&auml;tigung)';
 $lng['install']['serversettings'] = 'Servereinstellungen';
 $lng['install']['servername'] = 'Servername (FQDN)';
-$lng['install']['serverip'] = 'Serverip';
+$lng['install']['serverip'] = 'Server-IP';
 $lng['install']['next'] = 'Fortfahren';
 
 /**
