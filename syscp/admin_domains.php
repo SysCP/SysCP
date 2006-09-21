@@ -478,7 +478,7 @@
 						exit;
 					}
 
-					if($documentroot != $result['documentroot'] || $ipandport != $result['ipandport'] || $openbasedir != $result['openbasedir'] || $safemode != $result['safemode'] || $specialsettings != $result['specialsettings'])
+					if($documentroot != $result['documentroot'] || $ipandport != $result['ipandport'] || $openbasedir != $result['openbasedir'] || $safemode != $result['safemode'] || $specialsettings != $result['specialsettings'] || $aliasdomain != $result['aliasdomain'])
 					{
 						inserttask('1');
 					}
