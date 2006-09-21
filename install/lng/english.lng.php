@@ -19,7 +19,7 @@
  */
 $lng['install']['language'] = 'Installation - Language';
 $lng['install']['welcome'] = 'Welcome to SysCP Installation';
-$lng['install']['welcometext'] = 'Thank you for choosing SysCP. Please fill out the following fields with the required information to start the installation.<br /><b>Attantion:</b> If the database you chose for SysCP already exists on your System, it will be erased with all containing data!';
+$lng['install']['welcometext'] = 'Thank you for choosing SysCP. Please fill out the following fields with the required information to start the installation.<br /><b>Attention:</b> If the database you chose for SysCP already exists on your System, it will be erased with all containing data!';
 $lng['install']['database'] = 'Database';
 $lng['install']['mysql_hostname'] = 'MySQL-Hostname';
 $lng['install']['mysql_database'] = 'MySQL-Database';
@@ -31,9 +31,9 @@ $lng['install']['admin_account'] = 'Administrator Account';
 $lng['install']['admin_user'] = 'Administrator Username';
 $lng['install']['admin_pass'] = 'Administrator Password';
 $lng['install']['admin_pass_confirm'] = 'Administrator-Password (confirm)';
-$lng['install']['serversettings'] = 'Serversettings';
-$lng['install']['servername'] = 'Servername (FQDN)';
-$lng['install']['serverip'] = 'Serverip';
+$lng['install']['serversettings'] = 'Server settings';
+$lng['install']['servername'] = 'Server name (FQDN)';
+$lng['install']['serverip'] = 'Server IP';
 $lng['install']['next'] = 'Next';
 
 /**

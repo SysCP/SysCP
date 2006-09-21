@@ -65,7 +65,7 @@ $lng['customer']['forwarders'] = 'E-Mail-Weiterleitungen';
 $lng['customer']['ftps'] = 'FTP-Accounts';
 $lng['customer']['subdomains'] = 'Sub-Domain(s)';
 $lng['customer']['domains'] = 'Domain(s)';
-$lng['customer']['unlimited'] = 'unendlich';
+$lng['customer']['unlimited'] = 'unbeschr&auml;nkt';
 
 /**
  * Customermenue
@@ -215,7 +215,7 @@ $lng['error']['wwwnotallowed']='Ihre Subdomain darf nicht www heissen.';
 $lng['error']['subdomainiswrong']='Die Subdomain %s enth&auml;lt ung&uuml;ltige Zeichen.';
 $lng['error']['domaincantbeempty']='Der Domain-Name darf nicht leer sein.';
 $lng['error']['domainexistalready']='Die Domain %s existiert bereits.';
-$lng['error']['domainisaliasorothercustomer']='Die ausgew&auml;hlte Aliasdomain ist entweder selber eine Aliasdomain oder geh&ouml;t zu einem anderen Kunden.';
+$lng['error']['domainisaliasorothercustomer']='Die ausgew&auml;hlte Aliasdomain ist entweder selber eine Aliasdomain oder geh&ouml;rt zu einem anderen Kunden.';
 $lng['error']['emailexistalready']='Die E-Mail-Adresse %s existiert bereits.';
 $lng['error']['maindomainnonexist']='Die Haupt-Domain %s existiert nicht.';
 $lng['error']['destinationnonexist']='Bitte geben Sie Ihre Weiterleitungsadresse im Feld \'Nach\' ein.';
@@ -228,7 +228,7 @@ $lng['error']['domainname']=$lng['domains']['domainname'];
  * Questions
  */
 $lng['question']['question'] = 'Sicherheitsabfrage';
-$lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
+$lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiderruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
 $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';
 $lng['question']['admin_admin_reallydelete'] = 'Wollen Sie den Admin %s wirklich l&ouml;schen?<br />Alle Kunden und Domains werden dem Hauptadmin zugeteilt.';
@@ -240,7 +240,7 @@ $lng['question']['email_reallydelete_forwarder'] = 'Wollen Sie die Weiterleitung
 $lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz f&uuml;r %s wirklich l&ouml;schen?';
 $lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen f&uuml;r den Pfad %s wirklich l&ouml;schen?';
 $lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account %s wirklich l&ouml;schen?';
-$lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiederruflich verloren!';
+$lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiderruflich verloren!';
 $lng['question']['admin_configs_reallyrebuild'] = 'Wollen Sie wirklich Ihre Apache und Bind Konfigurationsdateien neu erstellen lassen?';
 
 /**
@@ -371,9 +371,9 @@ $lng['serversettings']['apacheconf_filename']['title'] = 'Apache-Config-Dateinam
 $lng['serversettings']['apacheconf_filename']['description'] = 'Wie soll die Apache-Konfigurationsdatei genannt werden?';
 $lng['serversettings']['paging']['title']       = 'Eintr&auml;ge pro Seite';
 $lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
-$lng['error']['ipstillhasdomains']= 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &Auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
+$lng['error']['ipstillhasdomains']= 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
 $lng['error']['cantdeletedefaultip'] = 'Sie k&ouml;nnen die Standard IP/Port Kombination f&uuml;r Reseller nicht l&ouml;schen. Bitte setzen Sie eine andere IP/Port Kombination als Standard um diese l&ouml;schen zu k&ouml;nnen.';
-$lng['error']['cantdeletesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
+$lng['error']['cantdeletesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie eine neue IP/Port Kombination als Systemeinstellung an oder &auml;ndern die System IP.';
 $lng['error']['myipaddress'] = '\'IP\'';
 $lng['error']['myport'] = '\'Port\'';
 $lng['error']['myipdefault'] = 'Sie m&uuml;ssen eine IP/Port Kombination ausw&auml;hlen, die den Standard defninieren soll.';
@@ -387,7 +387,7 @@ $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
 
 // ADDED IN 1.2.13-rc3
-$lng['error']['cantchangesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie noch eine neue IP/Port Kombination als Systemeinstellung an oder &Auml;ndern die System IP.';
+$lng['error']['cantchangesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie noch eine neue IP/Port Kombination als Systemeinstellung an oder &auml;ndern die System IP.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Sind Sie sicher, dass der DocumentRoot dieser Domain au&szlig;erhalb des Heimatverzeichnisses des Kunden liegen soll?';
 
 // ADDED IN 1.2.14-rc1
