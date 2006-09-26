@@ -1054,5 +1054,17 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc4';
 	}
+	if( $settings['panel']['version'] == '1.2.14-rc4' )
+	{
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.14\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.14';
+	}
 
 ?>
