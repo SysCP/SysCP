@@ -200,7 +200,7 @@
 
 			if($_POST['system_apacheconf_filename']!=$settings['system']['apacheconf_filename'])
 			{
-				$value=validate($_POST['system_apacheconf_filename'], 'apacheconf filename', '/^[a-z0-9\._]+$/i');
+				$value=validate($_POST['system_apacheconf_filename'], 'apacheconf filename', '/^[a-z0-9\._\/]+$/i');
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='system' AND `varname`='apacheconf_filename'");
 				inserttask('1');
 			}

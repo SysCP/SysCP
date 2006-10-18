@@ -19,7 +19,7 @@
 /**
  * Global
  */
-$lng['translator'] = 'Carlo Pedro Woedl, Ron Brand';
+$lng['translator'] = 'Carlo Pedro Woedl, Ron Brand, Sandra Aders';
 $lng['panel']['edit'] = 'modificar';
 $lng['panel']['delete'] = 'borar';
 $lng['panel']['create'] = 'crear';
@@ -49,9 +49,9 @@ $lng['login']['profile_lng'] = 'Lenguaje del perfil';
 $lng['customer']['documentroot'] = 'Hogar';
 $lng['customer']['name'] = 'Apellido';
 $lng['customer']['firstname'] = 'Nombre';
-$lng['customer']['company'] = 'Nombre de la empresa';
-$lng['customer']['street'] = 'Calle';
-$lng['customer']['zipcode'] = 'Codigo Postal';
+$lng['customer']['company'] = 'Raz&oacute;n social';
+$lng['customer']['street'] = 'Direcci&oacute;n';
+$lng['customer']['zipcode'] = 'Codigo Postal/Poblaci&oacute;n';
 $lng['customer']['city'] = 'Ciudad';
 $lng['customer']['phone'] = 'Tel&eacute;fono';
 $lng['customer']['fax'] = 'Telefax';
@@ -232,7 +232,7 @@ $lng['error']['domainname']=$lng['domains']['domainname'];
  * Questions
  */
 $lng['question']['question'] = 'Pregunta de seguridad';
-$lng['question']['admin_customer_reallydelete'] = '&#191;Usted realmente desea suprimir el %s del cliente? ATENCI&Ograve;N!todos los datos se perder&aacute;n definitivamente, deber&aacute; borrar los datos manualmente del sistema!';
+$lng['question']['admin_customer_reallydelete'] = '&#191;Usted realmente desea suprimir el %s del cliente? ATENCI&Ograve;N!todos los datos se perder&aacute;n definitivamente, deber&aacute; borar los datos manualmente del sistema!';
 $lng['question']['admin_domain_reallydelete'] = '&#191;Usted realmente desea suprimir el dominio %s?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = '&#191;Usted realmente desea desactivar estas configuraciones de seguridad (OpenBasedir y/o SafeMode)?';
 $lng['question']['admin_admin_reallydelete'] = '&#191;Usted realmente desea suprimir al administrador %s? todos los clientes y dominios ser&aacute;n reasignados al administrador principal.';
@@ -284,7 +284,7 @@ $lng['admin']['domains_see_all'] = '&#191;Puede ver todos los dominios?';
 $lng['admin']['change_serversettings'] = '&#191;Puede cambiar configuraciones del servidor?';
 $lng['admin']['server'] = 'Servidor';
 $lng['admin']['serversettings'] = 'Configuraciones';
-$lng['admin']['rebuildconf'] = 'Escrever de novo os configs';
+$lng['admin']['rebuildconf'] = 'Reescribir las configuraciones';
 $lng['admin']['stdsubdomain'] = 'dominio-secundario est&aacute;ndar';
 $lng['admin']['stdsubdomain_add'] = 'Crear el subdomain est&aacute;ndar';
 $lng['admin']['deactivated'] = 'Desactivado';
@@ -421,5 +421,13 @@ $lng['error']['pagingiswrong'] = 'Las entradas por p&aacute;gina est&aacute;n ma
 $lng['error']['phpmyadminiswrong'] = 'La URL de phpMyAdmin no es una URL v&aacute;lida.';
 $lng['error']['webmailiswrong'] = 'La URL de WebMail no es una URL v&aacute;lida.';
 $lng['error']['webftpiswrong'] = 'La URL de WebFTP no es una URL v&aacute;lida.';
+
+// ADDED IN 1.2.15-rc1
+$lng['admin']['serversoftware'] = 'Software del servidor';
+$lng['admin']['phpversion'] = 'Versi&oacute;n PHP';
+$lng['admin']['phpmemorylimit'] = 'Limite memoria PHP';
+$lng['admin']['mysqlserverversion'] = 'Versi&oacute;n servidor MySQL';
+$lng['admin']['mysqlclientversion'] = 'Versi&oacute;n cliente MySQL';
+$lng['admin']['webserverinterface'] = 'Interface servidor de red';
 
 ?>

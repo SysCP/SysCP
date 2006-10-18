@@ -34,6 +34,7 @@ $lng['install']['admin_pass_confirm'] = 'Administrator-Password (confirm)';
 $lng['install']['serversettings'] = 'Server settings';
 $lng['install']['servername'] = 'Server name (FQDN)';
 $lng['install']['serverip'] = 'Server IP';
+$lng['install']['apacheversion'] = 'Apacheversion';
 $lng['install']['next'] = 'Next';
 
 /**

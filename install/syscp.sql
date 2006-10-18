@@ -412,6 +412,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (32, 'system', 'lastcronrun', '');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (33, 'panel', 'paging', '20');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (34, 'system', 'defaultip', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (35, 'system', 'apacheversion', 'apache1');
 
 # --------------------------------------------------------
 
@@ -513,7 +514,7 @@ CREATE TABLE `panel_traffic_admins` (
 
 #
 # Table structure for table `panel_navigation`
-# 
+#
 
 DROP TABLE IF EXISTS `panel_navigation`;
 CREATE TABLE `panel_navigation` (
@@ -572,7 +573,7 @@ INSERT INTO `panel_navigation` VALUES (34, 'customer', 'customer_index.php', 'me
 
 #
 # Table structure for table `panel_languages`
-# 
+#
 
 DROP TABLE IF EXISTS `panel_languages`;
 CREATE TABLE `panel_languages` (
@@ -582,9 +583,9 @@ CREATE TABLE `panel_languages` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 
-# 
+#
 # Dumping data for table `panel_languages`
-# 
+#
 
 INSERT INTO `panel_languages` VALUES (1, 'Deutsch', 'lng/german.lng.php');
 INSERT INTO `panel_languages` VALUES (2, 'English', 'lng/english.lng.php');
@@ -600,9 +601,9 @@ INSERT INTO `panel_languages` VALUES (10, 'Italian', 'lng/italian.lng.php');
 
 # --------------------------------------------------------
 
-# 
+#
 # Table structure for table `panel_cronscript`
-# 
+#
 
 DROP TABLE IF EXISTS `panel_cronscript`;
 CREATE TABLE `panel_cronscript` (
@@ -611,10 +612,10 @@ CREATE TABLE `panel_cronscript` (
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 
-# 
+#
 # Dumping data for table `panel_cronscript`
-# 
+#
 
 INSERT INTO `panel_cronscript` (`id`, `file`) VALUES (1, 'cron_traffic.php');
 INSERT INTO `panel_cronscript` (`id`, `file`) VALUES (2, 'cron_tasks.php');
-        
+

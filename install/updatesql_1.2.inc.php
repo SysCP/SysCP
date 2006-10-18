@@ -1066,5 +1066,33 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14';
 	}
+	if( $settings['panel']['version'] == '1.2.14' )
+	{
+		// insert apacheversion (guess)
+		if( strtoupper(@php_sapi_name()) == "APACHE2HANDLER")
+		{
+			$apacheversion = 'apache2';
+		}
+		else
+		{
+			$apacheversion = 'apache1';
+		}
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'system\', ' .
+			'    `varname`      = \'apacheversion\', ' .
+			'    `value`        = \''.$apacheversion.'\' '
+		);
+		$settings['system']['apacheversion'] = $apacheversion;
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.14-svn1\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.14-svn1';
+	}
 
 ?>

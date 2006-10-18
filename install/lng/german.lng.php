@@ -34,6 +34,7 @@ $lng['install']['admin_pass_confirm'] = 'Administrator-Passwort (Best&auml;tigun
 $lng['install']['serversettings'] = 'Servereinstellungen';
 $lng['install']['servername'] = 'Servername (FQDN)';
 $lng['install']['serverip'] = 'Server-IP';
+$lng['install']['apacheversion'] = 'Apacheversion';
 $lng['install']['next'] = 'Fortfahren';
 
 /**

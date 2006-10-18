@@ -41,7 +41,7 @@
 					),
 					'restart' => Array
 					(
-						'/etc/init.d/apache restart'
+						'/etc/init.d/apache' . ( $settings['system']['apacheversion'] == 'apache2' ? '2' : '' ) . ' restart'
 					)
 				),
 				'bind' => Array
@@ -145,7 +145,7 @@
 					),
 					'restart' => Array
 					(
-						'/etc/init.d/apache restart'
+						'/etc/init.d/apache' . ( $settings['system']['apacheversion'] == 'apache2' ? '2' : '' ) . ' restart'
 					)
 				),
 				'bind' => Array
@@ -232,12 +232,111 @@
 					)
 				)
 			)
+		),
+		'suse_linux_10_0' => Array
+		(
+			'label' => 'SUSE Linux 10.0',
+			'daemons' => Array
+			(
+				'apache' => Array
+				(
+					'label' => 'Apache Webserver (HTTP)',
+					'commands' => Array
+					(
+						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+						'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
+						'mkdir -p '.$settings['system']['documentroot_prefix'],
+						'mkdir -p '.$settings['system']['logfiles_directory']
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/apache2 restart'
+					)
+				),
+				'bind' => Array
+				(
+					'label' => 'Bind Nameserver (DNS)',
+					'files' => Array
+					(
+						'etc_bind_default.zone' => '/etc/named.d/default.zone'
+					),
+					'commands' => Array
+					(
+						'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/named.conf',
+						'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/named restart'
+					)
+				),
+				'courier' => Array
+				(
+					'label' => 'Courier (POP3/IMAP)',
+					'files' => Array
+					(
+						'etc_authlib_authdaemonrc' => '/etc/authlib/authdaemonrc',
+						'etc_authlib_authmysqlrc' => '/etc/authlib/authmysqlrc'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/courier-authdaemon restart',
+						'/etc/init.d/courier-pop restart'
+					)
+				),
+				'postfix' => Array
+				(
+					'label' => 'Postfix (MTA)',
+					'files' => Array
+					(
+						'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+						'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+						'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+						'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+						'usr_lib_sasl2_smtpd.conf' => '/usr/lib/sasl2/smtpd.conf',
+					),
+					'commands' => Array
+					(
+						'mkdir -p /var/spool/postfix/etc/pam.d',
+						'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
+						'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
+						'mkdir -p '.$settings['system']['vmail_homedir'],
+						'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/postfix restart'
+					)
+				),
+				'proftpd' => Array
+				(
+					'label' => 'ProFTPd (FTP)',
+					'files' => Array
+					(
+						'etc_proftpd_modules.conf' => '/etc/proftpd/modules.conf',
+						'etc_proftpd_proftpd.conf' => '/etc/proftpd/proftpd.conf'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/proftpd restart'
+					)
+				),
+				'cron' => Array
+				(
+					'label' => 'Crond (cronscript)',
+					'files' => Array
+					(
+						'etc_php5_syscpcron_php.ini' => '/etc/php5/syscpcron/php.ini',
+						'etc_cron.d_syscp' => '/etc/cron.d/syscp'
+					),
+					'restart' => Array
+					(
+						'/etc/init.d/cron restart'
+					)
+				)
+			)
 		)
 	);
-
-	/*echo '<pre>';
-	print_r($configfiles);
-	echo '</pre>';*/
 
 	if( ($page == 'configfiles' || $page == 'overview') && $userinfo['change_serversettings'] == '1')
 	{

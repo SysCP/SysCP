@@ -441,4 +441,12 @@ $lng['panel']['translator'] = 'Translator';
 // ADDED IN 1.2.14-rc4
 $lng['error']['stringformaterror'] = 'The value for the field &quot;%s&quot; is not in the expected format.';
 
+// ADDED IN 1.2.15-rc1
+$lng['admin']['serversoftware'] = 'Serversoftware';
+$lng['admin']['phpversion'] = 'PHP-Version';
+$lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
+$lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
+$lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
+$lng['admin']['webserverinterface'] = 'Webserver Interface';
+
 ?>

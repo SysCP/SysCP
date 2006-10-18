@@ -424,8 +424,8 @@ $lng['error']['webftpiswrong'] = 'Die &quot;WebFTP-URL&quot ist keine g&uuml;lti
 $lng['domains']['hasaliasdomains'] = 'Hat Aliasdomain(s)';
 $lng['domains']['istopleveldomain'] = 'Ist Top-Level-Domain';
 
-$lng['serversettings']['defaultip']['title'] = 'Standard IP/Port'; 
-$lng['serversettings']['defaultip']['description'] = 'Welche IP/Port-Kombination soll standardm&auml;&szlig;ig verwendet werden?'; 
+$lng['serversettings']['defaultip']['title'] = 'Standard IP/Port';
+$lng['serversettings']['defaultip']['description'] = 'Welche IP/Port-Kombination soll standardm&auml;&szlig;ig verwendet werden?';
 
 $lng['domains']['statstics'] = 'Statistiken';
 
@@ -441,5 +441,12 @@ $lng['panel']['translator'] = '&Uuml;bersetzung';
 // ADDED IN 1.2.14-rc4
 $lng['error']['stringformaterror'] = 'Der Wert des Feldes &quot;%s&quot; ist nicht im erwarteten Format.';
 
+// ADDED IN 1.2.15-rc1
+$lng['admin']['serversoftware'] = 'Serversoftware';
+$lng['admin']['phpversion'] = 'PHP-Version';
+$lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
+$lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
+$lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
+$lng['admin']['webserverinterface'] = 'Webserver Interface';
 
 ?>

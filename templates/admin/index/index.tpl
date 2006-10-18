@@ -47,27 +47,27 @@ $header
 			<td colspan="2" class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemdetails']}</b></td>
 		</tr>
 		<tr>
-			<td class="field_name_border_left">Serversoftware:</td>
+			<td class="field_name_border_left">{$lng['admin']['serversoftware']}:</td>
 			<td class="field_display">{$_SERVER['SERVER_SOFTWARE']}</td>
 		</tr>
 		<tr>
-			<td class="field_name_border_left">PHP-Version:</td>
+			<td class="field_name_border_left">{$lng['admin']['phpversion']}:</td>
 			<td class="field_display">$phpversion</td>
 		</tr>
 		<tr>
-			<td class="field_name_border_left">PHP-Memory-Limit:</td>
+			<td class="field_name_border_left">{$lng['admin']['phpmemorylimit']}:</td>
 			<td class="field_display">$phpmemorylimit</td>
 		</tr>
 		<tr>
-			<td class="field_name_border_left">MySQL Server Version:</td>
+			<td class="field_name_border_left">{$lng['admin']['mysqlserverversion']}:</td>
 			<td class="field_display">$mysqlserverversion</td>
 		</tr>
 		<tr>
-			<td class="field_name_border_left">MySQL Client Version:</td>
+			<td class="field_name_border_left">{$lng['admin']['mysqlclientversion']}:</td>
 			<td class="field_display">$mysqlclientversion</td>
 		</tr>
 		<tr>
-			<td class="field_name_border_left">Webserver Interface:</td>
+			<td class="field_name_border_left">{$lng['admin']['webserverinterface']}:</td>
 			<td class="field_display">$webserverinterface</td>
 		</tr>
 		<tr>

@@ -381,6 +381,5 @@ $lng['admin']['ipsandports']['edit'] = 'Editar IP/Porta';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Porta';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Porta';
-$lng['admin']['ipsandports']['default'] = 'IP/Porta padr&atilde;o da revenda';
 
 ?>
