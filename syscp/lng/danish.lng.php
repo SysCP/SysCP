@@ -439,4 +439,12 @@ $lng['panel']['used'] = 'brugt';
 
 $lng['error']['stringformaterror'] = 'Den indtastede v&aelig;rdi i feltet &quot;%s&quot; er ugyldig';
 
+// ADDED IN 1.2.15-svn1
+$lng['admin']['serversoftware'] = 'Serversoftware';
+$lng['admin']['phpversion'] = 'PHP-Version';
+$lng['admin']['phpmemorylimit'] = 'PHP Hukommelses Gr&aelig;se';
+$lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
+$lng['admin']['mysqlclientversion'] = 'MySQL Klient Version';
+$lng['admin']['webserverinterface'] = 'Webserver Brugerflade';
+
 ?>

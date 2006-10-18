@@ -295,7 +295,7 @@
 			$sortfield = implode( '.', $sortfield );
 
 			$sortorder = strtoupper( $this->sortorder );
-			
+
 			return 'ORDER BY ' . $sortfield . ' ' . $sortorder;
 		}
 
@@ -383,7 +383,14 @@
 		 */
 		function getHtmlPagingCode( $baseurl )
 		{
-			$pages = intval( $this->entries / $this->entriesperpage );
+			if( $this->entriesperpage == 0 )
+			{
+				return '';
+			}
+			else
+			{
+				$pages = intval( $this->entries / $this->entriesperpage );
+			}
 			if( $this->entries % $this->entriesperpage != 0 )
 			{
 				$pages++;

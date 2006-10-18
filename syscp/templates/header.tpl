@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="templates/main.css" type="text/css" />
 	<title><if isset($userinfo['loginname']) && $userinfo['loginname'] != ''>{$userinfo['loginname']} - </if>SysCP</title>
 </head>
-<body style="margin: 0; padding: 0;" onload="document.loginform.loginname.focus()">
+<body style="margin: 0; padding: 0;"<if !isset($userinfo['loginname']) && !(isset($userinfo['loginname']) && $userinfo['loginname'] == '')> onload="document.loginform.loginname.focus()"</if>>
 <!--
     We request you retain the full copyright notice below including the link to www.syscp.org.
     This not only gives respect to the large amount of time given freely by the developers

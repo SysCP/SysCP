@@ -426,4 +426,12 @@ $lng['panel']['translator'] = 'Traducteur';
 // ADDED IN 1.2.14-rc4
 $lng['error']['stringformaterror'] = 'La valeur pour &quot;%s&quot; n\'est pas dans un format reconnu.';
 
+// ADDED IN 1.2.15-svn1
+$lng['admin']['serversoftware'] = 'Logiciel Serveur';
+$lng['admin']['phpversion'] = 'Version de PHP';
+$lng['admin']['phpmemorylimit'] = 'Limite Memoire PHP';
+$lng['admin']['mysqlserverversion'] = 'Version du serveur MySQL';
+$lng['admin']['mysqlclientversion'] = 'Version du client MySQL';
+$lng['admin']['webserverinterface'] = 'Interface Web';
+
 ?>

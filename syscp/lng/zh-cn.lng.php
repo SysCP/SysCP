@@ -430,4 +430,12 @@ $lng['panel']['translator'] = '&#32763;&#35793;&#32773;';
 // ADDED IN 1.2.14-rc4
 $lng['error']['stringformaterror'] = '&#20449;&#24687;&#32452;&quot;%s&quot;&#20540;&#19981;&#26159;&#26399;&#26395;&#26684;&#24335;';
 
+// ADDED in 1.2.15-svn1
+$lng['admin']['serversoftware'] = '&#26381;&#21153;&#22120;&#36719;&#20214;';
+$lng['admin']['phpversion'] = 'php&#29256;&#26412;';
+$lng['admin']['phpmemorylimit'] = 'php&#20869;&#23384;&#38480;&#21046;';
+$lng['admin']['mysqlserverversion'] = 'mysql&#26381;&#21153;&#22120;&#29256;&#26412;';
+$lng['admin']['mysqlclientversion'] = 'mysql&#23458;&#25143;&#31471;&#29256;&#26412;';
+$lng['admin']['webserverinterface'] = '&#32593;&#39029;&#26381;&#21153;&#22120;&#25509;&#21475
+
 ?>

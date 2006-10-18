@@ -8,7 +8,7 @@
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
  *
  * @copyright  (c) the authors
- * @author     Jordi Romero (jordi@jrom.net) 
+ * @author     Jordi Romero (jordi@jrom.net)
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
  * @version    $Id$
@@ -30,7 +30,7 @@ $lng['panel']['emptyfordefault'] = 'deixeu-ho buit per usar el valor predetermin
 $lng['panel']['path'] = 'Ruta';
 $lng['panel']['toggle'] = 'Marcar/Desmarcar';
 $lng['panel']['next'] = 'següent';
-$lng['panel']['dirsmissing'] = 'No puc trobar o escriure en aquest directori!'; 
+$lng['panel']['dirsmissing'] = 'No puc trobar o escriure en aquest directori!';
 
 /**
  * Login
@@ -47,7 +47,6 @@ $lng['login']['profile_lng'] = 'Idioma del perfil';
  */
 $lng['customer']['documentroot'] = 'Directori HOME';
 $lng['customer']['name'] = 'Nom';
-$lng['customer']['surname'] = 'Cognom';
 $lng['customer']['company'] = 'Empresa';
 $lng['customer']['street'] = 'Carrer';
 $lng['customer']['zipcode'] = 'Codi Postal';
@@ -113,7 +112,7 @@ $lng['domains']['subdomain_add'] = 'Crear subdomini';
 $lng['domains']['subdomain_edit'] = 'Editar (sub)domini';
 $lng['domains']['wildcarddomain'] = 'Crear un domini comod&iacute;? (wildcarddomain)';
 $lng['domains']['aliasdomain'] = 'Sobrenom per a aquest domini';
-$lng['domains']['noaliasdomain'] = 'No hi ha sobrenom del domini'; 
+$lng['domains']['noaliasdomain'] = 'No hi ha sobrenom del domini';
 
 /**
  * eMails
@@ -381,6 +380,5 @@ $lng['admin']['ipsandports']['edit'] = 'Editar IP/Port';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
-$lng['admin']['ipsandports']['default'] = 'IP/Port per defecte del resseller'; 
 
 ?>
