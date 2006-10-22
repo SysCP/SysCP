@@ -216,50 +216,37 @@
 		elseif($row['type'] == '3')
 		{
 			fwrite( $debugHandler, '  cron_tasks: Task3 started - create/change/del htaccess/htpasswd' . "\n");
-			if ( is_array($row['data']) )
+
+			$diroptions_file = '';
+			$diroptions_file = '# '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next dir options change at the panel.'."\n"."\n";
+			$result = $db->query(
+				'SELECT * ' .
+				'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
+				'ORDER BY `path`'
+			);
+			$diroptions = array();
+			while($row_diroptions=$db->fetch_array($result))
 			{
-				$path = $row['data']['path'];
-                fwrite( $debugHandler, '  cron_tasks: Task3 - Path: '.$path . "\n");
+				$diroptions[$row_diroptions['path']] = $row_diroptions;
+				$diroptions[$row_diroptions['path']]['htpasswds'] = array();
+			}
+			$result = $db->query(
+				'SELECT * ' .
+				'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
+				'ORDER BY `path`, `username`'
+			);
+			while($row_htpasswds=$db->fetch_array($result))
+			{
+				$diroptions[$row_htpasswds['path']]['path'] = $row_htpasswds['path'];
+				$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
+				$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
+			}
 
-				if (!is_dir($path))
-				{
-					$db->query(
-						'DELETE FROM `'.TABLE_PANEL_HTACCESS.'` ' .
-						'WHERE `path` = "'.$db->escape($path).'"'
-					);
-					$db->query(
-						'DELETE FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
-						'WHERE `path` = "'.$db->escape($path).'"'
-					);
-				}
-
-				$diroptions_file = '';
-				$diroptions_file = '# '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next dir options change at the panel.'."\n"."\n";
-				$result = $db->query(
-					'SELECT * ' .
-					'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
-					'ORDER BY `path`'
-				);
-				$diroptions = array();
-				while($row_diroptions=$db->fetch_array($result))
-				{
-					$diroptions[$row_diroptions['path']] = $row_diroptions;
-					$diroptions[$row_diroptions['path']]['htpasswds'] = array();
-				}
-				$result = $db->query(
-					'SELECT * ' .
-					'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
-					'ORDER BY `path`, `username`'
-				);
-				while($row_htpasswds=$db->fetch_array($result))
-				{
-					$diroptions[$row_htpasswds['path']]['path'] = $row_htpasswds['path'];
-					$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
-					$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
-				}
-
-				$htpasswd_files = array();
-				foreach($diroptions as $row_diroptions)
+			$htpasswd_files = array();
+			foreach($diroptions as $row_diroptions)
+			{
+				exec( 'mkdir -p ' . $row_diroptions['path'] );
+				if( is_dir( $row_diroptions['path'] ) )
 				{
 					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
 					if ( isset ( $row_diroptions['options_indexes'] ) && $row_diroptions['options_indexes'] == '1' )
@@ -313,7 +300,7 @@
 							$umask = umask();
 							umask( 0000 );
 							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0751);
-							umask( $umask );
+						umask( $umask );
 						}
 						elseif(!is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
 						{
@@ -330,20 +317,20 @@
 					}
 					$diroptions_file .= '</Directory>'."\n\n";
 				}
-				$diroptions_file_handler = fopen($settings['system']['apacheconf_directory'].'diroptions.conf', 'w');
-				fwrite($diroptions_file_handler, $diroptions_file);
-				fclose($diroptions_file_handler);
-				safe_exec($settings['system']['apachereload_command']);
+			}
+			$diroptions_file_handler = fopen($settings['system']['apacheconf_directory'].'diroptions.conf', 'w');
+			fwrite($diroptions_file_handler, $diroptions_file);
+			fclose($diroptions_file_handler);
+			safe_exec($settings['system']['apachereload_command']);
 
-				if(file_exists($settings['system']['apacheconf_directory'].'htpasswd/') && is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
+			if(file_exists($settings['system']['apacheconf_directory'].'htpasswd/') && is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
+			{
+				$htpasswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
+				while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle)))
 				{
-					$htpasswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'].'htpasswd/');
-					while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle)))
+					if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files) && file_exists($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename))
 					{
-						if($htpasswd_filename != '.' && $htpasswd_filename != '..' && !in_array($htpasswd_filename,$htpasswd_files) && file_exists($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename))
-						{
-							unlink($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename);
-						}
+						unlink($settings['system']['apacheconf_directory'].'htpasswd/'.$htpasswd_filename);
 					}
 				}
 			}

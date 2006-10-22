@@ -538,28 +538,19 @@
 				'("2", "' . $db->escape($data) . '")'
 			);
 		}
-		elseif($type=='3' && $param1!='')
+		elseif($type=='3')
 		{
-			$data=Array();
-			$data['path']=$param1;
-			$data=serialize($data);
-
-			$result=$db->query_first(
-				'SELECT `type` ' .
-				'FROM `' . TABLE_PANEL_TASKS . '` ' .
-				'WHERE `type`="3" ' .
-				'AND `data`="' . $db->escape($data) .'"'
+			$db->query(
+				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
+				'WHERE `type`="3"'
 			);
 
-			if($result['type']=='')
-			{
-				$db->query(
-					'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-					'(`type`, `data`) ' .
-					'VALUES ' .
-					'("3", "' . $db->escape($data) . '")'
-				);
-			}
+			$db->query(
+				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
+				'(`type`) ' .
+				'VALUES ' .
+				'("3")'
+			);
 		}
 		elseif($type=='4')
 		{

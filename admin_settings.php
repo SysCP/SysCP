@@ -488,6 +488,7 @@
 		if ( isset( $_POST['send'] ) && $_POST['send'] == 'send' )
 		{
 			inserttask('1');
+			inserttask('3');
 			inserttask('4');
 			redirectTo ( 'admin_index.php' , array( 's' => $s ) ) ;
 		}
