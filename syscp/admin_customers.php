@@ -392,7 +392,7 @@
 							"VALUES ('".(int)$customerid."', '".$db->escape($loginname)."', '".$db->escape($htpasswdPassword).
 							"', '".$db->escape($path)."')"
 						);
-						inserttask('3',$path);
+						inserttask('3');
 
 						$result=$db->query(
 							"INSERT INTO `".TABLE_FTP_USERS."` " .

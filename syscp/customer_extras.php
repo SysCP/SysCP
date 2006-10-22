@@ -83,7 +83,7 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='$id'");
-					inserttask('3',$result['path']);
+					inserttask('3');
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
@@ -144,7 +144,7 @@
 				else
 				{
 					$db->query("INSERT INTO `".TABLE_PANEL_HTPASSWDS."` (`customerid`, `username`, `password`, `path`) VALUES ('".(int)$userinfo['customerid']."', '".$db->escape($username)."', '".$db->escape($password)."', '".$db->escape($path)."')");
-					inserttask('3',$path);
+					inserttask('3');
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
@@ -180,7 +180,7 @@
 					else
 					{
 						$db->query("UPDATE `".TABLE_PANEL_HTPASSWDS."` SET `password`='".$db->escape($password)."' WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
-						inserttask('3',$result['path']);
+						inserttask('3');
 						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
@@ -252,7 +252,7 @@
 				if (isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
-					inserttask('3', $result['path']);
+					inserttask('3');
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 				else
@@ -353,7 +353,7 @@
 						'        "'.$db->escape($error500path).'" ' .
 						'       )'
 					);
-					inserttask('3',$path);
+					inserttask('3');
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
@@ -438,7 +438,7 @@
 					     || ($error500path   != $result['error500path'])
 					   )
 					{
-						inserttask('3', $result['path']);
+						inserttask('3');
 						$db->query(
 							'UPDATE `'.TABLE_PANEL_HTACCESS.'` ' .
 							'SET `options_indexes` = "'.$db->escape($option_indexes).'",' .

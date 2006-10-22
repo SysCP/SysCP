@@ -383,14 +383,7 @@
 			'    `error500path` = "" '
 		);
 
-		$result = $db->query(
-			'SELECT `path` ' .
-			'FROM `'.TABLE_PANEL_HTACCESS.'` '
-		);
-		while ($row = $db->fetch_array($result))
-		{
-			inserttask('3', $row['path']);
-		}
+		inserttask('3');
 
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.5-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.5-cvs4';
@@ -512,7 +505,7 @@
 	if($settings['panel']['version'] == '1.2.7')
 	{
 		inserttask('1');
-		inserttask('3','/');
+		inserttask('3');
 		$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='1.2.7-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 		$settings['panel']['version'] = '1.2.7-cvs1';
 	}
