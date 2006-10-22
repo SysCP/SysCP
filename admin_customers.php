@@ -687,8 +687,8 @@
 					{
 						$language_options .= makeoption($language_name, $language_file, $result['def_language'], true);
 					}
-					$result['traffic']=$result['traffic']/(1024*1024);
-					$result['diskspace']=$result['diskspace']/1024;
+					$result['traffic']=round($result['traffic']/(1024*1024),4);
+					$result['diskspace']=round($result['diskspace']/1024,2);
 					$result['email'] = $idna_convert->decode($result['email']);
 					$createstdsubdomain=makeyesno('createstdsubdomain', '1', '0', (($result['standardsubdomain'] != '0') ? '1' : '0'));
 					$deactivated=makeyesno('deactivated', '1', '0', $result['deactivated']);
