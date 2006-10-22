@@ -149,7 +149,8 @@ CREATE TABLE `panel_admins` (
   `lastlogin_succ` int(11) unsigned NOT NULL default '0',
   `lastlogin_fail` int(11) unsigned NOT NULL default '0',
   `loginfail_count` int(11) unsigned NOT NULL default '0',
-   PRIMARY KEY  (`adminid`)
+   PRIMARY KEY  (`adminid`),
+   UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
 
 
@@ -202,7 +203,7 @@ CREATE TABLE `panel_customers` (
   `lastlogin_fail` int(11) unsigned NOT NULL default '0',
   `loginfail_count` int(11) unsigned NOT NULL default '0',
    PRIMARY KEY  (`customerid`),
-  KEY `loginname` (`loginname`)
+   UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
 #
 # Dumping data for table `panel_customers`

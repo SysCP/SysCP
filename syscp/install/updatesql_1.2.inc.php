@@ -1094,5 +1094,20 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn1';
 	}
+	if( $settings['panel']['version'] == '1.2.14-svn1' )
+	{
+		$db->query( 'ALTER TABLE `' . TABLE_PANEL_CUSTOMERS . '` DROP INDEX  `loginname` ' );
+		$db->query( 'ALTER TABLE `' . TABLE_PANEL_ADMINS . '` ADD UNIQUE ( `loginname` )' );
+		$db->query( 'ALTER TABLE `' . TABLE_PANEL_CUSTOMERS . '` ADD UNIQUE ( `loginname` )' );
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.14-svn2\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.14-svn2';
+	}
 
 ?>

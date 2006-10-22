@@ -141,7 +141,6 @@
 				$name = validate($_POST['name'], 'name');
 				$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
 				$loginname = validate($_POST['loginname'], 'loginname');
-				$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname`='".$db->escape($loginname)."'");
 				$password = validate($_POST['password'], 'password');
 				$email = $idna_convert->encode ( validate($_POST['email'], 'email') );
 				$def_language = validate($_POST['def_language'], 'default language');
@@ -162,11 +161,15 @@
 				$diskspace = $diskspace * 1024 ;
 				$traffic = $traffic * 1024 * 1024 ;
 
+				// Check if the account already exists
+				$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '".$db->escape($loginname)."'");
+				$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '".$db->escape($loginname)."'");
+
 				if($loginname == '')
 				{
 					standard_error(array('stringisempty','myloginname'));
 				}
-				elseif($loginname_check['loginname'] == $loginname)
+				elseif( strtolower( $loginname_check['loginname'] ) == strtolower( $loginname ) || strtolower( $loginname_check_admin['loginname'] ) == strtolower( $loginname ) )
 				{
 					standard_error('loginnameexists',$loginname);
 				}
