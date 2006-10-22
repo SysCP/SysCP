@@ -20,7 +20,7 @@
 		die('This script will only work in the shell.');
 	}
 
-	fwrite( $debugHandler, '  cron_traffic: Started...');
+	fwrite( $debugHandler, '  cron_traffic: Started...' . "\n");
 	/**
 	 * DAILY TRAFFIC AND DISKUSAGE MESSURE
 	 */
