@@ -215,7 +215,7 @@
 						$aliasdomain_check = $db->query_first('SELECT `id` FROM `'.TABLE_PANEL_DOMAINS.'` `d`,`'.TABLE_PANEL_CUSTOMERS.'` `c` WHERE `d`.`customerid`=\''.(int)$userinfo['customerid'].'\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\''.(int)$userinfo['customerid'].'\' AND `d`.`id`=\''.(int)$aliasdomain.'\'');
 					}
 
-					if( isset($_POST['url']) && $_POST['url'] != '' && verify_url($_POST['url']) )
+					if( isset($_POST['url']) && $_POST['url'] != '' && verify_url( $idna_convert->encode( $_POST['url'] ) ) )
 					{
 						$path = $_POST['url'];
 					}
@@ -317,7 +317,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					if( isset($_POST['url']) && $_POST['url'] != '' && verify_url($_POST['url']) )
+					if( isset($_POST['url']) && $_POST['url'] != '' && verify_url( $idna_convert->encode( $_POST['url'] ) ) )
 					{
 						$path = $_POST['url'];
 					}
