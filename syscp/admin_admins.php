@@ -321,8 +321,8 @@
 				}
 				else
 				{
-					$result['traffic']=$result['traffic']/(1024*1024);
-					$result['diskspace']=$result['diskspace']/1024;
+					$result['traffic']=round($result['traffic']/(1024*1024),4);
+					$result['diskspace']=round($result['diskspace']/1024,2);
 					$result['email'] = $idna_convert->decode($result['email']);
 					$language_options = '';
 					while(list($language_file, $language_name) = each($languages))
