@@ -290,11 +290,11 @@
 						$loginname_check = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `loginname` = '".$db->escape($loginname)."'");
 						$loginname_check_admin = $db->query_first("SELECT `loginname` FROM `".TABLE_PANEL_ADMINS."` WHERE `loginname` = '".$db->escape($loginname)."'");
 
-						if ( $loginname_check['loginname'] == $loginname || $loginname_check_admin['loginname'] == $loginname )
+						if ( strtolower( $loginname_check['loginname'] ) == strtolower( $loginname ) || strtolower( $loginname_check_admin['loginname'] ) == strtolower( $loginname ) )
 						{
 							standard_error( 'loginnameexists', $loginname );
 						}
-						elseif ( !check_username($loginname))
+						elseif ( !check_username($loginname) )
 						{
 							standard_error( 'loginnameiswrong', $loginname);
 						}
