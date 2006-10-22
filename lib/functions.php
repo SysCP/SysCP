@@ -475,7 +475,7 @@
 	 */
 	function verify_url($url)
 	{
-		return (bool)preg_match('!^https?://[a-z0-9öüäÖÜÄ\.\-/\?&=%\+#]+$!i', $url);
+		return (bool)preg_match('!^https?://[a-z0-9\.\-/]*(?::\d{1,5})?(?:/[^\s\r\n\0]*)?$!i', $url);
 	}
 
 	/**
