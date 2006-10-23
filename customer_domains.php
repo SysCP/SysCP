@@ -40,7 +40,8 @@
 		{
 			$fields = array(
 								'd.domain' => $lng['domains']['domainname'],
-								'd.documentroot' => $lng['panel']['path']
+								'd.documentroot' => $lng['panel']['path'],
+								'd.aliasdomain' => $lng['domains']['aliasdomain']
 							);
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'] );
 
