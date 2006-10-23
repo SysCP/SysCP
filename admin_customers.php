@@ -277,7 +277,7 @@
 							// Accounts which match systemaccounts are not allowed, filtering them
 							if ( preg_match('/^'.preg_quote($settings['customer']['accountprefix'], '/').'([0-9]+)/', $loginname) )
 							{
-								standard_error('loginnameissystemaccount');
+								standard_error('loginnameissystemaccount', $settings['customer']['accountprefix']);
 							}
 						}
 						else

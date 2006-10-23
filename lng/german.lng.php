@@ -392,7 +392,6 @@ $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Sind Sie sich
 
 // ADDED IN 1.2.14-rc1
 $lng['admin']['memorylimitdisabled'] = 'Deaktiviert';
-$lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht. Bitte w&auml;hlen Sie einen anderen Accountnamen.';
 
 $lng['domain']['openbasedirpath'] = 'OpenBasedir-Pfad';
 $lng['domain']['docroot'] = 'Oben eingegebener Pfad';
@@ -448,5 +447,9 @@ $lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
 $lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
 $lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
 $lng['admin']['webserverinterface'] = 'Webserver Interface';
+
+// CHANGED IN 1.2.15-rc1
+$lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht (also zum Beispiel mit &quot;%s&quot; anf&auml;ngt). Bitte w&auml;hlen Sie einen anderen Accountnamen.';
+
 
 ?>
