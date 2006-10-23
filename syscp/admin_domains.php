@@ -41,7 +41,8 @@
 								'c.name' => $lng['customer']['name'],
 								'c.firstname' => $lng['customer']['firstname'],
 								'c.company' => $lng['customer']['company'],
-								'c.loginname' => $lng['login']['username']
+								'c.loginname' => $lng['login']['username'],
+								'd.aliasdomain' => $lng['domains']['aliasdomain']
 							);
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'] );
 
