@@ -421,7 +421,6 @@ $lng['error']['webmailiswrong'] = 'The WebMail-link is not a valid link.';
 $lng['error']['webftpiswrong'] = 'The WebFTP-link is not a valid link.';
 
 $lng['domains']['hasaliasdomains'] = 'Has alias domain(s)';
-$lng['domains']['istopleveldomain'] = 'Is top level domain';
 
 $lng['serversettings']['defaultip']['title'] = 'Default IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'What\'s the default IP/Port combination?';
@@ -447,6 +446,7 @@ $lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
 $lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
 $lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
 $lng['admin']['webserverinterface'] = 'Webserver Interface';
+$lng['domains']['isassigneddomain'] = 'Is assigned domain';
 
 // CHANGED IN 1.2.15-rc1
 $lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts (as for example begin with &quot;%s&quot;). Please enter another accountname.';

@@ -421,7 +421,6 @@ $lng['error']['webmailiswrong'] = 'Die &quot;WebMail-URL&quot ist keine g&uuml;l
 $lng['error']['webftpiswrong'] = 'Die &quot;WebFTP-URL&quot ist keine g&uuml;ltige URL.';
 
 $lng['domains']['hasaliasdomains'] = 'Hat Aliasdomain(s)';
-$lng['domains']['istopleveldomain'] = 'Ist Top-Level-Domain';
 
 $lng['serversettings']['defaultip']['title'] = 'Standard IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'Welche IP/Port-Kombination soll standardm&auml;&szlig;ig verwendet werden?';
@@ -447,6 +446,7 @@ $lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
 $lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
 $lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
 $lng['admin']['webserverinterface'] = 'Webserver Interface';
+$lng['domains']['isassigneddomain'] = 'Ist zugewiesene Domain';
 
 // CHANGED IN 1.2.15-rc1
 $lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht (also zum Beispiel mit &quot;%s&quot; anf&auml;ngt). Bitte w&auml;hlen Sie einen anderen Accountnamen.';
