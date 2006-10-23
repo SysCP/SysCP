@@ -173,6 +173,11 @@
 				{
 					standard_error('loginnameexists',$loginname);
 				}
+				// Accounts which match systemaccounts are not allowed, filtering them
+				elseif ( preg_match('/^'.preg_quote($settings['customer']['accountprefix'], '/').'([0-9]+)/', $loginname) )
+				{
+					standard_error('loginnameissystemaccount', $settings['customer']['accountprefix']);
+				}
 				elseif(!check_username($loginname))
 				{
 					standard_error('loginnameiswrong',$loginname);
