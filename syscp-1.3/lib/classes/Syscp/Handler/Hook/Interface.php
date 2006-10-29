@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -24,8 +25,11 @@
  * @subpackage Syscp.Handler.Hook
  * @see        Syscp_Handler_Hook
  */
+
 interface Syscp_Handler_Hook_Interface extends Syscp_Handler_Interface
 {
-	public function call($hookName, $params = array());
-	public function schedule($file, $class, $method, $params);
+    public function call($hookName, $params = array());
+
+    public function schedule($file, $class, $method, $params);
 }
+

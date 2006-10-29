@@ -15,7 +15,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  2005-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Pickle.php,v 1.5 2006/01/06 04:47:36 cellog Exp $
+ * @version    CVS: $Id: Pickle.php,v 1.5.2.1 2006/05/10 03:25:15 cellog Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.1
  */
@@ -33,7 +33,7 @@ require_once 'PEAR/Command/Common.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  2005-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.1
  */
@@ -156,7 +156,7 @@ generate both package.xml.
         require_once 'PEAR/PackageFile/v1.php';
         $pf = new PEAR_PackageFile_v1;
         $pf->setConfig($this->config);
-        if (is_array($pf2->getPackageType() != 'extsrc')) {
+        if ($pf2->getPackageType() != 'extsrc') {
             return $this->raiseError('Cannot safely convert "' . $packagexml .
             '", is not an extension source package.  Using a PEAR_PackageFileManager-based ' .
             'script is an option');

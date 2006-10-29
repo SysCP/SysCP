@@ -1,7 +1,6 @@
 <?php
 
 // {{{ license
-
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=marker: */
 //
 // +----------------------------------------------------------------------+
@@ -21,9 +20,7 @@
 // | USA.                                                                 |
 // +----------------------------------------------------------------------+
 //
-
 // }}}
-
 
 /**
  * Encode/decode Internationalized Domain Names.
@@ -34,10 +31,11 @@
  * @package Net
  * @version $Id: IDNA.php,v 1.2 2004/08/16 09:35:40 docuverse_de Exp $
  */
- 
+
 class Net_IDNA
 {
     // {{{ factory
+
     /**
      * Attempts to return a concrete IDNA instance for either php4 or php5.
      *
@@ -46,39 +44,46 @@ class Net_IDNA
      *                          false on an error.
      * @access public
      */
-    function &getInstance($params = array())
+
+    static function &getInstance($params = array())
     {
-        $version   = explode( '.', phpversion() );
-        $handler   = ((int)$version[0] > 4) ? 'php5' : 'php4'; 
-        $class     = 'Net_IDNA_' . $handler;
-        $classfile = 'Net/IDNA/' . $handler . '.php';
-        
+        $version = explode('.', phpversion());
+        $handler = ((int)$version[0] > 4) ? 'php5' : 'php4';
+        $class = 'Net_IDNA_'.$handler;
+        $classfile = 'Net/IDNA/'.$handler.'.php';
+
         /*
          * Attempt to include our version of the named class, but don't treat
          * a failure as fatal.  The caller may have already included their own
          * version of the named class.
          */
+
         @include_once $classfile;
 
         /* If the class exists, return a new instance of it. */
-        if (class_exists($class)) {
-// STARTPATCH
-	// eremit@syscp.org
-	// PHP5 Notice, return by reference
-        	$newClass = new $class($params);
-			return $newClass;
-// OLD CODE
-			// return new $class($params);
-// ENDPATCH
+
+        if(class_exists($class))
+        {
+            // STARTPATCH
+            // eremit@syscp.org
+            // PHP5 Notice, return by reference
+
+            $newClass = new $class($params);
+            return $newClass;
+
+            // OLD CODE
+            // return new $class($params);
+            // ENDPATCH
         }
 
         return false;
     }
+
     // }}}
-    
     // {{{ singleton
+
     /**
-     * Attempts to return a concrete IDNA instance for either php4 or php5, 
+     * Attempts to return a concrete IDNA instance for either php4 or php5,
      * only creating a new instance if no IDNA instance with the same
      * parameters currently exists.
      *
@@ -87,20 +92,26 @@ class Net_IDNA
      *                          false on an error.
      * @access public
      */
+
     function &singleton($params = array())
     {
         static $instances;
-        if (!isset($instances)) {
+
+        if(!isset($instances))
+        {
             $instances = array();
         }
-        
+
         $signature = serialize($params);
-        if (!isset($instances[$signature])) {
+
+        if(!isset($instances[$signature]))
+        {
             $instances[$signature] = &Net_IDNA::factory($params);
         }
 
         return $instances[$signature];
     }
+
     // }}}
 }
 

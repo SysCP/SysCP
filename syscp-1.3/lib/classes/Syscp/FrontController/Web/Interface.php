@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -26,24 +27,29 @@
  * @subpackage Syscp.FrontController.Web
  * @see        Syscp_FrontController_Web
  */
+
 interface Syscp_FrontController_Web_Interface extends Syscp_FrontController_Interface
 {
-	/**
-	 * Method to generate a link this FrontController_Web can handle and recognize.
-	 *
-	 * @param  array   $params  An associative array of _GET => value pairs.
-	 * @param  string  $host    The target host of the link, if no host is given, this must
-	 *                          resolve to the local host.
-	 * @return string  The generated url.
-	 */
-	public function createLink($params, $host = null);
-	/**
-	 * Method to send a header redirect call to the client.
-	 *
-	 * @param  array   $params  An associative array of _GET => value pairs.
-	 * @param  string  $host    The target host of the link, if no host is given, this must
-	 *                          resolve to the local host.
-	 * @return void
-	 */
-	public function redirectTo($params, $host = null);
+    /**
+     * Method to generate a link this FrontController_Web can handle and recognize.
+     *
+     * @param  array   $params  An associative array of _GET => value pairs.
+     * @param  string  $host    The target host of the link, if no host is given, this must
+     *                          resolve to the local host.
+     * @return string  The generated url.
+     */
+
+    public function createLink($params, $host = null);
+
+    /**
+     * Method to send a header redirect call to the client.
+     *
+     * @param  array   $params  An associative array of _GET => value pairs.
+     * @param  string  $host    The target host of the link, if no host is given, this must
+     *                          resolve to the local host.
+     * @return void
+     */
+
+    public function redirectTo($params, $host = null);
 }
+

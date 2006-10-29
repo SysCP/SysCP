@@ -15,7 +15,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Validate.php,v 1.46 2006/01/23 17:16:35 cellog Exp $
+ * @version    CVS: $Id: Validate.php,v 1.46.2.3 2006/07/17 17:49:37 pajoye Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -38,7 +38,7 @@ require_once 'PEAR/Validator/PECL.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -445,17 +445,16 @@ class PEAR_Validate
     {
         if ($this->_state == PEAR_VALIDATE_NORMAL ||
               $this->_state == PEAR_VALIDATE_PACKAGING) {
-            if (!preg_match('/\d\d\d\d\-\d\d\-\d\d/',
-                  $this->_packagexml->getDate())) {
+            if (!preg_match('/(\d\d\d\d)\-(\d\d)\-(\d\d)/',
+                  $this->_packagexml->getDate(), $res) ||
+                  count($res) < 4
+                  || !checkdate($res[2], $res[3], $res[1])
+                ) {
                 $this->_addFailure('date', 'invalid release date "' .
                     $this->_packagexml->getDate() . '"');
                 return false;
             }
-            if (strtotime($this->_packagexml->getDate()) == -1) {
-                $this->_addFailure('date', 'invalid release date "' .
-                    $this->_packagexml->getDate() . '"');
-                return false;
-            }
+
             if ($this->_state == PEAR_VALIDATE_PACKAGING &&
                   $this->_packagexml->getDate() != date('Y-m-d')) {
                 $this->_addWarning('date', 'Release Date "' .

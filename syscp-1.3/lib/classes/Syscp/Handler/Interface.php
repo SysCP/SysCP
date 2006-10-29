@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -23,22 +24,25 @@
  * @package    Syscp.Framework.API
  * @subpackage Syscp.Handler
  */
+
 interface Syscp_Handler_Interface
 {
-	/**
-	 * Initialisation Method
-	 *
-	 * This method must implement the initialisation routines of the
-	 * descendant handler. It will be called during the setup of the
-	 * handlers.
-	 *
-	 * Params is an associative array containing all needed configuration
-	 * parameters of the implementing class. Please take a look at the
-	 * implementation regarding a list of mandatory and optional parameters.
-	 *
-	 * @param array  $params  Associative array holding all parameter
-	 *                        to initialize the implementation of this
-	 *                        interface
-	 */
-	public function initialize($params = array());
+    /**
+     * Initialisation Method
+     *
+     * This method must implement the initialisation routines of the
+     * descendant handler. It will be called during the setup of the
+     * handlers.
+     *
+     * Params is an associative array containing all needed configuration
+     * parameters of the implementing class. Please take a look at the
+     * implementation regarding a list of mandatory and optional parameters.
+     *
+     * @param array  $params  Associative array holding all parameter
+     *                        to initialize the implementation of this
+     *                        interface
+     */
+
+    public function initialize($params = array());
 }
+

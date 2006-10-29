@@ -15,7 +15,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Package.php,v 1.91 2006/01/23 19:05:52 cellog Exp $
+ * @version    CVS: $Id: Package.php,v 1.91.2.1 2006/05/25 22:00:05 cellog Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -49,7 +49,7 @@ define('PEAR_DOWNLOADER_PACKAGE_STATE', -1003);
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -1010,8 +1010,10 @@ class PEAR_Downloader_Package
             }
         } else {
             if (isset($param['uri'])) {
-                $param['channel'] = '__uri';
-                $param['package'] = $param['dep']['name'];
+                if ($this->getChannel() != '__uri') {
+                    return false;
+                }
+                return $param['uri'] == $this->getURI();
             }
             $package = isset($param['package']) ? $param['package'] :
                 $param['info']->getPackage();

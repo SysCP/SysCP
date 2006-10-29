@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -24,4 +25,8 @@
  * @subpackage Syscp.Handler.Database
  * @see        Syscp_Handler_Database
  */
-class Syscp_Handler_Database_Exception extends Syscp_Exception {}
+
+class Syscp_Handler_Database_Exception extends Syscp_Exception
+{
+}
+

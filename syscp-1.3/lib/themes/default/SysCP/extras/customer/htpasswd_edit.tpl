@@ -1,23 +1,28 @@
-    <form method="post" action="{url module=extras action=editHtpasswds}">
-     <input type="hidden" name="id" value="{$Config->get('env.id')}">
-     <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-      <tr>
-       <td colspan="2" class="title">{l10n get=menue.main.changepassword}</td>
-      </tr>
-      <tr>
-       <td class="maintable">{l10n get=panel.path}:</td>
-       <td class="maintable" nowrap>{$result.path}</td>
-      </tr>
-      <tr>
-       <td class="maintable">{l10n get=login.username}:</td>
-       <td class="maintable" nowrap>{$result.username}</td>
-      </tr>
-      <tr>
-       <td class="maintable">{l10n get=login.password}:</td>
-       <td class="maintable"><input type="password" name="password" maxlength="50"></td>
-      </tr>
-      <tr>
-       <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{l10n get=menue.main.changepassword}"></td>
-      </tr>
-     </table>
-    </form>
+	<form method="post" action="{url module=extras action=editHtpasswds}">
+		<input type="hidden" name="id" value="{$Config->get('env.id')}">
+		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_60">
+			<tr>
+				<td colspan="2" class="maintitle">
+					<img src="{$imagedir}title.gif" alt="" />&nbsp;{l10n get=SysCP.globallang.changepassword}
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{l10n get=SysCP.globallang.path}:</td>
+				<td class="main_field_display" nowrap="nowrap">{$result.path}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{l10n get=SysCP.globallang.username}:</td>
+				<td class="main_field_display" nowrap="nowrap">{$result.username}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{l10n get=SysCP.globallang.password}:</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="password" name="password" maxlength="50" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_confirm" colspan="2">
+					<input type="hidden" name="send" value="send" />
+					<input class="bottom" type="submit" value="{l10n get=SysCP.globallang.changepassword}" />
+				</td>
+			</tr>
+		</table>
+	</form>

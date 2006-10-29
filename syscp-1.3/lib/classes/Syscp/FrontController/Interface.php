@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -25,38 +26,43 @@
  * @package    Syscp.Framework.API
  * @subpackage Syscp.FrontController
  */
+
 interface Syscp_FrontController_Interface
 {
-	/**
-	 * Initialisation Method
-	 *
-	 * This method will always be called to initialize a frontcontroller instance, take
-	 * a look at the direct implementation of this method for an overview regarding the
-	 * parameters the implementation needs.
-	 *
-	 * @param  array  $params  List of initialisation parameters, see the direct
-	 *                         implementation for more information.
-	 * @return void
-	 */
-	public function initialize($params = array());
-	/**
-	 * Dispatch Method
-	 *
-	 * Dispatches the FrontController implementation and let him
-	 * do his work. This method is called by another script to indicate the FrontController
-	 * implementation can start it's work.
-	 *
-	 * @return void
-	 */
-	public function dispatch();
+    /**
+     * Initialisation Method
+     *
+     * This method will always be called to initialize a frontcontroller instance, take
+     * a look at the direct implementation of this method for an overview regarding the
+     * parameters the implementation needs.
+     *
+     * @param  array  $params  List of initialisation parameters, see the direct
+     *                         implementation for more information.
+     * @return void
+     */
 
-	/**
-	 * @todo Document me!
-	 * @todo Compile Error: Syscp/FrontController/Interface.php line 56
-	 *       - Access type for interface method Syscp_FrontController_Interface::initModules()
-	 *         must be omitted
-	 *       Whatever, looks like only public methods are allowed in Interfaces. It's PHP :/
+    public function initialize($params = array());
 
-	 */
-	public function initModules();
+    /**
+     * Dispatch Method
+     *
+     * Dispatches the FrontController implementation and let him
+     * do his work. This method is called by another script to indicate the FrontController
+     * implementation can start its work.
+     *
+     * @return void
+     */
+
+    public function dispatch();
+
+    /**
+     * @todo Document me!
+     * @todo Compile Error: Syscp/FrontController/Interface.php line 56
+     *       - Access type for interface method Syscp_FrontController_Interface::initModules()
+     *         must be omitted
+     *       Whatever, looks like only public methods are allowed in Interfaces. It's PHP :/
+     */
+
+    public function initModules();
 }
+

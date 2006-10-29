@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -24,13 +25,19 @@
  * @subpackage Syscp.Handler.Template
  * @see        Syscp_Handler_Template
  */
+
 interface Syscp_Handler_Template_Interface extends Syscp_Handler_Interface
 {
-	public function set($varName, $value);
-	public function setTemplate($template);
-	public function render();
-	public function showError($error, $replacer = '');
-	public function useTheme($theme);
-	public function showQuestion($question, $params = array(), $replacer = '', $targetUrl = '');
+    public function set($varName, $value);
 
+    public function setTemplate($template);
+
+    public function render();
+
+    public function showError($error, $replacer = '');
+
+    public function useTheme($theme);
+
+    public function showQuestion($question, $params = array(), $replacer = '', $targetUrl = '');
 }
+

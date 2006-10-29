@@ -1,2 +1,2 @@
 <?php
-		$this->TemplateHandler->setTemplate('SysCP/domains/customer/index.tpl');
+$this->TemplateHandler->setTemplate('SysCP/domains/customer/index.tpl');

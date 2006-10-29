@@ -17,7 +17,7 @@
 // |                                                                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: Validator.php,v 1.86 2006/03/02 18:14:13 cellog Exp $
+// $Id: Validator.php,v 1.86.2.1 2006/05/10 02:55:06 cellog Exp $
 /**
  * Private validation class used by PEAR_PackageFile_v2 - do not use directly, its
  * sole purpose is to split up the PEAR/PackageFile/v2.php file to make it smaller
@@ -103,6 +103,15 @@ class PEAR_PackageFile_v2_Validator
             '*changelog',
         );
         $test = $this->_packageInfo;
+        if (isset($test['dependencies']) &&
+              isset($test['dependencies']['required']) &&
+              isset($test['dependencies']['required']['pearinstaller']) &&
+              isset($test['dependencies']['required']['pearinstaller']['min']) &&
+              version_compare('1.4.11',
+                $test['dependencies']['required']['pearinstaller']['min'], '<')) {
+            $this->_pearVersionTooLow($test['dependencies']['required']['pearinstaller']['min']);
+            return false;
+        }
         // ignore post-installation array fields
         if (array_key_exists('filelist', $test)) {
             unset($test['filelist']);
@@ -1268,6 +1277,14 @@ class PEAR_PackageFile_v2_Validator
     function _validateRole($role)
     {
         return in_array($role, PEAR_Installer_Role::getValidRoles($this->_pf->getPackageType()));
+    }
+
+    function _pearVersionTooLow($version)
+    {
+        $this->_stack->push(__FUNCTION__, 'error',
+            array('version' => $version),
+            'This package.xml requires PEAR version %version% to parse properly, we are ' .
+            'version 1.4.11');
     }
 
     function _invalidTagOrder($oktags, $actual, $root)

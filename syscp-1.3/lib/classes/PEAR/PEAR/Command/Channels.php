@@ -18,7 +18,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Channels.php,v 1.44 2006/03/02 18:14:13 cellog Exp $
+ * @version    CVS: $Id: Channels.php,v 1.44.2.1 2006/07/17 18:24:10 pajoye Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -36,7 +36,7 @@ require_once 'PEAR/Command/Common.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -132,8 +132,8 @@ alias.
             'function' => 'doDiscover',
             'shortcut' => 'di',
             'options' => array(),
-            'doc' => '<package>
-List the files in an installed package.
+            'doc' => '[<channel.xml>|<channel name>]
+Initialize a Channel from its server and creates the local channel.xml.
 '
             ),
         );

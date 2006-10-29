@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -24,4 +25,8 @@
  * @subpackage Syscp.FrontController.Web
  * @see        Syscp_FrontController_Web
  */
-class Syscp_FrontController_Web_Exception extends Syscp_Exception {}
+
+class Syscp_FrontController_Web_Exception extends Syscp_Exception
+{
+}
+

@@ -1,19 +1,17 @@
 <?php
 /**
  * This file is part of the SysCP project.
- * Copyright (c) 2003-2006 the SysCP Project.
+ * Copyright (c) 2003-2006 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
  *
+ * @copyright  (c) the authors
  * @author     Carlo Pedro Woedl <carlopedrowoedl@hotmail.com>
  * @author     Ron Brand <ron.brand@web.de>
- * @copyright  (c) 2005 Carlo Pedro Woedl, Ron Brand
- * @copyright  (c) 2006 Sandra Delgado
- * @package    Syscp.Misc
- * @subpackage Language
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
+ * @package    Language
  * @version    $Id$
  */
 
@@ -21,6 +19,7 @@
 /**
  * Global
  */
+$lng['translator'] = 'Carlo Pedro Woedl, Ron Brand';
 $lng['panel']['edit'] = 'modificar';
 $lng['panel']['delete'] = 'borar';
 $lng['panel']['create'] = 'crear';
@@ -56,7 +55,7 @@ $lng['customer']['zipcode'] = 'Codigo Postal';
 $lng['customer']['city'] = 'Ciudad';
 $lng['customer']['phone'] = 'Tel&eacute;fono';
 $lng['customer']['fax'] = 'Telefax';
-$lng['customer']['email'] = 'email';
+$lng['customer']['email'] = 'Email';
 $lng['customer']['customernumber'] = 'Numero de Cliente';
 $lng['customer']['diskspace'] = 'Espacio de web (MB)';
 $lng['customer']['traffic'] = 'Trafico (GB)';
@@ -86,7 +85,7 @@ $lng['menue']['domains']['settings'] = 'Configuraciones';
 $lng['menue']['ftp']['ftp'] = 'FTP';
 $lng['menue']['ftp']['accounts'] = 'Cuentas';
 $lng['menue']['ftp']['webftp'] = 'WebFTP';
-$lng['menue']['extras']['extras'] = 'Extras';
+
 $lng['menue']['extras']['directoryprotection'] = 'directorio de protecci&oacute;n';
 $lng['menue']['extras']['pathoptions'] = 'Opciones del camino';
 
@@ -156,7 +155,7 @@ $lng['extras']['directoryprotection_add'] = 'Crear Protecci&oacute;n de Director
 $lng['extras']['view_directory'] = 'Mostrar directorio';
 $lng['extras']['pathoptions_add'] = 'agregue las opciones del camino';
 $lng['extras']['directory_browsing'] = 'Mostrar contenido del Directorio';
-$lng['extras']['pathoptions_edit'] = 'edit path options';
+
 $lng['extras']['error404path'] = '404';
 $lng['extras']['error403path'] = '403';
 $lng['extras']['error500path'] = '500';
@@ -180,7 +179,7 @@ $lng['error']['firstdeleteallsubdomains'] = 'Usted debe primero borar todos los 
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Usted acaba de definer una Direccion como Catchall para este dominio.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Usted no puede suprimir su cuenta principal del ftp';
 $lng['error']['login'] = 'El Nombre de Usuario/Clave esta Errado. Por favor intento otra vez!';
-$lng['error']['login_blocked'] = 'Esta cuenta fue cerrada transitoriamente debido a demasiados intentos falsos. <br />Por favor intente otra vez en %s segundos.';
+$lng['error']['login_blocked'] = 'Esta cuenta fue cerrada transitoriamente debido a demasiados intentos falsos. <br />Por favor intente otra vez en '.$settings['login']['deactivatetime'].' segundos.';
 $lng['error']['notallreqfieldsorerrors'] = 'Usted no ha llenado todos los espacios asignados o ha colocado un dato Erroneo.';
 $lng['error']['oldpasswordnotcorrect'] = 'La Clave Vieja no es correcta.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Usted no puede afectar un aparato m&aacute;s recursos que los que usted posee.';
@@ -341,7 +340,7 @@ $lng['serversettings']['bindreload_command']['title'] = 'Comando de la recarga d
 $lng['serversettings']['bindreload_command']['description'] = '&#191;Cu&aacute;l es el comando de la recarga de Bind?';
 $lng['serversettings']['binddefaultzone']['title'] = 'Zona del valor por defecto de Bind';
 $lng['serversettings']['binddefaultzone']['description'] = '&#191;Cu&aacute;l es el nombre de la zona del valor por defecto?';
-$lng['serversettings']['vmail_uid']['title'] = 'email-Uid';
+$lng['serversettings']['vmail_uid']['title'] = 'eMail-Uid';
 $lng['serversettings']['vmail_uid']['description'] = '&#191;Qu&eacute; UserID deben tener los email?';
 $lng['serversettings']['vmail_gid']['title'] = 'eMail-Gid';
 $lng['serversettings']['vmail_gid']['description'] = '&#191;Qu&eacute; identificaci&oacute;n del grupo deben tener los email?';
@@ -386,5 +385,41 @@ $lng['admin']['ipsandports']['ipandport'] = 'IP/Puerto';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Puerto';
 $lng['admin']['ipsandports']['default'] = 'Puerto ip predeterminado';
+
+
+// ADDED IN 1.2.13-rc3
+$lng['error']['cantchangesystemip'] = 'No puede cambiar el &uacute;ltimo IP de sistema, cree una nueva combinaci&oacute;n de IP/Puerto para la IP de sistema o cambie la IP de sistema.';
+$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = '&iquest;Est&aacute; seguro de que quiere la ra&iacute;z de documento para este dominio, ya que no se encuentra dentro de la ra&iacute;z cliente del cliente?';
+
+// ADDED IN 1.2.14-rc1
+$lng['admin']['memorylimitdisabled'] = 'Desactivado';
+$lng['error']['loginnameissystemaccount'] = 'No puede crear cuentas parecidas a cuentas de sistema. Por favor, introduzca otro nombre de cuenta.';
+
+
+$lng['domain']['docroot'] = 'Path del campo de arriba';
+$lng['domain']['homedir'] = 'Hogar-directorio';
+
+$lng['admin']['valuemandatory'] = 'Este valor es obligatorio';
+$lng['admin']['valuemandatorycompany'] = 'Hay que rellenar &oacute; &quot;apellido&quot; y &quot;nombre&quot; &oacute; &quot;empresa&quot;';
+
+
+
+
+$lng['panel']['pathorurl'] = 'Path &oacute; URL';
+
+$lng['error']['sessiontimeoutiswrong'] = 'S&oacute;lo est&aacute;n permitidos &quot;descansos de la sesi&oacute;n&quot; numéricos';
+$lng['error']['maxloginattemptsiswrong'] = 'S&oacute;lo est&aacute;n permitidos &quot;intentos m&aacute;ximas de registro&quot; numéricos';
+$lng['error']['deactivatetimiswrong'] = 'S&oacute;lo est&aacute; permitido un &quot;tiempo de desactivaci&oacute;n&quot; numérico';
+$lng['error']['accountprefixiswrong'] = 'El prefijo de cliente est&aacute; mal.';
+$lng['error']['mysqlprefixiswrong'] = 'El prefijo del SQL est&aacute; mal.';
+$lng['error']['ftpprefixiswrong'] = 'El prefijo del FTP est&aacute; mal.';
+$lng['error']['ipiswrong'] = 'La direcci&oacute;n IP est&aacute; mal. S&oacute;lo se permiten direcciones IP v&aacute;lidas.';
+$lng['error']['vmailuidiswrong'] = 'El eMail-Uid est&aacute; mal. S&oacute;lo se permiten UIDs numéricos.';
+$lng['error']['vmailgidiswrong'] = 'El eMail-Gid est&aacute; mal. S&oacute;lo se permiten GIDs numéricos.';
+$lng['error']['adminmailiswrong'] = 'La direcci&oacute;n del remitente est&aacute; mal. S&oacute;lo se permiten direcciones de correo electr&oacute;nico v&aacute;lidas.';
+$lng['error']['pagingiswrong'] = 'Las entradas por p&aacute;gina est&aacute;n mal. S&oacute;lo se permiten caracteres numéricos.';
+$lng['error']['phpmyadminiswrong'] = 'La URL de phpMyAdmin no es una URL v&aacute;lida.';
+$lng['error']['webmailiswrong'] = 'La URL de WebMail no es una URL v&aacute;lida.';
+$lng['error']['webftpiswrong'] = 'La URL de WebFTP no es una URL v&aacute;lida.';
 
 ?>

@@ -18,7 +18,7 @@
  * @author     Martin Jansen <mj@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Downloader.php,v 1.99 2006/03/02 18:14:13 cellog Exp $
+ * @version    CVS: $Id: Downloader.php,v 1.99.2.2 2006/06/16 12:35:12 pajoye Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.3.0
  */
@@ -45,7 +45,7 @@ define('PEAR_INSTALLER_ERROR_NO_PREF_STATE', 2);
  * @author     Martin Jansen <mj@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.3.0
  */
@@ -132,7 +132,7 @@ class PEAR_Downloader extends PEAR_Common
      * @access private
      */
     var $_errorStack = array();
-    
+
     /**
      * @var boolean
      * @access private
@@ -293,29 +293,37 @@ class PEAR_Downloader extends PEAR_Common
                 $this->pushError('Package "' . $param . '" is not valid',
                     PEAR_INSTALLER_SKIPPED);
             } else {
-                if ($params[$i] && !isset($channelschecked[$params[$i]->getChannel()]) &&
-                      !isset($this->_options['offline'])) {
-                    $channelschecked[$params[$i]->getChannel()] = true;
-                    PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
-                    if (!class_exists('System')) {
-                        require_once 'System.php';
+                do {
+                    if ($params[$i] && $params[$i]->getType() == 'local') {
+                        // bug #7090
+                        // skip channel.xml check for local packages
+                        break;
                     }
-                    $curchannel = &$this->_registry->getChannel($params[$i]->getChannel());
-                    if (PEAR::isError($curchannel)) {
+                    if ($params[$i] && !isset($channelschecked[$params[$i]->getChannel()]) &&
+                          !isset($this->_options['offline'])) {
+                        $channelschecked[$params[$i]->getChannel()] = true;
+                        PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
+                        if (!class_exists('System')) {
+                            require_once 'System.php';
+                        }
+                        $curchannel = &$this->_registry->getChannel($params[$i]->getChannel());
+                        if (PEAR::isError($curchannel)) {
+                            PEAR::staticPopErrorHandling();
+                            return $this->raiseError($curchannel);
+                        }
+                        $a = $this->downloadHttp('http://' . $params[$i]->getChannel() .
+                            '/channel.xml', $this->ui,
+                            System::mktemp(array('-t' . $this->getDownloadDir())), null, $curchannel->lastModified());
+
                         PEAR::staticPopErrorHandling();
-                        return $this->raiseError($curchannel);
+                        if (PEAR::isError($a) || !$a) {
+                                break;
+                        }
+                        $this->log(0, 'WARNING: channel "' . $params[$i]->getChannel() . '" has ' .
+                            'updated its protocols, use "channel-update ' . $params[$i]->getChannel() .
+                            '" to update');
                     }
-                    $a = $this->downloadHttp('http://' . $params[$i]->getChannel() .
-                        '/channel.xml', $this->ui,
-                        System::mktemp(array('-d')), null, $curchannel->lastModified());
-                    PEAR::staticPopErrorHandling();
-                    if (PEAR::isError($a) || !$a) {
-                        continue;
-                    }
-                    $this->log(0, 'WARNING: channel "' . $params[$i]->getChannel() . '" has ' .
-                        'updated its protocols, use "channel-update ' . $params[$i]->getChannel() .
-                        '" to update');
-                }
+                } while (false);
                 if ($params[$i] && !isset($this->_options['downloadonly'])) {
                     if (isset($this->_options['packagingroot'])) {
                         $checkdir = $this->_prependPath(
@@ -843,33 +851,62 @@ class PEAR_Downloader extends PEAR_Common
     {
         $xsdversion = isset($dep['rel']) ? '1.0' : '2.0';
         $curchannel = $this->config->get('default_channel');
-        if (isset($dep['channel'])) {
-            $remotechannel = $dep['channel'];
+        if (isset($dep['uri'])) {
+            $xsdversion = '2.0';
+            $chan = &$this->_registry->getChannel('__uri');
+            if (PEAR::isError($chan)) {
+                return $chan;
+            }
+            $version = $this->_registry->packageInfo($dep['name'], 'version', '__uri');
+            $this->configSet('default_channel', '__uri');
         } else {
-            $remotechannel = 'pear.php.net';
-        }
-        if (!$this->_registry->channelExists($remotechannel)) {
-            do {
-                if ($this->config->get('auto_discover')) {
-                    if ($this->discover($remotechannel)) {
-                        break;
+            if (isset($dep['channel'])) {
+                $remotechannel = $dep['channel'];
+            } else {
+                $remotechannel = 'pear.php.net';
+            }
+            if (!$this->_registry->channelExists($remotechannel)) {
+                do {
+                    if ($this->config->get('auto_discover')) {
+                        if ($this->discover($remotechannel)) {
+                            break;
+                        }
                     }
-                }
-                return PEAR::raiseError('Unknown remote channel: ' . $remotechannel);
-            } while (false);
+                    return PEAR::raiseError('Unknown remote channel: ' . $remotechannel);
+                } while (false);
+            }
+            $chan = &$this->_registry->getChannel($remotechannel);
+            if (PEAR::isError($chan)) {
+                return $chan;
+            }
+            $version = $this->_registry->packageInfo($dep['name'], 'version',
+                $remotechannel);
+            $this->configSet('default_channel', $remotechannel);
         }
-        $this->configSet('default_channel', $remotechannel);
         $state = isset($parr['state']) ? $parr['state'] : $this->config->get('preferred_state');
         if (isset($parr['state']) && isset($parr['version'])) {
             unset($parr['state']);
         }
-        $chan = &$this->_registry->getChannel($remotechannel);
-        if (PEAR::isError($chan)) {
-            return $chan;
-        }
-        $version = $this->_registry->packageInfo($dep['name'], 'version',
-            $remotechannel);
-        if ($chan->supportsREST($this->config->get('preferred_mirror')) &&
+        if (isset($dep['uri'])) {
+            $info = &$this->newDownloaderPackage($this);
+            PEAR::staticPushErrorHandling(PEAR_ERROR_RETURN);
+            $err = $info->initialize($dep);
+            PEAR::staticPopErrorHandling();
+            if (!$err) {
+                // skip parameters that were missed by preferred_state
+                return PEAR::raiseError('Cannot initialize dependency');
+            }
+            if (PEAR::isError($err)) {
+                if (!isset($this->_options['soft'])) {
+                    $this->log(0, $err->getMessage());
+                }
+                if (is_object($info)) {
+                    $param = $info->getChannel() . '/' . $info->getPackage();
+                }
+                return PEAR::raiseError('Package "' . $param . '" is not valid');
+            }
+            return $info;
+        } elseif ($chan->supportsREST($this->config->get('preferred_mirror')) &&
               $base = $chan->getBaseURL('REST1.0', $this->config->get('preferred_mirror'))) {
             $rest = &$this->config->getREST('1.0', $this->_options);
             $url = $rest->getDepDownloadURL($base, $xsdversion, $dep, $parr,
@@ -926,7 +963,7 @@ class PEAR_Downloader extends PEAR_Common
         } else {
             $url = $this->_remote->call('package.getDepDownloadURL', $xsdversion, $dep, $parr, $state);
         }
-        if ($parr['channel'] != $curchannel) {
+        if ($this->config->get('default_channel') != $curchannel) {
             $this->configSet('default_channel', $curchannel);
         }
         if (!is_array($url)) {
@@ -1084,7 +1121,7 @@ class PEAR_Downloader extends PEAR_Common
      */
     function sortPkgDeps(&$packages, $uninstall = false)
     {
-        $uninstall ? 
+        $uninstall ?
             $this->sortPackagesForUninstall($packages) :
             $this->sortPackagesForInstall($packages);
     }
@@ -1327,7 +1364,7 @@ class PEAR_Downloader extends PEAR_Common
             $config = &PEAR_Config::singleton();
         }
         $proxy_host = $proxy_port = $proxy_user = $proxy_pass = '';
-        if ($config->get('http_proxy')&& 
+        if ($config->get('http_proxy')&&
               $proxy = parse_url($config->get('http_proxy'))) {
             $proxy_host = @$proxy['host'];
             if (isset($proxy['scheme']) && $proxy['scheme'] == 'https') {
@@ -1395,7 +1432,7 @@ class PEAR_Downloader extends PEAR_Common
             $ifmodifiedsince = ($lastmodified ? "If-Modified-Since: $lastmodified\r\n" : '');
         }
         $request .= "Host: $host:$port\r\n" . $ifmodifiedsince .
-            "User-Agent: PEAR/1.4.8/PHP/" . PHP_VERSION . "\r\n";
+            "User-Agent: PEAR/1.4.11/PHP/" . PHP_VERSION . "\r\n";
         if (isset($this)) { // only pass in authentication for non-static calls
             $username = $config->get('username');
             $password = $config->get('password');

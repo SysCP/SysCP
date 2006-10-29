@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -24,4 +25,7 @@
  * @subpackage Syscp.Handler.Log
  * @see        Syscp_Handler_Log
  */
-class Syscp_Handler_Log_Exception extends Syscp_Exception {};
+
+class Syscp_Handler_Log_Exception extends Syscp_Exception
+{
+};

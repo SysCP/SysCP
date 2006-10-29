@@ -16,7 +16,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: DependencyDB.php,v 1.30 2006/01/06 04:47:36 cellog Exp $
+ * @version    CVS: $Id: DependencyDB.php,v 1.30.2.1 2006/05/25 22:00:05 cellog Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.4.0a1
  */
@@ -35,7 +35,7 @@ require_once 'PEAR/Config.php';
  * @author     Tomas V.V.Cox <cox@idec.net.com>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 1.4.0a1
  */
@@ -290,16 +290,36 @@ class PEAR_DependencyDB
             return false;
         }
         foreach ($this->_cache['dependencies'][$channel][$package] as $info) {
+            if (isset($info['dep']['uri'])) {
+                if (is_object($child)) {
+                    if ($info['dep']['uri'] == $child->getURI()) {
+                        return true;
+                    }
+                } elseif (isset($child['uri'])) {
+                    if ($info['dep']['uri'] == $child['uri']) {
+                        return true;
+                    }
+                }
+                return false;
+            }
             if (strtolower($info['dep']['channel']) == strtolower($depchannel) &&
                   strtolower($info['dep']['name']) == strtolower($deppackage)) {
                 return true;
             }
         }
         foreach ($this->_cache['dependencies'][$channel][$package] as $info) {
-            if ($this->_dependsOn(array(
-                    'channel' => $info['dep']['channel'],
-                    'package' => $info['dep']['name']), $child, $checked)) {
-                return true;
+            if (isset($info['dep']['uri'])) {
+                if ($this->_dependsOn(array(
+                        'uri' => $info['dep']['uri'],
+                        'package' => $info['dep']['name']), $child, $checked)) {
+                    return true;
+                }
+            } else {
+                if ($this->_dependsOn(array(
+                        'channel' => $info['dep']['channel'],
+                        'package' => $info['dep']['name']), $child, $checked)) {
+                    return true;
+                }
             }
         }
         return false;

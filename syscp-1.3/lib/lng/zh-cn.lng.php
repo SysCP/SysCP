@@ -1,28 +1,27 @@
 <?php
 /**
  * This file is part of the SysCP project.
- * Copyright (c) 2003-2006 the SysCP Project.
+ * Copyright (c) 2003-2006 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
  *
+ * @copyright  (c) the authors
  * @author     Jackie Zhang <jackie.zhang@arcor.de>
  * @author     Wang Changyi <wangchangyi@hotmail.com>
  * @author     Patrick Brueckner <patrick_brueckner@yahoo.de>
  * @author     Yuan Yang <melodieyy@web.de>
- * @copyright  (c) 2004 Wang Changyi, Patrick Brueckner
- * @copyright  (c) 2004/2005 Jackie Zhang
- * @copyright  (c) 2006 Yuan Yang
- * @package    Syscp.Misc
- * @subpackage Language
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
+ * @package    Language
  * @version    $Id$
  */
+
 
 /**
  * Global
  */
+$lng['translator'] = 'Jackie Zhang, Wang Changyi, Yuan Yang';
 $lng['panel']['edit'] = '&#32534;&#36753;';
 $lng['panel']['delete'] = '&#21024;&#38500;';
 $lng['panel']['create'] = '&#21019;&#24314;';
@@ -182,7 +181,7 @@ $lng['error']['firstdeleteallsubdomains'] = '&#22312;&#24744;&#21019;&#24314;&#1
 $lng['error']['youhavealreadyacatchallforthisdomain'] = '&#24744;&#24050;&#32463;&#20026;&#36825;&#39033;&#22495;&#21517;&#35774;&#32622;&#20102;&#19968;&#20010;&#30005;&#37038;&#25143;&#21475;';
 $lng['error']['ftp_cantdeletemainaccount'] = '&#24744;&#19981;&#33021;&#21024;&#38500;&#24744;&#30340;&#20027;&#36134;&#25143;';
 $lng['error']['login'] = '&#34987;&#36755;&#20837;&#30340;&#29992;&#25143;&#21517;/&#23494;&#30721;&#38169;&#35823;';
-$lng['error']['login_blocked'] = '&#30001;&#20110;&#22810;&#27425;&#38169;&#35823;&#30340;&#23581;&#35797;&#36825;&#20010;&#36134;&#25143;&#23558;&#34987;&#20851;&#38381;&#65281;<br/>&#35831;&#24744;&#22312;%s&#31186;&#21518;&#37325;&#26032;&#23581;&#35797;&#12290;';
+$lng['error']['login_blocked'] = '&#30001;&#20110;&#22810;&#27425;&#38169;&#35823;&#30340;&#23581;&#35797;&#36825;&#20010;&#36134;&#25143;&#23558;&#34987;&#20851;&#38381;&#65281;<br/>&#35831;&#24744;&#22312;'.$settings['login']['deactivatetime'].'&#31186;&#21518;&#37325;&#26032;&#23581;&#35797;&#12290;';
 $lng['error']['notallreqfieldsorerrors'] = '&#24744;&#27809;&#26377;&#22635;&#20889;&#25152;&#26377;&#30340;&#25991;&#26412;&#26639;&#25110;&#32773;&#26377;&#19968;&#20010;&#25991;&#26412;&#26639;&#34987;&#38169;&#35823;&#22635;&#20889;';
 $lng['error']['oldpasswordnotcorrect'] = '&#26087;&#23494;&#30721;&#19981;&#27491;&#30830;';
 $lng['error']['youcantallocatemorethanyouhave'] = '&#24744;&#19981;&#33021;&#20998;&#37197;&#27604;&#24744;&#29616;&#26377;&#30340;&#26356;&#22810;&#30340;&#36164;&#28304;&#12290;';
@@ -385,6 +384,50 @@ $lng['admin']['ipsandports']['edit'] = '&#32534;&#36753;IP/&#31471;&#21475;';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/&#31471;&#21475;';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = '&#31471;&#21475;';
-$lng['admin']['ipsandports']['default'] = '&#40664;&#35748;&#20998;&#38144;&#21830;IP/&#31471;&#21475;';
+
+// ADDED IN 1.2.13-rc3
+$lng['error']['cantchangesystemip'] = '&#20320;&#19981;&#33021;&#25913;&#21464;&#26368;&#36817;&#29992;&#36807;&#30340;&#31995;&#32479;IP,&#35201;&#20040;&#29983;&#25104;&#19968;&#20010;&#26032;&#30340;IP/&#31471;&#21475;&#32452;&#21512;, &#35201;&#20040;&#25913;&#21464;&#31995;&#32479;IP.';
+$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] ='&#20320;&#30830;&#23450;&#20320;&#24819;&#35201;&#36825;&#20010;&#22495;&#30340;&#25991;&#20214;&#28304;&#29983;&#25104;&#20110;&#23458;&#25143;&#30340;&#23458;&#25143;&#26681;&#30446;&#24405;&#20043;&#22806;?';
+
+// ADDED IN 1.2.14-rc1
+$lng['admin']['memorylimitdisabled'] = '&#20851;&#38381;';
+$lng['error']['loginnameissystemaccount'] = '&#20320;&#19981;&#33021;&#29983;&#25104;&#19982;&#31995;&#32479;&#24080;&#21495;&#30456;&#20284;&#30340;&#24080;&#25143;. &#35831;&#21478;&#36755;&#20837;&#19968;&#20010;&#24080;&#25143;&#21517;';
+$lng['domain']['openbasedirpath'] = '&#20844;&#24320;&#22522;&#22336;&#30446;&#24405;&#36335;&#24452;';
+$lng['domain']['docroot'] = '&#26469;&#33258;&#19978;&#19968;&#20449;&#24687;&#32452;&#30340;&#36335;&#24452;';
+$lng['domain']['homedir'] = '&#23478;&#30446;&#24405;';
+$lng['admin']['valuemandatory'] = '&#27492;&#20540;&#20026;&#24378;&#21046;&#24615;&#30340;';
+$lng['admin']['valuemandatorycompany'] = '&quot;&#22995;&quot;&#19982;&quot;&#21517;&quot;&#25110;&#32773;&quot;&#20844;&#21496;&#21517;&quot;&#20026;&#24517;&#22635;&#39033;';
+$lng['menue']['main']['username'] = '&#20197;:  &#30331;&#24405; ';
+$lng['panel']['urloverridespath'] = 'URL (&#35206;&#30422;&#36335;&#24452;)';
+$lng['panel']['pathorurl'] = '&#36335;&#24452;&#25110;URL';
+$lng['error']['sessiontimeoutiswrong'] = '&#21482;&#23481;&#35768;&#25968;&#23383;&#30340;&quot;&#23545;&#35805;&#36229;&#26102;&quot;.';
+$lng['error']['maxloginattemptsiswrong'] = '&#21482;&#23481;&#35768;&#25968;&#23383;&#30340;&quot;&#30331;&#24405;&#23581;&#35797;&#26368;&#22823;&#20540;&quot;.';
+$lng['error']['deactivatetimiswrong'] = '&#21482;&#23481;&#35768;&#25968;&#23383;&#30340;&quot;&#20572;&#29992;&#26102;&#38388;&quot;.';
+$lng['error']['accountprefixiswrong'] = '&quot;&#23458;&#25143;&#21069;&#32512;&quot;&#38169;&#35823;.';
+$lng['error']['mysqlprefixiswrong'] = '&quot;SQL&#21069;&#32512;&quot;&#38169;&#35823;.';
+$lng['error']['ftpprefixiswrong'] = '&quot;FTP&#21069;&#32512;&quot;&#38169;&#35823;.';
+$lng['error']['ipiswrong'] = '&quot;IP&#22320;&#22336;&quot;&#38169;&#35823;. &#21482;&#23481;&#35768;&#26377;&#25928;&#30340;IP&#22320;&#22336;.';
+$lng['error']['vmailuidiswrong'] = '&quot;Mails-uid&quot;&#38169;&#35823;. &#21482;&#23481;&#35768;&#25968;&#23383;&#30340;UID.';
+$lng['error']['vmailgidiswrong'] = '&quot;Mails-gid&quot;&#38169;&#35823;. &#21482;&#23481;&#35768;&#25968;&#23383;&#30340;GID.';
+$lng['error']['adminmailiswrong'] = '&quot;&#23492;&#20214;&#20154;&#22320;&#22336;&quot;&#38169;&#35823;. &#21482;&#23481;&#35768;&#26377;&#25928;&#30340;Email&#22320;&#22336;.';
+$lng['error']['pagingiswrong'] = '&quot;&#27599;&#39029;&#35760;&#24405;&quot;&#20540;&#38169;&#35823;. &#21482;&#23481;&#35768;&#25968;&#23383;&#31526;&#21495;.';
+$lng['error']['phpmyadminiswrong'] = 'phpmyadmin-&#38142;&#25509;&#19981;&#26159;&#19968;&#20010;&#26377;&#25928;&#38142;&#25509;.';
+$lng['error']['webmailiswrong'] = 'WebMail-&#38142;&#25509;&#19981;&#26159;&#19968;&#20010;&#26377;&#25928;&#38142;&#25509;.';
+$lng['error']['webftpiswrong'] = 'WebFTP-&#38142;&#25509;&#19981;&#26159;&#19968;&#20010;&#26377;&#25928;&#38142;&#25509;.';
+$lng['domains']['hasaliasdomains'] = '&#26377;&#21035;&#21517;&#22495;';
+$lng['domains']['istopleveldomain'] = '&#26159;&#39030;&#32423;&#22495;';
+$lng['serversettings']['defaultip']['title'] = '&#40664;&#35748;IP/&#31471;&#21475;';
+$lng['serversettings']['defaultip']['description'] = '&#40664;&#35748;&#30340;IP/&#31471;&#21475;&#32452;&#21512;&#26159;&#20160;&#20040;?';
+$lng['domains']['statstics'] = '&#20351;&#29992;&#32479;&#35745;';
+$lng['panel']['ascending'] = '&#21521;&#19978;&#30340;';
+$lng['panel']['decending'] = '&#21521;&#19979;&#30340;';
+$lng['panel']['search'] = '&#25628;&#23547;';
+$lng['panel']['used'] = '&#24050;&#29992;';
+
+// ADDED IN 1.2.14-rc3
+$lng['panel']['translator'] = '&#32763;&#35793;&#32773;';
+
+// ADDED IN 1.2.14-rc4
+$lng['error']['stringformaterror'] = '&#20449;&#24687;&#32452;&quot;%s&quot;&#20540;&#19981;&#26159;&#26399;&#26395;&#26684;&#24335;';
 
 ?>

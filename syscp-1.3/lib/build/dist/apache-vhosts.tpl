@@ -39,7 +39,7 @@ NameVirtualHost {$item}
 	ErrorLog "{$domain.error_logfile}"
 	CustomLog "{$domain.access_logfile}" combined
 {/if}
-    {$specialsettings}
+    {$domain.specialsettings}
 
   	### NEVER EVER CHANGE THE FOLLOWING LINE
   	# or you will break the whole traffic accounting

@@ -16,7 +16,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Common.php,v 1.32 2006/03/02 16:39:14 pajoye Exp $
+ * @version    CVS: $Id: Common.php,v 1.32.2.1 2006/06/08 22:27:11 pajoye Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 0.1
  */
@@ -35,7 +35,7 @@ require_once 'PEAR.php';
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 0.1
  */
@@ -74,7 +74,7 @@ class PEAR_Command_Common extends PEAR
 
     var $_deps_type_trans = array(
                                   'pkg' => 'package',
-                                  'extension' => 'extension',
+                                  'ext' => 'extension',
                                   'php' => 'PHP',
                                   'prog' => 'external program',
                                   'ldlib' => 'external library for linking',

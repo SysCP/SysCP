@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log/file.php,v 1.44 2005/09/19 04:24:14 jon Exp $
+ * $Header: /repository/pear/Log/Log/file.php,v 1.45 2006/01/11 07:56:37 jon Exp $
  *
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  * @package Log
  */
 
@@ -78,18 +78,6 @@ class Log_file extends Log
      * @access private
      */
     var $_timeFormat = '%b %d %H:%M:%S';
-
-    /**
-     * Hash that maps canonical format keys to position arguments for the
-     * "line format" string.
-     * @var array
-     * @access private
-     */
-    var $_formatMap = array('%{timestamp}'  => '%1$s',
-                            '%{ident}'      => '%2$s',
-                            '%{priority}'   => '%3$s',
-                            '%{message}'    => '%4$s',
-                            '%\{'           => '%%{');
 
     /**
      * String containing the end-on-line character sequence.
@@ -298,9 +286,9 @@ class Log_file extends Log
         $message = $this->_extractMessage($message);
 
         /* Build the string containing the complete log line. */
-        $line = sprintf($this->_lineFormat, strftime($this->_timeFormat),
-                $this->_ident, $this->priorityToString($priority),
-                $message) . $this->_eol;
+        $line = $this->_format($this->_lineFormat,
+                               strftime($this->_timeFormat),
+                               $priority, $message) . $this->_eol;
 
         /* If locking is enabled, acquire an exclusive lock on the file. */
         if ($this->_locking) {

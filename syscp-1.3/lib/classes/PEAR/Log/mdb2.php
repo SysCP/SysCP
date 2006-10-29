@@ -1,8 +1,8 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log/mdb2.php,v 1.3 2005/10/24 05:02:33 jon Exp $
+ * $Header: /repository/pear/Log/Log/mdb2.php,v 1.5 2006/01/08 03:35:44 jon Exp $
  *
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.5 $
  * @package Log
  */
 
@@ -309,7 +309,7 @@ class Log_mdb2 extends Log
      */
     function _createTable()
     {
-        $this->_db->loadModule('Manager');
+        $this->_db->loadModule('Manager', null, true);
         $result = $this->_db->manager->createTable(
             $this->_table,
             array(
@@ -350,7 +350,7 @@ class Log_mdb2 extends Log
                 'INSERT INTO ' . $this->_table .
                 ' (id, logtime, ident, priority, message)' .
                 ' VALUES(:id, :logtime, :ident, :priority, :message)',
-                $this->_types);
+                $this->_types, MDB2_PREPARE_MANIP);
 
         /* Return success if we didn't generate an error. */
         return (PEAR::isError($this->_statement) === false);

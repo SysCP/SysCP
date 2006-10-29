@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -26,11 +27,19 @@ Syscp::uses('Syscp.Handler.Database.Interface');
  * @subpackage Syscp.Handler.L10n
  * @see        Syscp_Handler_L10n
  */
+
 interface Syscp_Handler_L10n_Interface extends Syscp_Handler_Interface
 {
-	public function hasLanguage($language);
-	public function getLanguageList();
-	public function exists($value);
-	public function get($value);
-	public function setLanguage($language);
+    public function hasLanguage($language);
+
+    public function getLanguageList();
+
+    public function exists($value);
+
+    public function get($value);
+
+    public function setLanguage($language);
+
+    public function getAllSubstrings($string);
 }
+

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -24,7 +25,9 @@
  * @subpackage Syscp.Handler.Session
  * @see        Syscp_Handler_Session
  */
+
 interface Syscp_Handler_Session_Interface extends Syscp_Handler_Interface
 {
-	public function isValid($sessionId);
+    public function isValid($sessionId);
 }
+

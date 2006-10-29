@@ -16,7 +16,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Command.php,v 1.36 2006/01/06 04:47:36 cellog Exp $
+ * @version    CVS: $Id: Command.php,v 1.36.2.1 2006/06/16 13:01:59 pajoye Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 0.1
  */
@@ -94,7 +94,7 @@ $GLOBALS['_PEAR_Command_objects'] = array();
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    Release: 1.4.8
+ * @version    Release: 1.4.11
  * @link       http://pear.php.net/package/PEAR
  * @since      Class available since Release 0.1
  */
@@ -231,6 +231,11 @@ class PEAR_Command
         if ($dir === null) {
             $dir = dirname(__FILE__) . '/Command';
         }
+
+        if (!@is_dir($dir)) {
+            return PEAR::raiseError("registerCommands: opendir($dir) '$dir' does not exist or is not a directory");
+        }
+
         $dp = @opendir($dir);
         if (empty($dp)) {
             return PEAR::raiseError("registerCommands: opendir($dir) failed");

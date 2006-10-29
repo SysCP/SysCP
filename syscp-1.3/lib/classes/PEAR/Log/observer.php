@@ -1,9 +1,9 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log/observer.php,v 1.14 2005/10/26 05:46:56 jon Exp $
+ * $Header: /repository/pear/Log/Log/observer.php,v 1.18 2006/04/25 06:02:23 jon Exp $
  * $Horde: horde/lib/Log/observer.php,v 1.5 2000/06/28 21:36:13 jon Exp $
  *
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.18 $
  * @package Log
  */
 
@@ -72,20 +72,23 @@ class Log_observer
         $type = strtolower($type);
         $class = 'Log_observer_' . $type;
 
-        /* Support both the new-style and old-style file naming conventions. */
-        if (file_exists(dirname(__FILE__) . '/observer_' . $type . '.php')) {
-            $classfile = 'Log/observer_' . $type . '.php';
-            $newstyle = true;
-        } else {
-            $classfile = 'Log/' . $type . '.php';
-            $newstyle = false;
+        /*
+         * If the desired class already exists (because the caller has supplied
+         * it from some custom location), simply instantiate and return a new
+         * instance.
+         */
+        if (class_exists($class)) {
+            $object = &new $class($priority, $conf);
+            return $object;
         }
 
-        /* Issue a warning if the old-style conventions are being used. */
-        if (!$newstyle)
-        {
-            trigger_error('Using old-style Log_observer conventions',
-                          E_USER_WARNING);
+        /* Support both the new-style and old-style file naming conventions. */
+        $newstyle = true;
+        $classfile = dirname(__FILE__) . '/observer_' . $type . '.php';
+
+        if (!file_exists($classfile)) {
+            $classfile = 'Log/' . $type . '.php';
+            $newstyle = false;
         }
 
         /*
@@ -99,14 +102,15 @@ class Log_observer
         if (class_exists($class)) {
             /* Support both new-style and old-style construction. */
             if ($newstyle) {
-                $object =& new $class($priority, $conf);
+                $object = &new $class($priority, $conf);
             } else {
-                $object =& new $class($priority);
+                $object = &new $class($priority);
             }
             return $object;
         }
 
-        return null;
+        $null = null;
+        return $null;
     }
 
     /**

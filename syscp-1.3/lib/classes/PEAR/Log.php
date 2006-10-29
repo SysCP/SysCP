@@ -1,9 +1,9 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log.php,v 1.52 2005/10/26 05:46:55 jon Exp $
+ * $Header: /repository/pear/Log/Log.php,v 1.63 2006/05/23 05:59:58 jon Exp $
  * $Horde: horde/lib/Log.php,v 1.15 2000/06/29 23:39:45 jon Exp $
  *
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.63 $
  * @package Log
  */
 
@@ -70,6 +70,7 @@ class Log
 
     /**
      * The bitmask of allowed log levels.
+     *
      * @var integer
      * @access private
      */
@@ -82,6 +83,22 @@ class Log
      * @access private
      */
     var $_listeners = array();
+
+    /**
+     * Maps canonical format keys to position arguments for use in building
+     * "line format" strings.
+     *
+     * @var array
+     * @access private
+     */
+    var $_formatMap = array('%{timestamp}'  => '%1$s',
+                            '%{ident}'      => '%2$s',
+                            '%{priority}'   => '%3$s',
+                            '%{message}'    => '%4$s',
+                            '%{file}'       => '%5$s',
+                            '%{line}'       => '%6$s',
+                            '%{function}'   => '%7$s',
+                            '%\{'           => '%%{');
 
 
     /**
@@ -109,7 +126,7 @@ class Log
      * @access public
      * @since Log 1.0
      */
-    function &factory($handler, $name = '', $ident = '', $conf = array(),
+    static function &factory($handler, $name = '', $ident = '', $conf = array(),
                       $level = PEAR_LOG_DEBUG)
     {
         $handler = strtolower($handler);
@@ -122,7 +139,7 @@ class Log
          * version of the named class.
          */
         if (!class_exists($class)) {
-            @include_once $classfile;
+            include_once $classfile;
         }
 
         /* If the class exists, return a new instance of it. */
@@ -131,7 +148,8 @@ class Log
             return $obj;
         }
 
-        return null;
+        $null = null;
+        return $null;
     }
 
     /**
@@ -410,6 +428,100 @@ class Log
     }
 
     /**
+     * Using debug_backtrace(), returns the file, line, and enclosing function
+     * name of the source code context from which log() was invoked.
+     *
+     * @param   int     $depth  The initial number of frames we should step
+     *                          back into the trace.
+     *
+     * @return  array   Array containing three strings: the filename, the line,
+     *                  and the function name from which log() was called.
+     *
+     * @access  private
+     * @since   Log 1.9.4
+     */
+    function _getBacktraceVars($depth)
+    {
+        /* Start by generating a backtrace from the current call (here). */
+        $backtrace = debug_backtrace();
+
+        /*
+         * If we were ultimately invoked by the composite handler, we need to
+         * increase our depth one additional level to compensate.
+         */
+        if (strcasecmp(@$backtrace[$depth+1]['class'], 'Log_composite') == 0) {
+            $depth++;
+        }
+
+        /*
+         * We're interested in the frame which invoked the log() function, so
+         * we need to walk back some number of frames into the backtrace.  The
+         * $depth parameter tells us where to start looking.   We go one step
+         * further back to find the name of the encapsulating function from
+         * which log() was called.
+         */
+        $file = @$backtrace[$depth]['file'];
+        $line = @$backtrace[$depth]['line'];
+        $func = @$backtrace[$depth + 1]['function'];
+
+        /*
+         * However, if log() was called from one of our "shortcut" functions,
+         * we're going to need to go back an additional step.
+         */
+        if (in_array($func, array('emerg', 'alert', 'crit', 'err', 'warning',
+                                  'notice', 'info', 'debug'))) {
+            $file = @$backtrace[$depth + 1]['file'];
+            $line = @$backtrace[$depth + 1]['line'];
+            $func = @$backtrace[$depth + 2]['function'];
+        }
+
+        /*
+         * If we couldn't extract a function name (perhaps because we were
+         * executed from the "main" context), provide a default value.
+         */
+        if (is_null($func)) {
+            $func = '(none)';
+        }
+
+        /* Return a 3-tuple containing (file, line, function). */
+        return array($file, $line, $func);
+    }
+
+    /**
+     * Produces a formatted log line based on a format string and a set of
+     * variables representing the current log record and state.
+     *
+     * @return  string  Formatted log string.
+     *
+     * @access  private
+     * @since   Log 1.9.4
+     */
+    function _format($format, $timestamp, $priority, $message)
+    {
+        /*
+         * If the format string references any of the backtrace-driven
+         * variables (%5, %6, %7), generate the backtrace and fetch them.
+         */
+        if (preg_match('/%[567]/', $format)) {
+            list($file, $line, $func) = $this->_getBacktraceVars(2);
+        }
+
+        /*
+         * Build the formatted string.  We use the sprintf() function's
+         * "argument swapping" capability to dynamically select and position
+         * the variables which will ultimately appear in the log string.
+         */
+        return sprintf($format,
+                       $timestamp,
+                       $this->_ident,
+                       $this->priorityToString($priority),
+                       $message,
+                       isset($file) ? $file : '',
+                       isset($line) ? $line : '',
+                       isset($func) ? $func : '');
+    }
+
+    /**
      * Returns the string representation of a PEAR_LOG_* integer constant.
      *
      * @param int $priority     A PEAR_LOG_* integer constant.
@@ -465,6 +577,8 @@ class Log
     /**
      * Calculate the log mask for the given priority.
      *
+     * This method may be called statically.
+     *
      * @param integer   $priority   The priority whose mask will be calculated.
      *
      * @return integer  The calculated log mask.
@@ -480,14 +594,56 @@ class Log
     /**
      * Calculate the log mask for all priorities up to the given priority.
      *
+     * This method may be called statically.
+     *
      * @param integer   $priority   The maximum priority covered by this mask.
      *
-     * @return integer  The calculated log mask.
+     * @return integer  The resulting log mask.
      *
      * @access  public
      * @since   Log 1.7.0
+     *
+     * @deprecated deprecated since Log 1.9.4; use Log::MAX() instead
      */
     function UPTO($priority)
+    {
+        return Log::MAX($priority);
+    }
+
+    /**
+     * Calculate the log mask for all priorities greater than or equal to the
+     * given priority.  In other words, $priority will be the lowest priority
+     * matched by the resulting mask.
+     *
+     * This method may be called statically.
+     *
+     * @param integer   $priority   The minimum priority covered by this mask.
+     *
+     * @return integer  The resulting log mask.
+     *
+     * @access  public
+     * @since   Log 1.9.4
+     */
+    function MIN($priority)
+    {
+        return PEAR_LOG_ALL ^ ((1 << $priority) - 1);
+    }
+
+    /**
+     * Calculate the log mask for all priorities less than or equal to the
+     * given priority.  In other words, $priority will be the highests priority
+     * matched by the resulting mask.
+     *
+     * This method may be called statically.
+     *
+     * @param integer   $priority   The maximum priority covered by this mask.
+     *
+     * @return integer  The resulting log mask.
+     *
+     * @access  public
+     * @since   Log 1.9.4
+     */
+    function MAX($priority)
     {
         return ((1 << ($priority + 1)) - 1);
     }

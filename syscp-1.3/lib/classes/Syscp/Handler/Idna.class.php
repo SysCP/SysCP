@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -16,6 +17,7 @@
  */
 
 // Include the PEAR Idna Converter class.
+
 Syscp::uses('PEAR.Net.IDNA');
 
 /**
@@ -26,128 +28,143 @@ Syscp::uses('PEAR.Net.IDNA');
  * @package    Syscp.Framework
  * @subpackage Syscp.Handler
  */
+
 class Syscp_Handler_Idna implements Syscp_Handler_Idna_Interface
 {
-	/**
-	 * Instanciated object of the IDNA converter
-	 *
-	 * @var    Net_IDNA
-	 */
-	private $IdnaConverter;
+    /**
+     * Instanciated object of the IDNA converter
+     *
+     * @var    Net_IDNA
+     */
 
-	/**
-	 * Class constructor. Creates a new idna converter
-	 *
-	 * @access public
-	 *
-	 * @return Org_Syscp_Core_IDNA
-	 */
-	public function initialize($params = array())
-	{
-		$this->IdnaConverter = Net_IDNA::getInstance();
-//		$this->IdnaConverter = new idna_convert();
-	}
+    private $IdnaConverter;
 
-	/**
-	 * Encode a domain name, a email address or a list of one of both.
-	 *
-	 * @access public
-	 *
-	 * @param  string  $to_encode  May be either a single domain name,
-	 *                             a single email address or a list of
-	 *                             one seperated either by ',', ';' or
-	 *                             ' '.
-	 *
-	 * @return string  Returns either a single domain name, a single
-	 *                 email address or a list of one of both seperated
-	 *                 by the same string as the input.
-	 */
-	public function encode($toEncode)
-	{
-		return $this->_doAction('encode',$toEncode);
-	}
+    /**
+     * Class constructor. Creates a new idna converter
+     *
+     * @access public
+     *
+     * @return Org_Syscp_Core_IDNA
+     */
 
-	/**
-	 * Decode a domain name, a email address or a list of one of both.
-	 *
-	 * @access public
-	 *
-	 * @param  string  $to_decode  May be either a single domain name,
-	 *                             a single email address or a list of
-	 *                             one seperated either by ',', ';' or
-	 *                             ' '.
-	 *
-	 * @return string  Returns either a single domain name, a single
-	 *                 email address or a list of one of both seperated
-	 *                 by the same string as the input.
-	 */
-	public function decode($toDecode)
-	{
-		return $this->_doAction('decode',$toDecode);
-	}
+    public function initialize($params = array())
+    {
+        $this->IdnaConverter = Net_IDNA::getInstance();
 
-	/**
-	 * Do the real de- or encoding. First checks if a list is submitted and seperates it. Afterwards sends
-	 * each entry to the idna converter to do the converting.
-	 *
-	 * @access private
-	 *
-	 * @param  string  May be either 'decode' or 'encode'.
-	 * @param  string  The string to de- or endcode.
-	 *
-	 * @return string  The input string after being processed.
-	 */
-	private function _doAction($action, $string)
-	{
-		$string = trim($string);
-		if(strpos($string,',') !== false)
-		{
-			$strings = explode(',',$string);
-			$sepchar = ',';
-		}
-		elseif(strpos($string,';') !== false)
-		{
-			$strings = explode(';',$string);
-			$sepchar = ';';
-		}
-		elseif(strpos($string,' ') !== false)
-		{
-			$strings = explode(' ',$string);
-			$sepchar = ' ';
-		}
-		else
-		{
-			$strings = array($string);
-			$sepchar = '';
-		}
-		for($i = 0; $i < count($strings); $i++)
-		{
-			if(strpos($strings[$i],'@') !== false)
-			{
-				$split = explode('@',$strings[$i]);
-				$localpart = $split[0];
-				$domain = $split[1];
-				$email = true;
-			}
-			else
-			{
-				$domain = $strings[$i];
-				$email = false;
-			}
-			if(strlen($domain) !== 0)
-			{
-				$domain = utf8_decode($this->IdnaConverter->$action(utf8_encode($domain.'.none')));
-				$domain = substr($domain, 0, strlen($domain)-5);
-			}
-			if($email)
-			{
-				$strings[$i] = $localpart . '@' . $domain;
-			}
-			else
-			{
-				$strings[$i] = $domain;
-			}
-		}
-		return implode($sepchar,$strings);
-	}
+        //		$this->IdnaConverter = new idna_convert();
+    }
+
+    /**
+     * Encode a domain name, a email address or a list of one of both.
+     *
+     * @access public
+     *
+     * @param  string  $to_encode  May be either a single domain name,
+     *                             a single email address or a list of
+     *                             one seperated either by ',', ';' or
+     *                             ' '.
+     *
+     * @return string  Returns either a single domain name, a single
+     *                 email address or a list of one of both seperated
+     *                 by the same string as the input.
+     */
+
+    public function encode($toEncode)
+    {
+        return $this->_doAction('encode', $toEncode);
+    }
+
+    /**
+     * Decode a domain name, a email address or a list of one of both.
+     *
+     * @access public
+     *
+     * @param  string  $to_decode  May be either a single domain name,
+     *                             a single email address or a list of
+     *                             one seperated either by ',', ';' or
+     *                             ' '.
+     *
+     * @return string  Returns either a single domain name, a single
+     *                 email address or a list of one of both seperated
+     *                 by the same string as the input.
+     */
+
+    public function decode($toDecode)
+    {
+        return $this->_doAction('decode', $toDecode);
+    }
+
+    /**
+     * Do the real de- or encoding. First checks if a list is submitted and seperates it. Afterwards sends
+     * each entry to the idna converter to do the converting.
+     *
+     * @access private
+     *
+     * @param  string  May be either 'decode' or 'encode'.
+     * @param  string  The string to de- or endcode.
+     *
+     * @return string  The input string after being processed.
+     */
+
+    private function _doAction($action, $string)
+    {
+        $string = trim($string);
+
+        if(strpos($string, ',') !== false)
+        {
+            $strings = explode(',', $string);
+            $sepchar = ',';
+        }
+        elseif(strpos($string, ';') !== false)
+        {
+            $strings = explode(';', $string);
+            $sepchar = ';';
+        }
+        elseif(strpos($string, ' ') !== false)
+        {
+            $strings = explode(' ', $string);
+            $sepchar = ' ';
+        }
+        else
+        {
+            $strings = array(
+                $string
+            );
+            $sepchar = '';
+        }
+
+        for ($i = 0;$i < count($strings);$i++)
+        {
+            if(strpos($strings[$i], '@') !== false)
+            {
+                $split = explode('@', $strings[$i]);
+                $localpart = $split[0];
+                $domain = $split[1];
+                $email = true;
+            }
+            else
+            {
+                $domain = $strings[$i];
+                $email = false;
+            }
+
+            if(strlen($domain) !== 0)
+            {
+                $domain = utf8_decode($this->IdnaConverter->$action(utf8_encode($domain.'.none')));
+                $domain = substr($domain, 0, strlen($domain)-5);
+            }
+
+            if($email)
+            {
+                $strings[$i] = $localpart.'@'.$domain;
+            }
+            else
+            {
+                $strings[$i] = $domain;
+            }
+        }
+
+        return implode($sepchar, $strings);
+    }
 }
+

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -28,153 +29,198 @@
  * @package    Syscp.Framework
  * @subpackage Syscp.FrontController
  */
+
 abstract class Syscp_FrontController implements Syscp_FrontController_Interface
 {
-	protected $moduleConfig     = array();
-	protected $navigationConfig = array();
-	protected $hookConfig       = array();
-	protected $languageConfig   = array();
+    protected $moduleConfig = array();
+    protected $navigationConfig = array();
+    protected $hookConfig = array();
+    protected $languageConfig = array();
 
-	/**
-	 * @todo implement language lists here
-	 */
-	public function initModules()
-	{
-		$cacheFile = SYSCP_PATH_BASE.'cache/modules.config';
-		if(SYSCP_CLEAR_CACHE && Syscp::isReadableFile($cacheFile))
-		{
-			unlink($cacheFile);
-		}
-		// init vars
-		$moduleConfig     = array();
-		$navigationConfig = array();
-		$hookConfig = array();
-		$languageConfig = array();
+    /**
+     * @todo implement language lists here
+     */
 
-		if (Syscp::isReadableFile($cacheFile))
-		{
-			$data = file($cacheFile);
-			$data = unserialize($data[0]);
-			$navigationConfig = $data['navigation'];
-			$moduleConfig     = $data['module'];
-			$hookConfig       = $data['hook'];
-			$languageConfig   = $data['language'];
-		}
-		else
-		{
-			// generate list of module.conf files
-			// lets init some values
-			$filelist = array();
-			$stack    = array();
-			// we start to push the startdir into the stack
-			array_push($stack, SYSCP_PATH_LIB);
-			// while there are values in the stack, we fetch the topmost value
-			while (sizeof($stack) > 0)
-			{
-				// fetch the topmost dir from the stack
-				$dirName = array_pop($stack);
-				// open the dir
-				$dir = new DirectoryIterator($dirName);
-				// iterate the directory
-				foreach($dir as $file)
-				{
-						// if the file is a readable directory but not . or ..
-						if(!$file->isDot()     && $file->isDir() &&
-						   $file->isReadable() && $file->isExecutable())
-						{
-						// push to stack
-						array_push($stack, $file->getPathname());
-					}
-					// if the file is a module.conf
-					elseif ($file->getFilename() == 'module.conf')
-					{
-						// we put the file into the filelist
-						$filelist[] = $file->getPathname();
-					}
-				}
-			}
+    public function initModules()
+    {
+        $cacheFile = SYSCP_PATH_BASE.'cache/modules.config';
 
-			// iterate the filelist
-			foreach($filelist as $file)
-			{
-				// parse the given file
-				$result = array();
-				$result = Syscp::parseConfig($file);
-				// create some convenience shortcuts
-				$vendor = $result['Module']['vendor'];
-				$name   = $result['Module']['name'];
+        if(SYSCP_CLEAR_CACHE
+           && Syscp::isWriteableFile($cacheFile))
+        {
+            unlink($cacheFile);
+        }
 
-				// store the module part
-				$moduleConfig[$vendor][$name] = $result['Module'];
+        // init vars
 
-				if($result['Module']['enabled'] == 'true')
-				{
-					// now store the navigation part by iterating the array
-					if(!isset($result['Navigation'])) $result['Navigation'] = array();
-					foreach($result['Navigation'] as $entry)
-					{
-						// convenience shortcuts
-						$area      = $entry['area'];
-						$parentURL = $entry['parent_url'];
-						$url       = $entry['url'];
+        $moduleConfig = array();
+        $navigationConfig = array();
+        $hookConfig = array();
+        $languageConfig = array();
 
-						// if the current entry doesn't have a parent and there
-						// is none entry with this url, add to the navigation
-						if($parentURL == '' && !isset($navigationConfig[$area][$url]))
-						{
-							$navigationConfig[$area][$url] = $entry;
-						}
-						// otherwise check if the parent of this entry is set,
-						// if so, add to the parent's child list.
-						elseif (isset($navigationConfig[$area][$parentURL]))
-						{
-							$navigationConfig[$area][$parentURL]['childs'][] = $entry;
-						}
-					}
+        if(Syscp::isReadableFile($cacheFile))
+        {
+            $data = file($cacheFile);
+            $data = unserialize($data[0]);
+            $navigationConfig = $data['navigation'];
+            $moduleConfig = $data['module'];
+            $hookConfig = $data['hook'];
+            $languageConfig = $data['language'];
+        }
+        else
+        {
+            // generate list of module.conf files
+            // lets init some values
 
-					// the hooklist
-					if(isset($result['Hook']))
-					{
-						foreach($result['Hook'] as $name => $data)
-						{
-							$tmp = array();
-							$tmp['hook'] = $name;
-							$tmp['class'] = $data['class'];
-							$tmp['file'] = $data['file'];
-							$tmp['method'] = $data['method'];
-							$tmp['priority'] = $data['priority'];
-							$hookConfig[] = $tmp;
-						}
-					}
+            $filelist = array();
+            $stack = array();
 
-					// the language files
-					if (isset($result['Language']))
-					{
-						foreach ($result['Language'] as $langName => $langFile)
-						{
-							$languageConfig[$langName][] = $langFile;
-						}
-					}
+            // we start to push the startdir into the stack
 
-				}
-			}
+            array_push($stack, SYSCP_PATH_LIB);
 
-			// put the data into the cache
-			$cache               = array();
-			$cache['navigation'] = $navigationConfig;
-			$cache['module']     = $moduleConfig;
-			$cache['hook']       = $hookConfig;
-			$cache['language']   = $languageConfig;
-			$cache = serialize($cache);
-//			$fileHandler = fopen($cacheFile, 'w');
-			file_put_contents($cacheFile, $cache);
-		}
+            // while there are values in the stack, we fetch the topmost value
 
-		// map local variables into object scope.
-		$this->moduleConfig     = $moduleConfig;
-		$this->navigationConfig = $navigationConfig;
-		$this->hookConfig       = $hookConfig;
-		$this->languageConfig   = $languageConfig;
-	}
+            while(sizeof($stack) > 0)
+            {
+                // fetch the topmost dir from the stack
 
+                $dirName = array_pop($stack);
+
+                // open the dir
+
+                $dir = new DirectoryIterator($dirName);
+
+                // iterate the directory
+
+                foreach($dir as $file)
+                {
+                    // if the file is a readable directory but not . or ..
+
+                    if(!$file->isDot()
+                       && $file->isDir()
+                       && $file->isReadable()
+                       && $file->isExecutable())
+                    {
+                        // push to stack
+
+                        array_push($stack, $file->getPathname());
+                    }
+
+                    // if the file is a module.conf
+
+                    elseif ($file->getFilename() == 'module.conf')
+                    {
+                        // we put the file into the filelist
+
+                        $filelist[] = $file->getPathname();
+                    }
+                }
+            }
+
+            // iterate the filelist
+
+            foreach($filelist as $file)
+            {
+                // parse the given file
+
+                $result = array();
+                $result = Syscp::parseConfig($file);
+
+                // create some convenience shortcuts
+
+                $vendor = $result['Module']['vendor'];
+                $name = $result['Module']['name'];
+
+                // store the module part
+
+                $moduleConfig[$vendor][$name] = $result['Module'];
+
+                if($result['Module']['enabled'] == 'true'
+                   || $result['Module']['enabled'] == 'core')
+                {
+                    // now store the navigation part by iterating the array
+
+                    if(!isset($result['Navigation']))$result['Navigation'] = array();
+                    foreach($result['Navigation'] as $entry)
+                    {
+                        // convenience shortcuts
+
+                        $area = $entry['area'];
+                        $parentURL = $entry['parent_url'];
+                        $url = $entry['url'];
+
+                        // if the current entry doesn't have a parent and there
+                        // is no entry with this url, add to the navigation
+
+                        if($parentURL == ''
+                           && !isset($navigationConfig[$area][$url]))
+                        {
+                            $navigationConfig[$area][$url] = $entry;
+                        }
+
+                        // otherwise check if the parent of this entry is set,
+                        // if so, add to the parent's child list
+
+                        elseif (isset($navigationConfig[$area][$parentURL]))
+                        {
+                            $navigationConfig[$area][$parentURL]['childs'][] = $entry;
+                        }
+                    }
+
+                    // the hooklist
+
+                    if(isset($result['Hook']))
+                    {
+                        foreach($result['Hook'] as $name => $data)
+                        {
+                            $tmp = array();
+                            $tmp['hook'] = $name;
+                            $tmp['class'] = $data['class'];
+                            $tmp['file'] = $data['file'];
+                            $tmp['method'] = $data['method'];
+                            $tmp['priority'] = $data['priority'];
+                            $hookConfig[] = $tmp;
+                        }
+                    }
+
+                    // the language files
+
+                    if(isset($result['Language']))
+                    {
+                        foreach($result['Language'] as $langName => $langFile)
+                        {
+                            $languageConfig[$langName][] = $langFile;
+                        }
+                    }
+                }
+            }
+
+            // put the data into the cache
+
+            $cache = array();
+            $cache['navigation'] = $navigationConfig;
+            $cache['module'] = $moduleConfig;
+            $cache['hook'] = $hookConfig;
+            $cache['language'] = $languageConfig;
+            $cache = serialize($cache);
+            file_put_contents($cacheFile, $cache);
+
+            // cache regeneration is a good place to additionally verify dependencies
+
+            Syscp::uses('Syscp.Handler.Modules');
+            $modulescheck = new Syscp_Handler_Modules();
+            $modulescheck->initialize($moduleConfig);
+            $modulescheck->checkAllDeps();
+            unset($modulescheck);
+        }
+
+        // map local variables into object scope.
+
+        $this->moduleConfig = $moduleConfig;
+        $this->navigationConfig = $navigationConfig;
+        $this->hookConfig = $hookConfig;
+        $this->languageConfig = $languageConfig;
+    }
 }
+

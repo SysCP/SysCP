@@ -1,32 +1,46 @@
-    <form method="post" action="{url module=domains action=edit}">
-     <input type="hidden" name="id" value="{$Config->get('env.id')}">
-     <table cellpadding="3" cellspacing="1" border="0" align="center" class="maintable">
-      <tr>
-       <td colspan="2" class="title">{l10n get=domains.subdomain_edit}</td>
-      </tr>
-      <tr>
-       <td class="maintable">{l10n get=domains.domainname}:</td>
-       <td class="maintable" nowrap>{$result.domain}</td>
-      </tr>
-      {if $alias_check == '0'}<tr>
-       <td class="maintable">{l10n get=domains.aliasdomain}:</td>
-       <td class="maintable" nowrap><select name="alias">
-       {html_options options=$domains selected=$result.aliasdomain}</select></td>
-      </tr>{/if}
-      <tr>
-       <td class="maintable">{l10n get=panel.path}:</td>
-       <td class="maintable">{$documentrootPrefix}{$pathSelect}</td>
-      </tr>
-      {if $result.parentdomainid == '0' && $User.subdomains != '0' }<tr>
-       <td class="maintable">{l10n get=domains.wildcarddomain}</td>
-       <td class="maintable">{html_radios name=iswildcarddomain options=$iswildcarddomain selected=$result.iswildcarddomain}</td>
-      </tr>{/if}
-      {if $result.subcanemaildomain == '1' && $result.parentdomainid != '0'}<tr>
-       <td class="maintable" nowrap>Emaildomain:</td>
-       <td class="maintable" nowrap>{html_radios name=isemaildomain options=$isemaildomain selected=$result.isemaildomain}</td>
-      </tr>{/if}
-      <tr>
-       <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{l10n get=panel.save}"></td>
-      </tr>
-     </table>
-    </form>
+	<form method="post" action="{url module=domains action=edit}">
+		<input type="hidden" name="id" value="{$Config->get('env.id')}">
+		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_60">
+			<tr>
+				<td colspan="2" class="maintitle">
+					<img src="{$imagedir}title.gif" alt="" />&nbsp;{l10n get=SysCP.domains.subdomain_edit}
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{l10n get=SysCP.domains.domainname}:</td>
+				<td class="main_field_display" nowrap="nowrap">{$result.domain}</td>
+			</tr>
+			{if $alias_check == '0'}<tr>
+				<td class="main_field_name" nowrap="nowrap">{l10n get=SysCP.domains.aliasdomain}:</td>
+				<td class="main_field_display" nowrap="nowrap">
+					<select class="dropdown_noborder" name="alias">
+						{html_options options=$domains selected=$result.aliasdomain}
+					</select>
+				</td>
+			</tr>{/if}
+			<tr>
+				<td class="main_field_name" nowrap="nowrap">{l10n get=SysCP.globallang.path}:</td>
+				<td class="main_field_display" nowrap="nowrap">
+					{$documentrootPrefix}{$pathSelect}
+				</td>
+			</tr>
+			{if $result.parentdomainid == '0' && $User.subdomains != '0' }<tr>
+				<td class="main_field_name" nowrap="nowrap">{l10n get=SysCP.domains.wildcarddomain}</td>
+				<td class="main_field_display" nowrap="nowrap">
+					{html_radios name=iswildcarddomain options=$iswildcarddomain selected=$result.iswildcarddomain}
+				</td>
+			</tr>{/if}
+			{if $result.subcanemaildomain == '1' && $result.parentdomainid != '0'}<tr>
+				<td class="main_field_name" nowrap="nowrap">{l10n get=SysCP.domains.emaildomain}:</td>
+				<td class="main_field_display" nowrap="nowrap">
+					{html_radios name=isemaildomain options=$isemaildomain selected=$result.isemaildomain}
+				</td>
+			</tr>{/if}
+			<tr>
+				<td class="main_field_confirm" colspan="2">
+					<input type="hidden" name="send" value="send" />
+					<input class="bottom" type="submit" value="{l10n get=SysCP.globallang.save}" />
+				</td>
+			</tr>
+		</table>
+	</form>

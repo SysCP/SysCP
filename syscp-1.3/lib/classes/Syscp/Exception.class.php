@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2006 the SysCP Project.
@@ -23,4 +24,7 @@
  * @package    Syscp.Framework
  * @subpackage Syscp
  */
-class Syscp_Exception extends Exception {};
+
+class Syscp_Exception extends Exception
+{
+};
