@@ -67,7 +67,7 @@ foreach($dir as $file)
  */
 //define('SYSCP_CLEAR_CACHE', true);
 
-error_reporting(E_ALL|E_STRICT);
+error_reporting(E_ALL);
 
 /**#@-*/
 
