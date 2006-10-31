@@ -7,7 +7,7 @@
 //define('SYSCP_DEFAULT_THEME', 'default');
 //define('SYSCP_CLEAR_CACHE', false);
 
-error_reporting(E_ALL|E_STRICT);
+error_reporting(E_ALL);
 
 /**#@-*/
 
