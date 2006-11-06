@@ -1102,5 +1102,19 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn2';
 	}
+	if( $settings['panel']['version'] == '1.2.14-svn2' )
+	{
+		$db->query( 'ALTER TABLE `' . TABLE_MAIL_VIRTUAL . '` ADD INDEX (  `email` ) ' );
+		$db->query( 'ALTER TABLE `' . TABLE_PANEL_DOMAINS . '` ADD INDEX (  `domain` ) ' );
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.14-svn3\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.14-svn3';
+	}
 
 ?>
