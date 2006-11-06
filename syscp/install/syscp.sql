@@ -100,7 +100,8 @@ CREATE TABLE `mail_virtual` (
   `customerid` int(11) NOT NULL default '0',
   `popaccountid` int(11) NOT NULL default '0',
   `iscatchall` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  KEY `email` (`email`)
 ) TYPE=MyISAM ;
 
 #
@@ -260,7 +261,8 @@ CREATE TABLE `panel_domains` (
   `deactivated` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `customerid` (`customerid`),
-  KEY `parentdomain` (`parentdomainid`)
+  KEY `parentdomain` (`parentdomainid`),
+  KEY `domain` (`domain`)
 ) TYPE=MyISAM ;
 
 #
