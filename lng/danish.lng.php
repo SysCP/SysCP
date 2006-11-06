@@ -363,7 +363,7 @@ $lng['serversettings']['pathedit']['description'] = 'SKal sti v&aelig;lges via e
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13
  */
-$lng['mysql']['description'] = 'Her kan du oprette og editere dine MySQL-Databaser.<br />&aelig;ndringerne er &oslash;jeblikkelige og databaserne kan bruges med det samme.<br />I menuen til venstre finder du v&aelig;rkt&oslash;jet phpMyAdmin hvilket kan bruges til nemt at administrere din(e) database(r).<br /><br />For at g&oslash;re brug af databaser i dine egne php-scripts skal de f&oslash;lgende indstillinger bruges: (Teksk i <i>italisk</i> skrift skal erstattes med de data du taster ind)<br />V&aelig;rt: <b>localhost</b><br />Bruger: <b><i>Databasenavn</i></b><br />Kodeord: <b><i>kodeordet du har valgt</i></b><br />Database: <b><i>Databasenavn</i></b>';
+$lng['mysql']['description'] = 'Her kan du oprette og editere dine MySQL-Databaser.<br />&aelig;ndringerne er &oslash;jeblikkelige og databaserne kan bruges med det samme.<br />I menuen til venstre finder du v&aelig;rkt&oslash;jet phpMyAdmin hvilket kan bruges til nemt at administrere din(e) database(r).<br /><br />For at g&oslash;re brug af databaser i dine egne php-scripts skal de f&oslash;lgende indstillinger bruges: (Teksk i <i>italisk</i> skrift skal erstattes med de data du taster ind)<br />V&aelig;rt: <b><SQL_HOST></b><br />Bruger: <b><i>Databasenavn</i></b><br />Kodeord: <b><i>kodeordet du har valgt</i></b><br />Database: <b><i>Databasenavn</i></b>';
 
 /**
  * ADDED BETWEEN 1.2.12 and 1.2.13

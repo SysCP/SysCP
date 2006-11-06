@@ -32,6 +32,7 @@
 
 	if($page=='overview')
 	{
+		$lng['mysql']['description'] = str_replace( '<SQL_HOST>', $sql['host'], $lng['mysql']['description'] );
 		eval("echo \"".getTemplate("mysql/mysql")."\";");
 	}
 

@@ -141,7 +141,7 @@ $lng['ftp']['account_add'] = 'Criar conta';
 /**
  * MySQL
  */
-$lng['mysql']['description'] = 'Aqui voce pode criar e alterar seus bancos de dados MySQL.<br />As altera&ccedil;&otilde;es s&atilde;o instant&acirc;neas e podem ser utilizadas imediatamente depois de salvas.<br />No menu do lado esquerdo voce pode encontrar a ferramenta phpMyAdmin e com ela facilmente administrar seus bancos de dados.<br /><br />Para usar seu banco de dados com scripts em PHP use as seguintes configura&ccedil;&otilde;es: (Os dados em <i>italico</i> devem ser substituidos pelo equivalente do banco de dados que voce criou!)<br />Hostname: <b>localhost</b><br />Usuario: <b><i>Nome do banco de dadose</i></b><br />Senha: <b><i>a senha que voce escolheu</i></b><br />Banco de dados: <b><i>Nome do banco de dados';
+$lng['mysql']['description'] = 'Aqui voce pode criar e alterar seus bancos de dados MySQL.<br />As altera&ccedil;&otilde;es s&atilde;o instant&acirc;neas e podem ser utilizadas imediatamente depois de salvas.<br />No menu do lado esquerdo voce pode encontrar a ferramenta phpMyAdmin e com ela facilmente administrar seus bancos de dados.<br /><br />Para usar seu banco de dados com scripts em PHP use as seguintes configura&ccedil;&otilde;es: (Os dados em <i>italico</i> devem ser substituidos pelo equivalente do banco de dados que voce criou!)<br />Hostname: <b><SQL_HOST></b><br />Usuario: <b><i>Nome do banco de dadose</i></b><br />Senha: <b><i>a senha que voce escolheu</i></b><br />Banco de dados: <b><i>Nome do banco de dados';
 $lng['mysql']['databasename'] = 'Usuario / Nome do banco de dados';
 $lng['mysql']['databasedescription'] = 'Descri&ccedil;&atilde;o do banco de dados';
 $lng['mysql']['database_create'] = 'Criar banco de dados';
