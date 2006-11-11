@@ -30,7 +30,28 @@
 		fwrite( $debugHandler, '  cron_traffic: Traffic run started...' . "\n");
 		$yesterday=time()-(60*60*24);
 
-		$admin_traffic = Array();
+		$admin_traffic = array();
+
+		$domainlist = array();
+		$speciallogfile_domainlist = array();
+		$result_domainlist = $db->query("SELECT `id`, `domain`, `customerid`, `parentdomainid`, `speciallogfile` FROM `".TABLE_PANEL_DOMAINS."` ;");
+		while($row_domainlist = $db->fetch_array($result_domainlist))
+		{
+			if( !isset( $domainlist[$row_domainlist['customerid']] ) )
+			{
+				$domainlist[$row_domainlist['customerid']] = array();
+			}
+			$domainlist[$row_domainlist['customerid']][$row_domainlist['id']] = $row_domainlist['domain'];
+
+			if( $row_domainlist['parentdomainid'] == '0' && $row_domainlist['speciallogfile'] == '1' )
+			{
+				if( !isset( $speciallogfile_domainlist[$row_domainlist['customerid']] ) )
+				{
+					$speciallogfile_domainlist[$row_domainlist['customerid']] = array();
+				}
+				$speciallogfile_domainlist[$row_domainlist['customerid']][$row_domainlist['id']] = $row_domainlist['domain'];
+			}
+		}
 
 		$result=$db->query("SELECT * FROM `".TABLE_PANEL_CUSTOMERS."` ORDER BY `customerid` ASC");
 		while($row=$db->fetch_array($result))
@@ -40,13 +61,41 @@
 			 */
 			fwrite( $debugHandler, '  cron_traffic: http traffic for '.$row['loginname'].' started...' . "\n");
 			$httptraffic = 0;
-			$httptraffic = floatval(webalizer_hist($row['loginname'], $row['documentroot'].'/webalizer/', $row['loginname']));
 
-			$speciallogfiles_domains = $db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid` = '".
-				(int)$row['customerid']."' AND `parentdomainid` = 0 AND `speciallogfile` = '1'");
-			while($speciallogfiles_domains_row = $db->fetch_array($speciallogfiles_domains))
+			if( isset( $domainlist[$row['customerid']] ) && is_array( $domainlist[$row['customerid']] ) && count( $domainlist[$row['customerid']] ) != 0 )
 			{
-				$httptraffic += floatval(webalizer_hist($row['loginname'].'-'.$speciallogfiles_domains_row['domain'], $row['documentroot'].'/webalizer/'.$speciallogfiles_domains_row['domain'].'/', $speciallogfiles_domains_row['domain']));
+				// Examining which caption to use for default webalizer stats...
+				if( $row['standardsubdomain'] != '0' )
+				{
+					// ... of course we'd prefer to use the standardsubdomain ...
+					$caption = $domainlist[$row['customerid']][$row['standardsubdomain']];
+				}
+				else
+				{
+					// ... but if there is no standardsubdomain, we have to use the loginname ...
+					$caption = $row['loginname'];
+					// ... which results in non-usable links to files in the stats, so lets have a look if we find a domain which is not speciallogfiledomain
+					foreach( $domainlist[$row['customerid']] as $domainid => $domain )
+					{
+						if( !isset( $speciallogfile_domainlist[$row['customerid']] ) || !isset( $speciallogfile_domainlist[$row['customerid']][$domainid] ) )
+						{
+							$caption = $domain;
+							break;
+						}
+					}
+				}
+
+				reset( $domainlist[$row['customerid']] );
+				$httptraffic = floatval(webalizer_hist($row['loginname'], $row['documentroot'].'/webalizer/', $caption, $domainlist[$row['customerid']]));
+
+				if( isset( $speciallogfile_domainlist[$row['customerid']] ) && is_array( $speciallogfile_domainlist[$row['customerid']] ) && count( $speciallogfile_domainlist[$row['customerid']] ) != 0 )
+				{
+					reset( $speciallogfile_domainlist[$row['customerid']] );
+					foreach( $speciallogfile_domainlist[$row['customerid']] as $domainid => $domain )
+					{
+						$httptraffic += floatval(webalizer_hist($row['loginname'].'-'.$domain, $row['documentroot'].'/webalizer/'.$domain.'/', $domain, $domainlist[$row['customerid']]));
+					}
+				}
 			}
 
 			/**
