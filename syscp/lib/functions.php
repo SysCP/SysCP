@@ -579,7 +579,7 @@
 	 * @return int Used traffic
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	function webalizer_hist($logfile, $outputdir, $caption, $month = 0, $year = 0)
+	function webalizer_hist($logfile, $outputdir, $caption, $usersdomainlist, $month = 0, $year = 0)
 	{
 		global $settings;
 
@@ -597,13 +597,19 @@
 				$year = date('Y',$yesterday);
 			}
 
+			$domainargs = '';
+			foreach ( $usersdomainlist as $domainid => $domain )
+			{
+				$domainargs .= ' -r "'.escapeshellarg($domain).'"';
+			}
+
 			$outputdir = makeCorrectDir ($outputdir);
 			if(!file_exists($outputdir))
 			{
 				safe_exec('mkdir -p "'.$outputdir.'"');
 			}
-			safe_exec('webalizer -n '.escapeshellarg($caption).' -o '.escapeshellarg($outputdir).' '.
-				escapeshellarg($settings['system']['logfiles_directory'].$logfile.'-access.log'));
+			safe_exec('webalizer -o '.escapeshellarg($outputdir).' -n '.escapeshellarg($caption).$domainargs.
+				' '.escapeshellarg($settings['system']['logfiles_directory'].$logfile.'-access.log'));
 
 			$webalizer_hist=@file_get_contents($outputdir.'webalizer.hist');
 			$webalizer_hist_rows=explode("\n",$webalizer_hist);
