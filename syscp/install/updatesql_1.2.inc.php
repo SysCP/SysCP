@@ -1149,5 +1149,17 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn5';
 	}
+	if( $settings['panel']['version'] == '1.2.14-svn5' )
+	{
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.15\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.15';
+	}
 
 ?>
