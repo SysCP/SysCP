@@ -416,6 +416,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (33, 'panel', 'paging', '20');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (34, 'system', 'defaultip', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (35, 'system', 'apacheversion', 'apache1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (36, 'system', 'phpappendopenbasedir', '/tmp/');
 
 # --------------------------------------------------------
 
@@ -600,6 +601,7 @@ INSERT INTO `panel_languages` VALUES (7, 'Portugu&ecirc;s', 'lng/portugues.lng.p
 INSERT INTO `panel_languages` VALUES (8, 'Russian', 'lng/russian.lng.php');
 INSERT INTO `panel_languages` VALUES (9, 'Danish', 'lng/danish.lng.php');
 INSERT INTO `panel_languages` VALUES (10, 'Italian', 'lng/italian.lng.php');
+INSERT INTO `panel_languages` VALUES (11, 'Bulgarian', 'lng/bulgarian.lng.php');
 
 
 # --------------------------------------------------------
