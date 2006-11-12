@@ -18,7 +18,7 @@
 /**
  * Global
  */
-$lng['translator'] = 'Никола Колев <nikky@minus273.org';
+$lng['translator'] = 'Никола Колев <nikky@minus273.org>';
 $lng['panel']['edit'] = 'редакция';
 $lng['panel']['delete'] = 'изтриване';
 $lng['panel']['create'] = 'създаване';
