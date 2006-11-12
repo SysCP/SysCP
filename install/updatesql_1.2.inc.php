@@ -1116,5 +1116,19 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn3';
 	}
+	if( $settings['panel']['version'] == '1.2.14-svn3' )
+	{
+		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`language`, `file`) VALUES ('Bulgarian', 'lng/bulgarian.lng.php');");
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.14-svn4\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.14-svn4';
+	}
 
 ?>
