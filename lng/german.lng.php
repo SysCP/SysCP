@@ -447,6 +447,8 @@ $lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
 $lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
 $lng['admin']['webserverinterface'] = 'Webserver Interface';
 $lng['domains']['isassigneddomain'] = 'Ist zugewiesene Domain';
+$lng['serversettings']['phpappendopenbasedir']['title'] = 'An OpenBasedir hinzuzuf&uuml;gende Pfade';
+$lng['serversettings']['phpappendopenbasedir']['description'] = 'Diese (durch Doppelpunkte getrennten) Pfade werden zum OpenBasedir-Statement in jedem vhost-Container hinzugef&uuml;gt.';
 
 // CHANGED IN 1.2.15-rc1
 $lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht (also zum Beispiel mit &quot;%s&quot; anf&auml;ngt). Bitte w&auml;hlen Sie einen anderen Accountnamen.';

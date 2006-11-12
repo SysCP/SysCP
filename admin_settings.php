@@ -212,6 +212,24 @@
 				inserttask('1');
 			}
 
+			if($_POST['system_phpappendopenbasedir']!=$settings['system']['phpappendopenbasedir'])
+			{
+				$value=validate($_POST['system_phpappendopenbasedir'], 'phpappendopenbasedir');
+				$value=explode(':', $value);
+				foreach( $value as $number => $path )
+				{
+					$value[$number] = makeCorrectDir($path);
+				}
+				$value=implode(':', $value);
+				// If user doesn't want to append anything we should not include the root here...
+				if($value == '/')
+				{
+					$value = '';
+				}
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='system' AND `varname`='phpappendopenbasedir'");
+				inserttask('1');
+			}
+
 			if($_POST['system_bindconf_directory']!=$settings['system']['bindconf_directory'])
 			{
 				$value=validate($_POST['system_bindconf_directory'], 'bind conf directory');

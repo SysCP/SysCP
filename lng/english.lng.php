@@ -447,6 +447,8 @@ $lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
 $lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
 $lng['admin']['webserverinterface'] = 'Webserver Interface';
 $lng['domains']['isassigneddomain'] = 'Is assigned domain';
+$lng['serversettings']['phpappendopenbasedir']['title'] = 'Paths to append to OpenBasedir';
+$lng['serversettings']['phpappendopenbasedir']['description'] = 'These paths (separated by colons) will be added to the OpenBasedir-statement in every vhost-container.';
 
 // CHANGED IN 1.2.15-rc1
 $lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts (as for example begin with &quot;%s&quot;). Please enter another accountname.';

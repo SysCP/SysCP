@@ -110,13 +110,22 @@
 
 					if($domain['openbasedir'] == '1')
 					{
-						if($domain['openbasedir_path'] == '1')
+						if($settings['system']['phpappendopenbasedir'] != '')
 						{
-							$vhosts_file.='  php_admin_value open_basedir "'.$domain['customerroot']."\"\n";
+							$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
 						}
 						else
 						{
-							$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot']."\"\n";
+							$_phpappendopenbasedir = '';
+						}
+
+						if($domain['openbasedir_path'] == '1')
+						{
+							$vhosts_file.='  php_admin_value open_basedir "'.$domain['customerroot'].$_phpappendopenbasedir."\"\n";
+						}
+						else
+						{
+							$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot'].$_phpappendopenbasedir."\"\n";
 						}
 					}
 
