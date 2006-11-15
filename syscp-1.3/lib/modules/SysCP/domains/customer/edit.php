@@ -35,7 +35,7 @@ if(isset($result['customerid'])
 
             // ensure a correct path and assign to path
 
-            $path = makeCorrectDir($finalPath);
+            $path = Syscp::makeCorrectDir($finalPath);
 
             //if(!is_dir($path))
             //{
@@ -128,7 +128,7 @@ if(isset($result['customerid'])
     {
         $result['domain'] = $this->IdnaHandler->decode($result['domain']);
         $domains = array();
-        $domains[0] = $this->L10nHandler->get('domains.noaliasdomain');
+        $domains[0] = $this->L10nHandler->get('SysCP.domains.noaliasdomain');
         $result_domains = $this->DatabaseHandler->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`id`<>'".$result['id']."' AND `c`.`standardsubdomain`<>`d`.`id` AND `d`.`customerid`='".$this->User['customerid']."' AND `c`.`customerid`=`d`.`customerid` ORDER BY `d`.`domain` ASC");
 
         while($row_domain = $this->DatabaseHandler->fetch_array($result_domains))
@@ -151,7 +151,7 @@ if(isset($result['customerid'])
         $documentrootPrefix = str_replace('{USERHOME}', $this->User['homedir'], $documentrootPrefix);
         $documentrootPrefix = str_replace('{DOMAIN}', $result['domain'], $documentrootPrefix);
         $documentrootPrefix = str_replace($this->User['homedir'], '', $documentrootPrefix);
-        $documentrootPrefix = makeCorrectDir($documentrootPrefix);
+        $documentrootPrefix = Syscp::makeCorrectDir($documentrootPrefix);
         $result['documentroot'] = str_replace($this->User['homedir'], '', $result['documentroot']);
         $result['documentroot'] = str_replace($documentrootPrefix, '', $result['documentroot']);
         $pathSelect = makePathfield($documentrootPrefix, $this->User['guid'], $this->User['guid'], $this->ConfigHandler->get('panel.pathedit'), $result['documentroot']);

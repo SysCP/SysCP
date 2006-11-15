@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: XMLPHPUnit2ResultFormatter.php,v 1.14 2005/12/02 21:17:27 mrook Exp $
+ * $Id: XMLPHPUnit2ResultFormatter.php 82 2006-07-07 18:15:35Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,8 +29,8 @@ require_once 'phing/tasks/ext/phpunit2/PHPUnit2ResultFormatter.php';
 /**
  * Prints XML output of the test to a specified Writer
  *
- * @author Michiel Rook <michiel@trendserver.nl>
- * @version $Id: XMLPHPUnit2ResultFormatter.php,v 1.14 2005/12/02 21:17:27 mrook Exp $
+ * @author Michiel Rook <michiel.rook@gmail.com>
+ * @version $Id: XMLPHPUnit2ResultFormatter.php 82 2006-07-07 18:15:35Z mrook $
  * @package phing.tasks.ext.phpunit2
  * @since 2.1.0
  */

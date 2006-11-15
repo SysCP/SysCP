@@ -74,21 +74,23 @@ class OCI8Connection extends ConnectionCommon implements Connection
         $connect_function		= ( $persistent )
 									? 'oci_pconnect'
 									: 'oci_connect';
-
+		
+		$encoding = !empty($dsninfo['encoding']) ? $dsninfo['encoding'] : null;
+		
 		@ini_set( 'track_errors', true );
 
         if ( $db && $hostspec && $user && $pw )
 	{
-			$conn				= @$connect_function( $user, $pw, "//$hostspec/$db" );
+			$conn				= @$connect_function( $user, $pw, "//$hostspec/$db", $encoding);
 	}
         elseif ( $hostspec && $user && $pw )
 		{
-			$conn				= @$connect_function( $user, $pw, $hostspec );
+			$conn				= @$connect_function( $user, $pw, $hostspec, $encoding );
         }
 		
 		elseif ( $user || $pw )
 		{
-			$conn				= @$connect_function( $user, $pw );
+			$conn				= @$connect_function( $user, $pw, null, $encoding );
         }
 		
 		else

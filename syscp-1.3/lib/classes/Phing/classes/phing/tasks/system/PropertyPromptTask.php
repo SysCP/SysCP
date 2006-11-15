@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: PropertyPromptTask.php,v 1.4 2004/01/08 15:33:00 hlellelid Exp $
+ *  $Id: PropertyPromptTask.php 59 2006-04-28 14:49:47Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT

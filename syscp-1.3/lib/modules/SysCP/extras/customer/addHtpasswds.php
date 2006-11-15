@@ -3,7 +3,7 @@
 if(isset($_POST['send'])
    && $_POST['send'] == 'send')
 {
-    $path = makeCorrectDir(addslashes($_POST['path']));
+    $path = Syscp::makeCorrectDir(addslashes($_POST['path']));
     $userpath = $path;
     $path = $this->User['homedir'].$path;
     $username = addslashes($_POST['username']);

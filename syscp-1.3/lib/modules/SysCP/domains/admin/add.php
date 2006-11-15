@@ -124,7 +124,7 @@ if($this->User['domains_used'] < $this->User['domains']
 
         if(!preg_match('/^https?\:\/\//', $documentroot))
         {
-            $documentroot = makeCorrectDir($documentroot);
+            $documentroot = Syscp::makeCorrectDir($documentroot);
         }
 
         $domain_check = $this->DatabaseHandler->queryFirst("SELECT `id`, `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '$domain'");
@@ -405,7 +405,7 @@ if($this->User['domains_used'] < $this->User['domains']
         }
 
         $domains = array();
-        $domains[0] = $this->L10nHandler->get('domains.noaliasdomain');
+        $domains[0] = $this->L10nHandler->get('SysCP.domains.noaliasdomain');
         $result_domains = $this->DatabaseHandler->query("SELECT `d`.`id`, `d`.`domain`, `c`.`loginname` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 ".$standardsubdomains.($this->User['customers_see_all'] ? '' : "AND `d`.`adminid` = '{$this->User['adminid']}' ")."AND `d`.`customerid`=`c`.`customerid` ORDER BY `loginname`, `domain` ASC");
 
         while($row_domain = $this->DatabaseHandler->fetch_array($result_domains))

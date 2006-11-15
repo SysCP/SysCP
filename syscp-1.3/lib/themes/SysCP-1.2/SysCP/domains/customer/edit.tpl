@@ -13,10 +13,10 @@
        <td class="maintable" nowrap><select name="alias">
        {html_options options=$domains selected=$result.aliasdomain}</select></td>
       </tr>{/if}
-      <tr>
+      {if $Config->get('panel.customerpathedit') == "Yes"}<tr>
        <td class="maintable">{l10n get=SysCP.globallang.path}:</td>
        <td class="maintable">{$documentrootPrefix}{$pathSelect}</td>
-      </tr>
+      </tr>{/if}
       {if $result.parentdomainid == '0' && $User.subdomains != '0' }<tr>
        <td class="maintable">{l10n get=SysCP.domains.wildcarddomain}</td>
        <td class="maintable">{html_radios name=iswildcarddomain options=$iswildcarddomain selected=$result.iswildcarddomain}</td>
@@ -26,7 +26,12 @@
        <td class="maintable" nowrap>{html_radios name=isemaildomain options=$isemaildomain selected=$result.isemaildomain}</td>
       </tr>{/if}
       <tr>
-       <td class="maintable" colspan="2" align="right"><input type="hidden" name="send" value="send"><input type="submit" value="{l10n get=SysCP.globallang.save}"></td>
+       <td class="maintable" colspan="2" align="right">
+        {if $Config->get('panel.customerpathedit') != "Yes"}
+         {$pathSelect}
+        {/if}
+        <input type="hidden" name="send" value="send">
+        <input type="submit" value="{l10n get=SysCP.globallang.save}"></td>
       </tr>
      </table>
     </form>

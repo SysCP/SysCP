@@ -47,7 +47,7 @@ if($this->User['subdomains_used'] < $this->User['subdomains']
 
             // ensure a correct path and assign to path
 
-            $path = makeCorrectDir($finalPath);
+            $path = Syscp::makeCorrectDir($finalPath);
 
             //						$path = $this->User['homedir'].$path;
             //if(!is_dir($path))
@@ -128,7 +128,7 @@ if($this->User['subdomains_used'] < $this->User['subdomains']
     }
     else
     {
-        $result = $this->DatabaseHandler->query("SELECT `id`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$this->User['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ORDER BY `domain` ASC");
+        $result = $this->DatabaseHandler->query("SELECT `id`, `domain`, `documentroot`, `isemaildomain`, `aliasdomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$this->User['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' AND `aliasdomain` IS NULL ORDER BY `domain` ASC");
         $domains = array();
 
         while($row = $this->DatabaseHandler->fetchArray($result))
@@ -138,7 +138,7 @@ if($this->User['subdomains_used'] < $this->User['subdomains']
         }
 
         $aliasdomains = array();
-        $aliasdomains[0] = $this->L10nHandler->get('domains.noaliasdomain');
+        $aliasdomains[0] = $this->L10nHandler->get('SysCP.domains.noaliasdomain');
         $result = $this->DatabaseHandler->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`id` <> `c`.`standardsubdomain` AND `d`.`customerid`=`c`.`customerid` AND `d`.`customerid`=".$this->User['customerid']." ORDER BY `d`.`domain` ASC");
 
         while($row = $this->DatabaseHandler->fetchArray($result))
@@ -147,13 +147,20 @@ if($this->User['subdomains_used'] < $this->User['subdomains']
             $aliasdomains[$row['id']] = $row['domain'];
         }
 
-        $pathSelect = makePathfield($this->User['homedir'], $this->User['guid'], $this->User['guid'], $this->ConfigHandler->get('panel.pathedit'));
+        if($this->ConfigHandler->get('panel.customerpathedit') == "Yes")
+        {
+            $pathSelect = makePathfield($this->User['homedir'], $this->User['guid'], $this->User['guid'], $this->ConfigHandler->get('panel.pathedit'));
+        }
+        else
+        {
+            $pathSelect = '<input type="hidden" name="path" value="" size="30" />';
+        }
         $documentrootPrefix = $this->ConfigHandler->get('system.documentroot_prefix');
         $documentrootPrefix = str_replace('{LOGIN}', $this->User['loginname'], $documentrootPrefix);
         $documentrootPrefix = str_replace('{USERHOME}', $this->User['homedir'], $documentrootPrefix);
         $documentrootPrefix = str_replace('{DOMAIN}', '{domainname}', $documentrootPrefix);
         $documentrootPrefix = str_replace($this->User['homedir'], '', $documentrootPrefix);
-        $documentrootPrefix = makeCorrectDir($documentrootPrefix);
+        $documentrootPrefix = Syscp::makeCorrectDir($documentrootPrefix);
         $this->TemplateHandler->set('domains', $domains);
         $this->TemplateHandler->set('aliasdomains', $aliasdomains);
         $this->TemplateHandler->set('pathSelect', $pathSelect);

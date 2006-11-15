@@ -29,5 +29,5 @@ $lng['SysCP']['login']['theme'] = 'Layout/Theme';
  * Errors & Questions
  */
 
-$lng['SysCP']['login']['error']['blocked'] = 'Dieser Account wurde aufgrund zu vieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in  Sekunden erneut.';
+$lng['SysCP']['login']['error']['blocked'] = 'Dieser Account wurde aufgrund zu vieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in %s Sekunden erneut.';
 $lng['SysCP']['login']['error']['login'] = 'Der angegebene Benutzername/Passwort ist falsch.';

@@ -79,6 +79,8 @@ $lng['SysCP']['settings']['webftp_url_desc'] = 'What\'s the URL to WebFTP? (Has 
 $lng['SysCP']['settings']['webftp_url_title'] = 'WebFTP URL';
 $lng['SysCP']['settings']['webmail_url_desc'] = 'What\'s the URL to WebMail? (Has to start with http:// or https://)';
 $lng['SysCP']['settings']['webmail_url_title'] = 'WebMail URL';
+$lng['SysCP']['settings']['customerpathedit_title'] = 'Customer-Pathedit';
+$lng['SysCP']['settings']['customerpathedit_description'] = 'Is the customer allowed to change the paths for ftp-accounts?';
 
 /**
  * Errors & Questions

@@ -87,14 +87,14 @@ if($this->User['change_serversettings'] == '1')
         if($_POST['system_documentroot_prefix'] != $this->ConfigHandler->get('system.documentroot_prefix'))
         {
             $value = addslashes($_POST['system_documentroot_prefix']);
-            $value = makeCorrectDir($value);
+            $value = Syscp::makeCorrectDir($value);
             $this->DatabaseHandler->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='documentroot_prefix'");
         }
 
         if($_POST['system_user_homedir'] != $this->ConfigHandler->get('system.user_homedir'))
         {
             $value = addslashes($_POST['system_user_homedir']);
-            $value = makeCorrectDir($value);
+            $value = Syscp::makeCorrectDir($value);
             $this->DatabaseHandler->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='user_homedir'");
         }
 
@@ -211,7 +211,7 @@ if($this->User['change_serversettings'] == '1')
         if($_POST['system_apacheconf_directory'] != $this->ConfigHandler->get('system.apacheconf_directory'))
         {
             $value = addslashes($_POST['system_apacheconf_directory']);
-            $value = makeCorrectDir($value);
+            $value = Syscp::makeCorrectDir($value);
             $this->DatabaseHandler->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='apacheconf_directory'");
             $this->HookHandler->call('OnUpdateDomain', array(
                 'id' => '*'
@@ -230,7 +230,7 @@ if($this->User['change_serversettings'] == '1')
         if($_POST['system_bindconf_directory'] != $this->ConfigHandler->get('system.bindconf_directory'))
         {
             $value = addslashes($_POST['system_bindconf_directory']);
-            $value = makeCorrectDir($value);
+            $value = Syscp::makeCorrectDir($value);
             $this->DatabaseHandler->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='bindconf_directory'");
         }
 
@@ -262,7 +262,7 @@ if($this->User['change_serversettings'] == '1')
         if($_POST['system_vmail_homedir'] != $this->ConfigHandler->get('system.vmail_homedir'))
         {
             $value = addslashes($_POST['system_vmail_homedir']);
-            $value = makeCorrectDir($value);
+            $value = Syscp::makeCorrectDir($value);
             $this->DatabaseHandler->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='system' AND `varname`='vmail_homedir'");
         }
 
@@ -294,6 +294,12 @@ if($this->User['change_serversettings'] == '1')
         {
             $value = addslashes(htmlentities(html_entity_decode($_POST['panel_pathedit'])));
             $this->DatabaseHandler->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='pathedit'");
+        }
+
+        if($_POST['panel_customerpathedit']!=$this->ConfigHandler->get('panel.customerpathedit'))
+        {
+                $value = addslashes ( htmlentities ( _html_entity_decode ( $_POST['panel_customerpathedit'] ) ) ) ;
+                $this->DatabaseHandler->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$value' WHERE `settinggroup`='panel' AND `varname`='customerpathedit'");
         }
 
         if($_POST['panel_phpmyadmin_url'] != $this->ConfigHandler->get('panel.phpmyadmin_url'))
@@ -433,9 +439,15 @@ if($this->User['change_serversettings'] == '1')
             'Dropdown' => 'Dropdown'
         );
 
+        $customerpathedit = array(
+            'Yes'   => $this->L10nHandler->get('SysCP.globallang.yes'),
+            'No' => $this->L10nHandler->get('SysCP.globallang.no')
+        );
+
         $this->TemplateHandler->set('system_ipaddress', $system_ipaddress);
         $this->TemplateHandler->set('lang_list', $lang_list);
         $this->TemplateHandler->set('pathedit', $pathedit);
+        $this->TemplateHandler->set('customerpathedit', $customerpathedit);
         $this->TemplateHandler->setTemplate('SysCP/settings/admin/edit.tpl');
     }
 }

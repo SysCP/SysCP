@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: ZipTask.php,v 1.2 2005/05/26 13:10:52 mrook Exp $
+ *  $Id: ZipTask.php 92 2006-07-11 06:56:45Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@ include_once 'phing/lib/Zip.php';
  * Creates a zip archive using PEAR Archive_Zip (which is presently unreleased
  * and included with Phing).
  *
- * @author    Michiel Rook <michiel@trendserver.nl>
+ * @author    Michiel Rook <michiel.rook@gmail.com>
  * @version   $Revision: 1.2 $
  * @package   phing.tasks.ext
  * @since     2.1.0
@@ -147,8 +147,8 @@ class ZipTask extends MatchingTask {
                 for ($i=0, $fcount=count($files); $i < $fcount; $i++) {
                     $f = new PhingFile($fsBasedir, $files[$i]);
                     $filesToZip[] = $f->getAbsolutePath();                        
-                }                    
-                $zip->add($filesToZip, array('remove_path' => $fsBasedir->getPath()));
+                }
+                $zip->add($filesToZip, array('remove_path' => $fsBasedir->getCanonicalPath()));
             }
                          
                 

@@ -1,3 +1,45 @@
+2006-05-25  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      un-hide hidden xml open tags
+
+2006-05-09  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      separate handling of comment blocks from "special blocks"
+
+    * NEWS
+      libs/plugins/function.popup_init.php:
+      reverted {popup_init} as proposed change to insertion behviour was not BC
+
+2006-05-04  boots  <jayboots@yahoo.com>
+
+    * NEWS
+      libs/plugins/function.popup_init.php:
+      changed {popup_init} to only emit code once during a request
+      
+      Thanks to TGKnIght from forums
+
+2006-04-22  Messju Mohr  <messju@lammfellpuschen.de>
+
+    * NEWS
+      libs/Smarty_Compiler.class.php:
+      fix handling of block-methods of registered objects
+      thanks to El Hombre Gris
+
+2006-04-04  Monte Ohrt  <monte@ohrt.com>
+
+    * libs/plugins/function.html_select_date.php:
+      fix typo
+
+2006-03-09  Monte Ohrt  <monte@ohrt.com>
+
+    * (Smarty_2_6_13)
+      NEWS:
+      update for release
+
 2006-03-08  Monte Ohrt  <monte@ohrt.com>
 
     * libs/plugins/modifier.regex_replace.php:
@@ -3678,7 +3720,7 @@
 
     * libs/Smarty.class.php
       libs/Smarty_Compiler.class.php:
-      added CVS $Id: ChangeLog,v 1.411 2006/03/09 06:31:55 changelog Exp $
+      added CVS $Id: ChangeLog,v 1.417 2006/05/26 05:32:07 changelog Exp $
 
 2003-03-31  Messju Mohr  <messju@lammfellpuschen.de>
 

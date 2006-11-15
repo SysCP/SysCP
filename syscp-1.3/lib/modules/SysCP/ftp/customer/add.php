@@ -6,7 +6,7 @@ if($this->User['ftps_used'] < $this->User['ftps']
     if(isset($_POST['send'])
        && $_POST['send'] == 'send')
     {
-        $path = makeCorrectDir(addslashes($_POST['path']));
+        $path = Syscp::makeCorrectDir(addslashes($_POST['path']));
         $userpath = $path;
         $path = $this->User['homedir'].$path;
         $path_check = $this->DatabaseHandler->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `homedir`='$path' AND `customerid`='".$this->User['customerid']."'");

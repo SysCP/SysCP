@@ -518,6 +518,32 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
                 $aliases[] = 'www.'.$row['domain'];
             }
 
+            $queryAliases = 'SELECT `domain`, `iswildcarddomain` FROM %s WHERE parentdomainid=0 AND aliasdomain=%s';
+            $queryAliases = sprintf($queryAliases, TABLE_PANEL_DOMAINS, $row['parentdomainid']);
+
+            $resultAliases = $db->query($queryAliases);
+            while(false !== ($rowAliases = $db->fetchArray($resultAliases)))
+            {
+                if ($row['parentdomainid'] == 0)
+                {
+                    $subDomainName = '';
+                }
+                else
+                {
+                    $subDomainName = substr($row['domain'],0,strpos($row['domain'], '.'));;
+                }
+
+                if ($rowAliases['iswildcarddomain'] == 1)
+                {
+                    $aliases[] .= '*.'.$subDomainName.'.'.$rowAliases['domain'];
+                }
+                else
+                {
+                    $aliases[] .= $subDomainName.'.'.$rowAliases['domain'];
+                    $aliases[] .= 'www.'.$subDomainName.'.'.$rowAliases['domain'];
+                }
+            }
+
             // store the aliases
 
             $row['aliases'] = $aliases;
@@ -532,6 +558,38 @@ class Syscp_Hooks_Apache extends Syscp_BaseHook
             {
                 Syscp::exec('mkdir -p "'.$row['documentroot'].'"');
                 Syscp::exec('chown -R '.$row['customer']['guid'].':'.$row['customer']['guid'].' "'.$row['documentroot'].'"');
+            }
+
+            // we need to enfore the existance of the access logfile directory
+            if(!is_dir(dirname($row['access_logfile'])))
+            {
+                Syscp::exec('mkdir -p "'.dirname($row['access_logfile']).'"');
+                Syscp::exec('chown -R '.$row['customer']['guid'].':'.$row['customer']['guid'].
+                            ' "'.dirname($row['access_logfile']).'"');
+            }
+
+            // we need to enfore the existance of the error logfile directory
+            if(!is_dir(dirname($row['error_logfile'])))
+            {
+                Syscp::exec('mkdir -p "'.dirname($row['error_logfile']).'"');
+                Syscp::exec('chown -R '.$row['customer']['guid'].':'.$row['customer']['guid'].
+                            ' "'.dirname($row['error_logfile']).'"');
+            }
+
+            // we need to enfore the existance of the access logfile directory
+            if(!is_dir(dirname($row['access_logfile'])))
+            {
+                    Syscp::exec('mkdir -p "'.dirname($row['access_logfile']).'"');
+                    Syscp::exec('chown -R '.$row['customer']['guid'].':'.$row['customer']['guid'].
+                                ' "'.dirname($row['access_logfile']).'"');
+            }
+
+            // we need to enfore the existance of the error logfile directory
+            if(!is_dir(dirname($row['error_logfile'])))
+            {
+                    Syscp::exec('mkdir -p "'.dirname($row['error_logfile']).'"');
+                    Syscp::exec('chown -R '.$row['customer']['guid'].':'.$row['customer']['guid'].
+                                ' "'.dirname($row['error_logfile']).'"');
             }
 
             // put the location of the traffic log

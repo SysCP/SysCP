@@ -21,6 +21,7 @@
 
 $lng['SysCP']['domains']['add'] = 'Domain anlegen';
 $lng['SysCP']['domains']['aliasdomain'] = 'Alias f&uuml;r Domain';
+$lng['SysCP']['domains']['noaliasdomain'] = 'Keine Alias Domain';
 $lng['SysCP']['domains']['apacheaccesslogfile'] = 'Apache-Zugriffs-Logfile';
 $lng['SysCP']['domains']['apacheerrorlogfile'] = 'Apache-Fehler-Logfile';
 $lng['SysCP']['domains']['customer'] = 'Kunde';

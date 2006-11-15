@@ -1,9 +1,9 @@
 <?php
 /**
- * $Header: /repository/pear/Log/Log.php,v 1.63 2006/05/23 05:59:58 jon Exp $
+ * $Header: /repository/pear/Log/Log.php,v 1.64 2006/10/08 23:03:15 jon Exp $
  * $Horde: horde/lib/Log.php,v 1.15 2000/06/29 23:39:45 jon Exp $
  *
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  * @package Log
  */
 
@@ -502,7 +502,7 @@ class Log
          * If the format string references any of the backtrace-driven
          * variables (%5, %6, %7), generate the backtrace and fetch them.
          */
-        if (preg_match('/%[567]/', $format)) {
+        if (strpos($format, '%5') || strpos($format, '%6') || strpos($format, '%7')) {
             list($file, $line, $func) = $this->_getBacktraceVars(2);
         }
 

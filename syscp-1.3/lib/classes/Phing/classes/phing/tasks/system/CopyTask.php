@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: CopyTask.php,v 1.16 2005/10/05 20:23:22 hlellelid Exp $
+ *  $Id: CopyTask.php 77 2006-06-12 19:46:05Z hans $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,7 +33,7 @@ include_once 'phing/mappers/FlattenMapper.php';
  * exist. It is possible to explictly overwrite existing files.
  *
  * @author   Andreas Aderhold, andi@binarycloud.com
- * @version  $Revision: 1.16 $ $Date: 2005/10/05 20:23:22 $
+ * @version  $Revision: 1.16 $ $Date: 2006-06-12 19:46:05 +0000 (Mon, 12 Jun 2006) $
  * @package  phing.tasks.system
  */
 class CopyTask extends Task {
@@ -295,6 +295,7 @@ class CopyTask extends Task {
             $mapper = new IdentityMapper();
         }
         $this->buildMap($fromDir, $toDir, $files, $mapper, $this->fileCopyMap);
+        $this->buildMap($fromDir, $toDir, $dirs, $mapper, $this->dirCopyMap);
     }
 
     /**
@@ -379,10 +380,10 @@ class CopyTask extends Task {
 
         // handle empty dirs if appropriate
         if ($this->includeEmpty) {
-            $e = array_keys($this->dirCopyMap);
+            $destdirs = array_values($this->dirCopyMap);
             $count = 0;
-            foreach ($e as $dir) {
-                $d = new PhingFile((string) $dir);
+            foreach ($destdirs as $destdir) {
+                $d = new PhingFile((string) $destdir);
                 if (!$d->exists()) {
                     if (!$d->mkdirs()) {
                         $this->log("Unable to create directory " . $d->__toString(), PROJECT_MSG_ERR);

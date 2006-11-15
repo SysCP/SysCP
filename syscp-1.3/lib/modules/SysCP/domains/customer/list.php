@@ -12,7 +12,7 @@ function reverseDomain($domain)
 // This part has been rewriten completly at 2006/06/02 --martin
 // query all domains from the domainlist owned by this user
 
-$result = $this->DatabaseHandler->query("SELECT `d`.`id`, "."       `d`.`customerid`, "."       `d`.`domain`, "."       `d`.`documentroot`, "."       `d`.`isemaildomain`, "."       `d`.`caneditdomain`, "."       `d`.`iswildcarddomain`, "."       `d`.`parentdomainid`, "."		`ad`.`domain` AS `aliasdomain`, "."       `pd`.`domain` AS `parentdomain` "."FROM `".TABLE_PANEL_DOMAINS."` `d` "."LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` "."LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON `d`.`parentdomainid`=`pd`.`id` "."WHERE `d`.`customerid`='".$this->User['customerid']."' "."  AND `d`.`id` <> ".$this->User['standardsubdomain']);
+$result = $this->DatabaseHandler->query("SELECT `d`.`id`, "."       `d`.`customerid`, "."       `d`.`domain`, "."       `d`.`documentroot`, "."       `d`.`isemaildomain`, "."       `d`.`caneditdomain`, "."       `d`.`iswildcarddomain`, "."       `d`.`parentdomainid`, "."		`ad`.`domain` AS `aliasdomain`, "."       `pd`.`domain` AS `parentdomain` "."FROM `".TABLE_PANEL_DOMAINS."` `d` "."LEFT JOIN `".TABLE_PANEL_DOMAINS."` `ad` ON `d`.`aliasdomain`=`ad`.`id` "."LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON `d`.`parentdomainid`=`pd`.`id` "."WHERE `d`.`customerid`='".$this->User['customerid']."' "."  AND `d`.`id` <> ".$this->User['standardsubdomain'] . " AND `d`.`aliasdomain` IS NULL");
 $domainList = array();
 
 // counter for the amount of parentdomains
@@ -94,9 +94,23 @@ foreach($domainList as $key => $list)
 $finalDomainList = array();
 foreach($domainList as $parentKey => $list)
 {
+    $parentAliasDomains = '';
+    $queryAliases  = 'SELECT `domain`, `aliasdomain` FROM `%s` WHERE `aliasdomain`=%s;';
+    $queryAliases  = sprintf($queryAliases, TABLE_PANEL_DOMAINS, $list[$parentKey]['id']);
+    $resultAliases = $this->DatabaseHandler->query($queryAliases);
+
+    while(false !== ($rowAliases = $this->DatabaseHandler->fetchArray($resultAliases)))
+    {
+        $parentAliasDomains .= $rowAliases['domain'];
+    }
+
     foreach($list as $domainKey => $domainEntry)
     {
         $parentDomain = reverseDomain($parentKey);
+        if($parentAliasDomains)
+        {
+            $parentDomain .= ' ('.$parentAliasDomains.')';
+        }
         $domain = reverseDomain($domainKey);
         $finalDomainList[$parentDomain][$domain] = $domainEntry;
     }

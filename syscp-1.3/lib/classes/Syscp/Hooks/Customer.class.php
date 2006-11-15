@@ -142,7 +142,7 @@ class Syscp_Hooks_Customer extends Syscp_BaseHook
                 $mailHome = $config->get('system.vmail_homedir');
                 $mailHome = str_replace('{LOGIN}', $userRow['loginname'], $mailHome);
                 $mailHome = str_replace('{USERHOME}', $userRow['homedir'], $mailHome);
-                $mailHome = makeCorrectDir($mailHome);
+                $mailHome = Syscp::makeCorrectDir($mailHome);
                 $cmd = 'mkdir -p %s';
                 $cmd = sprintf($cmd, $mailHome);
                 Syscp::exec($cmd);

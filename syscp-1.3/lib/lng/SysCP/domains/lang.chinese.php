@@ -28,6 +28,7 @@ $lng['SysCP']['domains']['domains'] = '&#32452;&#22495;';
 $lng['SysCP']['domains']['domainsettings'] = '&#22495;&#35774;&#32622;';
 $lng['SysCP']['domains']['edit'] = '&#32534;&#36753;&#22495;';
 $lng['SysCP']['domains']['ownvhostsettings'] = '&#33258;&#24049;&#30340;&#20027;&#26426;&#35774;&#32622;(vHost)';
+$lng['SysCP']['domains']['noaliasdomain'] = '&#26080;&#22495;&#21035;&#21517;';
 $lng['SysCP']['domains']['resources'] = '&#36164;&#28304;';
 $lng['SysCP']['domains']['subdomain_add'] = '&#28155;&#21152;&#23376;&#22495;';
 $lng['SysCP']['domains']['subdomain_edit'] = '&#32534;&#36753;&#23376;&#22495;';

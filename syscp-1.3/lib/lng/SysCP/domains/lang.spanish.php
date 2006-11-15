@@ -28,6 +28,7 @@ $lng['SysCP']['domains']['domains'] = 'Dominios';
 $lng['SysCP']['domains']['domainsettings'] = 'Configuraciones del dominio';
 $lng['SysCP']['domains']['edit'] = 'Corrija el dominio';
 $lng['SysCP']['domains']['ownvhostsettings'] = 'vHost-Configuraciones propias';
+$lng['SysCP']['domains']['noaliasdomain'] = 'No es un alias de dominio';
 $lng['SysCP']['domains']['resources'] = 'Recursos';
 $lng['SysCP']['domains']['subdomain_add'] = 'Crear el secundario-dominio';
 $lng['SysCP']['domains']['subdomain_edit'] = 'Corrija el dominio (secundario)';

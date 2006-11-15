@@ -326,6 +326,92 @@ final class Syscp
     }
 
     /**
+    * Function which returns a correct dirname, means to add slashes at the beginning and at the end if there weren't none
+    *
+    * @author Florian Lippert <flo@redenswert.de>
+    *
+    * @param  string  The dirname
+    *
+    * @return string  The corrected dirname
+    */
+
+    static public function makeCorrectDir($dir)
+    {
+        if(!self::$initialized)self::initialize();
+
+        if(substr($dir, -1, 1) != '/')
+        {
+            $dir.= '/';
+        }
+
+        if(substr($dir, 0, 1) != '/')
+        {
+            $dir = '/'.$dir;
+        }
+
+        $search = array(
+            '/(\/)+/',
+            '/(\.)+/'
+        );
+        $replace = array(
+            '/',
+            '.'
+        );
+
+        $dir = preg_replace($search, $replace, $dir);
+
+        return $dir;
+    }
+
+    /**
+     * Function which returns a correct filename, means to add a slash at the beginning if there wasn't one
+     *
+     * @author Florian Lippert <flo@redenswert.de>
+     *
+     * @author Michael Russ <mr@edvruss.com>
+     *
+     * @author Martin Burchert <eremit@adm1n.de>
+     *
+     * @param string filename the filename
+     *
+     * @return string the corrected filename
+     *
+     */
+    function makeCorrectFile($filename)
+    {
+        if(!self::$initialized)self::initialize();
+
+        if ( substr($filename, 0, 1) != '/' )
+        {
+            $filename = '/'.$filename;
+        }
+
+        $filename = self::makeSecurePath ( $filename ) ;
+
+        return $filename;
+    }
+
+    /**
+     * Function which returns a secure path, means to remove all multiple dots and slashes
+     *
+     * @param string The path
+     *
+     * @return string The corrected path
+     *
+     * @author Florian Lippert <flo@redenswert.de>
+     */
+    function makeSecurePath($path)
+    {
+        if(!self::$initialized)self::initialize();
+
+        $search = Array ('#/+#', '#\.+#', '#\0+#');
+        $replace = Array ('/', '.', '');
+        $path = preg_replace($search, $replace, $path);
+
+        return $path;
+    }
+
+    /**
      * Wrapper arround the php exec() command, with some additional security checks
      *
      * This method checks if the given command contains at least one of the chars

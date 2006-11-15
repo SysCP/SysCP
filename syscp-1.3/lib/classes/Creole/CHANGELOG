@@ -1,5 +1,16 @@
-Creole 1.1.0 - Feb 14, 2006
+Creole 1.1.0 - Sep 1, 2006
 ---------------------------
+
+	* Updated DSN to reflect latest PEAR DSN syntax.  In particular, changes
+	  to protocol:
+	  	- OLD: pgsql://unix+locahost/bookstore
+		- NEW: pgsql://unix(localhost)/bookstore
+		
+	* See full list of changes: http://creole.phpdb.org/trac/report/9
+
+-----------------
+OLD CVS CHANGELOG
+-----------------
 
 2006-01-30 21:32  sethr
 

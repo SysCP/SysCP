@@ -34,6 +34,7 @@ $lng['SysCP']['domains']['edit'] = 'Edit domain';
 $lng['SysCP']['domains']['emaildomain'] = 'Emaildomain';
 $lng['SysCP']['domains']['ipport'] = 'IP/Port';
 $lng['SysCP']['domains']['nameserver'] = 'Nameserver';
+$lng['SysCP']['domains']['noaliasdomain'] = 'No alias domain';
 $lng['SysCP']['domains']['openbasedir'] = 'OpenBasedir';
 $lng['SysCP']['domains']['ownvhostsettings'] = 'Own vHost-Settings';
 $lng['SysCP']['domains']['resources'] = 'Resources';

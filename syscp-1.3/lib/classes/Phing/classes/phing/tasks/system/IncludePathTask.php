@@ -1,7 +1,7 @@
 <?php
 
 /*
- * $Id: IncludePathTask.php,v 1.1 2004/11/17 14:06:12 hlellelid Exp $
+ * $Id: IncludePathTask.php 59 2006-04-28 14:49:47Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -105,10 +105,8 @@ class IncludePathTask extends Task {
         $curr_parts = explode(PATH_SEPARATOR, get_include_path());
         $add_parts = explode(PATH_SEPARATOR, $this->classpath);
         $new_parts = array_diff($add_parts, $curr_parts);
- 
+        
         if ($new_parts) {
-
-            $this->log("Prepending new include_path components: " . implode(PATH_SEPARATOR, $new_parts) );
             $this->log("Prepending new include_path components: " . implode(PATH_SEPARATOR, $new_parts), PROJECT_MSG_VERBOSE);
             set_include_path(implode(PATH_SEPARATOR, array_merge($new_parts, $curr_parts)));
         }

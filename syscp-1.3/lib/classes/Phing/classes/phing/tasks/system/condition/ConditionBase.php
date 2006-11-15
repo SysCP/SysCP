@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: ConditionBase.php,v 1.16 2005/12/08 14:45:56 mpigulla Exp $
+ *  $Id: ConditionBase.php 59 2006-04-28 14:49:47Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -150,13 +150,6 @@ abstract class ConditionBase extends ProjectComponent implements IteratorAggrega
         $num = array_push($this->conditions, new ReferenceExistsCondition());
         return $this->conditions[$num-1];
     }
-    
-    function createLesserThan() {
-        include_once 'phing/tasks/system/condition/LesserThanCondition.php';
-        $num = array_push($this->conditions, new LesserThanCondition());
-        return $this->conditions[$num-1];
-    }
-    
 
 }
 

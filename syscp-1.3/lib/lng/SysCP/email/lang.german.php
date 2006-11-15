@@ -24,6 +24,7 @@ $lng['SysCP']['email']['account_add'] = 'Account anlegen';
 $lng['SysCP']['email']['account_delete'] = 'Konto l&ouml;schen';
 $lng['SysCP']['email']['add'] = 'E-Mail-Adresse anlegen';
 $lng['SysCP']['email']['catchall'] = 'Catchall';
+$lng['SysCP']['email']['description'] = 'Hier k&ouml;nnen Sie Ihre E-Mail Adressen erzeugen und &auml;ndern.<br>Ein Account ist wie ein Briefkasten vor Ihrem Haus. Wenn Ihnen jemand eine E-Mail schreibt, wird sie an diesen Account &uuml;bergeben.<br><br>Um Ihre E-Mails herunterzuladen, verwenden Sie bitte folgende Einstellungen in Ihrem Mailprogramm: (Daten in <i>kursiver</i> Schrift, m&uuml;ssen entsprechend Ihrer Angaben abge&auml;ndert werden!)<br>Hostname: <i><strong>Domainname</strong></i><br>Benutzername: <i><strong>Account Name / E-Mail Adresse</strong></i><br>Passwort: <i><strong>Das von Ihnen gew&auml;hlte Passwort</strong></i>';
 $lng['SysCP']['email']['edit'] = 'E-Mail-Adresse &auml;ndern';
 $lng['SysCP']['email']['email'] = 'E-Mail';
 $lng['SysCP']['email']['emailaddress'] = 'E-Mail-Adresse';

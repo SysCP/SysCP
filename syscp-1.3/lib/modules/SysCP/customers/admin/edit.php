@@ -108,7 +108,7 @@ if($this->User['customers'] != '0')
                         $stdSubdomainDocRoot = str_replace('{LOGIN}', $result['loginname'], $stdSubdomainDocRoot);
                         $stdSubdomainDocRoot = str_replace('{USERHOME}', $result['homedir'], $stdSubdomainDocRoot);
                         $stdSubdomainDocRoot = str_replace('{DOMAIN}', $stdSubdomainName, $stdSubdomainDocRoot);
-                        $stdSubdomainDocRoot = makeCorrectDir($stdSubdomainDocRoot);
+                        $stdSubdomainDocRoot = Syscp::makeCorrectDir($stdSubdomainDocRoot);
 
                         // set the access logfile
 

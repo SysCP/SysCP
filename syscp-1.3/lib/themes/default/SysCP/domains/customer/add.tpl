@@ -22,14 +22,19 @@
 					</select>
 				</td>
 			</tr>
+			{if $Config->get('panel.customerpathedit') == "Yes"}
 			<tr>
 				<td class="main_field_name">{l10n get=SysCP.globallang.path}:</td>
 				<td class="main_field_display">
 					{$documentrootPrefix}{$pathSelect}
 				</td>
 			</tr>
+			{/if}
 			<tr>
 				<td class="main_field_confirm" colspan="2">
+                    {if $Config->get('panel.customerpathedit') != "Yes"}
+                        {$pathSelect}
+                    {/if}
 					<input type="hidden" name="send" value="send" />
 					<input class="bottom" type="submit" value="{l10n get=SysCP.domains.subdomain_add}" />
 				</td>

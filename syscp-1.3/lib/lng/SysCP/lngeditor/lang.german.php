@@ -19,8 +19,12 @@
  * Normal strings
  */
 
+$lng['SysCP']['lngeditor']['file'] = 'Datei';
+$lng['SysCP']['lngeditor']['lng_edit'] = 'Editor Sprache';
+$lng['SysCP']['lngeditor']['lngeditor'] = 'Sprachen-Editor';
 
 /**
  * Errors & Questions
  */
 
+$lng['SysCP']['lngeditor']['error']['filecouldnotbewritten'] = 'Die generierte Sprachdatei konnte nicht geschrieben werden. Bitte speichern Sie diese selbst.';

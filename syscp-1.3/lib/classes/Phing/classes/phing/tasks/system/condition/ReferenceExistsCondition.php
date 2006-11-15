@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: ReferenceExistsCondition.php,v 1.1 2005/12/08 14:45:56 mpigulla Exp $
+ *  $Id: ReferenceExistsCondition.php 59 2006-04-28 14:49:47Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT

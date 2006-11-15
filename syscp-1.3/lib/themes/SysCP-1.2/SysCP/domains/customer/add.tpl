@@ -16,12 +16,18 @@
        <td class="maintable" nowrap><select name="alias">
        {html_options options=$aliasdomains}</select></td>
       </tr>
+      {if $Config->get('panel.customerpathedit') == "Yes"}
       <tr>
        <td class="maintable">{l10n get=SysCP.globallang.path}:</td>
        <td class="maintable">{$documentrootPrefix}{$pathSelect}</td>
       </tr>
+      {/if}
       <tr>
-       <td class="maintable" colspan=2 align="right"><input type="hidden" name="send" value="send">
+       <td class="maintable" colspan=2 align="right">
+       {if $Config->get('panel.customerpathedit') != "Yes"}
+        {$pathSelect}
+       {/if}
+       <input type="hidden" name="send" value="send">
        <input type="submit" value="{l10n get=SysCP.domains.subdomain_add}"></td>
       </tr>
      </table>

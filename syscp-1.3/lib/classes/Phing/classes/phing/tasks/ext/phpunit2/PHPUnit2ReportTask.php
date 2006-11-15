@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: PHPUnit2ReportTask.php,v 1.5 2005/10/31 13:00:33 mrook Exp $
+ * $Id: PHPUnit2ReportTask.php 82 2006-07-07 18:15:35Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,8 +31,8 @@ require_once 'phing/util/ExtendedFileStream.php';
  * the framed report is much more convenient if you want to browse into 
  * different packages or testcases since it is a Javadoc like report.
  *
- * @author Michiel Rook <michiel@trendserver.nl>
- * @version $Id: PHPUnit2ReportTask.php,v 1.5 2005/10/31 13:00:33 mrook Exp $
+ * @author Michiel Rook <michiel.rook@gmail.com>
+ * @version $Id: PHPUnit2ReportTask.php 82 2006-07-07 18:15:35Z mrook $
  * @package phing.tasks.ext.phpunit2
  * @since 2.1.0
  */
@@ -77,7 +77,10 @@ class PHPUnit2ReportTask extends Task
 	{
 		$this->toDir = $toDir;
 	}
-
+	
+	/**
+	 * Returns the path to the XSL stylesheet
+	 */
 	private function getStyleSheet()
 	{
 		$xslname = "phpunit2-" . $this->format . ".xsl";
@@ -110,8 +113,11 @@ class PHPUnit2ReportTask extends Task
 
 		return $file;
 	}
-
-	function transform($document)
+	
+	/**
+	 * Transforms the DOM document
+	 */
+	private function transform(DOMDocument $document)
 	{
 		$dir = new PhingFile($this->toDir);
 		
@@ -145,16 +151,35 @@ class PHPUnit2ReportTask extends Task
 			$proc->transformToXML($document);
 		}
 	}
+	
+	/**
+	 * Fixes 'testsuite' elements with no package attribute, adds
+	 * package="default" to those elements.
+	 */
+	private function fixPackages(DOMDocument $document)
+	{
+		$testsuites = $document->getElementsByTagName('testsuite');
+		
+		foreach ($testsuites as $testsuite)
+		{
+			if (!$testsuite->hasAttribute('package'))
+			{
+				$testsuite->setAttribute('package', 'default');
+			}
+		}
+	}
 
 	/**
 	 * The main entry point
 	 *
 	 * @throws BuildException
 	 */
-	function main()
+	public function main()
 	{
 		$testSuitesDoc = new DOMDocument();
 		$testSuitesDoc->load($this->inFile);
+		
+		$this->fixPackages($testSuitesDoc);
 		
 		$this->transform($testSuitesDoc);
 	}

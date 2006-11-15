@@ -117,7 +117,7 @@ class Syscp_Customers_Hooks extends Syscp_BaseHook
             $maildir = $config->get('system.vmail_homedir');
             $maildir = str_replace('{USERHOME}', $customer['homedir'], $maildir);
             $maildir = str_replace('{LOGIN}', $customer['loginname'], $maildir);
-            $maildir = makeCorrectDir($maildir);
+            $maildir = Syscp::makeCorrectDir($maildir);
 
             // we need to check if the maildir has already been accounted
 
@@ -195,7 +195,7 @@ class Syscp_Customers_Hooks extends Syscp_BaseHook
                 // get the database information regarding a specific customer database
 
                 $query = 'SHOW TABLE STATUS FROM `%s`';
-                $query = sprintf($query, $database_row['databasename']);
+                $query = sprintf($query, $dbRow['databasename']);
                 $mysql_usage_result = $db_root->query($query);
 
                 // iterate the results and sum the diskspace up

@@ -63,42 +63,6 @@ function str_replace_array($search, $replace, $subject, $fields = '')
 }
 
 /**
- * Function which returns a correct dirname, means to add slashes at the beginning and at the end if there weren't none
- *
- * @author Florian Lippert <flo@redenswert.de>
- *
- * @param  string  The dirname
- *
- * @return string  The corrected dirname
- *
- * @todo This should be moved to Syscp.class.php, it's a core security functionality.
- */
-
-function makeCorrectDir($dir)
-{
-    if(substr($dir, -1, 1) != '/')
-    {
-        $dir.= '/';
-    }
-
-    if(substr($dir, 0, 1) != '/')
-    {
-        $dir = '/'.$dir;
-    }
-
-    $search = array(
-        '/(\/)+/',
-        '/(\.)+/'
-    );
-    $replace = array(
-        '/',
-        '.'
-    );
-    $dir = preg_replace($search, $replace, $dir);
-    return $dir;
-}
-
-/**
  * Function which returns a correct destination for Postfix Virtual Table
  *
  * @author Florian Lippert <flo@redenswert.de>

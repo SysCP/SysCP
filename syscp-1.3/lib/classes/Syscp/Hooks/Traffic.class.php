@@ -277,7 +277,7 @@ class Syscp_Hooks_Traffic extends Syscp_BaseHook
             $path = $config->get('system.vmail_homedir');
             $path = str_replace('{LOGIN}', $row['loginname'], $path);
             $path = str_replace('{USERHOME}', $row['homedir'], $path);
-            $path = makeCorrectDir($path);
+            $path = Syscp::makeCorrectDir($path);
             $back = Syscp::exec('du -s "'.$path.'"');
 
             // iterate the result

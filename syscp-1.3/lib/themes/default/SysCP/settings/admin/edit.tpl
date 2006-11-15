@@ -238,6 +238,17 @@
 			</tr>
 			<tr>
 				<td class="main_field_name">
+					<b>{l10n get=serversettings.customerpathedit.title}:</b><br />
+					{l10n get=serversettings.customerpathedit.description}
+				</td>
+				<td class="main_field_display" nowrap="nowrap">
+					<select name="panel_customerpathedit">
+						{html_options options=$customerpathedit selected=$Config->get('panel.customerpathedit')}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">
 					<b>{l10n get=SysCP.settings.phpmyadmin_url_title}:</b><br />
 					{l10n get=SysCP.settings.phpmyadmin_url_desc}
 				</td>

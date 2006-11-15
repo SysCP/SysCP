@@ -47,7 +47,7 @@ if($this->ConfigHandler->get('env.id') != 0)
 
             if(!preg_match('/^https?\:\/\//', $documentroot))
             {
-                $documentroot = makeCorrectDir($documentroot);
+                $documentroot = Syscp::makeCorrectDir($documentroot);
             }
 
             if($openbasedir != '1')
@@ -199,9 +199,9 @@ if($this->ConfigHandler->get('env.id') != 0)
         {
             $result['domain'] = $this->IdnaHandler->decode($result['domain']);
             $result['specialsettings'] = stripslashes($result['specialsettings']);
-            $result['speciallogfile'] = ($result['speciallogfile'] == 1 ? $this->L10nHandler->get('panel.yes') : $this->L10nHandler->get('panel.no'));
+            $result['speciallogfile'] = ($result['speciallogfile'] == 1 ? $this->L10nHandler->get('SysCP.globallang.yes') : $this->L10nHandler->get('SysCP.globallang.no'));
             $domains = array();
-            $domains[0] = $this->L10nHandler->get('domains.noaliasdomain');
+            $domains[0] = $this->L10nHandler->get('SysCP.domains.noaliasdomain');
             $result_domains = $this->DatabaseHandler->query("SELECT `d`.`id`, `d`.`domain` FROM `".TABLE_PANEL_DOMAINS."` `d`, `".TABLE_PANEL_CUSTOMERS."` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 AND `d`.`id`<>'".$result['id']."' AND `c`.`standardsubdomain`<>`d`.`id` AND `d`.`customerid`='".$result['customerid']."' AND `c`.`customerid`=`d`.`customerid` ORDER BY `d`.`domain` ASC");
 
             while($row_domain = $this->DatabaseHandler->fetch_array($result_domains))

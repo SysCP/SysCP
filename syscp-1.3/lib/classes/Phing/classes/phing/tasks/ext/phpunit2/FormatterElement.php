@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: FormatterElement.php,v 1.8 2005/06/02 15:32:06 mrook Exp $
+ * $Id: FormatterElement.php 82 2006-07-07 18:15:35Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -26,22 +26,22 @@ require_once 'phing/system/io/PhingFile.php';
 /**
  * A wrapper for the implementations of PHPUnit2ResultFormatter.
  *
- * @author Michiel Rook <michiel@trendserver.nl>
- * @version $Id: FormatterElement.php,v 1.8 2005/06/02 15:32:06 mrook Exp $
+ * @author Michiel Rook <michiel.rook@gmail.com>
+ * @version $Id: FormatterElement.php 82 2006-07-07 18:15:35Z mrook $
  * @package phing.tasks.ext.phpunit2
  * @since 2.1.0
  */
 class FormatterElement
 {
-	private $formatter = NULL;
+	protected $formatter = NULL;
 	
-	private $type = "";
+	protected $type = "";
 	
-	private $useFile = true;
+	protected $useFile = true;
 	
-	private $toDir = ".";
+	protected $toDir = ".";
 	
-	private $outfile = "";
+	protected $outfile = "";
 
 	function setType($type)
 	{

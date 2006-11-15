@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: ResolvePathTask.php,v 1.6 2005/06/18 01:28:07 hlellelid Exp $  
+ *  $Id: ResolvePathTask.php 59 2006-04-28 14:49:47Z mrook $  
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT

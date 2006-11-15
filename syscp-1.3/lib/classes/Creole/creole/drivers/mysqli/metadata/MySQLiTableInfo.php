@@ -35,10 +35,6 @@ class MySQLiTableInfo extends TableInfo {
         require_once 'creole/metadata/ColumnInfo.php';
         require_once 'creole/drivers/mysql/MySQLTypes.php';
 
-        if (!@mysqli_select_db($this->conn->getResource(), $this->dbname)) {
-            throw new SQLException('No database selected');
-        }
-
         // To get all of the attributes we need, we use
         // the MySQL "SHOW COLUMNS FROM $tablename" SQL.
         $res = mysqli_query($this->conn->getResource(), "SHOW COLUMNS FROM " . $this->name);
@@ -54,6 +50,7 @@ class MySQLiTableInfo extends TableInfo {
 
             $size = null;
             $precision = null;
+            $scale = null;
 
             if (preg_match('/^(\w+)[\(]?([\d,]*)[\)]?( |$)/', $row['Type'], $matches)) {
                 //            colname[1]   size/precision[2]
@@ -61,7 +58,8 @@ class MySQLiTableInfo extends TableInfo {
                 if ($matches[2]) {
                     if ( ($cpos = strpos($matches[2], ',')) !== false) {
                         $size = (int) substr($matches[2], 0, $cpos);
-                        $precision = (int) substr($matches[2], $cpos + 1);
+                        $precision = $size;
+                        $scale = (int) substr($matches[2], $cpos + 1);
                     } else {
                         $size = (int) $matches[2];
                     }
@@ -72,7 +70,7 @@ class MySQLiTableInfo extends TableInfo {
                 $nativeType = $row['Type'];
             }
 
-            $this->columns[$name] = new ColumnInfo($this, $name, MySQLTypes::getType($nativeType), $nativeType, $size, $precision, $is_nullable, $default);
+            $this->columns[$name] = new ColumnInfo($this, $name, MySQLTypes::getType($nativeType), $nativeType, $size, $precision, $scale, $is_nullable, $default);
         }
 
         $this->colsLoaded = true;
@@ -86,10 +84,6 @@ class MySQLiTableInfo extends TableInfo {
         // columns have to be loaded first
         if (!$this->colsLoaded) {
             $this->initColumns();
-        }
-
-        if (!@mysqli_select_db($this->conn->getResource(), $this->dbname)) {
-            throw new SQLException('No database selected');
         }
 
         // Primary Keys
@@ -117,11 +111,7 @@ class MySQLiTableInfo extends TableInfo {
         if (!$this->colsLoaded) {
             $this->initColumns();
         }
-
-        if (!@mysqli_select_db($this->conn->getResource(), $this->dbname)) {
-            throw new SQLException('No database selected');
-        }
-
+        
         // Indexes
         $res = mysqli_query($this->conn->getResource(), "SHOW INDEX FROM " . $this->name);
 

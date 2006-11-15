@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: ExecTask.php,v 1.17 2005/11/08 14:25:55 mrook Exp $
+ *  $Id: ExecTask.php 104 2006-08-09 16:44:06Z rob $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -190,7 +190,7 @@ class ExecTask extends Task {
     }
     
     /**
-     * Specify the workign directory for executing this command.
+     * Specify the working directory for executing this command.
      * @param PhingFile $dir
      */
     function setDir(PhingFile $dir) {

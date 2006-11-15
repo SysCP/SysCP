@@ -28,6 +28,7 @@ $lng['SysCP']['domains']['domains'] = 'Dominis';
 $lng['SysCP']['domains']['domainsettings'] = 'Opcions de domini';
 $lng['SysCP']['domains']['edit'] = 'Editar domini';
 $lng['SysCP']['domains']['ownvhostsettings'] = 'Opcions dels vhost propis';
+$lng['SysCP']['domains']['noaliasdomain'] = 'No hi ha sobrenom del domini';
 $lng['SysCP']['domains']['resources'] = 'Personal';
 $lng['SysCP']['domains']['subdomain_add'] = 'Crear subdomini';
 $lng['SysCP']['domains']['subdomain_edit'] = 'Editar (sub)domini';

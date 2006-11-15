@@ -19,6 +19,13 @@
  * Normal strings
  */
 
+$lng['SysCP']['ipsandports']['add'] = 'IP/Port hinzuf&uuml;gen';
+$lng['SysCP']['ipsandports']['default'] = 'Standard Reseller IP/Port';
+$lng['SysCP']['ipsandports']['edit'] = 'Ediiere IP/Port';
+$lng['SysCP']['ipsandports']['ip'] = 'IP';
+$lng['SysCP']['ipsandports']['ipandport'] = 'IP/Port';
+$lng['SysCP']['ipsandports']['ipsandports'] = 'IPs und Ports';
+$lng['SysCP']['ipsandports']['port'] = 'Port';
 $lng['SysCP']['ipsandports']['server'] = 'Server';
 
 /**
@@ -30,4 +37,5 @@ $lng['SysCP']['ipsandports']['error']['delete_defaultip'] = 'Sie k&ouml;nnen die
 $lng['SysCP']['ipsandports']['error']['delete_systemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie eine neue IP/Port Kombination als Systemeinstellung an oder &auml;ndern die System IP.';
 $lng['SysCP']['ipsandports']['error']['ip_duplicate'] = 'Diese Kombination aus IP und Post existiert bereits.';
 $lng['SysCP']['ipsandports']['error']['ip_has_domains'] = 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
-$lng['SysCP']['ipsandports']['error']['select_defaultip'] = 'Sie m&uuml;ssen eine IP/Port Kombination ausw&auml;hlen, die den Standard defninieren soll.';
+$lng['SysCP']['ipsandports']['error']['select_defaultip'] = 'Sie m&uuml;ssen eine IP/Port Kombination ausw&auml;hlen, die den Standard definieren soll.';
+$lng['SysCP']['ipsandports']['question']['delete'] = 'Wollen Sie wirklich die IP Adresse %s l&ouml;schen?';

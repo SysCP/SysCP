@@ -39,7 +39,7 @@ if($this->ConfigHandler->get('env.id') != 0)
                     $homedir = $this->ConfigHandler->get('system.vmail_homedir');
                     $homedir = str_replace('{LOGIN}', $this->User['loginname'], $homedir);
                     $homedir = str_replace('{USERHOME}', $this->User['homedir'], $homedir);
-                    $homedir = makeCorrectDir($homedir);
+                    $homedir = Syscp::makeCorrectDir($homedir);
                     $query = 'INSERT INTO `'.TABLE_MAIL_USERS.'` '.'SET `customerid`   =\''.$this->User['customerid'].'\', '.'    `email`        =\''.$email_full.'\', '.'    `username`     =\''.$username.'\', '.'    `password`     =\''.$password.'\', '.'    `password_enc` =ENCRYPT(\''.$password.'\'), '.'    `homedir`      =\''.$homedir.'\', '.'    `maildir`      =\'/'.$email_full.'/\', '.'    `uid`          =\''.$this->ConfigHandler->get('system.vmail_uid').'\', '.'    `gid`          =\''.$this->ConfigHandler->get('system.vmail_gid').'\', '.'    `domainid`     =\''.$result['domainid'].'\', '.'    `postfix`      =\'y\' ';
                     $this->DatabaseHandler->query($query);
                     $popaccountid = $this->DatabaseHandler->insert_id();

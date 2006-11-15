@@ -28,6 +28,7 @@ $lng['SysCP']['domains']['domains'] = 'Domaines';
 $lng['SysCP']['domains']['domainsettings'] = 'Configuration des Domaines';
 $lng['SysCP']['domains']['edit'] = 'Modifier le domaine';
 $lng['SysCP']['domains']['ownvhostsettings'] = 'Configuration spéciale du vHost';
+$lng['SysCP']['domains']['noaliasdomain'] = 'Domaine non-pseudonyme';
 $lng['SysCP']['domains']['resources'] = 'Réssources';
 $lng['SysCP']['domains']['subdomain_add'] = 'Ajouter un Sous-domaine';
 $lng['SysCP']['domains']['subdomain_edit'] = 'Changer un Sous-domaine';

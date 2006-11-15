@@ -8,7 +8,7 @@ if($this->User['emails_used'] < $this->User['emails']
     {
         $email_part = addslashes($_POST['email_part']);
         $domain = $this->IdnaHandler->encode(addslashes($_POST['domain']));
-        $domain_check = $this->DatabaseHandler->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$this->User['customerid']."' AND `isemaildomain`='1' ");
+        $domain_check = $this->DatabaseHandler->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".$this->User['customerid']."' AND `isemaildomain`='1' AND aliasdomain IS NULL");
 
         if(isset($_POST['iscatchall'])
            && $_POST['iscatchall'] == '1')
@@ -74,7 +74,7 @@ if($this->User['emails_used'] < $this->User['emails']
     }
     else
     {
-        $result = $this->DatabaseHandler->query("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$this->User['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
+        $result = $this->DatabaseHandler->query("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$this->User['customerid']."' AND `isemaildomain`='1' AND aliasdomain IS NULL ORDER BY `domain` ASC");
         $domains = array();
 
         while($row = $this->DatabaseHandler->fetch_array($result))

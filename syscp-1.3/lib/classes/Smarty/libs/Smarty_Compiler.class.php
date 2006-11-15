@@ -21,12 +21,12 @@
  * @link http://smarty.php.net/
  * @author Monte Ohrt <monte at ohrt dot com>
  * @author Andrei Zmievski <andrei@php.net>
- * @version 2.6.13
+ * @version 2.6.14
  * @copyright 2001-2005 New Digital Group, Inc.
  * @package Smarty
  */
 
-/* $Id: Smarty_Compiler.class.php,v 1.378 2006/01/29 18:11:22 messju Exp $ */
+/* $Id: Smarty_Compiler.class.php,v 1.381 2006/05/25 14:46:18 boots Exp $ */
 
 /**
  * Template compiling class
@@ -239,6 +239,9 @@ class Smarty_Compiler extends Smarty {
         $this->_current_line_no = 1;
         $ldq = preg_quote($this->left_delimiter, '~');
         $rdq = preg_quote($this->right_delimiter, '~');
+
+        /* un-hide hidden xml open tags  */
+        $source_content = preg_replace("~<({$ldq}(.*?){$rdq})[?]~s", '< \\1', $source_content);
 
         // run template source through prefilter functions
         if (count($this->_plugins['prefilter']) > 0) {
@@ -880,9 +883,9 @@ class Smarty_Compiler extends Smarty {
                     $prefix .= "while (\$_block_repeat) { ob_start();";
                     $return = null;
                     $postfix = '';
-            } else {
-                    $prefix = "\$_obj_block_content = ob_get_contents(); ob_end_clean(); ";
-                    $return = "\$_block_repeat=false; \$this->_reg_objects['$object'][0]->$obj_comp(\$this->_tag_stack[count(\$this->_tag_stack)-1][1], \$_obj_block_content, \$this, \$_block_repeat)";
+                } else {
+                    $prefix = "\$_obj_block_content = ob_get_contents(); ob_end_clean(); \$_block_repeat=false;";
+                    $return = "\$this->_reg_objects['$object'][0]->$obj_comp(\$this->_tag_stack[count(\$this->_tag_stack)-1][1], \$_obj_block_content, \$this, \$_block_repeat)";
                     $postfix = "} array_pop(\$this->_tag_stack);";
                 }
             } else {

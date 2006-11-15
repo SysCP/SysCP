@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: CreoleSQLExecTask.php,v 1.21 2005/12/02 20:21:17 mrook Exp $
+ *  $Id: CreoleSQLExecTask.php 83 2006-07-07 18:17:00Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -390,7 +390,7 @@ class CreoleSQLExecTask extends CreoleTask {
                         || $this->delimiterType == self::DELIM_ROW
                         && $line == $this->delimiter) {
                     $this->log("SQL: " . $sql, PROJECT_MSG_VERBOSE);
-                    $this->execSQL(StringHelper::substring($sql, 0, strlen($sql) - strlen($this->delimiter)), $out);
+                    $this->execSQL(StringHelper::substring($sql, 0, strlen($sql) - strlen($this->delimiter) - 1), $out);
                     $sql = "";
                 }
             }

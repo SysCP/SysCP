@@ -112,6 +112,11 @@
        {html_options options=$pathedit selected=$Config->get('panel.pathedit')}</select></td>
       </tr>
       <tr>
+       <td class="maintable" align="right"><b>{l10n get=serversettings.customerpathedit.title}:</b><br />{l10n get=serversettings.customerpathedit.description}</td>
+       <td class="maintable" nowrap><select name="panel_customerpathedit">
+         {html_options options=$customerpathedit selected=$Config->get('panel.customerpathedit')}</select></td>
+      </tr>
+      <tr>
        <td class="maintable" align="right"><b>{l10n get=SysCP.settings.phpmyadmin_url_title}:</b><br />{l10n get=SysCP.settings.phpmyadmin_url_desc}</td>
        <td class="maintable" nowrap><input type="text" name="panel_phpmyadmin_url" value="{$Config->get('panel.phpmyadmin_url')}"></td>
       </tr>
