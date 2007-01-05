@@ -436,6 +436,6 @@ $lng['admin']['phpversion'] = 'php&#29256;&#26412;';
 $lng['admin']['phpmemorylimit'] = 'php&#20869;&#23384;&#38480;&#21046;';
 $lng['admin']['mysqlserverversion'] = 'mysql&#26381;&#21153;&#22120;&#29256;&#26412;';
 $lng['admin']['mysqlclientversion'] = 'mysql&#23458;&#25143;&#31471;&#29256;&#26412;';
-$lng['admin']['webserverinterface'] = '&#32593;&#39029;&#26381;&#21153;&#22120;&#25509;&#21475
+$lng['admin']['webserverinterface'] = '&#32593;&#39029;&#26381;&#21153;&#22120;&#25509;&#21475';
 
 ?>
