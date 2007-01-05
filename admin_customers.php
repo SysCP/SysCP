@@ -551,7 +551,7 @@
 							$db->query(
 								'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
 								'SET `standardsubdomain`=\''.(int)$domainid.'\' ' .
-								'WHERE `customerid`=\''.(inT)$result['customerid'].'\''
+								'WHERE `customerid`=\''.(int)$result['customerid'].'\''
 							);
 							inserttask('1');
 						}
