@@ -68,45 +68,78 @@
 			$searchcode = $paging->getHtmlSearchCode( $lng );
 			$pagingcode = $paging->getHtmlPagingCode( $filename . '?page=' . $page . '&s=' . $s );
 
+			$emails = array();
+			while($row = $db->fetch_array($result))
+			{
+				if( !isset( $emails[$row['domain']] ) || !is_array( $emails[$row['domain']] ) )
+				{
+					$emails[$row['domain']] = array();
+				}
+				$emails[$row['domain']][$row['email_full']] = $row;
+			}
+
+			if( $paging->sortfield == 'd.domain' && $paging->sortorder == 'desc' )
+			{
+				krsort( $emails );
+			}
+			else
+			{
+				ksort( $emails );
+			}
+
 			$i = 0;
 			$count = 0;
 			$accounts='';
 			$emails_count=0;
 			$domainname = '';
-			while($row = $db->fetch_array($result))
+			foreach( $emails as $domainid => $emailaddresses )
 			{
-				if( $paging->checkDisplay( $i ) )
+				if( $paging->sortfield == 'm.email_full' && $paging->sortorder == 'desc' )
 				{
-					if ($domainname != $idna_convert->decode($row['domain']))
-					{
-						$domainname = $idna_convert->decode($row['domain']);
-						eval("\$accounts.=\"".getTemplate("email/emails_domain")."\";");
-					}
-					$emails_count++;
-					$row['email'] = $idna_convert->decode($row['email']);
-					$row['email_full'] = $idna_convert->decode($row['email_full']);
-					$row['destination'] = explode ( ' ', $row['destination'] ) ;
-					while ( list ( $dest_id , $destination ) = each ( $row['destination'] ) )
-					{
-						$row['destination'][$dest_id] = $idna_convert->decode($row['destination'][$dest_id]);
-						if ( $row['destination'][$dest_id] == $row['email_full'] )
-						{
-							unset ( $row['destination'][$dest_id] ) ;
-						}
-					}
-					$destinations_count = count ($row['destination']);
-					$row['destination'] = implode ( ', ', $row['destination'] ) ;
-					if ( strlen ($row['destination']) > 35 )
-					{
-						$row['destination'] = substr ( $row['destination'] , 0, 32 ) . '... (' . $destinations_count . ')' ;
-					}
-
-					$row = htmlentities_array( $row );
-					eval("\$accounts.=\"".getTemplate("email/emails_email")."\";");
-					$count++;
+					krsort( $emailaddresses );
 				}
-				$i++;
+				else
+				{
+					ksort( $emailaddresses );
+				}
+
+				foreach( $emailaddresses as $row )
+				{
+					if( $paging->checkDisplay( $i ) )
+					{
+						if( $domainname != $idna_convert->decode($row['domain']) )
+						{
+							$domainname = $idna_convert->decode($row['domain']);
+							eval("\$accounts.=\"".getTemplate("email/emails_domain")."\";");
+						}
+
+						$emails_count++;
+						$row['email'] = $idna_convert->decode($row['email']);
+						$row['email_full'] = $idna_convert->decode($row['email_full']);
+						$row['destination'] = explode ( ' ', $row['destination'] ) ;
+						while ( list ( $dest_id , $destination ) = each ( $row['destination'] ) )
+						{
+							$row['destination'][$dest_id] = $idna_convert->decode($row['destination'][$dest_id]);
+							if ( $row['destination'][$dest_id] == $row['email_full'] )
+							{
+								unset ( $row['destination'][$dest_id] ) ;
+							}
+						}
+						$destinations_count = count ($row['destination']);
+						$row['destination'] = implode ( ', ', $row['destination'] ) ;
+						if ( strlen ($row['destination']) > 35 )
+						{
+							$row['destination'] = substr ( $row['destination'] , 0, 32 ) . '... (' . $destinations_count . ')' ;
+						}
+
+						$row = htmlentities_array( $row );
+						eval("\$accounts.=\"".getTemplate("email/emails_email")."\";");
+						$count++;
+					}
+					$i++;
+				}
 			}
+
 			$emaildomains_count=$db->query_first("SELECT COUNT(`id`) AS `count` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".$userinfo['customerid']."' AND `isemaildomain`='1' ORDER BY `domain` ASC");
 			$emaildomains_count=$emaildomains_count['count'];
 
