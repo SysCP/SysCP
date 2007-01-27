@@ -1161,5 +1161,21 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.15';
 	}
+	if( $settings['panel']['version'] == '1.2.15' )
+	{
+		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`language`, `file`) VALUES ('Slovak', 'lng/slovak.lng.php');");
+		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`language`, `file`) VALUES ('Dutch', 'lng/dutch.lng.php');");
+		$db->query("INSERT INTO `".TABLE_PANEL_LANGUAGE."` (`language`, `file`) VALUES ('Hungarian', 'lng/hungarian.lng.php');");
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.15-svn1\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.15-svn1';
+	}
 
 ?>

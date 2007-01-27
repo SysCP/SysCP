@@ -10,6 +10,7 @@
  * @copyright  (c) the authors
  * @author     Carlo Pedro Woedl <carlopedrowoedl@hotmail.com>
  * @author     Ron Brand <ron.brand@web.de>
+ * @author     Sandra Aders
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
  * @version    $Id$
@@ -384,7 +385,6 @@ $lng['admin']['ipsandports']['edit'] = 'Editar IP/Puerto';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Puerto';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Puerto';
-$lng['admin']['ipsandports']['default'] = 'Puerto ip predeterminado';
 
 
 // ADDED IN 1.2.13-rc3
@@ -429,5 +429,22 @@ $lng['admin']['phpmemorylimit'] = 'Limite memoria PHP';
 $lng['admin']['mysqlserverversion'] = 'Versi&oacute;n servidor MySQL';
 $lng['admin']['mysqlclientversion'] = 'Versi&oacute;n cliente MySQL';
 $lng['admin']['webserverinterface'] = 'Interface servidor de red';
+
+
+$lng['menue']['extras']['extras'] = 'Extras';
+$lng['extras']['pathoptions_edit'] = 'editar opciones de ruta/directorio';
+$lng['domain']['openbasedirpath'] = 'Directorio OpenBasedir';
+$lng['menue']['main']['username'] = 'Ingreso como: ';
+
+$lng['serversettings']['defaultip']['title'] = 'IP/Puerto por defecto';
+$lng['serversettings']['defaultip']['description'] = '&#191;Cu&aacute;l es la combinaci&oacute;n de IP y Puerto por defecto?';
+$lng['domains']['statstics'] = 'Estadisticas de uso';
+$lng['panel']['ascending'] = 'ascendiente';
+$lng['panel']['decending'] = 'descendiente';
+$lng['panel']['search'] = 'Buscar';
+$lng['panel']['used'] = 'usado';
+$lng['panel']['translator'] = 'Traductor';
+$lng['error']['stringformaterror'] = 'El valor para la fila &quot;%s&quot; no esta dentro de los formatos esperados.';
+
 
 ?>
