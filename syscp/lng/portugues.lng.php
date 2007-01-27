@@ -382,4 +382,13 @@ $lng['admin']['ipsandports']['ipandport'] = 'IP/Porta';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Porta';
 
+
+$lng['error']['cantchangesystemip'] = 'Voc&ecirc; n&atilde;o pode mudar o &uacute;ltimo sistema IP, para criar uma outra combina&ccedil;&atilde;o nova de IP/Port para o sistema IP ou para mudar o sistema IP';
+$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = '&Eacute; voc&ecirc; certo, voc&ecirc; quer a raiz do original para este dom&iacute;nio, n&atilde;o estando dentro do customerroot do cliente?';
+$lng['error']['loginnameissystemaccount'] = 'Voc&ecirc; n&atilde;o pode criar os clientes que s&atilde;o similares aos systemaccounts. Incorpore por favor um outro accountname.';
+$lng['domain']['docroot'] = 'trajeto da linha acima de';
+$lng['domain']['homedir'] = 'diret&oacute;rio da casa';
+$lng['admin']['valuemandatory'] = 'Este valor &eacute; imperativo.';
+$lng['admin']['valuemandatorycompany'] = 'Qualquer um &quot;nome&quot; e &quot;nome&quot; o &quot;companhia&quot; deve ser enchido.';
+
 ?>
