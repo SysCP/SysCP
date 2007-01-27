@@ -103,8 +103,11 @@
 			 */
 			fwrite( $debugHandler, '  cron_traffic: ftp traffic for '.$row['loginname'].' started...' . "\n");
 			$mailtraffic=0;
-			$ftptraffic=Array();
-			$ftptraffic=floatval($db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".(int)$row['customerid']."'"));
+			$ftptraffic=$db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".(int)$row['customerid']."'");
+			if( !is_array( $ftptraffic ) )
+			{
+				$ftptraffic = array();
+			}
 
 			/**
 			 * Total Traffic
