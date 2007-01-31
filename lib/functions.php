@@ -77,7 +77,7 @@
 			}
 			else
 			{
-				$error = 'Unknown Error';
+				$error = 'Unknown Error (' . $single_error . ')';
 				break;
 			}
 
