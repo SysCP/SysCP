@@ -275,7 +275,7 @@
 					standard_error('invalidpath');
 				}
 				if (    ($_POST['error404path'] === '')
-				     || (verify_url( $idna_convert->encode( $_POST['error404path'] ) ) )
+				     || (validateUrl( $idna_convert->encode( $_POST['error404path'] ) ) )
 				   )
 				{
 					$error404path = $_POST['error404path'];
@@ -285,7 +285,7 @@
 					standard_error('mustbeurl');
 				}
 				if (    ($_POST['error403path'] === '')
-				     || (verify_url($idna_convert->encode( $_POST['error403path'] ) ) )
+				     || (validateUrl($idna_convert->encode( $_POST['error403path'] ) ) )
 				   )
 				{
 					$error403path = $_POST['error403path'];
@@ -296,7 +296,7 @@
 				}
 
 				if (    ($_POST['error500path'] === '')
-				     || (verify_url($idna_convert->encode( $_POST['error500path'] ) ) )
+				     || (validateUrl($idna_convert->encode( $_POST['error500path'] ) ) )
 				   )
 				{
 					$error500path = $_POST['error500path'];
@@ -308,7 +308,7 @@
 
 /*
 				if (    ($_POST['error401path'] === '')
-				     || (verify_url($idna_convert->encode( $_POST['error401path'] ) ) )
+				     || (validateUrl($idna_convert->encode( $_POST['error401path'] ) ) )
 				   )
 				{
 					$error401path = $_POST['error401path'];
@@ -388,7 +388,7 @@
 						$option_indexes = '0';
 					}
 					if (    ($_POST['error404path'] === '')
-					     || (verify_url($idna_convert->encode( $_POST['error404path'] ) ) )
+					     || (validateUrl($idna_convert->encode( $_POST['error404path'] ) ) )
 					   )
 					{
 						$error404path = $_POST['error404path'];
@@ -398,7 +398,7 @@
 						standard_error('mustbeurl');
 					}
 					if (    ($_POST['error403path'] === '')
-					     || (verify_url($idna_convert->encode( $_POST['error403path'] ) ) )
+					     || (validateUrl($idna_convert->encode( $_POST['error403path'] ) ) )
 					   )
 					{
 						$error403path = $_POST['error403path'];
@@ -408,7 +408,7 @@
 						standard_error('mustbeurl');
 					}
 					if (    ($_POST['error500path'] === '')
-					     || (verify_url($idna_convert->encode( $_POST['error500path'] ) ) )
+					     || (validateUrl($idna_convert->encode( $_POST['error500path'] ) ) )
 					   )
 					{
 						$error500path = $_POST['error500path'];
@@ -420,7 +420,7 @@
 
 /*
 					if (    ($_POST['error401path'] === '')
-					     || (verify_url($idna_convert->encode( $_POST['error401path'] ) ) )
+					     || (validateUrl($idna_convert->encode( $_POST['error401path'] ) ) )
 					   )
 					{
 						$error401path = $_POST['error401path'];
