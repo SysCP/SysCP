@@ -11,7 +11,7 @@
     This not only gives respect to the large amount of time given freely by the developers
     but also helps build interest, traffic and use of SysCP. If you refuse
     to include even this then support on our forums may be affected.
-    The SysCP Team : 2003-2006
+    The SysCP Team : 2003-2007
 // -->
 <!--
 	Templates by Luca Piona (info@havanastudio.ch) and Luca Longinotti (chtekk@gentoo.org)

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the SysCP project.
- * Copyright (c) 2003-2006 the SysCP Team (see authors).
+ * Copyright (c) 2003-2007 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
@@ -91,7 +91,7 @@
 			This not only gives respect to the large amount of time given freely by the developers
 			but also helps build interest, traffic and use of SysCP. If you refuse
 			to include even this then support on our forums may be affected.
-			The SysCP Team : 2003-2006
+			The SysCP Team : 2003-2007
 		// -->
 		<!--
 			Templates by Luca Piona (info@havanastudio.ch) and Luca Longinotti (chtekk@gentoo.org)
@@ -119,7 +119,7 @@
 		<table cellspacing="0" cellpadding="0" border="0" width="100%">
 			<tr>
 				<td width="100%" class="footer">
-					<br />SysCP &copy; 2003-2006 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
+					<br />SysCP &copy; 2003-2007 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
 					<br />&nbsp;
 					<br /><a href="http://validator.w3.org/check?uri=referer" target="_blank"><img src="../images/valid-xhtml10.gif" alt="Valid XHTML 1.0 Transitional" height="15" width="80" border="0" /></a>&nbsp;&nbsp;<a href="http://jigsaw.w3.org/css-validator/" target="_blank"><img style="border:0;width:80px;height:15px" src="../images/valid-css.gif" alt="Valid CSS!" border="0" /></a>
 					<br />&nbsp;
