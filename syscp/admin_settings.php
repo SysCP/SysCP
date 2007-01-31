@@ -245,7 +245,7 @@
 
 			if($_POST['system_binddefaultzone']!=$settings['system']['binddefaultzone'])
 			{
-				$value=validate($_POST['system_binddefaultzone'], 'bind default zone', '/^[a-z0-9\-_]+$/i');
+				$value=validate($_POST['system_binddefaultzone'], 'bind default zone', '/^[a-z0-9\-\._]+$/i');
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='system' AND `varname`='binddefaultzone'");
 			}
 
