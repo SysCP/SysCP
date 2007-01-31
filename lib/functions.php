@@ -453,17 +453,48 @@
 	}
 
 	/**
+	 * Returns if an username is in correct format or not.
+	 *
+	 * @param string The username to check
+	 * @return bool Correct or not
+	 * @author Michael Duergner <michael@duergner.com>
+	 *
+	 * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
+	 */
+	function validateUsername($username)
+	{
+		return preg_match('/^[a-z][a-z0-9]*$/Di',$username);
+	}
+
+	/**
 	 * Returns if an emailaddress is in correct format or not
 	 *
 	 * @param string The email address to check
 	 * @return bool Correct or not
 	 * @author Florian Lippert <flo@redenswert.de>
+	 *
+	 * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
 	 */
-	function verify_email($email)
+	function validateEmail($email)
 	{
 		$email=strtolower($email);
 
-		return (bool)preg_match('/^([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,}))$/si',$email);
+		return (bool)preg_match('/^[\-_a-z0-9]+(\.[\-_a-z0-9]+)*@((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di',$email);
+	}
+
+	/**
+	 * Check if the submitted string is a valid domainname, i.e.
+	 * it consists only of the following characters ([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}
+	 *
+	 * @param string The domainname which should be checked.
+	 * @return boolean True if the domain is valid, false otherwise
+	 * @author Michael Duergner
+	 *
+	 * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
+	 */
+	function validateDomain($domainname)
+	{
+		return preg_match('/^((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di',$domainname);
 	}
 
 	/**
@@ -472,10 +503,12 @@
 	 * @param string URL to be tested
 	 * @return bool
 	 * @author Christian Hoffmann
+	 *
+	 * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
 	 */
-	function verify_url($url)
+	function validateUrl($url)
 	{
-		return (bool)preg_match('!^https?://[a-z0-9\.\-/]*(?::\d{1,5})?(?:/[^\s\r\n\0]*)?$!i', $url);
+		return (bool)preg_match('!^https?://((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}(:[1-9][0-9]{0,4})?(/[^\s\0]*)?$!Di', $url);
 	}
 
 	/**
@@ -1152,43 +1185,6 @@
 	}
 
 	/**
-	 * Returns if an username is in correct format or not.
-	 * A username is valid if it would be a username that is accepted by the
-	 * useradd command.
-	 *
-	 * @param string The username to check
-	 * @return bool Correct or not
-	 * @author Michael Duergner <michael@duergner.com>
-	 */
-	function check_username($username) {
-		return preg_match('/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/',$username);
-	}
-
-	/**
-	 * Returns if an username_prefix is in correct format or not.
-	 * A username_prefix is valid if the resulting username would be a username
-	 * that is accepted by the useradd command.
-	 *
-	 * @param string The username to check
-	 * @return bool Correct or not
-	 * @author Michael Duergner <michael@duergner.com>
-	 */
-	function check_username_prefix($username_prefix) {
-		return preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\-\_]*$/",$username_prefix);
-	}
-
-	/**
-	 * Returns if a mysql_prefix is in correct format or not.
-	 *
-	 * @param string The mysql_prefix to check
-	 * @return bool Correct or not
-	 * @author Michael Duergner <michael@duergner.com>
-	 */
-	function check_mysql_prefix($mysql_prefix) {
-		return preg_match("/^[a-zA-Z0-9\-\_]+$/",$mysql_prefix);
-	}
-
-	/**
 	 * Returns an integer of the given value which isn't negative.
 	 * Returns -1 if the given value was -1.
 	 *
@@ -1295,19 +1291,6 @@
 			$string = stripslashes( $string );
 		}
 		return $string;
-	}
-
-	/**
-	 * Check if the submitted string is a valid domainname, i.e.
-	 * it consists only of the following characters ([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}
-	 *
-	 * @param string The domainname which should be checked.
-	 * @return boolean True if the domain is valid, false otherwise
-	 * @author Michael Duergner
-	 */
-	function check_domain($domainname)
-	{
-		return preg_match('/^([a-z0-9][a-z0-9\-]+\.)+[a-z]{2,4}$/i',$domainname);
 	}
 
 	/**

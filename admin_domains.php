@@ -248,7 +248,7 @@
 					{
 						standard_error(array('stringisempty','mydomain'));
 					}
-					elseif(!check_domain($domain))
+					elseif(!validateDomain($domain))
 					{
 						standard_error(array('stringiswrong','mydomain'));
 					}

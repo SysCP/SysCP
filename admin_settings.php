@@ -46,7 +46,7 @@
 			if($_POST['customer_accountprefix']!=$settings['customer']['accountprefix'])
 			{
 				$value=$_POST['customer_accountprefix'];
-				if(check_username_prefix($value))
+				if(validateUsername($value))
 				{
 					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='customer' AND `varname`='accountprefix'");
 				}
@@ -60,7 +60,7 @@
 			if($_POST['customer_mysqlprefix']!=$settings['customer']['mysqlprefix'])
 			{
 				$value=$_POST['customer_mysqlprefix'];
-				if(check_mysql_prefix($value))
+				if(validateUsername($value))
 				{
 					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='customer' AND `varname`='mysqlprefix'");
 				}
@@ -74,7 +74,7 @@
 			if($_POST['customer_ftpprefix']!=$settings['customer']['ftpprefix'])
 			{
 				$value=$_POST['customer_ftpprefix'];
-				if(check_username_prefix($value))
+				if(validateUsername($value))
 				{
 					$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='customer' AND `varname`='ftpprefix'");
 				}
@@ -271,7 +271,7 @@
 			if($_POST['panel_adminmail']!=$settings['panel']['adminmail'])
 			{
 				$value=$idna_convert->encode($_POST['panel_adminmail']);
-				if(!verify_email($value))
+				if(!validateEmail($value))
 				{
 					standard_error('adminmailiswrong');
 					exit;
@@ -305,7 +305,7 @@
 			if($_POST['panel_phpmyadmin_url']!=$settings['panel']['phpmyadmin_url'])
 			{
 				$value=$_POST['panel_phpmyadmin_url'];
-				if(!verify_url( $idna_convert->encode( $value ) ) && $value != '')
+				if(!validateUrl( $idna_convert->encode( $value ) ) && $value != '')
 				{
 					standard_error('phpmyadminiswrong');
 					exit;
@@ -356,7 +356,7 @@
 			if($_POST['panel_webmail_url']!=$settings['panel']['webmail_url'])
 			{
 				$value=$_POST['panel_webmail_url'];
-				if(!verify_url( $idna_convert->encode( $value ) ) && $value != '')
+				if(!validateUrl( $idna_convert->encode( $value ) ) && $value != '')
 				{
 					standard_error('webmailiswrong');
 					exit;
@@ -407,7 +407,7 @@
 			if($_POST['panel_webftp_url']!=$settings['panel']['webftp_url'])
 			{
 				$value=$_POST['panel_webftp_url'];
-				if(!verify_url( $idna_convert->encode( $value ) ) && $value != '')
+				if(!validateUrl( $idna_convert->encode( $value ) ) && $value != '')
 				{
 					standard_error('webftpiswrong');
 					exit;

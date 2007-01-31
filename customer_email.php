@@ -201,7 +201,7 @@
 					}
 					$email_full = $email_part . '@' . $domain ;
 
-					if(!verify_email($email_full))
+					if(!validateEmail($email_full))
 					{
 						standard_error('emailiswrong',$email_full);
 					}
@@ -442,7 +442,7 @@
 						{
 							standard_error('destinationnonexist');
 						}
-						elseif(!verify_email($destination))
+						elseif(!validateEmail($destination))
 						{
 							standard_error('destinationiswrong',$destination);
 						}

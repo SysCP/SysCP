@@ -178,7 +178,7 @@
 				{
 					standard_error('loginnameissystemaccount', $settings['customer']['accountprefix']);
 				}
-				elseif(!check_username($loginname))
+				elseif(!validateUsername($loginname))
 				{
 					standard_error('loginnameiswrong',$loginname);
 				}
@@ -194,7 +194,7 @@
 				{
 					standard_error(array('stringisempty','mypassword'));
 				}
-				elseif(!verify_email($email))
+				elseif(!validateEmail($email))
 				{
 					standard_error('emailiswrong',$email);
 				}
@@ -283,7 +283,7 @@
 					{
 						standard_error(array('stringisempty','emailadd'));
 					}
-					elseif(!verify_email($email))
+					elseif(!validateEmail($email))
 					{
 						standard_error('emailiswrong',$email);
 					}
