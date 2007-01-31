@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the SysCP project.
- * Copyright (c) 2003-2006 the SysCP Team (see authors).
+ * Copyright (c) 2003-2007 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
