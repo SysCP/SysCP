@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the SysCP project.
- * Copyright (c) 2003-2007 the SysCP Team (see authors).
+ * Copyright (c) 2003-2006 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
@@ -296,7 +296,8 @@
 
 			$sortorder = strtoupper( $this->sortorder );
 
-			return 'ORDER BY ' . $sortfield . ' ' . $sortorder;
+			// Acts similar to php's natsort(), found in one comment at http://my.opera.com/cpr/blog/show.dml/160556
+			return 'ORDER BY IF( ASCII( RIGHT( ' . $sortfield . ', 1 ) ) > 57, LPAD( ' . $sortfield . ', 10, \'0\' ), LPAD( CONCAT( ' . $sortfield . ', \'-\' ), 10, \'0\' ) ) ' . $sortorder;
 		}
 
 		/**
