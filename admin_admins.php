@@ -90,10 +90,10 @@
 			}
 			eval("echo \"".getTemplate("admins/admins")."\";");
 		}
-		elseif($action=='su' && $id != 1 && $userinfo['userid'] == '1')
+		elseif($action=='su')
 		{
 			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid` = '".(int)$id."'");
-			if($result['loginname'] != '')
+			if($result['loginname'] != '' && $result['adminid'] != $userinfo['userid'] )
 			{
 				$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_SESSIONS."` WHERE `userid`='".(int)$userinfo['userid']."'");
 				$s = md5(uniqid(microtime(),1));
@@ -122,8 +122,8 @@
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='".(int)$id."'");
 					$db->query("DELETE FROM `".TABLE_PANEL_TRAFFIC_ADMINS."` WHERE `adminid`='".(int)$id."'");
-					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `adminid` = '1' WHERE `adminid` = '".(int)$id."'");
-					$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `adminid` = '1' WHERE `adminid` = '".(int)$id."'");
+					$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `adminid` = '".(int)$userinfo['userid']."' WHERE `adminid` = '".(int)$id."'");
+					$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `adminid` = '".(int)$userinfo['userid']."' WHERE `adminid` = '".(int)$id."'");
 					updateCounters () ;
 
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
