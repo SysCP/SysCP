@@ -1311,22 +1311,25 @@
 	 */
 	function findDirs ( $path, $uid, $gid, $_fileList = array() )
 	{
-		$dh = opendir( $path );
-		while ( false !== ( $file = readdir( $dh ) ) )
+		$list = array( $path );
+		$_fileList = array();
+		while( sizeof($list) > 0 )
 		{
-			if ( $file == '.' && (    fileowner( $path.'/'.$file ) == $uid
-			                       || filegroup( $path.'/'.$file ) == $gid
-			                     )
-			   )
+			$path = array_pop( $list );
+			$dh = opendir( $path );
+			while( false !== ($file=readdir($dh)))
 			{
-				$_fileList[] = $path.'/';
+				if ( $file == '.' && (fileowner($path.'/'.$file)==$uid || filegroup($path.'/'.$file)==$gid))
+				{
+					$_fileList[] = $path.'/';
+				}
+				if( is_dir($path.'/'.$file) && $file != '..' && $file != '.')
+				{
+					array_push($list, $path.'/'.$file);
+				}
 			}
-			if ( $file != '..' && $file != '.' && is_dir( $path.'/'.$file ) && is_readable( $path.'/'.$file ) )
-			{
-				$_fileList = findDirs( $path.'/'.$file, $uid, $gid, $_fileList );
-			}
+			closedir( $dh );	
 		}
-		closedir( $dh );
 		return $_fileList;
 	}
 
