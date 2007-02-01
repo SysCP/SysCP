@@ -109,14 +109,15 @@
 		}
 		elseif($action=='delete' && $id!=0)
 		{
-			if($id == '1')
-			{
-				standard_error('youcantdeletechangemainadmin');
-				exit;
-			}
 			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='".(int)$id."'");
 			if($result['loginname']!='')
 			{
+				if( $result['adminid'] == $userinfo['userid'] )
+				{
+					standard_error('youcantdeleteyourself');
+					exit;
+				}
+
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$db->query("DELETE FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='".(int)$id."'");
@@ -243,37 +244,55 @@
 
 		elseif($action=='edit' && $id!=0)
 		{
-			if($id == '1')
-			{
-				standard_error('youcantdeletechangemainadmin');
-				exit;
-			}
 			$result=$db->query_first("SELECT * FROM `".TABLE_PANEL_ADMINS."` WHERE `adminid`='".(int)$id."'");
 			if($result['loginname']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					$name = validate($_POST['name'], 'name');
-					$newpassword = validate($_POST['newpassword'], 'new password');
 					$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
-					$def_language = validate($_POST['def_language'], 'default language');
-					$deactivated = intval ( $_POST['deactivated'] ) ;
-					$customers = intval_ressource ( $_POST['customers'] ) ;
-					$domains = intval_ressource ( $_POST['domains'] ) ;
-					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
-					$emails = intval_ressource ( $_POST['emails'] ) ;
-					$email_accounts = intval_ressource ( $_POST['email_accounts'] ) ;
-					$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
-					$ftps = intval_ressource ( $_POST['ftps'] ) ;
-					$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
-					$customers_see_all = intval ( $_POST['customers_see_all'] ) ;
-					$domains_see_all = intval ( $_POST['domains_see_all'] ) ;
-					$change_serversettings = intval ( $_POST['change_serversettings'] ) ;
+					
+					if( $result['adminid'] == $userinfo['userid'] )
+					{
+						$newpassword = '';
+						$def_language = $result['def_language'];
+						$deactivated = $result['deactivated'];
+						$customers = $result['customers'];
+						$domains = $result['domains'];
+						$subdomains = $result['subdomains'];
+						$emails = $result['emails'];
+						$email_accounts = $result['email_accounts'];
+						$email_forwarders = $result['email_forwarders'];
+						$ftps = $result['ftps'];
+						$mysqls = $result['mysqls'];
+						$customers_see_all = $result['customers_see_all'];
+						$domains_see_all = $result['domains_see_all'];
+						$change_serversettings = $result['change_serversettings'];
+						$diskspace = $result['diskspace'];
+						$traffic = $result['traffic'];
+ 					}
+					else
+					{
+						$newpassword = validate($_POST['newpassword'], 'new password');
+						$def_language = validate($_POST['def_language'], 'default language');
+						$deactivated = intval ( $_POST['deactivated'] ) ;
+						$customers = intval_ressource ( $_POST['customers'] ) ;
+						$domains = intval_ressource ( $_POST['domains'] ) ;
+						$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
+						$emails = intval_ressource ( $_POST['emails'] ) ;
+						$email_accounts = intval_ressource ( $_POST['email_accounts'] ) ;
+						$email_forwarders = intval_ressource ( $_POST['email_forwarders'] ) ;
+						$ftps = intval_ressource ( $_POST['ftps'] ) ;
+						$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
+						$customers_see_all = intval ( $_POST['customers_see_all'] ) ;
+						$domains_see_all = intval ( $_POST['domains_see_all'] ) ;
+						$change_serversettings = intval ( $_POST['change_serversettings'] ) ;
 
-					$diskspace = intval ( $_POST['diskspace'] ) ;
-					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
-					$diskspace = $diskspace * 1024 ;
-					$traffic = $traffic * 1024 * 1024 ;
+						$diskspace = intval ( $_POST['diskspace'] ) ;
+						$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
+						$diskspace = $diskspace * 1024 ;
+						$traffic = $traffic * 1024 * 1024 ;
+					}
 
 					if($name == '')
 					{
@@ -324,7 +343,7 @@
 							$db->escape($ftps)."', `mysqls`='".$db->escape($mysqls)."', `deactivated`='".
 							$db->escape($deactivated)."' WHERE `adminid`='".$db->escape($id)."'");
 
-					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
+						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else

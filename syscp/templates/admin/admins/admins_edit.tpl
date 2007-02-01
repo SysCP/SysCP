@@ -20,6 +20,12 @@ $header
 				<td class="main_field_name">{$lng['customer']['email']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email" value="{$result['email']}" /></td>
 			</tr>
+<if $result['adminid'] == $userinfo['userid']>
+			<tr>
+				<td class="main_field_name" colspan="2">{$lng['error']['youcanteditallfieldsofyourself']}</td>
+			</tr>
+</if>
+<if $result['adminid'] != $userinfo['userid']>
 			<tr>
 				<td class="main_field_name">{$lng['login']['language']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="def_language">$language_options</select></td>
@@ -84,6 +90,7 @@ $header
 				<td class="main_field_name">{$lng['login']['password']} ({$lng['panel']['emptyfornochanges']}):</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="password" name="newpassword" value="" /></td>
 			</tr>
+</if>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>
 			</tr>
