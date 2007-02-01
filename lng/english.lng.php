@@ -181,7 +181,6 @@ $lng['error']['login_blocked'] = 'This account has been suspended because of too
 $lng['error']['notallreqfieldsorerrors'] = 'You have not filled in all or filled in some fields incorrectly.';
 $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more resources than you own for yourself.';
-$lng['error']['youcantdeletechangemainadmin'] = 'You cannot delete or edit the main admin for security reasons.';
 
 $lng['error']['mustbeurl'] = 'You have not typed a valid or complete url (e.g. http://somedomain.com/error404.htm)';
 $lng['error']['invalidpath'] = 'You have not chosen a valid url (maybe problems with the dirlisting?)';
@@ -452,5 +451,7 @@ $lng['serversettings']['phpappendopenbasedir']['description'] = 'These paths (se
 
 // CHANGED IN 1.2.15-rc1
 $lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts (as for example begin with &quot;%s&quot;). Please enter another accountname.';
+$lng['error']['youcantdeleteyourself'] = 'You cannot delete yourself for security reasons.';
+$lng['error']['youcanteditallfieldsofyourself'] = 'Note: You cannot edit all fields of your own account for security reasons.';
 
 ?>
