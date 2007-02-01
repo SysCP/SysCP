@@ -230,7 +230,7 @@ $lng['question']['question'] = 'Sicherheitsabfrage';
 $lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiderruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
 $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';
-$lng['question']['admin_admin_reallydelete'] = 'Wollen Sie den Admin %s wirklich l&ouml;schen?<br />Alle Kunden und Domains werden dem Hauptadmin zugeteilt.';
+$lng['question']['admin_admin_reallydelete'] = 'Wollen Sie den Admin %s wirklich l&ouml;schen?<br />Alle Kunden und Domains werden Ihrem Account zugeteilt.';
 $lng['question']['admin_template_reallydelete'] = 'Wollen Sie die Vorlage \'%s\' wirklich l&ouml;schen?';
 $lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
 $lng['question']['email_reallydelete'] = 'Wollen Sie die E-Mail-Adresse %s wirklich l&ouml;schen?';
@@ -451,7 +451,7 @@ $lng['serversettings']['phpappendopenbasedir']['description'] = 'Diese (durch Do
 
 // CHANGED IN 1.2.15-rc1
 $lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht (also zum Beispiel mit &quot;%s&quot; anf&auml;ngt). Bitte w&auml;hlen Sie einen anderen Accountnamen.';
-$lng['error']['youcantdeleteyourself'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie sich selbst nicht l&ouml;schen.';
+$lng['error']['youcantdeleteyourself'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie sich nicht selbst l&ouml;schen.';
 $lng['error']['youcanteditallfieldsofyourself'] = 'Hinweis: Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie nicht alle Felder Ihres eigenen Accoounts bearbeiten.';
 
 ?>
