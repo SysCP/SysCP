@@ -252,7 +252,7 @@
 			$htpasswd_files = array();
 			foreach($diroptions as $row_diroptions)
 			{
-				exec( 'mkdir -p ' . $row_diroptions['path'] );
+				safe_exec( 'mkdir -p ' . escapeshellarg( $row_diroptions['path'] ) );
 				if( is_dir( $row_diroptions['path'] ) )
 				{
 					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
