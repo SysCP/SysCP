@@ -85,6 +85,11 @@ $header
 			<td class="field_name_border_left">{$lng['admin']['latestversion']}:</td>
 			<td class="field_display"><a href="$lookfornewversion_link">$lookfornewversion_lable</a></td>
 		</tr>
+<if $lookfornewversion_addinfo != ''>
+		<tr>
+			<td class="field_name_border_left" colspan="2">$lookfornewversion_addinfo</td>
+		</tr>
+</if>
 	</table>
 	<br />
 	<br />

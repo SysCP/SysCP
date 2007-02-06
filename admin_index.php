@@ -66,22 +66,32 @@
 		
 		if( (isset($_GET['lookfornewversion']) && $_GET['lookfornewversion'] == 'yes') || (isset($lookfornewversion) && $lookfornewversion == 'yes') )
 		{
-			$latestversion = @file('http://syscp.de/version/version.php');
-			if(is_array($latestversion))
+			$latestversion = @file( 'http://version.syscp.org/SysCP/legacy/' . $version );
+			if( is_array( $latestversion ) && count( $latestversion ) >= 2 )
 			{
 				$lookfornewversion_lable = $latestversion[0];
 				$lookfornewversion_link = $latestversion[1];
+				$lookfornewversion_addinfo = '';
+				if( count( $latestversion ) >= 3 )
+				{
+					$addinfo = $latestversion;
+					unset( $addinfo[0] );
+					unset( $addinfo[1] );
+					$lookfornewversion_addinfo = implode( "\n", $addinfo );
+				}
 			}
 			else
 			{
 				$lookfornewversion_lable = $lng['admin']['lookfornewversion']['error'];
 				$lookfornewversion_link = htmlspecialchars($filename.'?s='.urlencode($s).'&page='.urlencode($page).'&lookfornewversion=yes');
+				$lookfornewversion_addinfo = '';
 			}
 		}
 		else
 		{
 			$lookfornewversion_lable = $lng['admin']['lookfornewversion']['clickhere'];
 			$lookfornewversion_link = htmlspecialchars($filename.'?s='.urlencode($s).'&page='.urlencode($page).'&lookfornewversion=yes');
+			$lookfornewversion_addinfo = '';
 		}
 
 		$userinfo['diskspace']=round($userinfo['diskspace']/1024,4);
