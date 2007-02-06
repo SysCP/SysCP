@@ -45,6 +45,7 @@
 	$filename       = 'cronscript.php';
 
 	// create and open the lockfile!
+	$keepLockFile = false;
 	$debugHandler = fopen( $lockfile, 'w' );
 	fwrite( $debugHandler, 'Setting Lockfile to '.$lockfile . "\n");
 	fwrite( $debugHandler, 'Setting SysCP installation path to '.$pathtophpfiles . "\n");
@@ -61,7 +62,7 @@
 			unlink($lockfile);
 			die('There is already a lockfile. Exiting...' . "\n" .
 			    'Take a look into the contents of ' . $lockdir . $lockFilename .
-			    '* for more information!' );
+			    '* for more information!' . "\n" );
 		}
 	}
 
@@ -135,13 +136,25 @@
 	$cronFileIncludeResult = $db->query($query);
 	while ($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
 	{
-		fwrite( $debugHandler, 'Processing ...'.$pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'] . "\n");
-		include_once $pathtophpfiles.'/scripts/'.$cronFileIncludeRow['file'];
-		fwrite( $debugHandler, 'Processing done!' . "\n");
+		$cronFileIncludeFullPath = makeSecurePath( $pathtophpfiles . '/scripts/' . $cronFileIncludeRow['file'] );
+		if( fileowner( $cronFileIncludeFullPath ) == fileowner( $pathtophpfiles . '/scripts/' . $filename ) && filegroup( $cronFileIncludeFullPath ) == filegroup( $pathtophpfiles . '/scripts/' . $filename ) )
+		{
+			fwrite( $debugHandler, 'Processing ...' . $cronFileIncludeFullPath . "\n");
+			include_once $cronFileIncludeFullPath;
+			fwrite( $debugHandler, 'Processing done!' . "\n");
+		}
+		else
+		{
+			fwrite( $debugHandler, 'WARNING! uid and/or gid of "' . $cronFileIncludeFullPath . '" and "' . $pathtophpfiles . '/scripts/' . $filename . '" don\'t match! Execution aborted!' . "\n");
+			$keepLockFile = true;
+		}
 	}
 
 	fclose( $debugHandler );
-	unlink($lockfile);
+	if( $keepLockFile === false )
+	{
+		unlink($lockfile);
+	}
 
 	$db->query(
 		'UPDATE `'.TABLE_PANEL_SETTINGS.'` ' .
