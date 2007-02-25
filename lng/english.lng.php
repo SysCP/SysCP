@@ -454,4 +454,8 @@ $lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which ar
 $lng['error']['youcantdeleteyourself'] = 'You cannot delete yourself for security reasons.';
 $lng['error']['youcanteditallfieldsofyourself'] = 'Note: You cannot edit all fields of your own account for security reasons.';
 
+// ADDED IN 1.2.16-svn1
+$lng['serversettings']['natsorting']['title'] = 'Use natural human sorting in list view';
+$lng['serversettings']['natsorting']['description'] = 'Sorts lists as web1 -> web2 -> web11 instead of web1 -> web11 -> web2.';
+
 ?>

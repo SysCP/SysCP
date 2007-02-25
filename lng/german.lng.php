@@ -454,4 +454,8 @@ $lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anle
 $lng['error']['youcantdeleteyourself'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie sich nicht selbst l&ouml;schen.';
 $lng['error']['youcanteditallfieldsofyourself'] = 'Hinweis: Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie nicht alle Felder Ihres eigenen Accoounts bearbeiten.';
 
+// ADDED IN 1.2.16-svn1
+$lng['serversettings']['natsorting']['title'] = 'Nat&uuml;rliche Sortierung in der Listenansicht nutzen';
+$lng['serversettings']['natsorting']['description'] = 'Sortiert die Liste in der Reihenfolge web1 -> web2 -> web11 anstatt web1 -> web11 -> web2.';
+
 ?>

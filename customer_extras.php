@@ -42,7 +42,7 @@
 								'username' => $lng['login']['username'],
 								'path' => $lng['panel']['path']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTPASSWDS, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTPASSWDS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result=$db->query(
 				"SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' " . 
@@ -209,7 +209,7 @@
 								'error403path' => $lng['extras']['error403path'],
 								'error500path' => $lng['extras']['error500path']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTACCESS, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTACCESS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result=$db->query(
 				"SELECT `id`, `path`, `options_indexes`, `error404path`, `error403path`, `error500path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".(int)$userinfo['customerid']."' ". 

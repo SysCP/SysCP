@@ -96,6 +96,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['natsorting']['title']}:</b><br />{$lng['serversettings']['natsorting']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$natsorting}</td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['paging']['title']}:</b><br />{$lng['serversettings']['paging']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_paging" value="{$settings['panel']['paging']}" /></td>
 			</tr>

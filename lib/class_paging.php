@@ -75,6 +75,11 @@
 		 * @var int
 		 */
 		var $pageno = 0;
+		/**
+		 * Switch natsorting on/off
+		 * @var bool
+		 */
+		var $natSorting = false;
 
 		/**
 		 * Class constructor. Loads settings from request or from userdata and saves them to session.
@@ -83,8 +88,9 @@
 		 * @param string Name of Table
 		 * @param array Fields, in format array( 'fieldname_in_mysql' => 'field_caption' )
 		 * @param int entries per page
+		 * @param bool Switch natsorting on/off (global, affects all calls of sort)
 		 */
-		function paging( $userinfo, $db, $table, $fields, $entriesperpage )
+		function paging( $userinfo, $db, $table, $fields, $entriesperpage, $natSorting = false )
 		{
 			$this->userinfo = $userinfo;
 			if( !is_array( $this->userinfo['lastpaging'] ) )
@@ -96,6 +102,7 @@
 			$this->table = $table;
 			$this->fields = $fields;
 			$this->entriesperpage = $entriesperpage;
+			$this->natSorting = $natSorting;
 
 			$checklastpaging = ( isset( $this->userinfo['lastpaging']['table'] ) && $this->userinfo['lastpaging']['table'] == $this->table );
 			$this->userinfo['lastpaging']['table'] = $this->table;
@@ -275,9 +282,10 @@
 		/**
 		 * Returns "order by"-code for sql query
 		 *
+		 * @param bool Switch natsorting on/off (local, affects just this call)
 		 * @return string the "order by"-code
 		 */
-		function getSqlOrderBy()
+		function getSqlOrderBy( $natSorting = null )
 		{
 			$sortfield = explode( '.', $this->sortfield );
 			foreach( $sortfield as $id => $field )
@@ -296,8 +304,17 @@
 
 			$sortorder = strtoupper( $this->sortorder );
 
-			// Acts similar to php's natsort(), found in one comment at http://my.opera.com/cpr/blog/show.dml/160556
-			return 'ORDER BY IF( ASCII( RIGHT( ' . $sortfield . ', 1 ) ) > 57, LPAD( ' . $sortfield . ', 10, \'0\' ), LPAD( CONCAT( ' . $sortfield . ', \'-\' ), 10, \'0\' ) ) ' . $sortorder;
+			if( $natSorting == true || ( $natSorting === null && $this->natSorting == true ) )
+			{
+				// Acts similar to php's natsort(), found in one comment at http://my.opera.com/cpr/blog/show.dml/160556
+				$sortcode = 'ORDER BY IF( ASCII( RIGHT( ' . $sortfield . ', 1 ) ) > 57, LPAD( ' . $sortfield . ', 255, \'0\' ), LPAD( CONCAT( ' . $sortfield . ', \'-\' ), 255, \'0\' ) ) ' . $sortorder;
+			}
+			else
+			{
+				$sortcode = 'ORDER BY ' . $sortfield . ' ' . $sortorder;
+			}
+
+			return $sortcode;
 		}
 
 		/**

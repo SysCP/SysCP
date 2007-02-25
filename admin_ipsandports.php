@@ -40,7 +40,7 @@
 								'ip' => $lng['admin']['ipsandports']['ip'],
 								'port' => $lng['admin']['ipsandports']['port']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_PANEL_IPSANDPORTS, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_IPSANDPORTS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$ipsandports='';
 			$result=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` " . 

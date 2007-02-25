@@ -41,7 +41,7 @@
 								'username' => $lng['login']['username'],
 								'homedir' => $lng['panel']['path']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_FTP_USERS, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_FTP_USERS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result=$db->query(
 				"SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".$userinfo['customerid']."' " .
