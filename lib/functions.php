@@ -769,7 +769,7 @@
 			{
 				$admin_resources[$customer['adminid']]['diskspace_used'] = 0 ;
 			}
-			if ( ($customer['diskspace']/1024) != '-1' )
+			if ( ( $customer['diskspace'] / 1024 ) != '-1' )
 			{
 				$admin_resources[$customer['adminid']]['diskspace_used'] += intval_ressource ( $customer['diskspace'] ) ;
 			}

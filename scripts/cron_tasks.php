@@ -73,124 +73,145 @@
 				}
 			}
 
-			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`deactivated` <> '1' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 			while($domain=$db->fetch_array($result_domains))
 			{
 				fwrite( $debugHandler, '  cron_tasks: Task1 - Writing Domain '.$domain['id'].'::'.$domain['domain'] . "\n");
 				$vhosts_file.='# Domain ID: '.$domain['id'].' - CustomerID: '.$domain['customerid'].' - CustomerLogin: '.$domain['loginname']."\n";
-				$vhosts_file.='<VirtualHost '.$domain['ipandport'].'>'."\n";
-				$vhosts_file.='  ServerName '.$domain['domain']."\n";
+				if ( $domain['deactivated'] != '1' || $settings['system']['deactivateddocroot'] != '' )
+				{
+					$vhosts_file.='<VirtualHost '.$domain['ipandport'].'>'."\n";
+					$vhosts_file.='  ServerName '.$domain['domain']."\n";
 
-				$server_alias = '';
-				$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$domain['id'].'\'');
-				while(($alias_domain=$db->fetch_array($alias_domains)) !== false)
-				{
-					$server_alias .= ' '.$alias_domain['domain'].' '.(($alias_domain['iswildcarddomain']==1) ? '*' : 'www').'.'.$alias_domain['domain'];
-				}
-				if($domain['iswildcarddomain'] == '1')
-				{
-					$alias = '*';
-				}
-				else
-				{
-					$alias = 'www';
-				}
-				$vhosts_file.='  ServerAlias '.$alias.'.'.$domain['domain'].$server_alias."\n";
-				$vhosts_file.='  ServerAdmin '.$domain['email']."\n";
-
-				if(preg_match('/^https?\:\/\//', $domain['documentroot']))
-				{
-					$vhosts_file.='  Redirect / '.$domain['documentroot']."\n";
-				}
-				else
-				{
-					$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
-					$domain['documentroot'] = makeCorrectDir($domain['documentroot']);
-					$vhosts_file.='  DocumentRoot "'.$domain['documentroot']."\"\n";
-
-					if($domain['openbasedir'] == '1')
+					$server_alias = '';
+					$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `'.TABLE_PANEL_DOMAINS.'` WHERE `aliasdomain`=\''.$domain['id'].'\'');
+					while(($alias_domain=$db->fetch_array($alias_domains)) !== false)
 					{
-						if($settings['system']['phpappendopenbasedir'] != '')
-						{
-							$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
-						}
-						else
-						{
-							$_phpappendopenbasedir = '';
-						}
-
-						if($domain['openbasedir_path'] == '1')
-						{
-							$vhosts_file.='  php_admin_value open_basedir "'.$domain['customerroot'].$_phpappendopenbasedir."\"\n";
-						}
-						else
-						{
-							$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot'].$_phpappendopenbasedir."\"\n";
-						}
+						$server_alias .= ' '.$alias_domain['domain'].' '.(($alias_domain['iswildcarddomain']==1) ? '*' : 'www').'.'.$alias_domain['domain'];
 					}
-
-					if($domain['safemode'] == '0')
+					if($domain['iswildcarddomain'] == '1')
 					{
-						$vhosts_file.='  php_admin_flag safe_mode Off '."\n";
+						$alias = '*';
 					}
 					else
 					{
-						$vhosts_file.='  php_admin_flag safe_mode On '."\n";
+						$alias = 'www';
 					}
+					$vhosts_file.='  ServerAlias '.$alias.'.'.$domain['domain'].$server_alias."\n";
+					$vhosts_file.='  ServerAdmin '.$domain['email']."\n";
 
-					$subdir = str_replace($domain['customerroot'], '', $domain['documentroot']);
-					$offset = 0;
-					$subdirlen = strlen($subdir);
-					$subdirs = array();
-					array_push($subdirs, $domain['documentroot']);
-
-					while($offset < $subdirlen)
+					if(preg_match('/^https?\:\/\//', $domain['documentroot']))
 					{
-						$offset = strpos($subdir, '/', $offset);
-						$subdirelem = substr($subdir, 0, $offset);
-						$offset++;
-						array_push($subdirs, $domain['customerroot'].$subdirelem.'/');
-					}
-
-					$subdirs = array_unique($subdirs);
-					sort($subdirs);
-
-					foreach($subdirs as $sdir)
-					{
-						if(!is_dir($sdir))
-						{
-							safe_exec('mkdir -p '.escapeshellarg($sdir));
-							safe_exec('chown -R '.(int)$domain['guid'].':'.(int)$domain['guid'].' '.escapeshellarg($sdir));
-						}
-					}
-
-					if($domain['speciallogfile'] == '1')
-					{
-						if($domain['parentdomainid'] == '0')
-						{
-							$speciallogfile = '-'.$domain['domain'];
-							$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['domain']."\"\n";
-						}
-						else
-						{
-							$speciallogfile = '-'.$domain['parentdomain'];
-							$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\"\n";
-						}
+						$vhosts_file.='  Redirect / '.$domain['documentroot']."\n";
 					}
 					else
 					{
-						$speciallogfile = '';
-						if( $domain['customerroot'] != $domain['documentroot'])
+						$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
+						$domain['documentroot'] = makeCorrectDir($domain['documentroot']);
+
+						if ( $domain['deactivated'] == '1' && $settings['system']['deactivateddocroot'] != '' )
 						{
-							$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer"'."\n";
+							$vhosts_file.='  # Using docroot for deactivated users...' . "\n";
+							$vhosts_file.='  DocumentRoot "'.$settings['system']['deactivateddocroot']."\"\n";
 						}
+						else
+						{
+							$vhosts_file.='  DocumentRoot "'.$domain['documentroot']."\"\n";
+						}
+
+						if($domain['openbasedir'] == '1')
+						{
+							if($settings['system']['phpappendopenbasedir'] != '')
+							{
+								$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
+							}
+							else
+							{
+								$_phpappendopenbasedir = '';
+							}
+
+							if($domain['openbasedir_path'] == '1')
+							{
+								$vhosts_file.='  php_admin_value open_basedir "'.$domain['customerroot'].$_phpappendopenbasedir."\"\n";
+							}
+							else
+							{
+								$vhosts_file.='  php_admin_value open_basedir "'.$domain['documentroot'].$_phpappendopenbasedir."\"\n";
+							}
+						}
+
+						if($domain['safemode'] == '0')
+						{
+							$vhosts_file.='  php_admin_flag safe_mode Off '."\n";
+						}
+						else
+						{
+							$vhosts_file.='  php_admin_flag safe_mode On '."\n";
+						}
+
+						$subdir = str_replace($domain['customerroot'], '', $domain['documentroot']);
+						$offset = 0;
+						$subdirlen = strlen($subdir);
+						$subdirs = array();
+						array_push($subdirs, $domain['documentroot']);
+
+						while($offset < $subdirlen)
+						{
+							$offset = strpos($subdir, '/', $offset);
+							$subdirelem = substr($subdir, 0, $offset);
+							$offset++;
+							array_push($subdirs, $domain['customerroot'].$subdirelem.'/');
+						}
+
+						$subdirs = array_unique($subdirs);
+						sort($subdirs);
+
+						foreach($subdirs as $sdir)
+						{
+							if(!is_dir($sdir))
+							{
+								safe_exec('mkdir -p '.escapeshellarg($sdir));
+								safe_exec('chown -R '.(int)$domain['guid'].':'.(int)$domain['guid'].' '.escapeshellarg($sdir));
+							}
+						}
+
+						if($domain['speciallogfile'] == '1')
+						{
+							if($domain['parentdomainid'] == '0')
+							{
+								$speciallogfile = '-'.$domain['domain'];
+								$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['domain']."\"\n";
+							}
+							else
+							{
+								$speciallogfile = '-'.$domain['parentdomain'];
+								$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer/'.$domain['parentdomain']."\"\n";
+							}
+						}
+						else
+						{
+							$speciallogfile = '';
+							if( $domain['customerroot'] != $domain['documentroot'])
+							{
+								$vhosts_file .= '  Alias /webalizer "'.$domain['customerroot'].'/webalizer"'."\n";
+							}
+						}
+						$vhosts_file.='  ErrorLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\"\n";
+						$vhosts_file.='  CustomLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log" combined'."\n";
 					}
-					$vhosts_file.='  ErrorLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-error.log'."\"\n";
-					$vhosts_file.='  CustomLog "'.$settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log" combined'."\n";
+
+					if ( $domain['specialsettings'] != '' )
+					{
+						$vhosts_file.=$domain['specialsettings']."\n";
+					}
+
+					$vhosts_file.='</VirtualHost>'."\n";
+					$vhosts_file.="\n";
 				}
-				$vhosts_file.=$domain['specialsettings']."\n";
-				$vhosts_file.='</VirtualHost>'."\n";
-				$vhosts_file.="\n";
+				else
+				{
+					$vhosts_file .= '# Customer deactivated and a docroot for deactivated users hasn\'t been set.' . "\n";
+				}
 			}
 
 			$vhosts_file_handler = fopen( $settings['system']['apacheconf_directory'] .

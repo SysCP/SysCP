@@ -458,4 +458,8 @@ $lng['error']['youcanteditallfieldsofyourself'] = 'Hinweis: Aus Sicherheitsgr&uu
 $lng['serversettings']['natsorting']['title'] = 'Nat&uuml;rliche Sortierung in der Listenansicht nutzen';
 $lng['serversettings']['natsorting']['description'] = 'Sortiert die Liste in der Reihenfolge web1 -> web2 -> web11 anstatt web1 -> web11 -> web2.';
 
+// ADDED IN 1.2.16-svn2
+$lng['serversettings']['deactivateddocroot']['title'] = 'Docroot f&uuml; deaktivierte Benutzer';
+$lng['serversettings']['deactivateddocroot']['description'] = 'Dieser Pfad wird als docroot f&uuml;r deakitivierte Benutzer verwendet. Wenn leer wird kein vhost erstellt.';
+
 ?>
