@@ -458,4 +458,8 @@ $lng['error']['youcanteditallfieldsofyourself'] = 'Note: You cannot edit all fie
 $lng['serversettings']['natsorting']['title'] = 'Use natural human sorting in list view';
 $lng['serversettings']['natsorting']['description'] = 'Sorts lists as web1 -> web2 -> web11 instead of web1 -> web11 -> web2.';
 
+// ADDED IN 1.2.16-svn2
+$lng['serversettings']['deactivateddocroot']['title'] = 'Docroot for deactivated users';
+$lng['serversettings']['deactivateddocroot']['description'] = 'When a user is deactivated this path is used as his docroot. Leave empty for not creating at vhost at all.';
+
 ?>

@@ -230,6 +230,17 @@
 				inserttask('1');
 			}
 
+			if($_POST['system_deactivateddocroot']!=$settings['system']['deactivateddocroot'])
+			{
+				$value=validate($_POST['system_deactivateddocroot'], 'docroot for deactivated users');
+				if( $value != '' )
+				{
+					$value=makeCorrectDir($value);
+				}
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='system' AND `varname`='deactivateddocroot'");
+				inserttask( '1' );
+			}
+
 			if($_POST['system_bindconf_directory']!=$settings['system']['bindconf_directory'])
 			{
 				$value=validate($_POST['system_bindconf_directory'], 'bind conf directory');
