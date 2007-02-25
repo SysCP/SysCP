@@ -285,6 +285,12 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".(int)$value."' WHERE `settinggroup`='panel' AND `varname`='paging'");
 			}
 
+			if($_POST['panel_natsorting']!=$settings['panel']['natsorting'])
+			{
+				$value = ( $_POST['panel_natsorting'] == '1' ? '1' : '0' );
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='panel' AND `varname`='natsorting'");
+			}
+
 			if($_POST['panel_standardlanguage']!=$settings['panel']['standardlanguage'])
 			{
 				$value = $_POST['panel_standardlanguage'];
@@ -495,6 +501,8 @@
 			{
 				$pathedit .= makeoption($method, $method, $settings['panel']['pathedit'], true, true);
 			}
+
+			$natsorting = makeyesno( 'panel_natsorting', '1', '0', $settings['panel']['natsorting'] );
 
 			$settings = htmlentities_array( $settings );
 			eval("echo \"".getTemplate("settings/settings")."\";");

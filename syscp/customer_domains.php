@@ -43,7 +43,7 @@
 								'd.documentroot' => $lng['panel']['path'],
 								'd.aliasdomain' => $lng['domains']['aliasdomain']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result = $db->query(
 				"SELECT `d`.`id`, " .

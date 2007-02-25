@@ -44,7 +44,7 @@
 								'databasename' => $lng['mysql']['databasename'],
 								'description' => $lng['mysql']['databasedescription']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_PANEL_DATABASES, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_DATABASES, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result=$db->query(
 				"SELECT `id`, `databasename`, `description` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' " . 

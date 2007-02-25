@@ -55,7 +55,7 @@
 								'email_forwarders_used' => $lng['customer']['forwarders'] . ' (' . $lng['panel']['used'] . ')',
 								'deactivated' => $lng['admin']['deactivated']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_PANEL_ADMINS, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_PANEL_ADMINS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$admins='';
 			$result=$db->query("SELECT * FROM `".TABLE_PANEL_ADMINS."` " .

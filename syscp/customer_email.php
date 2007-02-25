@@ -44,7 +44,7 @@
 								'm.email_full' => $lng['emails']['emailaddress'],
 								'm.destination' => $lng['emails']['forwarders']
 							);
-			$paging = new paging( $userinfo, $db, TABLE_MAIL_VIRTUAL, $fields, $settings['panel']['paging'] );
+			$paging = new paging( $userinfo, $db, TABLE_MAIL_VIRTUAL, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result = $db->query(
 				'SELECT `m`.`id`, ' .
