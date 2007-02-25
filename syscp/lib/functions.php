@@ -104,21 +104,10 @@
 	 * @return string HTML Code
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	function makeyesno($name,$yesvalue,$novalue="",$yesselected="")
+	function makeyesno( $name, $yesvalue, $novalue = '', $yesselected = '' )
 	{
 		global $lng;
-		if($yesselected)
-		{
-			$yeschecked=' checked="checked"';
-			$nochecked='';
-		}
-		else
-		{
-			$yeschecked='';
-			$nochecked=' checked="checked"';
-		}
-		$code="<b>".$lng['panel']['yes']."</b> <input type=\"radio\" name=\"$name\" value=\"$yesvalue\"$yeschecked /> &nbsp; \n<b>".$lng['panel']['no']."</b> <input type=\"radio\" name=\"$name\" value=\"$novalue\"$nochecked /> ";
-		return $code;
+		return '<select class="dropdown_noborder" name="' . $name . '"><option value="' . $yesvalue . '"' . ( $yesselected ? ' selected="selected"' : '' ) . '>' . $lng['panel']['yes'] . '</option><option value="' . $novalue . '"' . ( $yesselected ? '' : ' selected="selected"' ) . '>' . $lng['panel']['no'] . '</option></select>';
 	}
 
 	/**
