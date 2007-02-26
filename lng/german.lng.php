@@ -317,22 +317,22 @@ $lng['serversettings']['mysqlprefix']['title'] = 'SQL-Prefix';
 $lng['serversettings']['mysqlprefix']['description'] = 'Welchen Prefix sollen die MySQL-Accounts haben?';
 $lng['serversettings']['ftpprefix']['title'] = 'FTP-Prefix';
 $lng['serversettings']['ftpprefix']['description'] = 'Welchen Prefix sollen die FTP-Accounts haben?';
-$lng['serversettings']['documentroot_prefix']['title'] = 'Documentdirectory';
-$lng['serversettings']['documentroot_prefix']['description'] = 'Wo sollen alle Kunden liegen?';
-$lng['serversettings']['logfiles_directory']['title'] = 'Logfilesdirectory';
-$lng['serversettings']['logfiles_directory']['description'] = 'Wo sollen alle Logfiles liegen?';
+$lng['serversettings']['documentroot_prefix']['title'] = 'Heimatverzeichnis';
+$lng['serversettings']['documentroot_prefix']['description'] = 'Wo sollen alle Heimatverzeichnisse der Kunden liegen?';
+$lng['serversettings']['logfiles_directory']['title'] = 'Apache-Logdateien-Verzeichnis';
+$lng['serversettings']['logfiles_directory']['description'] = 'Wo sollen alle Logdateien des Apache liegen?';
 $lng['serversettings']['ipaddress']['title'] = 'IP-Adresse';
 $lng['serversettings']['ipaddress']['description'] = 'Welche IP-Adresse hat der Server?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
-$lng['serversettings']['hostname']['description'] = 'Welchen Hostname hat der Server?';
+$lng['serversettings']['hostname']['description'] = 'Welchen Hostnamen hat der Server?';
 $lng['serversettings']['apacheconf_directory']['title'] = 'Apache-Config-Verzeichnis';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Wo liegen die Apache-Konfigdateien?';
+$lng['serversettings']['apacheconf_directory']['description'] = 'Wo liegen die Apache-Konfigurationsdateien?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache-Reload-Command';
-$lng['serversettings']['apachereload_command']['description'] = 'Wie heisst das Skript zum reloaden des Apache?';
+$lng['serversettings']['apachereload_command']['description'] = 'Wie heisst das Skript zum Neuladen der Apache-Konfigurationsdateien?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind-Config-Directory';
-$lng['serversettings']['bindconf_directory']['description'] = 'Wo liegen die Bind-Konfigdateien?';
+$lng['serversettings']['bindconf_directory']['description'] = 'Wo liegen die Bind-Konfigurationsdateien?';
 $lng['serversettings']['bindreload_command']['title'] = 'Bind-Reload-Command';
-$lng['serversettings']['bindreload_command']['description'] = 'Wie heisst das Skript zum reloaden des Bind?';
+$lng['serversettings']['bindreload_command']['description'] = 'Wie heisst das Skript zum Neuladen der Bind-Konfigurationsdateien?';
 $lng['serversettings']['binddefaultzone']['title'] = 'Bind-Default-Zone';
 $lng['serversettings']['binddefaultzone']['description'] = 'Wie heisst die Default-Zone f&uuml;r alle Domains?';
 $lng['serversettings']['vmail_uid']['title'] = 'Mails-Uid';
@@ -344,11 +344,11 @@ $lng['serversettings']['vmail_homedir']['description'] = 'Wo sollen die E-Mails 
 $lng['serversettings']['adminmail']['title'] = 'Absenderadresse';
 $lng['serversettings']['adminmail']['description'] = 'Wie ist die Absenderadresse f&uuml;r E-Mails aus dem Panel?';
 $lng['serversettings']['phpmyadmin_url']['title'] = 'phpMyAdmin-URL';
-$lng['serversettings']['phpmyadmin_url']['description'] = 'Wo liegt der phpMyAdmin? (muss mit http:// beginnen)';
+$lng['serversettings']['phpmyadmin_url']['description'] = 'Wo liegt der phpMyAdmin? (muss mit http(s):// beginnen)';
 $lng['serversettings']['webmail_url']['title'] = 'WebMail-URL';
-$lng['serversettings']['webmail_url']['description'] = 'Wo liegt das WebMail? (muss mit http:// beginnen)';
+$lng['serversettings']['webmail_url']['description'] = 'Wo liegt das WebMail? (muss mit http(s):// beginnen)';
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP-URL';
-$lng['serversettings']['webftp_url']['description'] = 'Wo liegt das WebFTP? (muss mit http:// beginnen)';
+$lng['serversettings']['webftp_url']['description'] = 'Wo liegt das WebFTP? (muss mit http(s):// beginnen)';
 $lng['serversettings']['language']['description'] = 'Welche Sprache ist ihre Standardsprache?';
 $lng['serversettings']['maxloginattempts']['title'] = 'Max Loginversuche';
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximale Anzahl an Loginversuchen bis der Account deaktiviert wird.';
@@ -459,7 +459,16 @@ $lng['serversettings']['natsorting']['title'] = 'Nat&uuml;rliche Sortierung in d
 $lng['serversettings']['natsorting']['description'] = 'Sortiert die Liste in der Reihenfolge web1 -> web2 -> web11 anstatt web1 -> web11 -> web2.';
 
 // ADDED IN 1.2.16-svn2
-$lng['serversettings']['deactivateddocroot']['title'] = 'Docroot f&uuml; deaktivierte Benutzer';
+$lng['serversettings']['deactivateddocroot']['title'] = 'Docroot f&uuml;r deaktivierte Benutzer';
 $lng['serversettings']['deactivateddocroot']['description'] = 'Dieser Pfad wird als docroot f&uuml;r deakitivierte Benutzer verwendet. Wenn leer wird kein vhost erstellt.';
+
+// ADDED IN 1.2.16-svn4
+$lng['panel']['reset'] = '&Auml;nderungen verwerfen';
+$lng['admin']['accountsettings'] = 'Konteneinstellungen';
+$lng['admin']['panelsettings'] = 'Paneleinstellungen';
+$lng['admin']['systemsettings'] = 'Systemeinstellungen';
+$lng['admin']['webserversettings'] = 'Webservereinstellungen';
+$lng['admin']['mailserversettings'] = 'Mailservereinstellungen';
+$lng['admin']['nameserversettings'] = 'Nameservereinstellungen';
 
 ?>

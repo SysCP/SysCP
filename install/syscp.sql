@@ -609,23 +609,3 @@ INSERT INTO `panel_languages` VALUES (13, 'Dutch', 'lng/dutch.lng.php');
 INSERT INTO `panel_languages` VALUES (14, 'Hungarian', 'lng/hungarian.lng.php');
 
 
-# --------------------------------------------------------
-
-#
-# Table structure for table `panel_cronscript`
-#
-
-DROP TABLE IF EXISTS `panel_cronscript`;
-CREATE TABLE `panel_cronscript` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `file` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM ;
-
-#
-# Dumping data for table `panel_cronscript`
-#
-
-INSERT INTO `panel_cronscript` (`id`, `file`) VALUES (1, 'cron_traffic.php');
-INSERT INTO `panel_cronscript` (`id`, `file`) VALUES (2, 'cron_tasks.php');
-

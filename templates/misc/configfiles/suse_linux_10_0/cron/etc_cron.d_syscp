@@ -5,5 +5,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #
 # Regular cron jobs for the syscp package
 #
-*/5 * * * *	root	/usr/bin/php5 -q -c /etc/php5/syscpcron /srv/www/htdocs/syscp/scripts/cronscript.php
+*/5 * * * *	root	/usr/bin/php4 -q -c /etc/php4/syscpcron /srv/www/htdocs/syscp/scripts/cron_tasks.php
+0 0 * * *	root	/usr/bin/php4 -q -c /etc/php4/syscpcron /srv/www/htdocs/syscp/scripts/cron_traffic.php
 

@@ -1,11 +1,47 @@
 $header
 	<form method="post" action="$filename">
+		<input type="hidden" name="send" value="send" />
 		<input type="hidden" name="s" value="$s" />
 		<input type="hidden" name="page" value="$page" />
 		<input type="hidden" name="action" value="$action" />
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
 			<tr>
-				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['serversettings']} {$lng['panel']['edit']}</b></td>
+				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['panelsettings']}</b><table cellpadding="0" cellspacing="0" border="0" align="right"><tr><td><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /> <input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td></tr></table></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['login']['language']}:</b><br />{$lng['serversettings']['language']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="panel_standardlanguage">$languages</select></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['natsorting']['title']}:</b><br />{$lng['serversettings']['natsorting']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$natsorting}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['paging']['title']}:</b><br />{$lng['serversettings']['paging']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_paging" value="{$settings['panel']['paging']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['pathedit']['title']}:</b><br />{$lng['serversettings']['pathedit']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="panel_pathedit">$pathedit</select></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['adminmail']['title']}:</b><br />{$lng['serversettings']['adminmail']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['phpmyadmin_url']['title']}:</b><br />{$lng['serversettings']['phpmyadmin_url']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_phpmyadmin_url" value="{$settings['panel']['phpmyadmin_url']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['webmail_url']['title']}:</b><br />{$lng['serversettings']['webmail_url']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_webmail_url" value="{$settings['panel']['webmail_url']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['webftp_url']['title']}:</b><br />{$lng['serversettings']['webftp_url']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_webftp_url" value="{$settings['panel']['webftp_url']}" /></td>
+			</tr>
+			<tr>
+				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['accountsettings']}</b><table cellpadding="0" cellspacing="0" border="0" align="right"><tr><td><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /> <input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td></tr></table></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['session_timeout']['title']}:</b><br />{$lng['serversettings']['session_timeout']['description']}</td>
@@ -32,12 +68,11 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="customer_ftpprefix" value="{$settings['customer']['ftpprefix']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['documentroot_prefix']['title']}:</b><br />{$lng['serversettings']['documentroot_prefix']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_documentroot_prefix" value="{$settings['system']['documentroot_prefix']}" /></td>
+				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemsettings']}</b><table cellpadding="0" cellspacing="0" border="0" align="right"><tr><td><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /> <input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td></tr></table></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['logfiles_directory']['title']}:</b><br />{$lng['serversettings']['logfiles_directory']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_logfiles_directory" value="{$settings['system']['logfiles_directory']}" /></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['documentroot_prefix']['title']}:</b><br />{$lng['serversettings']['documentroot_prefix']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_documentroot_prefix" value="{$settings['system']['documentroot_prefix']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['ipaddress']['title']}:</b><br />{$lng['serversettings']['ipaddress']['description']}</td>
@@ -52,6 +87,9 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_hostname" value="{$settings['system']['hostname']}" /></td>
 			</tr>
 			<tr>
+				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webserversettings']}</b><table cellpadding="0" cellspacing="0" border="0" align="right"><tr><td><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /> <input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td></tr></table></td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_directory']['title']}:</b><br />{$lng['serversettings']['apacheconf_directory']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_directory" value="{$settings['system']['apacheconf_directory']}" /></td>
 			</tr>
@@ -64,6 +102,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apachereload_command" value="{$settings['system']['apachereload_command']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['logfiles_directory']['title']}:</b><br />{$lng['serversettings']['logfiles_directory']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_logfiles_directory" value="{$settings['system']['logfiles_directory']}" /></td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['phpappendopenbasedir']['title']}:</b><br />{$lng['serversettings']['phpappendopenbasedir']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_phpappendopenbasedir" value="{$settings['system']['phpappendopenbasedir']}" /></td>
 			</tr>
@@ -72,16 +114,7 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_deactivateddocroot" value="{$settings['system']['deactivateddocroot']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['bindconf_directory']['title']}:</b><br />{$lng['serversettings']['bindconf_directory']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_bindconf_directory" value="{$settings['system']['bindconf_directory']}" /></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['bindreload_command']['title']}:</b><br />{$lng['serversettings']['bindreload_command']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_bindreload_command" value="{$settings['system']['bindreload_command']}" /></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['binddefaultzone']['title']}:</b><br />{$lng['serversettings']['binddefaultzone']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_binddefaultzone" value="{$settings['system']['binddefaultzone']}" /></td>
+				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['mailserversettings']}</b><table cellpadding="0" cellspacing="0" border="0" align="right"><tr><td><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /> <input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td></tr></table></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['vmail_uid']['title']}:</b><br />{$lng['serversettings']['vmail_uid']['description']}</td>
@@ -96,39 +129,19 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_vmail_homedir" value="{$settings['system']['vmail_homedir']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['adminmail']['title']}:</b><br />{$lng['serversettings']['adminmail']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}" /></td>
+				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['nameserversettings']}</b><table cellpadding="0" cellspacing="0" border="0" align="right"><tr><td><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /> <input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td></tr></table></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['natsorting']['title']}:</b><br />{$lng['serversettings']['natsorting']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap">{$natsorting}</td>
+				<td class="main_field_name"><b>{$lng['serversettings']['bindconf_directory']['title']}:</b><br />{$lng['serversettings']['bindconf_directory']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_bindconf_directory" value="{$settings['system']['bindconf_directory']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['paging']['title']}:</b><br />{$lng['serversettings']['paging']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_paging" value="{$settings['panel']['paging']}" /></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['bindreload_command']['title']}:</b><br />{$lng['serversettings']['bindreload_command']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_bindreload_command" value="{$settings['system']['bindreload_command']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['login']['language']}:</b><br />{$lng['serversettings']['language']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="panel_standardlanguage">$languages</select></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['pathedit']['title']}:</b><br />{$lng['serversettings']['pathedit']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="panel_pathedit">$pathedit</select></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['phpmyadmin_url']['title']}:</b><br />{$lng['serversettings']['phpmyadmin_url']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_phpmyadmin_url" value="{$settings['panel']['phpmyadmin_url']}" /></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['webmail_url']['title']}:</b><br />{$lng['serversettings']['webmail_url']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_webmail_url" value="{$settings['panel']['webmail_url']}" /></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['webftp_url']['title']}:</b><br />{$lng['serversettings']['webftp_url']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_webftp_url" value="{$settings['panel']['webftp_url']}" /></td>
-			</tr>
-			<tr>
-				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['binddefaultzone']['title']}:</b><br />{$lng['serversettings']['binddefaultzone']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_binddefaultzone" value="{$settings['system']['binddefaultzone']}" /></td>
 			</tr>
 		</table>
 	</form>

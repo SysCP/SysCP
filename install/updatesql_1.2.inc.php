@@ -1227,5 +1227,19 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn2';
 	}
+	if( $settings['panel']['version'] == '1.2.16-svn2' )
+	{
+		$db->query( 'DROP TABLE IF EXISTS `panel_cronscript` ' );
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn3\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn3';
+	}
 
 ?>
