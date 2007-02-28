@@ -281,3 +281,20 @@ textarea.textarea_border { /*textarea_bordo*/
 	border-left-width	: 0px;
 	text-align			: right;
 }
+
+
+.maintitle_apply_left {
+    background-color    : #ABC9E8;
+    border-color        : #000000;
+    border-style        : solid;
+    border-width        : 1px;
+    text-align          : left;
+}
+
+.maintitle_apply_right {
+    background-color    : #ABC9E8;
+    border-color        : #000000;
+    border-style        : solid;
+    border-width        : 1px;
+    text-align          : right;
+}
