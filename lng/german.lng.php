@@ -460,7 +460,7 @@ $lng['serversettings']['natsorting']['description'] = 'Sortiert die Liste in der
 
 // ADDED IN 1.2.16-svn2
 $lng['serversettings']['deactivateddocroot']['title'] = 'Docroot f&uuml;r deaktivierte Benutzer';
-$lng['serversettings']['deactivateddocroot']['description'] = 'Dieser Pfad wird als docroot f&uuml;r deakitivierte Benutzer verwendet. Wenn leer wird kein vhost erstellt.';
+$lng['serversettings']['deactivateddocroot']['description'] = 'Dieser Pfad wird als docroot f&uuml;r deaktivierte Benutzer verwendet. Wenn leer wird kein vhost erstellt.';
 
 // ADDED IN 1.2.16-svn4
 $lng['panel']['reset'] = '&Auml;nderungen verwerfen';
