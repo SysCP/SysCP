@@ -446,8 +446,8 @@ $lng['admin']['mysqlserverversion'] = 'MySQL Server Version';
 $lng['admin']['mysqlclientversion'] = 'MySQL Client Version';
 $lng['admin']['webserverinterface'] = 'Webserver Interface';
 $lng['domains']['isassigneddomain'] = 'Ist zugewiesene Domain';
-$lng['serversettings']['phpappendopenbasedir']['title'] = 'An OpenBasedir hinzuzuf&uuml;gende Pfade';
-$lng['serversettings']['phpappendopenbasedir']['description'] = 'Diese (durch Doppelpunkte getrennten) Pfade werden zum OpenBasedir-Statement in jedem vhost-Container hinzugef&uuml;gt.';
+$lng['serversettings']['phpappendopenbasedir']['title'] = 'An OpenBasedir anzuh&auml;ngende Pfade';
+$lng['serversettings']['phpappendopenbasedir']['description'] = 'Diese (durch Doppelpunkte getrennten) Pfade werden dem OpenBasedir-Statement in jedem vhost-Container angeh&auml;ngt.';
 
 // CHANGED IN 1.2.15-rc1
 $lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht (also zum Beispiel mit &quot;%s&quot; anf&auml;ngt). Bitte w&auml;hlen Sie einen anderen Accountnamen.';
@@ -460,7 +460,7 @@ $lng['serversettings']['natsorting']['description'] = 'Sortiert die Liste in der
 
 // ADDED IN 1.2.16-svn2
 $lng['serversettings']['deactivateddocroot']['title'] = 'Docroot f&uuml;r deaktivierte Benutzer';
-$lng['serversettings']['deactivateddocroot']['description'] = 'Dieser Pfad wird als docroot f&uuml;r deaktivierte Benutzer verwendet. Wenn leer wird kein vhost erstellt.';
+$lng['serversettings']['deactivateddocroot']['description'] = 'Dieser Pfad wird als docroot f&uuml;r deaktivierte Benutzer verwendet. Wenn leer, wird kein vHost erstellt.';
 
 // ADDED IN 1.2.16-svn4
 $lng['panel']['reset'] = '&Auml;nderungen verwerfen';
