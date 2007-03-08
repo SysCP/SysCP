@@ -1001,7 +1001,7 @@
 				'    `ftps_used` = "'.(int)$admin['ftps_used_new'].'", ' .
 				'    `subdomains_used` = "'.(int)$admin['subdomains_used_new'].'", ' .
 				'    `traffic_used` = "'.(int)$admin['traffic_used_new'].'" ' .
-				'WHERE `adminid` = "'.(int)$admin['_new'].'"'
+				'WHERE `adminid` = "'.(int)$admin['adminid'].'"'
 			);
 
 			if( $returndebuginfo === true )
