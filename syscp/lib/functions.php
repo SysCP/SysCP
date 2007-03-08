@@ -742,18 +742,26 @@
 
 	/**
 	 * Function which updates all counters of used ressources in panel_admins and panel_customers
+	 * @param bool Set to true to get an array with debug information
+	 * @return array Contains debug information if parameter 'returndebuginfo' is set to true
 	 *
 	 * @author Florian Lippert <flo@redenswert.de>
 	 */
-	function updateCounters ()
+	function updateCounters ( $returndebuginfo = false )
 	{
 		global $db;
-		$admin_resources = Array () ;
+
+		$returnval = array();
+		if( $returndebuginfo === true )
+		{
+			$returnval = array( 'admins' => array(), 'customers' => array() );
+		}
+
+		$admin_resources = array () ;
 
 		// Customers
 		$customers = $db->query(
-			'SELECT `customerid`, `adminid`, ' .
-			' `diskspace`, `traffic_used`, `mysqls`, `ftps`, `emails`, `email_accounts`, `email_forwarders`, `subdomains` ' .
+			'SELECT * ' .
 			'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' .
 			'ORDER BY `customerid`'
 		);
@@ -839,12 +847,14 @@
 				'FROM `'.TABLE_PANEL_DATABASES.'` ' .
 				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
+			$customer['mysqls_used_new'] = $customer_mysqls['number_mysqls'];
 
 			$customer_emails = $db->query_first(
 				'SELECT COUNT(*) AS `number_emails` ' .
 				'FROM `'.TABLE_MAIL_VIRTUAL.'` ' .
 				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
+			$customer['emails_used_new'] = $customer_emails['number_emails'];
 
 			$customer_emails_result = $db->query(
 				'SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` ' .
@@ -867,12 +877,15 @@
 					}
 				}
 			}
+			$customer['email_accounts_used_new'] = $customer_email_accounts;
+			$customer['email_forwarders_used_new'] = $customer_email_forwarders;
 
 			$customer_ftps = $db->query_first(
 				'SELECT COUNT(*) AS `number_ftps` ' .
 				'FROM `'.TABLE_FTP_USERS.'` ' .
 				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
+			$customer['ftps_used_new'] = ($customer_ftps['number_ftps'] - 1);
 
 			$customer_subdomains = $db->query_first(
 				'SELECT COUNT(*) AS `number_subdomains` ' .
@@ -880,22 +893,28 @@
 				'WHERE `customerid` = "'.(int)$customer['customerid'].'" ' .
 				'AND `parentdomainid` <> "0"'
 			);
+			$customer['subdomains_used_new'] = $customer_subdomains['number_subdomains'];
 
 			$db->query(
 				'UPDATE `'.TABLE_PANEL_CUSTOMERS.'` ' .
-				'SET `mysqls_used` = "'.(int)$customer_mysqls['number_mysqls'].'", ' .
-				'    `emails_used` = "'.(int)$customer_emails['number_emails'].'", ' .
-				'    `email_accounts_used` = "'.(int)$customer_email_accounts.'", ' .
-				'    `email_forwarders_used` = "'.(int)$customer_email_forwarders.'", ' .
-				'    `ftps_used` = "'.(int)($customer_ftps['number_ftps']-1).'", ' .
-				'    `subdomains_used` = "'.(int)$customer_subdomains['number_subdomains'].'" ' .
+				'SET `mysqls_used` = "'.(int)$customer['mysqls_used_new'].'", ' .
+				'    `emails_used` = "'.(int)$customer['emails_used_new'].'", ' .
+				'    `email_accounts_used` = "'.(int)$customer['email_accounts_used_new'].'", ' .
+				'    `email_forwarders_used` = "'.(int)$customer['email_forwarders_used_new'].'", ' .
+				'    `ftps_used` = "'.(int)$customer['ftps_used_new'].'", ' .
+				'    `subdomains_used` = "'.(int)$customer['subdomains_used_new'].'" ' .
 				'WHERE `customerid` = "'.(int)$customer['customerid'].'"'
 			);
+
+			if( $returndebuginfo === true )
+			{
+				$returnval['customers'][$customer['customerid']] = $customer;
+			}
 		}
 
 		// Admins
 		$admins = $db->query(
-			'SELECT `adminid` ' .
+			'SELECT * ' .
 			'FROM `'.TABLE_PANEL_ADMINS.'` ' .
 			'ORDER BY `adminid`'
 		);
@@ -907,6 +926,7 @@
 				'FROM `'.TABLE_PANEL_CUSTOMERS.'` ' .
 				'WHERE `adminid` = "'.(int)$admin['adminid'].'"'
 			);
+			$admin['customers_used_new'] = $admin_customers['number_customers'];
 
 			$admin_domains = $db->query_first(
 				'SELECT COUNT(*) AS `number_domains` ' .
@@ -914,59 +934,83 @@
 				'WHERE `adminid` = "'.(int)$admin['adminid'].'" ' .
 				'AND `isemaildomain` = "1"'
 			);
+			$admin['domains_used_new'] = $admin_domains['number_domains'];
 
 			if ( ! isset ( $admin_resources[$admin['adminid']] ) )
 			{
 				$admin_resources[$admin['adminid']] = Array () ;
 			}
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['diskspace_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['diskspace_used'] = 0 ;
 			}
+			$admin['diskspace_used_new'] = $admin_resources[$admin['adminid']]['diskspace_used'];
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['traffic_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['traffic_used'] = 0 ;
 			}
+			$admin['traffic_used_new'] = $admin_resources[$admin['adminid']]['traffic_used'];
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['mysqls_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['mysqls_used'] = 0 ;
 			}
+			$admin['mysqls_used_new'] = $admin_resources[$admin['adminid']]['mysqls_used'];
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['ftps_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['ftps_used'] = 0 ;
 			}
+			$admin['ftps_used_new'] = $admin_resources[$admin['adminid']]['ftps_used'];
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['emails_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['emails_used'] = 0 ;
 			}
+			$admin['emails_used_new'] = $admin_resources[$admin['adminid']]['emails_used'];
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['email_accounts_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['email_accounts_used'] = 0 ;
 			}
+			$admin['email_accounts_used_new'] = $admin_resources[$admin['adminid']]['email_accounts_used'];
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['email_forwarders_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['email_forwarders_used'] = 0 ;
 			}
+			$admin['email_forwarders_used_new'] = $admin_resources[$admin['adminid']]['email_forwarders_used'];
+
 			if ( ! isset ( $admin_resources[$admin['adminid']]['subdomains_used'] ) )
 			{
 				$admin_resources[$admin['adminid']]['subdomains_used'] = 0 ;
 			}
+			$admin['subdomains_used_new'] = $admin_resources[$admin['adminid']]['subdomains_used'];
 
 			$db->query(
 				'UPDATE `'.TABLE_PANEL_ADMINS.'` ' .
-				'SET `customers_used` = "'.(int)$admin_customers['number_customers'].'", ' .
-				'    `diskspace_used` = "'.(int)$admin_resources[$admin['adminid']]['diskspace_used'].'", ' .
-				'    `mysqls_used` = "'.(int)$admin_resources[$admin['adminid']]['mysqls_used'].'", ' .
-				'    `emails_used` = "'.(int)$admin_resources[$admin['adminid']]['emails_used'].'", ' .
-				'    `email_accounts_used` = "'.(int)$admin_resources[$admin['adminid']]['email_accounts_used'].'", ' .
-				'    `email_forwarders_used` = "'.(int)$admin_resources[$admin['adminid']]['email_forwarders_used'].'", ' .
-				'    `ftps_used` = "'.(int)$admin_resources[$admin['adminid']]['ftps_used'].'", ' .
-				'    `subdomains_used` = "'.(int)$admin_resources[$admin['adminid']]['subdomains_used'].'", ' .
-				'    `traffic_used` = "'.(int)$admin_resources[$admin['adminid']]['traffic_used'].'", ' .
-				'    `domains_used` = "'.(int)$admin_domains['number_domains'].'" ' .
-				'WHERE `adminid` = "'.(int)$admin['adminid'].'"'
+				'SET `customers_used` = "'.(int)$admin['customers_used_new'].'", ' .
+				'    `domains_used` = "'.(int)$admin['domains_used_new'].'", ' .
+				'    `diskspace_used` = "'.(int)$admin['diskspace_used_new'].'", ' .
+				'    `mysqls_used` = "'.(int)$admin['mysqls_used_new'].'", ' .
+				'    `emails_used` = "'.(int)$admin['emails_used_new'].'", ' .
+				'    `email_accounts_used` = "'.(int)$admin['email_accounts_used_new'].'", ' .
+				'    `email_forwarders_used` = "'.(int)$admin['email_forwarders_used_new'].'", ' .
+				'    `ftps_used` = "'.(int)$admin['ftps_used_new'].'", ' .
+				'    `subdomains_used` = "'.(int)$admin['subdomains_used_new'].'", ' .
+				'    `traffic_used` = "'.(int)$admin['traffic_used_new'].'" ' .
+				'WHERE `adminid` = "'.(int)$admin['_new'].'"'
 			);
+
+			if( $returndebuginfo === true )
+			{
+				$returnval['admins'][$admin['adminid']] = $admin;
+			}
 		}
+
+		return $returnval;
 	}
 
 	/******************************************************

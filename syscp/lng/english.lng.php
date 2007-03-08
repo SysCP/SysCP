@@ -63,8 +63,8 @@ $lng['customer']['emails'] = 'E-mail-Addresses';
 $lng['customer']['accounts'] = 'E-mail-Accounts';
 $lng['customer']['forwarders'] = 'E-mail-Forwarders';
 $lng['customer']['ftps'] = 'FTP-Accounts';
-$lng['customer']['subdomains'] = 'Sub-Domain(s)';
-$lng['customer']['domains'] = 'Domain(s)';
+$lng['customer']['subdomains'] = 'Sub-Domain';
+$lng['customer']['domains'] = 'Domain';
 $lng['customer']['unlimited'] = 'unlimited';
 
 /**
@@ -470,5 +470,7 @@ $lng['admin']['systemsettings'] = 'System settings';
 $lng['admin']['webserversettings'] = 'Webserver settings';
 $lng['admin']['mailserversettings'] = 'Mailserver settings';
 $lng['admin']['nameserversettings'] = 'Nameserver settings';
+$lng['admin']['updatecounters'] = 'Recalculate resource usage';
+$lng['question']['admin_counters_reallyupdate'] = 'Do you really want to recalculate resource usage?';
 
 ?>
