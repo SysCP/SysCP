@@ -7,11 +7,11 @@ $header
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
 			<tr>
 				<td class="maintitle_apply_left">
-                    <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['panelsettings']}</b>
-                </td>
-                <td class="maintitle_apply_right" nowarp="nowrap">
-                    <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-                </td>
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['panelsettings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowarp="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['login']['language']}:</b><br />{$lng['serversettings']['language']['description']}</td>
@@ -47,11 +47,11 @@ $header
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
-                    <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['accountsettings']}</b>
-                </td>
-                <td class="maintitle_apply_right" nowrap="nowrap">
-                    <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-                </td>
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['accountsettings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowrap="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['session_timeout']['title']}:</b><br />{$lng['serversettings']['session_timeout']['description']}</td>
@@ -79,11 +79,11 @@ $header
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
-                    <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemsettings']}</b>
-                </td>
-                <td class="maintitle_apply_right" nowrap="nowrap">
-                    <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-                </td>
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemsettings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowrap="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['documentroot_prefix']['title']}:</b><br />{$lng['serversettings']['documentroot_prefix']['description']}</td>
@@ -103,11 +103,11 @@ $header
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
-                    <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webserversettings']}</b>
-                </td>
-                <td class="maintitle_apply_right" nowrap="nowrap">
-                    <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-                </td>
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webserversettings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowrap="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_directory']['title']}:</b><br />{$lng['serversettings']['apacheconf_directory']['description']}</td>
@@ -135,11 +135,11 @@ $header
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
-                    <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['mailserversettings']}</b>
-                </td>
-                <td class="maintitle_apply_right" nowrap="nowrap">
-                    <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-                </td>
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['mailserversettings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowrap="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['vmail_uid']['title']}:</b><br />{$lng['serversettings']['vmail_uid']['description']}</td>
@@ -155,11 +155,11 @@ $header
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
-                    <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['nameserversettings']}</b>
-                </td>
-                <td class="maintitle_apply_right" nowrap="nowrap">
-                    <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-                </td>
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['nameserversettings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowrap="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['bindconf_directory']['title']}:</b><br />{$lng['serversettings']['bindconf_directory']['description']}</td>

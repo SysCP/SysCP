@@ -470,5 +470,7 @@ $lng['admin']['systemsettings'] = 'Systemeinstellungen';
 $lng['admin']['webserversettings'] = 'Webservereinstellungen';
 $lng['admin']['mailserversettings'] = 'Mailservereinstellungen';
 $lng['admin']['nameserversettings'] = 'Nameservereinstellungen';
+$lng['admin']['updatecounters'] = 'Ressourcenverbrauch';
+$lng['question']['admin_counters_reallyupdate'] = 'Wollen Sie den Ressourcenverbrauch neu berechnen?';
 
 ?>

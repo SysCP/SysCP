@@ -1266,5 +1266,35 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn3';
 	}
+	if( $settings['panel']['version'] == '1.2.16-svn3' )
+	{
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `area` = \'admin\', ' .
+			'    `parent_url` = \'admin_server.nourl\', ' .
+			'    `lang` = \'admin;updatecounters\', ' .
+			'    `url` = \'admin_settings.php?page=updatecounters\', ' .
+			'    `order` = \'35\', ' .
+			'    `required_resources` = \'change_serversettings\', ' .
+			'    `new_window` = \'0\''
+		);
+		
+		$db->query(
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' . 
+			'SET `order` = \'25\' ' . 
+			'WHERE `lang` = \'admin;ipsandports;ipsandports\' ' . 
+			'  AND `url` = \'admin_ipsandports.php?page=ipsandports\' '
+		);
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn4\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn4';
+	}
 
 ?>

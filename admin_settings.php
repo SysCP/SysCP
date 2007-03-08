@@ -520,7 +520,7 @@
 		}
 	}
 
-	elseif ( $page == 'rebuildconfigs' && $userinfo['change_serversettings'] == '1')
+	elseif ( $page == 'rebuildconfigs' && $userinfo['change_serversettings'] == '1' )
 	{
 		if ( isset( $_POST['send'] ) && $_POST['send'] == 'send' )
 		{
@@ -532,6 +532,29 @@
 		else
 		{
 			ask_yesno('admin_configs_reallyrebuild', $filename, array( 'page' => $page ) );
+		}
+	}
+
+	elseif ( $page == 'updatecounters' && $userinfo['change_serversettings'] == '1' )
+	{
+		if ( isset( $_POST['send'] ) && $_POST['send'] == 'send' )
+		{
+			$updatecounters = updateCounters( true );
+			$customers = '';
+			foreach( $updatecounters['customers'] as $customerid => $customer )
+			{
+				eval("\$customers.=\"".getTemplate("settings/updatecounters_row_customer")."\";");
+			}
+			$admins = '';
+			foreach( $updatecounters['admins'] as $adminid => $admin )
+			{
+				eval("\$admins.=\"".getTemplate("settings/updatecounters_row_admin")."\";");
+			}
+			eval("echo \"".getTemplate("settings/updatecounters")."\";");
+		}
+		else
+		{
+			ask_yesno('admin_counters_reallyupdate', $filename, array( 'page' => $page ) );
 		}
 	}
 
