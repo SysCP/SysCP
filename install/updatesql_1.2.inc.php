@@ -1089,7 +1089,11 @@
 	}
 	if( $settings['panel']['version'] == '1.2.14-svn1' )
 	{
-		$db->query( 'ALTER TABLE `' . TABLE_PANEL_CUSTOMERS . '` DROP INDEX  `loginname` ' );
+		$tables = getTables( $db );
+		if( isset( $tables[TABLE_PANEL_CUSTOMERS] ) && is_array( $tables[TABLE_PANEL_CUSTOMERS] ) && isset( $tables[TABLE_PANEL_CUSTOMERS]['loginname'] ) )
+		{
+			$db->query( 'ALTER TABLE `' . TABLE_PANEL_CUSTOMERS . '` DROP INDEX  `loginname` ' );
+		}
 		$db->query( 'ALTER TABLE `' . TABLE_PANEL_ADMINS . '` ADD UNIQUE ( `loginname` )' );
 		$db->query( 'ALTER TABLE `' . TABLE_PANEL_CUSTOMERS . '` ADD UNIQUE ( `loginname` )' );
 		// set new version
@@ -1229,7 +1233,28 @@
 	}
 	if( $settings['panel']['version'] == '1.2.16-svn2' )
 	{
-		$db->query( 'DROP TABLE IF EXISTS `panel_cronscript` ' );
+		$tables = getTables( $db );
+		if( isset( $tables[TABLE_PANEL_CRONSCRIPT] ) && is_array( $tables[TABLE_PANEL_CRONSCRIPT] ) )
+		{
+			$deletecronscriptstable = true;
+			$cronscripts_result = $db->query( 'SELECT * FROM `' . TABLE_PANEL_CRONSCRIPT . '`');
+			while( $cronscripts_row = $db->fetch_array( $cronscripts_result ) )
+			{
+				if( $cronscripts_row['file'] != 'cron_tasks.php' && $cronscripts_row['file'] != 'cron_traffic.php' )
+				{
+					$deletecronscriptstable = false;
+				}
+			}
+
+			if ( $deletecronscriptstable === true )
+			{
+				$db->query( 'DROP TABLE IF EXISTS `' . TABLE_PANEL_CRONSCRIPT . '` ' );
+			}
+			else
+			{
+				$db->query( 'DELETE FROM `' . TABLE_PANEL_CRONSCRIPT . '` WHERE `file` IN( "cron_tasks.php", "cron_traffic.php" ) ' );
+			}
+		}
 
 		// set new version
 		$query =

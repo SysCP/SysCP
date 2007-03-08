@@ -1369,4 +1369,46 @@
 		return $field;
 	}
 
+	function getTables( &$db )
+	{
+		$tables = array();
+
+		$tablefieldname = 'Tables_in_' . $db->database;
+		$tables_result = $db->query( 'SHOW TABLES' );
+		while( $tables_row = $db->fetch_array( $tables_result ) )
+		{
+			$tablename = $tables_row[$tablefieldname];
+			$tables[$tablename] = array();
+			$keys_result = $db->query( 'SHOW INDEX FROM ' . $tablename );
+			while( $keys_row = $db->fetch_array( $keys_result ) )
+			{
+				$keyname = $keys_row['Key_name'];
+				if( ( isset( $tables[$tablename][$keyname] ) && $tables[$tablename][$keyname] != '' ) || $keys_row['Seq_in_index'] != '1' )
+				{
+					if( !isset( $tables[$tablename][$keyname] ) )
+					{
+						$tables[$tablename][$keyname] = array();
+					}
+					elseif( !is_array( $tables[$tablename][$keyname] ) )
+					{
+						$tmpkeyvalue = $tables[$tablename][$keyname];
+						unset( $tables[$tablename][$keyname] );
+						$tables[$tablename][$keyname] = array();
+						$keyindex = ( $keys_row['Seq_in_index'] == '1' ) ? '0' : '1';
+						$tables[$tablename][$keyname][$keyindex] = $tmpkeyvalue;
+						unset( $tmpkeyvalue );
+					}
+
+					$tables[$tablename][$keyname][$keys_row['Seq_in_index']] = $keys_row['Column_name'];
+				}
+				else
+				{
+					$tables[$tablename][$keyname] = $keys_row['Column_name'];
+				}
+			}
+		}
+
+		return $tables;
+	}
+
 ?>
