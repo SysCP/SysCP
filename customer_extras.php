@@ -45,7 +45,7 @@
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTPASSWDS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result=$db->query(
-				"SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' " . 
+				"SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `customerid`='".(int)$userinfo['customerid']."' " .
 				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
 			$paging->setEntries( $db->num_rows($result) );
@@ -121,11 +121,7 @@
 				{
 					standard_error('invalidpath');
 				}
-				if(!is_dir($path))
-				{
-					standard_error('directorymustexist',$userpath);
-				}
-				elseif($username=='')
+				if($username=='')
 				{
 					standard_error(array('stringisempty','myloginname'));
 				}
@@ -148,10 +144,10 @@
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
 			}
-			else 
+			else
 			{
-				$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
-				                             $userinfo['guid'], $settings['panel']['pathedit'] );				
+				$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'],
+				                             $userinfo['guid'], $settings['panel']['pathedit'] );
 				eval("echo \"".getTemplate("extras/htpasswds_add")."\";");
 			}
 		}
@@ -212,7 +208,7 @@
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_HTACCESS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$result=$db->query(
-				"SELECT `id`, `path`, `options_indexes`, `error404path`, `error403path`, `error500path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".(int)$userinfo['customerid']."' ". 
+				"SELECT `id`, `path`, `options_indexes`, `error404path`, `error403path`, `error500path` FROM `".TABLE_PANEL_HTACCESS."` WHERE `customerid`='".(int)$userinfo['customerid']."' ".
 				$paging->getSqlWhere( true )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
 			$paging->setEntries( $db->num_rows($result) );
@@ -319,11 +315,7 @@
 				}
 */
 
-				if (!is_dir($path))
-				{
-					standard_error('directorymustexist',$userpath);
-				}
-				elseif ($path_dupe_check['path'] == $path)
+				if ($path_dupe_check['path'] == $path)
 				{
 					standard_error('errordocpathdupe',$userpath);
 				}
@@ -359,7 +351,7 @@
 			}
 			else
 			{
-				$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
+				$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'],
 				                             $userinfo['guid'], $settings['panel']['pathedit'] );
 				$options_indexes = makeyesno('options_indexes','1','0','1');
 				eval("echo \"".getTemplate("extras/htaccess_add")."\";");

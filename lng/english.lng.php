@@ -472,5 +472,8 @@ $lng['admin']['mailserversettings'] = 'Mailserver settings';
 $lng['admin']['nameserversettings'] = 'Nameserver settings';
 $lng['admin']['updatecounters'] = 'Recalculate resource usage';
 $lng['question']['admin_counters_reallyupdate'] = 'Do you really want to recalculate resource usage?';
+$lng['panel']['pathDescription'] = 'If the directory doesn\'t exist, it will be created automatically.';
 
+
+// ADDED IN 1.2.16-svn4
 ?>

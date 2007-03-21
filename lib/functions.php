@@ -1349,8 +1349,8 @@
 		while( sizeof($list) > 0 )
 		{
 			$path = array_pop( $list );
-			$dh = opendir( $path );
-			while( false !== ($file=readdir($dh)))
+			$dh = @opendir( $path );
+			while( false !== ($file=@readdir($dh)))
 			{
 				if ( $file == '.' && (fileowner($path.'/'.$file)==$uid || filegroup($path.'/'.$file)==$gid))
 				{
@@ -1361,7 +1361,7 @@
 					array_push($list, $path.'/'.$file);
 				}
 			}
-			closedir( $dh );	
+			@closedir( $dh );
 		}
 		return $_fileList;
 	}
