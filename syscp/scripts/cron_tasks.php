@@ -436,7 +436,7 @@
 							$umask = umask();
 							umask( 0000 );
 							mkdir($settings['system']['apacheconf_directory'].'htpasswd/',0751);
-						umask( $umask );
+							umask( $umask );
 						}
 						elseif(!is_dir($settings['system']['apacheconf_directory'].'htpasswd/'))
 						{
@@ -502,6 +502,19 @@
 			fwrite( $debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
 			safe_exec($settings['system']['bindreload_command']);
 			fwrite( $debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
+		}
+
+		/**
+		 * TYPE=5 MEANS THAT A NEW FTP-ACCoUNT HAS BEEN CREATED AND THE
+		 */
+		elseif($row['type'] == '5')
+		{
+			$result_directories = $db->query("SELECT `homedir`, `uid`, `gid` FROM `".TABLE_FTP_USERS."`;");
+			while($directory=$db->fetch_array($result_directories))
+			{
+				safe_exec('mkdir -p ' . escapeshellarg( $directory['homedir'] ) );
+				safe_exec('chown ' . $directory['uid'] . ':' . $directory['gid'] . ' ' . escapeshellarg( $directory['homedir'] ) );
+			}
 		}
 	}
 	if( $db->num_rows( $result_tasks ) != 0 )

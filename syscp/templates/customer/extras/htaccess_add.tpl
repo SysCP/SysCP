@@ -8,7 +8,10 @@ $header
 				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['extras']['pathoptions_add']}</b></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['panel']['path']}:</b></td>
+				<td class="main_field_name">
+					<b>{$lng['panel']['path']}:</b><br />
+					<if $settings['panel']['pathedit'] != 'Dropdown'><font size="1">{$lng['panel']['pathDescription']}</font></if>
+				</td>
 				<td class="main_field_display" nowrap="nowrap">{$pathSelect}</td>
 			</tr>
 			<tr>

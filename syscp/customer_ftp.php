@@ -129,11 +129,7 @@
 					{
 						standard_error('invalidpath');
 					}
-					if(!is_dir($path))
-					{
-						standard_error('directorymustexist',$userpath);
-					}
-					elseif($password=='')
+					if($password=='')
 					{
 						standard_error(array('stringisempty','mypassword'));
 					}
@@ -150,12 +146,15 @@
 //						$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
 						$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `ftps_used`=`ftps_used`+1, `ftp_lastaccountnumber`=`ftp_lastaccountnumber`+1 WHERE `customerid`='".(int)$userinfo['customerid']."'");
 //						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$uid' WHERE settinggroup='ftp' AND varname='lastguid'");
+
+    					inserttask(5);
+
 						redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 					}
 				}
 				else
 				{
-					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'], 
+					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'],
 					                             $userinfo['guid'], $settings['panel']['pathedit'] );
 					eval("echo \"".getTemplate("ftp/accounts_add")."\";");
 				}

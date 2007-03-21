@@ -527,6 +527,7 @@
 			inserttask('1');
 			inserttask('3');
 			inserttask('4');
+			inserttask('5');
 			redirectTo ( 'admin_index.php' , array( 's' => $s ) ) ;
 		}
 		else
