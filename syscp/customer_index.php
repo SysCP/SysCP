@@ -34,17 +34,11 @@
 		$result=$db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".(int)$userinfo['customerid']."' AND `parentdomainid`='0' AND `id` <> '" . (int)$userinfo['standardsubdomain'] . "' ");
 		while($row=$db->fetch_array($result))
 		{
-			$row['domain'] = $idna_convert->decode($row['domain']);
-			if($domains == '')
-			{
-				$domains=$row['domain'];
-			}
-			else
-			{
-				$domains.=', '.$row['domain'];
-			}
+			$domainArray[] = $idna_convert->decode($row['domain']);
 		}
-		
+		natsort($domainArray);
+		$domains = implode(', ', $domainArray);
+
 		$userinfo['email'] = $idna_convert->decode($userinfo['email']);
 
 		$yesterday=time()-(60*60*24);
