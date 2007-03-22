@@ -434,4 +434,9 @@ $lng['admin']['mysqlserverversion'] = 'Version du serveur MySQL';
 $lng['admin']['mysqlclientversion'] = 'Version du client MySQL';
 $lng['admin']['webserverinterface'] = 'Interface Web';
 
+// Translated by info@eConcept-Web.com on 03/19/2007 (see https://trac.syscp.org/ticket/126#comment:22)
+$lng['domains']['isassigneddomain'] = 'est le domaine assign&eacute;';
+$lng['serversettings']['phpappendopenbasedir']['title'] = 'Chemin pour se rendre &agrave; OpenBasedir';
+$lng['serversettings']['phpappendopenbasedir']['description'] = 'Ce chemin (s&eacute;par&eacute; par des deux points) sera ajout&eacute; &agrave; OpenBasedir-statement dans chaque conteneurs vhost.';
+
 ?>

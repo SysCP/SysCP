@@ -436,4 +436,15 @@ $lng['panel']['used'] = 'utilizzato';
 $lng['panel']['translator'] = 'Traduttore';
 $lng['error']['stringformaterror'] = 'Il valore per il campo &quot;%s&quot; non è nel formato atteso.';
 
+// Translated by marone42@googlemail.com on 03/15/2007 (see https://trac.syscp.org/ticket/126#comment:21)
+$lng['admin']['serversoftware'] = 'Serversoftware';
+$lng['admin']['phpversion'] = 'Versione PHP';
+$lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
+$lng['admin']['mysqlserverversion'] = 'Versione MySQL Server';
+$lng['admin']['mysqlclientversion'] = 'Version MySQL Client';
+$lng['admin']['webserverinterface'] = 'Interfaccia Webserver';
+$lng['domains']['isassigneddomain'] = '&Egrave; dominio assegnato';
+$lng['serversettings']['phpappendopenbasedir']['title'] = 'Percoso da aggiungere a OpenBasedir';
+$lng['serversettings']['phpappendopenbasedir']['description'] = 'Questi percorsi (separati da colonne) verranno aggiunti allo statement OpenBasedir in ognuno vhost-container.';
+
 ?>
