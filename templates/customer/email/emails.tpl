@@ -20,7 +20,7 @@ $header
 			$accounts
 			<if $pagingcode != ''>
 			<tr>
-				<td class="field_display_border_left" colspan="4" style=" text-align: center; ">{$pagingcode}</td>
+				<td class="field_display_border_left" colspan="6" style=" text-align: center; ">{$pagingcode}</td>
 			</tr>
 			</if>
 			<if ($userinfo['emails_used'] < $userinfo['emails'] || $userinfo['emails'] == '-1') && $emaildomains_count !=0 >
