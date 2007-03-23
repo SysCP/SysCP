@@ -248,40 +248,7 @@
 							}
 						}
 
-						if($domain['safemode'] == '0')
-						{
-							$vhosts_file.='  php_admin_flag safe_mode Off '."\n";
-						}
-						else
-						{
-							$vhosts_file.='  php_admin_flag safe_mode On '."\n";
-						}
-
-						$subdir = str_replace($domain['customerroot'], '', $domain['documentroot']);
-						$offset = 0;
-						$subdirlen = strlen($subdir);
-						$subdirs = array();
-						array_push($subdirs, $domain['documentroot']);
-
-						while($offset < $subdirlen)
-						{
-							$offset = strpos($subdir, '/', $offset);
-							$subdirelem = substr($subdir, 0, $offset);
-							$offset++;
-							array_push($subdirs, $domain['customerroot'].$subdirelem.'/');
-						}
-
-						$subdirs = array_unique($subdirs);
-						sort($subdirs);
-
-						foreach($subdirs as $sdir)
-						{
-							if(!is_dir($sdir))
-							{
-								safe_exec('mkdir -p '.escapeshellarg($sdir));
-								safe_exec('chown -R '.(int)$domain['guid'].':'.(int)$domain['guid'].' '.escapeshellarg($sdir));
-							}
-						}
+						mkDirWithCorrectOwnership( $domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid'] );
 
 						if($domain['speciallogfile'] == '1')
 						{
@@ -356,9 +323,10 @@
 			$diroptions_file = '';
 			$diroptions_file = '# '.$settings['system']['apacheconf_directory'].'diroptions.conf'."\n".'# Created '.date('d.m.Y H:i')."\n".'# Do NOT manually edit this file, all changes will be deleted after the next dir options change at the panel.'."\n"."\n";
 			$result = $db->query(
-				'SELECT * ' .
-				'FROM `'.TABLE_PANEL_HTACCESS.'` ' .
-				'ORDER BY `path`'
+				'SELECT `htac`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` ' .
+				'FROM `' . TABLE_PANEL_HTACCESS . '` `htac` ' .
+				'LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ' .
+				'ORDER BY `htac`.`path`'
 			);
 			$diroptions = array();
 			while($row_diroptions=$db->fetch_array($result))
@@ -367,21 +335,28 @@
 				$diroptions[$row_diroptions['path']]['htpasswds'] = array();
 			}
 			$result = $db->query(
-				'SELECT * ' .
-				'FROM `'.TABLE_PANEL_HTPASSWDS.'` ' .
-				'ORDER BY `path`, `username`'
+				'SELECT `htpw`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` ' .
+				'FROM `' . TABLE_PANEL_HTPASSWDS . '` `htpw` ' .
+				'LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ' .
+				'ORDER BY `htpw`.`path`, `htpw`.`username`'
 			);
 			while($row_htpasswds=$db->fetch_array($result))
 			{
+				if( !is_array ( $diroptions[$row_htpasswds['path']] ) )
+				{
+					$diroptions[$row_htpasswds['path']] = array();
+				}
 				$diroptions[$row_htpasswds['path']]['path'] = $row_htpasswds['path'];
+				$diroptions[$row_htpasswds['path']]['guid'] = $row_htpasswds['guid'];
+				$diroptions[$row_htpasswds['path']]['customerroot'] = $row_htpasswds['customerroot'];
 				$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
 				$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
 			}
 
 			$htpasswd_files = array();
-			foreach($diroptions as $row_diroptions)
+			foreach( $diroptions as $row_diroptions )
 			{
-				safe_exec( 'mkdir -p ' . escapeshellarg( $row_diroptions['path'] ) );
+				mkDirWithCorrectOwnership( $row_diroptions['customerroot'], $row_diroptions['path'], $row_diroptions['guid'], $row_diroptions['guid'] );
 				if( is_dir( $row_diroptions['path'] ) )
 				{
 					$diroptions_file .= '<Directory "'.$row_diroptions['path'].'">'."\n";
@@ -509,14 +484,18 @@
 		 */
 		elseif($row['type'] == '5')
 		{
-			$result_directories = $db->query("SELECT `homedir`, `uid`, `gid` FROM `".TABLE_FTP_USERS."`;");
-			while($directory=$db->fetch_array($result_directories))
+			$result_directories = $db->query(
+				'SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` ' .
+				'FROM `' . TABLE_FTP_USERS . '` `f` ' . 
+				'LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) '
+			);
+			while( $directory = $db->fetch_array( $result_directories ) )
 			{
-				safe_exec('mkdir -p ' . escapeshellarg( $directory['homedir'] ) );
-				safe_exec('chown ' . $directory['uid'] . ':' . $directory['gid'] . ' ' . escapeshellarg( $directory['homedir'] ) );
+				mkDirWithCorrectOwnership( $directory['customerroot'], $directory['homedir'], $directory['uid'], $directory['gid'] );
 			}
 		}
 	}
+
 	if( $db->num_rows( $result_tasks ) != 0 )
 	{
 		$where = array();
