@@ -227,16 +227,11 @@
 
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
-						$path=makeCorrectDir($path);
-						$userpath=$path;
-						$path=$userinfo['documentroot'].$path;
-						if(!is_dir($path))
-						{
-							standard_error('directorymustexist',$userpath);
-							exit;
-						}
+						$path = makeCorrectDir( $path );
+						$userpath = $path;
+						$path = $userinfo['documentroot'] . $path;
 					}
-
+ 
 					if(isset($_POST['openbasedir_path']) && $_POST['openbasedir_path'] == '1')
 					{
 						$openbasedir_path = '1';
@@ -331,14 +326,9 @@
 
 					if(!preg_match('/^https?\:\/\//', $path))
 					{
-						$path=makeCorrectDir($path);
-						$userpath=$path;
-						$path=$userinfo['documentroot'].$path;
-						if(!is_dir($path))
-						{
-							standard_error('directorymustexist',$userpath);
-							exit;
-						}
+						$path = makeCorrectDir( $path );
+						$userpath = $path;
+						$path = $userinfo['documentroot'] . $path;
 					}
 
 					if(isset($_POST['iswildcarddomain']) && $_POST['iswildcarddomain'] == '1' && $result['parentdomainid'] == '0' && $userinfo['subdomains'] != '0')

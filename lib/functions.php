@@ -532,18 +532,18 @@
 	{
 		global $db;
 
-		if($type=='1')
+		if( $type=='1' || $type=='3' || $type=='4' || $type=='5' )
 		{
 			$db->query(
 				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
-				'WHERE `type`="1"'
+				'WHERE `type`="' . $type . '"'
 			);
 
 			$db->query(
 				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
 				'(`type`) ' .
 				'VALUES ' .
-				'("1")'
+				'("' . $type . '")'
 			);
 		}
 		elseif($type=='2' && $param1!='' && $param2!='' && $param3!='')
@@ -558,34 +558,6 @@
 				'(`type`, `data`) ' .
 				'VALUES ' .
 				'("2", "' . $db->escape($data) . '")'
-			);
-		}
-		elseif($type=='3')
-		{
-			$db->query(
-				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
-				'WHERE `type`="3"'
-			);
-
-			$db->query(
-				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-				'(`type`) ' .
-				'VALUES ' .
-				'("3")'
-			);
-		}
-		elseif($type=='4')
-		{
-			$db->query(
-				'DELETE FROM `' . TABLE_PANEL_TASKS . '` ' .
-				'WHERE `type`="4"'
-			);
-
-			$db->query(
-				'INSERT INTO `' . TABLE_PANEL_TASKS . '` ' .
-				'(`type`) ' .
-				'VALUES ' .
-				'("4")'
 			);
 		}
 	}
@@ -1413,6 +1385,14 @@
 		return $field;
 	}
 
+	/**
+	 * Returns an array with all tables with keys which are in the currently selected database
+	 *
+	 * @param  db    A valid DB-object
+	 * @return array Array with tables and keys
+	 *
+	 * @author Florian Lippert <florian.lippert@syscp.org>
+	 */
 	function getTables( &$db )
 	{
 		// This variable is our return-value
@@ -1474,6 +1454,57 @@
 		}
 
 		return $tables;
+	}
+
+	/**
+	 * Creates a directory below a users homedir and sets all directories,
+	 * which had to be created below with correct Owner/Group
+	 * (Copied from cron_tasks.php:rev1189 as we'll need this more often in future)
+	 *
+	 * @param  string The homedir of the user
+	 * @param  string The dir which should be created
+	 * @param  int    The uid of the user
+	 * @param  int    The gid of the user
+	 * @return bool   true if everything went okay, false if something went wrong
+	 *
+	 * @author Florian Lippert <florian.lippert@syscp.org>
+	 * @author Martin Burchert <martin.burchert@syscp.org>
+	 */
+	function mkDirWithCorrectOwnership( $homeDir, $dirToCreate, $uid, $gid )
+	{
+		$returncode = true;
+
+		$homeDir = makeCorrectDir( $homeDir );
+		$dirToCreate = makeCorrectDir( $dirToCreate );
+
+		$subdir = makeCorrectDir( str_replace( $homeDir, '', $dirToCreate ) );
+		$offset = 0;
+		$subdirlen = strlen( $subdir );
+		$subdirs = array();
+		array_push( $subdirs, $dirToCreate );
+
+		while( $offset < $subdirlen )
+		{
+			$offset = strpos( $subdir, '/', $offset );
+			$subdirelem = substr( $subdir, 0, $offset );
+			$offset++;
+			array_push( $subdirs, makeCorrectDir( $homeDir . $subdirelem ) );
+		}
+
+		$subdirs = array_unique( $subdirs );
+		sort( $subdirs );
+
+		foreach( $subdirs as $sdir )
+		{
+			if( !is_dir( $sdir ) )
+			{
+				$sdir = makeCorrectDir( $sdir );
+				safe_exec( 'mkdir -p ' . escapeshellarg( $sdir ) );
+				safe_exec( 'chown -R ' . (int)$uid . ':' . (int)$gid . ' ' . escapeshellarg( $sdir ) );
+			}
+		}
+
+		return $returncode;
 	}
 
 ?>
