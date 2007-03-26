@@ -353,7 +353,7 @@
 	 * @param string Place where stats should be build
 	 * @param string Caption for webalizer output
 	 * @return int Used traffic
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function callWebalizerGetTraffic( $logfile, $outputdir, $caption, $usersdomainlist )
 	{
