@@ -197,14 +197,14 @@
 			}
 
 			reset( $domainlist[$row['customerid']] );
-			$httptraffic = floatval(webalizer_hist($row['loginname'], $row['documentroot'].'/webalizer/', $caption, $domainlist[$row['customerid']]));
+			$httptraffic = floatval(callWebalizerGetTraffic($row['loginname'], $row['documentroot'].'/webalizer/', $caption, $domainlist[$row['customerid']]));
 
 			if( isset( $speciallogfile_domainlist[$row['customerid']] ) && is_array( $speciallogfile_domainlist[$row['customerid']] ) && count( $speciallogfile_domainlist[$row['customerid']] ) != 0 )
 			{
 				reset( $speciallogfile_domainlist[$row['customerid']] );
 				foreach( $speciallogfile_domainlist[$row['customerid']] as $domainid => $domain )
 				{
-					$httptraffic += floatval(webalizer_hist($row['loginname'].'-'.$domain, $row['documentroot'].'/webalizer/'.$domain.'/', $domain, $domainlist[$row['customerid']]));
+					$httptraffic += floatval(callWebalizerGetTraffic($row['loginname'].'-'.$domain, $row['documentroot'].'/webalizer/'.$domain.'/', $domain, $domainlist[$row['customerid']]));
 				}
 			}
 		}
@@ -213,33 +213,32 @@
 		 * FTP-Traffic
 		 */
 		fwrite( $debugHandler, 'ftp traffic for '.$row['loginname'].' started...' . "\n");
-		$mailtraffic=0;
 		$ftptraffic=$db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `".TABLE_FTP_USERS."` WHERE `customerid`='".(int)$row['customerid']."'");
 		if( !is_array( $ftptraffic ) )
 		{
-			$ftptraffic = array();
+			$ftptraffic = array( 'up_bytes_sum' => 0, 'down_bytes_sum' => 0 );
 		}
+		$db->query("UPDATE `".TABLE_FTP_USERS."` SET `up_bytes`='0', `down_bytes`='0' WHERE `customerid`='".(int)$row['customerid']."'");
+
+		/**
+		 * Mail-Traffic
+		 */
+		$mailtraffic=0;
 
 		/**
 		 * Total Traffic
 		 */
-		if(date('d',$yesterday)!='01')
-		{
-			fwrite( $debugHandler, 'total traffic for '.$row['loginname'].' started' . "\n");
-			$oldtraffic=$db->query_first("SELECT SUM(`http`) AS `http_sum`, SUM(`ftp_up`) AS `ftp_up_sum`, SUM(`ftp_down`) AS `ftp_down_sum`, SUM(`mail`) AS `mail_sum` FROM `".TABLE_PANEL_TRAFFIC."` WHERE `year`='".date('Y',$yesterday)."' AND `month`='".date('m',$yesterday)."' AND `day`<'".date('d',$yesterday)."' AND `customerid`='".(int)$row['customerid']."'");
-			$new['http']=floatval($httptraffic-$oldtraffic['http_sum']);
-			$new['ftp_up']=floatval(($ftptraffic['up_bytes_sum']/1024)-$oldtraffic['ftp_up_sum']);
-			$new['ftp_down']=floatval(($ftptraffic['down_bytes_sum']/1024)-$oldtraffic['ftp_down_sum']);
-			$new['mail']=floatval($mailtraffic-$oldtraffic['mail_sum']);
-		}
-		else
-		{
-			fwrite( $debugHandler, '(new month) total traffic for '.$row['loginname'].' started' . "\n");
-			$new['http']=floatval($httptraffic);
-			$new['ftp_up']=floatval(($ftptraffic['up_bytes_sum']/1024));
-			$new['ftp_down']=floatval(($ftptraffic['down_bytes_sum']/1024));
-			$new['mail']=floatval($mailtraffic);
-		}
+		$new = array();
+		fwrite( $debugHandler, 'total traffic for '.$row['loginname'].' started' . "\n");
+		$new['http'] = floatval( $httptraffic );
+		$new['ftp_up'] = floatval( ( $ftptraffic['up_bytes_sum'] / 1024 ) );
+		$new['ftp_down'] = floatval( ( $ftptraffic['down_bytes_sum'] / 1024 ) );
+		$new['mail'] = floatval( $mailtraffic );
+		$new['all'] = $new['http'] + $new['ftp_up'] + $new['ftp_down'] + $new['mail'];
+
+		$db->query("INSERT INTO `".TABLE_PANEL_TRAFFIC."` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('".
+			(int)$row['customerid']."', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".time()."', '".
+			(float)$new['http']."', '".(float)$new['ftp_up']."', '".(float)$new['ftp_down']."', '".(float)$new['mail']."')");
 
 		if(!isset($admin_traffic[$row['adminid']]))
 		{
@@ -247,21 +246,13 @@
 			$admin_traffic[$row['adminid']]['ftp_up'] = 0 ;
 			$admin_traffic[$row['adminid']]['ftp_down'] = 0 ;
 			$admin_traffic[$row['adminid']]['mail'] = 0 ;
+			$admin_traffic[$row['adminid']]['all'] = 0 ;
 		}
-
-		$new['all']=$httptraffic+($ftptraffic['up_bytes_sum']/1024)+($ftptraffic['down_bytes_sum']/1024)+$mailtraffic;
-		$db->query("REPLACE INTO `".TABLE_PANEL_TRAFFIC."` (`customerid`, `year`, `month`, `day`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('".
-			(int)$row['customerid']."', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".
-			(float)$new['http']."', '".(float)$new['ftp_up']."', '".(float)$new['ftp_down']."', '".(float)$new['mail']."')");
-		$admin_traffic[$row['adminid']]['http'] += floatval($httptraffic);
-		$admin_traffic[$row['adminid']]['ftp_up'] += floatval($ftptraffic['up_bytes_sum']/1024);
-		$admin_traffic[$row['adminid']]['ftp_down'] += floatval($ftptraffic['down_bytes_sum']/1024);
-		$admin_traffic[$row['adminid']]['mail'] += floatval($mailtraffic);
-
-		if(date('d')=='01')
-		{
-			$db->query("UPDATE `".TABLE_FTP_USERS."` SET `up_bytes`='0', `down_bytes`='0' WHERE `customerid`='".(int)$row['customerid']."'");
-		}
+		$admin_traffic[$row['adminid']]['http'] += $new['http'];
+		$admin_traffic[$row['adminid']]['ftp_up'] += $new['ftp_up'];
+		$admin_traffic[$row['adminid']]['ftp_down'] += $new['ftp_down'];
+		$admin_traffic[$row['adminid']]['mail'] += $new['mail'];
+		$admin_traffic[$row['adminid']]['all'] += $new['all'];
 
 		/**
 		 * WebSpace-Usage
@@ -311,7 +302,6 @@
 		$diskusage=floatval($webspaceusage+$emailusage+$mysqlusage);
 		$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `diskspace_used`='".(float)$diskusage."', `traffic_used`='".
 			(float)$new['all']."' WHERE `customerid`='".(int)$row['customerid']."'");
-
 	}
 
 	/**
@@ -322,11 +312,9 @@
 	{
 		if(isset($admin_traffic[$row['adminid']]))
 		{
-			$admin_traffic[$row['adminid']]['all'] = floatval(floatval($admin_traffic[$row['adminid']]['http']) + floatval($admin_traffic[$row['adminid']]['ftp_up']) + floatval($admin_traffic[$row['adminid']]['ftp_down']) + floatval($admin_traffic[$row['adminid']]['mail']));
-			$db->query("REPLACE INTO `".TABLE_PANEL_TRAFFIC_ADMINS."` (`adminid`, `year`, `month`, `day`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('".
-				(int)$row['adminid']."', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday).
-				"', '".(float)$admin_traffic[$row['adminid']]['http']."', '".(float)$admin_traffic[$row['adminid']]['ftp_up'].
-				"', '".(float)$admin_traffic[$row['adminid']]['ftp_down']."', '".(float)$admin_traffic[$row['adminid']]['mail']."')");
+			$db->query("INSERT INTO `".TABLE_PANEL_TRAFFIC_ADMINS."` (`adminid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('".
+				(int)$row['adminid']."', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".time()."', '".
+				(float)$admin_traffic[$row['adminid']]['http']."', '".(float)$admin_traffic[$row['adminid']]['ftp_up']."', '".(float)$admin_traffic[$row['adminid']]['ftp_down']."', '".(float)$admin_traffic[$row['adminid']]['mail']."')");
 			$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `traffic_used`='".(float)$admin_traffic[$row['adminid']]['all']."' WHERE `adminid`='".(float)$row['adminid']."'");
 		}
 	}
@@ -353,5 +341,133 @@
 	/**
 	 * END CRONSCRIPT FOOTER
 	 */
+
+
+
+
+
+	/**
+	 * Function which make webalizer statistics and returns used traffic since last run
+	 *
+	 * @param string Name of logfile
+	 * @param string Place where stats should be build
+	 * @param string Caption for webalizer output
+	 * @return int Used traffic
+	 * @author Florian Lippert <flo@redenswert.de>
+	 */
+	function callWebalizerGetTraffic( $logfile, $outputdir, $caption, $usersdomainlist )
+	{
+		global $settings;
+
+		$returnval = 0;
+
+		if ( file_exists ( $settings['system']['logfiles_directory'].$logfile.'-access.log' ) )
+		{
+			$yesterday = time()-(60*60*24);
+			if($month == 0)
+			{
+				$month = date('n',$yesterday);
+			}
+			if($year == 0)
+			{
+				$year = date('Y',$yesterday);
+			}
+
+			$domainargs = '';
+			foreach ( $usersdomainlist as $domainid => $domain )
+			{
+				$domainargs .= ' -r "'.escapeshellarg($domain).'"';
+			}
+
+			$outputdir = makeCorrectDir ($outputdir);
+			if(!file_exists($outputdir))
+			{
+				safe_exec('mkdir -p '.escapeshellarg($outputdir));
+			}
+
+			if( file_exists( $outputdir . 'webalizer.hist.1' ) )
+			{
+				unlink ( $outputdir . 'webalizer.hist.1' );
+			}
+			if( file_exists( $outputdir . 'webalizer.hist' ) && !file_exists( $outputdir . 'webalizer.hist.1' ) )
+			{
+				safe_exec( 'cp ' . escapeshellarg( $outputdir . 'webalizer.hist' ) . ' ' . escapeshellarg( $outputdir . 'webalizer.hist.1' ) );
+			}
+
+			safe_exec('webalizer -o '.escapeshellarg($outputdir).' -n '.escapeshellarg($caption).$domainargs.
+				' '.escapeshellarg($settings['system']['logfiles_directory'].$logfile.'-access.log'));
+
+			/**
+			 * Format of webalizer.hist-files:
+			 * Month: $webalizer_hist_row['0']
+			 * Year:  $webalizer_hist_row['1']
+			 * KB:    $webalizer_hist_row['5']
+			 */
+			$httptraffic = array();
+			$webalizer_hist = @file_get_contents( $outputdir . 'webalizer.hist' );
+			$webalizer_hist_rows = explode( "\n" , $webalizer_hist );
+			foreach( $webalizer_hist_rows as $webalizer_hist_row )
+			{
+				if( $webalizer_hist_row != '' )
+				{
+					$webalizer_hist_row = explode( ' ' , $webalizer_hist_row );
+					if( isset( $webalizer_hist_row['0'] ) && isset( $webalizer_hist_row['1'] ) && isset( $webalizer_hist_row['5'] ) )
+					{
+						$month = intval( $webalizer_hist_row['0'] );
+						$year = intval( $webalizer_hist_row['1'] );
+						$traffic = floatval( $webalizer_hist_row['5'] );
+
+						if( !isset( $httptraffic[$year] ) )
+						{
+							$httptraffic[$year] = array();
+						}
+						$httptraffic[$year][$month] = $traffic;
+					}
+				}
+			}
+			reset( $httptraffic );
+
+			$httptrafficlast = array();
+			$webalizer_lasthist = @file_get_contents( $outputdir . 'webalizer.hist.1' );
+			$webalizer_lasthist_rows = explode( "\n" , $webalizer_lasthist );
+			foreach( $webalizer_lasthist_rows as $webalizer_lasthist_row )
+			{
+				if( $webalizer_lasthist_row != '' )
+				{
+					$webalizer_lasthist_row = explode( ' ' , $webalizer_lasthist_row );
+					if( isset( $webalizer_lasthist_row['0'] ) && isset( $webalizer_lasthist_row['1'] ) && isset( $webalizer_lasthist_row['5'] ) )
+					{
+						$month = intval( $webalizer_lasthist_row['0'] );
+						$year = intval( $webalizer_lasthist_row['1'] );
+						$traffic = floatval( $webalizer_lasthist_row['5'] );
+
+						if( !isset( $httptrafficlast[$year] ) )
+						{
+							$httptrafficlast[$year] = array();
+						}
+						$httptrafficlast[$year][$month] = $traffic;
+					}
+				}
+			}
+			reset( $httptrafficlast );
+
+			foreach( $httptraffic as $year => $months )
+			{
+				foreach( $months as $month => $traffic )
+				{
+					if( !isset( $httptrafficlast[$year][$month] ) )
+					{
+						$returnval += $traffic;
+					}
+					elseif( $httptrafficlast[$year][$month] < $httptraffic[$year][$month] )
+					{
+						$returnval += ( $httptraffic[$year][$month] - $httptrafficlast[$year][$month] );
+					}
+				}
+			}
+		}
+
+		return floatval($returnval);
+	}
 
 ?>
