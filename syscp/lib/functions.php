@@ -20,7 +20,7 @@
 	 * @param string Templatename
 	 * @param string noarea If area should be used to get template
 	 * @return string The Template
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function getTemplate($template, $noarea = 0)
 	{
@@ -53,7 +53,7 @@
 	 *
 	 * @param array Errormessages
 	 * @param string A %s in the errormessage will be replaced by this string.
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 * @author Ron Brand <ron.brand@web.de>
 	 */
 	function standard_error($errors='', $replacer='')
@@ -102,7 +102,7 @@
 	 * @param string Value which will be returned if user chooses no
 	 * @param string Value which is chosen by default
 	 * @return string HTML Code
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function makeyesno( $name, $yesvalue, $novalue = '', $yesselected = '' )
 	{
@@ -117,7 +117,7 @@
 	 * @param string File which will be called with POST if user clicks yes
 	 * @param array Values which will be given to $yesfile. Format: array(variable1=>value1, variable2=>value2, variable3=>value3)
 	 * @param string Name of the target eg Domain or eMail address etc.
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function ask_yesno ( $text , $yesfile , $params = array() , $targetname = '')
 	{
@@ -165,7 +165,7 @@
 	 * @param bool Whether the title may contain html or not
 	 * @param bool Whether the value may contain html or not
 	 * @return string HTML Code
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function makeoption($title,$value,$selvalue=NULL,$title_trusted=false,$value_trusted=false)
 	{
@@ -199,7 +199,7 @@
 	 *
 	 * @return  boolean  false if params is not an array
 	 *
-	 * @author  Florian Lippert <flo@redenswert.de>
+	 * @author  Florian Lippert <flo@syscp.org>
 	 * @author  Martin Burchert <eremit@syscp.org>
 	 *
 	 * @changes martin@2005-01-29
@@ -258,7 +258,7 @@
 	 *
 	 * @param array The array to trim
 	 * @return array The trim'med array
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function array_trim($source)
 	{
@@ -286,7 +286,7 @@
 	 * @param array The subject array
 	 * @param string The fields which should be checked for, separated by spaces
 	 * @return array The str_replace'd array
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function str_replace_array($search, $replace, $subject, $fields = '')
 	{
@@ -318,7 +318,7 @@
 	 * @param int See php documentation about this
 	 * @param string See php documentation about this
 	 * @return array The array with htmlentitie'd strings
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function htmlentities_array($subject, $fields = '', $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1')
 	{
@@ -358,7 +358,7 @@
 	 * @param int See php documentation about this
 	 * @param string See php documentation about this
 	 * @return array The array with html_entity_decode'd strings
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function html_entity_decode_array($subject, $fields = '', $complete = false, $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1')
 	{
@@ -405,7 +405,7 @@
 	 * @param string The fields which should be checked for, separated by spaces
 	 * @param bool Select true to use stripslashes_complete instead of stripslashes
 	 * @return array The array with stripslashe'd strings
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function stripslashes_array($subject, $fields = '', $complete = false)
 	{
@@ -460,7 +460,7 @@
 	 *
 	 * @param string The email address to check
 	 * @return bool Correct or not
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 *
 	 * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
 	 */
@@ -526,7 +526,7 @@
 	 * @param string Parameter 1
 	 * @param string Parameter 2
 	 * @param string Parameter 3
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function inserttask($type,$param1='',$param2='',$param3='')
 	{
@@ -567,7 +567,7 @@
 	 *
 	 * @param string The path
 	 * @return string The corrected path
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function makeSecurePath($path)
 	{
@@ -583,7 +583,7 @@
 	 *
 	 * @param string The dirname
 	 * @return string The corrected dirname
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function makeCorrectDir($dir)
 	{
@@ -606,7 +606,7 @@
 	 *
 	 * @param string filename the filename
 	 * @return string the corrected filename
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 * @author Michael Russ <mr@edvruss.com>
 	 * @author Martin Burchert <eremit@adm1n.de>
 	 */
@@ -627,7 +627,7 @@
 	 *
 	 * @param string The destinations
 	 * @return string the corrected destinations
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function makeCorrectDestination($destination)
 	{
@@ -652,7 +652,7 @@
 	 * @param bool Set to true to get an array with debug information
 	 * @return array Contains debug information if parameter 'returndebuginfo' is set to true
 	 *
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function updateCounters ( $returndebuginfo = false )
 	{
@@ -1130,7 +1130,7 @@
 	 *
 	 * @param any The value
 	 * @return int The positive value
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function intval_ressource ( $the_value )
 	{
@@ -1148,7 +1148,7 @@
 	 *
 	 * @param any The value
 	 * @return double The positive value
-	 * @author Florian Lippert <flo@redenswert.de>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function doubleval_ressource ( $the_value )
 	{
@@ -1326,7 +1326,7 @@
 	 * @param  db    A valid DB-object
 	 * @return array Array with tables and keys
 	 *
-	 * @author Florian Lippert <florian.lippert@syscp.org>
+	 * @author Florian Lippert <flo@syscp.org>
 	 */
 	function getTables( &$db )
 	{
@@ -1402,7 +1402,7 @@
 	 * @param  int    The gid of the user
 	 * @return bool   true if everything went okay, false if something went wrong
 	 *
-	 * @author Florian Lippert <florian.lippert@syscp.org>
+	 * @author Florian Lippert <flo@syscp.org>
 	 * @author Martin Burchert <martin.burchert@syscp.org>
 	 */
 	function mkDirWithCorrectOwnership( $homeDir, $dirToCreate, $uid, $gid )
