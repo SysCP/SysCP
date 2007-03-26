@@ -600,7 +600,7 @@
 			$outputdir = makeCorrectDir ($outputdir);
 			if(!file_exists($outputdir))
 			{
-				safe_exec('mkdir -p "'.$outputdir.'"');
+				safe_exec('mkdir -p '.escapeshellarg($outputdir));
 			}
 			safe_exec('webalizer -o '.escapeshellarg($outputdir).' -n '.escapeshellarg($caption).$domainargs.
 				' '.escapeshellarg($settings['system']['logfiles_directory'].$logfile.'-access.log'));
