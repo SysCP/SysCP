@@ -475,13 +475,13 @@ CREATE TABLE `panel_traffic` (
   `year` int(4) unsigned zerofill NOT NULL default '0000',
   `month` int(2) unsigned zerofill NOT NULL default '00',
   `day` int(2) unsigned zerofill NOT NULL default '00',
+  `stamp` int(11) unsigned NOT NULL default '0',
   `http` bigint(30) unsigned NOT NULL default '0',
   `ftp_up` bigint(30) unsigned NOT NULL default '0',
   `ftp_down` bigint(30) unsigned NOT NULL default '0',
   `mail` bigint(30) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `customerid` (`customerid`),
-  UNIQUE `date` (`customerid` , `year` , `month` , `day`)
+  KEY `customerid` (`customerid`)
 ) TYPE=MyISAM ;
 
 #
@@ -502,13 +502,13 @@ CREATE TABLE `panel_traffic_admins` (
   `year` int(4) unsigned zerofill NOT NULL default '0000',
   `month` int(2) unsigned zerofill NOT NULL default '00',
   `day` int(2) unsigned zerofill NOT NULL default '00',
+  `stamp` int(11) unsigned NOT NULL default '0',
   `http` bigint(30) unsigned NOT NULL default '0',
   `ftp_up` bigint(30) unsigned NOT NULL default '0',
   `ftp_down` bigint(30) unsigned NOT NULL default '0',
   `mail` bigint(30) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  KEY `adminid` (`adminid`),
-  UNIQUE `date` (`adminid` , `year` , `month` , `day`)
+  KEY `adminid` (`adminid`)
 ) TYPE=MyISAM ;
 
 #

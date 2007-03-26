@@ -1296,5 +1296,30 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn4';
 	}
+	if( $settings['panel']['version'] == '1.2.16-svn4' )
+	{
+		$tables = getTables( $db );
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_TRAFFIC.'` ADD `stamp` INT( 11 ) unsigned NOT NULL DEFAULT \'0\' AFTER `day` ');
+		if( isset( $tables[TABLE_PANEL_TRAFFIC] ) && is_array( $tables[TABLE_PANEL_TRAFFIC] ) && isset( $tables[TABLE_PANEL_TRAFFIC]['date'] ) )
+		{
+			$db->query( 'ALTER TABLE `' . TABLE_PANEL_TRAFFIC . '` DROP INDEX  `date` ' );
+		}
+		$tables = getTables( $db );
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_TRAFFIC_ADMINS.'` ADD `stamp` INT( 11 ) unsigned NOT NULL DEFAULT \'0\' AFTER `day` ');
+		if( isset( $tables[TABLE_PANEL_TRAFFIC_ADMINS] ) && is_array( $tables[TABLE_PANEL_TRAFFIC_ADMINS] ) && isset( $tables[TABLE_PANEL_TRAFFIC_ADMINS]['date'] ) )
+		{
+			$db->query( 'ALTER TABLE `' . TABLE_PANEL_TRAFFIC_ADMINS . '` DROP INDEX  `date` ' );
+		}
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn5\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn5';
+	}
 
 ?>
