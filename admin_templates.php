@@ -146,7 +146,6 @@
 
 				else
 				{
-
 					$result=$db->query("INSERT INTO `".TABLE_PANEL_TEMPLATES."` (`adminid`, `language`, `templategroup`, `varname`, `value`)
 					                   VALUES ('".(int)$userinfo['adminid']."', '".$db->escape($language)."', 'mails', '".$db->escape($template)."_subject','".$db->escape($subject)."')");
 					$result=$db->query("INSERT INTO `".TABLE_PANEL_TEMPLATES."` (`adminid`, `language`, `templategroup`, `varname`, `value`)
