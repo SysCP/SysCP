@@ -1275,11 +1275,11 @@
 			'    `required_resources` = \'change_serversettings\', ' .
 			'    `new_window` = \'0\''
 		);
-		
+
 		$db->query(
-			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' . 
-			'SET `order` = \'25\' ' . 
-			'WHERE `lang` = \'admin;ipsandports;ipsandports\' ' . 
+			'UPDATE `'.TABLE_PANEL_NAVIGATION.'` ' .
+			'SET `order` = \'25\' ' .
+			'WHERE `lang` = \'admin;ipsandports;ipsandports\' ' .
 			'  AND `url` = \'admin_ipsandports.php?page=ipsandports\' '
 		);
 
@@ -1317,6 +1317,27 @@
 		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn5';
+	}
+	if( $settings['panel']['version'] == '1.2.16-svn5' )
+	{
+        $db->query( 'ALTER TABLE `'.TABLE_PANEL_CUSTOMERS.'` ADD `reportsent` TINYINT( 4 ) unsigned NOT NULL DEFAULT \'0\' AFTER `loginfail_count` ');
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_ADMINS.'` ADD `reportsent` TINYINT( 4 ) unsigned NOT NULL DEFAULT \'0\' AFTER `loginfail_count` ');
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'system\', ' .
+			'    `varname`      = \'last_traffic_report_run\', ' .
+			'    `value`        = \'\' '
+		);
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn6\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn6';
 	}
 
 ?>
