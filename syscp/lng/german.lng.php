@@ -473,4 +473,7 @@ $lng['admin']['nameserversettings'] = 'Nameservereinstellungen';
 $lng['admin']['updatecounters'] = 'Ressourcenverbrauch';
 $lng['question']['admin_counters_reallyupdate'] = 'Wollen Sie den Ressourcenverbrauch neu berechnen?';
 
+// ADDED IN 1.2.16-svn6
+$lng['mails']['trafficninetypercent']['mailbody'] = 'Sehr geehrte(r) {NAME},\n\nSie haben bereits {TRAFFICUSED} MB von Ihren insgesamt {TRAFFIC} MB Traffic verbraucht.\nDies sind mehr als 90%.\n\nMit freundlichem Gruß, das SysCP-Team';
+$lng['mails']['trafficninetypercent']['subject'] = 'Reaching your trafficlimit';
 ?>

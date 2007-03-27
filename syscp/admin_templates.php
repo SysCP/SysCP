@@ -21,7 +21,7 @@
 	 * Include our init.php, which manages Sessions, Language etc.
 	 */
 	require("./lib/init.php");
-	
+
 	if($page=='email' )
 	{
 		if(isset($_POST['subjectid']))
@@ -39,9 +39,10 @@
 		{
 			$available_templates=array(
 				'createcustomer',
-				'pop_success'
+				'pop_success',
+				'trafficninetypercent',
 			);
-			
+
 			$templates_array=array();
 			$result=$db->query("SELECT `id`, `language`, `varname` FROM `".TABLE_PANEL_TEMPLATES."` WHERE `adminid`='".(int)$userinfo['adminid']."' AND `templategroup`='mails' ORDER BY `language`, `varname`");
 			while($row=$db->fetch_array($result))
@@ -61,7 +62,7 @@
 					eval("\$templates.=\"".getTemplate("templates/templates_template")."\";");
 				}
 			}
-			
+
 			$add = false;
 			while(list($language_file, $language_name) = each($languages))
 			{
@@ -76,7 +77,7 @@
 					$add = true;
 				}
 			}
-			
+
 			eval("echo \"".getTemplate("templates/templates")."\";");
 		}
 
@@ -101,12 +102,13 @@
 		{
 			$available_templates=array(
 				'createcustomer',
-				'pop_success'
+				'pop_success',
+				'trafficninetypercent',
 			);
 			if(isset($_POST['prepare']) && $_POST['prepare']=='prepare')
 			{
 				$language = validate($_POST['language'], 'language');
-				
+
 				$templates=array();
 				$result=$db->query('SELECT `varname` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\''.$db->escape($language).'\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
 				while(($row=$db->fetch_array($result))!=false)
@@ -114,13 +116,13 @@
 					$templates[]=str_replace('_subject','',$row['varname']);
 				}
 				$templates=array_diff($available_templates,$templates);
-				
+
 				$template_options='';
 				foreach($templates as $template) {
 					$template_options.=makeoption($lng['admin']['templates'][$template], $template, NULL, true);
 				}
 				eval("echo \"".getTemplate("templates/templates_add_2")."\";");
-				
+
 			}
 			else if(isset($_POST['send']) && $_POST['send']=='send')
 			{
