@@ -35,6 +35,6 @@ define('TABLE_PANEL_LANGUAGE','panel_languages');
 define('TABLE_PANEL_CRONSCRIPT','panel_cronscript');
 define('TABLE_PANEL_IPSANDPORTS','panel_ipsandports');
 
-$version = '1.2.16-svn5';
+$version = '1.2.16-svn6';
 
 ?>
