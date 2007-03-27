@@ -235,12 +235,12 @@
 		$current['mail'] = floatval( $mailtraffic );
 		$current['all'] = $current['http'] + $current['ftp_up'] + $current['ftp_down'] + $current['mail'];
 
-		$sum_month = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `".TABLE_PANEL_TRAFFIC."` WHERE `year`='".date('Y')."' AND `month`='".date('m')."' AND `customerid`='".(int)$row['customerid']."'");
-		$sum_month['all'] = $sum_month['http'] + $sum_month['ftp_up'] + $sum_month['ftp_down'] + $sum_month['mail'];
-
 		$db->query("INSERT INTO `".TABLE_PANEL_TRAFFIC."` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('".
 			(int)$row['customerid']."', '".date('Y')."', '".date('m')."', '".date('d')."', '".time()."', '".
 			(float)$current['http']."', '".(float)$current['ftp_up']."', '".(float)$current['ftp_down']."', '".(float)$current['mail']."')");
+
+		$sum_month = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `".TABLE_PANEL_TRAFFIC."` WHERE `year`='".date('Y')."' AND `month`='".date('m')."' AND `customerid`='".(int)$row['customerid']."'");
+		$sum_month['all'] = $sum_month['http'] + $sum_month['ftp_up'] + $sum_month['ftp_down'] + $sum_month['mail'];
 
 		if(!isset($admin_traffic[$row['adminid']]))
 		{
