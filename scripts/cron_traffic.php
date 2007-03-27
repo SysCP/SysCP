@@ -139,7 +139,6 @@
 	 * TRAFFIC AND DISKUSAGE MESSURE
 	 */
 	fwrite( $debugHandler, 'Traffic run started...' . "\n");
-	$yesterday=time()-(60*60*24);
 
 	$admin_traffic = array();
 
@@ -228,17 +227,20 @@
 		/**
 		 * Total Traffic
 		 */
-		$new = array();
 		fwrite( $debugHandler, 'total traffic for '.$row['loginname'].' started' . "\n");
-		$new['http'] = floatval( $httptraffic );
-		$new['ftp_up'] = floatval( ( $ftptraffic['up_bytes_sum'] / 1024 ) );
-		$new['ftp_down'] = floatval( ( $ftptraffic['down_bytes_sum'] / 1024 ) );
-		$new['mail'] = floatval( $mailtraffic );
-		$new['all'] = $new['http'] + $new['ftp_up'] + $new['ftp_down'] + $new['mail'];
+		$current = array();
+		$current['http'] = floatval( $httptraffic );
+		$current['ftp_up'] = floatval( ( $ftptraffic['up_bytes_sum'] / 1024 ) );
+		$current['ftp_down'] = floatval( ( $ftptraffic['down_bytes_sum'] / 1024 ) );
+		$current['mail'] = floatval( $mailtraffic );
+		$current['all'] = $current['http'] + $current['ftp_up'] + $current['ftp_down'] + $current['mail'];
+
+		$sum_month = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `".TABLE_PANEL_TRAFFIC."` WHERE `year`='".date('Y')."' AND `month`='".date('m')."' AND `customerid`='".(int)$row['customerid']."'");
+		$sum_month['all'] = $sum_month['http'] + $sum_month['ftp_up'] + $sum_month['ftp_down'] + $sum_month['mail'];
 
 		$db->query("INSERT INTO `".TABLE_PANEL_TRAFFIC."` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('".
-			(int)$row['customerid']."', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".time()."', '".
-			(float)$new['http']."', '".(float)$new['ftp_up']."', '".(float)$new['ftp_down']."', '".(float)$new['mail']."')");
+			(int)$row['customerid']."', '".date('Y')."', '".date('m')."', '".date('d')."', '".time()."', '".
+			(float)$current['http']."', '".(float)$current['ftp_up']."', '".(float)$current['ftp_down']."', '".(float)$current['mail']."')");
 
 		if(!isset($admin_traffic[$row['adminid']]))
 		{
@@ -247,12 +249,14 @@
 			$admin_traffic[$row['adminid']]['ftp_down'] = 0 ;
 			$admin_traffic[$row['adminid']]['mail'] = 0 ;
 			$admin_traffic[$row['adminid']]['all'] = 0 ;
+			$admin_traffic[$row['adminid']]['sum_month'] = 0 ;
 		}
-		$admin_traffic[$row['adminid']]['http'] += $new['http'];
-		$admin_traffic[$row['adminid']]['ftp_up'] += $new['ftp_up'];
-		$admin_traffic[$row['adminid']]['ftp_down'] += $new['ftp_down'];
-		$admin_traffic[$row['adminid']]['mail'] += $new['mail'];
-		$admin_traffic[$row['adminid']]['all'] += $new['all'];
+		$admin_traffic[$row['adminid']]['http'] += $current['http'];
+		$admin_traffic[$row['adminid']]['ftp_up'] += $current['ftp_up'];
+		$admin_traffic[$row['adminid']]['ftp_down'] += $current['ftp_down'];
+		$admin_traffic[$row['adminid']]['mail'] += $current['mail'];
+		$admin_traffic[$row['adminid']]['all'] += $current['all'];
+		$admin_traffic[$row['adminid']]['sum_month'] += $sum_month['all'];
 
 		/**
 		 * WebSpace-Usage
@@ -301,7 +305,7 @@
 		 */
 		$diskusage=floatval($webspaceusage+$emailusage+$mysqlusage);
 		$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `diskspace_used`='".(float)$diskusage."', `traffic_used`='".
-			(float)$new['all']."' WHERE `customerid`='".(int)$row['customerid']."'");
+			(float)$sum_month['all']."' WHERE `customerid`='".(int)$row['customerid']."'");
 	}
 
 	/**
@@ -313,9 +317,9 @@
 		if(isset($admin_traffic[$row['adminid']]))
 		{
 			$db->query("INSERT INTO `".TABLE_PANEL_TRAFFIC_ADMINS."` (`adminid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('".
-				(int)$row['adminid']."', '".date('Y',$yesterday)."', '".date('m',$yesterday)."', '".date('d',$yesterday)."', '".time()."', '".
+				(int)$row['adminid']."', '".date('Y')."', '".date('m')."', '".date('d')."', '".time()."', '".
 				(float)$admin_traffic[$row['adminid']]['http']."', '".(float)$admin_traffic[$row['adminid']]['ftp_up']."', '".(float)$admin_traffic[$row['adminid']]['ftp_down']."', '".(float)$admin_traffic[$row['adminid']]['mail']."')");
-			$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `traffic_used`='".(float)$admin_traffic[$row['adminid']]['all']."' WHERE `adminid`='".(float)$row['adminid']."'");
+			$db->query("UPDATE `".TABLE_PANEL_ADMINS."` SET `traffic_used`='".(float)$admin_traffic[$row['adminid']]['sum_month']."' WHERE `adminid`='".(float)$row['adminid']."'");
 		}
 	}
 
@@ -363,16 +367,6 @@
 
 		if ( file_exists ( $settings['system']['logfiles_directory'].$logfile.'-access.log' ) )
 		{
-			$yesterday = time()-(60*60*24);
-			if($month == 0)
-			{
-				$month = date('n',$yesterday);
-			}
-			if($year == 0)
-			{
-				$year = date('Y',$yesterday);
-			}
-
 			$domainargs = '';
 			foreach ( $usersdomainlist as $domainid => $domain )
 			{
