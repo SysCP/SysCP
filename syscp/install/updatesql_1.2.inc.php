@@ -1320,7 +1320,7 @@
 	}
 	if( $settings['panel']['version'] == '1.2.16-svn5' )
 	{
-        $db->query( 'ALTER TABLE `'.TABLE_PANEL_CUSTOMERS.'` ADD `reportsent` TINYINT( 4 ) unsigned NOT NULL DEFAULT \'0\' AFTER `loginfail_count` ');
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_CUSTOMERS.'` ADD `reportsent` TINYINT( 4 ) unsigned NOT NULL DEFAULT \'0\' AFTER `loginfail_count` ');
 		$db->query( 'ALTER TABLE `'.TABLE_PANEL_ADMINS.'` ADD `reportsent` TINYINT( 4 ) unsigned NOT NULL DEFAULT \'0\' AFTER `loginfail_count` ');
 		$db->query(
 			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
@@ -1338,6 +1338,21 @@
 		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn6';
+	}
+	if( $settings['panel']['version'] == '1.2.16-svn6' )
+	{
+		$db->query( 'ALTER TABLE `'.TABLE_PANEL_IPSANDPORTS.'` ADD `vhostcontainer` TINYINT( 1 ) NOT NULL DEFAULT \'0\', ADD `specialsettings` TEXT NOT NULL ');
+		$db->query( 'UPDATE `'.TABLE_PANEL_IPSANDPORTS.'` SET `vhostcontainer` = \'1\' ')
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn7\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn7';
 	}
 
 ?>

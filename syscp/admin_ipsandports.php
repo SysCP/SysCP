@@ -43,7 +43,7 @@
 			$paging = new paging( $userinfo, $db, TABLE_PANEL_IPSANDPORTS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting'] );
 
 			$ipsandports='';
-			$result=$db->query("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` " . 
+			$result=$db->query("SELECT `id`, `ip`, `port`, `vhostcontainer`, `specialsettings` FROM `".TABLE_PANEL_IPSANDPORTS."` " . 
 				$paging->getSqlWhere( false )." ".$paging->getSqlOrderBy()." ".$paging->getSqlLimit()
 			);
 			$paging->setEntries( $db->num_rows($result) );
@@ -123,16 +123,22 @@
 			{
 				$ip = validate($_POST['ip'], 'ip', '/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', 'ipiswrong');
 				$port = validate($_POST['port'], 'port', '/^[1-9][0-9]{0,4}$/', array('stringisempty','myport'));
+				$vhostcontainer = intval($_POST['vhostcontainer']);
+				$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
+
+				if($vhostcontainer != '1')
+				{
+					$vhostcontainer = '0';
+				}
 
 				$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$db->escape($ip)."' AND `port`='".(int)$port."'");
-
 				if($result_checkfordouble['id']!='')
 				{
 					standard_error('myipnotdouble');
 				}
 				else
 				{
-					$db->query("INSERT INTO `".TABLE_PANEL_IPSANDPORTS."` (`ip`, `port`) VALUES ('".$db->escape($ip)."', '".(int)$port."')");
+					$db->query("INSERT INTO `".TABLE_PANEL_IPSANDPORTS."` (`ip`, `port`, `vhostcontainer`, `specialsettings`) VALUES ('".$db->escape($ip)."', '".(int)$port."', '".(int)$vhostcontainer."', '".$db->escape($specialsettings)."')");
 
 					inserttask('1');
 					inserttask('4');
@@ -142,13 +148,14 @@
 			}
 			else
 			{
+				$vhostcontainer=makeyesno('vhostcontainer', '1', '0', '1');
 				eval("echo \"".getTemplate("ipsandports/ipsandports_add")."\";");
 			}
 		}
 
 		elseif($action=='edit' && $id!=0)
 		{
-			$result=$db->query_first("SELECT `id`, `ip`, `port` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".(int)$id."'");
+			$result=$db->query_first("SELECT `id`, `ip`, `port`, `vhostcontainer`, `specialsettings` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `id`='".(int)$id."'");
 			if($result['ip']!='')
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
@@ -158,6 +165,13 @@
 					
 					$result_checkfordouble=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$db->escape($ip)."' AND `port`='".(int)$port."'");
 					$result_sameipotherport=$db->query_first("SELECT `id` FROM `".TABLE_PANEL_IPSANDPORTS."` WHERE `ip`='".$db->escape($result['ip'])."' AND `id`!='".(int)$id."'");
+					$vhostcontainer = intval($_POST['vhostcontainer']);
+					$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
+
+					if($vhostcontainer != '1')
+					{
+						$vhostcontainer = '0';
+					}
 
 					if($result['ip']!=$ip && $result['ip']==$settings['system']['ipaddress'] && $result_sameipotherport['id']=='')
 					{
@@ -169,7 +183,7 @@
 					}
 					else
 					{
-						$db->query("UPDATE `".TABLE_PANEL_IPSANDPORTS."` SET `ip`='".$db->escape($ip)."', `port`='".(int)$port."' WHERE `id`='".(int)$id."'");
+						$db->query("UPDATE `".TABLE_PANEL_IPSANDPORTS."` SET `ip`='".$db->escape($ip)."', `port`='".(int)$port."', `vhostcontainer`='".(int)$vhostcontainer."', `specialsettings`='".$db->escape($specialsettings)."' WHERE `id`='".(int)$id."'");
 
 						inserttask('1');
 						inserttask('4');
@@ -180,6 +194,7 @@
 				else
 				{
 					$result = htmlentities_array( $result );
+					$vhostcontainer=makeyesno('vhostcontainer', '1', '0', $result['vhostcontainer']);
 					eval("echo \"".getTemplate("ipsandports/ipsandports_edit")."\";");
 				}
 			}

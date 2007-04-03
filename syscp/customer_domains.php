@@ -205,7 +205,7 @@
 					 */
 					$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/','/^https?\:\/\//'),'',validate($_POST['subdomain'], 'subdomain', '/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i', 'subdomainiswrong')));
 					$domain=$idna_convert->encode($_POST['domain']);
-					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".(int)$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
+					$domain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `subcanemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='$domain' AND `customerid`='".(int)$userinfo['customerid']."' AND `parentdomainid`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 					$completedomain=$subdomain.'.'.$domain;
 					$completedomain_check=$db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='".$db->escape($completedomain)."' AND `customerid`='".(int)$userinfo['customerid']."' AND `caneditdomain` = '1'");
 					$aliasdomain = intval($_POST['alias']);
@@ -272,7 +272,7 @@
 
 					else
 					{
-						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `openbasedir_path`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".(int)$userinfo['customerid']."', '".$db->escape($completedomain)."', '".$db->escape($path)."', '".$db->escape($domain_check['ipandport'])."', ".(($aliasdomain != 0) ? "'".$db->escape($aliasdomain)."'" : "NULL").", '".(int)$domain_check['id']."', '0', '".$db->escape($domain_check['openbasedir'])."', '".$db->escape($openbasedir_path)."', '".$db->escape($domain_check['safemode'])."', '".$db->escape($domain_check['speciallogfile'])."', '".$db->escape($domain_check['specialsettings'])."')");
+						$result=$db->query("INSERT INTO `".TABLE_PANEL_DOMAINS."` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `openbasedir_path`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('".(int)$userinfo['customerid']."', '".$db->escape($completedomain)."', '".$db->escape($path)."', '".$db->escape($domain_check['ipandport'])."', ".(($aliasdomain != 0) ? "'".$db->escape($aliasdomain)."'" : "NULL").", '".(int)$domain_check['id']."', '".( $domain_check['subcanemaildomain'] == '3' ? '1' : '0' )."', '".$db->escape($domain_check['openbasedir'])."', '".$db->escape($openbasedir_path)."', '".$db->escape($domain_check['safemode'])."', '".$db->escape($domain_check['speciallogfile'])."', '".$db->escape($domain_check['specialsettings'])."')");
 						$result=$db->query("UPDATE `".TABLE_PANEL_CUSTOMERS."` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='".(int)$userinfo['customerid']."'");
 						inserttask('1');
     					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
@@ -346,7 +346,7 @@
 						$iswildcarddomain = '0';
 					}
 
-					if($result['parentdomainid'] != '0' && $result['subcanemaildomain'] == '1' && isset ($_POST['isemaildomain']) )
+					if( $result['parentdomainid'] != '0' && ( $result['subcanemaildomain'] == '1' || $result['subcanemaildomain'] == '2' ) && isset ($_POST['isemaildomain']) )
 					{
 						$isemaildomain = intval($_POST['isemaildomain']);
 					}
