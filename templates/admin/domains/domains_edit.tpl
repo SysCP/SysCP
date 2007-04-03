@@ -46,7 +46,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['subdomainforemail']}:</td>
-				<td class="main_field_display" nowrap="nowrap">$subcanemaildomain</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="subcanemaildomain">$subcanemaildomain</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['domain_edit']}:</td>

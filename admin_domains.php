@@ -235,7 +235,7 @@
 					{
 						$isemaildomain = '0';
 					}
-					if($subcanemaildomain != '1')
+					if($subcanemaildomain != '1' && $subcanemaildomain != '2' && $subcanemaildomain != '3')
 					{
 						$subcanemaildomain = '0';
 					}
@@ -357,7 +357,11 @@
 					}
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', '1');
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', '1');
-					$subcanemaildomain=makeyesno('subcanemaildomain', '1', '0', '0');
+					$subcanemaildomain=
+						makeoption($lng['admin']['subcanemaildomain']['never'], '0', '0') . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', '0') . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', '0') . 
+						makeoption($lng['admin']['subcanemaildomain']['always'], '3', '0') ;
 					$caneditdomain=makeyesno('caneditdomain', '1', '0', '1');
 					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
 					$safemode=makeyesno('safemode', '1', '0', '1');
@@ -441,7 +445,7 @@
 					{
 						$isemaildomain = '0';
 					}
-					if($subcanemaildomain != '1')
+					if($subcanemaildomain != '1' && $subcanemaildomain != '2' && $subcanemaildomain != '3')
 					{
 						$subcanemaildomain = '0';
 					}
@@ -493,6 +497,16 @@
 						$db->query("DELETE FROM `".TABLE_MAIL_VIRTUAL."` WHERE `domainid`='".$id."' ");
 					}
 
+					$updatechildren = '';
+					if($subcanemaildomain == '0' && $result['subcanemaildomain'] != '0')
+					{
+						$updatechildren = ', `isemaildomain`=\'0\' ';
+					}
+					elseif($subcanemaildomain == '3' && $result['subcanemaildomain'] != '3')
+					{
+						$updatechildren = ', `isemaildomain`=\'1\' ';
+					}
+
 					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `documentroot`='".$db->escape($documentroot)."', `ipandport`='".
 						$db->escape($ipandport)."', `aliasdomain`=".(($aliasdomain!=0 && $alias_check==0) ? '\''.$db->escape($aliasdomain).'\'' : 'NULL').
 						", `isbinddomain`='".$db->escape($isbinddomain)."', `isemaildomain`='".$db->escape($isemaildomain)."', `subcanemaildomain`='".
@@ -501,7 +515,7 @@
 						$db->escape($specialsettings)."' WHERE `id`='".(int)$id."'");
 					$result=$db->query("UPDATE `".TABLE_PANEL_DOMAINS."` SET `ipandport`='".$db->escape($ipandport)."', `openbasedir`='".
 						$db->escape($openbasedir)."', `safemode`='".$db->escape($safemode)."', `specialsettings`='".$db->escape($specialsettings).
-						"'  WHERE `parentdomainid`='".(int)$id."'");
+						"'".$updatechildren." WHERE `parentdomainid`='".(int)$id."'");
 	
 					redirectTo ( $filename , Array ( 'page' => $page , 's' => $s ) ) ;
 				}
@@ -523,7 +537,11 @@
 					$result['specialsettings'] = $result['specialsettings'];
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
-					$subcanemaildomain=makeyesno('subcanemaildomain', '1', '0', $result['subcanemaildomain']);
+					$subcanemaildomain=
+						makeoption($lng['admin']['subcanemaildomain']['never'], '0', $result['subcanemaildomain']) . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', $result['subcanemaildomain']) . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', $result['subcanemaildomain']) . 
+						makeoption($lng['admin']['subcanemaildomain']['always'], '3', $result['subcanemaildomain']) ;
 					$caneditdomain=makeyesno('caneditdomain', '1', '0', $result['caneditdomain']);
 					$openbasedir=makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 					$safemode=makeyesno('safemode', '1', '0', $result['safemode']);

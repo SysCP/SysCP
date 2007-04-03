@@ -167,18 +167,20 @@
 				                'diroptions.conf' . "\n\n";
 			}
 
-			$ipsandports_cyclearray=array();
-			$result_ipsandports=$db->query("SELECT CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) ORDER BY `ip`.`ip` ASC");
+			$result_ipsandports=$db->query("SELECT `ip`, `port`, `vhostcontainer`, `specialsettings` FROM `".TABLE_PANEL_IPSANDPORTS."` ORDER BY `ip` ASC, `port` ASC");
 			while($row_ipsandports=$db->fetch_array($result_ipsandports))
 			{
-				if(!in_array($row_ipsandports['ipandport'], $ipsandports_cyclearray))
+				$vhosts_file.='NameVirtualHost '.$row_ipsandports['ip'].':'.$row_ipsandports['port']."\n";
+				if($row_ipsandports['vhostcontainer'] == '1')
 				{
-					$ipsandports_cyclearray[] = $row_ipsandports['ipandport'];
-					$vhosts_file.='NameVirtualHost '.$row_ipsandports['ipandport']."\n";
-					$vhosts_file.='<VirtualHost '.$row_ipsandports['ipandport'].'>'."\n";
-					$vhosts_file.=' ServerName '.$settings['system']['hostname']."\n";
-					$vhosts_file.='</VirtualHost>'."\n"."\n";
+					$vhosts_file.='<VirtualHost '.$row_ipsandports['ip'].':'.$row_ipsandports['port'].'>'."\n";
+					if($row_ipsandports['specialsettings'] != '')
+					{
+						$vhosts_file.=$row_ipsandports['specialsettings']."\n";
+					}
+					$vhosts_file.='</VirtualHost>'."\n";
 				}
+				$vhosts_file.="\n";
 			}
 
 			$result_domains=$db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated` FROM `".TABLE_PANEL_DOMAINS."` `d` LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `".TABLE_PANEL_IPSANDPORTS."` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");

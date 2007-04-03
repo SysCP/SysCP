@@ -35,7 +35,7 @@ $header
 				<td class="main_field_name">{$lng['domains']['wildcarddomain']}</td>
 				<td class="main_field_display" nowrap="nowrap">$iswildcarddomain</td>
 			</tr></if>
-			<if $result['subcanemaildomain'] == '1' && $result['parentdomainid'] != '0' ><tr>
+			<if ( $result['subcanemaildomain'] == '1' || $result['subcanemaildomain'] == '2' ) && $result['parentdomainid'] != '0' ><tr>
 				<td class="main_field_name">Emaildomain:</td>
 				<td class="main_field_display" nowrap="nowrap">$isemaildomain</td>
 			</tr></if>

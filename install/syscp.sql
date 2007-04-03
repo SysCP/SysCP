@@ -282,6 +282,8 @@ CREATE TABLE `panel_ipsandports` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `ip` varchar(15) NOT NULL default '',
   `port` int(5) NOT NULL default '80',
+  `vhostcontainer` tinyint(1) NOT NULL default '0',
+  `specialsettings` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 
