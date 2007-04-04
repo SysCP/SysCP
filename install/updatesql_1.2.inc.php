@@ -1342,7 +1342,7 @@
 	if( $settings['panel']['version'] == '1.2.16-svn6' )
 	{
 		$db->query( 'ALTER TABLE `'.TABLE_PANEL_IPSANDPORTS.'` ADD `vhostcontainer` TINYINT( 1 ) NOT NULL DEFAULT \'0\', ADD `specialsettings` TEXT NOT NULL ');
-		$db->query( 'UPDATE `'.TABLE_PANEL_IPSANDPORTS.'` SET `vhostcontainer` = \'1\' ')
+		$db->query( 'UPDATE `'.TABLE_PANEL_IPSANDPORTS.'` SET `vhostcontainer` = \'1\' ');
 
 		// set new version
 		$query =
