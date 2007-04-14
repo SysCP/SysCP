@@ -34,10 +34,11 @@
 					'label' => 'Apache Webserver (HTTP)',
 					'commands' => Array
 					(
-						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
 						'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
 						'mkdir -p '.$settings['system']['documentroot_prefix'],
-						'mkdir -p '.$settings['system']['logfiles_directory']
+						'mkdir -p '.$settings['system']['logfiles_directory'],
+						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+						'apache-modconf apache disable mod_userdir'
 					),
 					'restart' => Array
 					(
@@ -138,10 +139,11 @@
 					'label' => 'Apache Webserver (HTTP)',
 					'commands' => Array
 					(
-						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
 						'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
 						'mkdir -p '.$settings['system']['documentroot_prefix'],
-						'mkdir -p '.$settings['system']['logfiles_directory']
+						'mkdir -p '.$settings['system']['logfiles_directory'],
+						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+						'apache-modconf apache disable mod_userdir'
 					),
 					'restart' => Array
 					(
