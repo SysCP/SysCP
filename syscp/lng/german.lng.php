@@ -479,4 +479,8 @@ $lng['mails']['trafficninetypercent']['subject'] = 'Reaching your trafficlimit';
 
 // ADDED IN 1.2.16-svn7
 $lng['admin']['ipsandports']['createvhostcontainer'] = 'Erstelle vHost-Container';
+$lng['admin']['subcanemaildomain']['never'] = 'Nie';
+$lng['admin']['subcanemaildomain']['choosableno'] = 'W&auml;hlbar, Standardwert: Nein';
+$lng['admin']['subcanemaildomain']['choosableyes'] = 'W&auml;hlbar, Standardwert: Ja';
+$lng['admin']['subcanemaildomain']['always'] = 'Immer';
 ?>
