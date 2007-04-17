@@ -358,10 +358,10 @@
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', '1');
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', '1');
 					$subcanemaildomain=
-						makeoption($lng['admin']['subcanemaildomain']['never'], '0', '0') . 
-						makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', '0') . 
-						makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', '0') . 
-						makeoption($lng['admin']['subcanemaildomain']['always'], '3', '0') ;
+						makeoption($lng['admin']['subcanemaildomain']['never'], '0', '0', true, true) . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', '0', true, true) . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', '0', true, true) . 
+						makeoption($lng['admin']['subcanemaildomain']['always'], '3', '0', true, true) ;
 					$caneditdomain=makeyesno('caneditdomain', '1', '0', '1');
 					$openbasedir=makeyesno('openbasedir', '1', '0', '1');
 					$safemode=makeyesno('safemode', '1', '0', '1');
@@ -538,10 +538,10 @@
 					$isbinddomain=makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);
 					$isemaildomain=makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
 					$subcanemaildomain=
-						makeoption($lng['admin']['subcanemaildomain']['never'], '0', $result['subcanemaildomain']) . 
-						makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', $result['subcanemaildomain']) . 
-						makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', $result['subcanemaildomain']) . 
-						makeoption($lng['admin']['subcanemaildomain']['always'], '3', $result['subcanemaildomain']) ;
+						makeoption($lng['admin']['subcanemaildomain']['never'], '0', $result['subcanemaildomain'], true, true) . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', $result['subcanemaildomain'], true, true) . 
+						makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', $result['subcanemaildomain'], true, true) . 
+						makeoption($lng['admin']['subcanemaildomain']['always'], '3', $result['subcanemaildomain'], true, true) ;
 					$caneditdomain=makeyesno('caneditdomain', '1', '0', $result['caneditdomain']);
 					$openbasedir=makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 					$safemode=makeyesno('safemode', '1', '0', $result['safemode']);
