@@ -148,9 +148,9 @@
 
 			// Get mail templates from database; the ones from 'admin' are fetched for fallback
 			$result = $db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$row['adminid'].'\' AND `language`=\''.$db->escape($row['def_language']).'\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_subject\'');
-			$mail_subject = _html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
+			$mail_subject = html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
 			$result = $db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$row['adminid'].'\' AND `language`=\''.$db->escape($row['def_language']).'\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
-			$mail_body = _html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
+			$mail_body = html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
 			mail($row['firstname'].' '.$row['name'].' <'.$row['email'].'>', $mail_subject, $mail_body, 'From: '.str_replace(array("\r", "\n"), '', $row['adminname']).' <'.str_replace(array("\r", "\n"), '', $row['adminemail']).'>');
 
 			$db->query(
@@ -176,9 +176,9 @@
 
 			// Get mail templates from database; the ones from 'admin' are fetched for fallback
 			$result = $db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$row['adminid'].'\' AND `language`=\''.$db->escape($row['def_language']).'\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_subject\'');
-			$mail_subject = _html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
+			$mail_subject = html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
 			$result = $db->query_first('SELECT `value` FROM `'.TABLE_PANEL_TEMPLATES.'` WHERE `adminid`=\''.(int)$row['adminid'].'\' AND `language`=\''.$db->escape($row['def_language']).'\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
-			$mail_body = _html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
+			$mail_body = html_entity_decode(replace_variables((($result['value']!='') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
 			mail($row['name'].' <'.$row['email'].'>', $mail_subject, $mail_body, 'From: '.str_replace(array("\r", "\n"), '', $row['name']).' <'.str_replace(array("\r", "\n"), '', $row['email']).'>');
 
 			$db->query(
