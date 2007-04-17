@@ -388,7 +388,7 @@
 			}
 			else
 			{
-				$subject = _html_entity_decode( $subject, $quote_style, $charset );
+				$subject = html_entity_decode( $subject, $quote_style, $charset );
 			}
 		}
 		return $subject;
@@ -1190,18 +1190,6 @@
 	}
 
 	/**
-	 * Was a wrapper, now only for compatibility there
-	 *
-	 * @param string The string in which the html entities should be decoded.
-	 * @return string The decoded string
-	 * @author Michael Duergner
-	 */
-	function _html_entity_decode($string)
-	{
-		return html_entity_decode($string);
-	}
-
-	/**
 	 * Calls html_entity_decode in a loop until the result doesn't differ from original anymore
 	 *
 	 * @param string The string in which the html entities should be eliminated.
@@ -1210,9 +1198,9 @@
 	 */
 	function html_entity_decode_complete( $string )
 	{
-		while( $string != _html_entity_decode( $string ) )
+		while( $string != html_entity_decode( $string ) )
 		{
-			$string = _html_entity_decode( $string );
+			$string = html_entity_decode( $string );
 		}
 		return $string;
 	}
