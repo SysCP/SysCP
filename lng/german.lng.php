@@ -483,4 +483,6 @@ $lng['admin']['subcanemaildomain']['never'] = 'Nie';
 $lng['admin']['subcanemaildomain']['choosableno'] = 'W&auml;hlbar, Standardwert: Nein';
 $lng['admin']['subcanemaildomain']['choosableyes'] = 'W&auml;hlbar, Standardwert: Ja';
 $lng['admin']['subcanemaildomain']['always'] = 'Immer';
+$lng['changepassword']['also_change_webalizer'] = ' Auch Passwort vom Webalizer &auml;ndern';
+
 ?>

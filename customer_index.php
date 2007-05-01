@@ -93,6 +93,19 @@
 				{
 					$db->query("UPDATE `".TABLE_FTP_USERS."` SET `password`=ENCRYPT('".$db->escape($new_password)."') WHERE `customerid`='".(int)$userinfo['customerid']."' AND `username`='".$db->escape($userinfo['loginname'])."'");
 				}
+				if(isset($_POST['change_webalizer']) && $_POST['change_webalizer']=='true')
+				{
+					if ( CRYPT_STD_DES == 1 )
+					{
+						$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
+						$new_webalizer_password = crypt($new_password, $saltfordescrypt);
+					}
+					else
+					{
+						$new_webalizer_password = crypt($new_password);
+					}
+					$db->query("UPDATE `".TABLE_PANEL_HTPASSWDS."` SET `password`='".$db->escape($new_webalizer_password)."' WHERE `customerid`='".(int)$userinfo['customerid']."' AND `username`='".$db->escape($userinfo['loginname'])."'");
+				}
 				redirectTo ( $filename , Array ( 's' => $s ) ) ;
 			}
 		}
