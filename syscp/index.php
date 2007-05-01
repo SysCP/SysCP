@@ -109,11 +109,11 @@
 				
 				if($userinfo['adminsession'] == '1')
 				{
-					redirectTo ( 'admin_index.php' , Array ( 's' => $s ) );
+					redirectTo ( 'admin_index.php' , Array ( 's' => $s ), true );
 				}
 				else
 				{
-					redirectTo ( 'customer_index.php' , Array ( 's' => $s ) );
+					redirectTo ( 'customer_index.php' , Array ( 's' => $s ), true );
 				}
 			}
 			else
