@@ -123,7 +123,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$password=validate($_POST['password'], 'password');
+					$password=validate($_POST['mysql_password'], 'password');
 					if($password=='')
 					{
 						standard_error(array('stringisempty','mypassword'));
@@ -167,7 +167,7 @@
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
 					// Only change Password if it is set, do nothing if it is empty! -- PH 2004-11-29
-					$password=validate($_POST['password'], 'password');
+					$password=validate($_POST['mysql_password'], 'password');
 					if($password!='')
 					{
 						// Begin root-session

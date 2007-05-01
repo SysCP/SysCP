@@ -77,7 +77,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['login']['password']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="password" name="password" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="password" name="admin_password" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>
