@@ -105,16 +105,16 @@
 				$userpath=$path;
 				$path=$userinfo['documentroot'].$path;
 				$username=validate($_POST['username'], 'username', '/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/');
-				validate($_POST['password'], 'password');
+				validate($_POST['directory_password'], 'password');
 				$username_path_check=$db->query_first("SELECT `id`, `username`, `path` FROM `".TABLE_PANEL_HTPASSWDS."` WHERE `username`='".$db->escape($username)."' AND `path`='".$db->escape($path)."' AND `customerid`='".(int)$userinfo['customerid']."'");
 				if ( CRYPT_STD_DES == 1 )
 				{
 					$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
-					$password = crypt($_POST['password'], $saltfordescrypt);
+					$password = crypt($_POST['directory_password'], $saltfordescrypt);
 				}
 				else
 				{
-					$password = crypt($_POST['password']);
+					$password = crypt($_POST['directory_password']);
 				}
 
 				if(!$_POST['path'])
@@ -129,7 +129,7 @@
 				{
 					standard_error('userpathcombinationdupe');
 				}
-				elseif($_POST['password'] == '')
+				elseif($_POST['directory_password'] == '')
 				{
 					standard_error(array('stringisempty','mypassword'));
 				}
@@ -159,17 +159,17 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					validate($_POST['password'], 'password');
+					validate($_POST['directory_password'], 'password');
 					if ( CRYPT_STD_DES == 1 )
 					{
 						$saltfordescrypt = substr(md5(uniqid(microtime(),1)),4,2);
-						$password = crypt($_POST['password'], $saltfordescrypt);
+						$password = crypt($_POST['directory_password'], $saltfordescrypt);
 					}
 					else
 					{
-						$password = crypt($_POST['password']);
+						$password = crypt($_POST['directory_password']);
 					}
-					if ($_POST['password'] == '')
+					if ($_POST['directory_password'] == '')
 					{
 						standard_error(array('stringisempty','mypassword'));
 					}

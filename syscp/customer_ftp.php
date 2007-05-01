@@ -123,7 +123,7 @@
 					$userpath=$path;
 					$path=$userinfo['documentroot'].$path;
 					$path_check=$db->query_first("SELECT `id`, `username`, `homedir` FROM `".TABLE_FTP_USERS."` WHERE `homedir`='".$db->escape($path)."' AND `customerid`='".(int)$userinfo['customerid']."'");
-					$password=validate($_POST['password'], 'password');
+					$password=validate($_POST['ftp_password'], 'password');
 
 					if(!$_POST['path'])
 					{
@@ -168,7 +168,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$password=validate($_POST['password'], 'password');
+					$password=validate($_POST['ftp_password'], 'password');
 					if($password=='')
 					{
 						standard_error(array('stringisempty','mypassword'));

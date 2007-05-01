@@ -142,7 +142,7 @@
 				$name = validate($_POST['name'], 'name');
 				$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
 				$loginname = validate($_POST['loginname'], 'loginname');
-				$password = validate($_POST['password'], 'password');
+				$password = validate($_POST['admin_password'], 'password');
 				$email = $idna_convert->encode ( validate($_POST['email'], 'email') );
 				$def_language = validate($_POST['def_language'], 'default language');
 				$customers = intval_ressource ( $_POST['customers'] ) ;
@@ -254,7 +254,7 @@
 					
 					if( $result['adminid'] == $userinfo['userid'] )
 					{
-						$newpassword = '';
+						$password = '';
 						$def_language = $result['def_language'];
 						$deactivated = $result['deactivated'];
 						$customers = $result['customers'];
@@ -273,7 +273,7 @@
  					}
 					else
 					{
-						$newpassword = validate($_POST['newpassword'], 'new password');
+						$password = validate($_POST['admin_password'], 'new password');
 						$def_language = validate($_POST['def_language'], 'default language');
 						$deactivated = intval ( $_POST['deactivated'] ) ;
 						$customers = intval_ressource ( $_POST['customers'] ) ;
@@ -309,9 +309,9 @@
 					else
 					{
 						$updatepassword='';
-						if($newpassword!='')
+						if($password!='')
 						{
-							$updatepassword="`password`='".md5($newpassword)."', ";
+							$updatepassword="`password`='".md5($password)."', ";
 						}
 
 						if($deactivated != '1')

@@ -328,7 +328,7 @@
 					{
 						$email_full = $result['email_full'];
 						$username = $idna_convert->decode($email_full);
-						$password=validate($_POST['password'], 'password');
+						$password=validate($_POST['email_password'], 'password');
 
 						if($email_full == '')
 						{
@@ -382,7 +382,7 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
-					$password=validate($_POST['password'], 'password');
+					$password=validate($_POST['email_password'], 'password');
 					if($password=='')
 					{
 						standard_error(array('stringisempty','mypassword'));

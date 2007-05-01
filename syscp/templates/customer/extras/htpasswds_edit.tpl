@@ -18,7 +18,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['login']['password']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="password" name="password" maxlength="50" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="password" name="directory_password" maxlength="50" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['menue']['main']['changepassword']}" /></td>

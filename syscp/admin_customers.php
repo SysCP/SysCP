@@ -224,7 +224,7 @@
 					$ftps = intval_ressource ( $_POST['ftps'] ) ;
 					$mysqls = intval_ressource ( $_POST['mysqls'] ) ;
 					$createstdsubdomain = intval ( $_POST['createstdsubdomain'] ) ;
-					$password = validate($_POST['password'], 'password') ;
+					$password = validate($_POST['customer_password'], 'password') ;
 					$sendpassword = intval ( $_POST['sendpassword'] ) ;
 				
 					$diskspace=$diskspace*1024;
@@ -474,7 +474,7 @@
 					$email = $idna_convert->encode ( validate($_POST['email'], 'email') ) ;
 					$customernumber = validate($_POST['customernumber'], 'customer number', '/^[a-z0-9 \-]*$/i');
 					$def_language = validate($_POST['def_language'], 'default language');
-					$newpassword = validate($_POST['newpassword'], 'new password');
+					$password = validate($_POST['customer_password'], 'new password');
 					$diskspace = intval_ressource ( $_POST['diskspace'] ) ;
 					$traffic = doubleval_ressource ( $_POST['traffic'] ) ;
 					$subdomains = intval_ressource ( $_POST['subdomains'] ) ;
@@ -530,9 +530,9 @@
 					else
 					{
 						$updatepassword='';
-						if($newpassword!='')
+						if($password!='')
 						{
-							$updatepassword="`password`='".md5($newpassword)."', ";
+							$updatepassword="`password`='".md5($password)."', ";
 						}
 
 						if($createstdsubdomain != '1')

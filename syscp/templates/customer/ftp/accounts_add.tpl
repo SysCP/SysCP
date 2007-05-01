@@ -16,7 +16,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['login']['password']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="password" name="password" size="30" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="password" name="ftp_password" size="30" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['ftp']['account_add']}" /></td>

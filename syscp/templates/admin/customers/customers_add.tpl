@@ -93,7 +93,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['login']['password']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="password" name="password" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="password" name="customer_password" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['sendpassword']}?</td>
