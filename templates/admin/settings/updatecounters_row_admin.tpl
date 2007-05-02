@@ -1,7 +1,7 @@
 		<tr>
 			<td class="main_field_name">
 				<b>
-					<if $admin['adminid'] != $userinfo['userid']><a href="$filename?s=$s&amp;page=$page&amp;action=su&amp;id={$admin['adminid']}" target="_blank">{$admin['loginname']}</a></if><if $admin['adminid'] == $userinfo['userid']>{$admin['loginname']}</if>:
+					<if $admin['adminid'] != $userinfo['userid']><a href="admin_admins.php?s=$s&amp;page=admins&amp;action=su&amp;id={$admin['adminid']}" target="_blank">{$admin['loginname']}</a></if><if $admin['adminid'] == $userinfo['userid']>{$admin['loginname']}</if>:
 				</b>
 
 				{$lng['admin']['customers']}: <span <if $admin['customers_used'] == $admin['customers_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['customers_used']} -&gt; {$admin['customers_used_new']}</b></span> ||
