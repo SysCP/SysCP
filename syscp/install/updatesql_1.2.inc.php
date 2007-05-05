@@ -783,7 +783,7 @@
 			'SET `value` = UNIX_TIMESTAMP() ' .
 			'WHERE `settinggroup` = \'system\' ' .
 			'AND `varname` = \'lastcronrun\' ';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query( $query );
 		// set new version
 		$query =
@@ -791,7 +791,7 @@
 			'SET `value` = \'1.2.13-rc4\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-rc4';
 	}
@@ -803,7 +803,7 @@
 			'SET `value` = \'1.2.13\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13';
 	}
@@ -830,7 +830,7 @@
 			'SET `value` = \''. (int)$lastaccountnumber . '\' ' .
 			'WHERE `settinggroup` = \'system\' ' .
 			'AND `varname` = \'lastaccountnumber\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['system']['lastaccountnumber'] = $lastaccountnumber;
 
@@ -840,7 +840,7 @@
 			'SET `value` = \'1.2.13-svn1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn1';
 	}
@@ -857,7 +857,7 @@
 			'SET `value` = \'1.2.13-svn2\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn2';
 	}
@@ -881,7 +881,7 @@
 			'SET `value` = \'1.2.13-svn3\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn3';
 	}
@@ -907,7 +907,7 @@
 			'SET `value` = \'1.2.13-svn4\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn4';
 	}
@@ -924,7 +924,7 @@
 			'SET `value` = \'1.2.13-svn5\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.13-svn5';
 	}
@@ -936,7 +936,7 @@
 			'SET `value` = \'1.2.14-rc1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc1';
 	}
@@ -950,7 +950,7 @@
 			'SET `value` = \'1.2.14-rc1-svn1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc1-svn1';
 	}
@@ -962,7 +962,7 @@
 			'SET `value` = \'1.2.14-rc2\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc2';
 	}
@@ -974,7 +974,7 @@
 			'SET `value` = \'1.2.14-rc3\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc3';
 	}
@@ -988,7 +988,7 @@
 			'SET `value` = \'1.2.14-rc3-svn1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc3-svn1';
 	}
@@ -1014,7 +1014,7 @@
 			'SET `value` = \'1.2.14-rc3-svn2\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc3-svn2';
 	}
@@ -1028,7 +1028,7 @@
 			'SET `value` = \'1.2.14-rc3-svn3\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc3-svn3';
 	}
@@ -1040,7 +1040,7 @@
 			'SET `value` = \'1.2.14-rc4\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-rc4';
 	}
@@ -1052,7 +1052,7 @@
 			'SET `value` = \'1.2.14\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14';
 	}
@@ -1080,7 +1080,7 @@
 			'SET `value` = \'1.2.14-svn1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn1';
 	}
@@ -1099,7 +1099,7 @@
 			'SET `value` = \'1.2.14-svn2\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn2';
 	}
@@ -1113,7 +1113,7 @@
 			'SET `value` = \'1.2.14-svn3\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn3';
 	}
@@ -1127,7 +1127,7 @@
 			'SET `value` = \'1.2.14-svn4\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn4';
 	}
@@ -1146,7 +1146,7 @@
 			'SET `value` = \'1.2.14-svn5\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.14-svn5';
 	}
@@ -1158,7 +1158,7 @@
 			'SET `value` = \'1.2.15\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.15';
 	}
@@ -1174,7 +1174,7 @@
 			'SET `value` = \'1.2.15-svn1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.15-svn1';
 	}
@@ -1186,7 +1186,7 @@
 			'SET `value` = \'1.2.16\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16';
 	}
@@ -1205,7 +1205,7 @@
 			'SET `value` = \'1.2.16-svn1\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn1';
 	}
@@ -1224,7 +1224,7 @@
 			'SET `value` = \'1.2.16-svn2\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn2';
 	}
@@ -1259,7 +1259,7 @@
 			'SET `value` = \'1.2.16-svn3\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn3';
 	}
@@ -1289,7 +1289,7 @@
 			'SET `value` = \'1.2.16-svn4\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn4';
 	}
@@ -1314,7 +1314,7 @@
 			'SET `value` = \'1.2.16-svn5\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn5';
 	}
@@ -1335,7 +1335,7 @@
 			'SET `value` = \'1.2.16-svn6\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn6';
 	}
@@ -1350,7 +1350,7 @@
 			'SET `value` = \'1.2.16-svn7\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn7';
 	}
@@ -1371,7 +1371,7 @@
 			'SET `value` = \'1.2.16-svn8\' ' .
 			'WHERE `settinggroup` = \'panel\' ' .
 			'AND `varname` = \'version\'';
-		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn8';
 	}
