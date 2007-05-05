@@ -154,6 +154,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_vmail_homedir" value="{$settings['system']['vmail_homedir']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['mailpwcleartext']['title']}:</b><br />{$lng['serversettings']['mailpwcleartext']['description']}<br /><a href="$filename?page=wipecleartextmailpws&amp;s=$s">{$lng['serversettings']['mailpwcleartext']['removelink']}</a></td>
+				<td class="main_field_display" nowrap="nowrap">{$mailpwcleartext}</td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['nameserversettings']}</b>
 				</td>

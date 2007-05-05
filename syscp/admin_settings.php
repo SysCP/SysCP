@@ -279,6 +279,12 @@
 				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='system' AND `varname`='vmail_homedir'");
 			}
 
+			if($_POST['system_mailpwcleartext']!=$settings['system']['mailpwcleartext'])
+			{
+				$value = ( $_POST['system_mailpwcleartext'] == '1' ? '1' : '0' );
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
+			}
+
 			if($_POST['panel_adminmail']!=$settings['panel']['adminmail'])
 			{
 				$value=$idna_convert->encode($_POST['panel_adminmail']);
@@ -514,6 +520,7 @@
 			}
 
 			$natsorting = makeyesno( 'panel_natsorting', '1', '0', $settings['panel']['natsorting'] );
+			$mailpwcleartext = makeyesno( 'system_mailpwcleartext', '1', '0', $settings['system']['mailpwcleartext'] );
 
 			$settings = htmlentities_array( $settings );
 			eval("echo \"".getTemplate("settings/settings")."\";");
@@ -556,6 +563,20 @@
 		else
 		{
 			ask_yesno('admin_counters_reallyupdate', $filename, array( 'page' => $page ) );
+		}
+	}
+
+	elseif ( $page == 'wipecleartextmailpws' && $userinfo['change_serversettings'] == '1' )
+	{
+		if ( isset( $_POST['send'] ) && $_POST['send'] == 'send' )
+		{
+			$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `password`='' ");
+			$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='0' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
+			redirectTo ( 'admin_settings.php' , array( 's' => $s ) ) ;
+		}
+		else
+		{
+			ask_yesno('admin_cleartextmailpws_reallywipe', $filename, array( 'page' => $page ) );
 		}
 	}
 

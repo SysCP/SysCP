@@ -341,7 +341,7 @@
 
 						else
 						{
-							$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `username`, `password`, `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".(int)$userinfo['customerid']."', '".$db->escape($email_full)."', '".$db->escape($username)."', '".$db->escape($password)."', ENCRYPT('".$db->escape($password)."'), '".$db->escape($settings['system']['vmail_homedir'])."', '".$db->escape($userinfo['loginname'].'/'.$email_full.'/')."', '".(int)$settings['system']['vmail_uid']."', '".(int)$settings['system']['vmail_gid']."', '".(int)$result['domainid']."', 'y')");
+							$db->query("INSERT INTO `".TABLE_MAIL_USERS."` (`customerid`, `email`, `username`, " . ( $settings['system']['mailpwcleartext'] == '1' ? '`password`, ' : '' ) . " `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('".(int)$userinfo['customerid']."', '".$db->escape($email_full)."', '".$db->escape($username)."', " . ( $settings['system']['mailpwcleartext'] == '1' ? "'".$db->escape($password)."'," : '' ) . " ENCRYPT('".$db->escape($password)."'), '".$db->escape($settings['system']['vmail_homedir'])."', '".$db->escape($userinfo['loginname'].'/'.$email_full.'/')."', '".(int)$settings['system']['vmail_uid']."', '".(int)$settings['system']['vmail_gid']."', '".(int)$result['domainid']."', 'y')");
 							$popaccountid = $db->insert_id();
 							$result['destination'] .= ' ' . $email_full;
 							$db->query("UPDATE `".TABLE_MAIL_VIRTUAL."` SET `destination` = '".$db->escape(makeCorrectDestination($result['destination']))."', `popaccountid` = '".(int)$popaccountid."' WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$id."'");
@@ -390,7 +390,7 @@
 					}
 					else
 					{
-						$result=$db->query("UPDATE `".TABLE_MAIL_USERS."` SET `password` = '".$db->escape($password)."', `password_enc`=ENCRYPT('".$db->escape($password)."') WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$result['popaccountid']."'");
+						$result=$db->query("UPDATE `".TABLE_MAIL_USERS."` SET " . ( $settings['system']['mailpwcleartext'] == '1' ? "`password` = '".$db->escape($password)."', " : '' ) . " `password_enc`=ENCRYPT('".$db->escape($password)."') WHERE `customerid`='".(int)$userinfo['customerid']."' AND `id`='".(int)$result['popaccountid']."'");
 						redirectTo ( $filename , Array ( 'page' => 'emails' , 'action' => 'edit' , 'id' => $id , 's' => $s ) ) ;
 					}
 				}

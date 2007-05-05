@@ -1354,5 +1354,26 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn7';
 	}
+	if( $settings['panel']['version'] == '1.2.16-svn7' )
+	{
+		$db->query("ALTER TABLE `".TABLE_PANEL_SESSIONS."` CHANGE `ipaddress` `ipaddress` VARCHAR( 255 ) NOT NULL");
+
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'system\', ' .
+			'    `varname`      = \'mailpwcleartext\', ' .
+			'    `value`        = \'0\' '
+		);
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn8\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn8';
+	}
 
 ?>
