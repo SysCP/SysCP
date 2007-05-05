@@ -349,7 +349,7 @@ DROP TABLE IF EXISTS `panel_sessions`;
 CREATE TABLE `panel_sessions` (
   `hash` varchar(32) NOT NULL default '',
   `userid` int(11) unsigned NOT NULL default '0',
-  `ipaddress` varchar(16) NOT NULL default '',
+  `ipaddress` varchar(255) NOT NULL default '',
   `useragent` varchar(255) NOT NULL default '',
   `lastactivity` int(11) unsigned NOT NULL default '0',
   `lastpaging` varchar(255) NOT NULL default '',
@@ -423,6 +423,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (36, 'system', 'phpappendopenbasedir', '/tmp/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (37, 'panel', 'natsorting', '1');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (38, 'system', 'deactivateddocroot', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (39, 'system', 'mailpwcleartext', '0');
 
 # --------------------------------------------------------
 
