@@ -27,104 +27,146 @@
 		'debian_sarge' => Array
 		(
 			'label' => 'Debian 3.1 (Sarge)',
-			'daemons' => Array
+			'services' => Array
 			(
-				'apache' => Array
+				'http' => Array
 				(
-					'label' => 'Apache Webserver (HTTP)',
-					'commands' => Array
+					'label' => $lng['admin']['configfiles']['http'],
+					'daemons' => Array
 					(
-						'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
-						'mkdir -p '.$settings['system']['documentroot_prefix'],
-						'mkdir -p '.$settings['system']['logfiles_directory'],
-						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
-						'apache-modconf apache disable mod_userdir'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/apache' . ( $settings['system']['apacheversion'] == 'apache2' ? '2' : '' ) . ' restart'
+						'apache' => Array
+						(
+							'label' => 'Apache Webserver',
+							'commands' => Array
+							(
+								'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
+								'mkdir -p '.$settings['system']['documentroot_prefix'],
+								'mkdir -p '.$settings['system']['logfiles_directory'],
+								'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+								'apache-modconf apache disable mod_userdir'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/apache' . ( $settings['system']['apacheversion'] == 'apache2' ? '2' : '' ) . ' restart'
+							)
+						)
 					)
 				),
-				'bind' => Array
+				'dns' => Array
 				(
-					'label' => 'Bind9 Nameserver (DNS)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['dns'],
+					'daemons' => Array
 					(
-						'etc_bind_default.zone' => '/etc/bind/default.zone'
-					),
-					'commands' => Array
-					(
-						'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
-						'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/bind9 restart'
+						'bind' => Array
+						(
+							'label' => 'Bind9',
+							'files' => Array
+							(
+								'etc_bind_default.zone' => '/etc/bind/default.zone'
+							),
+							'commands' => Array
+							(
+								'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
+								'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/bind9 restart'
+							)
+						),
 					)
 				),
-				'courier' => Array
+				'mail' => Array
 				(
-					'label' => 'Courier (POP3/IMAP)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['mail'],
+					'daemons' => Array
 					(
-						'etc_courier_authdaemonrc' => '/etc/courier/authdaemonrc',
-						'etc_courier_authmysqlrc' => '/etc/courier/authmysqlrc'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/courier-authdaemon restart',
-						'/etc/init.d/courier-pop restart'
+						'courier' => Array
+						(
+							'label' => 'Courier',
+							'files' => Array
+							(
+								'etc_courier_authdaemonrc' => '/etc/courier/authdaemonrc',
+								'etc_courier_authmysqlrc' => '/etc/courier/authmysqlrc'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/courier-authdaemon restart',
+								'/etc/init.d/courier-pop restart'
+							)
+						),
 					)
 				),
-				'postfix' => Array
+				'smtp' => Array
 				(
-					'label' => 'Postfix (MTA)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['smtp'],
+					'daemons' => Array
 					(
-						'etc_postfix_main.cf' => '/etc/postfix/main.cf',
-						'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
-						'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
-						'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-						'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
-					),
-					'commands' => Array
-					(
-						'mkdir -p /etc/postfix/sasl',
-						'mkdir -p /var/spool/postfix/etc/pam.d',
-						'mkdir -p /var/spool/postfix/var/run/mysqld',
-						'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
-						'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
-						'mkdir -p '.$settings['system']['vmail_homedir'],
-						'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/postfix restart'
+						'postfix' => Array
+						(
+							'label' => 'Postfix',
+							'files' => Array
+							(
+								'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+								'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+								'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+								'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+								'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
+							),
+							'commands' => Array
+							(
+								'mkdir -p /etc/postfix/sasl',
+								'mkdir -p /var/spool/postfix/etc/pam.d',
+								'mkdir -p /var/spool/postfix/var/run/mysqld',
+								'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
+								'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
+								'mkdir -p '.$settings['system']['vmail_homedir'],
+								'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/postfix restart'
+							)
+						),
 					)
 				),
-				'proftpd' => Array
+				'ftp' => Array
 				(
-					'label' => 'ProFTPd (FTP)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['ftp'],
+					'daemons' => Array
 					(
-						'etc_proftpd.conf' => '/etc/proftpd.conf'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/proftpd restart'
+						'proftpd' => Array
+						(
+							'label' => 'ProFTPd',
+							'files' => Array
+							(
+								'etc_proftpd.conf' => '/etc/proftpd.conf'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/proftpd restart'
+							)
+						),
 					)
 				),
-				'cron' => Array
+				'etc' => Array
 				(
-					'label' => 'Crond (cronscript)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['etc'],
+					'daemons' => Array
 					(
-						'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
-						'etc_cron.d_syscp' => '/etc/cron.d/syscp'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/cron restart'
+						'cron' => Array
+						(
+							'label' => 'Crond (cronscript)',
+							'files' => Array
+							(
+								'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
+								'etc_cron.d_syscp' => '/etc/cron.d/syscp'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/cron restart'
+							)
+						)
 					)
 				)
 			)
@@ -132,105 +174,147 @@
 		'debian_etch' => Array
 		(
 			'label' => 'Debian 4.0 (Etch)',
-			'daemons' => Array
+			'services' => Array
 			(
-				'apache' => Array
+				'http' => Array
 				(
-					'label' => 'Apache Webserver (HTTP)',
-					'commands' => Array
+					'label' => $lng['admin']['configfiles']['http'],
+					'daemons' => Array
 					(
-						'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
-						'mkdir -p '.$settings['system']['documentroot_prefix'],
-						'mkdir -p '.$settings['system']['logfiles_directory'],
-						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
-						'apache-modconf apache disable mod_userdir'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/apache' . ( $settings['system']['apacheversion'] == 'apache2' ? '2' : '' ) . ' restart'
+						'apache' => Array
+						(
+							'label' => 'Apache',
+							'commands' => Array
+							(
+								'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
+								'mkdir -p '.$settings['system']['documentroot_prefix'],
+								'mkdir -p '.$settings['system']['logfiles_directory'],
+								'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+								'apache-modconf apache disable mod_userdir'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/apache' . ( $settings['system']['apacheversion'] == 'apache2' ? '2' : '' ) . ' restart'
+							)
+						),
 					)
 				),
-				'bind' => Array
+				'dns' => Array
 				(
-					'label' => 'Bind9 Nameserver (DNS)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['dns'],
+					'daemons' => Array
 					(
-						'etc_bind_default.zone' => '/etc/bind/default.zone'
-					),
-					'commands' => Array
-					(
-						'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
-						'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/bind9 restart'
+						'bind' => Array
+						(
+							'label' => 'Bind9',
+							'files' => Array
+							(
+								'etc_bind_default.zone' => '/etc/bind/default.zone'
+							),
+							'commands' => Array
+							(
+								'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
+								'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/bind9 restart'
+							)
+						),
 					)
 				),
-				'courier' => Array
+				'mail' => Array
 				(
-					'label' => 'Courier (POP3/IMAP)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['mail'],
+					'daemons' => Array
 					(
-						'etc_courier_authdaemonrc' => '/etc/courier/authdaemonrc',
-						'etc_courier_authmysqlrc' => '/etc/courier/authmysqlrc'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/courier-authdaemon restart',
-						'/etc/init.d/courier-pop restart'
+						'courier' => Array
+						(
+							'label' => 'Courier',
+							'files' => Array
+							(
+								'etc_courier_authdaemonrc' => '/etc/courier/authdaemonrc',
+								'etc_courier_authmysqlrc' => '/etc/courier/authmysqlrc'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/courier-authdaemon restart',
+								'/etc/init.d/courier-pop restart'
+							)
+						),
 					)
 				),
-				'postfix' => Array
+				'smtp' => Array
 				(
-					'label' => 'Postfix (MTA)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['smtp'],
+					'daemons' => Array
 					(
-						'etc_postfix_main.cf' => '/etc/postfix/main.cf',
-						'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
-						'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
-						'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-						'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
-					),
-					'commands' => Array
-					(
-						'mkdir -p /etc/postfix/sasl',
-						'mkdir -p /var/spool/postfix/etc/pam.d',
-						'mkdir -p /var/spool/postfix/var/run/mysqld',
-						'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
-						'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
-						'mkdir -p '.$settings['system']['vmail_homedir'],
-						'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/postfix restart'
+						'postfix' => Array
+						(
+							'label' => 'Postfix',
+							'files' => Array
+							(
+								'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+								'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+								'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+								'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+								'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
+							),
+							'commands' => Array
+							(
+								'mkdir -p /etc/postfix/sasl',
+								'mkdir -p /var/spool/postfix/etc/pam.d',
+								'mkdir -p /var/spool/postfix/var/run/mysqld',
+								'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
+								'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
+								'mkdir -p '.$settings['system']['vmail_homedir'],
+								'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/postfix restart'
+							)
+						),
 					)
 				),
-				'proftpd' => Array
+				'ftp' => Array
 				(
-					'label' => 'ProFTPd (FTP)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['ftp'],
+					'daemons' => Array
 					(
-						'etc_proftpd_modules.conf' => '/etc/proftpd/modules.conf',
-						'etc_proftpd_proftpd.conf' => '/etc/proftpd/proftpd.conf'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/proftpd restart'
+						'proftpd' => Array
+						(
+							'label' => 'ProFTPd',
+							'files' => Array
+							(
+								'etc_proftpd_modules.conf' => '/etc/proftpd/modules.conf',
+								'etc_proftpd_proftpd.conf' => '/etc/proftpd/proftpd.conf'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/proftpd restart'
+							)
+						),
 					)
 				),
-				'cron' => Array
+				'etc' => Array
 				(
-					'label' => 'Crond (cronscript)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['etc'],
+					'daemons' => Array
 					(
-						'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
-						'etc_cron.d_syscp' => '/etc/cron.d/syscp'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/cron restart'
+						'cron' => Array
+						(
+							'label' => 'Crond (cronscript)',
+							'files' => Array
+							(
+								'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
+								'etc_cron.d_syscp' => '/etc/cron.d/syscp'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/cron restart'
+							)
+						)
 					)
 				)
 			)
@@ -238,119 +322,197 @@
 		'suse_linux_10_0' => Array
 		(
 			'label' => 'SUSE Linux 10.0',
-			'daemons' => Array
+			'services' => Array
 			(
-				'apache' => Array
+				'http' => Array
 				(
-					'label' => 'Apache Webserver (HTTP)',
-					'commands' => Array
+					'label' => $lng['admin']['configfiles']['http'],
+					'daemons' => Array
 					(
-						'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
-						'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
-						'mkdir -p '.$settings['system']['documentroot_prefix'],
-						'mkdir -p '.$settings['system']['logfiles_directory']
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/apache2 restart'
+						'apache' => Array
+						(
+							'label' => 'Apache',
+							'commands' => Array
+							(
+								'echo -e "\\nInclude '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'].'" >> '.$settings['system']['apacheconf_directory'].'httpd.conf',
+								'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
+								'mkdir -p '.$settings['system']['documentroot_prefix'],
+								'mkdir -p '.$settings['system']['logfiles_directory']
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/apache2 restart'
+							)
+						),
 					)
 				),
-				'bind' => Array
+				'dns' => Array
 				(
-					'label' => 'Bind Nameserver (DNS)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['dns'],
+					'daemons' => Array
 					(
-						'etc_bind_default.zone' => '/etc/named.d/default.zone'
-					),
-					'commands' => Array
-					(
-						'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/named.conf',
-						'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/named restart'
+						'bind' => Array
+						(
+							'label' => 'Bind',
+							'files' => Array
+							(
+								'etc_bind_default.zone' => '/etc/named.d/default.zone'
+							),
+							'commands' => Array
+							(
+								'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/named.conf',
+								'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/named restart'
+							)
+						),
 					)
 				),
-				'courier' => Array
+				'mail' => Array
 				(
-					'label' => 'Courier (POP3/IMAP)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['mail'],
+					'daemons' => Array
 					(
-						'etc_authlib_authdaemonrc' => '/etc/authlib/authdaemonrc',
-						'etc_authlib_authmysqlrc' => '/etc/authlib/authmysqlrc'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/courier-authdaemon restart',
-						'/etc/init.d/courier-pop restart'
+						'courier' => Array
+						(
+							'label' => 'Courier',
+							'files' => Array
+							(
+								'etc_authlib_authdaemonrc' => '/etc/authlib/authdaemonrc',
+								'etc_authlib_authmysqlrc' => '/etc/authlib/authmysqlrc'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/courier-authdaemon restart',
+								'/etc/init.d/courier-pop restart'
+							)
+						),
 					)
 				),
-				'postfix' => Array
+				'smtp' => Array
 				(
-					'label' => 'Postfix (MTA)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['smtp'],
+					'daemons' => Array
 					(
-						'etc_postfix_main.cf' => '/etc/postfix/main.cf',
-						'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
-						'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
-						'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-						'usr_lib_sasl2_smtpd.conf' => '/usr/lib/sasl2/smtpd.conf',
-					),
-					'commands' => Array
-					(
-						'mkdir -p /var/spool/postfix/etc/pam.d',
-						'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
-						'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
-						'mkdir -p '.$settings['system']['vmail_homedir'],
-						'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/postfix restart'
+						'postfix' => Array
+						(
+							'label' => 'Postfix',
+							'files' => Array
+							(
+								'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+								'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+								'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+								'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+								'usr_lib_sasl2_smtpd.conf' => '/usr/lib/sasl2/smtpd.conf',
+							),
+							'commands' => Array
+							(
+								'mkdir -p /var/spool/postfix/etc/pam.d',
+								'groupadd -g '.$settings['system']['vmail_gid'].' vmail',
+								'useradd -u '.$settings['system']['vmail_uid'].' -g vmail vmail',
+								'mkdir -p '.$settings['system']['vmail_homedir'],
+								'chown -R vmail:vmail '.$settings['system']['vmail_homedir']
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/postfix restart'
+							)
+						),
 					)
 				),
-				'proftpd' => Array
+				'ftp' => Array
 				(
-					'label' => 'ProFTPd (FTP)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['ftp'],
+					'daemons' => Array
 					(
-						'etc_proftpd_modules.conf' => '/etc/proftpd/modules.conf',
-						'etc_proftpd_proftpd.conf' => '/etc/proftpd/proftpd.conf'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/proftpd restart'
+						'proftpd' => Array
+						(
+							'label' => 'ProFTPd',
+							'files' => Array
+							(
+								'etc_proftpd_modules.conf' => '/etc/proftpd/modules.conf',
+								'etc_proftpd_proftpd.conf' => '/etc/proftpd/proftpd.conf'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/proftpd restart'
+							)
+						),
 					)
 				),
-				'cron' => Array
+				'etc' => Array
 				(
-					'label' => 'Crond (cronscript)',
-					'files' => Array
+					'label' => $lng['admin']['configfiles']['etc'],
+					'daemons' => Array
 					(
-						'etc_php5_syscpcron_php.ini' => '/etc/php5/syscpcron/php.ini',
-						'etc_cron.d_syscp' => '/etc/cron.d/syscp'
-					),
-					'restart' => Array
-					(
-						'/etc/init.d/cron restart'
+						'cron' => Array
+						(
+							'label' => 'Crond (cronscript)',
+							'files' => Array
+							(
+								'etc_php5_syscpcron_php.ini' => '/etc/php5/syscpcron/php.ini',
+								'etc_cron.d_syscp' => '/etc/cron.d/syscp'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/cron restart'
+							)
+						)
 					)
 				)
 			)
 		)
 	);
 
-	if( ($page == 'configfiles' || $page == 'overview') && $userinfo['change_serversettings'] == '1')
+	$distribution = '';
+	$distributions_select = '';
+	$service = '';
+	$services_select = '';
+	$daemon = '';
+	$daemons_select = '';
+	if( isset( $_GET['distribution'] ) && $_GET['distribution'] != '' && isset( $configfiles[$_GET['distribution']] ) && is_array( $configfiles[$_GET['distribution']] ) )
 	{
-		if(isset($_GET['distribution']) && $_GET['distribution']!='' && isset($configfiles[$_GET['distribution']]) && is_array($configfiles[$_GET['distribution']]) &&
-		   isset($_GET['daemon']) && $_GET['daemon']!='' && isset($configfiles[$_GET['distribution']]['daemons'][$_GET['daemon']]) && is_array($configfiles[$_GET['distribution']]['daemons'][$_GET['daemon']]))
+		$distribution = $_GET['distribution'];
+		if( isset( $_GET['service'] ) && $_GET['service']!='' && isset( $configfiles[$distribution]['services'][$_GET['service']] ) && is_array( $configfiles[$distribution]['services'][$_GET['service']] ) )
 		{
-			$distribution = $_GET['distribution'];
-			$daemon = $_GET['daemon'];
-
-			if(isset($configfiles[$distribution]['daemons'][$daemon]['commands']) && is_array($configfiles[$distribution]['daemons'][$daemon]['commands']))
+			$service = $_GET['service'];
+			if( isset( $_GET['daemon'] ) && $_GET['daemon']!='' && isset( $configfiles[$distribution]['services'][$service]['daemons'][$_GET['daemon']] ) && is_array( $configfiles[$distribution]['services'][$service]['daemons'][$_GET['daemon']] ) )
 			{
-				$commands = implode("\n", $configfiles[$distribution]['daemons'][$daemon]['commands']);
+				$daemon = $_GET['daemon'];
+			}
+			else
+			{
+				foreach( $configfiles[$distribution]['services'][$service]['daemons'] as $daemon_name => $daemon_details )
+				{
+					$daemons_select .= makeoption( $daemon_details['label'], $daemon_name );
+				}
+			}
+		}
+		else
+		{
+			foreach( $configfiles[$distribution]['services'] as $service_name => $service_details )
+			{
+				$services_select .= makeoption( $service_details['label'], $service_name );
+			}
+		}
+	}
+	else
+	{
+		foreach( $configfiles as $distribution_name => $distribution_details )
+		{
+			$distributions_select .= makeoption( $distribution_details['label'], $distribution_name );
+		}
+	}
+
+	if( $userinfo['change_serversettings'] == '1' )
+	{
+		if( $distribution != '' && $service != '' && $daemon != '' )
+		{
+			if(isset($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['commands']) && is_array($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['commands']))
+			{
+				$commands = implode("\n", $configfiles[$distribution]['services'][$service]['daemons'][$daemon]['commands']);
 			}
 			else
 			{
@@ -370,9 +532,9 @@
 				'<VIRTUAL_GID_MAPS>' => $settings['system']['vmail_gid']
 			);
 			$files = '';
-			if(isset($configfiles[$distribution]['daemons'][$daemon]['files']) && is_array($configfiles[$distribution]['daemons'][$daemon]['files']))
+			if(isset($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['files']) && is_array($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['files']))
 			{
-				while(list($filename, $realname) = each($configfiles[$distribution]['daemons'][$daemon]['files']))
+				while(list($filename, $realname) = each($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['files']))
 				{
 					$file_content = file_get_contents('./templates/misc/configfiles/'.$distribution.'/'.$daemon.'/'.$filename);
 					$file_content = strtr($file_content, $replace_arr);
@@ -382,9 +544,9 @@
 				}
 			}
 
-			if(isset($configfiles[$distribution]['daemons'][$daemon]['restart']) && is_array($configfiles[$distribution]['daemons'][$daemon]['restart']))
+			if(isset($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['restart']) && is_array($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['restart']))
 			{
-				$restart = implode("\n", $configfiles[$distribution]['daemons'][$daemon]['restart']);
+				$restart = implode("\n", $configfiles[$distribution]['services'][$service]['daemons'][$daemon]['restart']);
 			}
 			else
 			{
@@ -393,19 +555,29 @@
 
 			eval("echo \"".getTemplate("configfiles/configfiles")."\";");
 		}
-		else
+		elseif( $distribution == '' && $service == '' && $daemon == '' && $page == 'overview' )
 		{
 			$distributions = '';
-			while (list($distribution_name, $distribution_details) = each($configfiles))
+			foreach( $configfiles as $distribution_name => $distribution_details )
 			{
-				$daemons = '';
-				while(list($daemon_name, $daemon_details) = each($distribution_details['daemons']))
+				$services = '';
+				foreach( $distribution_details['services'] as $service_name => $service_details )
 				{
-					eval("\$daemons.=\"".getTemplate("configfiles/choose_daemon")."\";");
+					$daemons = '';
+					foreach( $service_details['daemons'] as $daemon_name => $daemon_details )
+					{
+						eval("\$daemons.=\"".getTemplate("configfiles/choose_daemon")."\";");
+					}
+					eval("\$services.=\"".getTemplate("configfiles/choose_service")."\";");
 				}
 				eval("\$distributions.=\"".getTemplate("configfiles/choose_distribution")."\";");
 			}
 			eval("echo \"".getTemplate("configfiles/choose")."\";");
+		}
+		else
+		{
+			
+			eval("echo \"".getTemplate("configfiles/wizard")."\";");
 		}
 	}
 

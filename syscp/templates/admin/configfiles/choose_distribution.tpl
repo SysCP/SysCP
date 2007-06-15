@@ -5,7 +5,7 @@
 				<td class="maintitle">&raquo;&nbsp;{$distribution_details['label']}</td>
 			</tr>
 			<tr>
-				<td class="field_name_border_left">$daemons</td>
+				<td class="field_name_border_left">$services</td>
 			</tr>
 		</table>
 	</td>

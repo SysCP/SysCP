@@ -475,7 +475,7 @@ $lng['question']['admin_counters_reallyupdate'] = 'Wollen Sie den Ressourcenverb
 
 // ADDED IN 1.2.16-svn6
 $lng['mails']['trafficninetypercent']['mailbody'] = 'Sehr geehrte(r) {NAME},\n\nSie haben bereits {TRAFFICUSED} MB von Ihren insgesamt {TRAFFIC} MB Traffic verbraucht.\nDies sind mehr als 90%.\n\nMit freundlichem Gruß, das SysCP-Team';
-$lng['mails']['trafficninetypercent']['subject'] = 'Reaching your trafficlimit';
+$lng['mails']['trafficninetypercent']['subject'] = 'Sie erreichen bald Ihr Traffic-Limit';
 
 // ADDED IN 1.2.16-svn7
 $lng['admin']['ipsandports']['createvhostcontainer'] = 'Erstelle vHost-Container';
@@ -484,5 +484,23 @@ $lng['admin']['subcanemaildomain']['choosableno'] = 'W&auml;hlbar, Standardwert:
 $lng['admin']['subcanemaildomain']['choosableyes'] = 'W&auml;hlbar, Standardwert: Ja';
 $lng['admin']['subcanemaildomain']['always'] = 'Immer';
 $lng['changepassword']['also_change_webalizer'] = ' Auch Passwort vom Webalizer &auml;ndern';
+
+// ADDED IN 1.2.16-svn8
+$lng['serversettings']['mailpwcleartext']['title'] = 'Passw&ouml;rter der Mail-Accounts auch im Klartext in der Datenbank speichern';
+$lng['serversettings']['mailpwcleartext']['description'] = 'Wenn diese Einstellung auf Ja gesetzt wird, werden alle Passw&ouml;rter auch unverschl&uuml;sselt (also im Klartext, f&uuml;r jeden mit Zugriff auf die SysCP-Datenbank sofort lesbar) in der mail_users-Tabelle gespeichert. Aktivieren Sie diese Option nur dann, wenn Sie sie wirklich gebrauchen!';
+$lng['serversettings']['mailpwcleartext']['removelink'] = 'Klicken Sie hier, um alle unverschl&uuml;sselten Passw&ouml;rter aus der Tabelle zu entfernen.';
+$lng['question']['admin_cleartextmailpws_reallywipe'] = 'Wollen Sie wirklich alle unverschl&uuml;sselten Passw&ouml;rter aus der Tabelle mail_users entfernen? Dieser Schritt kann nicht r&uuml;ckg&auml;ngig gemacht werden!';
+
+$lng['admin']['configfiles']['overview'] = '&Uuml;bersicht';
+$lng['admin']['configfiles']['wizard'] = 'Assistent';
+$lng['admin']['configfiles']['distribution'] = 'Distribution';
+$lng['admin']['configfiles']['service'] = 'Service';
+$lng['admin']['configfiles']['daemon'] = 'Daemon';
+$lng['admin']['configfiles']['http'] = 'Webserver (HTTP)';
+$lng['admin']['configfiles']['dns'] = 'Nameserver (DNS)';
+$lng['admin']['configfiles']['mail'] = 'Mailserver (POP3/IMAP)';
+$lng['admin']['configfiles']['smtp'] = 'Mailserver (SMTP)';
+$lng['admin']['configfiles']['ftp'] = 'FTP-Server';
+$lng['admin']['configfiles']['etc'] = 'Sonstige (System)';
 
 ?>
