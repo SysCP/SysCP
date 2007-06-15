@@ -492,4 +492,16 @@ $lng['serversettings']['mailpwcleartext']['description'] = 'If this is set to ye
 $lng['serversettings']['mailpwcleartext']['removelink'] = 'Click here to wipe all unencrypted passwords from the table.';
 $lng['question']['admin_cleartextmailpws_reallywipe'] = 'Do you really want to wipe all unencrypted mail account passwords from the table mail_users? This cannot be reverted!';
 
+$lng['admin']['configfiles']['overview'] = 'Overview';
+$lng['admin']['configfiles']['wizard'] = 'Wizard';
+$lng['admin']['configfiles']['distribution'] = 'Distribution';
+$lng['admin']['configfiles']['service'] = 'Service';
+$lng['admin']['configfiles']['daemon'] = 'Daemon';
+$lng['admin']['configfiles']['http'] = 'Webserver (HTTP)';
+$lng['admin']['configfiles']['dns'] = 'Nameserver (DNS)';
+$lng['admin']['configfiles']['mail'] = 'Mailserver (POP3/IMAP)';
+$lng['admin']['configfiles']['smtp'] = 'Mailserver (SMTP)';
+$lng['admin']['configfiles']['ftp'] = 'FTP-Server';
+$lng['admin']['configfiles']['etc'] = 'Others (System)';
+
 ?>
