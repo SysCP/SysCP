@@ -1362,7 +1362,7 @@
 			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
 			'SET `settinggroup` = \'system\', ' .
 			'    `varname`      = \'mailpwcleartext\', ' .
-			'    `value`        = \'0\' '
+			'    `value`        = \'1\' '
 		);
 
 		// set new version
