@@ -8,15 +8,15 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['admin']['configfiles']['distribution']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><if $distribution != ''><input type="hidden" name="distribution" value="$distribution"><a href="$filename?s=$s&amp;page=$page">{$configfiles[$distribution]['label']}</a><else><select name="distribution">{$distributions_select}</select></if></td>
+				<td class="main_field_display" nowrap="nowrap"><if $distribution != ''><input type="hidden" name="distribution" value="$distribution"><a href="$filename?s=$s&amp;page=$page">{$configfiles[$distribution]['label']}</a><else><select name="distribution" onChange="javascript: window.location.href='$filename?s=$s&page=$page&distribution=' + this.options[ this.selectedIndex ].value;"><option value="choose" disabled="disabled">{$lng['admin']['configfiles']['choosedistribution']}</option>{$distributions_select}</select></if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['admin']['configfiles']['service']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><if $service != ''><input type="hidden" name="service" value="$service"><a href="$filename?s=$s&amp;page=$page&amp;distribution=$distribution">{$configfiles[$distribution]['services'][$service]['label']}</a><else><select name="service">{$services_select}</select></if></td>
+				<td class="main_field_display" nowrap="nowrap"><if $service != ''><input type="hidden" name="service" value="$service"><a href="$filename?s=$s&amp;page=$page&amp;distribution=$distribution">{$configfiles[$distribution]['services'][$service]['label']}</a><else><select name="service" onChange="javascript: window.location.href='$filename?s=$s&page=$page&distribution=$distribution&service=' + this.options[ this.selectedIndex ].value;"><option value="choose" disabled="disabled">{$lng['admin']['configfiles']['chooseservice']}</option>{$services_select}</select></if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['admin']['configfiles']['daemon']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><select name="daemon">{$daemons_select}</select></td>
+				<td class="main_field_display" nowrap="nowrap"><select name="daemon" onChange="javascript: window.location.href='$filename?s=$s&page=$page&distribution=$distribution&service=$service&daemon=' + this.options[ this.selectedIndex ].value;"><option value="choose" disabled="disabled">{$lng['admin']['configfiles']['choosedaemon']}</option>{$daemons_select}</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input class="bottom" type="submit" value="{$lng['panel']['next']}" /></td>
