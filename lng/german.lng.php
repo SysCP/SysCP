@@ -474,7 +474,7 @@ $lng['admin']['updatecounters'] = 'Ressourcenverbrauch';
 $lng['question']['admin_counters_reallyupdate'] = 'Wollen Sie den Ressourcenverbrauch neu berechnen?';
 
 // ADDED IN 1.2.16-svn6
-$lng['mails']['trafficninetypercent']['mailbody'] = 'Sehr geehrte(r) {NAME},\n\nSie haben bereits {TRAFFICUSED} MB von Ihren insgesamt {TRAFFIC} MB Traffic verbraucht.\nDies sind mehr als 90%.\n\nMit freundlichem Gruß, das SysCP-Team';
+$lng['mails']['trafficninetypercent']['mailbody'] = 'Sehr geehrte(r) {NAME},\n\nSie haben bereits {TRAFFICUSED} MB von Ihren insgesamt {TRAFFIC} MB Traffic verbraucht.\nDies sind mehr als 90%.\n\nMit freundlichem Gruï¿½, das SysCP-Team';
 $lng['mails']['trafficninetypercent']['subject'] = 'Sie erreichen bald Ihr Traffic-Limit';
 
 // ADDED IN 1.2.16-svn7
@@ -502,5 +502,8 @@ $lng['admin']['configfiles']['mail'] = 'Mailserver (POP3/IMAP)';
 $lng['admin']['configfiles']['smtp'] = 'Mailserver (SMTP)';
 $lng['admin']['configfiles']['ftp'] = 'FTP-Server';
 $lng['admin']['configfiles']['etc'] = 'Sonstige (System)';
+$lng['admin']['configfiles']['choosedistribution'] = '-- Distribution w&auml;hlen --';
+$lng['admin']['configfiles']['chooseservice'] = '-- Service w&auml;hlen --';
+$lng['admin']['configfiles']['choosedaemon'] = '-- Daemon w&auml;hlen --';
 
 ?>

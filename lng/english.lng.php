@@ -503,5 +503,8 @@ $lng['admin']['configfiles']['mail'] = 'Mailserver (POP3/IMAP)';
 $lng['admin']['configfiles']['smtp'] = 'Mailserver (SMTP)';
 $lng['admin']['configfiles']['ftp'] = 'FTP-Server';
 $lng['admin']['configfiles']['etc'] = 'Others (System)';
+$lng['admin']['configfiles']['choosedistribution'] = '-- Choose a distribution --';
+$lng['admin']['configfiles']['chooseservice'] = '-- Choose a service --';
+$lng['admin']['configfiles']['choosedaemon'] = '-- Choose a daemon --';
 
 ?>
