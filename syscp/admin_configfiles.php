@@ -36,7 +36,7 @@
 					(
 						'apache' => Array
 						(
-							'label' => 'Apache Webserver',
+							'label' => 'Apache',
 							'commands' => Array
 							(
 								'touch '.$settings['system']['apacheconf_directory'].$settings['system']['apacheconf_filename'],
