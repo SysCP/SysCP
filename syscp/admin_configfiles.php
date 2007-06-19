@@ -242,6 +242,19 @@
 								'/etc/init.d/courier-pop restart'
 							)
 						),
+						'dovecot' => Array
+						(
+							'label' => 'Dovecot',
+							'files' => Array
+							(
+								'etc_dovecot_dovecot.conf' => '/etc/dovecot/dovecot.conf',
+								'etc_dovecot_dovecot-sql.conf' => '/etc/dovecot/dovecot-sql.conf'
+							),
+							'restart' => Array
+							(
+								'/etc/init.d/dovecot restart'
+							)
+						)
 					)
 				),
 				'smtp' => Array
@@ -576,7 +589,7 @@
 		}
 		else
 		{
-			
+
 			eval("echo \"".getTemplate("configfiles/wizard")."\";");
 		}
 	}
