@@ -1375,5 +1375,24 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn8';
 	}
+	if( $settings['panel']['version'] == '1.2.16-svn8' )
+	{
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'system\', ' .
+			'    `varname`      = \'last_tasks_run\', ' .
+			'    `value`        = \'0\' '
+		);
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn9\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn9';
+	}
 
 ?>

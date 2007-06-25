@@ -56,14 +56,14 @@
 
 		$phpversion = phpversion();
 		$phpmemorylimit = @ini_get("memory_limit");
-		if($phpmemorylimit == "") 
+		if($phpmemorylimit == "")
 		{
-			$phpmemorylimit = $lng['admin']['memorylimitdisabled']; 
+			$phpmemorylimit = $lng['admin']['memorylimitdisabled'];
 		}
 		$mysqlserverversion = mysql_get_server_info();
 		$mysqlclientversion = mysql_get_client_info();
 		$webserverinterface = strtoupper(@php_sapi_name());
-		
+
 		if( (isset($_GET['lookfornewversion']) && $_GET['lookfornewversion'] == 'yes') || (isset($lookfornewversion) && $lookfornewversion == 'yes') )
 		{
 			$latestversion = @file( 'http://version.syscp.org/SysCP/legacy/' . $version );
@@ -101,7 +101,8 @@
 
 		$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
 
-		$cronlastrun = date("d.m.Y H:i:s", $settings['system']['lastcronrun']);
+		$cronlastrun = date("d.m.Y H:i:s", $settings['system']['last_tasks_run']);
+		$trafficlastrun = date("d.m.Y H:i:s", $settings['system']['last_traffic_run']);
 		eval("echo \"".getTemplate("index/index")."\";");
 	}
 
@@ -145,7 +146,7 @@
 			eval("echo \"".getTemplate("index/change_password")."\";");
 		}
 	}
-	
+
 	elseif($page=='change_language')
 	{
 		if(isset($_POST['send']) && $_POST['send']=='send')

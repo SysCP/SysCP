@@ -78,6 +78,10 @@ $header
 			<td class="field_display">$cronlastrun</td>
 		</tr>
 		<tr>
+			<td class="field_name_border_left">{$lng['admin']['trafficlastrun']}:</td>
+			<td class="field_display">$trafficlastrun</td>
+		</tr>
+		<tr>
 			<td class="field_name_border_left">{$lng['admin']['installedversion']}:</td>
 			<td class="field_display">$version</td>
 		</tr>

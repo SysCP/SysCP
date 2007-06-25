@@ -505,5 +505,6 @@ $lng['admin']['configfiles']['etc'] = 'Sonstige (System)';
 $lng['admin']['configfiles']['choosedistribution'] = '-- Distribution w&auml;hlen --';
 $lng['admin']['configfiles']['chooseservice'] = '-- Service w&auml;hlen --';
 $lng['admin']['configfiles']['choosedaemon'] = '-- Daemon w&auml;hlen --';
+$lng['admin']['trafficlastrun'] = 'Letzte Trafficberechnung';
 
 ?>
