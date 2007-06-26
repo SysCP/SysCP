@@ -1396,35 +1396,50 @@
 	function mkDirWithCorrectOwnership( $homeDir, $dirToCreate, $uid, $gid )
 	{
 		$returncode = true;
-
-		$homeDir = makeCorrectDir( $homeDir );
-		$dirToCreate = makeCorrectDir( $dirToCreate );
-
-		$subdir = makeCorrectDir( str_replace( $homeDir, '', $dirToCreate ) );
-		$offset = 0;
-		$subdirlen = strlen( $subdir );
-		$subdirs = array();
-		array_push( $subdirs, $dirToCreate );
-
-		while( $offset < $subdirlen )
+		if( $homeDir != '' && $dirToCreate != '' )
 		{
-			$offset = strpos( $subdir, '/', $offset );
-			$subdirelem = substr( $subdir, 0, $offset );
-			$offset++;
-			array_push( $subdirs, makeCorrectDir( $homeDir . $subdirelem ) );
-		}
+			$homeDir = makeCorrectDir( $homeDir );
+			$dirToCreate = makeCorrectDir( $dirToCreate );
 
-		$subdirs = array_unique( $subdirs );
-		sort( $subdirs );
-
-		foreach( $subdirs as $sdir )
-		{
-			if( !is_dir( $sdir ) )
+			if( substr( $dirToCreate, 0, strlen( $homeDir ) ) == $homeDir )
 			{
-				$sdir = makeCorrectDir( $sdir );
-				safe_exec( 'mkdir -p ' . escapeshellarg( $sdir ) );
-				safe_exec( 'chown -R ' . (int)$uid . ':' . (int)$gid . ' ' . escapeshellarg( $sdir ) );
+				$subdir = substr( $dirToCreate, strlen( $homeDir ) );
 			}
+			else
+			{
+				$subdir = $dirToCreate;
+			}
+
+			$subdir = makeCorrectDir( $subdir );
+			$subdirlen = strlen( $subdir );
+			$subdirs = array();
+			array_push( $subdirs, $dirToCreate );
+
+			$offset = 0;
+			while( $offset < $subdirlen )
+			{
+				$offset = strpos( $subdir, '/', $offset );
+				$subdirelem = substr( $subdir, 0, $offset );
+				$offset++;
+				array_push( $subdirs, makeCorrectDir( $homeDir . $subdirelem ) );
+			}
+
+			$subdirs = array_unique( $subdirs );
+			sort( $subdirs );
+
+			foreach( $subdirs as $sdir )
+			{
+				if( !is_dir( $sdir ) )
+				{
+					$sdir = makeCorrectDir( $sdir );
+					safe_exec( 'mkdir -p ' . escapeshellarg( $sdir ) );
+					safe_exec( 'chown -R ' . (int)$uid . ':' . (int)$gid . ' ' . escapeshellarg( $sdir ) );
+				}
+			}
+		}
+		else
+		{
+			$returncode = false;
 		}
 
 		return $returncode;

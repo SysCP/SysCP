@@ -333,8 +333,11 @@
 			$diroptions = array();
 			while($row_diroptions=$db->fetch_array($result))
 			{
-				$diroptions[$row_diroptions['path']] = $row_diroptions;
-				$diroptions[$row_diroptions['path']]['htpasswds'] = array();
+				if( $row_diroptions['customerid'] != 0 && isset( $row_diroptions['customerroot'] ) && $row_diroptions['customerroot'] != '' )
+				{
+					$diroptions[$row_diroptions['path']] = $row_diroptions;
+					$diroptions[$row_diroptions['path']]['htpasswds'] = array();
+				}
 			}
 			$result = $db->query(
 				'SELECT `htpw`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` ' .
@@ -344,15 +347,18 @@
 			);
 			while($row_htpasswds=$db->fetch_array($result))
 			{
-				if( !is_array ( $diroptions[$row_htpasswds['path']] ) )
+				if( $row_htpasswds['customerid'] != 0 && isset( $row_htpasswds['customerroot'] ) && $row_htpasswds['customerroot'] != '' )
 				{
-					$diroptions[$row_htpasswds['path']] = array();
+					if( !is_array ( $diroptions[$row_htpasswds['path']] ) )
+					{
+						$diroptions[$row_htpasswds['path']] = array();
+					}
+					$diroptions[$row_htpasswds['path']]['path'] = $row_htpasswds['path'];
+					$diroptions[$row_htpasswds['path']]['guid'] = $row_htpasswds['guid'];
+					$diroptions[$row_htpasswds['path']]['customerroot'] = $row_htpasswds['customerroot'];
+					$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
+					$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
 				}
-				$diroptions[$row_htpasswds['path']]['path'] = $row_htpasswds['path'];
-				$diroptions[$row_htpasswds['path']]['guid'] = $row_htpasswds['guid'];
-				$diroptions[$row_htpasswds['path']]['customerroot'] = $row_htpasswds['customerroot'];
-				$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
-				$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
 			}
 
 			$htpasswd_files = array();
