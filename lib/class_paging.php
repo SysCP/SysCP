@@ -307,7 +307,7 @@
 			if( $natSorting == true || ( $natSorting === null && $this->natSorting == true ) )
 			{
 				// Acts similar to php's natsort(), found in one comment at http://my.opera.com/cpr/blog/show.dml/160556
-				$sortcode = 'ORDER BY IF( ASCII( RIGHT( ' . $sortfield . ', 1 ) ) > 57, LPAD( ' . $sortfield . ', 255, \'0\' ), LPAD( CONCAT( ' . $sortfield . ', \'-\' ), 255, \'0\' ) ) ' . $sortorder;
+				$sortcode = 'ORDER BY CONCAT( IF( ASCII( LEFT( ' . $sortfield . ', 1 ) ) > 57, LEFT( ' . $sortfield . ', 1 ), \'0\' ), IF( ASCII( RIGHT( ' . $sortfield . ', 1 ) ) > 57, LPAD( ' . $sortfield . ', 255, \'0\' ), LPAD( CONCAT( ' . $sortfield . ', \'-\' ), 255, \'0\' ) ) ) ';
 			}
 			else
 			{
