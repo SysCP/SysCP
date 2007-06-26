@@ -477,6 +477,9 @@ $lng['panel']['pathDescription'] = 'If the directory doesn\'t exist, it will be 
 // ADDED IN 1.2.16-svn6
 $lng['mails']['trafficninetypercent']['mailbody'] = 'Dear {NAME},\n\nYou used {TRAFFICUSED} MB of your available {TRAFFIC} MB of traffic.\nThis are more than 90%.\n\nYours sincerely, the SysCP-Team';
 $lng['mails']['trafficninetypercent']['subject'] = 'Reaching your trafficlimit';
+$lng['admin']['templates']['trafficninetypercent'] = 'Notification mail for customers when ninety percent of traffic is exhausted';
+$lng['admin']['templates']['TRAFFIC'] = 'Replaced with the traffic, which was assigned to the customer.';
+$lng['admin']['templates']['TRAFFICUSED'] = 'Replaced with the traffic, which was exhausted by the customer.';
 
 // ADDED IN 1.2.16-svn7
 $lng['admin']['ipsandports']['createvhostcontainer'] = 'Create vHost-Container';
