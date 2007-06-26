@@ -476,6 +476,9 @@ $lng['question']['admin_counters_reallyupdate'] = 'Wollen Sie den Ressourcenverb
 // ADDED IN 1.2.16-svn6
 $lng['mails']['trafficninetypercent']['mailbody'] = 'Sehr geehrte(r) {NAME},\n\nSie haben bereits {TRAFFICUSED} MB von Ihren insgesamt {TRAFFIC} MB Traffic verbraucht.\nDies sind mehr als 90%.\n\nVielen Dank,\ndas SysCP-Team';
 $lng['mails']['trafficninetypercent']['subject'] = 'Sie erreichen bald Ihr Traffic-Limit';
+$lng['admin']['templates']['trafficninetypercent'] = 'Hinweismail f&uuml;r Kunden, wenn sie 90% des Traffics verbraucht haben';
+$lng['admin']['templates']['TRAFFIC'] = 'Wird mit Traffic, der dem Kunden zugewiesen wurde, ersetzt.';
+$lng['admin']['templates']['TRAFFICUSED'] = 'Wird mit Traffic, der vom Kunden bereits verbraucht wurde, ersetzt.';
 
 // ADDED IN 1.2.16-svn7
 $lng['admin']['ipsandports']['createvhostcontainer'] = 'Erstelle vHost-Container';

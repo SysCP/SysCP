@@ -59,6 +59,17 @@ $header
 				<td class="field_name_border_left"><i>{EMAIL}</i>:</td>
 				<td class="field_name">{$lng['admin']['templates']['EMAIL']}</td>
 			</tr>
+			<tr>
+				<td class="field_display_border_left" colspan="2"><b>{$lng['admin']['templates']['trafficninetypercent']}</b></td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left"><i>{TRAFFIC}</i>:</td>
+				<td class="field_name">{$lng['admin']['templates']['TRAFFIC']}</td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left"><i>{TRAFFICUSED}</i>:</td>
+				<td class="field_name">{$lng['admin']['templates']['TRAFFICUSED']}</td>
+			</tr>
 		</table>
 	</form>
 	<br />
