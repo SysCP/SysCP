@@ -11,7 +11,7 @@
  * @author     Nickola Kolev <nikky@minus273.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
- * @version    $Id: catalan.lng.php 941 2006-11-06 21:24:12Z flo $
+ * @version    $Id$
  */
 
 
