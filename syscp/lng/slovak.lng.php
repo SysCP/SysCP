@@ -11,7 +11,7 @@
  * @author     Bystrik Kacer <drakeman@phpnuke.sk>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
- * @version    $Id: slovak.lng.php 970 2006-8-12 01:04:00Z flo $
+ * @version    $Id$
  */
 
 
