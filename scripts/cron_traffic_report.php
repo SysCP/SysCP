@@ -191,7 +191,7 @@
 		// Another month, let's build our report
 		if(date('d') == '01')
 		{
-			$mail_subject = 'Trafficreport '.date("m/y", $yesterday).' for '. $row['name'].;
+			$mail_subject = 'Trafficreport '.date("m/y", $yesterday).' for '. $row['name'];
 			$mail_body = 'Trafficreport '.date("m/y", $yesterday).' for '. $row['name']."\n";
 			$mail_body .= '---------------------------------------------'."\n";
 			$mail_body .= 'Loginname       Traffic used (Percent) | Traffic available'."\n";
