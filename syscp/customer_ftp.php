@@ -119,6 +119,13 @@
 			{
 				if(isset($_POST['send']) && $_POST['send']=='send')
 				{
+					if ($settings['customer']['ftpatdomain'] == '1')
+					{
+						$ftpusername=validate($_POST['ftp_username'], 'username', '/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/');
+						$ftpdomain = $idna_convert->encode(validate($_POST['ftp_domain'], 'domain'));
+						$ftpdomain_check = $db->query_first("SELECT `id`, `domain`, `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain`='".$db->escape($ftpdomain)."' AND `customerid`='".(int)$userinfo['customerid']."'");
+					}
+
 					$path=makeCorrectDir(validate($_POST['path'], 'path'));
 					$userpath=$path;
 					$path=$userinfo['documentroot'].$path;
@@ -137,10 +144,25 @@
 					{
 						standard_error('patherror');
 					}
+					elseif($settings['customer']['ftpatdomain'] == '1' && $ftpusername=='')
+					{
+						standard_error(array('stringisempty','username'));
+					}
+					elseif($settings['customer']['ftpatdomain'] == '1' && $ftpdomain_check['domain']!=$ftpdomain)
+					{
+						standard_error('maindomainnonexist',$domain);
+					}
 
 					else
 					{
-						$username=$userinfo['loginname'].$settings['customer']['ftpprefix'].(intval($userinfo['ftp_lastaccountnumber'])+1);
+						if ($settings['customer']['ftpatdomain'] == '1')
+						{
+							$username=$ftpusername."@".$ftpdomain;
+						}
+						else
+						{
+							$username=$userinfo['loginname'].$settings['customer']['ftpprefix'].(intval($userinfo['ftp_lastaccountnumber'])+1);
+						}
 						$db->query("INSERT INTO `".TABLE_FTP_USERS."` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('".(int)$userinfo['customerid']."', '".$db->escape($username)."', ENCRYPT('".$db->escape($password)."'), '".$db->escape($path)."', 'y', '".(int)$userinfo['guid']."', '".(int)$userinfo['guid']."')");
 						$db->query("UPDATE `".TABLE_FTP_GROUPS."` SET `members`=CONCAT_WS(',',`members`,'".$db->escape($username)."') WHERE `customerid`='".$userinfo['customerid']."' AND `gid`='".(int)$userinfo['guid']."'");
 //						$db->query("INSERT INTO `".TABLE_FTP_GROUPS."` (`customerid`, `groupname`, `gid`, `members`) VALUES ('".$userinfo['customerid']."', '$username', '$uid', '$username')");
@@ -156,6 +178,14 @@
 				{
 					$pathSelect = makePathfield( $userinfo['documentroot'], $userinfo['guid'],
 					                             $userinfo['guid'], $settings['panel']['pathedit'] );
+					if ($settings['customer']['ftpatdomain'] == '1')
+					{
+						$result_domains = $db->query("SELECT `domain` FROM `".TABLE_PANEL_DOMAINS."` WHERE `customerid`='".(int)$userinfo['customerid']."'");
+						while($row_domain=$db->fetch_array($result_domains))
+						{
+							$domains.=makeoption($idna_convert->decode($row_domain['domain']), $row_domain['domain']);
+						}
+					}
 					eval("echo \"".getTemplate("ftp/accounts_add")."\";");
 				}
 			}

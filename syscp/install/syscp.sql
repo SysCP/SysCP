@@ -31,7 +31,7 @@ CREATE TABLE `ftp_groups` (
 DROP TABLE IF EXISTS `ftp_users`;
 CREATE TABLE `ftp_users` (
   `id` int(20) NOT NULL auto_increment,
-  `username` varchar(20) NOT NULL default '',
+  `username` varchar(255) NOT NULL default '',
   `uid` int(5) NOT NULL default '0',
   `gid` int(5) NOT NULL default '0',
   `password` varchar(20) NOT NULL default '',
@@ -425,6 +425,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (38, 'system', 'deactivateddocroot', '');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (39, 'system', 'mailpwcleartext', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (40, 'system', 'last_tasks_run', '000000');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (41, 'customer', 'ftpatdomain', '0');
 
 # --------------------------------------------------------
 

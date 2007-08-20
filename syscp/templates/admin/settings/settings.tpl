@@ -78,6 +78,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="customer_ftpprefix" value="{$settings['customer']['ftpprefix']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ftpdomain']['title']}:</b><br />{$lng['serversettings']['ftpdomain']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$ftpatdomain}</td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemsettings']}</b>
 				</td>
