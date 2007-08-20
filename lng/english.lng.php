@@ -511,4 +511,8 @@ $lng['admin']['configfiles']['chooseservice'] = '-- Choose a service --';
 $lng['admin']['configfiles']['choosedaemon'] = '-- Choose a daemon --';
 $lng['admin']['trafficlastrun'] = 'Last Traffic calculation';
 
+// ADDED IN 1.2.16-svn10
+$lng['serversettings']['ftpdomain']['title'] = 'FTP accounts @domain';
+$lng['serversettings']['ftpdomain']['description'] = 'Customers can create Ftp accounts user@customerdomain?';
+
 ?>

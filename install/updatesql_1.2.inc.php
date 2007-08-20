@@ -1394,5 +1394,25 @@
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.16-svn9';
 	}
+	if( $settings['panel']['version'] == '1.2.16-svn9' )
+	{
+		$db->query("ALTER TABLE `".TABLE_FTP_USERS."` CHANGE `username` `username` VARCHAR( 255 ) NOT NULL");
+		$db->query(
+			'INSERT INTO `'.TABLE_PANEL_SETTINGS.'` ' .
+			'SET `settinggroup` = \'customer\', ' .
+			'    `varname`      = \'ftpatdomain\', ' .
+			'    `value`        = \'0\' '
+		);
+
+		// set new version
+		$query =
+			'UPDATE `%s` ' .
+			'SET `value` = \'1.2.16-svn10\' ' .
+			'WHERE `settinggroup` = \'panel\' ' .
+			'AND `varname` = \'version\'';
+		$query = sprintf( $query, TABLE_PANEL_SETTINGS );
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.16-svn10';
+	}
 
 ?>

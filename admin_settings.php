@@ -85,6 +85,12 @@
 				}
 			}
 
+			if($_POST['customer_ftpatdomain']!=$settings['customer']['ftpatdomain'])
+			{
+				$value = ( $_POST['customer_ftpatdomain'] == '1' ? '1' : '0' );
+				$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='".$db->escape($value)."' WHERE `settinggroup`='customer' AND `varname`='ftpatdomain'");
+			}
+
 			if($_POST['system_documentroot_prefix']!=$settings['system']['documentroot_prefix'])
 			{
 				$value=validate($_POST['system_documentroot_prefix'], 'documentroot prefix');
@@ -521,6 +527,7 @@
 
 			$natsorting = makeyesno( 'panel_natsorting', '1', '0', $settings['panel']['natsorting'] );
 			$mailpwcleartext = makeyesno( 'system_mailpwcleartext', '1', '0', $settings['system']['mailpwcleartext'] );
+			$ftpatdomain = makeyesno( 'customer_ftpatdomain', '1', '0', $settings['customer']['ftpatdomain'] );
 
 			$settings = htmlentities_array( $settings );
 			eval("echo \"".getTemplate("settings/settings")."\";");
