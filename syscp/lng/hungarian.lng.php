@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2007 the SysCP Team (see authors).
@@ -14,10 +15,10 @@
  * @version    $Id$
  */
 
-
 /**
  * Global
  */
+
 $lng['translator'] = 'Puchner L&aacute;szl&oacute;';
 $lng['panel']['edit'] = 'szerkeszt';
 $lng['panel']['delete'] = 't&ouml;r&ouml;l';
@@ -35,6 +36,7 @@ $lng['panel']['dirsmissing'] = 'K&ouml;nyvt&aacute;r nem tal&aacute;lhat&oacute;
 /**
  * Login
  */
+
 $lng['login']['username'] = 'Felhaszn&aacute;l&oacute;n&eacute;v';
 $lng['login']['password'] = 'Jelsz&oacute;';
 $lng['login']['language'] = 'Nyelv';
@@ -45,6 +47,7 @@ $lng['login']['profile_lng'] = 'Profile nyelve';
 /**
  * Customer
  */
+
 $lng['customer']['documentroot'] = 'Kezd&#337;k&ouml;nyvt&aacute;r';
 $lng['customer']['name'] = 'N&eacute;v';
 $lng['customer']['firstname'] = 'Keresztn&eacute;v';
@@ -70,6 +73,7 @@ $lng['customer']['unlimited'] = 'korl&aacute;tlan';
 /**
  * Customermenue
  */
+
 $lng['menue']['main']['main'] = 'F&#337;men&uuml;';
 $lng['menue']['main']['changepassword'] = 'Jelsz&oacute;csere';
 $lng['menue']['main']['changelanguage'] = 'Nyelv-v&aacute;ltoztat&aacute;s';
@@ -91,12 +95,14 @@ $lng['menue']['extras']['pathoptions'] = '&Uacute;tvonal opci&oacute;k';
 /**
  * Index
  */
+
 $lng['index']['customerdetails'] = 'Felhaszn&aacute;l&oacute;i adatok';
 $lng['index']['accountdetails'] = 'Fi&oacute;k adatok';
 
 /**
  * Change Password
  */
+
 $lng['changepassword']['old_password'] = 'R&eacute;gi jelsz&oacute;';
 $lng['changepassword']['new_password'] = '&Uacute;j jelsz&oacute;';
 $lng['changepassword']['new_password_confirm'] = '&Uacute;j jelsz&oacute; (meger&#337;s&iacute;t&eacute;s)';
@@ -106,6 +112,7 @@ $lng['changepassword']['also_change_ftp'] = ' a f&#337; FTP fi&oacute;k jelszav&
 /**
  * Domains
  */
+
 $lng['domains']['description'] = 'Itt hozhat l&eacute;tre (al-)domaineket &eacute;s megv&aacute;ltoztathatja azok &uacute;tvonalait.<br />A rendszernek minden v&aacute;ltoztat&aacute;s ut&aacute;n sz&uuml;ks&eacute;ge van n&eacute;mi id&#337;re, m&iacute;g az &uacute;j be&aacute;ll&iacute;t&aacute;sokat &eacute;rv&eacute;nyes&iacute;ti.';
 $lng['domains']['domainsettings'] = 'Domain be&aacute;ll&iacute;t&aacute;sok';
 $lng['domains']['domainname'] = 'Domain név';
@@ -118,6 +125,7 @@ $lng['domains']['noaliasdomain'] = 'Nincs domain alias (&aacute;ln&eacute;v)';
 /**
  * E-mails
  */
+
 $lng['emails']['description'] = 'Itt hozhatja l&eacute;tre &eacute;s m&oacute;dos&iacute;thatja e-mail c&iacute;meit.<br />Egy fi&oacute;k olyan, mint az &Ouml;n postal&aacute;d&aacute;ja a h&aacute;z el&#337;tt. Ha valaki k&uuml;ld  &Ouml;nnek egy e-mailt, az a postal&aacute;d&aacute;ba &eacute;rkezik meg.<br /><br />Az e-mailek let&ouml;lt&eacute;s&eacute;hez &aacute;ll&iacute;sa be levelez&#337;-programj&aacute;t az al&aacute;bbiak szerint: (A <i>d&#337;ltbet&#369;s</i> adatokat v&aacute;ltoztassa meg azok alapj&aacute;n, amelyeket be&iacute;rt!)<br />Szerver (host) neve: <b><i>Domain n&eacute;v</i></b><br />felhaszn&aacute;l&oacute;n&eav: <b><i>Postafi&oacute;k neve / e-mail c&iacute;m</i></b><br />Jelsz&oacute;: <b><i>A jelsz&oacute;, amelyet v&aacute;lasztott</i></b>';
 $lng['emails']['emailaddress'] = 'E-mail c&iacute;m';
 $lng['emails']['emails_add'] = 'E-mail c&iacute;m l&eacute;trehoz&aacute;sa';
@@ -135,12 +143,14 @@ $lng['emails']['forwarder_add'] = 'Tov&aacute;bb&iacute;t&oacute; l&eacute;treho
 /**
  * FTP
  */
+
 $lng['ftp']['description'] = 'Itt hozhatja l&eacute;tre &eacute;s m&oacute;dos&iacute;thatja FTP fi&oacute;kjait.<br />A v&aacute;ltoz&aacute;sok azonnal &eacute;rv&eacute;nybe l&eacute;pnek &eacute;s haszn&aacute;lhat&oacute;k.';
 $lng['ftp']['account_add'] = 'Fi&oacute;k l&eacute;trehoz&aacute;sa';
 
 /**
  * MySQL
  */
+
 $lng['mysql']['databasename'] = 'felhaszn&aacute;l&oacute;/adatb&aacute;zis neve';
 $lng['mysql']['databasedescription'] = 'adatb&aacute;zis le&iacute;r&aacute;sa';
 $lng['mysql']['database_create'] = 'Adatb&aacute;zis l&eacute;trehoz&aacute;sa';
@@ -148,6 +158,7 @@ $lng['mysql']['database_create'] = 'Adatb&aacute;zis l&eacute;trehoz&aacute;sa';
 /**
  * Extras
  */
+
 $lng['extras']['description'] = 'Itt &aacute;ll&iacute;that be egyebeket, pl. k&ouml;nyvt&aacute;rv&eacute;delmet.<br />A rendszernek minden v&aacute;ltoztat&aacute;s ut&aacute;n sz&uuml;ks&eacute;ge van n&eacute;mi id&#337;re, m&iacute;g az &uacute;j be&aacute;ll&iacute;t&aacute;sokat &eacute;rv&eacute;nyes&iacute;ti.';
 $lng['extras']['directoryprotection_add'] = 'K&ouml;nyvt&aacute;rv&eacute;delem hozz&aacute;ad&aacute;sa';
 $lng['extras']['view_directory'] = 'A k&ouml;nyvt&aacute;r tartalm&aacute;nak megmutat&aacute;sa';
@@ -166,10 +177,10 @@ $lng['extras']['errordocument401path'] = 'A 401-es hiba&uuml;zenet URL-je';
 /**
  * Errors
  */
+
 $lng['error']['error'] = 'Hiba';
 $lng['error']['directorymustexist'] = 'L&eacute;teznie kell a %s k&ouml;nyvt&aacute;rnak. K&eacute;rem, hozza l&eacute;tre FTP cliens&eacute;vel.';
 $lng['error']['filemustexist'] = 'L&eacute;teznie kell a %sf&aacute;jlnak.';
-
 $lng['error']['allresourcesused'] = '&Ouml;n m&aacute;r minden er&#337;forr&aacute;s&aacute;t felhaszn&aacute;lta.';
 $lng['error']['domains_cantdeletemaindomain'] = 'Nem t&ouml;r&ouml;lhet le olyan domain nevet, amelyet e-mail domaink&eacute;nt haszn&aacute;lnak.';
 $lng['error']['domains_canteditdomain'] = 'Nem szerkeszthati ezt a domain nevet. Az adminisztr&aacute;tor letiltotta.';
@@ -178,57 +189,57 @@ $lng['error']['firstdeleteallsubdomains'] = 'Miel&#337;tt l&eacute;trehozna egy 
 $lng['error']['youhavealreadyacatchallforthisdomain'] = '&Ouml;n m&aacute;r meghat&aacute;rozott egy gy&#369;jt&#337;t erre a domain-re.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Nem t&ouml;r&ouml;lheti f&#337; FTP hozz&aacute;f&eacute;r&eacute;s&eacute;t.';
 $lng['error']['login'] = 'Helytelen a felhaszn&aacute;l&oacute;n&eacute;v vagy a jelsz&oacute;, amelyet beg&eacute;pelt. K&eacute;rem, pr&oacute;b&aacute;lja &uacute;jra!';
-$lng['error']['login_blocked'] = 'Ezt a hozz&aacute;f&eacute;r&eacute;s fel lett f&uuml;ggesztve a t&uacute;l sok bejelentkez&eacute;si hiba miatt. K&eacute;rem, pr&oacute;b&aacute;lja &uacute;jra!'; $settings['login']['deactivatetime'].' seconds.';
+$lng['error']['login_blocked'] = 'Ezt a hozz&aacute;f&eacute;r&eacute;s fel lett f&uuml;ggesztve a t&uacute;l sok bejelentkez&eacute;si hiba miatt. K&eacute;rem, pr&oacute;b&aacute;lja &uacute;jra!';
+$settings['login']['deactivatetime'] . ' seconds.';
 $lng['error']['notallreqfieldsorerrors'] = 'Nem teljesen vagy helytelen&uuml;l t&ouml;lt&ouml;tte ki a mez&#337;ket.';
 $lng['error']['oldpasswordnotcorrect'] = 'A r&eacute;gi jelsz&oacute; helytelen.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Nem oszthat ki t&ouml;bb er&#337;forr&aacute;st, mint amennyit birtokol.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Biztons&aacute;gi okokb&oacute;l nem t&ouml;r&ouml;lheti vagy szerkesztheti a f&#337;adminisztr&aacute;tort.';
-
 $lng['error']['mustbeurl'] = 'Nem teljes vagy nem &eacute;rv&eacute;nyes URL-t (pl.: http://somedomain.com/error404.htm) g&eacute;pelt be';
 $lng['error']['invalidpath'] = 'Nem v&aacute;lasztott ki &eacute;rv&eacute;nyes URL-t  (lehet, hogy probl&eacute;ma van a k&ouml;nyvt&aacute;rlist&aacute;z&aacute;ssal?).';
-$lng['error']['stringisempty'] ='A mez&#337;ben nincs adat.';
-$lng['error']['stringiswrong'] ='A mez&#337;ben helytelen adat van.';
-$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
-$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
-$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
-$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
-$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
-$lng['error']['newpasswordconfirmerror']='Az &uacute;j jelsz&oacute; &eacute;s annak meger&#337;s&iacute;t&eacute;se nem egyezik meg.';
-$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
-$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
-$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
+$lng['error']['stringisempty'] = 'A mez&#337;ben nincs adat.';
+$lng['error']['stringiswrong'] = 'A mez&#337;ben helytelen adat van.';
+$lng['error']['myloginname'] = '\'' . $lng['login']['username'] . '\'';
+$lng['error']['mypassword'] = '\'' . $lng['login']['password'] . '\'';
+$lng['error']['oldpassword'] = '\'' . $lng['changepassword']['old_password'] . '\'';
+$lng['error']['newpassword'] = '\'' . $lng['changepassword']['new_password'] . '\'';
+$lng['error']['newpasswordconfirm'] = '\'' . $lng['changepassword']['new_password_confirm'] . '\'';
+$lng['error']['newpasswordconfirmerror'] = 'Az &uacute;j jelsz&oacute; &eacute;s annak meger&#337;s&iacute;t&eacute;se nem egyezik meg.';
+$lng['error']['myname'] = '\'' . $lng['customer']['name'] . '\'';
+$lng['error']['myfirstname'] = '\'' . $lng['customer']['firstname'] . '\'';
+$lng['error']['emailadd'] = '\'' . $lng['customer']['email'] . '\'';
 $lng['error']['mydomain'] = '\'Domain\'';
 $lng['error']['mydocumentroot'] = '\'Dokumentum &uacute;tvonal\'';
-$lng['error']['loginnameexists']= 'A(z) %s felhaszn&aacute;l&oacute;n&eacute;v m&aacute;r l&eacute;tezik';
-$lng['error']['emailiswrong']= 'A(z) %s e-mail c&iacute;m &eacute;rv&eacute;nytelen karaktereket tartalmaz vagy nem teljes.';
-$lng['error']['loginnameiswrong']= 'A(z) %s felhaszn&aacute;l&oacute;n&eacute;v &eacute;rv&eacute;nytelen karaktereket tartalmaz.';
-$lng['error']['userpathcombinationdupe']='A felhaszn&aacute;l&oacute;n&eacute;v &eacute;s &uacute;tvonal kombin&aacute;ci&oacute;ja m&aacute;r l&eacute;tezik.';
-$lng['error']['patherror']='&Aacute;ltal&aacute;nos hiba! Az &uacute;tvonal nem lehet &uuml;res.';
-$lng['error']['errordocpathdupe']='A(z) %s &uacute;tvonalra vonatkoz&oacute; opci&oacute; m&aacute;r l&eacute;tezik.';
-$lng['error']['adduserfirst']='K&eacute;rem, el&#337;bb hozzon l&eacute;tre egy felhaszn&aacute;l&oacute;t!';
-$lng['error']['domainalreadyexists']= 'A(z) %s domain n&eacute;v m&aacute;r hozz&aacute; van rendelve egy felhaszn&aacute;l&oacute;hoz.';
-$lng['error']['nolanguageselect']='Nincs kiv&aacute;lasztott nyelv.';
-$lng['error']['nosubjectcreate']='Meg kell hat&aacute;roznia egy t&aacute;rgyat ehhez a sablonhoz.';
-$lng['error']['nomailbodycreate']='Meg kell hat&aacute;roznia az &uuml;zenet sz&ouml;veg&eacute;t ehhez a sablonhoz.';
-$lng['error']['templatenotfound']='A sablon nem tal&aacute;lhat&oacute;.';
-$lng['error']['alltemplatesdefined']='Nem k&eacute;sz&iacute;thet t&ouml;bb sablont, m&aacute;r minden nyelv t&aacute;mogatva van.';
-$lng['error']['wwwnotallowed']='a www el&#337;tag  al-domainekn&eacute;l nem haszn&aacute;lhat&oacute;.';
-$lng['error']['subdomainiswrong']='A(z) %s al-domain &eacute;rv&eacute;nytelen karaktereket tartalmaz.';
-$lng['error']['domaincantbeempty']='A domain neve nem lehet &uuml;res.';
-$lng['error']['domainexistalready']='A(z) %s domain m&aacute;r l&eacute;tezik.';
-$lng['error']['domainisaliasorothercustomer']='A v&aacute;lasztott domain &aacute;ln&eacute;v (alias) vagy maga is domain &aacute;ln&eacute;v, vagy m&aacute;s felhaszn&aacute;l&oacute;hoz tartozik.';
-$lng['error']['emailexistalready']='A(z) %s e-mail c&iacute;m m&aacute;r l&eacute;tezik.';
-$lng['error']['maindomainnonexist']='A(z)  %s f&#337; domain nem l&eacute;tezik.';
-$lng['error']['destinationnonexist']='K&eacute;rem, lev&eacute;l-tov&aacute;bb&iacute;t&oacute;j&aacute;t a  \'C&eacute;l\' mapp&aacute;ban hozza l&eacute;tre.';
-$lng['error']['destinationalreadyexistasmail']='A(z) %s tov&aacute;bb&iacute;t&oacute; m&aacute;r l&eacute;tezik mint akt&iacute;v e-mail c&iacute;m.';
-$lng['error']['destinationalreadyexist']='&Ouml;n m&aacute;r l&eacute;trehozott egy tov&aacute;bb&iacute;t&oacute;t ehhez: %s .';
-$lng['error']['destinationiswrong']= 'A(z) %s tov&aacute;bb&iacute;t&oacute; &eacute;rv&eacute;nytelen karakter(eke)t tartalmaz vagy nem teljes.';
-$lng['error']['domainname']=$lng['domains']['domainname'];
-
+$lng['error']['loginnameexists'] = 'A(z) %s felhaszn&aacute;l&oacute;n&eacute;v m&aacute;r l&eacute;tezik';
+$lng['error']['emailiswrong'] = 'A(z) %s e-mail c&iacute;m &eacute;rv&eacute;nytelen karaktereket tartalmaz vagy nem teljes.';
+$lng['error']['loginnameiswrong'] = 'A(z) %s felhaszn&aacute;l&oacute;n&eacute;v &eacute;rv&eacute;nytelen karaktereket tartalmaz.';
+$lng['error']['userpathcombinationdupe'] = 'A felhaszn&aacute;l&oacute;n&eacute;v &eacute;s &uacute;tvonal kombin&aacute;ci&oacute;ja m&aacute;r l&eacute;tezik.';
+$lng['error']['patherror'] = '&Aacute;ltal&aacute;nos hiba! Az &uacute;tvonal nem lehet &uuml;res.';
+$lng['error']['errordocpathdupe'] = 'A(z) %s &uacute;tvonalra vonatkoz&oacute; opci&oacute; m&aacute;r l&eacute;tezik.';
+$lng['error']['adduserfirst'] = 'K&eacute;rem, el&#337;bb hozzon l&eacute;tre egy felhaszn&aacute;l&oacute;t!';
+$lng['error']['domainalreadyexists'] = 'A(z) %s domain n&eacute;v m&aacute;r hozz&aacute; van rendelve egy felhaszn&aacute;l&oacute;hoz.';
+$lng['error']['nolanguageselect'] = 'Nincs kiv&aacute;lasztott nyelv.';
+$lng['error']['nosubjectcreate'] = 'Meg kell hat&aacute;roznia egy t&aacute;rgyat ehhez a sablonhoz.';
+$lng['error']['nomailbodycreate'] = 'Meg kell hat&aacute;roznia az &uuml;zenet sz&ouml;veg&eacute;t ehhez a sablonhoz.';
+$lng['error']['templatenotfound'] = 'A sablon nem tal&aacute;lhat&oacute;.';
+$lng['error']['alltemplatesdefined'] = 'Nem k&eacute;sz&iacute;thet t&ouml;bb sablont, m&aacute;r minden nyelv t&aacute;mogatva van.';
+$lng['error']['wwwnotallowed'] = 'a www el&#337;tag  al-domainekn&eacute;l nem haszn&aacute;lhat&oacute;.';
+$lng['error']['subdomainiswrong'] = 'A(z) %s al-domain &eacute;rv&eacute;nytelen karaktereket tartalmaz.';
+$lng['error']['domaincantbeempty'] = 'A domain neve nem lehet &uuml;res.';
+$lng['error']['domainexistalready'] = 'A(z) %s domain m&aacute;r l&eacute;tezik.';
+$lng['error']['domainisaliasorothercustomer'] = 'A v&aacute;lasztott domain &aacute;ln&eacute;v (alias) vagy maga is domain &aacute;ln&eacute;v, vagy m&aacute;s felhaszn&aacute;l&oacute;hoz tartozik.';
+$lng['error']['emailexistalready'] = 'A(z) %s e-mail c&iacute;m m&aacute;r l&eacute;tezik.';
+$lng['error']['maindomainnonexist'] = 'A(z)  %s f&#337; domain nem l&eacute;tezik.';
+$lng['error']['destinationnonexist'] = 'K&eacute;rem, lev&eacute;l-tov&aacute;bb&iacute;t&oacute;j&aacute;t a  \'C&eacute;l\' mapp&aacute;ban hozza l&eacute;tre.';
+$lng['error']['destinationalreadyexistasmail'] = 'A(z) %s tov&aacute;bb&iacute;t&oacute; m&aacute;r l&eacute;tezik mint akt&iacute;v e-mail c&iacute;m.';
+$lng['error']['destinationalreadyexist'] = '&Ouml;n m&aacute;r l&eacute;trehozott egy tov&aacute;bb&iacute;t&oacute;t ehhez: %s .';
+$lng['error']['destinationiswrong'] = 'A(z) %s tov&aacute;bb&iacute;t&oacute; &eacute;rv&eacute;nytelen karakter(eke)t tartalmaz vagy nem teljes.';
+$lng['error']['domainname'] = $lng['domains']['domainname'];
 
 /**
  * Questions
  */
+
 $lng['question']['question'] = 'Biztons&aacute;gi k&eacute;rd&eacute;s';
 $lng['question']['admin_customer_reallydelete'] = 'T&eacute;nyleg t&ouml;r&ouml;lni akarja a(z)  %s felhaszn&aacute;l&oacute;t? Ezt a l&eacute;p&eacute;st nem lehet visszavonni!';
 $lng['question']['admin_domain_reallydelete'] = 'T&eacute;nyleg t&ouml;r&ouml;lni akarja a(z) %s domain?';
@@ -248,6 +259,7 @@ $lng['question']['admin_configs_reallyrebuild'] = 'T&eacute;nyleg &uacute;jra sz
 /**
  * Mails
  */
+
 $lng['mails']['pop_success']['mailbody'] = '&Uuml;dv&ouml;zl&ouml;m!\n\nE-mail fi&oacute;kja {EMAIL} l&eacute;trej&ouml;tt.\n\nEz egy automatikusan k&uuml;ld&ouml;tt\ne-mail, k&eacute;rem, ne v&aacute;laszoljon r&aacute;!\n\nTisztelettel: a SysCP csapata';
 $lng['mails']['pop_success']['subject'] = 'E-mail fi&oacute;k l&eacute;trehozva.';
 $lng['mails']['createcustomer']['mailbody'] = 'Tisztelt {FIRSTNAME} {NAME}!\n\nAz &Ouml;n postafi&oacute;k adatai:\n\nFelhaszn&aacute;l&oacute;n&eacute;v: {USERNAME}\nJelsz&oacute;: {PASSWORD}\n\nK&ouml;sz&ouml;nj&uuml;k:\na SysCP csapata';
@@ -256,6 +268,7 @@ $lng['mails']['createcustomer']['subject'] = 'Postafi&oacute;k inform&aacute;ci&
 /**
  * Admin
  */
+
 $lng['admin']['overview'] = '&Aacute;ttekint&eacute;s';
 $lng['admin']['ressourcedetails'] = 'Felhaszn&aacute;lt er&#337;forr&aacute;sok';
 $lng['admin']['systemdetails'] = 'Rendszeradatok';
@@ -312,6 +325,7 @@ $lng['admin']['templates']['EMAIL'] = 'A POP3/IMAP fi&oacute;k c&iacute;me.';
 /**
  * Serversettings
  */
+
 $lng['serversettings']['session_timeout']['title'] = 'Munkamenet id&#337;t&uacute;ll&eacute;p&eacute;s';
 $lng['serversettings']['session_timeout']['description'] = 'Mennyi id&#337; m&uacute;lva v&aacute;ljon a munkamenet &eacute;rv&eacute;nytelenn&eacute; a felhaszn&aacute;l&oacute; utols&oacute; tev&eacute;kenys&eacute;g&eacute;t&#337;l (m&aacute;sodperc)?';
 $lng['serversettings']['accountprefix']['title'] = 'Felhaszn&aacute;l&oacute;i el&#337;tag';
@@ -353,16 +367,17 @@ $lng['serversettings']['webmail_url']['description'] = 'Mi a WebMail URL-je? (ht
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP URL';
 $lng['serversettings']['webftp_url']['description'] = 'Mi a WebFTP URL-je? (http://-vel kell kezd&#337;dnie)';
 $lng['serversettings']['language']['description'] = 'Mi a szerver alap&eacute;rtelmezett nyelve?';
-$lng['serversettings']['maxloginattempts']['title']       = 'Maxim&aacute;lis bejelentkez&eacute;si k&iacute;s&eacute;rlet';
+$lng['serversettings']['maxloginattempts']['title'] = 'Maxim&aacute;lis bejelentkez&eacute;si k&iacute;s&eacute;rlet';
 $lng['serversettings']['maxloginattempts']['description'] = 'Bejelentkez&eacute;si k&iacute;s&eacute;rletek maxim&aacute;lis sz&aacute;ma, miel&#337;tt a hozz&aacute;f&eacute;r&eacute;s z&aacute;rolva lesz.';
-$lng['serversettings']['deactivatetime']['title']       = 'Z&aacute;rlat-id&#337;';
+$lng['serversettings']['deactivatetime']['title'] = 'Z&aacute;rlat-id&#337;';
 $lng['serversettings']['deactivatetime']['description'] = 'Az id&#337;szak (m&aacute;sodpercekben), ameddig a t&uacute;l sok bejelentkez&eacute;si k&iacute;s&eacute;rlet ut&aacute;n a hozz&aacute;f&eacute;r&eacute;s z&aacute;rolva lesz.';
-$lng['serversettings']['pathedit']['title']       = 'Az &uacute;tvonal-megad&aacute;s t&iacute;pusa';
+$lng['serversettings']['pathedit']['title'] = 'Az &uacute;tvonal-megad&aacute;s t&iacute;pusa';
 $lng['serversettings']['pathedit']['description'] = 'Leg&ouml;rd&uuml;l&#337; men&uuml; vagy beviteli mez&#337; seg&iacute;ts&eacute;g&eacute;vel lesznek az &uacute;tvonalak kiv&aacute;lasztva?';
 
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['mysql']['description'] = 'Itt hozhatja l&eacute;tre &eacute;s v&aacute;ltoztathatja meg MySQL adatb&aacute;zisait. <br />
  A v&aacute;ltoz&aacute;sok azonnal &eacute;rv&eacute;nyre jutnak, &eacute;s az adatb&aacute;zis r&ouml;gt&ouml;n haszn&aacute;lhat&oacute;.<br />
  A bal oldali men&uuml;ben megtal&aacute;lja a  phpMyAdmin eszk&ouml;zt, amellyel k&ouml;nnyed&eacute;n kezelheti adatb&aacute;zis&aacute;t.<br />
@@ -372,12 +387,13 @@ $lng['mysql']['description'] = 'Itt hozhatja l&eacute;tre &eacute;s v&aacute;lto
 /**
  * ADDED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['admin']['cronlastrun'] = 'Utols&oacute; Cron fut&aacute;s';
 $lng['serversettings']['apacheconf_filename']['title'] = 'Apache konfigur&aacute;ci&oacute;s &aacute;llom&aacute;ny';
 $lng['serversettings']['apacheconf_filename']['description'] = 'Hogy nevezz&uuml;k el az Apache konfigur&aacute;ci&oacute;s &aacute;llom&aacute;ny&aacute;t?';
-$lng['serversettings']['paging']['title']       = 'Bejegyz&eacute;sek sz&aacute;ma egy lapon';
+$lng['serversettings']['paging']['title'] = 'Bejegyz&eacute;sek sz&aacute;ma egy lapon';
 $lng['serversettings']['paging']['description'] = 'H&aacute;ny bejegyz&eacute;s jelenjen meg egy lapon? (0 = lapoz&aacute;s kikapcsol&aacute;sa)';
-$lng['error']['ipstillhasdomains']= 'A t&ouml;r&ouml;lni k&iacute;v&aacute;nt IP/Port kombin&aacute;ci&oacute;hoz domainek vannak rendelve. Rendelje hozz&aacute; ezeket egy m&aacute;sik IP/Port kombin&aacute;ci&oacute;hoz, miel&#337;tt a jelenlegi IP/Port kombin&aacute;ci&oacute;t t&ouml;rli.';
+$lng['error']['ipstillhasdomains'] = 'A t&ouml;r&ouml;lni k&iacute;v&aacute;nt IP/Port kombin&aacute;ci&oacute;hoz domainek vannak rendelve. Rendelje hozz&aacute; ezeket egy m&aacute;sik IP/Port kombin&aacute;ci&oacute;hoz, miel&#337;tt a jelenlegi IP/Port kombin&aacute;ci&oacute;t t&ouml;rli.';
 $lng['error']['cantdeletedefaultip'] = 'Nem t&ouml;r&ouml;lheti az alap&eacute;rtelmezett viszontelad&oacute;i  IP/Port kombin&aacute;ci&oacute;t. Hozzon l&eacute;tre &uacute;j  alap&eacute;rtelmezett IP/Port kombin&aacute;ci&oacute;t a viszontelad&oacute;knak, miel&#337;tt ezt az  IP/Port kombin&aacute;ci&oacute;t t&ouml;rli.';
 $lng['error']['cantdeletesystemip'] = 'Nem t&ouml;r&ouml;lheti a rendszer utols&oacute; IP c&iacute;m&eacute;t. Hozzon l&eacute;tre egy &uacute;j IP/Port kombin&aacute;ci&oacute;t a rendszer IP c&iacute;m&eacute;re, vagy v&aacute;ltozatassa meg a rendszer IP c&iacute;m&eacute;t.';
 $lng['error']['myipaddress'] = '\'IP\'';
@@ -393,24 +409,21 @@ $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
 
 // ADDED IN 1.2.13-rc3
+
 $lng['error']['cantchangesystemip'] = 'Nem v&aacute;ltoztathatja meg a rendszer utols&oacute; IP c&iacute;m&eacute;t. Hozzon l&eacute;tre egy &uacute;j IP/Port kombin&aacute;ci&oacute;t a rendszer IP c&iacute;m&eacute;re, vagy v&aacute;ltozatassa meg a rendszer IP c&iacute;m&eacute;t.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Biztos, hogy a dokumentum gy&ouml;ker&eacute;t (root) rendeli ehhez a domainhez, nem pedig a felhaszn&aacute;l&oacute;i k&ouml;nyvt&aacute;rban marad?';
 
 // ADDED IN 1.2.14-rc1
-$lng['admin']['memorylimitdisabled'] = 'Letiltva';
 
+$lng['admin']['memorylimitdisabled'] = 'Letiltva';
 $lng['domain']['openbasedirpath'] = 'OpenBasedir &uacute;tvonal';
 $lng['domain']['docroot'] = '&Uacute;tvonal a a fenti mez&#337;b&#337;l';
 $lng['domain']['homedir'] = 'Kezd&#337;k&ouml;nyvt&aacute;r';
-
 $lng['admin']['valuemandatory'] = 'Ez a mez&#337; k&ouml;telez&#337;';
 $lng['admin']['valuemandatorycompany'] = 'Vagy a &quot;n&eacute;v&quot; &eacute;s &quot;keresztn&eacute;v&quot;, vagy  a &quot;c&eacute;gn&eacute;v&quot; mez&#337;t ki kell t&ouml;lteni.';
-
 $lng['menue']['main']['username'] = 'Bejelentkezve mint: ';
-
 $lng['panel']['urloverridespath'] = 'URL (figyelmen k&iacute;v&uuml;l hagyja az &uacute;tvonalat)';
 $lng['panel']['pathorurl'] = '&Uacute;tvonal az URL-hez';
-
 $lng['error']['sessiontimeoutiswrong'] = 'Csak numerikus &quot;Munkamenet Id&#337;t&uacute;ll&eacute;p&eacute;s&quot;adhat&oacute; meg.';
 $lng['error']['maxloginattemptsiswrong'] = 'Csak numerikus  &quot;Maxim&aacute;lis Bejelentkez&eacute;si K&iacute;s&eacute;rlet&quot;adhat&oacute; meg. ';
 $lng['error']['deactivatetimiswrong'] = 'Csak numerikus &quot;Kikapcsol&aacute;si Id&#337;&quot; adhat&oacute; meg.';
@@ -425,27 +438,25 @@ $lng['error']['pagingiswrong'] = 'A &quot;Laponk&eacute;nti Bejegyz&eacute;s &qu
 $lng['error']['phpmyadminiswrong'] = 'A phpMyAdmin hivatkoz&aacute;s &eacute;rv&eacute;nytelen.';
 $lng['error']['webmailiswrong'] = 'A WebMail hivatkoz&aacute;s &eacute;rv&eacute;nytelen.';
 $lng['error']['webftpiswrong'] = 'A WebFTP hivatkoz&aacute;s &eacute;rv&eacute;nytelen';
-
 $lng['domains']['hasaliasdomains'] = 'Alias (al-)domainjei';
-
 $lng['serversettings']['defaultip']['title'] = 'Alap&eacute;rtelmezett IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'Mi az alap&eacute;rtelmezett IP/Port kombin&aacute;ci&oacute;?';
-
 $lng['domains']['statstics'] = 'Haszn&aacute;lati statisztika';
-
 $lng['panel']['ascending'] = 'n&ouml;vekv&#337;';
 $lng['panel']['decending'] = 'csökken&#337;';
-
 $lng['panel']['search'] = 'Keres&eacute;s';
 $lng['panel']['used'] = 'felhaszn&aacute;lt';
 
 // ADDED IN 1.2.14-rc3
+
 $lng['panel']['translator'] = 'Ford&iacute;t&oacute;';
 
 // ADDED IN 1.2.14-rc4
+
 $lng['error']['stringformaterror'] = 'A &quot;%s&quot; mez&#337; &eacute;rt&eacute;ke nem megfelel&#337; form&aacute;tum&uacute;.';
 
 // ADDED IN 1.2.15-rc1
+
 $lng['admin']['serversoftware'] = 'Szerverszoftver';
 $lng['admin']['phpversion'] = 'PHP verzi&oacute;';
 $lng['admin']['phpmemorylimit'] = 'PHP mem&oacute;ria korl&aacute;t';
@@ -457,6 +468,7 @@ $lng['serversettings']['phpappendopenbasedir']['title'] = 'Az OpenBasedir-hez cs
 $lng['serversettings']['phpappendopenbasedir']['description'] = 'Ezek az &uacute;tvonalak (kett&#337;sponttal elv&aacute;lasztva) lesznek hozz&aacute;adva az OpenBasedir jegyz&eacute;khez minden vhost t&aacute;rol&oacute;ban.';
 
 // CHANGED IN 1.2.15-rc1
+
 $lng['error']['loginnameissystemaccount'] = 'Nem hozhat l&eacute;tre olyan fi&oacute;kot, amely hasonl&iacute;t a rendszerfi&oacute;kokhoz (mint pl. a &quot;%s&quot; kezdet&#369;ek). K&eacute;rem, adjon meg m&aacute;sik fi&oacute;knevet!';
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2007 the SysCP Team (see authors).
@@ -14,10 +15,10 @@
  * @version    $Id$
  */
 
-
 /**
  * Global
  */
+
 $lng['translator'] = 'Sander Klein';
 $lng['panel']['edit'] = 'bewerken';
 $lng['panel']['delete'] = 'verwijderen';
@@ -35,6 +36,7 @@ $lng['panel']['dirsmissing'] = 'Kan de map niet lezen of vinden!';
 /**
  * Login
  */
+
 $lng['login']['username'] = 'Gebruikersnaam';
 $lng['login']['password'] = 'Wachtwoord';
 $lng['login']['language'] = 'Taal';
@@ -45,6 +47,7 @@ $lng['login']['profile_lng'] = 'Profiel taal';
 /**
  * Customer
  */
+
 $lng['customer']['documentroot'] = 'Home directory';
 $lng['customer']['name'] = 'Naam';
 $lng['customer']['firstname'] = 'Voornaam';
@@ -70,6 +73,7 @@ $lng['customer']['unlimited'] = 'onbeperkt';
 /**
  * Customermenue
  */
+
 $lng['menue']['main']['main'] = 'Main';
 $lng['menue']['main']['changepassword'] = 'Wijzig wachtwoord';
 $lng['menue']['main']['changelanguage'] = 'Wijzig taal';
@@ -91,12 +95,14 @@ $lng['menue']['extras']['pathoptions'] = 'pad opties';
 /**
  * Index
  */
+
 $lng['index']['customerdetails'] = 'Klant Details';
 $lng['index']['accountdetails'] = 'Account Details';
 
 /**
  * Change Password
  */
+
 $lng['changepassword']['old_password'] = 'Oud wachtwoord';
 $lng['changepassword']['new_password'] = 'Nieuw wachtwoord';
 $lng['changepassword']['new_password_confirm'] = 'Nieuw wacthwoord (bevestigen)';
@@ -106,6 +112,7 @@ $lng['changepassword']['also_change_ftp'] = ' wijzig ook het wachtwoord van het 
 /**
  * Domains
  */
+
 $lng['domains']['description'] = 'Hier kunt u nieuwe (sub-) domeinen maken en de paden aanpassen.<br />Het systeem heeft een paar minuten nodig om de wijzigingen door te voeren na iedere varandering.';
 $lng['domains']['domainsettings'] = 'Domein instellingen';
 $lng['domains']['domainname'] = 'Domeinnaam';
@@ -118,6 +125,7 @@ $lng['domains']['noaliasdomain'] = 'Geen alias domein';
 /**
  * E-mails
  */
+
 $lng['emails']['description'] = 'Hier kunt u e-mail adressen maken en wijzigen.<br />Een aacount is net als een brievenbus voor uw huis. Als iemand u mail stuurd word dit op uw account bezorgt.<br /><br />Om uw emails te downloaden moet u het volgende installen in uw mail programma: (De <i>schuigedrukte</i> gegevens moeten gewijzigd worden in hetgeen dat u ingegeven heeft!)<br />Servernaam: <b><i>Domeinnaam</i></b><br />Gebruikersnaam: <b><i>Account naam / e-mail adres</i></b><br />Wachtwoord: <b><i>het door u ingegeven wachtwoord</i></b>';
 $lng['emails']['emailaddress'] = 'E-mail adres';
 $lng['emails']['emails_add'] = 'Maak nieuw e-mail adres';
@@ -135,12 +143,14 @@ $lng['emails']['forwarder_add'] = 'Maak forwarder';
 /**
  * FTP
  */
+
 $lng['ftp']['description'] = 'Hier kunt u nieuwe FTP accounts maken of bestaande accounts wijzigen.<br />De wijzigingen worden direct doorgevoerd en het account kan direct gebruikt worden.';
 $lng['ftp']['account_add'] = 'Maak nieuw account';
 
 /**
  * MySQL
  */
+
 $lng['mysql']['databasename'] = 'gebruiker/database naam';
 $lng['mysql']['databasedescription'] = 'database omschrijving';
 $lng['mysql']['database_create'] = 'Maak database';
@@ -148,6 +158,7 @@ $lng['mysql']['database_create'] = 'Maak database';
 /**
  * Extras
  */
+
 $lng['extras']['description'] = 'Hier kunt u wat extra instellingen doen zoals map beveiliging.<br />Het systeem heeft enkele minuten nodig om elke wijziging door te voeren.';
 $lng['extras']['directoryprotection_add'] = 'Map beveiliging toevoegen';
 $lng['extras']['view_directory'] = 'map inhoud laten zien';
@@ -166,6 +177,7 @@ $lng['extras']['errordocument401path'] = 'URL naar Foutducument 401';
 /**
  * Errors
  */
+
 $lng['error']['error'] = 'Fout';
 $lng['error']['directorymustexist'] = 'De map %s bestaat niet. Maak hem eerst aan met uw FTP client.';
 $lng['error']['filemustexist'] = 'Het bestand %s bestaat niet.';
@@ -177,56 +189,56 @@ $lng['error']['firstdeleteallsubdomains'] = 'U moet eerst alle subdomeinen verwi
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'U heeft al een catchall voor dit domein aangemaakt.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'U kunt uw hoofd FTP account niet verwijderen';
 $lng['error']['login'] = 'De door u ingegeven gebruikersnaam en wacthwoord zijn verkeerd. Probeer opnieuw!';
-$lng['error']['login_blocked'] = 'Dit account is inactief vanwege teveel login fouten. <br />Probeer het nog eens over '.$settings['login']['deactivatetime'].' seconden.';
+$lng['error']['login_blocked'] = 'Dit account is inactief vanwege teveel login fouten. <br />Probeer het nog eens over ' . $settings['login']['deactivatetime'] . ' seconden.';
 $lng['error']['notallreqfieldsorerrors'] = 'U heeft niet alle velden goed, of helemaal niet ingevuld.';
 $lng['error']['oldpasswordnotcorrect'] = 'Het oude wachtwoord is niet correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'U kunt niet meer resources gebruiken dan dat u bezit.';
 $lng['error']['youcantdeletechangemainadmin'] = 'U kunt dit domein niet aanpassen of verwijderen vanwege beveiligings redenen.';
-
 $lng['error']['mustbeurl'] = 'U heeft geen goed of compleet URL ingegeven (bijv. http://eenserver.com/error404.htm)';
 $lng['error']['invalidpath'] = 'U heeft geen goed URL ingegeven (misschien een probleem met dirlisting?)';
-$lng['error']['stringisempty'] ='Geen waarde in invoerveld';
-$lng['error']['stringiswrong'] ='Verkeerde waarde in invoerveld';
-$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
-$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
-$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
-$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
-$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
-$lng['error']['newpasswordconfirmerror']='Het nieuwe wacthwoord en de bevestiging zijn niet gelijk';
-$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
-$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
-$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
+$lng['error']['stringisempty'] = 'Geen waarde in invoerveld';
+$lng['error']['stringiswrong'] = 'Verkeerde waarde in invoerveld';
+$lng['error']['myloginname'] = '\'' . $lng['login']['username'] . '\'';
+$lng['error']['mypassword'] = '\'' . $lng['login']['password'] . '\'';
+$lng['error']['oldpassword'] = '\'' . $lng['changepassword']['old_password'] . '\'';
+$lng['error']['newpassword'] = '\'' . $lng['changepassword']['new_password'] . '\'';
+$lng['error']['newpasswordconfirm'] = '\'' . $lng['changepassword']['new_password_confirm'] . '\'';
+$lng['error']['newpasswordconfirmerror'] = 'Het nieuwe wacthwoord en de bevestiging zijn niet gelijk';
+$lng['error']['myname'] = '\'' . $lng['customer']['name'] . '\'';
+$lng['error']['myfirstname'] = '\'' . $lng['customer']['firstname'] . '\'';
+$lng['error']['emailadd'] = '\'' . $lng['customer']['email'] . '\'';
 $lng['error']['mydomain'] = '\'Domain\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
-$lng['error']['loginnameexists']= 'Loginnaam %s bestaat al';
-$lng['error']['emailiswrong']= 'E-mail Adres %s bevat illegale karakters of is niet compleet';
-$lng['error']['loginnameiswrong']= 'Loginnaame %s bevat illegale karakters';
-$lng['error']['userpathcombinationdupe']='Combinatie van Gebruikersnaam en Pad bestaat reeds';
-$lng['error']['patherror']='Generale Fout! pad kan niet leeg zijn';
-$lng['error']['errordocpathdupe']='Optie voor pad %s bestaat reeds';
-$lng['error']['adduserfirst']='Maak klant eerst aan, aub';
-$lng['error']['domainalreadyexists']= 'Het domein %s is al aan een klant toegewezen';
-$lng['error']['nolanguageselect']='Geen taal geselecteerd.';
-$lng['error']['nosubjectcreate']='U moet een onderwerp ingeven voor dit e-mail sjabloon.';
-$lng['error']['nomailbodycreate']='U moet een tekst ingeven voor dit e-mail sjabloon.';
-$lng['error']['templatenotfound']='Sjabloon niet gevonden.';
-$lng['error']['alltemplatesdefined']='U kunt niet meer sjablonen definieeren, alle talen worden al ondersteund.';
-$lng['error']['wwwnotallowed']='www is niet toegestaan voor subdomeinen.';
-$lng['error']['subdomainiswrong']='Het subdomein %s bevat illegale karakters.';
-$lng['error']['domaincantbeempty']='De domeinnaam kan niet leeg zijn.';
-$lng['error']['domainexistalready']='Het domein %s bestaads reeds.';
-$lng['error']['domainisaliasorothercustomer']='Het geselecteerde alias domein verwijsd naar zichzelf of is van een andere gebruiker.';
-$lng['error']['emailexistalready']='Het e-mail adres %s bestaat reeds.';
-$lng['error']['maindomainnonexist']='Het hoofd-domein %s bestaat niet.';
-$lng['error']['destinationnonexist']='Maak uw forwarder in het veld \'Destination\' alstublieft.';
-$lng['error']['destinationalreadyexistasmail']='De forwarder naar %s bestaat reeds als actief e-mail adres.';
-$lng['error']['destinationalreadyexist']='U heeft al een forwarder die verwijst naar %s .';
-$lng['error']['destinationiswrong']= 'De forwarder naar %s bevat illegale karakter(s) of is niet compleet.';
-$lng['error']['domainname']=$lng['domains']['domainname'];
+$lng['error']['loginnameexists'] = 'Loginnaam %s bestaat al';
+$lng['error']['emailiswrong'] = 'E-mail Adres %s bevat illegale karakters of is niet compleet';
+$lng['error']['loginnameiswrong'] = 'Loginnaame %s bevat illegale karakters';
+$lng['error']['userpathcombinationdupe'] = 'Combinatie van Gebruikersnaam en Pad bestaat reeds';
+$lng['error']['patherror'] = 'Generale Fout! pad kan niet leeg zijn';
+$lng['error']['errordocpathdupe'] = 'Optie voor pad %s bestaat reeds';
+$lng['error']['adduserfirst'] = 'Maak klant eerst aan, aub';
+$lng['error']['domainalreadyexists'] = 'Het domein %s is al aan een klant toegewezen';
+$lng['error']['nolanguageselect'] = 'Geen taal geselecteerd.';
+$lng['error']['nosubjectcreate'] = 'U moet een onderwerp ingeven voor dit e-mail sjabloon.';
+$lng['error']['nomailbodycreate'] = 'U moet een tekst ingeven voor dit e-mail sjabloon.';
+$lng['error']['templatenotfound'] = 'Sjabloon niet gevonden.';
+$lng['error']['alltemplatesdefined'] = 'U kunt niet meer sjablonen definieeren, alle talen worden al ondersteund.';
+$lng['error']['wwwnotallowed'] = 'www is niet toegestaan voor subdomeinen.';
+$lng['error']['subdomainiswrong'] = 'Het subdomein %s bevat illegale karakters.';
+$lng['error']['domaincantbeempty'] = 'De domeinnaam kan niet leeg zijn.';
+$lng['error']['domainexistalready'] = 'Het domein %s bestaads reeds.';
+$lng['error']['domainisaliasorothercustomer'] = 'Het geselecteerde alias domein verwijsd naar zichzelf of is van een andere gebruiker.';
+$lng['error']['emailexistalready'] = 'Het e-mail adres %s bestaat reeds.';
+$lng['error']['maindomainnonexist'] = 'Het hoofd-domein %s bestaat niet.';
+$lng['error']['destinationnonexist'] = 'Maak uw forwarder in het veld \'Destination\' alstublieft.';
+$lng['error']['destinationalreadyexistasmail'] = 'De forwarder naar %s bestaat reeds als actief e-mail adres.';
+$lng['error']['destinationalreadyexist'] = 'U heeft al een forwarder die verwijst naar %s .';
+$lng['error']['destinationiswrong'] = 'De forwarder naar %s bevat illegale karakter(s) of is niet compleet.';
+$lng['error']['domainname'] = $lng['domains']['domainname'];
 
 /**
  * Questions
  */
+
 $lng['question']['question'] = 'Beveiligings vraag';
 $lng['question']['admin_customer_reallydelete'] = 'Weet u zeker dat u de klant %s wilt verwijderen? Dit kan niet ongedaan worden gemaakt!';
 $lng['question']['admin_domain_reallydelete'] = 'Weet u zeker dat u het domein %s wilt verwijderen?';
@@ -246,6 +258,7 @@ $lng['question']['admin_configs_reallyrebuild'] = 'Weet u zeker dat u de configu
 /**
  * Mails
  */
+
 $lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nUw mail account {EMAIL}\nis succesvol aangemaakt.\n\nDit is een automatisch verstuurde\ne-mail, beantwoord deze niet AUB!\n\nMet vriendelijke groet, het SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'Mail account succesvol aangemaakt';
 $lng['mails']['createcustomer']['mailbody'] = 'Hallo {FIRSTNAME} {NAME},\n\nhierbij uw account informatie:\n\nGebruikersnaam: {USERNAME}\nWachtwoord: {PASSWORD}\n\nMet vriendelijke groet,\nhet SysCP-Team';
@@ -254,6 +267,7 @@ $lng['mails']['createcustomer']['subject'] = 'Account informatie';
 /**
  * Admin
  */
+
 $lng['admin']['overview'] = 'Overzicht';
 $lng['admin']['ressourcedetails'] = 'Gebruikte resources';
 $lng['admin']['systemdetails'] = 'Systeem Details';
@@ -310,6 +324,7 @@ $lng['admin']['templates']['EMAIL'] = 'Vervangen door het adres van het POP3/IMA
 /**
  * Serversettings
  */
+
 $lng['serversettings']['session_timeout']['title'] = 'Sessie Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'Hoe lang moet een gebruiker inactief zijn voor dat de sessie ongeldig wordt (seconden)?';
 $lng['serversettings']['accountprefix']['title'] = 'Klant Voorvoegsel';
@@ -351,27 +366,29 @@ $lng['serversettings']['webmail_url']['description'] = 'Wat is de URL die verwij
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP URL';
 $lng['serversettings']['webftp_url']['description'] = 'Wat is de URL die verwijst naar WebFTP? (moet beginnen met http://)';
 $lng['serversettings']['language']['description'] = 'Wat is uw standaard server taal?';
-$lng['serversettings']['maxloginattempts']['title']       = 'Maximaal aantal inlog pogingen';
+$lng['serversettings']['maxloginattempts']['title'] = 'Maximaal aantal inlog pogingen';
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximaam aantal inlog pogingen voor het account gedeactiveerd wordt.';
-$lng['serversettings']['deactivatetime']['title']       = 'Deactivatie Tijd';
+$lng['serversettings']['deactivatetime']['title'] = 'Deactivatie Tijd';
 $lng['serversettings']['deactivatetime']['description'] = 'Tijd (in seconden) dat een account gedeactiveerd word na te veel inlogpogingen.';
-$lng['serversettings']['pathedit']['title']       = 'Manier van Pad ingeven';
+$lng['serversettings']['pathedit']['title'] = 'Manier van Pad ingeven';
 $lng['serversettings']['pathedit']['description'] = 'Moet het pad geselecteerd worden met een \'dropdown\' menu of met een invoerveld?';
 
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['mysql']['description'] = 'Hier kunt u MySQL-Databases maken en wijzigen.<br />De wijzigingen worden direct gemaakt en de database kan direkt gebruikt worden.<br />In het menu dat links staat vind u de tool phpMyAdmin welke u kunt gebruiken om uw database makkelijk te beheren.<br /><br />Om gebruikt te maken van uw database in uw eigen php programmas kunt u de volgende instellingen gebruiken: (De gegeven in <i>italics</i> moeten aangepast worden in wat u ingevoerd heeft!)<br />Hostnaam: <b><SQL_HOST></b><br />Gebruikersnaam: <b><i>Databasenaam</i></b><br />Wachtwoord: <b><i>het wachtwoord dat u gekozen heeft</i></b><br />Database: <b><i>Databasenaam</i></b>';
 
 /**
  * ADDED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['admin']['cronlastrun'] = 'Laatste Cron-run';
 $lng['serversettings']['apacheconf_filename']['title'] = 'Apache configuratie bestandsnaam';
 $lng['serversettings']['apacheconf_filename']['description'] = 'Hoe moet het apache configuratie bestand genoemd worden?';
-$lng['serversettings']['paging']['title']       = 'Vermeldingen per pagina';
+$lng['serversettings']['paging']['title'] = 'Vermeldingen per pagina';
 $lng['serversettings']['paging']['description'] = 'Hoeveel vermeldingen er getoond moeten worden per pagina? (0 = alles laten zien)';
-$lng['error']['ipstillhasdomains']= 'De IP/Port combinatie die u verwijderen wilt heeft nog domeinen toegewezen, wijs deze opnieuw to aan andere IP/Poort combinaties voordat u deze IP/Poort combinatie verwijderd.';
+$lng['error']['ipstillhasdomains'] = 'De IP/Port combinatie die u verwijderen wilt heeft nog domeinen toegewezen, wijs deze opnieuw to aan andere IP/Poort combinaties voordat u deze IP/Poort combinatie verwijderd.';
 $lng['error']['cantdeletedefaultip'] = 'U kunt de standaard reseller IP/Poort combinatie niet verwijderen, maak eerst een andere IP/Port combinatie standaard voor reseller voor dat u deze IP/Port combinatie verwijderd.';
 $lng['error']['cantdeletesystemip'] = 'U kunt het laatste IP/Poort combinatie van het systeem niet verwijderen, maak eerste een andere IP/Port combinatie aan voor het systeem of wijzig het ipadres van het systeem.';
 $lng['error']['myipaddress'] = '\'IP\'';
@@ -387,24 +404,21 @@ $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Poort';
 
 // ADDED IN 1.2.13-rc3
+
 $lng['error']['cantchangesystemip'] = 'U kunt het laatste system IP niet wijzigen, maak eerst een nieuwe IP/Poort cominatie aan of wijzig het ip-adres van het systeem.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Weet u zeker dat u de document root voor dit domein niet in de klant-root van de klant wil hebben?';
 
 // ADDED IN 1.2.14-rc1
-$lng['admin']['memorylimitdisabled'] = 'Gedeactiveerd';
 
+$lng['admin']['memorylimitdisabled'] = 'Gedeactiveerd';
 $lng['domain']['openbasedirpath'] = 'OpenBasedir-pad';
 $lng['domain']['docroot'] = 'Pad van bovenstaand veld';
 $lng['domain']['homedir'] = 'Home directory';
-
 $lng['admin']['valuemandatory'] = 'Deze waarde is verplicht';
 $lng['admin']['valuemandatorycompany'] = 'De waarde &quot;naam&quot; en &quot;voornaam&quot; of &quot;bedrijf&quot; moet ingevoerd worden';
-
 $lng['menue']['main']['username'] = 'Ingelogged als: ';
-
 $lng['panel']['urloverridespath'] = 'URL (Vervangd path)';
 $lng['panel']['pathorurl'] = 'Pad of URL';
-
 $lng['error']['sessiontimeoutiswrong'] = 'Alleen nummerieke &quot;Session Timeout&quot; zijn toegestaan.';
 $lng['error']['maxloginattemptsiswrong'] = 'Alleen nummerieke &quot;Maximaal aantal inlogpogingen&quot; zijn toegestaan.';
 $lng['error']['deactivatetimiswrong'] = 'Allee nummerieke &quot;Deactivatie Tijd&quot; zijn toegestaan.';
@@ -419,27 +433,25 @@ $lng['error']['pagingiswrong'] = 'Het aantal &quot;Vermeldingen per pagina&quot;
 $lng['error']['phpmyadminiswrong'] = 'De phpMyAdmin-link is niet een geldige link.';
 $lng['error']['webmailiswrong'] = 'De WebMail-link is niet een geldige link.';
 $lng['error']['webftpiswrong'] = 'De WebFTP-link is niet een geldige link.';
-
 $lng['domains']['hasaliasdomains'] = 'Heeft alias domein(en)';
-
 $lng['serversettings']['defaultip']['title'] = 'Standaard IP/Poort';
 $lng['serversettings']['defaultip']['description'] = 'Wat is de standaard IP/Poort combinatie?';
-
 $lng['domains']['statstics'] = 'Gebruiks Statistieken';
-
 $lng['panel']['ascending'] = 'oplopend';
 $lng['panel']['decending'] = 'aflopend';
-
 $lng['panel']['search'] = 'Zoeken';
 $lng['panel']['used'] = 'gebruikt';
 
 // ADDED IN 1.2.14-rc3
+
 $lng['panel']['translator'] = 'Vertaler';
 
 // ADDED IN 1.2.14-rc4
+
 $lng['error']['stringformaterror'] = 'De waarde voor het veld &quot;%s&quot; is niet in het verwachte formaat.';
 
 // ADDED IN 1.2.15-rc1
+
 $lng['admin']['serversoftware'] = 'Serversoftware';
 $lng['admin']['phpversion'] = 'PHP-Versie';
 $lng['admin']['phpmemorylimit'] = 'PHP-Geheugen-Limiet';
@@ -451,6 +463,7 @@ $lng['serversettings']['phpappendopenbasedir']['title'] = 'Pad wat toegevoegd wo
 $lng['serversettings']['phpappendopenbasedir']['description'] = 'Deze paden (gescheiden door dubbele punten) zullen worden toegevoegd aan het OpenBasedir-statement in iedere vhost-container.';
 
 // CHANGED IN 1.2.15-rc1
+
 $lng['error']['loginnameissystemaccount'] = 'U kunt geen accounts aanmaken die gelijk zijn aan systeem accounts (bijvoorbeeld beginnend met &quot;%s&quot;). Kies een andere accountnaam AUB.';
 
 ?>

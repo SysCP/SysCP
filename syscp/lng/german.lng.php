@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2007 the SysCP Team (see authors).
@@ -14,10 +15,10 @@
  * @version    $Id$
  */
 
-
 /**
  * Global
  */
+
 $lng['translator'] = '';
 $lng['panel']['edit'] = 'bearbeiten';
 $lng['panel']['delete'] = 'l&ouml;schen';
@@ -35,6 +36,7 @@ $lng['panel']['dirsmissing'] = 'Verzeichnisse nicht verf&uuml;gbar oder lesbar';
 /**
  * Login
  */
+
 $lng['login']['username'] = 'Benutzername';
 $lng['login']['password'] = 'Passwort';
 $lng['login']['language'] = 'Sprache';
@@ -45,6 +47,7 @@ $lng['login']['profile_lng'] = 'Profilsprache';
 /**
  * Customer
  */
+
 $lng['customer']['documentroot'] = 'Heimverzeichnis';
 $lng['customer']['name'] = 'Name';
 $lng['customer']['firstname'] = 'Vorname';
@@ -70,6 +73,7 @@ $lng['customer']['unlimited'] = 'unbeschr&auml;nkt';
 /**
  * Customermenue
  */
+
 $lng['menue']['main']['main'] = 'Allgemein';
 $lng['menue']['main']['changepassword'] = 'Passwort &auml;ndern';
 $lng['menue']['main']['changelanguage'] = 'Sprache &auml;ndern';
@@ -91,12 +95,14 @@ $lng['menue']['extras']['pathoptions'] = 'Pfadoptionen';
 /**
  * Index
  */
+
 $lng['index']['customerdetails'] = 'Kundendaten';
 $lng['index']['accountdetails'] = 'Accountdaten';
 
 /**
  * Change Password
  */
+
 $lng['changepassword']['old_password'] = 'Altes Passwort';
 $lng['changepassword']['new_password'] = 'Neues Passwort';
 $lng['changepassword']['new_password_confirm'] = 'Neues Passwort (best&auml;tigen)';
@@ -106,6 +112,7 @@ $lng['changepassword']['also_change_ftp'] = ' Auch Passwort vom Haupt-FTP-Zugang
 /**
  * Domains
  */
+
 $lng['domains']['description'] = 'Hier k&ouml;nnen Sie (Sub-)Domains erstellen und deren Pfade &auml;ndern.<br />Nach jeder &Auml;nderung braucht das System etwas Zeit um die Konfiguration neu einzulesen.';
 $lng['domains']['domainsettings'] = 'Domaineinstellungen';
 $lng['domains']['domainname'] = 'Domainname';
@@ -118,6 +125,7 @@ $lng['domains']['noaliasdomain'] = 'Keine Aliasdomain';
 /**
  * eMails
  */
+
 $lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre E-Mail Adressen einrichten.<br />Ein Konto ist wie Ihr Briefkasten vor der Haust&uuml;re. Wenn jemand eine email an Sie schreibt, dann wird diese in dieses Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / E-Mail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
 $lng['emails']['emailaddress'] = 'E-Mail-Adresse';
 $lng['emails']['emails_add'] = 'E-Mail-Adresse anlegen';
@@ -135,12 +143,14 @@ $lng['emails']['forwarder_add'] = 'Weiterleitung hinzuf&uuml;gen';
 /**
  * FTP
  */
+
 $lng['ftp']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche FTP-Accounts einrichten.<br />Die &Auml;nderungen sind sofort wirksam und die FTP-Accounts sofort benutzbar.';
 $lng['ftp']['account_add'] = 'Account anlegen';
 
 /**
  * MySQL
  */
+
 $lng['mysql']['databasename'] = 'Benutzer-/Datenbankname';
 $lng['mysql']['databasedescription'] = 'Datenbankbeschreibung';
 $lng['mysql']['database_create'] = 'Datenbank anlegen';
@@ -148,6 +158,7 @@ $lng['mysql']['database_create'] = 'Datenbank anlegen';
 /**
  * Extras
  */
+
 $lng['extras']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche Extras einrichten, wie zum Beispiel Verzeichnisschutz.<br />Die &Auml;nderungen sind erst nach einer bestimmten Zeit wirksam.';
 $lng['extras']['directoryprotection_add'] = 'Verzeichnisschutz anlegen';
 $lng['extras']['view_directory'] = 'Verzeichnis anzeigen';
@@ -166,6 +177,7 @@ $lng['extras']['errordocument401path'] = 'URL zum Fehlerdokument 401';
 /**
  * Errors
  */
+
 $lng['error']['error'] = 'Fehlermeldung';
 $lng['error']['directorymustexist'] = 'Das Verzeichnis %s muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
 $lng['error']['filemustexist'] = 'Die Datei %s muss existieren.';
@@ -177,55 +189,55 @@ $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomain
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Sie haben bereits eine Adresse als Catchall f&uuml;r diese Domain definiert.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
 $lng['error']['login'] = 'Der angegebene Benutzername/Passwort ist falsch.';
-$lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zu vieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in '.$settings['login']['deactivatetime'].' Sekunden erneut.';
+$lng['error']['login_blocked'] = 'Dieser Account wurde aufgrund zu vieler Fehlversuche vorr&uuml;bergehend geschlossen. <br />Bitte versuchen Sie es in ' . $settings['login']['deactivatetime'] . ' Sekunden erneut.';
 $lng['error']['notallreqfieldsorerrors'] = 'Sie haben nicht alle Felder oder ein Feld mit fehlerhaften Angaben ausgef&uuml;llt.';
 $lng['error']['oldpasswordnotcorrect'] = 'Das alte Passwort ist nicht korrekt.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Sie k&ouml;nnen nicht mehr Ressourcen verteilen als Sie noch frei haben.';
-
 $lng['error']['mustbeurl'] = 'Sie m&uuml;ssen eine vollst&auml;ndige URL angeben (z.B. http://irgendwas.de/error404.htm)';
 $lng['error']['invalidpath'] = 'Sie haben keine g&uuml;ltige URL ausgew&auml;hlt (Evtl. Probleme beim Verzeichnislisting?)';
-$lng['error']['stringisempty'] ='Fehlende Eingabe im Feld';
-$lng['error']['stringiswrong'] ='Falsche Eingabe im Feld';
-$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
-$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
-$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
-$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
-$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
-$lng['error']['newpasswordconfirmerror']='Das neue Passwort und die Best&auml;tigung sind nicht identisch.';
-$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
-$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
-$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
+$lng['error']['stringisempty'] = 'Fehlende Eingabe im Feld';
+$lng['error']['stringiswrong'] = 'Falsche Eingabe im Feld';
+$lng['error']['myloginname'] = '\'' . $lng['login']['username'] . '\'';
+$lng['error']['mypassword'] = '\'' . $lng['login']['password'] . '\'';
+$lng['error']['oldpassword'] = '\'' . $lng['changepassword']['old_password'] . '\'';
+$lng['error']['newpassword'] = '\'' . $lng['changepassword']['new_password'] . '\'';
+$lng['error']['newpasswordconfirm'] = '\'' . $lng['changepassword']['new_password_confirm'] . '\'';
+$lng['error']['newpasswordconfirmerror'] = 'Das neue Passwort und die Best&auml;tigung sind nicht identisch.';
+$lng['error']['myname'] = '\'' . $lng['customer']['name'] . '\'';
+$lng['error']['myfirstname'] = '\'' . $lng['customer']['firstname'] . '\'';
+$lng['error']['emailadd'] = '\'' . $lng['customer']['email'] . '\'';
 $lng['error']['mydomain'] = '\'Domain\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
-$lng['error']['loginnameexists']= 'Der Login-Name %s existiert bereits.';
-$lng['error']['emailiswrong']= 'Die E-Mail-Adresse %s enth&auml;lt ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
-$lng['error']['loginnameiswrong']= 'Der Login-Name %s enth&auml;lt ung&uuml;ltige Zeichen.';
-$lng['error']['userpathcombinationdupe']='Kombination aus Benutzername und Pfad existiert bereits.';
-$lng['error']['patherror']='allgemeiner Fehler! Pfad darf nicht leer sein.';
-$lng['error']['errordocpathdupe']='Option f&uuml;r Pfad %s existiert bereits.';
-$lng['error']['adduserfirst']='Sie m&uuml;ssen zuerst einen Kunden anlegen.';
-$lng['error']['domainalreadyexists']= 'Die Domain %s wurde bereits einem Kunden zugeordnet.';
-$lng['error']['nolanguageselect']='Keine Sprache ausgew&auml;hlt.';
-$lng['error']['nosubjectcreate']='Sie m&uuml;ssen einen Betreff angeben.';
-$lng['error']['nomailbodycreate']='Sie m&uuml;ssen einen E-Mail-Text eingeben.';
-$lng['error']['templatenotfound']='Template wurde nicht gefunden.';
-$lng['error']['alltemplatesdefined']='Sie k&ouml;nnen keine weiteren Templates anlegen, da bereits alle Sprachen mit Templates versorgt sind.';
-$lng['error']['wwwnotallowed']='Ihre Subdomain darf nicht www heissen.';
-$lng['error']['subdomainiswrong']='Die Subdomain %s enth&auml;lt ung&uuml;ltige Zeichen.';
-$lng['error']['domaincantbeempty']='Der Domain-Name darf nicht leer sein.';
-$lng['error']['domainexistalready']='Die Domain %s existiert bereits.';
-$lng['error']['domainisaliasorothercustomer']='Die ausgew&auml;hlte Aliasdomain ist entweder selber eine Aliasdomain oder geh&ouml;rt zu einem anderen Kunden.';
-$lng['error']['emailexistalready']='Die E-Mail-Adresse %s existiert bereits.';
-$lng['error']['maindomainnonexist']='Die Haupt-Domain %s existiert nicht.';
-$lng['error']['destinationnonexist']='Bitte geben Sie Ihre Weiterleitungsadresse im Feld \'Nach\' ein.';
-$lng['error']['destinationalreadyexistasmail']='Die Weiterleitung zu %s exisitiert bereits als aktive E-Mail-Adresse.';
-$lng['error']['destinationalreadyexist']='Es gibt bereits eine Weiterleitung nach %s .';
-$lng['error']['destinationiswrong']= 'Die Weiterleitungsadresse-Adresse %s enth&auml;lt ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
-$lng['error']['domainname']=$lng['domains']['domainname'];
+$lng['error']['loginnameexists'] = 'Der Login-Name %s existiert bereits.';
+$lng['error']['emailiswrong'] = 'Die E-Mail-Adresse %s enth&auml;lt ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
+$lng['error']['loginnameiswrong'] = 'Der Login-Name %s enth&auml;lt ung&uuml;ltige Zeichen.';
+$lng['error']['userpathcombinationdupe'] = 'Kombination aus Benutzername und Pfad existiert bereits.';
+$lng['error']['patherror'] = 'allgemeiner Fehler! Pfad darf nicht leer sein.';
+$lng['error']['errordocpathdupe'] = 'Option f&uuml;r Pfad %s existiert bereits.';
+$lng['error']['adduserfirst'] = 'Sie m&uuml;ssen zuerst einen Kunden anlegen.';
+$lng['error']['domainalreadyexists'] = 'Die Domain %s wurde bereits einem Kunden zugeordnet.';
+$lng['error']['nolanguageselect'] = 'Keine Sprache ausgew&auml;hlt.';
+$lng['error']['nosubjectcreate'] = 'Sie m&uuml;ssen einen Betreff angeben.';
+$lng['error']['nomailbodycreate'] = 'Sie m&uuml;ssen einen E-Mail-Text eingeben.';
+$lng['error']['templatenotfound'] = 'Template wurde nicht gefunden.';
+$lng['error']['alltemplatesdefined'] = 'Sie k&ouml;nnen keine weiteren Templates anlegen, da bereits alle Sprachen mit Templates versorgt sind.';
+$lng['error']['wwwnotallowed'] = 'Ihre Subdomain darf nicht www heissen.';
+$lng['error']['subdomainiswrong'] = 'Die Subdomain %s enth&auml;lt ung&uuml;ltige Zeichen.';
+$lng['error']['domaincantbeempty'] = 'Der Domain-Name darf nicht leer sein.';
+$lng['error']['domainexistalready'] = 'Die Domain %s existiert bereits.';
+$lng['error']['domainisaliasorothercustomer'] = 'Die ausgew&auml;hlte Aliasdomain ist entweder selber eine Aliasdomain oder geh&ouml;rt zu einem anderen Kunden.';
+$lng['error']['emailexistalready'] = 'Die E-Mail-Adresse %s existiert bereits.';
+$lng['error']['maindomainnonexist'] = 'Die Haupt-Domain %s existiert nicht.';
+$lng['error']['destinationnonexist'] = 'Bitte geben Sie Ihre Weiterleitungsadresse im Feld \'Nach\' ein.';
+$lng['error']['destinationalreadyexistasmail'] = 'Die Weiterleitung zu %s exisitiert bereits als aktive E-Mail-Adresse.';
+$lng['error']['destinationalreadyexist'] = 'Es gibt bereits eine Weiterleitung nach %s .';
+$lng['error']['destinationiswrong'] = 'Die Weiterleitungsadresse-Adresse %s enth&auml;lt ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
+$lng['error']['domainname'] = $lng['domains']['domainname'];
 
 /**
  * Questions
  */
+
 $lng['question']['question'] = 'Sicherheitsabfrage';
 $lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiderruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
 $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
@@ -245,6 +257,7 @@ $lng['question']['admin_configs_reallyrebuild'] = 'Wollen Sie wirklich Ihre Apac
 /**
  * Mails
  */
+
 $lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr E-Mail-Konto {USERNAME}\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'E-Mail-Konto erfolgreich eingerichtet';
 $lng['mails']['createcustomer']['mailbody'] = 'Hallo {FIRSTNAME} {NAME},\n\nhier ihre Accountinformationen:\n\nBenutzername: {USERNAME}\nPassword: {PASSWORD}\n\nVielen Dank,\nIhr SysCP-Team';
@@ -253,6 +266,7 @@ $lng['mails']['createcustomer']['subject'] = 'Accountinformationen';
 /**
  * Admin
  */
+
 $lng['admin']['overview'] = '&Uuml;bersicht';
 $lng['admin']['ressourcedetails'] = 'Verbrauchte Ressourcen';
 $lng['admin']['systemdetails'] = 'Systemdetails';
@@ -309,6 +323,7 @@ $lng['admin']['templates']['EMAIL'] = 'Wird mit der Adresse des neuen POP3/IMAP 
 /**
  * Serversettings
  */
+
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'Wie lange muss ein Benutzer inaktiv sein, damit die Session ung&uuml;ltig wird? (Sekunden)';
 $lng['serversettings']['accountprefix']['title'] = 'Kundenprefix';
@@ -360,17 +375,19 @@ $lng['serversettings']['pathedit']['description'] = 'Soll ein Pfad via Dropdown-
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['mysql']['description'] = 'Hier k&ouml;nnen Sie MySQL-Datenbanken anlegen und l&ouml;schen.<br>Die &Auml;nderungen werden sofort wirksam und die Datenbanken sofort benutzbar.<br>Im Men&uuml; finden Sie einen Link zum phpMyAdmin, mit dem Sie Ihre Datenbankeninhalte einfach bearbeiten k&ouml;nnen.<br><br>Die Zugangsdaten von php-Skripten sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><SQL_HOST></b><br>Benutzername: <b><i>Datenbankname</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b><br>Datenbank: <b><i>Datenbankname</i></b>';
 
 /**
  * ADDED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['admin']['cronlastrun'] = 'Last Cron';
 $lng['serversettings']['apacheconf_filename']['title'] = 'Apache-Config-Dateiname';
 $lng['serversettings']['apacheconf_filename']['description'] = 'Wie soll die Apache-Konfigurationsdatei genannt werden?';
-$lng['serversettings']['paging']['title']       = 'Eintr&auml;ge pro Seite';
+$lng['serversettings']['paging']['title'] = 'Eintr&auml;ge pro Seite';
 $lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
-$lng['error']['ipstillhasdomains']= 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
+$lng['error']['ipstillhasdomains'] = 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
 $lng['error']['cantdeletedefaultip'] = 'Sie k&ouml;nnen die Standard IP/Port Kombination f&uuml;r Reseller nicht l&ouml;schen. Bitte setzen Sie eine andere IP/Port Kombination als Standard um diese l&ouml;schen zu k&ouml;nnen.';
 $lng['error']['cantdeletesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie eine neue IP/Port Kombination als Systemeinstellung an oder &auml;ndern die System IP.';
 $lng['error']['myipaddress'] = '\'IP\'';
@@ -386,24 +403,21 @@ $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
 
 // ADDED IN 1.2.13-rc3
+
 $lng['error']['cantchangesystemip'] = 'Sie k&ouml;nnen die letzte System IP nicht l&ouml;schen. Entweder legen Sie noch eine neue IP/Port Kombination als Systemeinstellung an oder &auml;ndern die System IP.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Sind Sie sicher, dass der DocumentRoot dieser Domain au&szlig;erhalb des Heimatverzeichnisses des Kunden liegen soll?';
 
 // ADDED IN 1.2.14-rc1
-$lng['admin']['memorylimitdisabled'] = 'Deaktiviert';
 
+$lng['admin']['memorylimitdisabled'] = 'Deaktiviert';
 $lng['domain']['openbasedirpath'] = 'OpenBasedir-Pfad';
 $lng['domain']['docroot'] = 'Oben eingegebener Pfad';
 $lng['domain']['homedir'] = 'Heimverzeichnis';
-
 $lng['admin']['valuemandatory'] = 'Dieses Feld muss ausgef&uuml;llt werden';
 $lng['admin']['valuemandatorycompany'] = 'Entweder &quot;Name&quot; und &quot;Vorname&quot; oder &quot;Firma&quot; muss ausgef&uuml;llt werden';
-
 $lng['menue']['main']['username'] = 'Angemeldet als: ';
-
 $lng['panel']['urloverridespath'] = 'URL (&uuml;berschreibt Pfad)';
 $lng['panel']['pathorurl'] = 'Pfad oder URL';
-
 $lng['error']['sessiontimeoutiswrong'] = '&quot;Session-Timeout&quot; muss ein numerischer Wert sein.';
 $lng['error']['maxloginattemptsiswrong'] = '&quot;Maximale Loginversuche&quot; muss ein numerischer Wert sein.';
 $lng['error']['deactivatetimiswrong'] = '&quot;L&auml;nge der Deaktivierung&quot; muss numerisch sein.';
@@ -418,27 +432,25 @@ $lng['error']['pagingiswrong'] = 'Die &quot;Eintr&auml;ge pro Seite&quot;-Einste
 $lng['error']['phpmyadminiswrong'] = 'Die &quot;phpMyAdmin-URL&quot ist keine g&uuml;ltige URL.';
 $lng['error']['webmailiswrong'] = 'Die &quot;WebMail-URL&quot ist keine g&uuml;ltige URL.';
 $lng['error']['webftpiswrong'] = 'Die &quot;WebFTP-URL&quot ist keine g&uuml;ltige URL.';
-
 $lng['domains']['hasaliasdomains'] = 'Hat Aliasdomain(s)';
-
 $lng['serversettings']['defaultip']['title'] = 'Standard IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'Welche IP/Port-Kombination soll standardm&auml;&szlig;ig verwendet werden?';
-
 $lng['domains']['statstics'] = 'Statistiken';
-
 $lng['panel']['ascending'] = 'aufsteigend';
 $lng['panel']['decending'] = 'absteigend';
-
 $lng['panel']['search'] = 'Suche';
 $lng['panel']['used'] = 'benutzt';
 
 // ADDED IN 1.2.14-rc3
+
 $lng['panel']['translator'] = '&Uuml;bersetzung';
 
 // ADDED IN 1.2.14-rc4
+
 $lng['error']['stringformaterror'] = 'Der Wert des Feldes &quot;%s&quot; ist nicht im erwarteten Format.';
 
 // ADDED IN 1.2.15-rc1
+
 $lng['admin']['serversoftware'] = 'Serversoftware';
 $lng['admin']['phpversion'] = 'PHP-Version';
 $lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
@@ -450,19 +462,23 @@ $lng['serversettings']['phpappendopenbasedir']['title'] = 'An OpenBasedir anzuh&
 $lng['serversettings']['phpappendopenbasedir']['description'] = 'Diese (durch Doppelpunkte getrennten) Pfade werden dem OpenBasedir-Statement in jedem vhost-Container angeh&auml;ngt.';
 
 // CHANGED IN 1.2.15-rc1
+
 $lng['error']['loginnameissystemaccount'] = 'Sie k&ouml;nnen keinen Account anlegen, welcher wie ein Systemaccount aussieht (also zum Beispiel mit &quot;%s&quot; anf&auml;ngt). Bitte w&auml;hlen Sie einen anderen Accountnamen.';
 $lng['error']['youcantdeleteyourself'] = 'Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie sich nicht selbst l&ouml;schen.';
 $lng['error']['youcanteditallfieldsofyourself'] = 'Hinweis: Aus Sicherheitsgr&uuml;nden k&ouml;nnen Sie nicht alle Felder Ihres eigenen Accoounts bearbeiten.';
 
 // ADDED IN 1.2.16-svn1
+
 $lng['serversettings']['natsorting']['title'] = 'Nat&uuml;rliche Sortierung in der Listenansicht nutzen';
 $lng['serversettings']['natsorting']['description'] = 'Sortiert die Liste in der Reihenfolge web1 -> web2 -> web11 anstatt web1 -> web11 -> web2.';
 
 // ADDED IN 1.2.16-svn2
+
 $lng['serversettings']['deactivateddocroot']['title'] = 'Docroot f&uuml;r deaktivierte Benutzer';
 $lng['serversettings']['deactivateddocroot']['description'] = 'Dieser Pfad wird als docroot f&uuml;r deaktivierte Benutzer verwendet. Wenn leer, wird kein vHost erstellt.';
 
 // ADDED IN 1.2.16-svn4
+
 $lng['panel']['reset'] = '&Auml;nderungen verwerfen';
 $lng['admin']['accountsettings'] = 'Konteneinstellungen';
 $lng['admin']['panelsettings'] = 'Paneleinstellungen';
@@ -474,6 +490,7 @@ $lng['admin']['updatecounters'] = 'Ressourcenverbrauch';
 $lng['question']['admin_counters_reallyupdate'] = 'Wollen Sie den Ressourcenverbrauch neu berechnen?';
 
 // ADDED IN 1.2.16-svn6
+
 $lng['mails']['trafficninetypercent']['mailbody'] = 'Sehr geehrte(r) {NAME},\n\nSie haben bereits {TRAFFICUSED} MB von Ihren insgesamt {TRAFFIC} MB Traffic verbraucht.\nDies sind mehr als 90%.\n\nVielen Dank,\ndas SysCP-Team';
 $lng['mails']['trafficninetypercent']['subject'] = 'Sie erreichen bald Ihr Traffic-Limit';
 $lng['admin']['templates']['trafficninetypercent'] = 'Hinweismail f&uuml;r Kunden, wenn sie 90% des Traffics verbraucht haben';
@@ -481,6 +498,7 @@ $lng['admin']['templates']['TRAFFIC'] = 'Wird mit Traffic, der dem Kunden zugewi
 $lng['admin']['templates']['TRAFFICUSED'] = 'Wird mit Traffic, der vom Kunden bereits verbraucht wurde, ersetzt.';
 
 // ADDED IN 1.2.16-svn7
+
 $lng['admin']['ipsandports']['createvhostcontainer'] = 'Erstelle vHost-Container';
 $lng['admin']['subcanemaildomain']['never'] = 'Nie';
 $lng['admin']['subcanemaildomain']['choosableno'] = 'W&auml;hlbar, Standardwert: Nein';
@@ -489,11 +507,11 @@ $lng['admin']['subcanemaildomain']['always'] = 'Immer';
 $lng['changepassword']['also_change_webalizer'] = ' Auch Passwort vom Webalizer &auml;ndern';
 
 // ADDED IN 1.2.16-svn8
+
 $lng['serversettings']['mailpwcleartext']['title'] = 'Passw&ouml;rter der Mail-Accounts auch im Klartext in der Datenbank speichern';
 $lng['serversettings']['mailpwcleartext']['description'] = 'Wenn diese Einstellung auf Ja gesetzt wird, werden alle Passw&ouml;rter auch unverschl&uuml;sselt (also im Klartext, f&uuml;r jeden mit Zugriff auf die SysCP-Datenbank sofort lesbar) in der mail_users-Tabelle gespeichert. Aktivieren Sie diese Option nur dann, wenn Sie sie wirklich gebrauchen!';
 $lng['serversettings']['mailpwcleartext']['removelink'] = 'Klicken Sie hier, um alle unverschl&uuml;sselten Passw&ouml;rter aus der Tabelle zu entfernen.';
 $lng['question']['admin_cleartextmailpws_reallywipe'] = 'Wollen Sie wirklich alle unverschl&uuml;sselten Passw&ouml;rter aus der Tabelle mail_users entfernen? Dieser Schritt kann nicht r&uuml;ckg&auml;ngig gemacht werden!';
-
 $lng['admin']['configfiles']['overview'] = '&Uuml;bersicht';
 $lng['admin']['configfiles']['wizard'] = 'Assistent';
 $lng['admin']['configfiles']['distribution'] = 'Distribution';

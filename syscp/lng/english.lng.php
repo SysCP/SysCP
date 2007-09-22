@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2007 the SysCP Team (see authors).
@@ -14,10 +15,10 @@
  * @version    $Id$
  */
 
-
 /**
  * Global
  */
+
 $lng['translator'] = '';
 $lng['panel']['edit'] = 'edit';
 $lng['panel']['delete'] = 'delete';
@@ -35,6 +36,7 @@ $lng['panel']['dirsmissing'] = 'Can not find or read the directory!';
 /**
  * Login
  */
+
 $lng['login']['username'] = 'Username';
 $lng['login']['password'] = 'Password';
 $lng['login']['language'] = 'Language';
@@ -45,6 +47,7 @@ $lng['login']['profile_lng'] = 'Profile language';
 /**
  * Customer
  */
+
 $lng['customer']['documentroot'] = 'Home directory';
 $lng['customer']['name'] = 'Name';
 $lng['customer']['firstname'] = 'First name';
@@ -70,6 +73,7 @@ $lng['customer']['unlimited'] = 'unlimited';
 /**
  * Customermenue
  */
+
 $lng['menue']['main']['main'] = 'Main';
 $lng['menue']['main']['changepassword'] = 'Change password';
 $lng['menue']['main']['changelanguage'] = 'Change language';
@@ -91,12 +95,14 @@ $lng['menue']['extras']['pathoptions'] = 'path options';
 /**
  * Index
  */
+
 $lng['index']['customerdetails'] = 'Customer Details';
 $lng['index']['accountdetails'] = 'Account Details';
 
 /**
  * Change Password
  */
+
 $lng['changepassword']['old_password'] = 'Old password';
 $lng['changepassword']['new_password'] = 'New password';
 $lng['changepassword']['new_password_confirm'] = 'New password (confirm)';
@@ -106,6 +112,7 @@ $lng['changepassword']['also_change_ftp'] = ' also change password of the main F
 /**
  * Domains
  */
+
 $lng['domains']['description'] = 'Here you can create (sub-)domains and change their paths.<br />The system will need some time to apply the new settings after every change.';
 $lng['domains']['domainsettings'] = 'Domain settings';
 $lng['domains']['domainname'] = 'Domain name';
@@ -118,6 +125,7 @@ $lng['domains']['noaliasdomain'] = 'No alias domain';
 /**
  * E-mails
  */
+
 $lng['emails']['description'] = 'Here you can create and change your e-mail addresses.<br />An account is like your letterbox in front of your house. If someone sends you an email, it will be dropped into the account.<br /><br />To download your emails use the following settings in your mailprogram: (The data in <i>italics</i> has to be changed to the equivalents you typed in!)<br />Hostname: <b><i>Domainname</i></b><br />Username: <b><i>Account name / e-mail address</i></b><br />Password: <b><i>the password you\'ve chosen</i></b>';
 $lng['emails']['emailaddress'] = 'E-mail-address';
 $lng['emails']['emails_add'] = 'Create e-mail-address';
@@ -135,12 +143,14 @@ $lng['emails']['forwarder_add'] = 'Create forwarder';
 /**
  * FTP
  */
+
 $lng['ftp']['description'] = 'Here you can create and change your FTP accounts.<br />The changes are made instantly and the accounts can be used immediately.';
 $lng['ftp']['account_add'] = 'Create Account';
 
 /**
  * MySQL
  */
+
 $lng['mysql']['databasename'] = 'user/database name';
 $lng['mysql']['databasedescription'] = 'database description';
 $lng['mysql']['database_create'] = 'Create database';
@@ -148,6 +158,7 @@ $lng['mysql']['database_create'] = 'Create database';
 /**
  * Extras
  */
+
 $lng['extras']['description'] = 'Here you can add some extras, for example directory protection.<br />The system will need some time to apply the new settings after every change.';
 $lng['extras']['directoryprotection_add'] = 'Add directory protection';
 $lng['extras']['view_directory'] = 'display directory content';
@@ -166,6 +177,7 @@ $lng['extras']['errordocument401path'] = 'URL to ErrorDocument 401';
 /**
  * Errors
  */
+
 $lng['error']['error'] = 'Error';
 $lng['error']['directorymustexist'] = 'The directory %s must exist. Please create it with your FTP client.';
 $lng['error']['filemustexist'] = 'The file %s must exist.';
@@ -177,55 +189,55 @@ $lng['error']['firstdeleteallsubdomains'] = 'You have to delete all Subdomains f
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'You have already defined a catchall for this domain.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'You cannot delete your main FTP account';
 $lng['error']['login'] = 'The username or password you typed in is wrong. Please try it again!';
-$lng['error']['login_blocked'] = 'This account has been suspended because of too many login errors. <br />Please try again in '.$settings['login']['deactivatetime'].' seconds.';
+$lng['error']['login_blocked'] = 'This account has been suspended because of too many login errors. <br />Please try again in ' . $settings['login']['deactivatetime'] . ' seconds.';
 $lng['error']['notallreqfieldsorerrors'] = 'You have not filled in all or filled in some fields incorrectly.';
 $lng['error']['oldpasswordnotcorrect'] = 'The old password is not correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'You cannot allocate more resources than you own for yourself.';
-
 $lng['error']['mustbeurl'] = 'You have not typed a valid or complete url (e.g. http://somedomain.com/error404.htm)';
 $lng['error']['invalidpath'] = 'You have not chosen a valid url (maybe problems with the dirlisting?)';
-$lng['error']['stringisempty'] ='Missing Input in Field';
-$lng['error']['stringiswrong'] ='Wrong Input in Field';
-$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
-$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
-$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
-$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
-$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
-$lng['error']['newpasswordconfirmerror']='New password and confirmation does not match';
-$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
-$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
-$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
+$lng['error']['stringisempty'] = 'Missing Input in Field';
+$lng['error']['stringiswrong'] = 'Wrong Input in Field';
+$lng['error']['myloginname'] = '\'' . $lng['login']['username'] . '\'';
+$lng['error']['mypassword'] = '\'' . $lng['login']['password'] . '\'';
+$lng['error']['oldpassword'] = '\'' . $lng['changepassword']['old_password'] . '\'';
+$lng['error']['newpassword'] = '\'' . $lng['changepassword']['new_password'] . '\'';
+$lng['error']['newpasswordconfirm'] = '\'' . $lng['changepassword']['new_password_confirm'] . '\'';
+$lng['error']['newpasswordconfirmerror'] = 'New password and confirmation does not match';
+$lng['error']['myname'] = '\'' . $lng['customer']['name'] . '\'';
+$lng['error']['myfirstname'] = '\'' . $lng['customer']['firstname'] . '\'';
+$lng['error']['emailadd'] = '\'' . $lng['customer']['email'] . '\'';
 $lng['error']['mydomain'] = '\'Domain\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
-$lng['error']['loginnameexists']= 'Login-Name %s already exists';
-$lng['error']['emailiswrong']= 'E-mail-Address %s contains invalid characters or is incomplete';
-$lng['error']['loginnameiswrong']= 'Login-Name %s contains invalid characters';
-$lng['error']['userpathcombinationdupe']='Combination of Username and Path already exists';
-$lng['error']['patherror']='General Error! path cannot be empty';
-$lng['error']['errordocpathdupe']='Option for path %s already exists';
-$lng['error']['adduserfirst']='Please create a customer first';
-$lng['error']['domainalreadyexists']= 'The domain %s is already assigned to a customer';
-$lng['error']['nolanguageselect']='No language selected.';
-$lng['error']['nosubjectcreate']='You must define a topic for this mail template.';
-$lng['error']['nomailbodycreate']='You must define a Mail-Text for this mail template.';
-$lng['error']['templatenotfound']='Template was not found.';
-$lng['error']['alltemplatesdefined']='You cant define more templates, all languages are supported already.';
-$lng['error']['wwwnotallowed']='www is not allowed for subdomains.';
-$lng['error']['subdomainiswrong']='The subdomain %s contains invalid characters.';
-$lng['error']['domaincantbeempty']='The domain-name can not be empty.';
-$lng['error']['domainexistalready']='The domain %s already exists.';
-$lng['error']['domainisaliasorothercustomer']='The selected alias domain is either itself an alias domain or belongs to another customer.';
-$lng['error']['emailexistalready']='The e-mail-Address %s already exists.';
-$lng['error']['maindomainnonexist']='The main-domain %s does not exist.';
-$lng['error']['destinationnonexist']='Please create your forwarder in the field \'Destination\'.';
-$lng['error']['destinationalreadyexistasmail']='The forwarder to %s already exists as active EMail-Address.';
-$lng['error']['destinationalreadyexist']='You have already defined a forwarder to %s .';
-$lng['error']['destinationiswrong']= 'The forwarder %s contains invalid character(s) or is incomplete.';
-$lng['error']['domainname']=$lng['domains']['domainname'];
+$lng['error']['loginnameexists'] = 'Login-Name %s already exists';
+$lng['error']['emailiswrong'] = 'E-mail-Address %s contains invalid characters or is incomplete';
+$lng['error']['loginnameiswrong'] = 'Login-Name %s contains invalid characters';
+$lng['error']['userpathcombinationdupe'] = 'Combination of Username and Path already exists';
+$lng['error']['patherror'] = 'General Error! path cannot be empty';
+$lng['error']['errordocpathdupe'] = 'Option for path %s already exists';
+$lng['error']['adduserfirst'] = 'Please create a customer first';
+$lng['error']['domainalreadyexists'] = 'The domain %s is already assigned to a customer';
+$lng['error']['nolanguageselect'] = 'No language selected.';
+$lng['error']['nosubjectcreate'] = 'You must define a topic for this mail template.';
+$lng['error']['nomailbodycreate'] = 'You must define a Mail-Text for this mail template.';
+$lng['error']['templatenotfound'] = 'Template was not found.';
+$lng['error']['alltemplatesdefined'] = 'You cant define more templates, all languages are supported already.';
+$lng['error']['wwwnotallowed'] = 'www is not allowed for subdomains.';
+$lng['error']['subdomainiswrong'] = 'The subdomain %s contains invalid characters.';
+$lng['error']['domaincantbeempty'] = 'The domain-name can not be empty.';
+$lng['error']['domainexistalready'] = 'The domain %s already exists.';
+$lng['error']['domainisaliasorothercustomer'] = 'The selected alias domain is either itself an alias domain or belongs to another customer.';
+$lng['error']['emailexistalready'] = 'The e-mail-Address %s already exists.';
+$lng['error']['maindomainnonexist'] = 'The main-domain %s does not exist.';
+$lng['error']['destinationnonexist'] = 'Please create your forwarder in the field \'Destination\'.';
+$lng['error']['destinationalreadyexistasmail'] = 'The forwarder to %s already exists as active EMail-Address.';
+$lng['error']['destinationalreadyexist'] = 'You have already defined a forwarder to %s .';
+$lng['error']['destinationiswrong'] = 'The forwarder %s contains invalid character(s) or is incomplete.';
+$lng['error']['domainname'] = $lng['domains']['domainname'];
 
 /**
  * Questions
  */
+
 $lng['question']['question'] = 'Security question';
 $lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete the customer %s? This cannot be undone!';
 $lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete the domain %s?';
@@ -245,6 +257,7 @@ $lng['question']['admin_configs_reallyrebuild'] = 'Do you really want to rebuild
 /**
  * Mails
  */
+
 $lng['mails']['pop_success']['mailbody'] = 'Hello,\n\nyour Mail account {EMAIL}\nwas set up successfully.\n\nThis is an automatically created\ne-mail, please do not answer!\n\nYours sincerely, the SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'Mail account set up successfully';
 $lng['mails']['createcustomer']['mailbody'] = 'Hello {FIRSTNAME} {NAME},\n\nhere is your account information:\n\nUsername: {USERNAME}\nPassword: {PASSWORD}\n\nThank you,\nthe SysCP-Team';
@@ -253,6 +266,7 @@ $lng['mails']['createcustomer']['subject'] = 'Account information';
 /**
  * Admin
  */
+
 $lng['admin']['overview'] = 'Overview';
 $lng['admin']['ressourcedetails'] = 'Used resources';
 $lng['admin']['systemdetails'] = 'System Details';
@@ -309,6 +323,7 @@ $lng['admin']['templates']['EMAIL'] = 'Replaced with the address of the POP3/IMA
 /**
  * Serversettings
  */
+
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'How long does a user have to be inactive before a session gets invalid (seconds)?';
 $lng['serversettings']['accountprefix']['title'] = 'Customer prefix';
@@ -350,27 +365,29 @@ $lng['serversettings']['webmail_url']['description'] = 'What\'s the URL to WebMa
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP URL';
 $lng['serversettings']['webftp_url']['description'] = 'What\'s the URL to  WebFTP? (has to start with http(s)://)';
 $lng['serversettings']['language']['description'] = 'What\'s your standard server language?';
-$lng['serversettings']['maxloginattempts']['title']       = 'Max Login Attempts';
+$lng['serversettings']['maxloginattempts']['title'] = 'Max Login Attempts';
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximum login attempts after which the account gets deactivated.';
-$lng['serversettings']['deactivatetime']['title']       = 'Deactivate Time';
+$lng['serversettings']['deactivatetime']['title'] = 'Deactivate Time';
 $lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
-$lng['serversettings']['pathedit']['title']       = 'Type of path input';
+$lng['serversettings']['pathedit']['title'] = 'Type of path input';
 $lng['serversettings']['pathedit']['description'] = 'Should a path be selected by a dropdown menu or by an input field?';
 
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['mysql']['description'] = 'Here you can create and change your MySQL-Databases.<br />The changes are made instantly and the database can be used immediately.<br />At the menu on the left side you find the tool phpMyAdmin with which you can easily administer your database.<br /><br />To use your databases in your own php-scripts use the following settings: (The data in <i>italics</i> have to be changed into the equivalents you typed in!)<br />Hostname: <b><SQL_HOST></b><br />Username: <b><i>Databasename</i></b><br />Password: <b><i>the password you\'ve chosen</i></b><br />Database: <b><i>Databasename</i></b>';
 
 /**
  * ADDED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['admin']['cronlastrun'] = 'Last Cron';
 $lng['serversettings']['apacheconf_filename']['title'] = 'Apache configuration filename';
 $lng['serversettings']['apacheconf_filename']['description'] = 'How should the apache configuration file called?';
-$lng['serversettings']['paging']['title']       = 'Entries per page';
+$lng['serversettings']['paging']['title'] = 'Entries per page';
 $lng['serversettings']['paging']['description'] = 'How many entries shall be shown on one page? (0 = disable paging)';
-$lng['error']['ipstillhasdomains']= 'The IP/Port combination you want to delete still has domains assigned to it, please reassign those to other IP/Port combinations before deleting this IP/Port combination.';
+$lng['error']['ipstillhasdomains'] = 'The IP/Port combination you want to delete still has domains assigned to it, please reassign those to other IP/Port combinations before deleting this IP/Port combination.';
 $lng['error']['cantdeletedefaultip'] = 'You cannot delete the default reseller IP/Port combination, please make another IP/Port combination default for resellers before deleting this IP/Port combination.';
 $lng['error']['cantdeletesystemip'] = 'You cannot delete the last system IP, either create a new IP/Port combination for the system IP or change the system IP.';
 $lng['error']['myipaddress'] = '\'IP\'';
@@ -386,24 +403,21 @@ $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
 
 // ADDED IN 1.2.13-rc3
+
 $lng['error']['cantchangesystemip'] = 'You cannot change the last system IP, either create another new IP/Port combination for the system IP or change the system IP.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure, you want the document root for this domain, not being within the customerroot of the customer?';
 
 // ADDED IN 1.2.14-rc1
-$lng['admin']['memorylimitdisabled'] = 'Disabled';
 
+$lng['admin']['memorylimitdisabled'] = 'Disabled';
 $lng['domain']['openbasedirpath'] = 'OpenBasedir-path';
 $lng['domain']['docroot'] = 'Path from field above';
 $lng['domain']['homedir'] = 'Home directory';
-
 $lng['admin']['valuemandatory'] = 'This value is mandatory';
 $lng['admin']['valuemandatorycompany'] = 'Either &quot;name&quot; and &quot;firstname&quot; or &quot;company&quot; must be filled';
-
 $lng['menue']['main']['username'] = 'Logged in as: ';
-
 $lng['panel']['urloverridespath'] = 'URL (overrides path)';
 $lng['panel']['pathorurl'] = 'Path or URL';
-
 $lng['error']['sessiontimeoutiswrong'] = 'Only numerical &quot;Session Timeout&quot; is allowed.';
 $lng['error']['maxloginattemptsiswrong'] = 'Only numerical &quot;Max Login Attempts&quot; are allowed.';
 $lng['error']['deactivatetimiswrong'] = 'Only numerical &quot;Deactivate Time&quot; is allowed.';
@@ -418,27 +432,25 @@ $lng['error']['pagingiswrong'] = 'The &quot;Entries per Page&quot;-value is wron
 $lng['error']['phpmyadminiswrong'] = 'The phpMyAdmin-link is not a valid link.';
 $lng['error']['webmailiswrong'] = 'The WebMail-link is not a valid link.';
 $lng['error']['webftpiswrong'] = 'The WebFTP-link is not a valid link.';
-
 $lng['domains']['hasaliasdomains'] = 'Has alias domain(s)';
-
 $lng['serversettings']['defaultip']['title'] = 'Default IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'What\'s the default IP/Port combination?';
-
 $lng['domains']['statstics'] = 'Usage Statistics';
-
 $lng['panel']['ascending'] = 'ascending';
 $lng['panel']['decending'] = 'decending';
-
 $lng['panel']['search'] = 'Search';
 $lng['panel']['used'] = 'used';
 
 // ADDED IN 1.2.14-rc3
+
 $lng['panel']['translator'] = 'Translator';
 
 // ADDED IN 1.2.14-rc4
+
 $lng['error']['stringformaterror'] = 'The value for the field &quot;%s&quot; is not in the expected format.';
 
 // ADDED IN 1.2.15-rc1
+
 $lng['admin']['serversoftware'] = 'Serversoftware';
 $lng['admin']['phpversion'] = 'PHP-Version';
 $lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';
@@ -450,19 +462,23 @@ $lng['serversettings']['phpappendopenbasedir']['title'] = 'Paths to append to Op
 $lng['serversettings']['phpappendopenbasedir']['description'] = 'These paths (separated by colons) will be added to the OpenBasedir-statement in every vhost-container.';
 
 // CHANGED IN 1.2.15-rc1
+
 $lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts (as for example begin with &quot;%s&quot;). Please enter another accountname.';
 $lng['error']['youcantdeleteyourself'] = 'You cannot delete yourself for security reasons.';
 $lng['error']['youcanteditallfieldsofyourself'] = 'Note: You cannot edit all fields of your own account for security reasons.';
 
 // ADDED IN 1.2.16-svn1
+
 $lng['serversettings']['natsorting']['title'] = 'Use natural human sorting in list view';
 $lng['serversettings']['natsorting']['description'] = 'Sorts lists as web1 -> web2 -> web11 instead of web1 -> web11 -> web2.';
 
 // ADDED IN 1.2.16-svn2
+
 $lng['serversettings']['deactivateddocroot']['title'] = 'Docroot for deactivated users';
 $lng['serversettings']['deactivateddocroot']['description'] = 'When a user is deactivated this path is used as his docroot. Leave empty for not creating a vhost at all.';
 
 // ADDED IN 1.2.16-svn4
+
 $lng['panel']['reset'] = 'discard changes';
 $lng['admin']['accountsettings'] = 'Account settings';
 $lng['admin']['panelsettings'] = 'Panel settings';
@@ -475,6 +491,7 @@ $lng['question']['admin_counters_reallyupdate'] = 'Do you really want to recalcu
 $lng['panel']['pathDescription'] = 'If the directory doesn\'t exist, it will be created automatically.';
 
 // ADDED IN 1.2.16-svn6
+
 $lng['mails']['trafficninetypercent']['mailbody'] = 'Dear {NAME},\n\nYou used {TRAFFICUSED} MB of your available {TRAFFIC} MB of traffic.\nThis are more than 90%.\n\nYours sincerely, the SysCP-Team';
 $lng['mails']['trafficninetypercent']['subject'] = 'Reaching your trafficlimit';
 $lng['admin']['templates']['trafficninetypercent'] = 'Notification mail for customers when ninety percent of traffic is exhausted';
@@ -482,6 +499,7 @@ $lng['admin']['templates']['TRAFFIC'] = 'Replaced with the traffic, which was as
 $lng['admin']['templates']['TRAFFICUSED'] = 'Replaced with the traffic, which was exhausted by the customer.';
 
 // ADDED IN 1.2.16-svn7
+
 $lng['admin']['ipsandports']['createvhostcontainer'] = 'Create vHost-Container';
 $lng['admin']['subcanemaildomain']['never'] = 'Never';
 $lng['admin']['subcanemaildomain']['choosableno'] = 'Choosable, default no';
@@ -490,11 +508,11 @@ $lng['admin']['subcanemaildomain']['always'] = 'Always';
 $lng['changepassword']['also_change_webalizer'] = ' also change password of the webalizer statistics';
 
 // ADDED IN 1.2.16-svn8
+
 $lng['serversettings']['mailpwcleartext']['title'] = 'Also save passwords of mail accounts unencrypted in database';
 $lng['serversettings']['mailpwcleartext']['description'] = 'If this is set to yes, all passwords will also be saved unencrypted (clearext, plain readable for everyone with database access) in the mail_users-table. Only activate this if you really need it!';
 $lng['serversettings']['mailpwcleartext']['removelink'] = 'Click here to wipe all unencrypted passwords from the table.';
 $lng['question']['admin_cleartextmailpws_reallywipe'] = 'Do you really want to wipe all unencrypted mail account passwords from the table mail_users? This cannot be reverted!';
-
 $lng['admin']['configfiles']['overview'] = 'Overview';
 $lng['admin']['configfiles']['wizard'] = 'Wizard';
 $lng['admin']['configfiles']['distribution'] = 'Distribution';
@@ -512,6 +530,7 @@ $lng['admin']['configfiles']['choosedaemon'] = '-- Choose a daemon --';
 $lng['admin']['trafficlastrun'] = 'Last Traffic calculation';
 
 // ADDED IN 1.2.16-svn10
+
 $lng['serversettings']['ftpdomain']['title'] = 'FTP accounts @domain';
 $lng['serversettings']['ftpdomain']['description'] = 'Customers can create Ftp accounts user@customerdomain?';
 
