@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2007 the SysCP Team (see authors).
@@ -8,13 +9,12 @@
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
  *
  * @copyright  (c) the authors
- * @author     Luca Piona <info@havanastudio.ch> 
+ * @author     Luca Piona <info@havanastudio.ch>
  * @author     Luca Longinotti <chtekk@gentoo.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
  * @version    $Id$
  */
-
 
 /**
  * Global
@@ -191,7 +191,7 @@ $lng['error']['firstdeleteallsubdomains'] = 'Prima di creare un dominio wildcard
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Hai già definito un catchall per questo dominio.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Non puoi cancellare il tuo account FTP principale.';
 $lng['error']['login'] = 'Il nome utente o la password da te immessi sono incorretti. Per favore riprova!';
-$lng['error']['login_blocked'] = 'Questo account è stato sospeso per i troppi tentativi di login falliti. <br />Riprovi tra '.$settings['login']['deactivatetime'].' secondi.';
+$lng['error']['login_blocked'] = 'Questo account è stato sospeso per i troppi tentativi di login falliti. <br />Riprovi tra ' . $settings['login']['deactivatetime'] . ' secondi.';
 $lng['error']['notallreqfieldsorerrors'] = 'Alcuni campi sono stati lasciati vuoti o sono stati riempiti incorrettamente.';
 $lng['error']['oldpasswordnotcorrect'] = 'La vecchia password non è corretta.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Non puoi assegnare più risorse di quante ne possieda tu stesso.';
@@ -200,15 +200,15 @@ $lng['error']['mustbeurl'] = 'Non hai inserito un\'indirizzo valido o completo (
 $lng['error']['invalidpath'] = 'Non hai scelto un\'indirizzo valido.';
 $lng['error']['stringisempty'] = 'Manca il dato nel campo.';
 $lng['error']['stringiswrong'] = 'Dato incorretto.';
-$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
-$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
-$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
-$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
-$lng['error']['newpasswordconfirm'] = '\''.$lng['changepassword']['new_password_confirm'].'\'';
+$lng['error']['myloginname'] = '\'' . $lng['login']['username'] . '\'';
+$lng['error']['mypassword'] = '\'' . $lng['login']['password'] . '\'';
+$lng['error']['oldpassword'] = '\'' . $lng['changepassword']['old_password'] . '\'';
+$lng['error']['newpassword'] = '\'' . $lng['changepassword']['new_password'] . '\'';
+$lng['error']['newpasswordconfirm'] = '\'' . $lng['changepassword']['new_password_confirm'] . '\'';
 $lng['error']['newpasswordconfirmerror'] = 'La nuova password non corrisponde a quella vecchia.';
-$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
-$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
-$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
+$lng['error']['myname'] = '\'' . $lng['customer']['name'] . '\'';
+$lng['error']['myfirstname'] = '\'' . $lng['customer']['firstname'] . '\'';
+$lng['error']['emailadd'] = '\'' . $lng['customer']['email'] . '\'';
 $lng['error']['mydomain'] = '\'Dominio\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
 $lng['error']['loginnameexists'] = 'Il login %s esiste già.';
@@ -437,6 +437,7 @@ $lng['panel']['translator'] = 'Traduttore';
 $lng['error']['stringformaterror'] = 'Il valore per il campo &quot;%s&quot; non è nel formato atteso.';
 
 // Translated by marone42@googlemail.com on 03/15/2007 (see https://trac.syscp.org/ticket/126#comment:21)
+
 $lng['admin']['serversoftware'] = 'Serversoftware';
 $lng['admin']['phpversion'] = 'Versione PHP';
 $lng['admin']['phpmemorylimit'] = 'PHP-Memory-Limit';

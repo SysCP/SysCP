@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2007 the SysCP Team (see authors).
@@ -17,6 +18,7 @@
 /**
  * Begin
  */
+
 $lng['install']['language'] = 'Installation - Language';
 $lng['install']['welcome'] = 'Welcome to SysCP Installation';
 $lng['install']['welcometext'] = 'Thank you for choosing SysCP. Please fill out the following fields with the required information to start the installation.<br /><b>Attention:</b> If the database you chose for SysCP already exists on your System, it will be erased with all containing data!';
@@ -40,6 +42,7 @@ $lng['install']['next'] = 'Next';
 /**
  * Progress
  */
+
 $lng['install']['testing_mysql'] = 'Testing if MySQL-root-username and password are correct...';
 $lng['install']['erasing_old_db'] = 'Erasing old Database...';
 $lng['install']['create_mysqluser_and_db'] = 'Creating MySQL-database and username...';

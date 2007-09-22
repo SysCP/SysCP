@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2007 the SysCP Team (see authors).
@@ -15,10 +16,10 @@
  * @version    $Id$
  */
 
-
 /**
  * Global
  */
+
 $lng['translator'] = 'Tim Zielosko, Aldo Reset';
 $lng['panel']['edit'] = 'Modifier';
 $lng['panel']['delete'] = 'Effacer';
@@ -36,6 +37,7 @@ $lng['panel']['dirsmissing'] = 'Dossiers non disponibles ou illisibles';
 /**
  * Login
  */
+
 $lng['login']['username'] = 'Identifiant';
 $lng['login']['password'] = 'Mot de passe';
 $lng['login']['language'] = 'Langue';
@@ -46,6 +48,7 @@ $lng['login']['profile_lng'] = 'Langage du profil';
 /**
  * Customer
  */
+
 $lng['customer']['documentroot'] = 'Chemin';
 $lng['customer']['name'] = 'Nom';
 $lng['customer']['firstname'] = 'Pr&eacute;nom';
@@ -71,6 +74,7 @@ $lng['customer']['unlimited'] = 'illimit&eacute;';
 /**
  * Customermenue
  */
+
 $lng['menue']['main']['main'] = 'General';
 $lng['menue']['main']['changepassword'] = 'Changer de mot de passe';
 $lng['menue']['main']['changelanguage'] = 'Changer de langage';
@@ -92,12 +96,14 @@ $lng['menue']['extras']['pathoptions'] = 'Options du chemin';
 /**
  * Index
  */
+
 $lng['index']['customerdetails'] = 'Donn&eacute;es du compte';
 $lng['index']['accountdetails'] = 'Donn&eacute;es de l\'acc&egrave;s';
 
 /**
  * Change Password
  */
+
 $lng['changepassword']['old_password'] = 'Ancien mot de passe';
 $lng['changepassword']['new_password'] = 'Nouveau mot de passe';
 $lng['changepassword']['new_password_confirm'] = 'Nouveau mot de passe (confirmer)';
@@ -107,6 +113,7 @@ $lng['changepassword']['also_change_ftp'] = ' Changer aussi le mot de passe de l
 /**
  * Domains
  */
+
 $lng['domains']['description'] = 'Ici vous pouvez inscrire des Domaines et changer ses chemins.<br />Il faut un peu de temps apr&egrave;s chaque changement pour relire la configuration.';
 $lng['domains']['domainsettings'] = 'Configuration des Domaines';
 $lng['domains']['domainname'] = 'Nom du Domaine';
@@ -119,6 +126,7 @@ $lng['domains']['noaliasdomain'] = 'Domaine non-pseudonyme';
 /**
  * eMails
  */
+
 $lng['emails']['description'] = 'Ici vous pouvez ajouter vos boites &agrave; e-mail.<br><br>Les donn&eacute;es pour configurer votre logiciel e-mail sont celles-la: <br><br>Nom du server: <b><i>votre domaine</i></b><br>Identifiant: <b><i>l\'adresse e-mail</i></b><br>Mot de passe: <b><i>le mot de passe que vous avez choisi</i></b>';
 $lng['emails']['emailaddress'] = 'Adresse';
 $lng['emails']['emails_add'] = 'Ajouter une Adresse';
@@ -136,12 +144,14 @@ $lng['emails']['forwarder_add'] = 'Ajouter un Renvoi';
 /**
  * FTP
  */
+
 $lng['ftp']['description'] = 'Ici vous pouvez ajouter des acc&egrave;s FTP suppl&eacute;mentaire.<br />Les changements sont tout de suite op&eacute;rant et l\'acc&egrave;s est disponible.';
 $lng['ftp']['account_add'] = 'Ajouter un acc&egrave;s';
 
 /**
  * MySQL
  */
+
 $lng['mysql']['description'] = 'Ici vous pouvez ajouter et effacer des bases de donn&eacute;es MySQL.<br>Les changements sont tout de suite op&eacute;rant et les banques sont disponibles.<br>Sur le menu on trouve un lien &agrave; phpMyAdmin, avec lequel vous pouvez modifier vos banques de donn&eacute;es.<br><br>L\'acc&egrave;s de PHP fonctionne comme ca: (Il faut modifier les valeurs en <i>italique</i> en mettant ce que c\'est!)<br><br>$connection = mysql_connect(&quot;<SQL_HOST>&quot;, &quot;<i>Votre identifiant</i>&quot;, &quot;<i>Votre mot de passe</i>&quot;);<br>mysql_select_db(&quot;<i>Le nom de la banque</i>&quot;, $connection);';
 $lng['mysql']['databasename'] = 'Nom de la base';
 $lng['mysql']['databasedescription'] = 'Description de la base';
@@ -150,6 +160,7 @@ $lng['mysql']['database_create'] = 'Ajouter une base de donn&eacute;es';
 /**
  * Extras
  */
+
 $lng['extras']['description'] = 'Ici vous pouvez ajouter des extras suppl&eactue;mentaires, par example la protection des listes.<br />Il faut un peu de temps apr&egrave;s chaque changement pour reliser la configuration.';
 $lng['extras']['directoryprotection_add'] = 'Ajouter une protection de dossier';
 $lng['extras']['view_directory'] = 'Faire voir le dossier';
@@ -168,6 +179,7 @@ $lng['extras']['errordocument401path'] = 'Chemin du document erreur 401';
 /**
  * Errors
  */
+
 $lng['error']['error'] = 'Erreur';
 $lng['error']['directorymustexist'] = 'Le dossier que vous avez choisi n\'existe pas. S\'il vous plait ajouter le avec votre client FTP.';
 $lng['error']['filemustexist'] = 'Le fichier que vous avez choisi n\'existe pas.';
@@ -179,56 +191,56 @@ $lng['error']['firstdeleteallsubdomains'] = 'Il faut effacer tous les sous-domai
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Vous avez d&eacute;j&agrave; defin&eacute; une adresse catchall pour ce domaine.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Vous ne pouvez pas effacer votre acc&egrave;s principal.';
 $lng['error']['login'] = 'Identifiant / mot de passe invalide.';
-$lng['error']['login_blocked'] = 'Cet acc&egrave;s &eacute;tait bloqu&eacute; &agrave; cause de nombreux login invalides.<br />S\'il vous-plait l\'essayer encore dans '.$settings['login']['deactivatetime'].' secondes.';
+$lng['error']['login_blocked'] = 'Cet acc&egrave;s &eacute;tait bloqu&eacute; &agrave; cause de nombreux login invalides.<br />S\'il vous-plait l\'essayer encore dans ' . $settings['login']['deactivatetime'] . ' secondes.';
 $lng['error']['notallreqfieldsorerrors'] = 'Vous n\'avez pas rempli toutes les cases ou vous l\'avez rempli avec des valeurs invalides.';
 $lng['error']['oldpasswordnotcorrect'] = 'L\'ancien mot de passe n\'est pas correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus de ressource qu\'il n\'en reste.';
 $lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; ce n\'est pas possible d\'effacer ou modifier l\'administrateur principal.';
-
 $lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; une adresse URL valide.';
 $lng['error']['invalidpath'] = 'Vous n\'avez pas choisi une adresse URL valide (Probablement &agrave; cause de probl&egrave;s avec le listing de dossiers?)';
-$lng['error']['stringisempty'] ='Entr&eacute;e manquante';
-$lng['error']['stringiswrong'] ='Entr&eacute;e invalide';
-$lng['error']['myloginname'] = '\''.$lng['login']['username'].'\'';
-$lng['error']['mypassword'] = '\''.$lng['login']['password'].'\'';
-$lng['error']['oldpassword'] = '\''.$lng['changepassword']['old_password'].'\'';
-$lng['error']['newpassword'] = '\''.$lng['changepassword']['new_password'].'\'';
-$lng['error']['newpasswordconfirm']= '\''.$lng['changepassword']['new_password_confirm'].'\'';
-$lng['error']['newpasswordconfirmerror']='Les deux nouveaux mots de passe ne sont pas identiques.';
-$lng['error']['myname'] = '\''.$lng['customer']['name'].'\'';
-$lng['error']['myfirstname'] = '\''.$lng['customer']['firstname'].'\'';
-$lng['error']['emailadd'] = '\''.$lng['customer']['email'].'\'';
+$lng['error']['stringisempty'] = 'Entr&eacute;e manquante';
+$lng['error']['stringiswrong'] = 'Entr&eacute;e invalide';
+$lng['error']['myloginname'] = '\'' . $lng['login']['username'] . '\'';
+$lng['error']['mypassword'] = '\'' . $lng['login']['password'] . '\'';
+$lng['error']['oldpassword'] = '\'' . $lng['changepassword']['old_password'] . '\'';
+$lng['error']['newpassword'] = '\'' . $lng['changepassword']['new_password'] . '\'';
+$lng['error']['newpasswordconfirm'] = '\'' . $lng['changepassword']['new_password_confirm'] . '\'';
+$lng['error']['newpasswordconfirmerror'] = 'Les deux nouveaux mots de passe ne sont pas identiques.';
+$lng['error']['myname'] = '\'' . $lng['customer']['name'] . '\'';
+$lng['error']['myfirstname'] = '\'' . $lng['customer']['firstname'] . '\'';
+$lng['error']['emailadd'] = '\'' . $lng['customer']['email'] . '\'';
 $lng['error']['mydomain'] = '\'domaine\'';
 $lng['error']['mydocumentroot'] = '\'Documentroot\'';
-$lng['error']['loginnameexists']= 'L\'identifiant %s existe d&eacute;j&agrave;.';
-$lng['error']['emailiswrong']= 'L\'adresse %s contient des signes invalides ou n\'est pas complet.';
-$lng['error']['loginnameiswrong']= 'L\'identifiant %s contient des signes invalides.';
-$lng['error']['userpathcombinationdupe']='Cette combination d\'identifiant et sentier existe d&eacute;j&agrave;.';
-$lng['error']['patherror']='Erreur g&eacute;n&eacute;ral! Le sentier ne doit pas &ecirc;tre vide.';
-$lng['error']['errordocpathdupe']='Il y a d&eacute;j&agrave; une option concernant le sentier %s.';
-$lng['error']['adduserfirst']='Vous devez ajouter un compte avant.';
-$lng['error']['domainalreadyexists']= 'Vous avez d&eacute;j&agrave; appliqu&eacute; le domaine %s.';
-$lng['error']['nolanguageselect']='Aucun langage choisi.';
-$lng['error']['nosubjectcreate']='Il faut donner un sujet.';
-$lng['error']['nomailbodycreate']='Il faut &eactute;crire un texte.';
-$lng['error']['templatenotfound']='Aucun template trouv&eacute;.';
-$lng['error']['alltemplatesdefined']='Vous avez d&eacute;j&agrave; appliqu&eacute des templates pour toutes les langues.';
-$lng['error']['wwwnotallowed']='Un sous-domaine ne doit pas s\'appeler www.';
-$lng['error']['subdomainiswrong']='Le sous-domaine %s contient des signes invalides.';
-$lng['error']['domaincantbeempty']='Le nom de domaine ne doit pas &ecirc;tre vide.';
-$lng['error']['domainexistalready']='Le domaine %s existe d&eacute;j&agrave;.';
-$lng['error']['domainisaliasorothercustomer']='Le domaine pseudonyme choisi est un domaine pseudonyme soi-m&ecirc;me ou fait partie d\'un autre client.';
-$lng['error']['emailexistalready']='L\'adresse %s existe d&eacute;j&agrave;.';
-$lng['error']['maindomainnonexist']='Le domaine %s n\'existe pas.';
-$lng['error']['destinationnonexist']='S\'il-vous-plait &eacutecrivez votre adresse de revoi au panneau \'&agrave;\'.';
-$lng['error']['destinationalreadyexistasmail']='Le renvoi vers l\'adresse %s existe d&eacute;j&agrave; comme adresse active.';
-$lng['error']['destinationalreadyexist']='Il y a d&eacute;j&agrave; une re-exp&eacute;dition vers l\'adresse %s.';
-$lng['error']['destinationiswrong']= 'L\'adresse %s contient des signes invalides ou n\'est pas complete.';
-$lng['error']['domainname']=$lng['domains']['domainname'];
+$lng['error']['loginnameexists'] = 'L\'identifiant %s existe d&eacute;j&agrave;.';
+$lng['error']['emailiswrong'] = 'L\'adresse %s contient des signes invalides ou n\'est pas complet.';
+$lng['error']['loginnameiswrong'] = 'L\'identifiant %s contient des signes invalides.';
+$lng['error']['userpathcombinationdupe'] = 'Cette combination d\'identifiant et sentier existe d&eacute;j&agrave;.';
+$lng['error']['patherror'] = 'Erreur g&eacute;n&eacute;ral! Le sentier ne doit pas &ecirc;tre vide.';
+$lng['error']['errordocpathdupe'] = 'Il y a d&eacute;j&agrave; une option concernant le sentier %s.';
+$lng['error']['adduserfirst'] = 'Vous devez ajouter un compte avant.';
+$lng['error']['domainalreadyexists'] = 'Vous avez d&eacute;j&agrave; appliqu&eacute; le domaine %s.';
+$lng['error']['nolanguageselect'] = 'Aucun langage choisi.';
+$lng['error']['nosubjectcreate'] = 'Il faut donner un sujet.';
+$lng['error']['nomailbodycreate'] = 'Il faut &eactute;crire un texte.';
+$lng['error']['templatenotfound'] = 'Aucun template trouv&eacute;.';
+$lng['error']['alltemplatesdefined'] = 'Vous avez d&eacute;j&agrave; appliqu&eacute des templates pour toutes les langues.';
+$lng['error']['wwwnotallowed'] = 'Un sous-domaine ne doit pas s\'appeler www.';
+$lng['error']['subdomainiswrong'] = 'Le sous-domaine %s contient des signes invalides.';
+$lng['error']['domaincantbeempty'] = 'Le nom de domaine ne doit pas &ecirc;tre vide.';
+$lng['error']['domainexistalready'] = 'Le domaine %s existe d&eacute;j&agrave;.';
+$lng['error']['domainisaliasorothercustomer'] = 'Le domaine pseudonyme choisi est un domaine pseudonyme soi-m&ecirc;me ou fait partie d\'un autre client.';
+$lng['error']['emailexistalready'] = 'L\'adresse %s existe d&eacute;j&agrave;.';
+$lng['error']['maindomainnonexist'] = 'Le domaine %s n\'existe pas.';
+$lng['error']['destinationnonexist'] = 'S\'il-vous-plait &eacutecrivez votre adresse de revoi au panneau \'&agrave;\'.';
+$lng['error']['destinationalreadyexistasmail'] = 'Le renvoi vers l\'adresse %s existe d&eacute;j&agrave; comme adresse active.';
+$lng['error']['destinationalreadyexist'] = 'Il y a d&eacute;j&agrave; une re-exp&eacute;dition vers l\'adresse %s.';
+$lng['error']['destinationiswrong'] = 'L\'adresse %s contient des signes invalides ou n\'est pas complete.';
+$lng['error']['domainname'] = $lng['domains']['domainname'];
 
 /**
  * Questions
  */
+
 $lng['question']['question'] = 'Question de s&eacute;curit&eacute;';
 $lng['question']['admin_customer_reallydelete'] = 'Voulez-vous vraiment effacer le compte %s?<br />ATTENTION! Toutes les donn&eacute;es vont &ecirc;tre effac&eacute;es! Apr&egrave;s ceci fait il faut effacer les dossiers du system des fichiers manuellement.';
 $lng['question']['admin_domain_reallydelete'] = 'Voulez-vous vraiment effacer le domaine %s?';
@@ -248,6 +260,7 @@ $lng['question']['admin_configs_reallyrebuild'] = 'Voulez-vous vraiment laisser 
 /**
  * Mails
  */
+
 $lng['mails']['pop_success']['mailbody'] = 'Bonjour,\n\nvotre acc&egrave;s POP3 {EMAIL}\na &eacute;t&eacute; install&eacute; avec succ&egrave;s.\n\nC\'est un e-mail g&eacute;ner&eacute; automatiquement, s\'il vous plait ne repondez pas a ce message.\n\nVotre Webmaster';
 $lng['mails']['pop_success']['subject'] = 'Acc&egrave;s POP3 install&eacute;';
 $lng['mails']['createcustomer']['mailbody'] = 'Bonjour {FIRSTNAME} {NAME},\n\nici vos informations d\'acc&egrave;s:\n\nIdentifiant: {USERNAME}\nMot de passe: {PASSWORD}\n\nNous vous remercions,\nVotre Webmaster';
@@ -256,6 +269,7 @@ $lng['mails']['createcustomer']['subject'] = 'Informations de votre acc&egrave;s
 /**
  * Admin
  */
+
 $lng['admin']['overview'] = 'Sommaire';
 $lng['admin']['ressourcedetails'] = 'Ressources utilis&eacute;s';
 $lng['admin']['systemdetails'] = 'Details du system';
@@ -312,6 +326,7 @@ $lng['admin']['templates']['EMAIL'] = 'Va &ecirc;tre remplac&eacute; par l\'acc&
 /**
  * Serversettings
  */
+
 $lng['serversettings']['session_timeout']['title'] = 'Session Timeout';
 $lng['serversettings']['session_timeout']['description'] = 'Combien de secondes d\'inactivit&eacute; pour que votre session se ferme?';
 $lng['serversettings']['accountprefix']['title'] = 'Pr&eacute;fix des comptes';
@@ -363,12 +378,13 @@ $lng['serversettings']['pathedit']['description'] = 'Choisir un chemin par menu 
 /**
  * ADDED BETWEEN 1.2.12 and 1.2.13
  */
+
 $lng['admin']['cronlastrun'] = 'Derni&egrave;re Tache Cron';
 $lng['serversettings']['apacheconf_filename']['title'] = 'Nom fichier de configuration Apache';
 $lng['serversettings']['apacheconf_filename']['description'] = 'Quel nom utiliserez-vous pour le fichier de configuration Apache?';
-$lng['serversettings']['paging']['title']       = 'R&eacute;sultats par page';
+$lng['serversettings']['paging']['title'] = 'R&eacute;sultats par page';
 $lng['serversettings']['paging']['description'] = 'Combien de r&eacute;sultats par page ? (0 = D&eacute;sactive la pagination)';
-$lng['error']['ipstillhasdomains']= 'La combinaison IP/port est encore utilis&eacute;e, svp r&eacute;assignez le ou les domaines concern&eacute;s &agrave; une autre combinaison avant de supprimer celle-ci.';
+$lng['error']['ipstillhasdomains'] = 'La combinaison IP/port est encore utilis&eacute;e, svp r&eacute;assignez le ou les domaines concern&eacute;s &agrave; une autre combinaison avant de supprimer celle-ci.';
 $lng['error']['cantdeletedefaultip'] = 'Vous ne pouvez pas supprimer cette combinaison IP/Port, svp attribuez une autre combinaison par d&eacute;faut &agrave; ce revendeur avant de supprimer celle-ci.';
 $lng['error']['cantdeletesystemip'] = 'Vous ne pouvez pas supprimer, cr&eacute;er ou modifier  l\'IP syst&egrave;me.';
 $lng['error']['myipaddress'] = '\'IP\'';
@@ -384,6 +400,7 @@ $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
 
 // ADDED IN 1.2.14-rc1
+
 $lng['error']['cantchangesystemip'] = 'Vous ne pouvez pas modifier la derni&egrave;re  IP, ni en ajouter une nouvelle.';
 $lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Etes vous sure de vouloir diff&eacute;rencier la racine principale de ce domaine de la racine du client ?';
 $lng['admin']['memorylimitdisabled'] = 'D&eacute;sactiv&eacute;';
@@ -421,12 +438,15 @@ $lng['panel']['search'] = 'Rechercher';
 $lng['panel']['used'] = 'utilis&eacute;';
 
 // ADDED IN 1.2.14-rc3
+
 $lng['panel']['translator'] = 'Traducteur';
 
 // ADDED IN 1.2.14-rc4
+
 $lng['error']['stringformaterror'] = 'La valeur pour &quot;%s&quot; n\'est pas dans un format reconnu.';
 
 // ADDED IN 1.2.15-svn1
+
 $lng['admin']['serversoftware'] = 'Logiciel Serveur';
 $lng['admin']['phpversion'] = 'Version de PHP';
 $lng['admin']['phpmemorylimit'] = 'Limite Memoire PHP';
@@ -435,6 +455,7 @@ $lng['admin']['mysqlclientversion'] = 'Version du client MySQL';
 $lng['admin']['webserverinterface'] = 'Interface Web';
 
 // Translated by info@eConcept-Web.com on 03/19/2007 (see https://trac.syscp.org/ticket/126#comment:22)
+
 $lng['domains']['isassigneddomain'] = 'est le domaine assign&eacute;';
 $lng['serversettings']['phpappendopenbasedir']['title'] = 'Chemin pour se rendre &agrave; OpenBasedir';
 $lng['serversettings']['phpappendopenbasedir']['description'] = 'Ce chemin (s&eacute;par&eacute; par des deux points) sera ajout&eacute; &agrave; OpenBasedir-statement dans chaque conteneurs vhost.';
