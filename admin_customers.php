@@ -428,13 +428,7 @@ if($page == 'customers'
                         $mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['createcustomer']['subject']), $replace_arr));
                         $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
                         $mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['createcustomer']['mailbody']), $replace_arr));
-                        mail($firstname . ' ' . $name . ' <' . $email . '>', $mail_subject, $mail_body, 'From: ' . str_replace(array(
-                            "\r",
-                            "\n"
-                        ), '', $userinfo['name']) . ' <' . str_replace(array(
-                            "\r",
-                            "\n"
-                        ), '', $userinfo['email']) . '>');
+                        mail($firstname.' '.$name.' <'.$email.'>',$mail_subject,$mail_body,'From: '.str_replace(array("\r", "\n"), '', $userinfo['name']).' <'.str_replace(array("\r", "\n"), '', $userinfo['email']).'>');
                     }
 
                     redirectTo($filename, Array(
