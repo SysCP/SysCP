@@ -528,4 +528,10 @@ $lng['admin']['configfiles']['chooseservice'] = '-- Service w&auml;hlen --';
 $lng['admin']['configfiles']['choosedaemon'] = '-- Daemon w&auml;hlen --';
 $lng['admin']['trafficlastrun'] = 'Letzte Trafficberechnung';
 
+// ADDED IN 1.2.16-svn10
+
+$lng['serversettings']['ftpdomain']['title'] = 'FTP-Accounts @domain';
+$lng['serversettings']['ftpdomain']['description'] = 'K&ouml;nnen Kunden FTP-Accounts user@customerdomain anlegen?';
+$lng['panel']['back'] = 'Zur&uuml;ck';
+
 ?>

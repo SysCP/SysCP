@@ -1,7 +1,7 @@
 $header
 	<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable_60">
 		<tr>
-			<td class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$configfiles[$distribution]['label']}&nbsp;&raquo;&nbsp;{$configfiles[$distribution]['services'][$service]['label']}&nbsp;&raquo;&nbsp;{$configfiles[$distribution]['services'][$service]['daemons'][$daemon]['label']}</b></td>
+			<td class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$configfiles[$distribution]['label']}&nbsp;&raquo;&nbsp;{$configfiles[$distribution]['services'][$service]['label']}&nbsp;&raquo;&nbsp;{$configfiles[$distribution]['services'][$service]['daemons'][$daemon]['label']}</b> [<a href="$filename?s=$s&amp;page=$page&amp;distribution=$distribution&amp;service=$service">{$lng['panel']['back']}</a>]</td>
 		</tr>
 		<if $commands != ''>
 		<tr>
