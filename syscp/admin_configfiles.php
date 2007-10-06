@@ -125,7 +125,6 @@ $configfiles = Array(
                     'cron' => Array(
                         'label' => 'Crond (cronscript)',
                         'files' => Array(
-                            'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
                             'etc_cron.d_syscp' => '/etc/cron.d/syscp'
                         ),
                         'restart' => Array(
@@ -152,9 +151,22 @@ $configfiles = Array(
                             'apache-modconf apache disable mod_userdir'
                         ),
                         'restart' => Array(
-                            '/etc/init.d/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . ' restart'
+                            '/etc/init.d/apache restart'
                         )
                     ),
+                    'apache2' => Array(
+                        'label' => 'Apache 2',
+                        'commands' => Array(
+                            'touch ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'],
+                            'a2ensite '.$settings['system']['apacheconf_filename'],
+                            'mkdir -p ' . $settings['system']['documentroot_prefix'],
+                            'mkdir -p ' . $settings['system']['logfiles_directory'],
+                            'a2dismod userdir'
+                        ),
+                        'restart' => Array(
+                            '/etc/init.d/apache2 restart'
+                        )
+                    )
                 )
             ),
             'dns' => Array(
@@ -249,7 +261,6 @@ $configfiles = Array(
                     'cron' => Array(
                         'label' => 'Crond (cronscript)',
                         'files' => Array(
-                            'etc_php4_syscpcron_php.ini' => '/etc/php4/syscpcron/php.ini',
                             'etc_cron.d_syscp' => '/etc/cron.d/syscp'
                         ),
                         'restart' => Array(
@@ -360,7 +371,6 @@ $configfiles = Array(
                     'cron' => Array(
                         'label' => 'Crond (cronscript)',
                         'files' => Array(
-                            'etc_php5_syscpcron_php.ini' => '/etc/php5/syscpcron/php.ini',
                             'etc_cron.d_syscp' => '/etc/cron.d/syscp'
                         ),
                         'restart' => Array(
@@ -478,10 +488,7 @@ if($userinfo['change_serversettings'] == '1')
 
         eval("echo \"" . getTemplate("configfiles/configfiles") . "\";");
     }
-    elseif($distribution == ''
-           && $service == ''
-           && $daemon == ''
-           && $page == 'overview')
+    elseif($page == 'overview')
     {
         $distributions = '';
         foreach($configfiles as $distribution_name => $distribution_details)

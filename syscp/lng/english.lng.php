@@ -533,5 +533,6 @@ $lng['admin']['trafficlastrun'] = 'Last Traffic calculation';
 
 $lng['serversettings']['ftpdomain']['title'] = 'FTP accounts @domain';
 $lng['serversettings']['ftpdomain']['description'] = 'Customers can create Ftp accounts user@customerdomain?';
+$lng['panel']['back'] = 'Back';
 
 ?>
