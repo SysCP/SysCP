@@ -191,6 +191,7 @@ while($row = $db->fetch_array($result_tasks))
 
         while($row_ipsandports = $db->fetch_array($result_ipsandports))
         {
+            $vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
             $vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
 
             if($row_ipsandports['vhostcontainer'] == '1')
@@ -208,7 +209,7 @@ while($row = $db->fetch_array($result_tasks))
             $vhosts_file.= "\n";
         }
 
-        $result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+        $result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 
         while($domain = $db->fetch_array($result_domains))
         {
@@ -260,24 +261,45 @@ while($row = $db->fetch_array($result_tasks))
                         $vhosts_file.= '  DocumentRoot "' . $domain['documentroot'] . "\"\n";
                     }
 
-                    if($domain['openbasedir'] == '1')
+                    if($domain['phpenabled'] == '1')
                     {
-                        if($settings['system']['phpappendopenbasedir'] != '')
+                        // This vHost has PHP enabled...
+                        if($settings['system']['mod_fcgid'] == 1)
                         {
-                            $_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
+                            // ...and we are using mod_fcgid
+                            // TODO: Put this in the join on line 212
+                            $sql = "SELECT * FROM `ftp_users` WHERE `customerid` = " . $domain['customerid'];
+                            $result_ftp = $db->query($sql);
+                            if($db->num_rows($result_ftp) > 0)
+                            {
+                                $vhosts_file.='  ScriptAlias /php/ /var/www/php-fcgi-scripts/'.$domain['loginname'].'/'.$domain['domain'].'/'."\n";
+                                $vhosts_file.='  SuexecUserGroup "'.$domain['loginname'].'" "'.$domain['loginname'].'"'."\n";
+                                include($pathtophpfiles . '/scripts/cron_tasks.inc.fcgi_create.php');
+                            }
                         }
                         else
                         {
-                            $_phpappendopenbasedir = '';
-                        }
+                            // ...and we are using the regular mod_php
+                            if($domain['openbasedir'] == '1')
+                            {
+                                if($settings['system']['phpappendopenbasedir'] != '')
+                                {
+                                    $_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
+                                }
+                                else
+                                {
+                                    $_phpappendopenbasedir = '';
+                                }
 
-                        if($domain['openbasedir_path'] == '1')
-                        {
-                            $vhosts_file.= '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
-                        }
-                        else
-                        {
-                            $vhosts_file.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
+                                if($domain['openbasedir_path'] == '1')
+                                {
+                                    $vhosts_file.= '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
+                                }
+                                else
+                                {
+                                    $vhosts_file.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
+                                }
+                            }
                         }
                     }
 
@@ -306,8 +328,18 @@ while($row = $db->fetch_array($result_tasks))
                         }
                     }
 
-                    $vhosts_file.= '  ErrorLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
-                    $vhosts_file.= '  CustomLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
+                    if($settings['system']['mod_log_sql'] == 1)
+                    {
+                        // We are using mod_log_sql (http://www.outoforder.cc/projects/apache/mod_log_sql/)
+                        // TODO: See how we are able emulate the error_log
+                        $vhosts_file.= '  LogSQLTransferLogTable access_log'."\n";
+                    }
+                    else
+                    {
+                        // The normal access/error - logging is enabled
+                        $vhosts_file.= '  ErrorLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
+                        $vhosts_file.= '  CustomLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
+                    }
                 }
 
                 if($domain['specialsettings'] != '')

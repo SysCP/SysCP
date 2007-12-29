@@ -233,9 +233,8 @@ while($row = $db->fetch_array($result))
             }
         }
 
+        $httptraffic = 0;
         reset($domainlist[$row['customerid']]);
-        $httptraffic = floatval(callWebalizerGetTraffic($row['loginname'], $row['documentroot'] . '/webalizer/', $caption, $domainlist[$row['customerid']]));
-
         if(isset($speciallogfile_domainlist[$row['customerid']])
            && is_array($speciallogfile_domainlist[$row['customerid']])
            && count($speciallogfile_domainlist[$row['customerid']]) != 0)
@@ -243,9 +242,24 @@ while($row = $db->fetch_array($result))
             reset($speciallogfile_domainlist[$row['customerid']]);
             foreach($speciallogfile_domainlist[$row['customerid']] as $domainid => $domain)
             {
-                $httptraffic+= floatval(callWebalizerGetTraffic($row['loginname'] . '-' . $domain, $row['documentroot'] . '/webalizer/' . $domain . '/', $domain, $domainlist[$row['customerid']]));
+                if($settings['system']['mod_log_sql'] == 1)
+                {
+                    safeSQLLogfile($domain, $row['loginname']);
+                    // Remove this domain from the domainlist - it's already analysed
+                    // and doesn't need to be selected twice
+                    unset($domainlist[$row['customerid']][$domainid]);
+                }
+                $httptraffic += floatval(callWebalizerGetTraffic($row['loginname'] . '-' . $domain, $row['documentroot'] . '/webalizer/' . $domain . '/', $domain, $domainlist[$row['customerid']]));
             }
         }
+
+        reset($domainlist[$row['customerid']]);
+        if($settings['system']['mod_log_sql'] == 1)
+        {
+            safeSQLLogfile($domainlist[$row['customerid']], $row['loginname']);
+        }
+        $httptraffic += floatval(callWebalizerGetTraffic($row['loginname'], $row['documentroot'] . '/webalizer/', $caption, $domainlist[$row['customerid']]));
+
     }
 
     /**
@@ -519,6 +533,69 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
     }
 
     return floatval($returnval);
+}
+
+/**
+ * This function saves the logfile written by mod_log_sql
+ * into a logfile webalizer can parse
+ *
+ * @param string $domain        The "speciallogfile" - domain(s)
+ * @param string $loginname     The loginname of the customer
+ * @return bool
+ *
+ * @author Florian Aders <eleras@syscp.org>
+ */
+function safeSQLLogfile($domains, $loginname)
+{
+    global $db, $settings;
+    $sql = "SELECT * FROM access_log ";
+    $where = "WHERE virtual_host = ";
+    if(!is_array($domains))
+    {
+        // If it isn't an array, it's a speciallogfile-domain
+        $logname = $settings['system']['logfiles_directory'] . $loginname . '-' . $domains . '-access.log';
+        $where .= "'$domains' OR virtual_host = 'www.$domains'";
+    }
+    else
+    {
+        // If we have an array, these are all domains aggregated into a single logfile
+        if(count($domains) == 0)
+        {
+            // If the $omains-array is empty, this customer has only speciallogfile-
+            // domains, so just return, all logfiles are already written to disk
+            return true;
+        }
+        $logname = $settings['system']['logfiles_directory'] . $loginname . '-access.log';
+
+        // Build the "WHERE" - part of the sql-query
+        foreach($domains as $domain)
+        {
+            // A domain may be reached with or without the "www" in front.
+            $where .= "'$domain' OR virtual_host = 'www.$domain' OR virtual_host = ";
+        }
+        $where = substr($where, 0, -19);
+    }
+    // We want clean, ordered logfiles
+    $sql .= $where . " ORDER BY time_stamp;";
+    $logs = $db->query($sql);
+
+    // Don't overwrite the logfile - append the new stuff
+    file_put_contents($logname, "", FILE_APPEND);
+    while($logline = $db->fetch_array($logs))
+    {
+        // Create a "CustomLog" - line
+        $writelog = $logline['remote_host'] . " " . $logline['virtual_host'] . " " . $logline['remote_user'] . " ";
+        $writelog .= date("[d/M/Y:H:i:s O]", $logline['time_stamp']);
+        $writelog .= " \"" . $logline['request_method'] . " " . $logline['request_uri'] . " " . $logline['request_protocol'] . "\" ";
+        $writelog .= $logline['status'];
+        $writelog .= " " . $logline['bytes_sent'] . " \"" . $logline['referer'] . "\" \"" . $logline['agent'] . "\"\n";
+
+        file_put_contents($logname, $writelog, FILE_APPEND);
+    }
+
+    // Remove the just written stuff
+    $db->query("DELETE FROM access_log ". $where);
+    return true;
 }
 
 ?>

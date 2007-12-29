@@ -296,6 +296,7 @@ $lng['admin']['serversettings'] = 'Settings';
 $lng['admin']['rebuildconf'] = 'Rebuild Config Files';
 $lng['admin']['stdsubdomain'] = 'Standard subdomain';
 $lng['admin']['stdsubdomain_add'] = 'Create standard subdomain';
+$lng['admin']['phpenabled'] = 'PHP enabled';
 $lng['admin']['deactivated'] = 'Deactivated';
 $lng['admin']['deactivated_user'] = 'Deactivate User';
 $lng['admin']['sendpassword'] = 'Send password';
@@ -538,5 +539,11 @@ $lng['admin']['trafficlastrun'] = 'Last Traffic calculation';
 $lng['serversettings']['ftpdomain']['title'] = 'FTP accounts @domain';
 $lng['serversettings']['ftpdomain']['description'] = 'Customers can create Ftp accounts user@customerdomain?';
 $lng['panel']['back'] = 'Back';
+
+// ADDED IN 1.2.16-svn12
+$lng['serversettings']['mod_log_sql']['title'] = 'Temporary save logs in the database';
+$lng['serversettings']['mod_log_sql']['description'] = 'Use <a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> to save webrequests temporarily<br /><b>This needs a special apache-configuration!</b>';
+$lng['serversettings']['mod_fcgid']['title'] = 'Include PHP via mod_fcgid/suexec';
+$lng['serversettings']['mod_fcgid']['description'] = 'Use mod_fcgid/suexec/libnss_mysql to run PHP with the corresponding useraccount.<br/><b>This needs a special apache-configuration!</b>';
 
 ?>

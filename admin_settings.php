@@ -233,6 +233,20 @@ if(($page == 'settings' || $page == 'overview')
             inserttask('1');
         }
 
+        if($_POST['system_modlogsql'] != $settings['system']['mod_log_sql'])
+        {
+            $value = ($_POST['system_modlogsql'] == '1' ? '1' : '0');
+            $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_log_sql'");
+            inserttask('1');
+        }
+
+        if($_POST['system_modfcgid'] != $settings['system']['mod_fcgid'])
+        {
+            $value = ($_POST['system_modfcgid'] == '1' ? '1' : '0');
+            $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid'");
+            inserttask('1');
+        }
+
         if($_POST['system_phpappendopenbasedir'] != $settings['system']['phpappendopenbasedir'])
         {
             $value = validate($_POST['system_phpappendopenbasedir'], 'phpappendopenbasedir');
@@ -545,6 +559,8 @@ if(($page == 'settings' || $page == 'overview')
         $natsorting = makeyesno('panel_natsorting', '1', '0', $settings['panel']['natsorting']);
         $mailpwcleartext = makeyesno('system_mailpwcleartext', '1', '0', $settings['system']['mailpwcleartext']);
         $ftpatdomain = makeyesno('customer_ftpatdomain', '1', '0', $settings['customer']['ftpatdomain']);
+        $system_modlogsql = makeyesno('system_modlogsql', '1', '0', $settings['system']['mod_log_sql']);
+        $system_modfcgid = makeyesno('system_modfcgid', '1', '0', $settings['system']['mod_fcgid']);
         $settings = htmlentities_array($settings);
         eval("echo \"" . getTemplate("settings/settings") . "\";");
     }
