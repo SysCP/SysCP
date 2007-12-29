@@ -1102,12 +1102,12 @@ if($settings['panel']['version'] == '1.2.16-svn9')
     $db->query($query);
     $settings['panel']['version'] = '1.2.16-svn10';
 }
-if($setting['panel']['version'] == '1.2.16-svn10')
+if($settings['panel']['version'] == '1.2.16-svn10')
 {
     $db->query('ALTER TABLE `' . TABLE_PANEL_DOMAINS . '` ADD `bindserial` VARCHAR( 10 ) NOT NULL DEFAULT \'2000010100\'');
-    $db->query('INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (42, \'system\', \'nameservers\', \'\')');
-    $db->query('INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (43, \'system\', \'mxservers\', \'\')');
-    $db->query('DELETE FROM `panel_settings` WHERE `settinggroup`=\'system\' AND `varname`=\'binddefaultzone\'');
+    $db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'system\', \'nameservers\', \'\')');
+    $db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'system\', \'mxservers\', \'\')');
+    $db->query('DELETE FROM `' . TABLE_PANEL_SETTINGS . '` WHERE `settinggroup`=\'system\' AND `varname`=\'binddefaultzone\'');
 
     $query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn11\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
     $query = sprintf($query, TABLE_PANEL_SETTINGS);
