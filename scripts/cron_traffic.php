@@ -28,7 +28,7 @@ if(@php_sapi_name() != 'cli'
    && @php_sapi_name() != 'cgi'
    && @php_sapi_name() != 'cgi-fcgi')
 {
-    die('This script will only work in the shell.');
+	die('This script will only work in the shell.');
 }
 
 $cronscriptDebug = false;
@@ -45,13 +45,13 @@ $pathtophpfiles = '';
 
 if(substr($_SERVER['PHP_SELF'], 0, 1) != '/')
 {
-    $pathtophpfiles = $_SERVER['PWD'];
+	$pathtophpfiles = $_SERVER['PWD'];
 }
 
 $pathtophpfiles.= '/' . $_SERVER['PHP_SELF'];
 $pathtophpfiles = str_replace(array(
-    '/./',
-    '//'
+	'/./',
+	'//'
 ), '/', $pathtophpfiles);
 $pathtophpfiles = dirname(dirname($pathtophpfiles));
 
@@ -71,18 +71,18 @@ $lockDirHandle = opendir($lockdir);
 
 while($fName = readdir($lockDirHandle))
 {
-    if($lockFilename == substr($fName, 0, strlen($lockFilename))
-       && $lockfName != $fName)
-    {
-        // close the current lockfile
+	if($lockFilename == substr($fName, 0, strlen($lockFilename))
+	   && $lockfName != $fName)
+	{
+		// close the current lockfile
 
-        fclose($debugHandler);
+		fclose($debugHandler);
 
-        // ... and delete it
+		// ... and delete it
 
-        unlink($lockfile);
-        die('There is already a lockfile. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
-    }
+		unlink($lockfile);
+		die('There is already a lockfile. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
+	}
 }
 
 /**
@@ -111,13 +111,13 @@ $db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 if($db->link_id == 0
    || $db_root->link_id == 0)
 {
-    /**
-     * Do not proceed further if no database connection could be established (either normal or root)
-     */
+	/**
+	 * Do not proceed further if no database connection could be established (either normal or root)
+	 */
 
-    fclose($debugHandler);
-    unlink($lockfile);
-    die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+	fclose($debugHandler);
+	unlink($lockfile);
+	die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 }
 
 fwrite($debugHandler, 'Database Connection established' . "\n");
@@ -128,7 +128,7 @@ $result = $db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FRO
 
 while($row = $db->fetch_array($result))
 {
-    $settings[$row['settinggroup']][$row['varname']] = $row['value'];
+	$settings[$row['settinggroup']][$row['varname']] = $row['value'];
 }
 
 unset($row);
@@ -138,13 +138,13 @@ fwrite($debugHandler, 'SysCP Settings has been loaded from the database' . "\n")
 if(!isset($settings['panel']['version'])
    || $settings['panel']['version'] != $version)
 {
-    /**
-     * Do not proceed further if the Database version is not the same as the script version
-     */
+	/**
+	 * Do not proceed further if the Database version is not the same as the script version
+	 */
 
-    fclose($debugHandler);
-    unlink($lockfile);
-    die('Version of File doesnt match Version of Database. Exiting...');
+	fclose($debugHandler);
+	unlink($lockfile);
+	die('Version of File doesnt match Version of Database. Exiting...');
 }
 
 fwrite($debugHandler, 'SysCP Version and Database Version are correct' . "\n");
@@ -172,207 +172,212 @@ $result_domainlist = $db->query("SELECT `id`, `domain`, `customerid`, `parentdom
 
 while($row_domainlist = $db->fetch_array($result_domainlist))
 {
-    if(!isset($domainlist[$row_domainlist['customerid']]))
-    {
-        $domainlist[$row_domainlist['customerid']] = array();
-    }
+	if(!isset($domainlist[$row_domainlist['customerid']]))
+	{
+		$domainlist[$row_domainlist['customerid']] = array();
+	}
 
-    $domainlist[$row_domainlist['customerid']][$row_domainlist['id']] = $row_domainlist['domain'];
+	$domainlist[$row_domainlist['customerid']][$row_domainlist['id']] = $row_domainlist['domain'];
 
-    if($row_domainlist['parentdomainid'] == '0'
-       && $row_domainlist['speciallogfile'] == '1')
-    {
-        if(!isset($speciallogfile_domainlist[$row_domainlist['customerid']]))
-        {
-            $speciallogfile_domainlist[$row_domainlist['customerid']] = array();
-        }
+	if($row_domainlist['parentdomainid'] == '0'
+	   && $row_domainlist['speciallogfile'] == '1')
+	{
+		if(!isset($speciallogfile_domainlist[$row_domainlist['customerid']]))
+		{
+			$speciallogfile_domainlist[$row_domainlist['customerid']] = array();
+		}
 
-        $speciallogfile_domainlist[$row_domainlist['customerid']][$row_domainlist['id']] = $row_domainlist['domain'];
-    }
+		$speciallogfile_domainlist[$row_domainlist['customerid']][$row_domainlist['id']] = $row_domainlist['domain'];
+	}
 }
 
 $result = $db->query("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` ORDER BY `customerid` ASC");
 
 while($row = $db->fetch_array($result))
 {
-    /**
-     * HTTP-Traffic
-     */
+	/**
+	 * HTTP-Traffic
+	 */
 
-    fwrite($debugHandler, 'http traffic for ' . $row['loginname'] . ' started...' . "\n");
-    $httptraffic = 0;
+	fwrite($debugHandler, 'http traffic for ' . $row['loginname'] . ' started...' . "\n");
+	$httptraffic = 0;
 
-    if(isset($domainlist[$row['customerid']])
-       && is_array($domainlist[$row['customerid']])
-       && count($domainlist[$row['customerid']]) != 0)
-    {
-        // Examining which caption to use for default webalizer stats...
+	if(isset($domainlist[$row['customerid']])
+	   && is_array($domainlist[$row['customerid']])
+	   && count($domainlist[$row['customerid']]) != 0)
+	{
+		// Examining which caption to use for default webalizer stats...
 
-        if($row['standardsubdomain'] != '0')
-        {
-            // ... of course we'd prefer to use the standardsubdomain ...
+		if($row['standardsubdomain'] != '0')
+		{
+			// ... of course we'd prefer to use the standardsubdomain ...
 
-            $caption = $domainlist[$row['customerid']][$row['standardsubdomain']];
-        }
-        else
-        {
-            // ... but if there is no standardsubdomain, we have to use the loginname ...
+			$caption = $domainlist[$row['customerid']][$row['standardsubdomain']];
+		}
+		else
+		{
+			// ... but if there is no standardsubdomain, we have to use the loginname ...
 
-            $caption = $row['loginname'];
+			$caption = $row['loginname'];
 
-            // ... which results in non-usable links to files in the stats, so lets have a look if we find a domain which is not speciallogfiledomain
+			// ... which results in non-usable links to files in the stats, so lets have a look if we find a domain which is not speciallogfiledomain
 
-            foreach($domainlist[$row['customerid']] as $domainid => $domain)
-            {
-                if(!isset($speciallogfile_domainlist[$row['customerid']])
-                   || !isset($speciallogfile_domainlist[$row['customerid']][$domainid]))
-                {
-                    $caption = $domain;
-                    break;
-                }
-            }
-        }
+			foreach($domainlist[$row['customerid']] as $domainid => $domain)
+			{
+				if(!isset($speciallogfile_domainlist[$row['customerid']])
+				   || !isset($speciallogfile_domainlist[$row['customerid']][$domainid]))
+				{
+					$caption = $domain;
+					break;
+				}
+			}
+		}
 
-        $httptraffic = 0;
-        reset($domainlist[$row['customerid']]);
-        if(isset($speciallogfile_domainlist[$row['customerid']])
-           && is_array($speciallogfile_domainlist[$row['customerid']])
-           && count($speciallogfile_domainlist[$row['customerid']]) != 0)
-        {
-            reset($speciallogfile_domainlist[$row['customerid']]);
-            foreach($speciallogfile_domainlist[$row['customerid']] as $domainid => $domain)
-            {
-                if($settings['system']['mod_log_sql'] == 1)
-                {
-                    safeSQLLogfile($domain, $row['loginname']);
-                    // Remove this domain from the domainlist - it's already analysed
-                    // and doesn't need to be selected twice
-                    unset($domainlist[$row['customerid']][$domainid]);
-                }
-                $httptraffic += floatval(callWebalizerGetTraffic($row['loginname'] . '-' . $domain, $row['documentroot'] . '/webalizer/' . $domain . '/', $domain, $domainlist[$row['customerid']]));
-            }
-        }
+		$httptraffic = 0;
+		reset($domainlist[$row['customerid']]);
 
-        reset($domainlist[$row['customerid']]);
-        if($settings['system']['mod_log_sql'] == 1)
-        {
-            safeSQLLogfile($domainlist[$row['customerid']], $row['loginname']);
-        }
-        $httptraffic += floatval(callWebalizerGetTraffic($row['loginname'], $row['documentroot'] . '/webalizer/', $caption, $domainlist[$row['customerid']]));
+		if(isset($speciallogfile_domainlist[$row['customerid']])
+		   && is_array($speciallogfile_domainlist[$row['customerid']])
+		   && count($speciallogfile_domainlist[$row['customerid']]) != 0)
+		{
+			reset($speciallogfile_domainlist[$row['customerid']]);
+			foreach($speciallogfile_domainlist[$row['customerid']] as $domainid => $domain)
+			{
+				if($settings['system']['mod_log_sql'] == 1)
+				{
+					safeSQLLogfile($domain, $row['loginname']);
 
-    }
+					// Remove this domain from the domainlist - it's already analysed
+					// and doesn't need to be selected twice
 
-    /**
-     * FTP-Traffic
-     */
+					unset($domainlist[$row['customerid']][$domainid]);
+				}
 
-    fwrite($debugHandler, 'ftp traffic for ' . $row['loginname'] . ' started...' . "\n");
-    $ftptraffic = $db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `" . TABLE_FTP_USERS . "` WHERE `customerid`='" . (int)$row['customerid'] . "'");
+				$httptraffic+= floatval(callWebalizerGetTraffic($row['loginname'] . '-' . $domain, $row['documentroot'] . '/webalizer/' . $domain . '/', $domain, $domainlist[$row['customerid']]));
+			}
+		}
 
-    if(!is_array($ftptraffic))
-    {
-        $ftptraffic = array(
-            'up_bytes_sum' => 0,
-            'down_bytes_sum' => 0
-        );
-    }
+		reset($domainlist[$row['customerid']]);
 
-    $db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `up_bytes`='0', `down_bytes`='0' WHERE `customerid`='" . (int)$row['customerid'] . "'");
+		if($settings['system']['mod_log_sql'] == 1)
+		{
+			safeSQLLogfile($domainlist[$row['customerid']], $row['loginname']);
+		}
 
-    /**
-     * Mail-Traffic
-     */
+		$httptraffic+= floatval(callWebalizerGetTraffic($row['loginname'], $row['documentroot'] . '/webalizer/', $caption, $domainlist[$row['customerid']]));
+	}
 
-    $mailtraffic = 0;
+	/**
+	 * FTP-Traffic
+	 */
 
-    /**
-     * Total Traffic
-     */
+	fwrite($debugHandler, 'ftp traffic for ' . $row['loginname'] . ' started...' . "\n");
+	$ftptraffic = $db->query_first("SELECT SUM(`up_bytes`) AS `up_bytes_sum`, SUM(`down_bytes`) AS `down_bytes_sum` FROM `" . TABLE_FTP_USERS . "` WHERE `customerid`='" . (int)$row['customerid'] . "'");
 
-    fwrite($debugHandler, 'total traffic for ' . $row['loginname'] . ' started' . "\n");
-    $current = array();
-    $current['http'] = floatval($httptraffic);
-    $current['ftp_up'] = floatval(($ftptraffic['up_bytes_sum']/1024));
-    $current['ftp_down'] = floatval(($ftptraffic['down_bytes_sum']/1024));
-    $current['mail'] = floatval($mailtraffic);
-    $current['all'] = $current['http']+$current['ftp_up']+$current['ftp_down']+$current['mail'];
-    $db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC . "` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['customerid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$current['http'] . "', '" . (float)$current['ftp_up'] . "', '" . (float)$current['ftp_down'] . "', '" . (float)$current['mail'] . "')");
-    $sum_month = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `" . TABLE_PANEL_TRAFFIC . "` WHERE `year`='" . date('Y') . "' AND `month`='" . date('m') . "' AND `customerid`='" . (int)$row['customerid'] . "'");
-    $sum_month['all'] = $sum_month['http']+$sum_month['ftp_up']+$sum_month['ftp_down']+$sum_month['mail'];
+	if(!is_array($ftptraffic))
+	{
+		$ftptraffic = array(
+			'up_bytes_sum' => 0,
+			'down_bytes_sum' => 0
+		);
+	}
 
-    if(!isset($admin_traffic[$row['adminid']]))
-    {
-        $admin_traffic[$row['adminid']]['http'] = 0;
-        $admin_traffic[$row['adminid']]['ftp_up'] = 0;
-        $admin_traffic[$row['adminid']]['ftp_down'] = 0;
-        $admin_traffic[$row['adminid']]['mail'] = 0;
-        $admin_traffic[$row['adminid']]['all'] = 0;
-        $admin_traffic[$row['adminid']]['sum_month'] = 0;
-    }
+	$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `up_bytes`='0', `down_bytes`='0' WHERE `customerid`='" . (int)$row['customerid'] . "'");
 
-    $admin_traffic[$row['adminid']]['http']+= $current['http'];
-    $admin_traffic[$row['adminid']]['ftp_up']+= $current['ftp_up'];
-    $admin_traffic[$row['adminid']]['ftp_down']+= $current['ftp_down'];
-    $admin_traffic[$row['adminid']]['mail']+= $current['mail'];
-    $admin_traffic[$row['adminid']]['all']+= $current['all'];
-    $admin_traffic[$row['adminid']]['sum_month']+= $sum_month['all'];
+	/**
+	 * Mail-Traffic
+	 */
 
-    /**
-     * WebSpace-Usage
-     */
+	$mailtraffic = 0;
 
-    fwrite($debugHandler, 'calculating webspace usage for ' . $row['loginname'] . "\n");
-    $webspaceusage = 0;
-    $back = safe_exec('du -s ' . escapeshellarg($row['documentroot']) . '');
-    foreach($back as $backrow)
-    {
-        $webspaceusage = explode(' ', $backrow);
-    }
+	/**
+	 * Total Traffic
+	 */
 
-    $webspaceusage = floatval($webspaceusage['0']);
-    unset($back);
+	fwrite($debugHandler, 'total traffic for ' . $row['loginname'] . ' started' . "\n");
+	$current = array();
+	$current['http'] = floatval($httptraffic);
+	$current['ftp_up'] = floatval(($ftptraffic['up_bytes_sum']/1024));
+	$current['ftp_down'] = floatval(($ftptraffic['down_bytes_sum']/1024));
+	$current['mail'] = floatval($mailtraffic);
+	$current['all'] = $current['http']+$current['ftp_up']+$current['ftp_down']+$current['mail'];
+	$db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC . "` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['customerid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$current['http'] . "', '" . (float)$current['ftp_up'] . "', '" . (float)$current['ftp_down'] . "', '" . (float)$current['mail'] . "')");
+	$sum_month = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `" . TABLE_PANEL_TRAFFIC . "` WHERE `year`='" . date('Y') . "' AND `month`='" . date('m') . "' AND `customerid`='" . (int)$row['customerid'] . "'");
+	$sum_month['all'] = $sum_month['http']+$sum_month['ftp_up']+$sum_month['ftp_down']+$sum_month['mail'];
 
-    /**
-     * MailSpace-Usage
-     */
+	if(!isset($admin_traffic[$row['adminid']]))
+	{
+		$admin_traffic[$row['adminid']]['http'] = 0;
+		$admin_traffic[$row['adminid']]['ftp_up'] = 0;
+		$admin_traffic[$row['adminid']]['ftp_down'] = 0;
+		$admin_traffic[$row['adminid']]['mail'] = 0;
+		$admin_traffic[$row['adminid']]['all'] = 0;
+		$admin_traffic[$row['adminid']]['sum_month'] = 0;
+	}
 
-    fwrite($debugHandler, 'calculating mailspace usage for ' . $row['loginname'] . "\n");
-    $emailusage = 0;
-    $back = safe_exec('du -s ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['loginname']) . '');
-    foreach($back as $backrow)
-    {
-        $emailusage = explode(' ', $backrow);
-    }
+	$admin_traffic[$row['adminid']]['http']+= $current['http'];
+	$admin_traffic[$row['adminid']]['ftp_up']+= $current['ftp_up'];
+	$admin_traffic[$row['adminid']]['ftp_down']+= $current['ftp_down'];
+	$admin_traffic[$row['adminid']]['mail']+= $current['mail'];
+	$admin_traffic[$row['adminid']]['all']+= $current['all'];
+	$admin_traffic[$row['adminid']]['sum_month']+= $sum_month['all'];
 
-    $emailusage = floatval($emailusage['0']);
-    unset($back);
+	/**
+	 * WebSpace-Usage
+	 */
 
-    /**
-     * MySQLSpace-Usage
-     */
+	fwrite($debugHandler, 'calculating webspace usage for ' . $row['loginname'] . "\n");
+	$webspaceusage = 0;
+	$back = safe_exec('du -s ' . escapeshellarg($row['documentroot']) . '');
+	foreach($back as $backrow)
+	{
+		$webspaceusage = explode(' ', $backrow);
+	}
 
-    fwrite($debugHandler, 'calculating mysqlspace usage for ' . $row['loginname'] . "\n");
-    $mysqlusage = 0;
-    $databases_result = $db->query("SELECT `databasename` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . (int)$row['customerid'] . "'");
+	$webspaceusage = floatval($webspaceusage['0']);
+	unset($back);
 
-    while($database_row = $db->fetch_array($databases_result))
-    {
-        $mysql_usage_result = $db_root->query("SHOW TABLE STATUS FROM `" . $db_root->escape($database_row['databasename']) . "`");
+	/**
+	 * MailSpace-Usage
+	 */
 
-        while($mysql_usage_row = $db_root->fetch_array($mysql_usage_result))
-        {
-            $mysqlusage+= floatval($mysql_usage_row['Data_length']+$mysql_usage_row['Index_length']);
-        }
-    }
+	fwrite($debugHandler, 'calculating mailspace usage for ' . $row['loginname'] . "\n");
+	$emailusage = 0;
+	$back = safe_exec('du -s ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['loginname']) . '');
+	foreach($back as $backrow)
+	{
+		$emailusage = explode(' ', $backrow);
+	}
 
-    $mysqlusage = floatval($mysqlusage/1024);
+	$emailusage = floatval($emailusage['0']);
+	unset($back);
 
-    /**
-     * Total Usage
-     */
+	/**
+	 * MySQLSpace-Usage
+	 */
 
-    $diskusage = floatval($webspaceusage+$emailusage+$mysqlusage);
-    $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `diskspace_used`='" . (float)$diskusage . "', `traffic_used`='" . (float)$sum_month['all'] . "' WHERE `customerid`='" . (int)$row['customerid'] . "'");
+	fwrite($debugHandler, 'calculating mysqlspace usage for ' . $row['loginname'] . "\n");
+	$mysqlusage = 0;
+	$databases_result = $db->query("SELECT `databasename` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . (int)$row['customerid'] . "'");
+
+	while($database_row = $db->fetch_array($databases_result))
+	{
+		$mysql_usage_result = $db_root->query("SHOW TABLE STATUS FROM `" . $db_root->escape($database_row['databasename']) . "`");
+
+		while($mysql_usage_row = $db_root->fetch_array($mysql_usage_result))
+		{
+			$mysqlusage+= floatval($mysql_usage_row['Data_length']+$mysql_usage_row['Index_length']);
+		}
+	}
+
+	$mysqlusage = floatval($mysqlusage/1024);
+
+	/**
+	 * Total Usage
+	 */
+
+	$diskusage = floatval($webspaceusage+$emailusage+$mysqlusage);
+	$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `diskspace_used`='" . (float)$diskusage . "', `traffic_used`='" . (float)$sum_month['all'] . "' WHERE `customerid`='" . (int)$row['customerid'] . "'");
 }
 
 /**
@@ -383,11 +388,11 @@ $result = $db->query("SELECT `adminid` FROM `" . TABLE_PANEL_ADMINS . "` ORDER B
 
 while($row = $db->fetch_array($result))
 {
-    if(isset($admin_traffic[$row['adminid']]))
-    {
-        $db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC_ADMINS . "` (`adminid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['adminid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$admin_traffic[$row['adminid']]['http'] . "', '" . (float)$admin_traffic[$row['adminid']]['ftp_up'] . "', '" . (float)$admin_traffic[$row['adminid']]['ftp_down'] . "', '" . (float)$admin_traffic[$row['adminid']]['mail'] . "')");
-        $db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `traffic_used`='" . (float)$admin_traffic[$row['adminid']]['sum_month'] . "' WHERE `adminid`='" . (float)$row['adminid'] . "'");
-    }
+	if(isset($admin_traffic[$row['adminid']]))
+	{
+		$db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC_ADMINS . "` (`adminid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['adminid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$admin_traffic[$row['adminid']]['http'] . "', '" . (float)$admin_traffic[$row['adminid']]['ftp_up'] . "', '" . (float)$admin_traffic[$row['adminid']]['ftp_down'] . "', '" . (float)$admin_traffic[$row['adminid']]['mail'] . "')");
+		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `traffic_used`='" . (float)$admin_traffic[$row['adminid']]['sum_month'] . "' WHERE `adminid`='" . (float)$row['adminid'] . "'");
+	}
 }
 
 $db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = UNIX_TIMESTAMP() ' . 'WHERE `settinggroup` = \'system\'  ' . '  AND `varname`      = \'last_traffic_run\' ');
@@ -403,7 +408,7 @@ fclose($debugHandler);
 
 if($keepLockFile === false)
 {
-    unlink($lockfile);
+	unlink($lockfile);
 }
 
 /**
@@ -422,117 +427,117 @@ if($keepLockFile === false)
 
 function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlist)
 {
-    global $settings;
-    $returnval = 0;
+	global $settings;
+	$returnval = 0;
 
-    if(file_exists($settings['system']['logfiles_directory'] . $logfile . '-access.log'))
-    {
-        $domainargs = '';
-        foreach($usersdomainlist as $domainid => $domain)
-        {
-            $domainargs.= ' -r "' . escapeshellarg($domain) . '"';
-        }
+	if(file_exists($settings['system']['logfiles_directory'] . $logfile . '-access.log'))
+	{
+		$domainargs = '';
+		foreach($usersdomainlist as $domainid => $domain)
+		{
+			$domainargs.= ' -r "' . escapeshellarg($domain) . '"';
+		}
 
-        $outputdir = makeCorrectDir($outputdir);
+		$outputdir = makeCorrectDir($outputdir);
 
-        if(!file_exists($outputdir))
-        {
-            safe_exec('mkdir -p ' . escapeshellarg($outputdir));
-        }
+		if(!file_exists($outputdir))
+		{
+			safe_exec('mkdir -p ' . escapeshellarg($outputdir));
+		}
 
-        if(file_exists($outputdir . 'webalizer.hist.1'))
-        {
-            unlink($outputdir . 'webalizer.hist.1');
-        }
+		if(file_exists($outputdir . 'webalizer.hist.1'))
+		{
+			unlink($outputdir . 'webalizer.hist.1');
+		}
 
-        if(file_exists($outputdir . 'webalizer.hist')
-           && !file_exists($outputdir . 'webalizer.hist.1'))
-        {
-            safe_exec('cp ' . escapeshellarg($outputdir . 'webalizer.hist') . ' ' . escapeshellarg($outputdir . 'webalizer.hist.1'));
-        }
+		if(file_exists($outputdir . 'webalizer.hist')
+		   && !file_exists($outputdir . 'webalizer.hist.1'))
+		{
+			safe_exec('cp ' . escapeshellarg($outputdir . 'webalizer.hist') . ' ' . escapeshellarg($outputdir . 'webalizer.hist.1'));
+		}
 
-        safe_exec('webalizer -o ' . escapeshellarg($outputdir) . ' -n ' . escapeshellarg($caption) . $domainargs . ' ' . escapeshellarg($settings['system']['logfiles_directory'] . $logfile . '-access.log'));
+		safe_exec('webalizer -o ' . escapeshellarg($outputdir) . ' -n ' . escapeshellarg($caption) . $domainargs . ' ' . escapeshellarg($settings['system']['logfiles_directory'] . $logfile . '-access.log'));
 
-        /**
-         * Format of webalizer.hist-files:
-         * Month: $webalizer_hist_row['0']
-         * Year:  $webalizer_hist_row['1']
-         * KB:    $webalizer_hist_row['5']
-         */
+		/**
+		 * Format of webalizer.hist-files:
+		 * Month: $webalizer_hist_row['0']
+		 * Year:  $webalizer_hist_row['1']
+		 * KB:    $webalizer_hist_row['5']
+		 */
 
-        $httptraffic = array();
-        $webalizer_hist = @file_get_contents($outputdir . 'webalizer.hist');
-        $webalizer_hist_rows = explode("\n", $webalizer_hist);
-        foreach($webalizer_hist_rows as $webalizer_hist_row)
-        {
-            if($webalizer_hist_row != '')
-            {
-                $webalizer_hist_row = explode(' ', $webalizer_hist_row);
+		$httptraffic = array();
+		$webalizer_hist = @file_get_contents($outputdir . 'webalizer.hist');
+		$webalizer_hist_rows = explode("\n", $webalizer_hist);
+		foreach($webalizer_hist_rows as $webalizer_hist_row)
+		{
+			if($webalizer_hist_row != '')
+			{
+				$webalizer_hist_row = explode(' ', $webalizer_hist_row);
 
-                if(isset($webalizer_hist_row['0'])
-                   && isset($webalizer_hist_row['1'])
-                   && isset($webalizer_hist_row['5']))
-                {
-                    $month = intval($webalizer_hist_row['0']);
-                    $year = intval($webalizer_hist_row['1']);
-                    $traffic = floatval($webalizer_hist_row['5']);
+				if(isset($webalizer_hist_row['0'])
+				   && isset($webalizer_hist_row['1'])
+				   && isset($webalizer_hist_row['5']))
+				{
+					$month = intval($webalizer_hist_row['0']);
+					$year = intval($webalizer_hist_row['1']);
+					$traffic = floatval($webalizer_hist_row['5']);
 
-                    if(!isset($httptraffic[$year]))
-                    {
-                        $httptraffic[$year] = array();
-                    }
+					if(!isset($httptraffic[$year]))
+					{
+						$httptraffic[$year] = array();
+					}
 
-                    $httptraffic[$year][$month] = $traffic;
-                }
-            }
-        }
+					$httptraffic[$year][$month] = $traffic;
+				}
+			}
+		}
 
-        reset($httptraffic);
-        $httptrafficlast = array();
-        $webalizer_lasthist = @file_get_contents($outputdir . 'webalizer.hist.1');
-        $webalizer_lasthist_rows = explode("\n", $webalizer_lasthist);
-        foreach($webalizer_lasthist_rows as $webalizer_lasthist_row)
-        {
-            if($webalizer_lasthist_row != '')
-            {
-                $webalizer_lasthist_row = explode(' ', $webalizer_lasthist_row);
+		reset($httptraffic);
+		$httptrafficlast = array();
+		$webalizer_lasthist = @file_get_contents($outputdir . 'webalizer.hist.1');
+		$webalizer_lasthist_rows = explode("\n", $webalizer_lasthist);
+		foreach($webalizer_lasthist_rows as $webalizer_lasthist_row)
+		{
+			if($webalizer_lasthist_row != '')
+			{
+				$webalizer_lasthist_row = explode(' ', $webalizer_lasthist_row);
 
-                if(isset($webalizer_lasthist_row['0'])
-                   && isset($webalizer_lasthist_row['1'])
-                   && isset($webalizer_lasthist_row['5']))
-                {
-                    $month = intval($webalizer_lasthist_row['0']);
-                    $year = intval($webalizer_lasthist_row['1']);
-                    $traffic = floatval($webalizer_lasthist_row['5']);
+				if(isset($webalizer_lasthist_row['0'])
+				   && isset($webalizer_lasthist_row['1'])
+				   && isset($webalizer_lasthist_row['5']))
+				{
+					$month = intval($webalizer_lasthist_row['0']);
+					$year = intval($webalizer_lasthist_row['1']);
+					$traffic = floatval($webalizer_lasthist_row['5']);
 
-                    if(!isset($httptrafficlast[$year]))
-                    {
-                        $httptrafficlast[$year] = array();
-                    }
+					if(!isset($httptrafficlast[$year]))
+					{
+						$httptrafficlast[$year] = array();
+					}
 
-                    $httptrafficlast[$year][$month] = $traffic;
-                }
-            }
-        }
+					$httptrafficlast[$year][$month] = $traffic;
+				}
+			}
+		}
 
-        reset($httptrafficlast);
-        foreach($httptraffic as $year => $months)
-        {
-            foreach($months as $month => $traffic)
-            {
-                if(!isset($httptrafficlast[$year][$month]))
-                {
-                    $returnval+= $traffic;
-                }
-                elseif($httptrafficlast[$year][$month] < $httptraffic[$year][$month])
-                {
-                    $returnval+= ($httptraffic[$year][$month]-$httptrafficlast[$year][$month]);
-                }
-            }
-        }
-    }
+		reset($httptrafficlast);
+		foreach($httptraffic as $year => $months)
+		{
+			foreach($months as $month => $traffic)
+			{
+				if(!isset($httptrafficlast[$year][$month]))
+				{
+					$returnval+= $traffic;
+				}
+				elseif($httptrafficlast[$year][$month] < $httptraffic[$year][$month])
+				{
+					$returnval+= ($httptraffic[$year][$month]-$httptrafficlast[$year][$month]);
+				}
+			}
+		}
+	}
 
-    return floatval($returnval);
+	return floatval($returnval);
 }
 
 /**
@@ -545,57 +550,71 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
  *
  * @author Florian Aders <eleras@syscp.org>
  */
+
 function safeSQLLogfile($domains, $loginname)
 {
-    global $db, $settings;
-    $sql = "SELECT * FROM access_log ";
-    $where = "WHERE virtual_host = ";
-    if(!is_array($domains))
-    {
-        // If it isn't an array, it's a speciallogfile-domain
-        $logname = $settings['system']['logfiles_directory'] . $loginname . '-' . $domains . '-access.log';
-        $where .= "'$domains' OR virtual_host = 'www.$domains'";
-    }
-    else
-    {
-        // If we have an array, these are all domains aggregated into a single logfile
-        if(count($domains) == 0)
-        {
-            // If the $omains-array is empty, this customer has only speciallogfile-
-            // domains, so just return, all logfiles are already written to disk
-            return true;
-        }
-        $logname = $settings['system']['logfiles_directory'] . $loginname . '-access.log';
+	global $db, $settings;
+	$sql = "SELECT * FROM access_log ";
+	$where = "WHERE virtual_host = ";
 
-        // Build the "WHERE" - part of the sql-query
-        foreach($domains as $domain)
-        {
-            // A domain may be reached with or without the "www" in front.
-            $where .= "'$domain' OR virtual_host = 'www.$domain' OR virtual_host = ";
-        }
-        $where = substr($where, 0, -19);
-    }
-    // We want clean, ordered logfiles
-    $sql .= $where . " ORDER BY time_stamp;";
-    $logs = $db->query($sql);
+	if(!is_array($domains))
+	{
+		// If it isn't an array, it's a speciallogfile-domain
 
-    // Don't overwrite the logfile - append the new stuff
-    file_put_contents($logname, "", FILE_APPEND);
-    while($logline = $db->fetch_array($logs))
-    {
-        // Create a "CustomLog" - line
-        $writelog = $logline['remote_host'] . " " . $logline['virtual_host'] . " " . $logline['remote_user'] . " ";
-        $writelog .= date("[d/M/Y:H:i:s O]", $logline['time_stamp']);
-        $writelog .= " \"" . $logline['request_method'] . " " . $logline['request_uri'] . " " . $logline['request_protocol'] . "\" ";
-        $writelog .= $logline['status'];
-        $writelog .= " " . $logline['bytes_sent'] . " \"" . $logline['referer'] . "\" \"" . $logline['agent'] . "\"\n";
+		$logname = $settings['system']['logfiles_directory'] . $loginname . '-' . $domains . '-access.log';
+		$where.= "'$domains' OR virtual_host = 'www.$domains'";
+	}
+	else
+	{
+		// If we have an array, these are all domains aggregated into a single logfile
 
-        file_put_contents($logname, $writelog, FILE_APPEND);
-    }
+		if(count($domains) == 0)
+		{
+			// If the $omains-array is empty, this customer has only speciallogfile-
+			// domains, so just return, all logfiles are already written to disk
 
-    // Remove the just written stuff
-    $db->query("DELETE FROM access_log ". $where);
-    return true;
+			return true;
+		}
+
+		$logname = $settings['system']['logfiles_directory'] . $loginname . '-access.log';
+
+		// Build the "WHERE" - part of the sql-query
+
+		foreach($domains as $domain)
+		{
+			// A domain may be reached with or without the "www" in front.
+
+			$where.= "'$domain' OR virtual_host = 'www.$domain' OR virtual_host = ";
+		}
+
+		$where = substr($where, 0, -19);
+	}
+
+	// We want clean, ordered logfiles
+
+	$sql.= $where . " ORDER BY time_stamp;";
+	$logs = $db->query($sql);
+
+	// Don't overwrite the logfile - append the new stuff
+
+	file_put_contents($logname, "", FILE_APPEND);
+
+	while($logline = $db->fetch_array($logs))
+	{
+		// Create a "CustomLog" - line
+
+		$writelog = $logline['remote_host'] . " " . $logline['virtual_host'] . " " . $logline['remote_user'] . " ";
+		$writelog.= date("[d/M/Y:H:i:s O]", $logline['time_stamp']);
+		$writelog.= " \"" . $logline['request_method'] . " " . $logline['request_uri'] . " " . $logline['request_protocol'] . "\" ";
+		$writelog.= $logline['status'];
+		$writelog.= " " . $logline['bytes_sent'] . " \"" . $logline['referer'] . "\" \"" . $logline['agent'] . "\"\n";
+		file_put_contents($logname, $writelog, FILE_APPEND);
+	}
+
+	// Remove the just written stuff
+
+	$db->query("DELETE FROM access_log " . $where);
+	return true;
 }
 
 ?>

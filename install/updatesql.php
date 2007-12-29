@@ -39,7 +39,7 @@ $result = $db->query("SELECT `settinggroup`, `varname`, `value` FROM `" . TABLE_
 
 while($row = $db->fetch_array($result))
 {
-    $settings[$row['settinggroup']][$row['varname']] = $row['value'];
+	$settings[$row['settinggroup']][$row['varname']] = $row['value'];
 }
 
 unset($row);
@@ -58,7 +58,7 @@ require ('../lib/functions.php');
 if(!isset($settings['panel']['version'])
    || (substr($settings['panel']['version'], 0, 3) == '1.0' && $settings['panel']['version'] != '1.0.10'))
 {
-    include ('./updatesql_1.0.inc.php');
+	include ('./updatesql_1.0.inc.php');
 }
 
 /**
@@ -67,7 +67,7 @@ if(!isset($settings['panel']['version'])
 
 if($settings['panel']['version'] == '1.0.10')
 {
-    include ('./updatesql_1.0-1.2.inc.php');
+	include ('./updatesql_1.0-1.2.inc.php');
 }
 
 /**
@@ -76,7 +76,7 @@ if($settings['panel']['version'] == '1.0.10')
 
 if(substr($settings['panel']['version'], 0, 3) == '1.2')
 {
-    include ('./updatesql_1.2.inc.php');
+	include ('./updatesql_1.2.inc.php');
 }
 
 updateCounters();

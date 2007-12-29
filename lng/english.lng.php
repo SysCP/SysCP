@@ -541,6 +541,7 @@ $lng['serversettings']['ftpdomain']['description'] = 'Customers can create Ftp a
 $lng['panel']['back'] = 'Back';
 
 // ADDED IN 1.2.16-svn12
+
 $lng['serversettings']['mod_log_sql']['title'] = 'Temporary save logs in the database';
 $lng['serversettings']['mod_log_sql']['description'] = 'Use <a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> to save webrequests temporarily<br /><b>This needs a special apache-configuration!</b>';
 $lng['serversettings']['mod_fcgid']['title'] = 'Include PHP via mod_fcgid/suexec';

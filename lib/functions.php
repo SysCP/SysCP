@@ -26,33 +26,33 @@
 
 function getTemplate($template, $noarea = 0)
 {
-    global $templatecache;
+	global $templatecache;
 
-    if($noarea != 1)
-    {
-        $template = AREA . '/' . $template;
-    }
+	if($noarea != 1)
+	{
+		$template = AREA . '/' . $template;
+	}
 
-    if(!isset($templatecache[$template]))
-    {
-        $filename = './templates/' . $template . '.tpl';
+	if(!isset($templatecache[$template]))
+	{
+		$filename = './templates/' . $template . '.tpl';
 
-        if(file_exists($filename))
-        {
-            $templatefile = addcslashes(file_get_contents($filename), '"\\');
-        }
-        else
-        {
-            $templatefile = '<!-- TEMPLATE NOT FOUND: ' . $filename . ' -->';
-        }
+		if(file_exists($filename))
+		{
+			$templatefile = addcslashes(file_get_contents($filename), '"\\');
+		}
+		else
+		{
+			$templatefile = '<!-- TEMPLATE NOT FOUND: ' . $filename . ' -->';
+		}
 
-        //			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
+		//			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
 
-        $templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis', '".( ($1) ? ("$2") : ("$4") )."', $templatefile);
-        $templatecache[$template] = $templatefile;
-    }
+		$templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis', '".( ($1) ? ("$2") : ("$4") )."', $templatefile);
+		$templatecache[$template] = $templatefile;
+	}
 
-    return $templatecache[$template];
+	return $templatecache[$template];
 }
 
 /**
@@ -66,44 +66,44 @@ function getTemplate($template, $noarea = 0)
 
 function standard_error($errors = '', $replacer = '')
 {
-    global $db, $tpl, $userinfo, $s, $header, $footer, $lng;
-    $replacer = htmlentities($replacer);
+	global $db, $tpl, $userinfo, $s, $header, $footer, $lng;
+	$replacer = htmlentities($replacer);
 
-    if(!is_array($errors))
-    {
-        $errors = array(
-            $errors
-        );
-    }
+	if(!is_array($errors))
+	{
+		$errors = array(
+			$errors
+		);
+	}
 
-    $error = '';
-    foreach($errors as $single_error)
-    {
-        if(isset($lng['error'][$single_error]))
-        {
-            $single_error = $lng['error'][$single_error];
-            $single_error = strtr($single_error, array(
-                '%s' => $replacer
-            ));
-        }
-        else
-        {
-            $error = 'Unknown Error (' . $single_error . ')';
-            break;
-        }
+	$error = '';
+	foreach($errors as $single_error)
+	{
+		if(isset($lng['error'][$single_error]))
+		{
+			$single_error = $lng['error'][$single_error];
+			$single_error = strtr($single_error, array(
+				'%s' => $replacer
+			));
+		}
+		else
+		{
+			$error = 'Unknown Error (' . $single_error . ')';
+			break;
+		}
 
-        if(empty($error))
-        {
-            $error = $single_error;
-        }
-        else
-        {
-            $error.= ' ' . $single_error;
-        }
-    }
+		if(empty($error))
+		{
+			$error = $single_error;
+		}
+		else
+		{
+			$error.= ' ' . $single_error;
+		}
+	}
 
-    eval("echo \"" . getTemplate('misc/error', '1') . "\";");
-    exit;
+	eval("echo \"" . getTemplate('misc/error', '1') . "\";");
+	exit;
 }
 
 /**
@@ -119,8 +119,8 @@ function standard_error($errors = '', $replacer = '')
 
 function makeyesno($name, $yesvalue, $novalue = '', $yesselected = '')
 {
-    global $lng;
-    return '<select class="dropdown_noborder" name="' . $name . '"><option value="' . $yesvalue . '"' . ($yesselected ? ' selected="selected"' : '') . '>' . $lng['panel']['yes'] . '</option><option value="' . $novalue . '"' . ($yesselected ? '' : ' selected="selected"') . '>' . $lng['panel']['no'] . '</option></select>';
+	global $lng;
+	return '<select class="dropdown_noborder" name="' . $name . '"><option value="' . $yesvalue . '"' . ($yesselected ? ' selected="selected"' : '') . '>' . $lng['panel']['yes'] . '</option><option value="' . $novalue . '"' . ($yesselected ? '' : ' selected="selected"') . '>' . $lng['panel']['no'] . '</option></select>';
 }
 
 /**
@@ -135,9 +135,9 @@ function makeyesno($name, $yesvalue, $novalue = '', $yesselected = '')
 
 function ask_yesno($text, $yesfile, $params = array(), $targetname = '')
 {
-    global $userinfo, $tpl, $db, $s, $header, $footer, $lng;
+	global $userinfo, $tpl, $db, $s, $header, $footer, $lng;
 
-    /*
+	/*
 		// For compatibility reasons (if $params contains a string like "field1=value1;field2=value2") this will convert it into a usable array
 		if(!is_array($params))
 		{
@@ -152,25 +152,25 @@ function ask_yesno($text, $yesfile, $params = array(), $targetname = '')
 		}
 */
 
-    $hiddenparams = '';
+	$hiddenparams = '';
 
-    if(is_array($params))
-    {
-        foreach($params as $field => $value)
-        {
-            $hiddenparams.= '<input type="hidden" name="' . htmlspecialchars($field) . '" value="' . htmlspecialchars($value) . '" />' . "\n";
-        }
-    }
+	if(is_array($params))
+	{
+		foreach($params as $field => $value)
+		{
+			$hiddenparams.= '<input type="hidden" name="' . htmlspecialchars($field) . '" value="' . htmlspecialchars($value) . '" />' . "\n";
+		}
+	}
 
-    if(isset($lng['question'][$text]))
-    {
-        $text = $lng['question'][$text];
-    }
+	if(isset($lng['question'][$text]))
+	{
+		$text = $lng['question'][$text];
+	}
 
-    $text = strtr($text, array(
-        '%s' => $targetname
-    ));
-    eval("echo \"" . getTemplate('misc/question_yesno', '1') . "\";");
+	$text = strtr($text, array(
+		'%s' => $targetname
+	));
+	eval("echo \"" . getTemplate('misc/question_yesno', '1') . "\";");
 }
 
 /**
@@ -187,28 +187,28 @@ function ask_yesno($text, $yesfile, $params = array(), $targetname = '')
 
 function makeoption($title, $value, $selvalue = NULL, $title_trusted = false, $value_trusted = false)
 {
-    if($selvalue !== NULL
-       && $value == $selvalue)
-    {
-        $selected = 'selected="selected"';
-    }
-    else
-    {
-        $selected = '';
-    }
+	if($selvalue !== NULL
+	   && $value == $selvalue)
+	{
+		$selected = 'selected="selected"';
+	}
+	else
+	{
+		$selected = '';
+	}
 
-    if(!$title_trusted)
-    {
-        $title = htmlspecialchars($title);
-    }
+	if(!$title_trusted)
+	{
+		$title = htmlspecialchars($title);
+	}
 
-    if(!$value_trusted)
-    {
-        $value = htmlspecialchars($value);
-    }
+	if(!$value_trusted)
+	{
+		$value = htmlspecialchars($value);
+	}
 
-    $option = '<option value="' . $value . '" ' . $selected . ' >' . $title . '</option>';
-    return $option;
+	$option = '<option value="' . $value . '" ' . $selected . ' >' . $title . '</option>';
+	return $option;
 }
 
 /**
@@ -232,52 +232,52 @@ function makeoption($title, $value, $selvalue = NULL, $title_trusted = false, $v
 
 function redirectTo($destination, $get_variables = array(), $isRelative = false)
 {
-    $params = array();
+	$params = array();
 
-    if(is_array($get_variables))
-    {
-        foreach($get_variables as $key => $value)
-        {
-            $params[] = urlencode($key) . '=' . urlencode($value);
-        }
+	if(is_array($get_variables))
+	{
+		foreach($get_variables as $key => $value)
+		{
+			$params[] = urlencode($key) . '=' . urlencode($value);
+		}
 
-        $params = '?' . implode($params, '&');
+		$params = '?' . implode($params, '&');
 
-        if($isRelative)
-        {
-            $protocol = '';
-            $host = '';
-            $path = './';
-        }
-        else
-        {
-            if(isset($_SERVER['HTTPS'])
-               && strtolower($_SERVER['HTTPS']) == 'on')
-            {
-                $protocol = 'https://';
-            }
-            else
-            {
-                $protocol = 'http://';
-            }
+		if($isRelative)
+		{
+			$protocol = '';
+			$host = '';
+			$path = './';
+		}
+		else
+		{
+			if(isset($_SERVER['HTTPS'])
+			   && strtolower($_SERVER['HTTPS']) == 'on')
+			{
+				$protocol = 'https://';
+			}
+			else
+			{
+				$protocol = 'http://';
+			}
 
-            $host = $_SERVER['HTTP_HOST'];
+			$host = $_SERVER['HTTP_HOST'];
 
-            if(dirname($_SERVER['PHP_SELF']) == '/')
-            {
-                $path = '/';
-            }
-            else
-            {
-                $path = dirname($_SERVER['PHP_SELF']) . '/';
-            }
-        }
+			if(dirname($_SERVER['PHP_SELF']) == '/')
+			{
+				$path = '/';
+			}
+			else
+			{
+				$path = dirname($_SERVER['PHP_SELF']) . '/';
+			}
+		}
 
-        header('Location: ' . $protocol . $host . $path . $destination . $params);
-        exit;
-    }
+		header('Location: ' . $protocol . $host . $path . $destination . $params);
+		exit;
+	}
 
-    return false;
+	return false;
 }
 
 /**
@@ -290,22 +290,22 @@ function redirectTo($destination, $get_variables = array(), $isRelative = false)
 
 function array_trim($source)
 {
-    $returnval = array();
+	$returnval = array();
 
-    if(is_array($source))
-    {
-        while(list($var, $val) = each($source))
-        {
-            if($val != ' '
-               && $val != '')$returnval[$var] = $val;
-        }
-    }
-    else
-    {
-        $returnval = $source;
-    }
+	if(is_array($source))
+	{
+		while(list($var, $val) = each($source))
+		{
+			if($val != ' '
+			   && $val != '')$returnval[$var] = $val;
+		}
+	}
+	else
+	{
+		$returnval = $source;
+	}
 
-    return $returnval;
+	return $returnval;
 }
 
 /**
@@ -322,24 +322,24 @@ function array_trim($source)
 
 function str_replace_array($search, $replace, $subject, $fields = '')
 {
-    if(is_array($subject))
-    {
-        $fields = array_trim(explode(' ', $fields));
-        foreach($subject as $field => $value)
-        {
-            if((!is_array($fields) || empty($fields))
-               || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
-            {
-                $subject[$field] = str_replace($search, $replace, $subject[$field]);
-            }
-        }
-    }
-    else
-    {
-        $subject = str_replace($search, $replace, $subject);
-    }
+	if(is_array($subject))
+	{
+		$fields = array_trim(explode(' ', $fields));
+		foreach($subject as $field => $value)
+		{
+			if((!is_array($fields) || empty($fields))
+			   || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
+			{
+				$subject[$field] = str_replace($search, $replace, $subject[$field]);
+			}
+		}
+	}
+	else
+	{
+		$subject = str_replace($search, $replace, $subject);
+	}
 
-    return $subject;
+	return $subject;
 }
 
 /**
@@ -356,32 +356,32 @@ function str_replace_array($search, $replace, $subject, $fields = '')
 
 function htmlentities_array($subject, $fields = '', $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1')
 {
-    if(is_array($subject))
-    {
-        if(!is_array($fields))
-        {
-            $fields = array_trim(explode(' ', $fields));
-        }
+	if(is_array($subject))
+	{
+		if(!is_array($fields))
+		{
+			$fields = array_trim(explode(' ', $fields));
+		}
 
-        foreach($subject as $field => $value)
-        {
-            if((!is_array($fields) || empty($fields))
-               || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
-            {
-                /**
-                 * Just call ourselve to manage multi-dimensional arrays
-                 */
+		foreach($subject as $field => $value)
+		{
+			if((!is_array($fields) || empty($fields))
+			   || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
+			{
+				/**
+				 * Just call ourselve to manage multi-dimensional arrays
+				 */
 
-                $subject[$field] = htmlentities_array($subject[$field], $fields, $quote_style, $charset);
-            }
-        }
-    }
-    else
-    {
-        $subject = htmlentities($subject, $quote_style, $charset);
-    }
+				$subject[$field] = htmlentities_array($subject[$field], $fields, $quote_style, $charset);
+			}
+		}
+	}
+	else
+	{
+		$subject = htmlentities($subject, $quote_style, $charset);
+	}
 
-    return $subject;
+	return $subject;
 }
 
 /**
@@ -400,39 +400,39 @@ function htmlentities_array($subject, $fields = '', $quote_style = ENT_COMPAT, $
 
 function html_entity_decode_array($subject, $fields = '', $complete = false, $quote_style = ENT_COMPAT, $charset = 'ISO-8859-1')
 {
-    if(is_array($subject))
-    {
-        if(!is_array($fields))
-        {
-            $fields = array_trim(explode(' ', $fields));
-        }
+	if(is_array($subject))
+	{
+		if(!is_array($fields))
+		{
+			$fields = array_trim(explode(' ', $fields));
+		}
 
-        foreach($subject as $field => $value)
-        {
-            if((!is_array($fields) || empty($fields))
-               || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
-            {
-                /**
-                 * Just call ourselve to manage multi-dimensional arrays
-                 */
+		foreach($subject as $field => $value)
+		{
+			if((!is_array($fields) || empty($fields))
+			   || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
+			{
+				/**
+				 * Just call ourselve to manage multi-dimensional arrays
+				 */
 
-                $subject[$field] = html_entity_decode_array($subject[$field], $fields, $complete, $quote_style, $charset);
-            }
-        }
-    }
-    else
-    {
-        if($complete == true)
-        {
-            $subject = html_entity_decode_complete($subject, $quote_style, $charset);
-        }
-        else
-        {
-            $subject = html_entity_decode($subject, $quote_style, $charset);
-        }
-    }
+				$subject[$field] = html_entity_decode_array($subject[$field], $fields, $complete, $quote_style, $charset);
+			}
+		}
+	}
+	else
+	{
+		if($complete == true)
+		{
+			$subject = html_entity_decode_complete($subject, $quote_style, $charset);
+		}
+		else
+		{
+			$subject = html_entity_decode($subject, $quote_style, $charset);
+		}
+	}
 
-    return $subject;
+	return $subject;
 }
 
 /**
@@ -451,39 +451,39 @@ function html_entity_decode_array($subject, $fields = '', $complete = false, $qu
 
 function stripslashes_array($subject, $fields = '', $complete = false)
 {
-    if(is_array($subject))
-    {
-        if(!is_array($fields))
-        {
-            $fields = array_trim(explode(' ', $fields));
-        }
+	if(is_array($subject))
+	{
+		if(!is_array($fields))
+		{
+			$fields = array_trim(explode(' ', $fields));
+		}
 
-        foreach($subject as $field => $value)
-        {
-            if((!is_array($fields) || empty($fields))
-               || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
-            {
-                /**
-                 * Just call ourselve to manage multi-dimensional arrays
-                 */
+		foreach($subject as $field => $value)
+		{
+			if((!is_array($fields) || empty($fields))
+			   || (is_array($fields) && !empty($fields) && in_array($field, $fields)))
+			{
+				/**
+				 * Just call ourselve to manage multi-dimensional arrays
+				 */
 
-                $subject[$field] = stripslashes_array($subject[$field], $fields, $complete);
-            }
-        }
-    }
-    else
-    {
-        if($complete == true)
-        {
-            $subject = stripslashes_complete($subject);
-        }
-        else
-        {
-            $subject = stripslashes($subject);
-        }
-    }
+				$subject[$field] = stripslashes_array($subject[$field], $fields, $complete);
+			}
+		}
+	}
+	else
+	{
+		if($complete == true)
+		{
+			$subject = stripslashes_complete($subject);
+		}
+		else
+		{
+			$subject = stripslashes($subject);
+		}
+	}
 
-    return $subject;
+	return $subject;
 }
 
 /**
@@ -498,7 +498,7 @@ function stripslashes_array($subject, $fields = '', $complete = false)
 
 function validateUsername($username)
 {
-    return preg_match('/^[a-z][a-z0-9]*$/Di', $username);
+	return preg_match('/^[a-z][a-z0-9]*$/Di', $username);
 }
 
 /**
@@ -513,8 +513,8 @@ function validateUsername($username)
 
 function validateEmail($email)
 {
-    $email = strtolower($email);
-    return preg_match('/^[\-_a-z0-9]+(\.[\-_a-z0-9]+)*@((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di', $email);
+	$email = strtolower($email);
+	return preg_match('/^[\-_a-z0-9]+(\.[\-_a-z0-9]+)*@((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di', $email);
 }
 
 /**
@@ -530,7 +530,7 @@ function validateEmail($email)
 
 function validateDomain($domainname)
 {
-    return preg_match('/^((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di', $domainname);
+	return preg_match('/^((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di', $domainname);
 }
 
 /**
@@ -545,7 +545,7 @@ function validateDomain($domainname)
 
 function validateUrl($url)
 {
-    return preg_match('!^https?://((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}(:(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5])))?(/[^\s\0]*)?$!Di', $url);
+	return preg_match('!^https?://((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}(:(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5])))?(/[^\s\0]*)?$!Di', $url);
 }
 
 /**
@@ -560,13 +560,13 @@ function validateUrl($url)
 
 function validate($str, $fieldname, $pattern = '/^[^\r\n\t\f\0]*$/D', $lng = 'stringformaterror')
 {
-    if(preg_match($pattern, $str))
-    {
-        return $str;
-    }
+	if(preg_match($pattern, $str))
+	{
+		return $str;
+	}
 
-    standard_error($lng, $fieldname);
-    exit;
+	standard_error($lng, $fieldname);
+	exit;
 }
 
 /**
@@ -581,28 +581,28 @@ function validate($str, $fieldname, $pattern = '/^[^\r\n\t\f\0]*$/D', $lng = 'st
 
 function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 {
-    global $db;
+	global $db;
 
-    if($type == '1'
-       || $type == '3'
-       || $type == '4'
-       || $type == '5')
-    {
-        $db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` ' . 'WHERE `type`="' . $type . '"');
-        $db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` ' . '(`type`) ' . 'VALUES ' . '("' . $type . '")');
-    }
-    elseif($type == '2'
-           && $param1 != ''
-           && $param2 != ''
-           && $param3 != '')
-    {
-        $data = Array();
-        $data['loginname'] = $param1;
-        $data['uid'] = $param2;
-        $data['gid'] = $param3;
-        $data = serialize($data);
-        $db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` ' . '(`type`, `data`) ' . 'VALUES ' . '("2", "' . $db->escape($data) . '")');
-    }
+	if($type == '1'
+	   || $type == '3'
+	   || $type == '4'
+	   || $type == '5')
+	{
+		$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` ' . 'WHERE `type`="' . $type . '"');
+		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` ' . '(`type`) ' . 'VALUES ' . '("' . $type . '")');
+	}
+	elseif($type == '2'
+	       && $param1 != ''
+	       && $param2 != ''
+	       && $param3 != '')
+	{
+		$data = Array();
+		$data['loginname'] = $param1;
+		$data['uid'] = $param2;
+		$data['gid'] = $param3;
+		$data = serialize($data);
+		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` ' . '(`type`, `data`) ' . 'VALUES ' . '("2", "' . $db->escape($data) . '")');
+	}
 }
 
 /**
@@ -615,18 +615,18 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 
 function makeSecurePath($path)
 {
-    $search = Array(
-        '#/+#',
-        '#\.+#',
-        '#\0+#'
-    );
-    $replace = Array(
-        '/',
-        '.',
-        ''
-    );
-    $path = preg_replace($search, $replace, $path);
-    return $path;
+	$search = Array(
+		'#/+#',
+		'#\.+#',
+		'#\0+#'
+	);
+	$replace = Array(
+		'/',
+		'.',
+		''
+	);
+	$path = preg_replace($search, $replace, $path);
+	return $path;
 }
 
 /**
@@ -639,18 +639,18 @@ function makeSecurePath($path)
 
 function makeCorrectDir($dir)
 {
-    if(substr($dir, -1, 1) != '/')
-    {
-        $dir.= '/';
-    }
+	if(substr($dir, -1, 1) != '/')
+	{
+		$dir.= '/';
+	}
 
-    if(substr($dir, 0, 1) != '/')
-    {
-        $dir = '/' . $dir;
-    }
+	if(substr($dir, 0, 1) != '/')
+	{
+		$dir = '/' . $dir;
+	}
 
-    $dir = makeSecurePath($dir);
-    return $dir;
+	$dir = makeSecurePath($dir);
+	return $dir;
 }
 
 /**
@@ -665,13 +665,13 @@ function makeCorrectDir($dir)
 
 function makeCorrectFile($filename)
 {
-    if(substr($filename, 0, 1) != '/')
-    {
-        $filename = '/' . $filename;
-    }
+	if(substr($filename, 0, 1) != '/')
+	{
+		$filename = '/' . $filename;
+	}
 
-    $filename = makeSecurePath($filename);
-    return $filename;
+	$filename = makeSecurePath($filename);
+	return $filename;
 }
 
 /**
@@ -684,21 +684,21 @@ function makeCorrectFile($filename)
 
 function makeCorrectDestination($destination)
 {
-    $search = '/ +/';
-    $replace = ' ';
-    $destination = preg_replace($search, $replace, $destination);
+	$search = '/ +/';
+	$replace = ' ';
+	$destination = preg_replace($search, $replace, $destination);
 
-    if(substr($destination, 0, 1) == ' ')
-    {
-        $destination = substr($destination, 1);
-    }
+	if(substr($destination, 0, 1) == ' ')
+	{
+		$destination = substr($destination, 1);
+	}
 
-    if(substr($destination, -1, 1) == ' ')
-    {
-        $destination = substr($destination, 0, strlen($destination)-1);
-    }
+	if(substr($destination, -1, 1) == ' ')
+	{
+		$destination = substr($destination, 0, strlen($destination)-1);
+	}
 
-    return $destination;
+	return $destination;
 }
 
 /**
@@ -711,224 +711,224 @@ function makeCorrectDestination($destination)
 
 function updateCounters($returndebuginfo = false)
 {
-    global $db;
-    $returnval = array();
+	global $db;
+	$returnval = array();
 
-    if($returndebuginfo === true)
-    {
-        $returnval = array(
-            'admins' => array(),
-            'customers' => array()
-        );
-    }
+	if($returndebuginfo === true)
+	{
+		$returnval = array(
+			'admins' => array(),
+			'customers' => array()
+		);
+	}
 
-    $admin_resources = array();
+	$admin_resources = array();
 
-    // Customers
+	// Customers
 
-    $customers = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'ORDER BY `customerid`');
+	$customers = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'ORDER BY `customerid`');
 
-    while($customer = $db->fetch_array($customers))
-    {
-        if(!isset($admin_resources[$customer['adminid']]))
-        {
-            $admin_resources[$customer['adminid']] = Array();
-        }
+	while($customer = $db->fetch_array($customers))
+	{
+		if(!isset($admin_resources[$customer['adminid']]))
+		{
+			$admin_resources[$customer['adminid']] = Array();
+		}
 
-        if(!isset($admin_resources[$customer['adminid']]['diskspace_used']))
-        {
-            $admin_resources[$customer['adminid']]['diskspace_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['diskspace_used']))
+		{
+			$admin_resources[$customer['adminid']]['diskspace_used'] = 0;
+		}
 
-        if(($customer['diskspace']/1024) != '-1')
-        {
-            $admin_resources[$customer['adminid']]['diskspace_used']+= intval_ressource($customer['diskspace']);
-        }
+		if(($customer['diskspace']/1024) != '-1')
+		{
+			$admin_resources[$customer['adminid']]['diskspace_used']+= intval_ressource($customer['diskspace']);
+		}
 
-        if(!isset($admin_resources[$customer['adminid']]['traffic_used']))
-        {
-            $admin_resources[$customer['adminid']]['traffic_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['traffic_used']))
+		{
+			$admin_resources[$customer['adminid']]['traffic_used'] = 0;
+		}
 
-        $admin_resources[$customer['adminid']]['traffic_used']+= $customer['traffic_used'];
+		$admin_resources[$customer['adminid']]['traffic_used']+= $customer['traffic_used'];
 
-        if(!isset($admin_resources[$customer['adminid']]['mysqls_used']))
-        {
-            $admin_resources[$customer['adminid']]['mysqls_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['mysqls_used']))
+		{
+			$admin_resources[$customer['adminid']]['mysqls_used'] = 0;
+		}
 
-        if($customer['mysqls'] != '-1')
-        {
-            $admin_resources[$customer['adminid']]['mysqls_used']+= intval_ressource($customer['mysqls']);
-        }
+		if($customer['mysqls'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['mysqls_used']+= intval_ressource($customer['mysqls']);
+		}
 
-        if(!isset($admin_resources[$customer['adminid']]['ftps_used']))
-        {
-            $admin_resources[$customer['adminid']]['ftps_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['ftps_used']))
+		{
+			$admin_resources[$customer['adminid']]['ftps_used'] = 0;
+		}
 
-        if($customer['ftps'] != '-1')
-        {
-            $admin_resources[$customer['adminid']]['ftps_used']+= intval_ressource($customer['ftps']);
-        }
+		if($customer['ftps'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['ftps_used']+= intval_ressource($customer['ftps']);
+		}
 
-        if(!isset($admin_resources[$customer['adminid']]['emails_used']))
-        {
-            $admin_resources[$customer['adminid']]['emails_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['emails_used']))
+		{
+			$admin_resources[$customer['adminid']]['emails_used'] = 0;
+		}
 
-        if($customer['emails'] != '-1')
-        {
-            $admin_resources[$customer['adminid']]['emails_used']+= intval_ressource($customer['emails']);
-        }
+		if($customer['emails'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['emails_used']+= intval_ressource($customer['emails']);
+		}
 
-        if(!isset($admin_resources[$customer['adminid']]['email_accounts_used']))
-        {
-            $admin_resources[$customer['adminid']]['email_accounts_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['email_accounts_used']))
+		{
+			$admin_resources[$customer['adminid']]['email_accounts_used'] = 0;
+		}
 
-        if($customer['email_accounts'] != '-1')
-        {
-            $admin_resources[$customer['adminid']]['email_accounts_used']+= intval_ressource($customer['email_accounts']);
-        }
+		if($customer['email_accounts'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['email_accounts_used']+= intval_ressource($customer['email_accounts']);
+		}
 
-        if(!isset($admin_resources[$customer['adminid']]['email_forwarders_used']))
-        {
-            $admin_resources[$customer['adminid']]['email_forwarders_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['email_forwarders_used']))
+		{
+			$admin_resources[$customer['adminid']]['email_forwarders_used'] = 0;
+		}
 
-        if($customer['email_forwarders'] != '-1')
-        {
-            $admin_resources[$customer['adminid']]['email_forwarders_used']+= intval_ressource($customer['email_forwarders']);
-        }
+		if($customer['email_forwarders'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['email_forwarders_used']+= intval_ressource($customer['email_forwarders']);
+		}
 
-        if(!isset($admin_resources[$customer['adminid']]['subdomains_used']))
-        {
-            $admin_resources[$customer['adminid']]['subdomains_used'] = 0;
-        }
+		if(!isset($admin_resources[$customer['adminid']]['subdomains_used']))
+		{
+			$admin_resources[$customer['adminid']]['subdomains_used'] = 0;
+		}
 
-        if($customer['subdomains'] != '-1')
-        {
-            $admin_resources[$customer['adminid']]['subdomains_used']+= intval_ressource($customer['subdomains']);
-        }
+		if($customer['subdomains'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['subdomains_used']+= intval_ressource($customer['subdomains']);
+		}
 
-        $customer_mysqls = $db->query_first('SELECT COUNT(*) AS `number_mysqls` ' . 'FROM `' . TABLE_PANEL_DATABASES . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
-        $customer['mysqls_used_new'] = $customer_mysqls['number_mysqls'];
-        $customer_emails = $db->query_first('SELECT COUNT(*) AS `number_emails` ' . 'FROM `' . TABLE_MAIL_VIRTUAL . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
-        $customer['emails_used_new'] = $customer_emails['number_emails'];
-        $customer_emails_result = $db->query('SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` ' . 'FROM `' . TABLE_MAIL_VIRTUAL . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '" ');
-        $customer_email_forwarders = 0;
-        $customer_email_accounts = 0;
+		$customer_mysqls = $db->query_first('SELECT COUNT(*) AS `number_mysqls` ' . 'FROM `' . TABLE_PANEL_DATABASES . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer['mysqls_used_new'] = $customer_mysqls['number_mysqls'];
+		$customer_emails = $db->query_first('SELECT COUNT(*) AS `number_emails` ' . 'FROM `' . TABLE_MAIL_VIRTUAL . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer['emails_used_new'] = $customer_emails['number_emails'];
+		$customer_emails_result = $db->query('SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` ' . 'FROM `' . TABLE_MAIL_VIRTUAL . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '" ');
+		$customer_email_forwarders = 0;
+		$customer_email_accounts = 0;
 
-        while($customer_emails_row = $db->fetch_array($customer_emails_result))
-        {
-            if($customer_emails_row['destination'] != '')
-            {
-                $customer_emails_row['destination'] = explode(' ', makeCorrectDestination($customer_emails_row['destination']));
-                $customer_email_forwarders+= count($customer_emails_row['destination']);
+		while($customer_emails_row = $db->fetch_array($customer_emails_result))
+		{
+			if($customer_emails_row['destination'] != '')
+			{
+				$customer_emails_row['destination'] = explode(' ', makeCorrectDestination($customer_emails_row['destination']));
+				$customer_email_forwarders+= count($customer_emails_row['destination']);
 
-                if(in_array($customer_emails_row['email_full'], $customer_emails_row['destination']))
-                {
-                    $customer_email_forwarders-= 1;
-                    $customer_email_accounts++;
-                }
-            }
-        }
+				if(in_array($customer_emails_row['email_full'], $customer_emails_row['destination']))
+				{
+					$customer_email_forwarders-= 1;
+					$customer_email_accounts++;
+				}
+			}
+		}
 
-        $customer['email_accounts_used_new'] = $customer_email_accounts;
-        $customer['email_forwarders_used_new'] = $customer_email_forwarders;
-        $customer_ftps = $db->query_first('SELECT COUNT(*) AS `number_ftps` ' . 'FROM `' . TABLE_FTP_USERS . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
-        $customer['ftps_used_new'] = ($customer_ftps['number_ftps']-1);
-        $customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '" ' . 'AND `parentdomainid` <> "0"');
-        $customer['subdomains_used_new'] = $customer_subdomains['number_subdomains'];
-        $db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '", ' . '    `emails_used` = "' . (int)$customer['emails_used_new'] . '", ' . '    `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '", ' . '    `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '", ' . '    `ftps_used` = "' . (int)$customer['ftps_used_new'] . '", ' . '    `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer['email_accounts_used_new'] = $customer_email_accounts;
+		$customer['email_forwarders_used_new'] = $customer_email_forwarders;
+		$customer_ftps = $db->query_first('SELECT COUNT(*) AS `number_ftps` ' . 'FROM `' . TABLE_FTP_USERS . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer['ftps_used_new'] = ($customer_ftps['number_ftps']-1);
+		$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '" ' . 'AND `parentdomainid` <> "0"');
+		$customer['subdomains_used_new'] = $customer_subdomains['number_subdomains'];
+		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '", ' . '    `emails_used` = "' . (int)$customer['emails_used_new'] . '", ' . '    `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '", ' . '    `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '", ' . '    `ftps_used` = "' . (int)$customer['ftps_used_new'] . '", ' . '    `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 
-        if($returndebuginfo === true)
-        {
-            $returnval['customers'][$customer['customerid']] = $customer;
-        }
-    }
+		if($returndebuginfo === true)
+		{
+			$returnval['customers'][$customer['customerid']] = $customer;
+		}
+	}
 
-    // Admins
+	// Admins
 
-    $admins = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_ADMINS . '` ' . 'ORDER BY `adminid`');
+	$admins = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_ADMINS . '` ' . 'ORDER BY `adminid`');
 
-    while($admin = $db->fetch_array($admins))
-    {
-        $admin_customers = $db->query_first('SELECT COUNT(*) AS `number_customers` ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
-        $admin['customers_used_new'] = $admin_customers['number_customers'];
-        $admin_domains = $db->query_first('SELECT COUNT(*) AS `number_domains` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '" ' . 'AND `isemaildomain` = "1"');
-        $admin['domains_used_new'] = $admin_domains['number_domains'];
+	while($admin = $db->fetch_array($admins))
+	{
+		$admin_customers = $db->query_first('SELECT COUNT(*) AS `number_customers` ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
+		$admin['customers_used_new'] = $admin_customers['number_customers'];
+		$admin_domains = $db->query_first('SELECT COUNT(*) AS `number_domains` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '" ' . 'AND `isemaildomain` = "1"');
+		$admin['domains_used_new'] = $admin_domains['number_domains'];
 
-        if(!isset($admin_resources[$admin['adminid']]))
-        {
-            $admin_resources[$admin['adminid']] = Array();
-        }
+		if(!isset($admin_resources[$admin['adminid']]))
+		{
+			$admin_resources[$admin['adminid']] = Array();
+		}
 
-        if(!isset($admin_resources[$admin['adminid']]['diskspace_used']))
-        {
-            $admin_resources[$admin['adminid']]['diskspace_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['diskspace_used']))
+		{
+			$admin_resources[$admin['adminid']]['diskspace_used'] = 0;
+		}
 
-        $admin['diskspace_used_new'] = $admin_resources[$admin['adminid']]['diskspace_used'];
+		$admin['diskspace_used_new'] = $admin_resources[$admin['adminid']]['diskspace_used'];
 
-        if(!isset($admin_resources[$admin['adminid']]['traffic_used']))
-        {
-            $admin_resources[$admin['adminid']]['traffic_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['traffic_used']))
+		{
+			$admin_resources[$admin['adminid']]['traffic_used'] = 0;
+		}
 
-        $admin['traffic_used_new'] = $admin_resources[$admin['adminid']]['traffic_used'];
+		$admin['traffic_used_new'] = $admin_resources[$admin['adminid']]['traffic_used'];
 
-        if(!isset($admin_resources[$admin['adminid']]['mysqls_used']))
-        {
-            $admin_resources[$admin['adminid']]['mysqls_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['mysqls_used']))
+		{
+			$admin_resources[$admin['adminid']]['mysqls_used'] = 0;
+		}
 
-        $admin['mysqls_used_new'] = $admin_resources[$admin['adminid']]['mysqls_used'];
+		$admin['mysqls_used_new'] = $admin_resources[$admin['adminid']]['mysqls_used'];
 
-        if(!isset($admin_resources[$admin['adminid']]['ftps_used']))
-        {
-            $admin_resources[$admin['adminid']]['ftps_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['ftps_used']))
+		{
+			$admin_resources[$admin['adminid']]['ftps_used'] = 0;
+		}
 
-        $admin['ftps_used_new'] = $admin_resources[$admin['adminid']]['ftps_used'];
+		$admin['ftps_used_new'] = $admin_resources[$admin['adminid']]['ftps_used'];
 
-        if(!isset($admin_resources[$admin['adminid']]['emails_used']))
-        {
-            $admin_resources[$admin['adminid']]['emails_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['emails_used']))
+		{
+			$admin_resources[$admin['adminid']]['emails_used'] = 0;
+		}
 
-        $admin['emails_used_new'] = $admin_resources[$admin['adminid']]['emails_used'];
+		$admin['emails_used_new'] = $admin_resources[$admin['adminid']]['emails_used'];
 
-        if(!isset($admin_resources[$admin['adminid']]['email_accounts_used']))
-        {
-            $admin_resources[$admin['adminid']]['email_accounts_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['email_accounts_used']))
+		{
+			$admin_resources[$admin['adminid']]['email_accounts_used'] = 0;
+		}
 
-        $admin['email_accounts_used_new'] = $admin_resources[$admin['adminid']]['email_accounts_used'];
+		$admin['email_accounts_used_new'] = $admin_resources[$admin['adminid']]['email_accounts_used'];
 
-        if(!isset($admin_resources[$admin['adminid']]['email_forwarders_used']))
-        {
-            $admin_resources[$admin['adminid']]['email_forwarders_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['email_forwarders_used']))
+		{
+			$admin_resources[$admin['adminid']]['email_forwarders_used'] = 0;
+		}
 
-        $admin['email_forwarders_used_new'] = $admin_resources[$admin['adminid']]['email_forwarders_used'];
+		$admin['email_forwarders_used_new'] = $admin_resources[$admin['adminid']]['email_forwarders_used'];
 
-        if(!isset($admin_resources[$admin['adminid']]['subdomains_used']))
-        {
-            $admin_resources[$admin['adminid']]['subdomains_used'] = 0;
-        }
+		if(!isset($admin_resources[$admin['adminid']]['subdomains_used']))
+		{
+			$admin_resources[$admin['adminid']]['subdomains_used'] = 0;
+		}
 
-        $admin['subdomains_used_new'] = $admin_resources[$admin['adminid']]['subdomains_used'];
-        $db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `customers_used` = "' . (int)$admin['customers_used_new'] . '", ' . '    `domains_used` = "' . (int)$admin['domains_used_new'] . '", ' . '    `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '", ' . '    `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '", ' . '    `emails_used` = "' . (int)$admin['emails_used_new'] . '", ' . '    `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '", ' . '    `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '", ' . '    `ftps_used` = "' . (int)$admin['ftps_used_new'] . '", ' . '    `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '", ' . '    `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
+		$admin['subdomains_used_new'] = $admin_resources[$admin['adminid']]['subdomains_used'];
+		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `customers_used` = "' . (int)$admin['customers_used_new'] . '", ' . '    `domains_used` = "' . (int)$admin['domains_used_new'] . '", ' . '    `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '", ' . '    `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '", ' . '    `emails_used` = "' . (int)$admin['emails_used_new'] . '", ' . '    `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '", ' . '    `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '", ' . '    `ftps_used` = "' . (int)$admin['ftps_used_new'] . '", ' . '    `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '", ' . '    `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
 
-        if($returndebuginfo === true)
-        {
-            $returnval['admins'][$admin['adminid']] = $admin;
-        }
-    }
+		if($returndebuginfo === true)
+		{
+			$returnval['admins'][$admin['adminid']] = $admin;
+		}
+	}
 
-    return $returnval;
+	return $returnval;
 }
 
 /******************************************************
@@ -946,73 +946,73 @@ function updateCounters($returndebuginfo = false)
 	 * 1.2 : Removed * as security break
 	 ******************************************************/function safe_exec($exec_string)
 {
-    global $settings;
+	global $settings;
 
-    //
-    // define allowed system commands
-    //
+	//
+	// define allowed system commands
+	//
 
-    $allowed_commands = array(
-        'touch',
-        'chown',
-        'mkdir',
-        'webalizer',
-        'cp',
-        'du',
-        'chmod',
-        'chattr',
-        $settings['system']['apachereload_command'],
-        $settings['system']['bindreload_command']
-    );
+	$allowed_commands = array(
+		'touch',
+		'chown',
+		'mkdir',
+		'webalizer',
+		'cp',
+		'du',
+		'chmod',
+		'chattr',
+		$settings['system']['apachereload_command'],
+		$settings['system']['bindreload_command']
+	);
 
-    //
-    // check for ; in execute command
-    //
+	//
+	// check for ; in execute command
+	//
 
-    if((stristr($exec_string, ';'))
-       or (stristr($exec_string, '|'))
-       or (stristr($exec_string, '&'))
-       or (stristr($exec_string, '>'))
-       or (stristr($exec_string, '<'))
-       or (stristr($exec_string, '`'))
-       or (stristr($exec_string, '$'))
-       or (stristr($exec_string, '~'))
-       or (stristr($exec_string, '?')))
-    {
-        die('SECURITY CHECK FAILED!' . "\n" . 'The execute string "' . htmlspecialchars($exec_string) . '" is a possible security risk!' . "\n" . 'Please check your whole server for security problems by hand!' . "\n");
-    }
+	if((stristr($exec_string, ';'))
+	   or (stristr($exec_string, '|'))
+	   or (stristr($exec_string, '&'))
+	   or (stristr($exec_string, '>'))
+	   or (stristr($exec_string, '<'))
+	   or (stristr($exec_string, '`'))
+	   or (stristr($exec_string, '$'))
+	   or (stristr($exec_string, '~'))
+	   or (stristr($exec_string, '?')))
+	{
+		die('SECURITY CHECK FAILED!' . "\n" . 'The execute string "' . htmlspecialchars($exec_string) . '" is a possible security risk!' . "\n" . 'Please check your whole server for security problems by hand!' . "\n");
+	}
 
-    //
-    // check if command is allowed here
-    //
+	//
+	// check if command is allowed here
+	//
 
-    $ok = false;
-    foreach($allowed_commands as $allowed_command)
-    {
-        if(strpos($exec_string, $allowed_command) == 0
-           && (strlen($exec_string) === ($allowed_command_pos = strlen($allowed_command)) || substr($exec_string, $allowed_command_pos, 1) === ' '))
-        {
-            $ok = true;
-        }
-    }
+	$ok = false;
+	foreach($allowed_commands as $allowed_command)
+	{
+		if(strpos($exec_string, $allowed_command) == 0
+		   && (strlen($exec_string) === ($allowed_command_pos = strlen($allowed_command)) || substr($exec_string, $allowed_command_pos, 1) === ' '))
+		{
+			$ok = true;
+		}
+	}
 
-    if(!$ok)
-    {
-        die('SECURITY CHECK FAILED!' . "\n" . 'Your command "' . htmlspecialchars($exec_string) . '" is not allowed!' . "\n" . 'Please check your whole server for security problems by hand!' . "\n");
-    }
+	if(!$ok)
+	{
+		die('SECURITY CHECK FAILED!' . "\n" . 'Your command "' . htmlspecialchars($exec_string) . '" is not allowed!' . "\n" . 'Please check your whole server for security problems by hand!' . "\n");
+	}
 
-    //
-    // execute the command and return output
-    //
-    // --- martin @ 08.08.2005 -------------------------------------------------------
-    // fixing usage of uninitialised variable
+	//
+	// execute the command and return output
+	//
+	// --- martin @ 08.08.2005 -------------------------------------------------------
+	// fixing usage of uninitialised variable
 
-    $return = '';
+	$return = '';
 
-    // -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------
 
-    exec($exec_string, $return);
-    return $return;
+	exec($exec_string, $return);
+	return $return;
 }
 
 /******************************************************
@@ -1030,81 +1030,81 @@ function updateCounters($returndebuginfo = false)
 	 * 1.1 : Added new_window and required_resources (flo)
 	 ******************************************************/function getNavigation($s, $userinfo)
 {
-    global $db, $lng;
-    $return = '';
+	global $db, $lng;
+	$return = '';
 
-    //
-    // query database
-    //
+	//
+	// query database
+	//
 
-    $query = 'SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape(AREA) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 'ORDER BY `order`, `id` ASC';
-    $result = $db->query($query);
+	$query = 'SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape(AREA) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 'ORDER BY `order`, `id` ASC';
+	$result = $db->query($query);
 
-    //
-    // presort in multidimensional array
-    //
+	//
+	// presort in multidimensional array
+	//
 
-    while($row = $db->fetch_array($result))
-    {
-        if($row['required_resources'] == ''
-           || $userinfo[$row['required_resources']] > 0
-           || $userinfo[$row['required_resources']] == '-1')
-        {
-            $row['parent_url'] = $row['url'];
-            $row['isparent'] = 1;
-            $nav[$row['parent_url']][] = _createNavigationEntry($s, $row);
-            $subQuery = 'SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape(AREA) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ' . 'ORDER BY `order`, `id` ASC';
-            $subResult = $db->query($subQuery);
+	while($row = $db->fetch_array($result))
+	{
+		if($row['required_resources'] == ''
+		   || $userinfo[$row['required_resources']] > 0
+		   || $userinfo[$row['required_resources']] == '-1')
+		{
+			$row['parent_url'] = $row['url'];
+			$row['isparent'] = 1;
+			$nav[$row['parent_url']][] = _createNavigationEntry($s, $row);
+			$subQuery = 'SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape(AREA) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ' . 'ORDER BY `order`, `id` ASC';
+			$subResult = $db->query($subQuery);
 
-            while($subRow = $db->fetch_array($subResult))
-            {
-                if($subRow['required_resources'] == ''
-                   || $userinfo[$subRow['required_resources']] > 0
-                   || $userinfo[$subRow['required_resources']] == '-1')
-                {
-                    $subRow['isparent'] = 0;
-                    $nav[$row['parent_url']][] = _createNavigationEntry($s, $subRow);
-                }
-            }
-        }
-    }
+			while($subRow = $db->fetch_array($subResult))
+			{
+				if($subRow['required_resources'] == ''
+				   || $userinfo[$subRow['required_resources']] > 0
+				   || $userinfo[$subRow['required_resources']] == '-1')
+				{
+					$subRow['isparent'] = 0;
+					$nav[$row['parent_url']][] = _createNavigationEntry($s, $subRow);
+				}
+			}
+		}
+	}
 
-    //
-    // generate output
-    //
+	//
+	// generate output
+	//
 
-    if((isset($nav))
-       && (sizeof($nav) > 0))
-    {
-        foreach($nav as $parent_url => $row)
-        {
-            $navigation_links = '';
-            foreach($row as $id => $navElem)
-            {
-                if($navElem['isparent'] == 1)
-                {
-                    $completeLink_ElementTitle = $navElem['completeLink'];
-                }
-                else
-                {
-                    // assign url
+	if((isset($nav))
+	   && (sizeof($nav) > 0))
+	{
+		foreach($nav as $parent_url => $row)
+		{
+			$navigation_links = '';
+			foreach($row as $id => $navElem)
+			{
+				if($navElem['isparent'] == 1)
+				{
+					$completeLink_ElementTitle = $navElem['completeLink'];
+				}
+				else
+				{
+					// assign url
 
-                    $completeLink = $navElem['completeLink'];
+					$completeLink = $navElem['completeLink'];
 
-                    // read template
+					// read template
 
-                    eval("\$navigation_links .= \"" . getTemplate("navigation_link", 1) . "\";");
-                }
-            }
+					eval("\$navigation_links .= \"" . getTemplate("navigation_link", 1) . "\";");
+				}
+			}
 
-            if($navigation_links != '')
-            {
-                eval("\$return .= \"" . getTemplate("navigation_element", 1) . "\";");
-            }
-        }
-    }
+			if($navigation_links != '')
+			{
+				eval("\$return .= \"" . getTemplate("navigation_element", 1) . "\";");
+			}
+		}
+	}
 
-    return $return;
+	return $return;
 }
 
 /**
@@ -1118,52 +1118,52 @@ function updateCounters($returndebuginfo = false)
 
 function _createNavigationEntry($s, $data)
 {
-    global $db, $lng;
+	global $db, $lng;
 
-    // get corect lang string
+	// get corect lang string
 
-    $lngArr = explode(';', $data['lang']);
-    $data['text'] = $lng;
-    foreach($lngArr as $lKey => $lValue)
-    {
-        $data['text'] = $data['text'][$lValue];
-    }
+	$lngArr = explode(';', $data['lang']);
+	$data['text'] = $lng;
+	foreach($lngArr as $lKey => $lValue)
+	{
+		$data['text'] = $data['text'][$lValue];
+	}
 
-    if(str_replace(' ', '', $data['url']) != ''
-       && !stristr($data['url'], 'nourl'))
-    {
-        // append sid only to local
+	if(str_replace(' ', '', $data['url']) != ''
+	   && !stristr($data['url'], 'nourl'))
+	{
+		// append sid only to local
 
-        if(!preg_match('/^https?\:\/\//', $data['url'])
-           && (isset($s) && $s != ''))
-        {
-            // generate sid with ? oder &
+		if(!preg_match('/^https?\:\/\//', $data['url'])
+		   && (isset($s) && $s != ''))
+		{
+			// generate sid with ? oder &
 
-            if(strpos($data['url'], '?') !== false)
-            {
-                $data['url'].= '&s=' . $s;
-            }
-            else
-            {
-                $data['url'].= '?s=' . $s;
-            }
-        }
+			if(strpos($data['url'], '?') !== false)
+			{
+				$data['url'].= '&s=' . $s;
+			}
+			else
+			{
+				$data['url'].= '?s=' . $s;
+			}
+		}
 
-        $target = '';
+		$target = '';
 
-        if($data['new_window'] == '1')
-        {
-            $target = ' target="_blank"';
-        }
+		if($data['new_window'] == '1')
+		{
+			$target = ' target="_blank"';
+		}
 
-        $data['completeLink'] = '<a href="' . htmlspecialchars($data['url']) . '"' . $target . ' class="menu">' . $data['text'] . '</a>';
-    }
-    else
-    {
-        $data['completeLink'] = $data['text'];
-    }
+		$data['completeLink'] = '<a href="' . htmlspecialchars($data['url']) . '"' . $target . ' class="menu">' . $data['text'] . '</a>';
+	}
+	else
+	{
+		$data['completeLink'] = $data['text'];
+	}
 
-    return $data;
+	return $data;
 }
 
 /**
@@ -1177,15 +1177,15 @@ function _createNavigationEntry($s, $data)
 
 function intval_ressource($the_value)
 {
-    $the_value = intval($the_value);
+	$the_value = intval($the_value);
 
-    if($the_value < 0
-       && $the_value != '-1')
-    {
-        $the_value*= -1;
-    }
+	if($the_value < 0
+	   && $the_value != '-1')
+	{
+		$the_value*= -1;
+	}
 
-    return $the_value;
+	return $the_value;
 }
 
 /**
@@ -1199,15 +1199,15 @@ function intval_ressource($the_value)
 
 function doubleval_ressource($the_value)
 {
-    $the_value = doubleval($the_value);
+	$the_value = doubleval($the_value);
 
-    if($the_value < 0
-       && $the_value != '-1')
-    {
-        $the_value*= -1;
-    }
+	if($the_value < 0
+	   && $the_value != '-1')
+	{
+		$the_value*= -1;
+	}
 
-    return $the_value;
+	return $the_value;
 }
 
 /**
@@ -1222,32 +1222,32 @@ function doubleval_ressource($the_value)
 
 function replace_variables($text, $vars)
 {
-    $pattern = "/\{([a-zA-Z0-9\-_]+)\}/";
+	$pattern = "/\{([a-zA-Z0-9\-_]+)\}/";
 
-    // --- martin @ 08.08.2005 -------------------------------------------------------
-    // fixing usage of uninitialised variable
+	// --- martin @ 08.08.2005 -------------------------------------------------------
+	// fixing usage of uninitialised variable
 
-    $matches = array();
+	$matches = array();
 
-    // -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------
 
-    if(count($vars) > 0
-       && preg_match_all($pattern, $text, $matches))
-    {
-        for ($i = 0;$i < count($matches[1]);$i++)
-        {
-            $current = $matches[1][$i];
+	if(count($vars) > 0
+	   && preg_match_all($pattern, $text, $matches))
+	{
+		for ($i = 0;$i < count($matches[1]);$i++)
+		{
+			$current = $matches[1][$i];
 
-            if(isset($vars[$current]))
-            {
-                $var = $vars[$current];
-                $text = str_replace("{" . $current . "}", $var, $text);
-            }
-        }
-    }
+			if(isset($vars[$current]))
+			{
+				$var = $vars[$current];
+				$text = str_replace("{" . $current . "}", $var, $text);
+			}
+		}
+	}
 
-    $text = str_replace('\n', "\n", $text);
-    return $text;
+	$text = str_replace('\n', "\n", $text);
+	return $text;
 }
 
 /**
@@ -1260,12 +1260,12 @@ function replace_variables($text, $vars)
 
 function html_entity_decode_complete($string)
 {
-    while($string != html_entity_decode($string))
-    {
-        $string = html_entity_decode($string);
-    }
+	while($string != html_entity_decode($string))
+	{
+		$string = html_entity_decode($string);
+	}
 
-    return $string;
+	return $string;
 }
 
 /**
@@ -1278,12 +1278,12 @@ function html_entity_decode_complete($string)
 
 function stripslashes_complete($string)
 {
-    while($string != stripslashes($string))
-    {
-        $string = stripslashes($string);
-    }
+	while($string != stripslashes($string))
+	{
+		$string = stripslashes($string);
+	}
 
-    return $string;
+	return $string;
 }
 
 /**
@@ -1305,36 +1305,36 @@ function stripslashes_complete($string)
 
 function findDirs($path, $uid, $gid, $_fileList = array())
 {
-    $list = array(
-        $path
-    );
-    $_fileList = array();
+	$list = array(
+		$path
+	);
+	$_fileList = array();
 
-    while(sizeof($list) > 0)
-    {
-        $path = array_pop($list);
-        $dh = @opendir($path);
+	while(sizeof($list) > 0)
+	{
+		$path = array_pop($list);
+		$dh = @opendir($path);
 
-        while(false !== ($file = @readdir($dh)))
-        {
-            if($file == '.'
-               && (fileowner($path . '/' . $file) == $uid || filegroup($path . '/' . $file) == $gid))
-            {
-                $_fileList[] = $path . '/';
-            }
+		while(false !== ($file = @readdir($dh)))
+		{
+			if($file == '.'
+			   && (fileowner($path . '/' . $file) == $uid || filegroup($path . '/' . $file) == $gid))
+			{
+				$_fileList[] = $path . '/';
+			}
 
-            if(is_dir($path . '/' . $file)
-               && $file != '..'
-               && $file != '.')
-            {
-                array_push($list, $path . '/' . $file);
-            }
-        }
+			if(is_dir($path . '/' . $file)
+			   && $file != '..'
+			   && $file != '.')
+			{
+				array_push($list, $path . '/' . $file);
+			}
+		}
 
-        @closedir($dh);
-    }
+		@closedir($dh);
+	}
 
-    return $_fileList;
+	return $_fileList;
 }
 
 /**
@@ -1352,41 +1352,41 @@ function findDirs($path, $uid, $gid, $_fileList = array())
 
 function makePathfield($path, $uid, $gid, $fieldType, $value = '')
 {
-    global $lng;
-    $value = str_replace($path, '', $value);
-    $field = '';
+	global $lng;
+	$value = str_replace($path, '', $value);
+	$field = '';
 
-    if($fieldType == 'Manual')
-    {
-        $field = '<input type="text" name="path" value="' . htmlspecialchars($value) . '" size="30" />';
-    }
-    elseif($fieldType == 'Dropdown')
-    {
-        $dirList = findDirs($path, $uid, $gid);
+	if($fieldType == 'Manual')
+	{
+		$field = '<input type="text" name="path" value="' . htmlspecialchars($value) . '" size="30" />';
+	}
+	elseif($fieldType == 'Dropdown')
+	{
+		$dirList = findDirs($path, $uid, $gid);
 
-        if(sizeof($dirList) > 0)
-        {
-            $field = '<select name="path">';
-            foreach($dirList as $key => $dir)
-            {
-                if(strpos($dir, $path) === 0)
-                {
-                    $dir = substr($dir, strlen($path));
-                }
+		if(sizeof($dirList) > 0)
+		{
+			$field = '<select name="path">';
+			foreach($dirList as $key => $dir)
+			{
+				if(strpos($dir, $path) === 0)
+				{
+					$dir = substr($dir, strlen($path));
+				}
 
-                $field.= makeoption($dir, $dir, $value);
-            }
+				$field.= makeoption($dir, $dir, $value);
+			}
 
-            $field.= '</select>';
-        }
-        else
-        {
-            $field = $lng['panel']['dirsmissing'];
-            $field.= '<input type="hidden" name="path" value="/" />';
-        }
-    }
+			$field.= '</select>';
+		}
+		else
+		{
+			$field = $lng['panel']['dirsmissing'];
+			$field.= '<input type="hidden" name="path" value="/" />';
+		}
+	}
 
-    return $field;
+	return $field;
 }
 
 /**
@@ -1400,97 +1400,97 @@ function makePathfield($path, $uid, $gid, $fieldType, $value = '')
 
 function getTables(&$db)
 {
-    // This variable is our return-value
+	// This variable is our return-value
 
-    $tables = array();
+	$tables = array();
 
-    // The fieldname in the associative array which we get by fetch_array()
+	// The fieldname in the associative array which we get by fetch_array()
 
-    $tablefieldname = 'Tables_in_' . $db->database;
+	$tablefieldname = 'Tables_in_' . $db->database;
 
-    // Query for a list of tables in the currently selected database
+	// Query for a list of tables in the currently selected database
 
-    $tables_result = $db->query('SHOW TABLES');
+	$tables_result = $db->query('SHOW TABLES');
 
-    while($tables_row = $db->fetch_array($tables_result))
-    {
-        // Extract tablename
+	while($tables_row = $db->fetch_array($tables_result))
+	{
+		// Extract tablename
 
-        $tablename = $tables_row[$tablefieldname];
+		$tablename = $tables_row[$tablefieldname];
 
-        // Create sub-array with key tablename
+		// Create sub-array with key tablename
 
-        $tables[$tablename] = array();
+		$tables[$tablename] = array();
 
-        // Query for a list of indexes of the currently selected table
+		// Query for a list of indexes of the currently selected table
 
-        $keys_result = $db->query('SHOW INDEX FROM ' . $tablename);
+		$keys_result = $db->query('SHOW INDEX FROM ' . $tablename);
 
-        while($keys_row = $db->fetch_array($keys_result))
-        {
-            // Extract keyname
+		while($keys_row = $db->fetch_array($keys_result))
+		{
+			// Extract keyname
 
-            $keyname = $keys_row['Key_name'];
+			$keyname = $keys_row['Key_name'];
 
-            // If there is aleady a key in our tablename-sub-array with has the same name as our key
-            // OR if the sequence is not one
-            // then we have more then index-columns for our keyname
+			// If there is aleady a key in our tablename-sub-array with has the same name as our key
+			// OR if the sequence is not one
+			// then we have more then index-columns for our keyname
 
-            if((isset($tables[$tablename][$keyname]) && $tables[$tablename][$keyname] != '')
-               || $keys_row['Seq_in_index'] != '1')
-            {
-                // If there is no keyname in the tablename-sub-array set ...
+			if((isset($tables[$tablename][$keyname]) && $tables[$tablename][$keyname] != '')
+			   || $keys_row['Seq_in_index'] != '1')
+			{
+				// If there is no keyname in the tablename-sub-array set ...
 
-                if(!isset($tables[$tablename][$keyname]))
-                {
-                    // ... then create one
+				if(!isset($tables[$tablename][$keyname]))
+				{
+					// ... then create one
 
-                    $tables[$tablename][$keyname] = array();
-                }
+					$tables[$tablename][$keyname] = array();
+				}
 
-                // If the keyname-sub-array isn't an array ...
+				// If the keyname-sub-array isn't an array ...
 
-                elseif (!is_array($tables[$tablename][$keyname]))
-                {
-                    // temporary move columname
+				elseif (!is_array($tables[$tablename][$keyname]))
+				{
+					// temporary move columname
 
-                    $tmpkeyvalue = $tables[$tablename][$keyname];
+					$tmpkeyvalue = $tables[$tablename][$keyname];
 
-                    // unset keyname-key
+					// unset keyname-key
 
-                    unset($tables[$tablename][$keyname]);
+					unset($tables[$tablename][$keyname]);
 
-                    // create new array for keyname-key
+					// create new array for keyname-key
 
-                    $tables[$tablename][$keyname] = array();
+					$tables[$tablename][$keyname] = array();
 
-                    // keyindex will be 1 by default, if seq is also 1 we'd better use 0 (this case shouldn't ever occur)
+					// keyindex will be 1 by default, if seq is also 1 we'd better use 0 (this case shouldn't ever occur)
 
-                    $keyindex = ($keys_row['Seq_in_index'] == '1') ? '0' : '1';
+					$keyindex = ($keys_row['Seq_in_index'] == '1') ? '0' : '1';
 
-                    // then move back our tmp columname from above
+					// then move back our tmp columname from above
 
-                    $tables[$tablename][$keyname][$keyindex] = $tmpkeyvalue;
+					$tables[$tablename][$keyname][$keyindex] = $tmpkeyvalue;
 
-                    // end unset the variable afterwards
+					// end unset the variable afterwards
 
-                    unset($tmpkeyvalue);
-                }
+					unset($tmpkeyvalue);
+				}
 
-                // set columname
+				// set columname
 
-                $tables[$tablename][$keyname][$keys_row['Seq_in_index']] = $keys_row['Column_name'];
-            }
-            else
-            {
-                // set columname
+				$tables[$tablename][$keyname][$keys_row['Seq_in_index']] = $keys_row['Column_name'];
+			}
+			else
+			{
+				// set columname
 
-                $tables[$tablename][$keyname] = $keys_row['Column_name'];
-            }
-        }
-    }
+				$tables[$tablename][$keyname] = $keys_row['Column_name'];
+			}
+		}
+	}
 
-    return $tables;
+	return $tables;
 }
 
 /**
@@ -1510,55 +1510,55 @@ function getTables(&$db)
 
 function mkDirWithCorrectOwnership($homeDir, $dirToCreate, $uid, $gid)
 {
-    $returncode = true;
+	$returncode = true;
 
-    if($homeDir != ''
-       && $dirToCreate != '')
-    {
-        $homeDir = makeCorrectDir($homeDir);
-        $dirToCreate = makeCorrectDir($dirToCreate);
+	if($homeDir != ''
+	   && $dirToCreate != '')
+	{
+		$homeDir = makeCorrectDir($homeDir);
+		$dirToCreate = makeCorrectDir($dirToCreate);
 
-        if(substr($dirToCreate, 0, strlen($homeDir)) == $homeDir)
-        {
-            $subdir = substr($dirToCreate, strlen($homeDir));
-        }
-        else
-        {
-            $subdir = $dirToCreate;
-        }
+		if(substr($dirToCreate, 0, strlen($homeDir)) == $homeDir)
+		{
+			$subdir = substr($dirToCreate, strlen($homeDir));
+		}
+		else
+		{
+			$subdir = $dirToCreate;
+		}
 
-        $subdir = makeCorrectDir($subdir);
-        $subdirlen = strlen($subdir);
-        $subdirs = array();
-        array_push($subdirs, $dirToCreate);
-        $offset = 0;
+		$subdir = makeCorrectDir($subdir);
+		$subdirlen = strlen($subdir);
+		$subdirs = array();
+		array_push($subdirs, $dirToCreate);
+		$offset = 0;
 
-        while($offset < $subdirlen)
-        {
-            $offset = strpos($subdir, '/', $offset);
-            $subdirelem = substr($subdir, 0, $offset);
-            $offset++;
-            array_push($subdirs, makeCorrectDir($homeDir . $subdirelem));
-        }
+		while($offset < $subdirlen)
+		{
+			$offset = strpos($subdir, '/', $offset);
+			$subdirelem = substr($subdir, 0, $offset);
+			$offset++;
+			array_push($subdirs, makeCorrectDir($homeDir . $subdirelem));
+		}
 
-        $subdirs = array_unique($subdirs);
-        sort($subdirs);
-        foreach($subdirs as $sdir)
-        {
-            if(!is_dir($sdir))
-            {
-                $sdir = makeCorrectDir($sdir);
-                safe_exec('mkdir -p ' . escapeshellarg($sdir));
-                safe_exec('chown -R ' . (int)$uid . ':' . (int)$gid . ' ' . escapeshellarg($sdir));
-            }
-        }
-    }
-    else
-    {
-        $returncode = false;
-    }
+		$subdirs = array_unique($subdirs);
+		sort($subdirs);
+		foreach($subdirs as $sdir)
+		{
+			if(!is_dir($sdir))
+			{
+				$sdir = makeCorrectDir($sdir);
+				safe_exec('mkdir -p ' . escapeshellarg($sdir));
+				safe_exec('chown -R ' . (int)$uid . ':' . (int)$gid . ' ' . escapeshellarg($sdir));
+			}
+		}
+	}
+	else
+	{
+		$returncode = false;
+	}
 
-    return $returncode;
+	return $returncode;
 }
 
 ?>

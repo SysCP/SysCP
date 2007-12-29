@@ -26,7 +26,7 @@ if(@php_sapi_name() != 'cli'
    && @php_sapi_name() != 'cgi'
    && @php_sapi_name() != 'cgi-fcgi')
 {
-    die('This script will only work in the shell.');
+	die('This script will only work in the shell.');
 }
 
 $cronscriptDebug = false;
@@ -43,13 +43,13 @@ $pathtophpfiles = '';
 
 if(substr($_SERVER['PHP_SELF'], 0, 1) != '/')
 {
-    $pathtophpfiles = $_SERVER['PWD'];
+	$pathtophpfiles = $_SERVER['PWD'];
 }
 
 $pathtophpfiles.= '/' . $_SERVER['PHP_SELF'];
 $pathtophpfiles = str_replace(array(
-    '/./',
-    '//'
+	'/./',
+	'//'
 ), '/', $pathtophpfiles);
 $pathtophpfiles = dirname(dirname($pathtophpfiles));
 
@@ -69,18 +69,18 @@ $lockDirHandle = opendir($lockdir);
 
 while($fName = readdir($lockDirHandle))
 {
-    if($lockFilename == substr($fName, 0, strlen($lockFilename))
-       && $lockfName != $fName)
-    {
-        // close the current lockfile
+	if($lockFilename == substr($fName, 0, strlen($lockFilename))
+	   && $lockfName != $fName)
+	{
+		// close the current lockfile
 
-        fclose($debugHandler);
+		fclose($debugHandler);
 
-        // ... and delete it
+		// ... and delete it
 
-        unlink($lockfile);
-        die('There is already a lockfile. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
-    }
+		unlink($lockfile);
+		die('There is already a lockfile. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
+	}
 }
 
 /**
@@ -107,13 +107,13 @@ $db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
 
 if($db->link_id == 0)
 {
-    /**
-     * Do not proceed further if no database connection could be established
-     */
+	/**
+	 * Do not proceed further if no database connection could be established
+	 */
 
-    fclose($debugHandler);
-    unlink($lockfile);
-    die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+	fclose($debugHandler);
+	unlink($lockfile);
+	die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 }
 
 fwrite($debugHandler, 'Database Connection established' . "\n");
@@ -123,7 +123,7 @@ $result = $db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FRO
 
 while($row = $db->fetch_array($result))
 {
-    $settings[$row['settinggroup']][$row['varname']] = $row['value'];
+	$settings[$row['settinggroup']][$row['varname']] = $row['value'];
 }
 
 unset($row);
@@ -133,13 +133,13 @@ fwrite($debugHandler, 'SysCP Settings has been loaded from the database' . "\n")
 if(!isset($settings['panel']['version'])
    || $settings['panel']['version'] != $version)
 {
-    /**
-     * Do not proceed further if the Database version is not the same as the script version
-     */
+	/**
+	 * Do not proceed further if the Database version is not the same as the script version
+	 */
 
-    fclose($debugHandler);
-    unlink($lockfile);
-    die('Version of File doesnt match Version of Database. Exiting...');
+	fclose($debugHandler);
+	unlink($lockfile);
+	die('Version of File doesnt match Version of Database. Exiting...');
 }
 
 fwrite($debugHandler, 'SysCP Version and Database Version are correct' . "\n");
@@ -164,29 +164,29 @@ $result = $db->query("SELECT `c`.`customerid`, `c`.`adminid`, `c`.`name`, `c`.`f
 
 while($row = $db->fetch_array($result))
 {
-    if((($row['traffic_used']*100)/$row['traffic']) >= 90)
-    {
-        $replace_arr = array(
-            'NAME' => $ow['name'],
-            'TRAFFICMAX' => $row['traffic'],
-            'TRAFFICUSED' => $row['traffic_used']
-        );
+	if((($row['traffic_used']*100)/$row['traffic']) >= 90)
+	{
+		$replace_arr = array(
+			'NAME' => $ow['name'],
+			'TRAFFICMAX' => $row['traffic'],
+			'TRAFFICUSED' => $row['traffic_used']
+		);
 
-        // Get mail templates from database; the ones from 'admin' are fetched for fallback
+		// Get mail templates from database; the ones from 'admin' are fetched for fallback
 
-        $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_subject\'');
-        $mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
-        $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
-        $mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
-        mail($row['firstname'] . ' ' . $row['name'] . ' <' . $row['email'] . '>', $mail_subject, $mail_body, 'From: ' . str_replace(array(
-            "\r",
-            "\n"
-        ), '', $row['adminname']) . ' <' . str_replace(array(
-            "\r",
-            "\n"
-        ), '', $row['adminemail']) . '>');
-        $db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `reportsent`=\'1\' ' . 'WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
-    }
+		$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_subject\'');
+		$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
+		$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
+		$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
+		mail($row['firstname'] . ' ' . $row['name'] . ' <' . $row['email'] . '>', $mail_subject, $mail_body, 'From: ' . str_replace(array(
+			"\r",
+			"\n"
+		), '', $row['adminname']) . ' <' . str_replace(array(
+			"\r",
+			"\n"
+		), '', $row['adminemail']) . '>');
+		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `reportsent`=\'1\' ' . 'WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
+	}
 }
 
 // Warn the admins at 90% traffic-usage
@@ -195,63 +195,63 @@ $result = $db->query("SELECT * FROM `" . TABLE_PANEL_ADMINS . "`;");
 
 while($row = $db->fetch_array($result))
 {
-    if((($row['traffic_used']*100)/$row['traffic']) >= 90)
-    {
-        $replace_arr = array(
-            'NAME' => $ow['name'],
-            'TRAFFICMAX' => $row['traffic'],
-            'TRAFFICUSED' => $row['traffic_used']
-        );
+	if((($row['traffic_used']*100)/$row['traffic']) >= 90)
+	{
+		$replace_arr = array(
+			'NAME' => $ow['name'],
+			'TRAFFICMAX' => $row['traffic'],
+			'TRAFFICUSED' => $row['traffic_used']
+		);
 
-        // Get mail templates from database; the ones from 'admin' are fetched for fallback
+		// Get mail templates from database; the ones from 'admin' are fetched for fallback
 
-        $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_subject\'');
-        $mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
-        $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
-        $mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
-        mail($row['name'] . ' <' . $row['email'] . '>', $mail_subject, $mail_body, 'From: ' . str_replace(array(
-            "\r",
-            "\n"
-        ), '', $row['name']) . ' <' . str_replace(array(
-            "\r",
-            "\n"
-        ), '', $row['email']) . '>');
-        $db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `reportsent`=\'1\' ' . 'WHERE `customerid`=\'' . (int)$row['adminid'] . '\'');
-    }
+		$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_subject\'');
+		$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
+		$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
+		$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
+		mail($row['name'] . ' <' . $row['email'] . '>', $mail_subject, $mail_body, 'From: ' . str_replace(array(
+			"\r",
+			"\n"
+		), '', $row['name']) . ' <' . str_replace(array(
+			"\r",
+			"\n"
+		), '', $row['email']) . '>');
+		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `reportsent`=\'1\' ' . 'WHERE `customerid`=\'' . (int)$row['adminid'] . '\'');
+	}
 
-    // Another month, let's build our report
+	// Another month, let's build our report
 
-    if(date('d') == '01')
-    {
-        $mail_subject = 'Trafficreport ' . date("m/y", $yesterday) . ' for ' . $row['name'];
-        $mail_body = 'Trafficreport ' . date("m/y", $yesterday) . ' for ' . $row['name'] . "\n";
-        $mail_body.= '---------------------------------------------' . "\n";
-        $mail_body.= 'Loginname       Traffic used (Percent) | Traffic available' . "\n";
-        $customers = $db->query("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `adminid` = " . $row['adminid'] . ";");
+	if(date('d') == '01')
+	{
+		$mail_subject = 'Trafficreport ' . date("m/y", $yesterday) . ' for ' . $row['name'];
+		$mail_body = 'Trafficreport ' . date("m/y", $yesterday) . ' for ' . $row['name'] . "\n";
+		$mail_body.= '---------------------------------------------' . "\n";
+		$mail_body.= 'Loginname       Traffic used (Percent) | Traffic available' . "\n";
+		$customers = $db->query("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `adminid` = " . $row['adminid'] . ";");
 
-        while($customer = $db->fetch_array($customers))
-        {
-            $mail_body.= sprintf('%-15s', $customer['loginname']) . ' ' . sprintf('%-12d', $customer['traffic_used']) . ' (' . sprintf('%00.3f%%', (($customer['traffic_used']*100)/$customer['traffic'])) . ')   ' . $customer['traffic'] . "\n";
-        }
+		while($customer = $db->fetch_array($customers))
+		{
+			$mail_body.= sprintf('%-15s', $customer['loginname']) . ' ' . sprintf('%-12d', $customer['traffic_used']) . ' (' . sprintf('%00.3f%%', (($customer['traffic_used']*100)/$customer['traffic'])) . ')   ' . $customer['traffic'] . "\n";
+		}
 
-        $mail_body.= '---------------------------------------------' . "\n";
-        $mail_body.= sprintf('%-15s', $row['loginname']) . ' ' . sprintf('%-12d', $row['traffic_used']) . ' (' . sprintf('%00.3f%%', (($row['traffic_used']*100)/$row['traffic'])) . ')   ' . $row['traffic'] . "\n";
-        mail($row['name'] . ' <' . $row['email'] . '>', $mail_subject, $mail_body, 'From: ' . str_replace(array(
-            "\r",
-            "\n"
-        ), '', $row['name']) . ' <' . str_replace(array(
-            "\r",
-            "\n"
-        ), '', $row['email']) . '>');
-    }
+		$mail_body.= '---------------------------------------------' . "\n";
+		$mail_body.= sprintf('%-15s', $row['loginname']) . ' ' . sprintf('%-12d', $row['traffic_used']) . ' (' . sprintf('%00.3f%%', (($row['traffic_used']*100)/$row['traffic'])) . ')   ' . $row['traffic'] . "\n";
+		mail($row['name'] . ' <' . $row['email'] . '>', $mail_subject, $mail_body, 'From: ' . str_replace(array(
+			"\r",
+			"\n"
+		), '', $row['name']) . ' <' . str_replace(array(
+			"\r",
+			"\n"
+		), '', $row['email']) . '>');
+	}
 }
 
 // Another month, reset the reportstatus
 
 if(date('d') == '01')
 {
-    $db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `reportsent` = \'0\';');
-    $db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `reportsent` = \'0\';');
+	$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `reportsent` = \'0\';');
+	$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `reportsent` = \'0\';');
 }
 
 $db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = UNIX_TIMESTAMP() ' . 'WHERE `settinggroup` = \'system\'  ' . '  AND `varname`      = \'last_traffic_report_run\' ');
@@ -266,7 +266,7 @@ fclose($debugHandler);
 
 if($keepLockFile === false)
 {
-    unlink($lockfile);
+	unlink($lockfile);
 }
 
 /**
