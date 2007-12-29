@@ -23,138 +23,12 @@
  * and the lockfile!
  */
 
-if(@php_sapi_name() != 'cli'
-   && @php_sapi_name() != 'cgi'
-   && @php_sapi_name() != 'cgi-fcgi')
-{
-	die('This script will only work in the shell.');
-}
-
-$cronscriptDebug = false;
-$lockdir = '/var/run/';
-$lockFilename = 'syscp_cron_tasks.lock-';
-$lockfName = $lockFilename . time();
-$lockfile = $lockdir . $lockfName;
-
-// guess the syscp installation path
-// normally you should not need to modify this script anymore, if your
-// syscp installation isn't in /var/www/syscp
-
-$pathtophpfiles = '';
-
-if(substr($_SERVER['PHP_SELF'], 0, 1) != '/')
-{
-	$pathtophpfiles = $_SERVER['PWD'];
-}
-
-$pathtophpfiles.= '/' . $_SERVER['PHP_SELF'];
-$pathtophpfiles = str_replace(array(
-	'/./',
-	'//'
-), '/', $pathtophpfiles);
-$pathtophpfiles = dirname(dirname($pathtophpfiles));
-
-// should the syscp installation guessing not work correctly,
-// uncomment the following line, and put your path in there!
-//$pathtophpfiles = '/var/www/syscp';
-// create and open the lockfile!
-
-$keepLockFile = false;
-$debugHandler = fopen($lockfile, 'w');
-fwrite($debugHandler, 'Setting Lockfile to ' . $lockfile . "\n");
-fwrite($debugHandler, 'Setting SysCP installation path to ' . $pathtophpfiles . "\n");
-
-// open the lockfile directory and scan for existing lockfiles
-
-$lockDirHandle = opendir($lockdir);
-
-while($fName = readdir($lockDirHandle))
-{
-	if($lockFilename == substr($fName, 0, strlen($lockFilename))
-	   && $lockfName != $fName)
-	{
-		// close the current lockfile
-
-		fclose($debugHandler);
-
-		// ... and delete it
-
-		unlink($lockfile);
-		die('There is already a lockfile. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
-	}
-}
-
-/**
- * Includes the Usersettings eg. MySQL-Username/Passwort etc.
- */
-
-require ($pathtophpfiles . '/lib/userdata.inc.php');
-fwrite($debugHandler, 'Userdatas included' . "\n");
-
-/**
- * Includes the MySQL-Tabledefinitions etc.
- */
-
-require ($pathtophpfiles . '/lib/tables.inc.php');
-fwrite($debugHandler, 'Table definitions included' . "\n");
-
-/**
- * Includes the MySQL-Connection-Class
- */
-
-require ($pathtophpfiles . '/lib/class_mysqldb.php');
-fwrite($debugHandler, 'Database Class has been loaded' . "\n");
-$db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
-
-if($db->link_id == 0)
-{
-	/**
-	 * Do not proceed further if no database connection could be established
-	 */
-
-	fclose($debugHandler);
-	unlink($lockfile);
-	die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
-}
-
-fwrite($debugHandler, 'Database Connection established' . "\n");
-unset($sql);
-unset($db->password);
-$result = $db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FROM `" . TABLE_PANEL_SETTINGS . "`");
-
-while($row = $db->fetch_array($result))
-{
-	$settings[$row['settinggroup']][$row['varname']] = $row['value'];
-}
-
-unset($row);
-unset($result);
-fwrite($debugHandler, 'SysCP Settings has been loaded from the database' . "\n");
-
-if(!isset($settings['panel']['version'])
-   || $settings['panel']['version'] != $version)
-{
-	/**
-	 * Do not proceed further if the Database version is not the same as the script version
-	 */
-
-	fclose($debugHandler);
-	unlink($lockfile);
-	die('Version of File doesnt match Version of Database. Exiting...');
-}
-
-fwrite($debugHandler, 'SysCP Version and Database Version are correct' . "\n");
-
-/**
- * Includes the Functions
- */
-
-require ($pathtophpfiles . '/lib/functions.php');
-fwrite($debugHandler, 'Functions has been included' . "\n");
-
 /**
  * END REDUNDANT CODE (CRONSCRIPT "HEADER")
  */
+
+$lockFilename = 'syscp_cron_tasks.lock-';
+include (dirname(__FILE__) . '/../lib/cron_init.php');
 
 /**
  * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
@@ -761,14 +635,7 @@ $db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = UNIX_TIMEST
  * STARTING CRONSCRIPT FOOTER
  */
 
-$db->close();
-fwrite($debugHandler, 'Closing database connection' . "\n");
-fclose($debugHandler);
-
-if($keepLockFile === false)
-{
-	unlink($lockfile);
-}
+include ($pathtophpfiles . '/lib/cron_shutdown.php');
 
 /**
  * END CRONSCRIPT FOOTER
