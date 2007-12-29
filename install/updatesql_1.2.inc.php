@@ -1131,4 +1131,16 @@ if($settings['panel']['version'] == '1.2.16-svn11')
     $settings['panel']['version'] = '1.2.16-svn12';
 }
 
+if($settings['panel']['version'] == '1.2.16-svn12')
+{
+    $db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'panel\', ' . '    `varname`      = \'sendalternativemail\', ' . '    `value`        = \'0\' ');
+
+    // set new version
+
+    $query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn13\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+    $query = sprintf($query, TABLE_PANEL_SETTINGS);
+    $db->query($query);
+    $settings['panel']['version'] = '1.2.16-svn13';
+}
+
 ?>
