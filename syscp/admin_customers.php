@@ -326,7 +326,12 @@ if($page == 'customers'
 					}
 
 					$guid = intval($settings['system']['lastguid'])+1;
-					$documentroot = $settings['system']['documentroot_prefix'] . $loginname;
+					$documentroot = makeCorrectDir($settings['system']['documentroot_prefix'] . '/' . $loginname);
+
+					if(file_exists($documentroot))
+					{
+						standard_error('documentrootexists', $documentroot);
+					}
 
 					if($createstdsubdomain != '1')
 					{

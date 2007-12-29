@@ -553,4 +553,8 @@ $lng['mails']['pop_success_alternative']['subject'] = 'E-Mail-Konto erfolgreich 
 $lng['admin']['templates']['pop_success_alternative'] = 'Willkommensmail f&uuml;r neue E-Mail Konten f&uuml;r die alternative Email Addresse';
 $lng['admin']['templates']['PASSWORD'] = 'Wird mit dem Passwort des neuen POP3/IMAP Kontos ersetzt.';
 
+// ADDED IN 1.2.16-svn13
+
+$lng['error']['documentrootexists'] = 'Es existiert noch ein Verzeichnis &quot;%s&quot; f&uuml;r diesen Kunden. Bitte dieses vorher l&ouml;schen.';
+
 ?>
