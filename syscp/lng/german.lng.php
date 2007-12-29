@@ -371,6 +371,10 @@ $lng['serversettings']['deactivatetime']['title'] = 'L&auml;nge der Deaktivierun
 $lng['serversettings']['deactivatetime']['description'] = 'Zeitraum (in sek.) f&uuml;r den der Account deaktiviert ist.';
 $lng['serversettings']['pathedit']['title'] = 'Pfad-Eingabemethode';
 $lng['serversettings']['pathedit']['description'] = 'Soll ein Pfad via Dropdown-Men&uuml; ausgew&auml;hlt oder manuell eingegeben werden k&ouml;nnen.';
+$lng['serversettings']['nameservers']['title'] = 'Nameserver';
+$lng['serversettings']['nameservers']['description'] = 'Eine durch Komma getrennte Liste mit den Hostnamen aller Nameserver. Der erste ist der prim&auml;re.';
+$lng['serversettings']['mxservers']['title'] = 'MX Server';
+$lng['serversettings']['mxservers']['description'] = 'Eine durch Komma getrenne Liste die ein Paar mit einer Nummer und den Hostnamen einen MX Servers, getrennt durch ein Leerzeichen, enthaelt (z.B. \'10 mx.example.com\').';
 
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13

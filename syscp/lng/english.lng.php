@@ -371,6 +371,10 @@ $lng['serversettings']['deactivatetime']['title'] = 'Deactivate Time';
 $lng['serversettings']['deactivatetime']['description'] = 'Time (sec.) an account gets deactivated after too many login tries.';
 $lng['serversettings']['pathedit']['title'] = 'Type of path input';
 $lng['serversettings']['pathedit']['description'] = 'Should a path be selected by a dropdown menu or by an input field?';
+$lng['serversettings']['nameservers']['title'] = 'Nameservers';
+$lng['serversettings']['nameservers']['description'] = 'A comma separated list containing the hostnames of all nameservers. The first one will be the primary one.';
+$lng['serversettings']['mxservers']['title'] = 'MX servers';
+$lng['serversettings']['mxservers']['description'] = 'A comma seperated list containing a pair of a number and a hostname separated by whitespace (e.g. \'10 mx.example.com\') containing the mx servers.';
 
 /**
  * CHANGED BETWEEN 1.2.12 and 1.2.13

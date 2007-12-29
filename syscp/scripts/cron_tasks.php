@@ -489,10 +489,11 @@ while($row = $db->fetch_array($result_tasks))
         fclose($diroptions_file_handler);
         safe_exec($settings['system']['apachereload_command']);
 
-        if(file_exists($settings['system']['apacheconf_directory'] . 'htpasswd/')
-           && is_dir($settings['system']['apacheconf_directory'] . 'htpasswd/'))
+		$htpasswd_dir = makeCorrectDir($settings['system']['apacheconf_directory'] . 'htpasswd/');
+        if(file_exists($htpasswd_dir)
+           && is_dir($htpasswd_dir))
         {
-            $htpasswd_file_dirhandle = opendir($settings['system']['apacheconf_directory'] . 'htpasswd/');
+            $htpasswd_file_dirhandle = opendir($htpasswd_dir);
 
             while(false !== ($htpasswd_filename = readdir($htpasswd_file_dirhandle)))
             {
@@ -513,33 +514,176 @@ while($row = $db->fetch_array($result_tasks))
     elseif ($row['type'] == '4')
     {
         fwrite($debugHandler, '  cron_tasks: Task4 started - Rebuilding syscp_bind.conf' . "\n");
-        $bindconf_file = '# ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf' . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n";
-        $result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`zonefile`, `c`.`loginname`, `c`.`guid` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) WHERE `d`.`isbinddomain` = '1' ORDER BY `d`.`domain` ASC");
-
-        while($domain = $db->fetch_array($result_domains))
+        
+        if(!file_exists($settings['system']['bindconf_directory'] . 'domains/'))
         {
-            fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+        	safe_exec('mkdir '.escapeshellarg(makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/')));
+        }
+        
+        $bindconf_file = '# ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf' . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n";
+		
+		$nameservers = (($settings['system']['nameservers'] != '') ? split(',',$settings['system']['nameservers']) : array());
+		for($i=0; $i<count($nameservers); $i++)
+		{
+			if(!preg_match('/\.$/',$nameservers[$i]))
+			{
+				$nameservers[$i] .= '.';
+			}
+			$array = array('hostname' => trim($nameservers[$i]), 'ip' => gethostbyname(trim($nameservers[$i])));
+			$nameservers[$i] = $array;
+		}
+		
+		$mxservers = (($settings['system']['mxservers'] != '') ? split(',',$settings['system']['mxservers']) : array());
+		for($i=0; $i<count($mxservers); $i++)
+		{
+			if(!preg_match('/\.$/',$mxservers[$i]))
+			{
+				$mxservers[$i] .= '.';
+			}
+		}
 
-            if($domain['zonefile'] == '')
-            {
-                $domain['zonefile'] = $settings['system']['binddefaultzone'];
+		$known_domain_zonefiles = array();
+		$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`iswildcarddomain`, `d`.`customerid`, `d`.`zonefile`, `d`.`bindserial`, `ip`.`ip`, `c`.`loginname`, `c`.`guid` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` AS `ip` ON(`d`.`ipandport`=`ip`.`id`) WHERE `d`.`isbinddomain` = '1' ORDER BY `d`.`domain` ASC");
+		while($domain = $db->fetch_array($result_domains))
+		{
+			fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");	
+
+			if($domain['zonefile'] == '')
+			{
+				$date = date('Ymd');
+				$bindserial = (preg_match('/^' . $date . '/',$domain['bindserial']) ? $domain['bindserial'] + 1 : $date . '00' );
+				$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `bindserial`=\'' . $bindserial . '\' WHERE `id`=\'' . $domain['id'] . '\'');
+
+				$zonefile = 	'$TTL 1W' . "\n";
+				if(count($nameservers) == 0)
+				{
+					$zonefile .= '@ IN SOA ns ' . str_replace('@','.',$settings['panel']['adminmail']) . ' (' . "\n";
+				}
+				else
+				{
+					$zonefile .= '@ IN SOA ' . $nameservers[0]['hostname'] . ' ' . str_replace('@','.',$settings['panel']['adminmail']) . ' (' . "\n";
+				}
+				$zonefile .=		'	' . $bindserial . ' ; serial' . "\n" .
+								'	8H ; refresh' . "\n" .
+								'	2H ; retry' . "\n" .
+								'	1W ; expiry' . "\n" .
+								'	11h) ; minimum' . "\n" .
+								'';
+				if(count($nameservers) == 0)
+				{
+					$zonefile .=		'		IN  NS	ns' . "\n" . 
+										'ns		IN	A	' . $domain['ip'] . "\n";
+				}
+				else 
+				{
+					foreach($nameservers as $nameserver)
+					{
+						$zonefile .= '		IN NS ' . $nameserver['hostname'] . "\n";
+					}
+				}
+				if(count($mxservers) == 0)
+				{
+					$zonefile .=		'		IN MX	10 mail' . "\n" . 
+										'mail	IN A	' . $domain['ip'] . "\n";
+				}
+				else
+				{
+					foreach($mxservers as $mxserver)
+					{
+						$zonefile .= '		IN MX	' . $mxserver . "\n";
+					}
+				}
+
+				$nssubdomains = $db->query('SELECT `domain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `isbinddomain`=\'1\' AND `domain` LIKE \'%.' . $domain['domain'] . '\'');
+				while($nssubdomain = $db->fetch_array($nssubdomains))
+				{
+					if(preg_match('/^[^\.]+\.' . $domain['domain'] . '/',$nssubdomain['domain']))
+					{
+						$nssubdomain = str_replace('.' . $domain['domain'],'',$nssubdomain['domain']);
+
+						if(count($nameservers) == 0)
+						{
+							$zonefile .=		$nssubdomain . '		IN  NS	ns.' . $nssubdomain . "\n"; 
+//												'ns		IN	A	' . $domain['ip'] . "\n";
+						}
+						else 
+						{
+							foreach($nameservers as $nameserver)
+							{
+								$zonefile .= $nssubdomain . '		IN NS ' . $nameserver['hostname'] . "\n";
+							}
+						}
+					}
+				}
+
+				$zonefile .= 	'		IN  A ' . $domain['ip'] . "\n" .
+								'www	IN  A ' . $domain['ip'] . "\n";
+				if($domain['iswildcarddomain'] == '1')
+				{
+					$zonefile .= 	'*		IN  A ' . $domain['ip'] . "\n";
+				}
+
+				$subdomains = $db->query('SELECT `d`.`domain`, `ip`.`ip` AS `ip` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_IPSANDPORTS . '` `ip` WHERE `parentdomainid`=\'' . $domain['id'] . '\' AND `d`.`ipandport`=`ip`.`id`');
+
+				while($subdomain = $db->fetch_array($subdomains))
+				{
+					$zonefile .= str_replace('.' . $domain['domain'],'',$subdomain['domain']) . '	IN A	' . $subdomain['ip'] . "\n";
+				}
+
+				$domain['zonefile'] = 'domains/' . $domain['domain'] . '.zone';
+				$zonefile_name = makeCorrectFile($settings['system']['bindconf_directory'] . '/domains/' . $domain['domain'] . '.zone');
+				$known_domain_zonefiles[] = basename( $zonefile_name );
+
+				$zonefile_handler = fopen($zonefile_name,'w');
+				fwrite($zonefile_handler,$zonefile);
+				fclose($zonefile_handler);
+				fwrite($debugHandler, '  cron_tasks: Task4 - `' . $zonefile_name . '` zone written' . "\n");
             }
 
-            $bindconf_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
-            $bindconf_file.= 'zone "' . $domain['domain'] . '" in {' . "\n";
-            $bindconf_file.= '	type master;' . "\n";
-            $bindconf_file.= '	file "' . $settings['system']['bindconf_directory'] . $domain['zonefile'] . '";' . "\n";
-            $bindconf_file.= '	allow-query { any; };' . "\n";
-            $bindconf_file.= '};' . "\n";
-            $bindconf_file.= "\n";
-        }
+			$bindconf_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
+			$bindconf_file.= 'zone "' . $domain['domain'] . '" in {' . "\n";
+			$bindconf_file.= '	type master;' . "\n";
+			$bindconf_file.= '	file "' . $settings['system']['bindconf_directory'] . $domain['zonefile'] . '";' . "\n";
+			$bindconf_file.= '	allow-query { any; };' . "\n";
+			if(count($nameservers)>1)
+			{
+				$bindconf_file .= '	allow-transfer {' . "\n";
+				for($i=1;$i<count($nameservers); $i++)
+				{
+					$bindconf_file .= '		'  . $nameservers[$i]['ip'] . ';' . "\n";
+				}
+				$bindconf_file .= '	}' . "\n";
+			}
+			$bindconf_file.= '};' . "\n";
+			$bindconf_file.= "\n";
 
-        $bindconf_file_handler = fopen($settings['system']['bindconf_directory'] . 'syscp_bind.conf', 'w');
-        fwrite($bindconf_file_handler, $bindconf_file);
-        fclose($bindconf_file_handler);
-        fwrite($debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
+			$bindconf_file_handler = fopen(makeCorrectFile($settings['system']['bindconf_directory'] . '/syscp_bind.conf'), 'w');
+			fwrite($bindconf_file_handler, $bindconf_file);
+			fclose($bindconf_file_handler);
+			fwrite($debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
+		}
+		
         safe_exec($settings['system']['bindreload_command']);
         fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
+
+		$domains_dir = makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/');
+        if(file_exists($domains_dir)
+           && is_dir($domains_dir))
+        {
+            $domain_file_dirhandle = opendir($domains_dir);
+
+            while(false !== ($domain_filename = readdir($domain_file_dirhandle)))
+            {
+                if($domain_filename != '.'
+                   && $domain_filename != '..'
+                   && !in_array($domain_filename, $known_domain_zonefiles)
+                   && file_exists($domains_dir . $domain_filename))
+                {
+					fwrite($debugHandler, '  cron_tasks: Task4 - unlinking ' . $domain_filename . "\n");
+                    unlink($domains_dir . $domain_filename);
+                }
+            }
+        }
     }
 
     /**

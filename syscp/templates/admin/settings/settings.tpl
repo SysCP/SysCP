@@ -178,8 +178,12 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_bindreload_command" value="{$settings['system']['bindreload_command']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['binddefaultzone']['title']}:</b><br />{$lng['serversettings']['binddefaultzone']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_binddefaultzone" value="{$settings['system']['binddefaultzone']}" /></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['nameservers']['title']}:</b><br />{$lng['serversettings']['nameservers']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_nameservers" value="{$settings['system']['nameservers']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['mxservers']['title']}:</b><br />{$lng['serversettings']['mxservers']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mxservers" value="{$settings['system']['mxservers']}" /></td>
 			</tr>
 		</table>
 	</form>
