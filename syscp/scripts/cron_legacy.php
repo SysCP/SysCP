@@ -28,7 +28,7 @@ if(@php_sapi_name() != 'cli'
    && @php_sapi_name() != 'cgi'
    && @php_sapi_name() != 'cgi-fcgi')
 {
-    die('This script will only work in the shell.');
+	die('This script will only work in the shell.');
 }
 
 $cronscriptDebug = false;
@@ -45,13 +45,13 @@ $pathtophpfiles = '';
 
 if(substr($_SERVER['PHP_SELF'], 0, 1) != '/')
 {
-    $pathtophpfiles = $_SERVER['PWD'];
+	$pathtophpfiles = $_SERVER['PWD'];
 }
 
 $pathtophpfiles.= '/' . $_SERVER['PHP_SELF'];
 $pathtophpfiles = str_replace(array(
-    '/./',
-    '//'
+	'/./',
+	'//'
 ), '/', $pathtophpfiles);
 $pathtophpfiles = dirname(dirname($pathtophpfiles));
 
@@ -71,18 +71,18 @@ $lockDirHandle = opendir($lockdir);
 
 while($fName = readdir($lockDirHandle))
 {
-    if($lockFilename == substr($fName, 0, strlen($lockFilename))
-       && $lockfName != $fName)
-    {
-        // close the current lockfile
+	if($lockFilename == substr($fName, 0, strlen($lockFilename))
+	   && $lockfName != $fName)
+	{
+		// close the current lockfile
 
-        fclose($debugHandler);
+		fclose($debugHandler);
 
-        // ... and delete it
+		// ... and delete it
 
-        unlink($lockfile);
-        die('There is already a lockfile. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
-    }
+		unlink($lockfile);
+		die('There is already a lockfile. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
+	}
 }
 
 /**
@@ -111,13 +111,13 @@ $db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 if($db->link_id == 0
    || $db_root->link_id == 0)
 {
-    /**
-     * Do not proceed further if no database connection could be established (either normal or root)
-     */
+	/**
+	 * Do not proceed further if no database connection could be established (either normal or root)
+	 */
 
-    fclose($debugHandler);
-    unlink($lockfile);
-    die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+	fclose($debugHandler);
+	unlink($lockfile);
+	die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 }
 
 fwrite($debugHandler, 'Database Connection established' . "\n");
@@ -128,7 +128,7 @@ $result = $db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FRO
 
 while($row = $db->fetch_array($result))
 {
-    $settings[$row['settinggroup']][$row['varname']] = $row['value'];
+	$settings[$row['settinggroup']][$row['varname']] = $row['value'];
 }
 
 unset($row);
@@ -138,13 +138,13 @@ fwrite($debugHandler, 'SysCP Settings has been loaded from the database' . "\n")
 if(!isset($settings['panel']['version'])
    || $settings['panel']['version'] != $version)
 {
-    /**
-     * Do not proceed further if the Database version is not the same as the script version
-     */
+	/**
+	 * Do not proceed further if the Database version is not the same as the script version
+	 */
 
-    fclose($debugHandler);
-    unlink($lockfile);
-    die('Version of File doesnt match Version of Database. Exiting...');
+	fclose($debugHandler);
+	unlink($lockfile);
+	die('Version of File doesnt match Version of Database. Exiting...');
 }
 
 fwrite($debugHandler, 'SysCP Version and Database Version are correct' . "\n");
@@ -169,7 +169,7 @@ $tables = getTables($db);
 if(!isset($tables[TABLE_PANEL_CRONSCRIPT])
    || !is_array($tables[TABLE_PANEL_CRONSCRIPT]))
 {
-    $db->query('CREATE TABLE `' . TABLE_PANEL_CRONSCRIPT . '` ( ' . '  `id` int(11) unsigned NOT NULL auto_increment, ' . '  `file` varchar(255) NOT NULL default \'\', ' . '  PRIMARY KEY  (`id`) ' . ') TYPE=MyISAM ; ');
+	$db->query('CREATE TABLE `' . TABLE_PANEL_CRONSCRIPT . '` ( ' . '  `id` int(11) unsigned NOT NULL auto_increment, ' . '  `file` varchar(255) NOT NULL default \'\', ' . '  PRIMARY KEY  (`id`) ' . ') TYPE=MyISAM ; ');
 }
 
 /**
@@ -181,20 +181,20 @@ $cronFileIncludeResult = $db->query($query);
 
 while($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
 {
-    $cronFileIncludeFullPath = makeSecurePath($pathtophpfiles . '/scripts/' . $cronFileIncludeRow['file']);
+	$cronFileIncludeFullPath = makeSecurePath($pathtophpfiles . '/scripts/' . $cronFileIncludeRow['file']);
 
-    if(fileowner($cronFileIncludeFullPath) == fileowner($pathtophpfiles . '/scripts/' . $filename)
-       && filegroup($cronFileIncludeFullPath) == filegroup($pathtophpfiles . '/scripts/' . $filename))
-    {
-        fwrite($debugHandler, 'Processing ...' . $cronFileIncludeFullPath . "\n");
-        include_once $cronFileIncludeFullPath;
-        fwrite($debugHandler, 'Processing done!' . "\n");
-    }
-    else
-    {
-        fwrite($debugHandler, 'WARNING! uid and/or gid of "' . $cronFileIncludeFullPath . '" and "' . $pathtophpfiles . '/scripts/' . $filename . '" don\'t match! Execution aborted!' . "\n");
-        $keepLockFile = true;
-    }
+	if(fileowner($cronFileIncludeFullPath) == fileowner($pathtophpfiles . '/scripts/' . $filename)
+	   && filegroup($cronFileIncludeFullPath) == filegroup($pathtophpfiles . '/scripts/' . $filename))
+	{
+		fwrite($debugHandler, 'Processing ...' . $cronFileIncludeFullPath . "\n");
+		include_once $cronFileIncludeFullPath;
+		fwrite($debugHandler, 'Processing done!' . "\n");
+	}
+	else
+	{
+		fwrite($debugHandler, 'WARNING! uid and/or gid of "' . $cronFileIncludeFullPath . '" and "' . $pathtophpfiles . '/scripts/' . $filename . '" don\'t match! Execution aborted!' . "\n");
+		$keepLockFile = true;
+	}
 }
 
 /**
@@ -208,7 +208,7 @@ fclose($debugHandler);
 
 if($keepLockFile === false)
 {
-    unlink($lockfile);
+	unlink($lockfile);
 }
 
 /**

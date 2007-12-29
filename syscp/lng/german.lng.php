@@ -540,6 +540,7 @@ $lng['serversettings']['ftpdomain']['description'] = 'K&ouml;nnen Kunden FTP-Acc
 $lng['panel']['back'] = 'Zur&uuml;ck';
 
 // ADDED IN 1.2.16-svn12
+
 $lng['serversettings']['mod_log_sql']['title'] = 'Logs in Datenbank zwischenspeichern';
 $lng['serversettings']['mod_log_sql']['description'] = '<a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> benutzen um die Webzugriffe tempor&auml;r zu speichern<br /><b>Dies ben&ouml;tigt eine spezielle Apache-Konfiguration</b>';
 $lng['serversettings']['mod_fcgid']['title'] = 'PHP &uuml;ber mod_fcgid/suexec einbinden';
