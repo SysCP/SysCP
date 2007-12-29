@@ -554,4 +554,8 @@ $lng['mails']['pop_success_alternative']['subject'] = 'Mail account set up succe
 $lng['admin']['templates']['pop_success_alternative'] = 'Welcome mail for new email accounts sent to alternative address';
 $lng['admin']['templates']['EMAIL_PASSWORD'] = 'Replaced with the POP3/IMAP account password.';
 
+// ADDED IN 1.2.16-svn13
+
+$lng['error']['documentrootexists'] = 'The directory &quot;%s&quot; already exists for this customer. Please remove this before adding the customer again.';
+
 ?>
