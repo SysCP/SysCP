@@ -369,6 +369,7 @@ elseif($page == 'accounts')
                     $email_full = $result['email_full'];
                     $username = $idna_convert->decode($email_full);
                     $password = validate($_POST['email_password'], 'password');
+                    $alternative_email = $idna_convert->encode( validate( $_POST['alternative_email'], 'alternative_email' ) );
 
                     if($email_full == '')
                     {
@@ -377,7 +378,7 @@ elseif($page == 'accounts')
                             'emailadd'
                         ));
                     }
-                    elseif($password == '')
+                    elseif($password == '' && !($settings['panel']['sendalternativemail'] == 1 && validateEmail($alternative_email)))
                     {
                         standard_error(array(
                             'stringisempty',
@@ -386,6 +387,10 @@ elseif($page == 'accounts')
                     }
                     else
                     {
+                        if($password == '')
+                        {
+                            $password = substr( md5( uniqid( microtime(), 1 ) ), 12, 6 );
+                        }
                         $db->query("INSERT INTO `" . TABLE_MAIL_USERS . "` (`customerid`, `email`, `username`, " . ($settings['system']['mailpwcleartext'] == '1' ? '`password`, ' : '') . " `password_enc`, `homedir`, `maildir`, `uid`, `gid`, `domainid`, `postfix`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($email_full) . "', '" . $db->escape($username) . "', " . ($settings['system']['mailpwcleartext'] == '1' ? "'" . $db->escape($password) . "'," : '') . " ENCRYPT('" . $db->escape($password) . "'), '" . $db->escape($settings['system']['vmail_homedir']) . "', '" . $db->escape($userinfo['loginname'] . '/' . $email_full . '/') . "', '" . (int)$settings['system']['vmail_uid'] . "', '" . (int)$settings['system']['vmail_gid'] . "', '" . (int)$result['domainid'] . "', 'y')");
                         $popaccountid = $db->insert_id();
                         $result['destination'].= ' ' . $email_full;
@@ -393,7 +398,8 @@ elseif($page == 'accounts')
                         $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_accounts_used`=`email_accounts_used`+1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
                         $replace_arr = array(
                             'EMAIL' => $email_full,
-                            'USERNAME' => $username
+                            'USERNAME' => $username,
+                            'PASSWORD' => $password
                         );
                         $admin = $db->query_first('SELECT `name`, `email` FROM `' . TABLE_PANEL_ADMINS . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\'');
                         $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($userinfo['def_language']) . '\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_subject\'');
@@ -401,6 +407,14 @@ elseif($page == 'accounts')
                         $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($userinfo['def_language']) . '\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_mailbody\'');
                         $mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['pop_success']['mailbody']), $replace_arr));
                         mail($email_full,$mail_subject,$mail_body,'From: '.str_replace(array("\r", "\n"), '', $admin['name'].' <'.$admin['email']).'>');
+						if(validateEmail($alternative_email) && $settings['panel']['sendalternativemail'] == 1)
+                        {
+                            $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\'' . $db->escape($userinfo['def_language']) . '\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_alternative_subject\'');
+                            $mail_subject = replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['pop_success_alternative']['subject']), $replace_arr);
+                            $result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\''.(int)$userinfo['adminid'].'\' AND `language`=\'' . $db->escape($userinfo['def_language']) . '\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_alternative_mailbody\'');
+                            $mail_body = replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['pop_success_alternative']['mailbody']), $replace_arr);
+                            mail($alternative_email, $mail_subject, $mail_body, 'From: ' . str_replace(array("\r", "\n"), '', $admin['name'] . ' <' . $admin['email']) . '>');
+                        }
                         redirectTo($filename, Array(
                             'page' => 'emails',
                             'action' => 'edit',

@@ -545,5 +545,12 @@ $lng['serversettings']['mod_log_sql']['title'] = 'Temporary save logs in the dat
 $lng['serversettings']['mod_log_sql']['description'] = 'Use <a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> to save webrequests temporarily<br /><b>This needs a special apache-configuration!</b>';
 $lng['serversettings']['mod_fcgid']['title'] = 'Include PHP via mod_fcgid/suexec';
 $lng['serversettings']['mod_fcgid']['description'] = 'Use mod_fcgid/suexec/libnss_mysql to run PHP with the corresponding useraccount.<br/><b>This needs a special apache-configuration!</b>';
+$lng['serversettings']['sendalternativemail']['title'] = 'Use alternative email-address';
+$lng['serversettings']['sendalternativemail']['description'] = 'Send the password-email to a different address during email-account-creation';
+$lng['emails']['alternative_emailaddress'] = 'Alternative e-mail-address';
+$lng['mails']['pop_success_alternative']['mailbody'] = 'Hello,\n\nyour Mail account {EMAIL}\nwas set up successfully.\nYour password is {PASSWORD}.\n\nThis is an automatically created\ne-mail, please do not answer!\n\nYours sincerely, the SysCP-Team';
+$lng['mails']['pop_success_alternative']['subject'] = 'Mail account set up successfully';
+$lng['admin']['templates']['pop_success_alternative'] = 'Welcome mail for new email accounts sent to alternative address';
+$lng['admin']['templates']['EMAIL_PASSWORD'] = 'Replaced with the POP3/IMAP account password.';
 
 ?>
