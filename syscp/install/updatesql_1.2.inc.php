@@ -1109,10 +1109,26 @@ if($settings['panel']['version'] == '1.2.16-svn10')
     $db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'system\', \'mxservers\', \'\')');
     $db->query('DELETE FROM `' . TABLE_PANEL_SETTINGS . '` WHERE `settinggroup`=\'system\' AND `varname`=\'binddefaultzone\'');
 
+    // set new version
+
     $query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn11\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
     $query = sprintf($query, TABLE_PANEL_SETTINGS);
     $db->query($query);
     $settings['panel']['version'] = '1.2.16-svn11';
+}
+
+if($settings['panel']['version'] == '1.2.16-svn11')
+{
+    $db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `phpenabled` TINYINT( 1 ) unsigned NOT NULL DEFAULT '1' AFTER `deactivated`");
+    $db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'mod_log_sql\', ' . '    `value`        = \'0\' ');
+    $db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'mod_fcgid\', ' . '    `value`        = \'0\' ');
+
+    // set new version
+
+    $query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn12\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+    $query = sprintf($query, TABLE_PANEL_SETTINGS);
+    $db->query($query);
+    $settings['panel']['version'] = '1.2.16-svn12';
 }
 
 ?>

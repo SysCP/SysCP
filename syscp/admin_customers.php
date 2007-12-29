@@ -59,7 +59,8 @@ if($page == 'customers'
             'c.email_accounts_used' => $lng['customer']['accounts'] . ' (' . $lng['panel']['used'] . ')',
             'c.email_forwarders' => $lng['customer']['forwarders'],
             'c.email_forwarders_used' => $lng['customer']['forwarders'] . ' (' . $lng['panel']['used'] . ')',
-            'c.deactivated' => $lng['admin']['deactivated']
+            'c.deactivated' => $lng['admin']['deactivated'],
+            'c.phpenabled' => $lng['admin']['phpenabled']
         );
         $paging = new paging($userinfo, $db, TABLE_PANEL_CUSTOMERS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
         $customers = '';
@@ -236,6 +237,7 @@ if($page == 'customers'
                 $createstdsubdomain = intval($_POST['createstdsubdomain']);
                 $password = validate($_POST['customer_password'], 'password');
                 $sendpassword = intval($_POST['sendpassword']);
+                $phpenabled = intval($_POST['phpenabled']);
                 $diskspace = $diskspace*1024;
                 $traffic = $traffic*1024*1024;
 
@@ -331,12 +333,17 @@ if($page == 'customers'
                         $createstdsubdomain = '0';
                     }
 
+                    if($phpenabled != '0')
+                    {
+                        $phpenabled = '1';
+                    }
+
                     if($password == '')
                     {
                         $password = substr(md5(uniqid(microtime(), 1)), 12, 6);
                     }
 
-                    $result = $db->query("INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` " . "(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `standardsubdomain`) " . " VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "', '" . $db->escape($customernumber) . "','" . $db->escape($def_language) . "', '" . $db->escape($documentroot) . "', '" . $db->escape($guid) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($mysqls) . "', '0')");
+                    $result = $db->query("INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` " . "(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `standardsubdomain`, `phpenabled`) " . " VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "', '" . $db->escape($customernumber) . "','" . $db->escape($def_language) . "', '" . $db->escape($documentroot) . "', '" . $db->escape($guid) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($mysqls) . "', '0', '" . $db->escape($phpenabled) . "')");
                     $customerid = $db->insert_id();
                     $admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` + 1";
 
@@ -448,6 +455,7 @@ if($page == 'customers'
 
                 $createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', '1');
                 $sendpassword = makeyesno('sendpassword', '1', '0', '1');
+                $phpenabled = makeyesno('phpenabled', '1', '0', '1');
                 eval("echo \"" . getTemplate("customers/customers_add") . "\";");
             }
         }
@@ -484,6 +492,7 @@ if($page == 'customers'
                 $mysqls = intval_ressource($_POST['mysqls']);
                 $createstdsubdomain = intval($_POST['createstdsubdomain']);
                 $deactivated = intval($_POST['deactivated']);
+                $phpenabled = intval($_POST['phpenabled']);
                 $diskspace = $diskspace*1024;
                 $traffic = $traffic*1024*1024;
 
@@ -571,6 +580,11 @@ if($page == 'customers'
                         $deactivated = '0';
                     }
 
+                    if($phpenabled != '0')
+                    {
+                        $phpenabled = '1';
+                    }
+
                     if($deactivated != $result['deactivated'])
                     {
                         $db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `postfix`='" . (($deactivated) ? 'N' : 'Y') . "' WHERE `customerid`='" . (int)$id . "'");
@@ -579,7 +593,7 @@ if($page == 'customers'
                         inserttask('1');
                     }
 
-                    $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . (int)$customernumber . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `customerid`='" . (int)$id . "'");
+                    $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . (int)$customernumber . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "' WHERE `customerid`='" . (int)$id . "'");
                     $admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` ";
 
                     if($mysqls != '-1'
@@ -715,6 +729,7 @@ if($page == 'customers'
                 $result['diskspace'] = round($result['diskspace']/1024, 2);
                 $result['email'] = $idna_convert->decode($result['email']);
                 $createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', (($result['standardsubdomain'] != '0') ? '1' : '0'));
+                $phpenabled = makeyesno('phpenabled', '1', '0', $result['phpenabled']);
                 $deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
                 $result = htmlentities_array($result);
                 eval("echo \"" . getTemplate("customers/customers_edit") . "\";");

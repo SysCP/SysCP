@@ -960,6 +960,7 @@ function updateCounters($returndebuginfo = false)
         'cp',
         'du',
         'chmod',
+        'chattr',
         $settings['system']['apachereload_command'],
         $settings['system']['bindreload_command']
     );

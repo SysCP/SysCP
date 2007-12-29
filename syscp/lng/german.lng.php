@@ -296,6 +296,7 @@ $lng['admin']['serversettings'] = 'Einstellungen';
 $lng['admin']['rebuildconf'] = 'Configs neuschreiben';
 $lng['admin']['stdsubdomain'] = 'Standardsubdomain';
 $lng['admin']['stdsubdomain_add'] = 'Standardsubdomain anlegen';
+$lng['admin']['phpenabled'] = 'PHP verf&uuml;gbar';
 $lng['admin']['deactivated'] = 'Gesperrt';
 $lng['admin']['deactivated_user'] = 'Benutzer sperren';
 $lng['admin']['sendpassword'] = 'Passwort zusenden';
@@ -537,5 +538,11 @@ $lng['admin']['trafficlastrun'] = 'Letzte Trafficberechnung';
 $lng['serversettings']['ftpdomain']['title'] = 'FTP-Accounts @domain';
 $lng['serversettings']['ftpdomain']['description'] = 'K&ouml;nnen Kunden FTP-Accounts user@customerdomain anlegen?';
 $lng['panel']['back'] = 'Zur&uuml;ck';
+
+// ADDED IN 1.2.16-svn12
+$lng['serversettings']['mod_log_sql']['title'] = 'Logs in Datenbank zwischenspeichern';
+$lng['serversettings']['mod_log_sql']['description'] = '<a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> benutzen um die Webzugriffe tempor&auml;r zu speichern<br /><b>Dies ben&ouml;tigt eine spezielle Apache-Konfiguration</b>';
+$lng['serversettings']['mod_fcgid']['title'] = 'PHP &uuml;ber mod_fcgid/suexec einbinden';
+$lng['serversettings']['mod_fcgid']['description'] = 'mod_fcgid/suexec/libnss_mysql benutzen um PHP unter dem jeweiligen Useraccount laufen zu lassen<br /><b>Dies ben&ouml;tigt eine spezielle Apache-Konfiguration</b>';
 
 ?>

@@ -201,6 +201,7 @@ CREATE TABLE `panel_customers` (
   `ftp_lastaccountnumber` int(11) NOT NULL default '0',
   `mysql_lastaccountnumber` int(11) NOT NULL default '0',
   `deactivated` tinyint(1) NOT NULL default '0',
+  `phpenabled` tinyint(1) NOT NULL default '1',
   `lastlogin_succ` int(11) unsigned NOT NULL default '0',
   `lastlogin_fail` int(11) unsigned NOT NULL default '0',
   `loginfail_count` int(11) unsigned NOT NULL default '0',
@@ -428,6 +429,8 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (41, 'customer', 'ftpatdomain', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (42, 'system', 'nameservers', '');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (43, 'system', 'mxservers', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (44, 'system', 'mod_log_sql', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (45, 'system', 'mod_fcgid', '0');
 
 # --------------------------------------------------------
 

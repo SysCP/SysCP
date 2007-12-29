@@ -88,6 +88,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="mysqls" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name">{$lng['admin']['phpenabled']}?</td>
+				<td class="main_field_display" nowrap="nowrap">$phpenabled</td>
+			</tr>
+			<tr>
 				<td class="main_field_name">{$lng['admin']['stdsubdomain_add']}?</td>
 				<td class="main_field_display" nowrap="nowrap">$createstdsubdomain</td>
 			</tr>
