@@ -44,6 +44,12 @@ if($page == 'email')
             'pop_success',
             'trafficninetypercent',
         );
+
+        if($settings['panel']['sendalternativemail'] == 1)
+        {
+            $available_templates[] = 'pop_success_alternative';
+        }
+
         $templates_array = array();
         $result = $db->query("SELECT `id`, `language`, `varname` FROM `" . TABLE_PANEL_TEMPLATES . "` WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `templategroup`='mails' ORDER BY `language`, `varname`");
 
@@ -121,6 +127,11 @@ if($page == 'email')
             'pop_success',
             'trafficninetypercent',
         );
+
+        if($settings['panel']['sendalternativemail'] == 1)
+        {
+            $available_templates[] = 'pop_success_alternative';
+        }
 
         if(isset($_POST['prepare'])
            && $_POST['prepare'] == 'prepare')

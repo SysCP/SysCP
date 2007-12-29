@@ -170,6 +170,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap">{$mailpwcleartext}</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['sendalternativemail']['title']}:</b><br />{$lng['serversettings']['sendalternativemail']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$panel_sendalternativemail}</td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['nameserversettings']}</b>
 				</td>

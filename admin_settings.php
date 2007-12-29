@@ -332,6 +332,12 @@ if(($page == 'settings' || $page == 'overview')
             $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
         }
 
+        if($_POST['panel_sendalternativemail'] != $settings['panel']['sendalternativemail'])
+        {
+            $value = ($_POST['panel_sendalternativemail'] == '1' ? '1' : '0');
+            $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='sendalternativemail'");
+        }
+
         if($_POST['panel_adminmail'] != $settings['panel']['adminmail'])
         {
             $value = $idna_convert->encode($_POST['panel_adminmail']);
@@ -558,6 +564,7 @@ if(($page == 'settings' || $page == 'overview')
 
         $natsorting = makeyesno('panel_natsorting', '1', '0', $settings['panel']['natsorting']);
         $mailpwcleartext = makeyesno('system_mailpwcleartext', '1', '0', $settings['system']['mailpwcleartext']);
+        $panel_sendalternativemail = makeyesno('panel_sendalternativemail', '1', '0', $settings['panel']['sendalternativemail']);
         $ftpatdomain = makeyesno('customer_ftpatdomain', '1', '0', $settings['customer']['ftpatdomain']);
         $system_modlogsql = makeyesno('system_modlogsql', '1', '0', $settings['system']['mod_log_sql']);
         $system_modfcgid = makeyesno('system_modfcgid', '1', '0', $settings['system']['mod_fcgid']);

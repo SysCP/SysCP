@@ -15,8 +15,14 @@ $header
 			<tr>
 				<td class="main_field_name">{$lng['login']['password']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="password" name="email_password" maxlength="50" /></td>
-			</tr>
-			<tr>
+            </tr>
+            <if $settings['panel']['sendalternativemail'] == 1>
+            <tr>
+                <td class="main_field_name">{$lng['emails']['alternative_emailaddress']}:</td>
+                <td class="main_field_display" nowrap="nowrap"><input type="text" name="alternative_email" maxlength="255" /></td>
+            </tr>
+            </if>
+            <tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['emails']['account_add']}" /></td>
 			</tr>
 		</table>
