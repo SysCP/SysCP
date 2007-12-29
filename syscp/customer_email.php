@@ -408,10 +408,7 @@ elseif($page == 'accounts')
 						$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['pop_success']['subject']), $replace_arr));
 						$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($userinfo['def_language']) . '\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_mailbody\'');
 						$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['pop_success']['mailbody']), $replace_arr));
-						mail($email_full, $mail_subject, $mail_body, 'From: ' . str_replace(array(
-							"\r",
-							"\n"
-						), '', $admin['name'] . ' <' . $admin['email']) . '>');
+						mail($email_full, $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($admin['name'], $admin['email']));
 
 						if(validateEmail($alternative_email)
 						   && $settings['panel']['sendalternativemail'] == 1)
@@ -420,10 +417,7 @@ elseif($page == 'accounts')
 							$mail_subject = replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['pop_success_alternative']['subject']), $replace_arr);
 							$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($userinfo['def_language']) . '\' AND `templategroup`=\'mails\' AND `varname`=\'pop_success_alternative_mailbody\'');
 							$mail_body = replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['pop_success_alternative']['mailbody']), $replace_arr);
-							mail($alternative_email, $mail_subject, $mail_body, 'From: ' . str_replace(array(
-								"\r",
-								"\n"
-							), '', $admin['name'] . ' <' . $admin['email']) . '>');
+							mail($alternative_email, $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($admin['name'], $admin['email']));
 						}
 
 						redirectTo($filename, Array(

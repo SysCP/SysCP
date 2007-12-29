@@ -1561,4 +1561,16 @@ function mkDirWithCorrectOwnership($homeDir, $dirToCreate, $uid, $gid)
 	return $returncode;
 }
 
+function buildValidMailFrom($username, $mailaddress)
+{
+	$mailfrom = str_replace(array(
+		"\r",
+		"\n"
+	), '', $username) . ' <' . str_replace(array(
+		"\r",
+		"\n"
+	), '', $mailaddress) . '>';
+	return $mailfrom;
+}
+
 ?>
