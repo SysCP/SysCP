@@ -151,7 +151,7 @@ while($row = $db->fetch_array($result_tasks))
 							{
 								$vhosts_file.= '  ScriptAlias /php/ /var/www/php-fcgi-scripts/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . "\n";
 								$vhosts_file.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
-								include ($pathtophpfiles . '/scripts/cron_tasks.inc.fcgi_create.php');
+								createFcgiConfig($domain, $settings);
 							}
 						}
 						else
