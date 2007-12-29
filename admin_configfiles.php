@@ -49,9 +49,6 @@ $configfiles = Array(
                 'daemons' => Array(
                     'bind' => Array(
                         'label' => 'Bind9',
-                        'files' => Array(
-                            'etc_bind_default.zone' => '/etc/bind/default.zone'
-                        ),
                         'commands' => Array(
                             'echo "include \"' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf\";" >> /etc/bind/named.conf',
                             'touch ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf'
@@ -174,9 +171,6 @@ $configfiles = Array(
                 'daemons' => Array(
                     'bind' => Array(
                         'label' => 'Bind9',
-                        'files' => Array(
-                            'etc_bind_default.zone' => '/etc/bind/default.zone'
-                        ),
                         'commands' => Array(
                             'echo "include \"' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf\";" >> /etc/bind/named.conf',
                             'touch ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf'
@@ -296,9 +290,6 @@ $configfiles = Array(
                 'daemons' => Array(
                     'bind' => Array(
                         'label' => 'Bind',
-                        'files' => Array(
-                            'etc_bind_default.zone' => '/etc/named.d/default.zone'
-                        ),
                         'commands' => Array(
                             'echo "include \"' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf\";" >> /etc/named.conf',
                             'touch ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf'

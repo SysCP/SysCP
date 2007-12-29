@@ -281,10 +281,16 @@ if(($page == 'settings' || $page == 'overview')
             $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='bindreload_command'");
         }
 
-        if($_POST['system_binddefaultzone'] != $settings['system']['binddefaultzone'])
+        if($_POST['system_nameservers'] != $settings['system']['nameservers'])
         {
-            $value = validate($_POST['system_binddefaultzone'], 'bind default zone', '/^[a-z0-9\-\._]+$/i');
-            $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='binddefaultzone'");
+            $value = validate($_POST['system_nameservers'], 'nameservers', '/^(([a-z0-9\-\._]+, ?)*[a-z0-9\-\._]+)?$/i');
+            $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='nameservers'");
+        }
+
+        if($_POST['system_mxservers'] != $settings['system']['mxservers'])
+        {
+            $value = validate($_POST['system_mxservers'], 'mxservers', '/^(([0-9]+ [a-z0-9\-\._]+, ?)*[0-9]+ [a-z0-9\-\._]+)?$/i');
+            $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mxservers'");
         }
 
         if($_POST['system_vmail_uid'] != $settings['system']['vmail_uid'])

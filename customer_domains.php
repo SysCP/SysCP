@@ -177,6 +177,7 @@ elseif($page == 'domains')
                 $result = $db->query("DELETE FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
                 $result = $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used`=`subdomains_used`-1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
                 inserttask('1');
+                inserttask('4');
                 redirectTo($filename, Array(
                     'page' => $page,
                     's' => $s
@@ -293,6 +294,7 @@ elseif($page == 'domains')
                     $result = $db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `openbasedir_path`, `safemode`, `speciallogfile`, `specialsettings`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($completedomain) . "', '" . $db->escape($path) . "', '" . $db->escape($domain_check['ipandport']) . "', " . (($aliasdomain != 0) ? "'" . $db->escape($aliasdomain) . "'" : "NULL") . ", '" . (int)$domain_check['id'] . "', '" . ($domain_check['subcanemaildomain'] == '3' ? '1' : '0') . "', '" . $db->escape($domain_check['openbasedir']) . "', '" . $db->escape($openbasedir_path) . "', '" . $db->escape($domain_check['safemode']) . "', '" . $db->escape($domain_check['speciallogfile']) . "', '" . $db->escape($domain_check['specialsettings']) . "')");
                     $result = $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
                     inserttask('1');
+                    inserttask('4');
                     redirectTo($filename, Array(
                         'page' => $page,
                         's' => $s
@@ -430,7 +432,8 @@ elseif($page == 'domains')
                        || $aliasdomain != $result['aliasdomain']
                        || $openbasedir_path != $result['openbasedir_path'])
                     {
-                        inserttask('1');
+	                    inserttask('1');
+	                    inserttask('4');
                         $result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($path) . "', `isemaildomain`='" . (int)$isemaildomain . "', `iswildcarddomain`='" . (int)$iswildcarddomain . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ",`openbasedir_path`='" . $db->escape($openbasedir_path) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
                     }
 
