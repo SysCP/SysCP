@@ -23,12 +23,12 @@
  * and the lockfile!
  */
 
+$lockFilename = 'syscp_cron_tasks.lock-';
+include (dirname(__FILE__) . '/../lib/cron_init.php');
+
 /**
  * END REDUNDANT CODE (CRONSCRIPT "HEADER")
  */
-
-$lockFilename = 'syscp_cron_tasks.lock-';
-include (dirname(__FILE__) . '/../lib/cron_init.php');
 
 /**
  * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
