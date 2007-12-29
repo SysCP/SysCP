@@ -23,7 +23,6 @@ define('AREA', 'admin');
 
 require ("./lib/init.php");
 require ("./lib/configfiles_index.inc.php");
-
 $distribution = '';
 $distributions_select = '';
 $service = '';
