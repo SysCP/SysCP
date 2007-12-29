@@ -1561,12 +1561,20 @@ function mkDirWithCorrectOwnership($homeDir, $dirToCreate, $uid, $gid)
 	return $returncode;
 }
 
-function buildValidMailFrom($username, $mailaddress)
+/**
+ * Create a valid from/to - mailheader (remove carriage-returns)
+ *
+ * @param string The name of the recipient
+ * @param string The mailaddress
+ * @return string A valid header-entry
+ * @author Florian Aders <eleras@syscp.org>
+ */
+function buildValidMailFrom($name, $mailaddress)
 {
 	$mailfrom = str_replace(array(
 		"\r",
 		"\n"
-	), '', $username) . ' <' . str_replace(array(
+	), '', $name) . ' <' . str_replace(array(
 		"\r",
 		"\n"
 	), '', $mailaddress) . '>';
