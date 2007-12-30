@@ -1620,4 +1620,21 @@ function isConfigDir($dir)
 	return $returnval;
 }
 
+function wasFormCompromised()
+{
+	global $db, $userinfo;
+
+	if($userinfo['hadtoken'] !== true)
+	{
+		$db->query('DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `hash`="' . $db->escape($userinfo['hash']) . '" AND `adminsession` = "' . $db->escape($userinfo['adminsession']) . '"');
+		standard_error('formtokencompromised');
+
+		// explicit die, if someone ever removes it from standard_error
+
+		die();
+	}
+
+	return false;
+}
+
 ?>

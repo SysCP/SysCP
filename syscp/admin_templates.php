@@ -103,6 +103,7 @@ if($page == 'email')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_TEMPLATES . "` WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND (`id`='" . (int)$subjectid . "' OR `id`='" . (int)$mailbodyid . "')");
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -136,6 +137,7 @@ if($page == 'email')
 		if(isset($_POST['prepare'])
 		   && $_POST['prepare'] == 'prepare')
 		{
+			wasFormCompromised();
 			$language = validate($_POST['language'], 'language');
 			$templates = array();
 			$result = $db->query('SELECT `varname` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($language) . '\' AND `templategroup`=\'mails\' AND `varname` LIKE \'%_subject\'');
@@ -154,11 +156,10 @@ if($page == 'email')
 
 			eval("echo \"" . getTemplate("templates/templates_add_2") . "\";");
 		}
-		else
-
-		if(isset($_POST['send'])
-		   && $_POST['send'] == 'send')
+		elseif(isset($_POST['send'])
+		       && $_POST['send'] == 'send')
 		{
+			wasFormCompromised();
 			$language = validate($_POST['language'], 'language', '/^[^\r\n\0"\']+$/', 'nolanguageselect');
 			$template = validate($_POST['template'], 'template');
 			$subject = validate($_POST['subject'], 'subject', '/^[^\r\n\0]+$/', 'nosubjectcreate');
@@ -231,6 +232,7 @@ if($page == 'email')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$subject = validate($_POST['subject'], 'subject', '/^[^\r\n\0]+$/', 'nosubjectcreate');
 				$mailbody = validate($_POST['mailbody'], 'mailbody', '/^[^\0]+$/', 'nomailbodycreate');
 				$db->query("UPDATE `" . TABLE_PANEL_TEMPLATES . "` SET `value`='" . $db->escape($subject) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `id`='" . (int)$subjectid . "'");

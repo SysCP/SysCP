@@ -94,6 +94,7 @@ if($page == 'ipsandports'
 							if(isset($_POST['send'])
 							   && $_POST['send'] == 'send')
 							{
+								wasFormCompromised();
 								$db->query("DELETE FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$id . "'");
 								inserttask('1');
 								inserttask('4');
@@ -133,6 +134,7 @@ if($page == 'ipsandports'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
+			wasFormCompromised();
 			$ip = validate($_POST['ip'], 'ip', '/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/Di', 'ipiswrong');
 			$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array(
 				'stringisempty',
@@ -179,6 +181,7 @@ if($page == 'ipsandports'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$ip = validate($_POST['ip'], 'ip', '/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/Di', 'ipiswrong');
 				$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array(
 					'stringisempty',

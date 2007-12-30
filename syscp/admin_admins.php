@@ -125,6 +125,7 @@ if($page == 'admins'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$id . "'");
 				$db->query("DELETE FROM `" . TABLE_PANEL_TRAFFIC_ADMINS . "` WHERE `adminid`='" . (int)$id . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `adminid` = '" . (int)$userinfo['userid'] . "' WHERE `adminid` = '" . (int)$id . "'");
@@ -150,6 +151,7 @@ if($page == 'admins'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
+			wasFormCompromised();
 			$name = validate($_POST['name'], 'name');
 			$email = $idna_convert->encode(validate($_POST['email'], 'email'));
 			$loginname = validate($_POST['loginname'], 'loginname');
@@ -276,6 +278,7 @@ if($page == 'admins'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$name = validate($_POST['name'], 'name');
 				$email = $idna_convert->encode(validate($_POST['email'], 'email'));
 

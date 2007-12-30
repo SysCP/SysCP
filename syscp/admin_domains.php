@@ -108,6 +108,7 @@ if($page == 'domains'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$query = 'SELECT `id` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE (`id`="' . (int)$id . '" OR `parentdomainid`="' . (int)$id . '") ' . '  AND  `isemaildomain`="1"';
 				$subResult = $db->query($query);
 				$idString = array();
@@ -157,6 +158,7 @@ if($page == 'domains'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$domain = $idna_convert->encode(preg_replace(Array(
 					'/\:(\d)+$/',
 					'/^https?\:\/\//'
@@ -304,6 +306,7 @@ if($page == 'domains'
 					if(($openbasedir == '0' || $safemode == '0')
 					   && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
 					{
+						wasFormCompromised();
 						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, array(
 							'page' => $page,
 							'action' => $action,
@@ -355,6 +358,7 @@ if($page == 'domains'
 							$params['reallydoit'] = 'reallydoit';
 						}
 
+						wasFormCompromised();
 						ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params);
 						exit;
 					}
@@ -451,6 +455,7 @@ if($page == 'domains'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$customer = $db->query_first("SELECT `documentroot` FROM " . TABLE_PANEL_CUSTOMERS . " WHERE `customerid`='" . (int)$result['customerid'] . "'");
 				$aliasdomain = intval($_POST['alias']);
 				$isemaildomain = intval($_POST['isemaildomain']);
@@ -546,6 +551,7 @@ if($page == 'domains'
 				   && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit')
 				   && $userinfo['change_serversettings'] == '1')
 				{
+					wasFormCompromised();
 					ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, array(
 						'id' => $id,
 						'page' => $page,
@@ -593,6 +599,7 @@ if($page == 'domains'
 						$params['reallydoit'] = 'reallydoit';
 					}
 
+					wasFormCompromised();
 					ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params);
 					exit;
 				}

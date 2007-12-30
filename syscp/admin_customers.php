@@ -125,6 +125,7 @@ if($page == 'customers'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$databases = $db->query("SELECT * FROM " . TABLE_PANEL_DATABASES . " WHERE customerid='" . (int)$id . "'");
 				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 				unset($db_root->password);
@@ -215,6 +216,7 @@ if($page == 'customers'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$name = validate($_POST['name'], 'name');
 				$firstname = validate($_POST['firstname'], 'first name');
 				$company = validate($_POST['company'], 'company');
