@@ -563,4 +563,8 @@ $lng['serversettings']['apacheconf_diroptions']['description'] = 'Where should t
 $lng['serversettings']['apacheconf_htpasswddir']['title'] = 'Apache htpasswd dirname';
 $lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Where should the htpasswd files for directory protection be stored?';
 
+// ADDED IN 1.2.16-svn15
+
+$lng['error']['formtokencompromised'] = 'The request seems to be compromised. For securityreasons you were logged out.';
+
 ?>

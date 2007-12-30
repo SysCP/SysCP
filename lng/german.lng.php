@@ -562,4 +562,8 @@ $lng['serversettings']['apacheconf_diroptions']['description'] = 'Wo soll die Ve
 $lng['serversettings']['apacheconf_htpasswddir']['title'] = 'Apache htpasswd Verzeichnisname';
 $lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Wo sollen die htpasswd-Dateien f&uuml; den Verzeichnisschutz abgelegt werden?';
 
+// ADDED IN 1.2.16-svn15
+
+$lng['error']['formtokencompromised'] = 'Das Formular scheint manipuliert worden zu sein. Aus Sicherheitsgr&uuml;nden wurden Sie ausgelogged.';
+
 ?>

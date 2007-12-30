@@ -1,5 +1,6 @@
 $header
 	<form action="$filename?s=$s&amp;page=$page" method="post">
+		<input type="hidden" name="token" value="{$userinfo['formtoken']}" />
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable_60">
 			<tr>
 				<td class="maintitle_search_left" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['ipsandports']['ipsandports']}</b></td>

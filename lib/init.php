@@ -388,4 +388,23 @@ if($page == '')
 	$page = 'overview';
 }
 
+/**
+ * Check the formtoken
+ */
+
+// First check if there was a token submitted
+
+$submittedtoken = isset($_POST['token']) ? $_POST['token'] : null;
+
+if(!is_null($submittedtoken)
+   && (!preg_match('/^[0-9a-f]{32}$/D', $submittedtoken) || $userinfo['formtoken'] != $submittedtoken))
+{
+	$db->query('DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"');
+	standard_error('formtokencompromised');
+}
+
+unset($submittedtoken, $result, $_POST['token']);
+$userinfo['formtoken'] = strtolower(md5(uniqid(microtime(), 1)));
+$db->query('UPDATE `' . TABLE_PANEL_SESSIONS . '` SET `formtoken`="' . $userinfo['formtoken'] . '" WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"');
+
 ?>
