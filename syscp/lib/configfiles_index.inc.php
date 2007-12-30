@@ -29,7 +29,7 @@ $configfiles = Array(
 							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname( $settings['system']['apacheconf_vhost'] ) . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -139,7 +139,7 @@ $configfiles = Array(
 							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname( $settings['system']['apacheconf_vhost'] ) . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -267,7 +267,7 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname( $settings['system']['apacheconf_vhost'] ) . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
 							'touch ' . $settings['system']['apacheconf_vhost'],
 							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],

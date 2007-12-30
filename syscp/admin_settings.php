@@ -214,7 +214,7 @@ if(($page == 'settings' || $page == 'overview')
 		if($_POST['system_apacheconf_vhost'] != $settings['system']['apacheconf_vhost'])
 		{
 			$value = validate($_POST['system_apacheconf_vhost'], 'apacheconf vhost');
-			$value = makeSecurePath( $value );
+			$value = makeSecurePath($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_vhost'");
 			inserttask('1');
 		}
@@ -222,7 +222,7 @@ if(($page == 'settings' || $page == 'overview')
 		if($_POST['system_apacheconf_diroptions'] != $settings['system']['apacheconf_diroptions'])
 		{
 			$value = validate($_POST['system_apacheconf_diroptions'], 'apacheconf diroptions');
-			$value = makeSecurePath( $value );
+			$value = makeSecurePath($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_diroptions'");
 			inserttask('3');
 		}
