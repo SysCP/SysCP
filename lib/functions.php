@@ -1591,11 +1591,12 @@ function buildValidMailFrom($name, $mailaddress)
  *
  * @author Florian Lippert <flo@syscp.org>
  */
-function isConfigDir( $dir )
+
+function isConfigDir($dir)
 {
-	if( file_exists( $dir ) )
+	if(file_exists($dir))
 	{
-		if( is_dir( $dir ) )
+		if(is_dir($dir))
 		{
 			$returnval = true;
 		}
@@ -1606,7 +1607,7 @@ function isConfigDir( $dir )
 	}
 	else
 	{
-		if( substr( $dir, -1 ) == '/' )
+		if(substr($dir, -1) == '/')
 		{
 			$returnval = true;
 		}
@@ -1615,6 +1616,7 @@ function isConfigDir( $dir )
 			$returnval = false;
 		}
 	}
+
 	return $returnval;
 }
 

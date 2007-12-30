@@ -1146,9 +1146,9 @@ if($settings['panel']['version'] == '1.2.16-svn12')
 
 if($settings['panel']['version'] == '1.2.16-svn13')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_vhost\', `value` = \'' . makeCorrectFile( $settings['system']['apacheconf_directory'] . '/' . $settings['system']['apacheconf_filename'] ) . '\' ');
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_diroptions\', `value` = \'' . makeCorrectFile( $settings['system']['apacheconf_directory'] . '/diroptions.conf' ) . '\' ');
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_htpasswddir\', `value` = \'' . makeCorrectDir( $settings['system']['apacheconf_directory'] . '/htpasswd/' ) . '\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_vhost\', `value` = \'' . makeCorrectFile($settings['system']['apacheconf_directory'] . '/' . $settings['system']['apacheconf_filename']) . '\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_diroptions\', `value` = \'' . makeCorrectFile($settings['system']['apacheconf_directory'] . '/diroptions.conf') . '\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_htpasswddir\', `value` = \'' . makeCorrectDir($settings['system']['apacheconf_directory'] . '/htpasswd/') . '\' ');
 	$db->query('DELETE FROM `' . TABLE_PANEL_SETTINGS . '` WHERE `settinggroup` = \'system\' AND `varname` = \'apacheconf_directory\' ');
 	$db->query('DELETE FROM `' . TABLE_PANEL_SETTINGS . '` WHERE `settinggroup` = \'system\' AND `varname` = \'apacheconf_filename\' ');
 

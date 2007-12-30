@@ -55,7 +55,8 @@ while($row = $db->fetch_array($result_tasks))
 		fwrite($debugHandler, '  cron_tasks: Task1 started - ' . $settings['system']['apacheconf_vhost'] . ' rebuild' . "\n");
 		$vhosts_file = '';
 
-		if(isConfigDir($settings['system']['apacheconf_vhost']) && !file_exists($settings['system']['apacheconf_vhost']))
+		if(isConfigDir($settings['system']['apacheconf_vhost'])
+		   && !file_exists($settings['system']['apacheconf_vhost']))
 		{
 			safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
 		}
@@ -80,17 +81,23 @@ while($row = $db->fetch_array($result_tasks))
 				$vhosts_file.= '</VirtualHost>' . "\n";
 			}
 
-			if( isConfigDir($settings['system']['apacheconf_vhost']) )
+			if(isConfigDir($settings['system']['apacheconf_vhost']))
 			{
-				$vhosts_filename = makeCorrectFile( $settings['system']['apacheconf_vhost'] . '/10_syscp_ipandport_' . $row_ipsandports['ip'] . '.' . $row_ipsandports['port'] . '.conf' );
-				$known_vhost_filenames[] = basename( $vhosts_filename );
+				$vhosts_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/10_syscp_ipandport_' . $row_ipsandports['ip'] . '.' . $row_ipsandports['port'] . '.conf');
+				$known_vhost_filenames[] = basename($vhosts_filename);
+
 				// Apply header
+
 				$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
+
 				// Save partial file
+
 				$vhosts_file_handler = fopen($vhosts_filename, 'w');
 				fwrite($vhosts_file_handler, $vhosts_file);
 				fclose($vhosts_file_handler);
+
 				// Reset vhosts_file
+
 				$vhosts_file = '';
 			}
 			else
@@ -245,17 +252,23 @@ while($row = $db->fetch_array($result_tasks))
 
 				$vhosts_file.= '</VirtualHost>' . "\n";
 
-				if( isConfigDir($settings['system']['apacheconf_vhost']) )
+				if(isConfigDir($settings['system']['apacheconf_vhost']))
 				{
-					$vhosts_filename = makeCorrectFile( $settings['system']['apacheconf_vhost'] . '/' . ( $domain['iswildcarddomain'] == '1' ? '30_syscp_wildcard_vhost' : '20_syscp_normal_vhost' ) . '_' . $domain['domain'] . '.conf' );
-					$known_vhost_filenames[] = basename( $vhosts_filename );
+					$vhosts_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/' . ($domain['iswildcarddomain'] == '1' ? '30_syscp_wildcard_vhost' : '20_syscp_normal_vhost') . '_' . $domain['domain'] . '.conf');
+					$known_vhost_filenames[] = basename($vhosts_filename);
+
 					// Apply header
+
 					$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
+
 					// Save partial file
+
 					$vhosts_file_handler = fopen($vhosts_filename, 'w');
 					fwrite($vhosts_file_handler, $vhosts_file);
 					fclose($vhosts_file_handler);
+
 					// Reset vhosts_file
+
 					$vhosts_file = '';
 				}
 				else
@@ -269,7 +282,7 @@ while($row = $db->fetch_array($result_tasks))
 			}
 		}
 
-		if( !isConfigDir($settings['system']['apacheconf_vhost']) )
+		if(!isConfigDir($settings['system']['apacheconf_vhost']))
 		{
 			if(file_exists($settings['system']['apacheconf_diroptions']))
 			{
@@ -277,9 +290,13 @@ while($row = $db->fetch_array($result_tasks))
 			}
 
 			$vhosts_filename = $settings['system']['apacheconf_vhost'];
+
 			// Apply header
+
 			$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
+
 			// Save big file
+
 			$vhosts_file_handler = fopen($vhosts_filename, 'w');
 			fwrite($vhosts_file_handler, $vhosts_file);
 			fclose($vhosts_file_handler);
@@ -287,6 +304,7 @@ while($row = $db->fetch_array($result_tasks))
 		else
 		{
 			$vhosts_dir = makeCorrectDir($settings['system']['apacheconf_vhost']);
+
 			if(file_exists($vhosts_dir)
 			   && is_dir($vhosts_dir))
 			{
@@ -297,11 +315,11 @@ while($row = $db->fetch_array($result_tasks))
 					if($vhost_filename != '.'
 					   && $vhost_filename != '..'
 					   && !in_array($vhost_filename, $known_vhost_filenames)
-					   && preg_match( '/^(10|20|30)_syscp_(ipandport|normal_vhost|wildcard_vhost)_(.+)\.conf$/', $vhost_filename )
-					   && file_exists(makeCorrectFile( $vhosts_dir . '/' . $vhost_filename )))
+					   && preg_match('/^(10|20|30)_syscp_(ipandport|normal_vhost|wildcard_vhost)_(.+)\.conf$/', $vhost_filename)
+					   && file_exists(makeCorrectFile($vhosts_dir . '/' . $vhost_filename)))
 					{
 						fwrite($debugHandler, '  cron_tasks: Task1 - unlinking ' . $vhost_filename . "\n");
-						unlink(makeCorrectFile( $vhosts_dir . '/' . $vhost_filename ));
+						unlink(makeCorrectFile($vhosts_dir . '/' . $vhost_filename));
 					}
 				}
 			}
@@ -336,7 +354,8 @@ while($row = $db->fetch_array($result_tasks))
 		fwrite($debugHandler, '  cron_tasks: Task3 started - create/change/del htaccess/htpasswd' . "\n");
 		$diroptions_file = '';
 
-		if(isConfigDir($settings['system']['apacheconf_diroptions']) && !file_exists($settings['system']['apacheconf_diroptions']))
+		if(isConfigDir($settings['system']['apacheconf_diroptions'])
+		   && !file_exists($settings['system']['apacheconf_diroptions']))
 		{
 			safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_diroptions'])));
 		}
@@ -425,10 +444,10 @@ while($row = $db->fetch_array($result_tasks))
 					$diroptions_file.= '  ErrorDocument 403 ' . $row_diroptions['error403path'] . "\n";
 				}
 
-//				if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
-//				{
-//					$diroptions_file .= '  ErrorDocument 401 '.$row_diroptions['error401path']."\n";
-//				}
+				//				if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
+				//				{
+				//					$diroptions_file .= '  ErrorDocument 401 '.$row_diroptions['error401path']."\n";
+				//				}
 
 				if(isset($row_diroptions['error500path'])
 				   && $row_diroptions['error500path'] != '')
@@ -444,7 +463,7 @@ while($row = $db->fetch_array($result_tasks))
 					{
 						if($htpasswd_filename == '')
 						{
-							$htpasswd_filename = makeCorrectFile( $settings['system']['apacheconf_htpasswddir'] . '/' . $row_diroptions['customerid'] . '-' . $row_htpasswd['id'] . '-' . md5($row_diroptions['path']) . '.htpasswd' );
+							$htpasswd_filename = makeCorrectFile($settings['system']['apacheconf_htpasswddir'] . '/' . $row_diroptions['customerid'] . '-' . $row_htpasswd['id'] . '-' . md5($row_diroptions['path']) . '.htpasswd');
 							$known_htpasswd_files[] = basename($htpasswd_filename);
 						}
 
@@ -459,7 +478,6 @@ while($row = $db->fetch_array($result_tasks))
 						$diroptions_file.= '  AuthName "Restricted Area"' . "\n";
 						$diroptions_file.= '  AuthUserFile ' . $htpasswd_filename . "\n";
 						$diroptions_file.= '  require valid-user' . "\n";
-
 						$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
 						fwrite($htpasswd_file_handler, $htpasswd_file);
 						fclose($htpasswd_file_handler);
@@ -468,17 +486,23 @@ while($row = $db->fetch_array($result_tasks))
 
 				$diroptions_file.= '</Directory>' . "\n";
 
-				if( isConfigDir($settings['system']['apacheconf_diroptions']) )
+				if(isConfigDir($settings['system']['apacheconf_diroptions']))
 				{
-					$diroptions_filename = makeCorrectFile( $settings['system']['apacheconf_diroptions'] . '/40_syscp_diroption_' . md5($row_diroptions['path']) . '.conf' );
-					$known_diroptions_files[] = basename( $diroptions_filename );
+					$diroptions_filename = makeCorrectFile($settings['system']['apacheconf_diroptions'] . '/40_syscp_diroption_' . md5($row_diroptions['path']) . '.conf');
+					$known_diroptions_files[] = basename($diroptions_filename);
+
 					// Apply header
+
 					$diroptions_file = '# ' . $diroptions_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next dir options change at the panel.' . "\n" . "\n" . $diroptions_file;
+
 					// Save partial file
+
 					$diroptions_file_handler = fopen($diroptions_filename, 'w');
 					fwrite($diroptions_file_handler, $diroptions_file);
 					fclose($diroptions_file_handler);
+
 					// Reset diroptions_file
+
 					$diroptions_file = '';
 				}
 				else
@@ -488,12 +512,16 @@ while($row = $db->fetch_array($result_tasks))
 			}
 		}
 
-		if( !isConfigDir($settings['system']['apacheconf_diroptions']) )
+		if(!isConfigDir($settings['system']['apacheconf_diroptions']))
 		{
 			$diroptions_filename = $settings['system']['apacheconf_diroptions'];
+
 			// Apply header
+
 			$diroptions_file = '# ' . $diroptions_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next dir options change at the panel.' . "\n" . "\n" . $diroptions_file;
+
 			// Save big file
+
 			$diroptions_file_handler = fopen($diroptions_filename, 'w');
 			fwrite($diroptions_file_handler, $diroptions_file);
 			fclose($diroptions_file_handler);
@@ -501,6 +529,7 @@ while($row = $db->fetch_array($result_tasks))
 		else
 		{
 			$diroptions_dir = makeCorrectDir($settings['system']['apacheconf_diroptions']);
+
 			if(file_exists($diroptions_dir)
 			   && is_dir($diroptions_dir))
 			{
@@ -511,7 +540,7 @@ while($row = $db->fetch_array($result_tasks))
 					if($diroptions_filename != '.'
 					   && $diroptions_filename != '..'
 					   && !in_array($diroptions_filename, $known_diroptions_files)
-					   && preg_match( '/^40_syscp_diroption_(.+)\.conf$/', $diroptions_filename )
+					   && preg_match('/^40_syscp_diroption_(.+)\.conf$/', $diroptions_filename)
 					   && file_exists(makeCorrectFile($settings['system']['apacheconf_diroptions'] . '/' . $diroptions_filename)))
 					{
 						unlink(makeCorrectFile($settings['system']['apacheconf_diroptions'] . '/' . $diroptions_filename));
@@ -521,8 +550,8 @@ while($row = $db->fetch_array($result_tasks))
 		}
 
 		safe_exec($settings['system']['apachereload_command']);
-
 		$htpasswd_dir = makeCorrectDir($settings['system']['apacheconf_htpasswddir']);
+
 		if(file_exists($htpasswd_dir)
 		   && is_dir($htpasswd_dir))
 		{
@@ -701,8 +730,8 @@ while($row = $db->fetch_array($result_tasks))
 
 		safe_exec($settings['system']['bindreload_command']);
 		fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
-
 		$domains_dir = makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/');
+
 		if(file_exists($domains_dir)
 		   && is_dir($domains_dir))
 		{
@@ -713,10 +742,10 @@ while($row = $db->fetch_array($result_tasks))
 				if($domain_filename != '.'
 				   && $domain_filename != '..'
 				   && !in_array($domain_filename, $known_domain_zonefiles)
-				   && file_exists(makeCorrectFile( $domains_dir . '/' . $domain_filename )))
+				   && file_exists(makeCorrectFile($domains_dir . '/' . $domain_filename)))
 				{
 					fwrite($debugHandler, '  cron_tasks: Task4 - unlinking ' . $domain_filename . "\n");
-					unlink(makeCorrectFile( $domains_dir . '/' . $domain_filename ));
+					unlink(makeCorrectFile($domains_dir . '/' . $domain_filename));
 				}
 			}
 		}
