@@ -130,9 +130,9 @@ elseif($page == 'mysqls')
 		   || $userinfo['mysqls'] == '-1')
 		{
 			if(isset($_POST['send'])
-			   && $_POST['send'] == 'send'
-			   && $userinfo['hadtoken'] === true)
+			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$password = validate($_POST['mysql_password'], 'password');
 
 				if($password == '')
@@ -183,9 +183,10 @@ elseif($page == 'mysqls')
 		   && $result['databasename'] != '')
 		{
 			if(isset($_POST['send'])
-			   && $_POST['send'] == 'send'
-			   && $userinfo['hadtoken'] === true)
+			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
+
 				// Only change Password if it is set, do nothing if it is empty! -- PH 2004-11-29
 
 				$password = validate($_POST['mysql_password'], 'password');
