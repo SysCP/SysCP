@@ -567,4 +567,7 @@ $lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Where should 
 
 $lng['error']['formtokencompromised'] = 'The request seems to be compromised. For securityreasons you were logged out.';
 
+$lng['serversettings']['mysql_access_host']['title'] = 'MySQL-Access-Hosts';
+$lng['serversettings']['mysql_access_host']['description'] = 'A comma separated list of hosts from which users should be allowed to connect to the MySQL-Server.';
+
 ?>

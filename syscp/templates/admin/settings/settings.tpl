@@ -107,6 +107,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_hostname" value="{$settings['system']['hostname']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['mysql_access_host']['title']}:</b><br />{$lng['serversettings']['mysql_access_host']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mysql_access_host" value="{$settings['system']['mysql_access_host']}" /></td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webserversettings']}</b>
 				</td>

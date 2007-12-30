@@ -566,4 +566,7 @@ $lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Wo sollen die
 
 $lng['error']['formtokencompromised'] = 'Das Formular scheint manipuliert worden zu sein. Aus Sicherheitsgr&uuml;nden wurden Sie ausgelogged.';
 
+$lng['serversettings']['mysql_access_host']['title'] = 'MySQL-Access-Hosts';
+$lng['serversettings']['mysql_access_host']['description'] = 'Eine durch Komma getrennte Liste mit den Hostnamen aller Hostnames/IP-Adressen von denen sich die Benutzer einloggen d&uuml;rfen.';
+
 ?>
