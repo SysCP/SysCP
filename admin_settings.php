@@ -211,19 +211,28 @@ if(($page == 'settings' || $page == 'overview')
 			}
 		}
 
-		if($_POST['system_apacheconf_directory'] != $settings['system']['apacheconf_directory'])
+		if($_POST['system_apacheconf_vhost'] != $settings['system']['apacheconf_vhost'])
 		{
-			$value = validate($_POST['system_apacheconf_directory'], 'apacheconf directory');
-			$value = makeCorrectDir($value);
-			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_directory'");
+			$value = validate($_POST['system_apacheconf_vhost'], 'apacheconf vhost');
+			$value = makeSecurePath( $value );
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_vhost'");
 			inserttask('1');
 		}
 
-		if($_POST['system_apacheconf_filename'] != $settings['system']['apacheconf_filename'])
+		if($_POST['system_apacheconf_diroptions'] != $settings['system']['apacheconf_diroptions'])
 		{
-			$value = validate($_POST['system_apacheconf_filename'], 'apacheconf filename', '#^[\-\./_a-z0-9]+$#Di');
-			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_filename'");
-			inserttask('1');
+			$value = validate($_POST['system_apacheconf_diroptions'], 'apacheconf diroptions');
+			$value = makeSecurePath( $value );
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_diroptions'");
+			inserttask('3');
+		}
+
+		if($_POST['system_apacheconf_htpasswddir'] != $settings['system']['apacheconf_htpasswddir'])
+		{
+			$value = validate($_POST['system_apacheconf_htpasswddir'], 'apacheconf htpasswddir');
+			$value = makeCorrectDir($value);
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_htpasswddir'");
+			inserttask('3');
 		}
 
 		if($_POST['system_apachereload_command'] != $settings['system']['apachereload_command'])

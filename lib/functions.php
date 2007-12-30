@@ -1582,4 +1582,40 @@ function buildValidMailFrom($name, $mailaddress)
 	return $mailfrom;
 }
 
+/**
+ * Checks if a given directory is valid for multiple configurations
+ * or should rather be used as a single file
+ *
+ * @param  string The dir
+ * @return bool   true if usable as dir, false otherwise
+ *
+ * @author Florian Lippert <flo@syscp.org>
+ */
+function isConfigDir( $dir )
+{
+	if( file_exists( $dir ) )
+	{
+		if( is_dir( $dir ) )
+		{
+			$returnval = true;
+		}
+		else
+		{
+			$returnval = false;
+		}
+	}
+	else
+	{
+		if( substr( $dir, -1 ) == '/' )
+		{
+			$returnval = true;
+		}
+		else
+		{
+			$returnval = false;
+		}
+	}
+	return $returnval;
+}
+
 ?>

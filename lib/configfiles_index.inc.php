@@ -25,10 +25,11 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'],
+							'touch ' . $settings['system']['apacheconf_vhost'],
+							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'] . '" >> ' . $settings['system']['apacheconf_directory'] . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname( $settings['system']['apacheconf_vhost'] ) . 'httpd.conf',
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -134,10 +135,11 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'],
+							'touch ' . $settings['system']['apacheconf_vhost'],
+							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'] . '" >> ' . $settings['system']['apacheconf_directory'] . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname( $settings['system']['apacheconf_vhost'] ) . 'httpd.conf',
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -147,8 +149,6 @@ $configfiles = Array(
 					'apache2' => Array(
 						'label' => 'Apache 2',
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'],
-							'a2ensite ' . $settings['system']['apacheconf_filename'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
 							'a2dismod userdir'
@@ -267,8 +267,9 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'] . '" >> ' . $settings['system']['apacheconf_directory'] . 'httpd.conf',
-							'touch ' . $settings['system']['apacheconf_directory'] . $settings['system']['apacheconf_filename'],
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname( $settings['system']['apacheconf_vhost'] ) . 'httpd.conf',
+							'touch ' . $settings['system']['apacheconf_vhost'],
+							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory']
 						),
