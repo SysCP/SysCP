@@ -85,6 +85,7 @@ elseif($page == 'htpasswds')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='$id'");
 				inserttask('3');
 				redirectTo($filename, Array(
@@ -112,6 +113,7 @@ elseif($page == 'htpasswds')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
+			wasFormCompromised();
 			$path = makeCorrectDir(validate($_POST['path'], 'path'));
 			$userpath = $path;
 			$path = $userinfo['documentroot'] . $path;
@@ -184,6 +186,7 @@ elseif($page == 'htpasswds')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				validate($_POST['directory_password'], 'password');
 
 				if(CRYPT_STD_DES == 1)
@@ -281,6 +284,7 @@ elseif($page == 'htaccess')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 				inserttask('3');
 				redirectTo($filename, Array(
@@ -300,9 +304,10 @@ elseif($page == 'htaccess')
 	}
 	elseif($action == 'add')
 	{
-		if((isset($_POST['send']))
-		   && ($_POST['send'] == 'send'))
+		if(isset($_POST['send'])
+		   && $_POST['send'] == 'send')
 		{
+			wasFormCompromised();
 			$path = makeCorrectDir(validate($_POST['path'], 'path'));
 			$userpath = $path;
 			$path = $userinfo['documentroot'] . $path;
@@ -401,6 +406,7 @@ elseif($page == 'htaccess')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				wasFormCompromised();
 				$option_indexes = intval($_POST['options_indexes']);
 
 				if($option_indexes != '1')
@@ -457,7 +463,7 @@ elseif($page == 'htaccess')
 
 				//					     || ($error401path   != $result['error401path'])
 
-				
+
 				   || ($error500path != $result['error500path']))
 				{
 					inserttask('3');
