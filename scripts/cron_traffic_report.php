@@ -65,7 +65,7 @@ while($row = $db->fetch_array($result))
 	if((($row['traffic_used']*100)/$row['traffic']) >= 90)
 	{
 		$replace_arr = array(
-			'NAME' => $ow['name'],
+			'NAME' => $row['name'],
 			'TRAFFICMAX' => $row['traffic'],
 			'TRAFFICUSED' => $row['traffic_used']
 		);

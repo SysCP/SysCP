@@ -72,7 +72,7 @@ while($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
  * STARTING CRONSCRIPT FOOTER
  */
 
-include (dirname(__FILE__) . '/../lib/cron_shutdown.php');
+include ($pathtophpfiles . '/lib/cron_shutdown.php');
 
 /**
  * END CRONSCRIPT FOOTER
