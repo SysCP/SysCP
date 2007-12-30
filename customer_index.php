@@ -35,6 +35,7 @@ if($page == 'overview')
 	$domains = '';
 	$result = $db->query("SELECT `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `id` <> '" . (int)$userinfo['standardsubdomain'] . "' ");
 
+	$domainArray = array();
 	while($row = $db->fetch_array($result))
 	{
 		$domainArray[] = $idna_convert->decode($row['domain']);
