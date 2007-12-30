@@ -92,9 +92,7 @@ elseif($filename == 'customer_mysql.php'
 }
 elseif($filename == 'admin_settings.php')
 {
-	// admin settings needs the  host, user, root user, root pw
-
-	unset($sql['db']);
+	// admin settings needs the  host, user, db, root user, root pw
 }
 else
 {
