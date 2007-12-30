@@ -1160,4 +1160,16 @@ if($settings['panel']['version'] == '1.2.16-svn13')
 	$settings['panel']['version'] = '1.2.16-svn14';
 }
 
+if($settings['panel']['version'] == '1.2.16-svn14')
+{
+	$db->query('ALTER TABLE `' . TABLE_PANEL_SESSIONS . '` ' . ' ADD `formtoken` CHAR( 32 ) NOT NULL AFTER `lastpaging` ');
+
+	// set new version
+
+	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn15\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.16-svn15';
+}
+
 ?>
