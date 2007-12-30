@@ -463,7 +463,7 @@ elseif($page == 'htaccess')
 
 				//					     || ($error401path   != $result['error401path'])
 
-
+				
 				   || ($error500path != $result['error500path']))
 				{
 					inserttask('3');
