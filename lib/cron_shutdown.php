@@ -19,6 +19,12 @@
 $db->close();
 fwrite($debugHandler, 'Closing database connection' . "\n");
 
+if(isset($db_root))
+{
+	$db_root->close();
+	fwrite($debugHandler, 'Closing database rootconnection' . "\n");
+}
+
 if($keepLockFile === true)
 {
 	fwrite($debugHandler, '=== Keep lockfile because of exception ===');

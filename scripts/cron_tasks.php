@@ -23,7 +23,6 @@
  * and the lockfile!
  */
 
-$lockFilename = 'syscp_cron_tasks.lock-';
 include (dirname(__FILE__) . '/../lib/cron_init.php');
 
 /**
