@@ -24,7 +24,7 @@
  * connection, if you don't need it, see for the header in cron_tasks.php)
  */
 
-$lockFilename = 'syscp_cron_traffic.lock-';
+$needrootdb = true;
 include (dirname(__FILE__) . '/../lib/cron_init.php');
 
 /**

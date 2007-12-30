@@ -25,6 +25,7 @@ if(@php_sapi_name() != 'cli'
 
 $cronscriptDebug = true;
 $lockdir = '/var/run/';
+$lockFilename = 'syscp_' . basename($_SERVER['PHP_SELF'], '.php') . '.lock-';
 $lockfName = $lockFilename . getmypid();
 $lockfile = $lockdir . $lockfName;
 
@@ -134,6 +135,30 @@ require ($pathtophpfiles . '/lib/class_mysqldb.php');
 fwrite($debugHandler, 'Database Class has been loaded' . "\n");
 $db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
 
+// If one cronscript needs root, it should say $needrootdb = true before the include
+
+if(isset($needrootdb)
+   && $needrootdb === true)
+{
+	$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
+
+	if($db_root->link_id == 0)
+	{
+		/**
+		 * Do not proceed further if no database connection could be established
+		 */
+
+		fclose($debugHandler);
+		unlink($lockfile);
+		die('root can\'t connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+	}
+
+	unset($db_root->password);
+	fwrite($debugHandler, 'Database-rootconnection established' . "\n");
+}
+
+unset($sql['root_user'], $sql['root_password']);
+
 if($db->link_id == 0)
 {
 	/**
@@ -142,10 +167,10 @@ if($db->link_id == 0)
 
 	fclose($debugHandler);
 	unlink($lockfile);
-	die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+	die('SysCP can\'t connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 }
 
-fwrite($debugHandler, 'Database Connection established' . "\n");
+fwrite($debugHandler, 'Database-connection established' . "\n");
 unset($sql);
 unset($db->password);
 $result = $db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FROM `" . TABLE_PANEL_SETTINGS . "`");

@@ -1569,6 +1569,7 @@ function mkDirWithCorrectOwnership($homeDir, $dirToCreate, $uid, $gid)
  * @return string A valid header-entry
  * @author Florian Aders <eleras@syscp.org>
  */
+
 function buildValidMailFrom($name, $mailaddress)
 {
 	$mailfrom = str_replace(array(
