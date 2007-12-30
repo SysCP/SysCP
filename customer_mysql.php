@@ -88,12 +88,13 @@ elseif($page == 'mysqls')
 
 				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 				unset($db_root->password);
-				foreach(array_map('trim',explode(',',$settings['system']['mysql_access_host'])) as $mysql_access_host)
+				foreach(array_map('trim', explode(',', $settings['system']['mysql_access_host'])) as $mysql_access_host)
 				{
 					$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($result['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');
 					$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($result['databasename'])) . '` . * FROM `' . $db_root->escape($result['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');
 					$db_root->query('DELETE FROM `mysql`.`user` WHERE `User` = "' . $db_root->escape($result['databasename']) . '" AND `Host` = "' . $db_root->escape($mysql_access_host) . '"');
 				}
+
 				$db_root->query('DROP DATABASE IF EXISTS `' . $db_root->escape($result['databasename']) . '`');
 				$db_root->query('FLUSH PRIVILEGES');
 				$db_root->close();
@@ -154,11 +155,12 @@ elseif($page == 'mysqls')
 					$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 					unset($db_root->password);
 					$db_root->query('CREATE DATABASE `' . $db_root->escape($username) . '`');
-					foreach(array_map('trim',explode(',',$settings['system']['mysql_access_host'])) as $mysql_access_host)
+					foreach(array_map('trim', explode(',', $settings['system']['mysql_access_host'])) as $mysql_access_host)
 					{
 						$db_root->query('GRANT ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '`.* TO `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` IDENTIFIED BY \'password\'');
 						$db_root->query('SET PASSWORD FOR `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` = PASSWORD(\'' . $db_root->escape($password) . '\')');
 					}
+
 					$db_root->query('FLUSH PRIVILEGES');
 					$db_root->close();
 
@@ -203,10 +205,11 @@ elseif($page == 'mysqls')
 
 					$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 					unset($db_root->password);
-					foreach(array_map('trim',explode(',',$settings['system']['mysql_access_host'])) as $mysql_access_host)
+					foreach(array_map('trim', explode(',', $settings['system']['mysql_access_host'])) as $mysql_access_host)
 					{
 						$db_root->query('SET PASSWORD FOR `' . $db_root->escape($result['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '` = PASSWORD(\'' . $db_root->escape($password) . '\')');
 					}
+
 					$db_root->query('FLUSH PRIVILEGES');
 					$db_root->close();
 
