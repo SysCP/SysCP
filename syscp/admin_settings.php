@@ -216,58 +216,73 @@ if(($page == 'settings' || $page == 'overview')
 		if($_POST['system_mysql_access_host'] != $settings['system']['mysql_access_host'])
 		{
 			$value = validate($_POST['system_mysql_access_host'], 'MySQL Access Host', '/^([a-z0-9\-\._]+, ?)*[a-z0-9\-\._]+$/i');
+			$mysql_access_host_array = array_map('trim', explode(',', $value));
 
-			$mysql_access_host_array = array_map('trim',explode(',',$value));
-			if(in_array('127.0.0.1',$mysql_access_host_array) && !in_array('localhost',$mysql_access_host_array))
+			if(in_array('127.0.0.1', $mysql_access_host_array)
+			   && !in_array('localhost', $mysql_access_host_array))
 			{
-				$value .= ',localhost';
+				$value.= ',localhost';
 				$mysql_access_host_array[] = 'localhost';
 			}
-			if(!in_array('127.0.0.1',$mysql_access_host_array) && in_array('localhost',$mysql_access_host_array))
+
+			if(!in_array('127.0.0.1', $mysql_access_host_array)
+			   && in_array('localhost', $mysql_access_host_array))
 			{
-				$value .= ',127.0.0.1';
+				$value.= ',127.0.0.1';
 				$mysql_access_host_array[] = '127.0.0.1';
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
-
 			$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
 			$users = array();
 			$users_result = $db_root->query('SELECT * FROM `mysql`.`user`');
+
 			while($users_row = $db_root->fetch_array($users_result))
 			{
-				if(!isset($users[$users_row['User']]) || !is_array($users[$users_row['User']]))
+				if(!isset($users[$users_row['User']])
+				   || !is_array($users[$users_row['User']]))
 				{
-					$users[$users_row['User']] = array('password' => $users_row['Password'], 'hosts' => array());
+					$users[$users_row['User']] = array(
+						'password' => $users_row['Password'],
+						'hosts' => array()
+					);
 				}
+
 				$users[$users_row['User']]['hosts'][] = $users_row['Host'];
 			}
 
-			$databases = array($sql['db']);
+			$databases = array(
+				$sql['db']
+			);
 			$databases_result = $db->query('SELECT * FROM `' . TABLE_PANEL_DATABASES . '`');
+
 			while($databases_row = $db->fetch_array($databases_result))
 			{
 				$databases[] = $databases_row['databasename'];
 			}
-			
+
 			foreach($databases as $username)
 			{
-				if(isset($users[$username]) && is_array($users[$username])
-				&& isset($users[$username]['hosts']) && is_array($users[$username]['hosts']))
+				if(isset($users[$username])
+				   && is_array($users[$username])
+				   && isset($users[$username]['hosts'])
+				   && is_array($users[$username]['hosts']))
 				{
 					$password = $users[$username]['password'];
 					foreach($mysql_access_host_array as $mysql_access_host)
 					{
 						$mysql_access_host = trim($mysql_access_host);
-						if(!in_array($mysql_access_host,$users[$username]['hosts']))
+
+						if(!in_array($mysql_access_host, $users[$username]['hosts']))
 						{
 							$db_root->query('GRANT ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '`.* TO `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` IDENTIFIED BY \'password\'');
 							$db_root->query('SET PASSWORD FOR `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` = \'' . $db_root->escape($password) . '\'');
 						}
 					}
+
 					foreach($users[$username]['hosts'] as $mysql_access_host)
 					{
-						if(!in_array($mysql_access_host,$mysql_access_host_array))
+						if(!in_array($mysql_access_host, $mysql_access_host_array))
 						{
 							$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
 							$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '` . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
@@ -276,6 +291,7 @@ if(($page == 'settings' || $page == 'overview')
 					}
 				}
 			}
+
 			$db_root->query('FLUSH PRIVILEGES');
 			$db_root->close();
 			unset($db_root);
