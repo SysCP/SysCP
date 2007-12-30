@@ -1,6 +1,7 @@
 $header
 	<form action="$filename?s=$s&amp;page=$page" method="post">
 		<input type="hidden" name="token" value="{$userinfo['formtoken']}" />
+		<input type="hidden" name="send" value="send" />
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 			<tr>
 				<td class="maintitle_search_left"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['ftp']['accounts']}</b></td>

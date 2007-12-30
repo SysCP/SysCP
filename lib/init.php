@@ -395,9 +395,19 @@ if($page == '')
 // First check if there was a token submitted
 
 $submittedtoken = isset($_POST['token']) ? $_POST['token'] : null;
+$postkeys = array('send', 'action', 's', 'page', 'Go');
+$wasapost = false;
+foreach($postkeys as $postkey)
+{
+	if(array_key_exists($postkey, $_POST))
+	{
+		$wasapost = true;
+	}
+}
 
-if(!is_null($submittedtoken)
-   && (!preg_match('/^[0-9a-f]{32}$/D', $submittedtoken) || $userinfo['formtoken'] != $submittedtoken))
+if($wasapost === true
+   && (is_null($submittedtoken)
+   || (!preg_match('/^[0-9a-f]{32}$/D', $submittedtoken) || $userinfo['formtoken'] != $submittedtoken)))
 {
 	$db->query('DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"');
 	standard_error('formtokencompromised');
