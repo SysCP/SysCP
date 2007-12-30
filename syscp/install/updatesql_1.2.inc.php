@@ -1121,8 +1121,8 @@ if($settings['panel']['version'] == '1.2.16-svn10')
 if($settings['panel']['version'] == '1.2.16-svn11')
 {
 	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `phpenabled` TINYINT( 1 ) unsigned NOT NULL DEFAULT '1' AFTER `deactivated`");
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'mod_log_sql\', ' . '    `value`        = \'0\' ');
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'mod_fcgid\', ' . '    `value`        = \'0\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'mod_log_sql\', `value` = \'0\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'mod_fcgid\', `value` = \'0\' ');
 
 	// set new version
 
@@ -1134,7 +1134,7 @@ if($settings['panel']['version'] == '1.2.16-svn11')
 
 if($settings['panel']['version'] == '1.2.16-svn12')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'panel\', ' . '    `varname`      = \'sendalternativemail\', ' . '    `value`        = \'0\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'panel\', `varname` = \'sendalternativemail\', `value` = \'0\' ');
 
 	// set new version
 
@@ -1142,6 +1142,22 @@ if($settings['panel']['version'] == '1.2.16-svn12')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn13';
+}
+
+if($settings['panel']['version'] == '1.2.16-svn13')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_vhost\', `value` = \'' . makeCorrectFile( $settings['system']['apacheconf_directory'] . '/' . $settings['system']['apacheconf_filename'] ) . '\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_diroptions\', `value` = \'' . makeCorrectFile( $settings['system']['apacheconf_directory'] . '/diroptions.conf' ) . '\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'apacheconf_htpasswddir\', `value` = \'' . makeCorrectDir( $settings['system']['apacheconf_directory'] . '/htpasswd/' ) . '\' ');
+	$db->query('DELETE FROM `' . TABLE_PANEL_SETTINGS . '` WHERE `settinggroup` = \'system\' AND `varname` = \'apacheconf_directory\' ');
+	$db->query('DELETE FROM `' . TABLE_PANEL_SETTINGS . '` WHERE `settinggroup` = \'system\' AND `varname` = \'apacheconf_filename\' ');
+
+	// set new version
+
+	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn14\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.16-svn14';
 }
 
 ?>

@@ -114,12 +114,16 @@ $header
 				</td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_directory']['title']}:</b><br />{$lng['serversettings']['apacheconf_directory']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_directory" value="{$settings['system']['apacheconf_directory']}" /></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_vhost']['title']}:</b><br />{$lng['serversettings']['apacheconf_vhost']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_vhost" value="{$settings['system']['apacheconf_vhost']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_filename']['title']}:</b><br />{$lng['serversettings']['apacheconf_filename']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_filename" value="{$settings['system']['apacheconf_filename']}" /></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_diroptions']['title']}:</b><br />{$lng['serversettings']['apacheconf_diroptions']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_diroptions" value="{$settings['system']['apacheconf_diroptions']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_htpasswddir']['title']}:</b><br />{$lng['serversettings']['apacheconf_htpasswddir']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_htpasswddir" value="{$settings['system']['apacheconf_htpasswddir']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apachereload_command']['title']}:</b><br />{$lng['serversettings']['apachereload_command']['description']}</td>

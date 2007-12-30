@@ -206,7 +206,7 @@ require ($pathtophpfiles . '/lib/functions.php');
 $cronbasedir = makeCorrectDir($pathtophpfiles . '/scripts/');
 $crondir = opendir($cronbasedir);
 $cronfilename = basename($_SERVER['PHP_SELF'], '.php');
-$cronscriptFullName = makeCorrectFile($cronbasedir . $_SERVER['PHP_SELF']);
+$cronscriptFullName = makeCorrectFile($cronbasedir . basename($_SERVER['PHP_SELF']));
 
 while(false !== ($checkfile = readdir($crondir)))
 {

@@ -341,8 +341,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP-Address';
 $lng['serversettings']['ipaddress']['description'] = 'What\'s the IP-address of this server?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'What\'s the Hostname of this server?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Apache configuration directory';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Where should apache configfiles be saved?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache reload command';
 $lng['serversettings']['apachereload_command']['description'] = 'What\'s the apache command to reload apache configfiles?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind config directory';
@@ -388,8 +386,6 @@ $lng['mysql']['description'] = 'Here you can create and change your MySQL-Databa
  */
 
 $lng['admin']['cronlastrun'] = 'Last Cron';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Apache configuration filename';
-$lng['serversettings']['apacheconf_filename']['description'] = 'How should the apache configuration file called?';
 $lng['serversettings']['paging']['title'] = 'Entries per page';
 $lng['serversettings']['paging']['description'] = 'How many entries shall be shown on one page? (0 = disable paging)';
 $lng['error']['ipstillhasdomains'] = 'The IP/Port combination you want to delete still has domains assigned to it, please reassign those to other IP/Port combinations before deleting this IP/Port combination.';
@@ -557,5 +553,14 @@ $lng['admin']['templates']['EMAIL_PASSWORD'] = 'Replaced with the POP3/IMAP acco
 // ADDED IN 1.2.16-svn13
 
 $lng['error']['documentrootexists'] = 'The directory &quot;%s&quot; already exists for this customer. Please remove this before adding the customer again.';
+
+// ADDED IN 1.2.16-svn14
+
+$lng['serversettings']['apacheconf_vhost']['title'] = 'Apache vhost configuration file/dirname';
+$lng['serversettings']['apacheconf_vhost']['description'] = 'Where should the vhost configuration be stored? You could either specify a file (all vhosts in one file) or directory (each vhost in his own file) here.';
+$lng['serversettings']['apacheconf_diroptions']['title'] = 'Apache diroptions configuration file/dirname';
+$lng['serversettings']['apacheconf_diroptions']['description'] = 'Where should the diroptions configuration be stored? You could either specify a file (all diroptions in one file) or directory (each diroption in his own file) here.';
+$lng['serversettings']['apacheconf_htpasswddir']['title'] = 'Apache htpasswd dirname';
+$lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Where should the htpasswd files for directory protection be stored?';
 
 ?>

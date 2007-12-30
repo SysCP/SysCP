@@ -341,8 +341,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP-Adresse';
 $lng['serversettings']['ipaddress']['description'] = 'Welche IP-Adresse hat der Server?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Welchen Hostnamen hat der Server?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Apache-Config-Verzeichnis';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Wo liegen die Apache-Konfigurationsdateien?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache-Reload-Command';
 $lng['serversettings']['apachereload_command']['description'] = 'Wie heisst das Skript zum Neuladen der Apache-Konfigurationsdateien?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind-Config-Directory';
@@ -388,8 +386,6 @@ $lng['mysql']['description'] = 'Hier k&ouml;nnen Sie MySQL-Datenbanken anlegen u
  */
 
 $lng['admin']['cronlastrun'] = 'Last Cron';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Apache-Config-Dateiname';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Wie soll die Apache-Konfigurationsdatei genannt werden?';
 $lng['serversettings']['paging']['title'] = 'Eintr&auml;ge pro Seite';
 $lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
 $lng['error']['ipstillhasdomains'] = 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
@@ -556,5 +552,14 @@ $lng['admin']['templates']['PASSWORD'] = 'Wird mit dem Passwort des neuen POP3/I
 // ADDED IN 1.2.16-svn13
 
 $lng['error']['documentrootexists'] = 'Es existiert noch ein Verzeichnis &quot;%s&quot; f&uuml;r diesen Kunden. Bitte dieses vorher l&ouml;schen.';
+
+// ADDED IN 1.2.16-svn14
+
+$lng['serversettings']['apacheconf_vhost']['title'] = 'Apache vHost-Konfigurations-Datei/Verzeichnis-Name';
+$lng['serversettings']['apacheconf_vhost']['description'] = 'Wo soll die vHost-Konfigurationen abgelegt werden? Sie k&ouml;nnen entweder eine Datei (also mit allen vhosts) oder einen Ordner (mit einer Datei pro vhost) angeben.';
+$lng['serversettings']['apacheconf_diroptions']['title'] = 'Apache Verzeichnisoption-Konfigurations-Datei/Verzeichnis-Name';
+$lng['serversettings']['apacheconf_diroptions']['description'] = 'Wo soll die Verzeichnisoption-Konfigurationen abgelegt werden? Sie k&ouml;nnen entweder eine Datei (also mit allen vhosts) oder einen Ordner (mit einer Datei pro vhost) angeben.';
+$lng['serversettings']['apacheconf_htpasswddir']['title'] = 'Apache htpasswd Verzeichnisname';
+$lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Wo sollen die htpasswd-Dateien f&uuml; den Verzeichnisschutz abgelegt werden?';
 
 ?>
