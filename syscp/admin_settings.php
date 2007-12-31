@@ -128,42 +128,16 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
 			inserttask('1');
 
-			if($sql['host'] != 'localhost'
-			   && $sql['host'] != '127.0.0.1')
-			{
-				$mysql_access_host = $value;
+			$mysql_access_host_array = array_map('trim', explode(',', $settings['system']['mysql_access_host']));
+			$mysql_access_host_array[] = $value;
+			$mysql_access_host_array = array_unique($mysql_access_host_array);
+			$mysql_access_host = implode(',', $mysql_access_host_array);
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($mysql_access_host) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
 
-				// Connect as root to change hostnames from where the server will be accessed to new ip
-
-				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
-
-				// Update our sql unprivileged and privileged (root) user
-
-				$update_users = '"' . $db->escape($sql['user']) . '", "' . $db->escape($sql['root_user']) . '"';
-
-				// Update all customer databases
-
-				$databases = $db->query('SELECT `databasename` FROM `' . TABLE_PANEL_DATABASES . '`');
-
-				while($database = $db->fetch_array($databases))
-				{
-					$update_users.= ', "' . $db->escape($database['databasename']) . '"';
-				}
-
-				// Do the update
-
-				$db_root->query("UPDATE `mysql`.`user` SET `HOST` = '" . $db_root->escape($mysql_access_host) . "' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
-				$db_root->query("UPDATE `mysql`.`db` SET `HOST` = '" . $db_root->escape($mysql_access_host) . "' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
-				$db_root->query("UPDATE `mysql`.`tables_priv` SET `HOST` = '" . $db_root->escape($mysql_access_host) . "' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
-				$db_root->query("UPDATE `mysql`.`columns_priv` SET `HOST` = '" . $db_root->escape($mysql_access_host) . "' WHERE `User` IN (" . $update_users . ") AND `Host` = '" . $db_root->escape($settings['system']['mysql_access_host']) . "'");
-
-				// Clean up and disconnect
-
-				$db_root->query("FLUSH PRIVILEGES;");
-				$db_root->close();
-				unset($db_root);
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($mysql_access_host) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
-			}
+			$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
+			correctMysqlUsers($db, $db_root, $mysql_access_host_array);
+			$db_root->close();
+			unset($db_root);
 		}
 
 		if($_POST['system_defaultip'] != $settings['system']['defaultip'])
@@ -231,68 +205,10 @@ if(($page == 'settings' || $page == 'overview')
 				$value.= ',127.0.0.1';
 				$mysql_access_host_array[] = '127.0.0.1';
 			}
-
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
+
 			$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
-			$users = array();
-			$users_result = $db_root->query('SELECT * FROM `mysql`.`user`');
-
-			while($users_row = $db_root->fetch_array($users_result))
-			{
-				if(!isset($users[$users_row['User']])
-				   || !is_array($users[$users_row['User']]))
-				{
-					$users[$users_row['User']] = array(
-						'password' => $users_row['Password'],
-						'hosts' => array()
-					);
-				}
-
-				$users[$users_row['User']]['hosts'][] = $users_row['Host'];
-			}
-
-			$databases = array(
-				$sql['db']
-			);
-			$databases_result = $db->query('SELECT * FROM `' . TABLE_PANEL_DATABASES . '`');
-
-			while($databases_row = $db->fetch_array($databases_result))
-			{
-				$databases[] = $databases_row['databasename'];
-			}
-
-			foreach($databases as $username)
-			{
-				if(isset($users[$username])
-				   && is_array($users[$username])
-				   && isset($users[$username]['hosts'])
-				   && is_array($users[$username]['hosts']))
-				{
-					$password = $users[$username]['password'];
-					foreach($mysql_access_host_array as $mysql_access_host)
-					{
-						$mysql_access_host = trim($mysql_access_host);
-
-						if(!in_array($mysql_access_host, $users[$username]['hosts']))
-						{
-							$db_root->query('GRANT ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '`.* TO `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` IDENTIFIED BY \'password\'');
-							$db_root->query('SET PASSWORD FOR `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` = \'' . $db_root->escape($password) . '\'');
-						}
-					}
-
-					foreach($users[$username]['hosts'] as $mysql_access_host)
-					{
-						if(!in_array($mysql_access_host, $mysql_access_host_array))
-						{
-							$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
-							$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '` . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
-							$db_root->query('DELETE FROM `mysql`.`user` WHERE `User` = "' . $db_root->escape($username) . '" AND `Host` = "' . $db_root->escape($mysql_access_host) . '"');
-						}
-					}
-				}
-			}
-
-			$db_root->query('FLUSH PRIVILEGES');
+			correctMysqlUsers($db, $db_root, $mysql_access_host_array);
 			$db_root->close();
 			unset($db_root);
 		}

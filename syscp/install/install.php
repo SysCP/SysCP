@@ -522,9 +522,31 @@ if(isset($_POST['installstep'])
 
 	status_message('begin', $lng['install']['create_mysqluser_and_db']);
 	$db_root->query("CREATE DATABASE `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`");
-	$db_root->query("GRANT ALL PRIVILEGES ON `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`.* TO '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' IDENTIFIED BY 'password'");
-	$db_root->query("SET PASSWORD FOR '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' = PASSWORD('" . $db_root->escape($mysql_unpriv_pass) . "')");
+	$mysql_access_host_array = array_map('trim', explode(',', $mysql_access_host));
+
+	if(in_array('127.0.0.1', $mysql_access_host_array)
+	   && !in_array('localhost', $mysql_access_host_array))
+	{
+		$value.= ',localhost';
+		$mysql_access_host_array[] = 'localhost';
+	}
+
+	if(!in_array('127.0.0.1', $mysql_access_host_array)
+	   && in_array('localhost', $mysql_access_host_array))
+	{
+		$value.= ',127.0.0.1';
+		$mysql_access_host_array[] = '127.0.0.1';
+	}
+
+	$mysql_access_host_array[] = $serverip;
+	foreach($mysql_access_host_array as $mysql_access_host)
+	{
+		$db_root->query("GRANT ALL PRIVILEGES ON `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`.* TO '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' IDENTIFIED BY 'password'");
+		$db_root->query("SET PASSWORD FOR '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' = PASSWORD('" . $db_root->escape($mysql_unpriv_pass) . "')");
+	}
 	$db_root->query("FLUSH PRIVILEGES;");
+
+	$mysql_access_host = implode(',', $mysql_acces_host_array);
 	status_message('green', 'OK');
 
 	//now a new database and the new syscp-unprivileged-mysql-account have been created and we can fill it now with the data.
