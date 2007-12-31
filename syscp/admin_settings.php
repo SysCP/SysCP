@@ -127,13 +127,11 @@ if(($page == 'settings' || $page == 'overview')
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
 			inserttask('1');
-
 			$mysql_access_host_array = array_map('trim', explode(',', $settings['system']['mysql_access_host']));
 			$mysql_access_host_array[] = $value;
 			$mysql_access_host_array = array_unique($mysql_access_host_array);
 			$mysql_access_host = implode(',', $mysql_access_host_array);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($mysql_access_host) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
-
 			$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
 			correctMysqlUsers($db, $db_root, $mysql_access_host_array);
 			$db_root->close();
@@ -205,8 +203,8 @@ if(($page == 'settings' || $page == 'overview')
 				$value.= ',127.0.0.1';
 				$mysql_access_host_array[] = '127.0.0.1';
 			}
-			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
 
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
 			$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
 			correctMysqlUsers($db, $db_root, $mysql_access_host_array);
 			$db_root->close();
