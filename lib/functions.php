@@ -1649,7 +1649,6 @@ function wasFormCompromised()
 function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
 {
 	global $settings, $sql;
-	
 	$users = array();
 	$users_result = $db_root->query('SELECT * FROM `mysql`.`user`');
 

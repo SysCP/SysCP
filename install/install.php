@@ -544,8 +544,8 @@ if(isset($_POST['installstep'])
 		$db_root->query("GRANT ALL PRIVILEGES ON `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`.* TO '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' IDENTIFIED BY 'password'");
 		$db_root->query("SET PASSWORD FOR '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' = PASSWORD('" . $db_root->escape($mysql_unpriv_pass) . "')");
 	}
-	$db_root->query("FLUSH PRIVILEGES;");
 
+	$db_root->query("FLUSH PRIVILEGES;");
 	$mysql_access_host = implode(',', $mysql_acces_host_array);
 	status_message('green', 'OK');
 
