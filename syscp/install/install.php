@@ -590,20 +590,20 @@ if(isset($_POST['installstep'])
 
 	// insert the lastcronrun to be the installation date
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = UNIX_TIMESTAMP() ' . 'WHERE `settinggroup` = \'system\' ' . '  AND `varname` = \'lastcronrun\'';
+	$query = 'UPDATE `%s` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'  AND `varname` = \'lastcronrun\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 
 	// and lets insert the default ip and port
 
-	$query = 'INSERT INTO `%s` ' . ' SET `ip`   = \'%s\', ' . '     `port` = \'80\' ';
+	$query = 'INSERT INTO `%s`  SET `ip`   = \'%s\',  `port` = \'80\' ';
 	$query = sprintf($query, TABLE_PANEL_IPSANDPORTS, $db->escape($serverip));
 	$db->query($query);
 	$defaultip = $db->insert_id();
 
 	// insert the defaultip
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'%s\' ' . 'WHERE `settinggroup` = \'system\' ' . '  AND `varname` = \'defaultip\'';
+	$query = 'UPDATE `%s` SET `value` = \'%s\' WHERE `settinggroup` = \'system\'  AND `varname` = \'defaultip\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS, $db->escape($defaultip));
 	$db->query($query);
 	status_message('green', 'OK');

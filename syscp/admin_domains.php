@@ -109,7 +109,7 @@ if($page == 'domains'
 			   && $_POST['send'] == 'send')
 			{
 				wasFormCompromised();
-				$query = 'SELECT `id` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE (`id`="' . (int)$id . '" OR `parentdomainid`="' . (int)$id . '") ' . '  AND  `isemaildomain`="1"';
+				$query = 'SELECT `id` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE (`id`="' . (int)$id . '" OR `parentdomainid`="' . (int)$id . '")  AND  `isemaildomain`="1"';
 				$subResult = $db->query($query);
 				$idString = array();
 
@@ -122,9 +122,9 @@ if($page == 'domains'
 
 				if($idString != '')
 				{
-					$query = 'DELETE FROM `' . TABLE_MAIL_USERS . '` ' . 'WHERE ' . $idString;
+					$query = 'DELETE FROM `' . TABLE_MAIL_USERS . '` WHERE ' . $idString;
 					$db->query($query);
-					$query = 'DELETE FROM `' . TABLE_MAIL_VIRTUAL . '` ' . 'WHERE ' . $idString;
+					$query = 'DELETE FROM `' . TABLE_MAIL_VIRTUAL . '` WHERE ' . $idString;
 					$db->query($query);
 				}
 

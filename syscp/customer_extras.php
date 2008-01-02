@@ -348,19 +348,6 @@ elseif($page == 'htaccess')
 				standard_error('mustbeurl');
 			}
 
-			/*
-				if (    ($_POST['error401path'] === '')
-				     || (validateUrl($idna_convert->encode( $_POST['error401path'] ) ) )
-				   )
-				{
-					$error401path = $_POST['error401path'];
-				}
-				else
-				{
-					standard_error('mustbeurl');
-				}
-*/
-
 			if($path_dupe_check['path'] == $path)
 			{
 				standard_error('errordocpathdupe', $userpath);
@@ -371,15 +358,7 @@ elseif($page == 'htaccess')
 			}
 			else
 			{
-				$db->query('INSERT INTO `' . TABLE_PANEL_HTACCESS . '` ' . '       (`customerid`, ' . '        `path`, ' . '        `options_indexes`, ' . '        `error404path`, ' . '        `error403path`, ' .
-
-				//						'        `error401path`, ' .
-
-				'        `error500path` ' . '       ) ' . 'VALUES ("' . (int)$userinfo['customerid'] . '", ' . '        "' . $db->escape($path) . '", ' . '        "' . $db->escape($_POST['options_indexes'] == '1' ? '1' : '0') . '", ' . '        "' . $db->escape($error404path) . '", ' . '        "' . $db->escape($error403path) . '", ' .
-
-				//						'        "'.$db->escape($error401path).'", ' .
-
-				'        "' . $db->escape($error500path) . '" ' . '       )');
+				$db->query('INSERT INTO `' . TABLE_PANEL_HTACCESS . '`  (`customerid`,  `path`,  `options_indexes`,  `error404path`,  `error403path`,  `error500path`  ) VALUES ("' . (int)$userinfo['customerid'] . '",  "' . $db->escape($path) . '",  "' . $db->escape($_POST['options_indexes'] == '1' ? '1' : '0') . '",  "' . $db->escape($error404path) . '",  "' . $db->escape($error403path) . '",  "' . $db->escape($error500path) . '"  )');
 				inserttask('3');
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -397,7 +376,7 @@ elseif($page == 'htaccess')
 	elseif(($action == 'edit')
 	       && ($id != 0))
 	{
-		$result = $db->query_first('SELECT * ' . 'FROM `' . TABLE_PANEL_HTACCESS . '` ' . 'WHERE `customerid` = "' . (int)$userinfo['customerid'] . '" ' . '  AND `id`         = "' . (int)$id . '"');
+		$result = $db->query_first('SELECT * FROM `' . TABLE_PANEL_HTACCESS . '` WHERE `customerid` = "' . (int)$userinfo['customerid'] . '"  AND `id`         = "' . (int)$id . '"');
 
 		if((isset($result['customerid']))
 		   && ($result['customerid'] != '')
@@ -444,34 +423,13 @@ elseif($page == 'htaccess')
 					standard_error('mustbeurl');
 				}
 
-				/*
-					if (    ($_POST['error401path'] === '')
-					     || (validateUrl($idna_convert->encode( $_POST['error401path'] ) ) )
-					   )
-					{
-						$error401path = $_POST['error401path'];
-					}
-					else
-					{
-						standard_error('mustbeurl');
-					}
-*/
-
 				if(($option_indexes != $result['options_indexes'])
 				   || ($error404path != $result['error404path'])
 				   || ($error403path != $result['error403path'])
-
-				//					     || ($error401path   != $result['error401path'])
-
-				
 				   || ($error500path != $result['error500path']))
 				{
 					inserttask('3');
-					$db->query('UPDATE `' . TABLE_PANEL_HTACCESS . '` ' . 'SET `options_indexes` = "' . $db->escape($option_indexes) . '",' . '    `error404path`    = "' . $db->escape($error404path) . '", ' . '    `error403path`    = "' . $db->escape($error403path) . '", ' .
-
-					//							'    `error401path`    = "'.$db->escape($error401path).'", ' .
-
-					'    `error500path`    = "' . $db->escape($error500path) . '" ' . 'WHERE `customerid` = "' . (int)$userinfo['customerid'] . '" ' . '  AND `id` = "' . (int)$id . '"');
+					$db->query('UPDATE `' . TABLE_PANEL_HTACCESS . '` SET `options_indexes` = "' . $db->escape($option_indexes) . '", `error404path`    = "' . $db->escape($error404path) . '",  `error403path`    = "' . $db->escape($error403path) . '",  `error500path`    = "' . $db->escape($error500path) . '" WHERE `customerid` = "' . (int)$userinfo['customerid'] . '"  AND `id` = "' . (int)$id . '"');
 				}
 
 				redirectTo($filename, Array(
@@ -488,9 +446,6 @@ elseif($page == 'htaccess')
 
 				$result['error404path'] = $result['error404path'];
 				$result['error403path'] = $result['error403path'];
-
-				//					$result['error401path'] = $result['error401path'];
-
 				$result['error500path'] = $result['error500path'];
 				$options_indexes = makeyesno('options_indexes', '1', '0', $result['options_indexes']);
 				$result = htmlentities_array($result);

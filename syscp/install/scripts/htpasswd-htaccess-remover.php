@@ -83,7 +83,7 @@ if(!isset($settings['panel']['version'])
  */
 
 require ("$pathtophpfiles/lib/functions.php");
-$result = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_HTACCESS . '` ');
+$result = $db->query('SELECT * FROM `' . TABLE_PANEL_HTACCESS . '` ');
 
 while($row = $db->fetch_array($result))
 {
@@ -93,7 +93,7 @@ while($row = $db->fetch_array($result))
 	}
 }
 
-$result = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_HTPASSWDS . '` ');
+$result = $db->query('SELECT * FROM `' . TABLE_PANEL_HTPASSWDS . '` ');
 
 while($row = $db->fetch_array($result))
 {
