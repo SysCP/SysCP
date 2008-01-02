@@ -204,6 +204,15 @@ while($row = $db->fetch_array($result_tasks))
 						}
 					}
 
+					if($domain['safemode'] == '0') 
+					{ 
+						$vhosts_file.='  php_admin_flag safe_mode Off '."\n"; 
+					} 
+					else 
+					{ 
+						$vhosts_file.='  php_admin_flag safe_mode On '."\n"; 
+					}
+
 					mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
 
 					if($domain['speciallogfile'] == '1')
