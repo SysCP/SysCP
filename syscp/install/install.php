@@ -546,7 +546,7 @@ if(isset($_POST['installstep'])
 	}
 
 	$db_root->query("FLUSH PRIVILEGES;");
-	$mysql_access_host = implode(',', $mysql_acces_host_array);
+	$mysql_access_host = implode(',', $mysql_access_host_array);
 	status_message('green', 'OK');
 
 	//now a new database and the new syscp-unprivileged-mysql-account have been created and we can fill it now with the data.
