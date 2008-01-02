@@ -239,7 +239,7 @@ class paging
 		}
 
 		$this->userinfo['lastpaging']['pageno'] = $this->pageno;
-		$query = 'UPDATE `' . TABLE_PANEL_SESSIONS . '` ' . 'SET `lastpaging`="' . $this->db->escape(serialize($this->userinfo['lastpaging'])) . '" ' . 'WHERE `hash`="' . $this->db->escape($userinfo['hash']) . '" ' . '  AND `userid` = "' . $this->db->escape($userinfo['userid']) . '" ' . '  AND `ipaddress` = "' . $this->db->escape($userinfo['ipaddress']) . '" ' . '  AND `useragent` = "' . $this->db->escape($userinfo['useragent']) . '" ' . '  AND `adminsession` = "' . $this->db->escape($userinfo['adminsession']) . '" ';
+		$query = 'UPDATE `' . TABLE_PANEL_SESSIONS . '` SET `lastpaging`="' . $this->db->escape(serialize($this->userinfo['lastpaging'])) . '" WHERE `hash`="' . $this->db->escape($userinfo['hash']) . '"  AND `userid` = "' . $this->db->escape($userinfo['userid']) . '"  AND `ipaddress` = "' . $this->db->escape($userinfo['ipaddress']) . '"  AND `useragent` = "' . $this->db->escape($userinfo['useragent']) . '"  AND `adminsession` = "' . $this->db->escape($userinfo['adminsession']) . '" ';
 		$this->db->query($query);
 	}
 

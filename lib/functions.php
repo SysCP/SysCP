@@ -588,8 +588,8 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 	   || $type == '4'
 	   || $type == '5')
 	{
-		$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` ' . 'WHERE `type`="' . $type . '"');
-		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` ' . '(`type`) ' . 'VALUES ' . '("' . $type . '")');
+		$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE `type`="' . $type . '"');
+		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`) VALUES ("' . $type . '")');
 	}
 	elseif($type == '2'
 	       && $param1 != ''
@@ -601,7 +601,7 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 		$data['uid'] = $param2;
 		$data['gid'] = $param3;
 		$data = serialize($data);
-		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` ' . '(`type`, `data`) ' . 'VALUES ' . '("2", "' . $db->escape($data) . '")');
+		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("2", "' . $db->escape($data) . '")');
 	}
 }
 
@@ -726,7 +726,7 @@ function updateCounters($returndebuginfo = false)
 
 	// Customers
 
-	$customers = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'ORDER BY `customerid`');
+	$customers = $db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` ORDER BY `customerid`');
 
 	while($customer = $db->fetch_array($customers))
 	{
@@ -812,11 +812,11 @@ function updateCounters($returndebuginfo = false)
 			$admin_resources[$customer['adminid']]['subdomains_used']+= intval_ressource($customer['subdomains']);
 		}
 
-		$customer_mysqls = $db->query_first('SELECT COUNT(*) AS `number_mysqls` ' . 'FROM `' . TABLE_PANEL_DATABASES . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer_mysqls = $db->query_first('SELECT COUNT(*) AS `number_mysqls` FROM `' . TABLE_PANEL_DATABASES . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 		$customer['mysqls_used_new'] = $customer_mysqls['number_mysqls'];
-		$customer_emails = $db->query_first('SELECT COUNT(*) AS `number_emails` ' . 'FROM `' . TABLE_MAIL_VIRTUAL . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer_emails = $db->query_first('SELECT COUNT(*) AS `number_emails` FROM `' . TABLE_MAIL_VIRTUAL . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 		$customer['emails_used_new'] = $customer_emails['number_emails'];
-		$customer_emails_result = $db->query('SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` ' . 'FROM `' . TABLE_MAIL_VIRTUAL . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '" ');
+		$customer_emails_result = $db->query('SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` FROM `' . TABLE_MAIL_VIRTUAL . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '" ');
 		$customer_email_forwarders = 0;
 		$customer_email_accounts = 0;
 
@@ -837,11 +837,11 @@ function updateCounters($returndebuginfo = false)
 
 		$customer['email_accounts_used_new'] = $customer_email_accounts;
 		$customer['email_forwarders_used_new'] = $customer_email_forwarders;
-		$customer_ftps = $db->query_first('SELECT COUNT(*) AS `number_ftps` ' . 'FROM `' . TABLE_FTP_USERS . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer_ftps = $db->query_first('SELECT COUNT(*) AS `number_ftps` FROM `' . TABLE_FTP_USERS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 		$customer['ftps_used_new'] = ($customer_ftps['number_ftps']-1);
-		$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '" ' . 'AND `parentdomainid` <> "0"');
+		$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '" AND `parentdomainid` <> "0"');
 		$customer['subdomains_used_new'] = $customer_subdomains['number_subdomains'];
-		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '", ' . '    `emails_used` = "' . (int)$customer['emails_used_new'] . '", ' . '    `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '", ' . '    `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '", ' . '    `ftps_used` = "' . (int)$customer['ftps_used_new'] . '", ' . '    `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" ' . 'WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '",  `emails_used` = "' . (int)$customer['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$customer['ftps_used_new'] . '",  `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 
 		if($returndebuginfo === true)
 		{
@@ -851,13 +851,13 @@ function updateCounters($returndebuginfo = false)
 
 	// Admins
 
-	$admins = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_ADMINS . '` ' . 'ORDER BY `adminid`');
+	$admins = $db->query('SELECT * FROM `' . TABLE_PANEL_ADMINS . '` ORDER BY `adminid`');
 
 	while($admin = $db->fetch_array($admins))
 	{
-		$admin_customers = $db->query_first('SELECT COUNT(*) AS `number_customers` ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
+		$admin_customers = $db->query_first('SELECT COUNT(*) AS `number_customers` FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
 		$admin['customers_used_new'] = $admin_customers['number_customers'];
-		$admin_domains = $db->query_first('SELECT COUNT(*) AS `number_domains` ' . 'FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '" ' . 'AND `isemaildomain` = "1"');
+		$admin_domains = $db->query_first('SELECT COUNT(*) AS `number_domains` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `adminid` = "' . (int)$admin['adminid'] . '" AND `isemaildomain` = "1"');
 		$admin['domains_used_new'] = $admin_domains['number_domains'];
 
 		if(!isset($admin_resources[$admin['adminid']]))
@@ -920,7 +920,7 @@ function updateCounters($returndebuginfo = false)
 		}
 
 		$admin['subdomains_used_new'] = $admin_resources[$admin['adminid']]['subdomains_used'];
-		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `customers_used` = "' . (int)$admin['customers_used_new'] . '", ' . '    `domains_used` = "' . (int)$admin['domains_used_new'] . '", ' . '    `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '", ' . '    `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '", ' . '    `emails_used` = "' . (int)$admin['emails_used_new'] . '", ' . '    `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '", ' . '    `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '", ' . '    `ftps_used` = "' . (int)$admin['ftps_used_new'] . '", ' . '    `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '", ' . '    `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" ' . 'WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
+		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `customers_used` = "' . (int)$admin['customers_used_new'] . '",  `domains_used` = "' . (int)$admin['domains_used_new'] . '",  `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '",  `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '",  `emails_used` = "' . (int)$admin['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$admin['ftps_used_new'] . '",  `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '",  `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
 
 		if($returndebuginfo === true)
 		{
@@ -1037,7 +1037,7 @@ function updateCounters($returndebuginfo = false)
 	// query database
 	//
 
-	$query = 'SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape(AREA) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 'ORDER BY `order`, `id` ASC';
+	$query = 'SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape(AREA) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ORDER BY `order`, `id` ASC';
 	$result = $db->query($query);
 
 	//
@@ -1053,7 +1053,7 @@ function updateCounters($returndebuginfo = false)
 			$row['parent_url'] = $row['url'];
 			$row['isparent'] = 1;
 			$nav[$row['parent_url']][] = _createNavigationEntry($s, $row);
-			$subQuery = 'SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape(AREA) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ' . 'ORDER BY `order`, `id` ASC';
+			$subQuery = 'SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape(AREA) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ORDER BY `order`, `id` ASC';
 			$subResult = $db->query($subQuery);
 
 			while($subRow = $db->fetch_array($subResult))

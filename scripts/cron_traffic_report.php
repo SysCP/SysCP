@@ -52,7 +52,7 @@ while($row = $db->fetch_array($result))
 		$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
 		$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
 		mail(buildValidMailFrom($row['firstname'] . ' ' . $row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['adminname'], $row['adminemail']));
-		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `reportsent`=\'1\' ' . 'WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
+		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `reportsent`=\'1\' WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
 	}
 }
 
@@ -77,7 +77,7 @@ while($row = $db->fetch_array($result))
 		$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
 		$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
 		mail(buildValidMailFrom($row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['name'], $row['email']));
-		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `reportsent`=\'1\' ' . 'WHERE `customerid`=\'' . (int)$row['adminid'] . '\'');
+		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `reportsent`=\'1\' WHERE `customerid`=\'' . (int)$row['adminid'] . '\'');
 	}
 
 	// Another month, let's build our report
@@ -105,11 +105,11 @@ while($row = $db->fetch_array($result))
 
 if(date('d') == '01')
 {
-	$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `reportsent` = \'0\';');
-	$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` ' . 'SET `reportsent` = \'0\';');
+	$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `reportsent` = \'0\';');
+	$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `reportsent` = \'0\';');
 }
 
-$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = UNIX_TIMESTAMP() ' . 'WHERE `settinggroup` = \'system\'  ' . '  AND `varname`      = \'last_traffic_report_run\' ');
+$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'   AND `varname`      = \'last_traffic_report_run\' ');
 
 /**
  * STARTING CRONSCRIPT FOOTER

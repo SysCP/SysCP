@@ -373,7 +373,7 @@ while($row = $db->fetch_array($result_tasks))
 			echo 'WARNING!!! ' . $settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!';
 		}
 
-		$result = $db->query('SELECT `htac`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` ' . 'FROM `' . TABLE_PANEL_HTACCESS . '` `htac` ' . 'LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ' . 'ORDER BY `htac`.`path`');
+		$result = $db->query('SELECT `htac`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_PANEL_HTACCESS . '` `htac` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ORDER BY `htac`.`path`');
 		$diroptions = array();
 
 		while($row_diroptions = $db->fetch_array($result))
@@ -387,7 +387,7 @@ while($row = $db->fetch_array($result_tasks))
 			}
 		}
 
-		$result = $db->query('SELECT `htpw`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` ' . 'FROM `' . TABLE_PANEL_HTPASSWDS . '` `htpw` ' . 'LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ' . 'ORDER BY `htpw`.`path`, `htpw`.`username`');
+		$result = $db->query('SELECT `htpw`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_PANEL_HTPASSWDS . '` `htpw` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ORDER BY `htpw`.`path`, `htpw`.`username`');
 
 		while($row_htpasswds = $db->fetch_array($result))
 		{
@@ -443,11 +443,6 @@ while($row = $db->fetch_array($result_tasks))
 				{
 					$diroptions_file.= '  ErrorDocument 403 ' . $row_diroptions['error403path'] . "\n";
 				}
-
-				//				if ( isset ( $row_diroptions['error401path'] ) && $row_diroptions['error401path'] != '')
-				//				{
-				//					$diroptions_file .= '  ErrorDocument 401 '.$row_diroptions['error401path']."\n";
-				//				}
 
 				if(isset($row_diroptions['error500path'])
 				   && $row_diroptions['error500path'] != '')
@@ -756,7 +751,7 @@ while($row = $db->fetch_array($result_tasks))
 	 */
 	elseif ($row['type'] == '5')
 	{
-		$result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` ' . 'FROM `' . TABLE_FTP_USERS . '` `f` ' . 'LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ');
+		$result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_FTP_USERS . '` `f` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ');
 
 		while($directory = $db->fetch_array($result_directories))
 		{
@@ -779,7 +774,7 @@ if($db->num_rows($result_tasks) != 0)
 	unset($where);
 }
 
-$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = UNIX_TIMESTAMP() ' . 'WHERE `settinggroup` = \'system\'  ' . '  AND `varname`      = \'last_tasks_run\' ');
+$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'   AND `varname`      = \'last_tasks_run\' ');
 
 /**
  * STARTING CRONSCRIPT FOOTER

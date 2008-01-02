@@ -410,23 +410,23 @@ if(($page == 'settings' || $page == 'overview')
 				{
 					//delete
 
-					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `lang` = "menue;mysql;phpmyadmin"';
+					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin"';
 				}
 				else
 				{
 					//update
 
-					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `url`="' . $db->escape($value) . '" ' . 'WHERE `lang` = "menue;mysql;phpmyadmin"';
+					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;mysql;phpmyadmin"';
 				}
 			}
 			else
 			{
 				// insert into menu
 
-				$query = 'SELECT MAX(`order`) AS `max` ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'customer\' AND `parent_url`=\'customer_mysql.php\'';
+				$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_mysql.php\'';
 				$max = $db->query_first($query);
 				$new = floor($max['max']/10)+10;
-				$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "menue;mysql;phpmyadmin", ' . '    `url`        = "' . $db->escape($value) . '", ' . '    `order`      = "' . (int)$new . '", ' . '    `area`       = "customer", ' . '    `new_window` = "1", ' . '    `required_resources` = "mysqls_used", ' . '    `parent_url` = "customer_mysql.php"';
+				$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;mysql;phpmyadmin",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "mysqls_used",  `parent_url` = "customer_mysql.php"';
 			}
 
 			$db->query($query);
@@ -452,23 +452,23 @@ if(($page == 'settings' || $page == 'overview')
 				{
 					//delete
 
-					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `lang` = "menue;email;webmail"';
+					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;email;webmail"';
 				}
 				else
 				{
 					//update
 
-					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `url`="' . $db->escape($value) . '" ' . 'WHERE `lang` = "menue;email;webmail"';
+					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;email;webmail"';
 				}
 			}
 			else
 			{
 				// insert into menu
 
-				$query = 'SELECT MAX(`order`) AS `max` ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'customer\' AND `parent_url`=\'customer_email.php\'';
+				$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_email.php\'';
 				$max = $db->query_first($query);
 				$new = floor($max['max']/10)+10;
-				$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "menue;email;webmail", ' . '    `url`        = "' . $db->escape($value) . '", ' . '    `order`      = "' . (int)$new . '", ' . '    `area`       = "customer", ' . '    `new_window` = "1", ' . '    `required_resources` = "emails_used", ' . '    `parent_url` = "customer_email.php"';
+				$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;email;webmail",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "emails_used",  `parent_url` = "customer_email.php"';
 			}
 
 			$db->query($query);
@@ -494,23 +494,23 @@ if(($page == 'settings' || $page == 'overview')
 				{
 					//delete
 
-					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `lang` = "menue;ftp;webftp"';
+					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ftp;webftp"';
 				}
 				else
 				{
 					//update
 
-					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `url`="' . $db->escape($value) . '" ' . 'WHERE `lang` = "menue;ftp;webftp"';
+					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;ftp;webftp"';
 				}
 			}
 			else
 			{
 				// insert into menu
 
-				$query = 'SELECT MAX(`order`) AS `max` ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'customer\' AND `parent_url`=\'customer_ftp.php\'';
+				$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_ftp.php\'';
 				$max = $db->query_first($query);
 				$new = floor($max['max']/10)+10;
-				$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "menue;ftp;webftp", ' . '    `url`        = "' . $db->escape($value) . '", ' . '    `order`      = "' . (int)$new . '", ' . '    `area`       = "customer", ' . '    `new_window` = "1", ' . '    `parent_url` = "customer_ftp.php"';
+				$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;ftp;webftp",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `parent_url` = "customer_ftp.php"';
 			}
 
 			$db->query($query);
@@ -526,7 +526,7 @@ if(($page == 'settings' || $page == 'overview')
 	{
 		// build the languages list
 
-		$query = 'SELECT * ' . 'FROM `' . TABLE_PANEL_LANGUAGE . '` ';
+		$query = 'SELECT * FROM `' . TABLE_PANEL_LANGUAGE . '` ';
 		$result = $db->query($query);
 		$languages_array = array();
 		$languages = '';

@@ -266,7 +266,7 @@ while($row = $db->fetch_array($result))
 	}
 }
 
-$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = UNIX_TIMESTAMP() ' . 'WHERE `settinggroup` = \'system\'  ' . '  AND `varname`      = \'last_traffic_run\' ');
+$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'   AND `varname`      = \'last_traffic_run\' ');
 
 /**
  * STARTING CRONSCRIPT FOOTER

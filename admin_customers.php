@@ -428,7 +428,7 @@ if($page == 'customers'
 					{
 						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` " . "(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " . "VALUES ('" . $db->escape($loginname . '.' . $settings['system']['hostname']) . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '-1', '" . $db->escape($settings['system']['defaultip']) . "', '" . $db->escape($documentroot) . "', '', '0', '0', '1', '1', '0', '')");
 						$domainid = $db->insert_id();
-						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `standardsubdomain`=\'' . (int)$domainid . '\' ' . 'WHERE `customerid`=\'' . (int)$customerid . '\'');
+						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'' . (int)$domainid . '\' WHERE `customerid`=\'' . (int)$customerid . '\'');
 						inserttask('1');
 					}
 
@@ -575,15 +575,15 @@ if($page == 'customers'
 					{
 						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` " . "(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " . "VALUES ('" . $db->escape($result['loginname'] . '.' . $settings['system']['hostname']) . "', '" . (int)$result['customerid'] . "', '" . (int)$userinfo['adminid'] . "', '-1', '" . $db->escape($settings['system']['defaultip']) . "', '" . $db->escape($result['documentroot']) . "', '', '0', '0', '1', '1', '0', '')");
 						$domainid = $db->insert_id();
-						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `standardsubdomain`=\'' . (int)$domainid . '\' ' . 'WHERE `customerid`=\'' . (int)$result['customerid'] . '\'');
+						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'' . (int)$domainid . '\' WHERE `customerid`=\'' . (int)$result['customerid'] . '\'');
 						inserttask('1');
 					}
 
 					if($createstdsubdomain == '0'
 					   && $result['standardsubdomain'] != '0')
 					{
-						$db->query('DELETE FROM `' . TABLE_PANEL_DOMAINS . '` ' . 'WHERE `id`=\'' . (int)$result['standardsubdomain'] . '\'');
-						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `standardsubdomain`=\'0\' ' . 'WHERE `customerid`=\'' . (int)$result['customerid'] . '\'');
+						$db->query('DELETE FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `id`=\'' . (int)$result['standardsubdomain'] . '\'');
+						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'0\' WHERE `customerid`=\'' . (int)$result['customerid'] . '\'');
 						inserttask('1');
 					}
 

@@ -136,8 +136,8 @@ if($settings['panel']['version'] == '1.2.2-cvs4')
 
 if($settings['panel']['version'] == '1.2.3')
 {
-	$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `lang` = "menue;mysql;phpmyadmin" OR `lang` = "menue;email;webmail" OR `lang` = "menue;ftp;webftp"');
-	$db->query('ALTER TABLE `' . TABLE_PANEL_NAVIGATION . '` ADD `parent_url` VARCHAR( 255 ) NOT NULL AFTER `parent_id`, ' . 'ADD `required_resources` VARCHAR( 255 ) NOT NULL , ' . 'ADD `new_window` TINYINT( 1 ) UNSIGNED NOT NULL ');
+	$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin" OR `lang` = "menue;email;webmail" OR `lang` = "menue;ftp;webftp"');
+	$db->query('ALTER TABLE `' . TABLE_PANEL_NAVIGATION . '` ADD `parent_url` VARCHAR( 255 ) NOT NULL AFTER `parent_id`, ADD `required_resources` VARCHAR( 255 ) NOT NULL , ADD `new_window` TINYINT( 1 ) UNSIGNED NOT NULL ');
 	$updateNavigationResult = $db->query("SELECT `id`, `url` FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `parent_id` = '0'");
 
 	while($updateNavigationRow = $db->fetch_array($updateNavigationResult))
@@ -155,17 +155,17 @@ if($settings['panel']['version'] == '1.2.3')
 
 	if($settings['panel']['phpmyadmin_url'] != '')
 	{
-		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "menue;mysql;phpmyadmin", ' . '    `url`        = "' . $db->escape($settings['panel']['phpmyadmin_url']) . '", ' . '    `area`       = "customer", ' . '    `new_window` = "1", ' . '    `required_resources` = "mysqls_used", ' . '    `parent_url` = "customer_mysql.php"');
+		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;mysql;phpmyadmin",  `url`        = "' . $db->escape($settings['panel']['phpmyadmin_url']) . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "mysqls_used",  `parent_url` = "customer_mysql.php"');
 	}
 
 	if($settings['panel']['webmail_url'] != '')
 	{
-		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "menue;email;webmail", ' . '    `url`        = "' . $db->escape($settings['panel']['webmail_url']) . '", ' . '    `area`       = "customer", ' . '    `new_window` = "1", ' . '    `required_resources` = "emails_used", ' . '    `parent_url` = "customer_email.php"');
+		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;email;webmail",  `url`        = "' . $db->escape($settings['panel']['webmail_url']) . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "emails_used",  `parent_url` = "customer_email.php"');
 	}
 
 	if($settings['panel']['webftp_url'] != '')
 	{
-		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "menue;ftp;webftp", ' . '    `url`        = "' . $db->escape($settings['panel']['webftp_url']) . '", ' . '    `area`       = "customer", ' . '    `new_window` = "1", ' . '    `parent_url` = "customer_ftp.php"');
+		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;ftp;webftp",  `url`        = "' . $db->escape($settings['panel']['webftp_url']) . '",  `area`       = "customer",  `new_window` = "1",  `parent_url` = "customer_ftp.php"');
 	}
 
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.3-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
@@ -174,7 +174,7 @@ if($settings['panel']['version'] == '1.2.3')
 
 if($settings['panel']['version'] == '1.2.3-cvs1')
 {
-	$db->query('ALTER TABLE `' . TABLE_PANEL_DATABASES . '` ' . 'ADD `description` VARCHAR( 255 ) NOT NULL');
+	$db->query('ALTER TABLE `' . TABLE_PANEL_DATABASES . '` ADD `description` VARCHAR( 255 ) NOT NULL');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.3-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.3-cvs2';
 }
@@ -273,13 +273,13 @@ if($settings['panel']['version'] == '1.2.5')
 
 if($settings['panel']['version'] == '1.2.5-cvs1')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "admin;resources", ' . '    `url`        = "admin_resources.nourl", ' . '    `area`       = "admin"');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "admin;server", ' . '    `url`        = "admin_server.nourl", ' . '    `required_resources` = "change_serversettings", ' . '    `area`       = "admin"');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `lang`       = "login;login", ' . '    `url`        = "login.nourl", ' . '    `area`       = "login"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `parent_url` = "admin_index.php" ' . 'WHERE `url`      = "admin_index.php?page=change_password" OR ' . '      `url`      = "admin_index.php?action=logout"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `parent_url` = "admin_resources.nourl" ' . 'WHERE `url`      = "admin_customers.php?page=customers" OR ' . '      `url`      = "admin_domains.php?page=domains" OR ' . '      `url`      = "admin_admins.php?page=admins"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `parent_url` = "admin_server.nourl" ' . 'WHERE `url`      = "admin_configfiles.php?page=configfiles" OR ' . '      `url`      = "admin_settings.php?page=settings"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `parent_url` = "login.nourl" ' . 'WHERE `url`      = "index.php"');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "admin;resources",  `url`        = "admin_resources.nourl",  `area`       = "admin"');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "admin;server",  `url`        = "admin_server.nourl",  `required_resources` = "change_serversettings",  `area`       = "admin"');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "login;login",  `url`        = "login.nourl",  `area`       = "login"');
+	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "admin_index.php" WHERE `url`      = "admin_index.php?page=change_password" OR  `url`      = "admin_index.php?action=logout"');
+	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "admin_resources.nourl" WHERE `url`      = "admin_customers.php?page=customers" OR  `url`      = "admin_domains.php?page=domains" OR  `url`      = "admin_admins.php?page=admins"');
+	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "admin_server.nourl" WHERE `url`      = "admin_configfiles.php?page=configfiles" OR  `url`      = "admin_settings.php?page=settings"');
+	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "login.nourl" WHERE `url`      = "index.php"');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.5-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.5-cvs2';
 }
@@ -312,7 +312,7 @@ if($settings['panel']['version'] == '1.2.5-cvs2')
 
 if($settings['panel']['version'] == '1.2.5-cvs3')
 {
-	$db->query('UPDATE `' . TABLE_PANEL_HTACCESS . '` ' . 'SET `error404path` = "", ' . '    `error403path` = "", ' . '    `error401path` = "", ' . '    `error500path` = "" ');
+	$db->query('UPDATE `' . TABLE_PANEL_HTACCESS . '` SET `error404path` = "",  `error403path` = "",  `error401path` = "",  `error500path` = "" ');
 	inserttask('3');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.5-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.5-cvs4';
@@ -353,7 +353,7 @@ if($settings['panel']['version'] == '1.2.6')
 
 if($settings['panel']['version'] == '1.2.6-cvs1')
 {
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `url`=\'admin_index.php\' ' . 'WHERE `url`=\'admin_index.php?page=overview\'');
+	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`=\'admin_index.php\' WHERE `url`=\'admin_index.php?page=overview\'');
 	$db->query('ALTER TABLE `' . TABLE_PANEL_NAVIGATION . '` ADD `order` INT( 4 ) NOT NULL AFTER `url`');
 	$areas = array(
 		'login',
@@ -362,20 +362,20 @@ if($settings['panel']['version'] == '1.2.6-cvs1')
 	);
 	foreach($areas as $area)
 	{
-		$result = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape($area) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ' . 'ORDER BY `order`, `id` ASC');
+		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape($area) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ORDER BY `order`, `id` ASC');
 		$i = 0;
 
 		while($row = $db->fetch_array($result))
 		{
 			$i++;
-			$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `order`=\'' . ($i*10) . '\' ' . 'WHERE `id`=\'' . (int)$row['id'] . '\'');
-			$subResult = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_NAVIGATION . '` ' . 'WHERE `area`=\'' . $db->escape($area) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ' . 'ORDER BY `order`, `id` ASC');
+			$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($i*10) . '\' WHERE `id`=\'' . (int)$row['id'] . '\'');
+			$subResult = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape($area) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ORDER BY `order`, `id` ASC');
 			$j = 0;
 
 			while($subRow = $db->fetch_array($subResult))
 			{
 				$j++;
-				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `order`=\'' . ($j*10) . '\' ' . 'WHERE `id`=\'' . (int)$subRow['id'] . '\'');
+				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($j*10) . '\' WHERE `id`=\'' . (int)$subRow['id'] . '\'');
 			}
 		}
 	}
@@ -424,13 +424,13 @@ if($settings['panel']['version'] == '1.2.7')
 if($settings['panel']['version'] == '1.2.7-cvs1')
 {
 	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` CHANGE `createstdsubdomain` `standardsubdomain` INT( 11 ) NOT NULL ");
-	$result = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'WHERE `standardsubdomain`=\'1\'');
+	$result = $db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `standardsubdomain`=\'1\'');
 
 	while($row = $db->fetch_array($result))
 	{
 		$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` " . "(`domain`, `customerid`, `adminid`, `documentroot`, `zonefile`, `isemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " . "VALUES ('" . $db->escape($row['loginname']) . '.' . $db->escape($settings['system']['hostname']) . "', '" . (int)$row['customerid'] . "', '" . (int)$row['adminid'] . "', '" . $db->escape($row['documentroot']) . "', '', '0', '1', '1', '0', '')");
 		$domainid = $db->insert_id();
-		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` ' . 'SET `standardsubdomain`=\'' . (int)$domainid . '\' ' . 'WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
+		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'' . (int)$domainid . '\' WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
 	}
 
 	inserttask('1');
@@ -443,9 +443,9 @@ if($settings['panel']['version'] == '1.2.7-cvs2')
 	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `isbinddomain` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `documentroot`");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `subcanemaildomain` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `iswildcarddomain`");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `caneditdomain` TINYINT( 1 ) NOT NULL DEFAULT '1' AFTER `subcanemaildomain`");
-	$db->query('UPDATE ' . '`' . TABLE_PANEL_DOMAINS . '` ' . 'SET `isbinddomain`=\'1\'' . 'WHERE `isemaildomain`=\'1\'');
+	$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `isbinddomain`=\'1\' WHERE `isemaildomain`=\'1\'');
 	$standardsubdomainids = Array();
-	$result = $db->query('SELECT * ' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'WHERE `standardsubdomain`<>\'0\'');
+	$result = $db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `standardsubdomain`<>\'0\'');
 
 	while($row = $db->fetch_array($result))
 	{
@@ -456,7 +456,7 @@ if($settings['panel']['version'] == '1.2.7-cvs2')
 
 	if($standardsubdomainids != '')
 	{
-		$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` ' . 'SET `caneditdomain`=\'0\' ' . 'WHERE `id` IN(' . $standardsubdomainids . ')');
+		$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `caneditdomain`=\'0\' WHERE `id` IN(' . $standardsubdomainids . ')');
 	}
 
 	inserttask('1');
@@ -521,22 +521,22 @@ if($settings['panel']['version'] == '1.2.11')
 
 if($settings['panel']['version'] == '1.2.11-cvs1')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settingid` = \'\' , ' . '`settinggroup`  = \'panel\', ' . '`varname`       = \'pathedit\', ' . '`value`         = \'Manual\'');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settingid` = \'\' , `settinggroup`  = \'panel\', `varname`       = \'pathedit\', `value`         = \'Manual\'');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.11-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.11-cvs2';
 }
 
 if($settings['panel']['version'] == '1.2.11-cvs2')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `area` = \'admin\', ' . '    `parent_url` = \'admin_server.nourl\', ' . '    `lang` = \'admin;rebuildconf\', ' . '    `url` = \'admin_settings.php?page=rebuildconfigs\', ' . '    `order` = \'30\', ' . '    `required_resources` = \'change_serversettings\', ' . '    `new_window` = \'0\'');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area` = \'admin\',  `parent_url` = \'admin_server.nourl\',  `lang` = \'admin;rebuildconf\',  `url` = \'admin_settings.php?page=rebuildconfigs\',  `order` = \'30\',  `required_resources` = \'change_serversettings\',  `new_window` = \'0\'');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.11-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.11-cvs3';
 }
 
 if($settings['panel']['version'] == '1.2.11-cvs3')
 {
-	$db->query('ALTER TABLE `' . TABLE_MAIL_USERS . '` ' . 'CHANGE  `email`    `email`    VARCHAR( 255 ) NOT NULL , ' . 'CHANGE  `username` `username` VARCHAR( 255 ) NOT NULL , ' . 'CHANGE  `homedir`  `homedir`  VARCHAR( 255 ) NOT NULL , ' . 'CHANGE  `maildir`  `maildir`  VARCHAR( 255 ) NOT NULL ');
-	$db->query('ALTER TABLE `' . TABLE_MAIL_VIRTUAL . '` ' . 'CHANGE  `email`      `email`      VARCHAR( 255 ) NOT NULL , ' . 'CHANGE  `email_full` `email_full` VARCHAR( 255 ) NOT NULL ');
+	$db->query('ALTER TABLE `' . TABLE_MAIL_USERS . '` CHANGE  `email`    `email`    VARCHAR( 255 ) NOT NULL , CHANGE  `username` `username` VARCHAR( 255 ) NOT NULL , CHANGE  `homedir`  `homedir`  VARCHAR( 255 ) NOT NULL , CHANGE  `maildir`  `maildir`  VARCHAR( 255 ) NOT NULL ');
+	$db->query('ALTER TABLE `' . TABLE_MAIL_VIRTUAL . '` CHANGE  `email`      `email`      VARCHAR( 255 ) NOT NULL , CHANGE  `email_full` `email_full` VARCHAR( 255 ) NOT NULL ');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.11-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.11-cvs4';
 }
@@ -549,16 +549,16 @@ if($settings['panel']['version'] == '1.2.11-cvs4')
 
 if($settings['panel']['version'] == '1.2.12')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'apacheconf_filename\', ' . '    `value`        = \'vhosts.conf\' ');
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'lastcronrun\', ' . '    `value`        = \'\' ');
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'panel\', ' . '    `varname`      = \'paging\', ' . '    `value`        = \'20\' ');
-	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = \'1.2.12-svn1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'apacheconf_filename\',  `value`        = \'vhosts.conf\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'lastcronrun\',  `value`        = \'\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'panel\',  `varname`      = \'paging\',  `value`        = \'20\' ');
+	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'1.2.12-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'');
 	$settings['panel']['version'] = '1.2.12-svn1';
 }
 
 if($settings['panel']['version'] == '1.2.12-svn1')
 {
-	$db->query('ALTER TABLE `' . TABLE_PANEL_DOMAINS . '` ' . 'ADD `ipandport` int(11) unsigned NOT NULL default \'1\' AFTER `documentroot`');
+	$db->query('ALTER TABLE `' . TABLE_PANEL_DOMAINS . '` ADD `ipandport` int(11) unsigned NOT NULL default \'1\' AFTER `documentroot`');
 	$db->query('CREATE TABLE `' . TABLE_PANEL_IPSANDPORTS . '` (
 			`id` int(11) unsigned NOT NULL auto_increment,
 			`ip` varchar(15) NOT NULL default \'\',
@@ -566,27 +566,27 @@ if($settings['panel']['version'] == '1.2.12-svn1')
 			`default` int(1) NOT NULL default \'0\',
 			PRIMARY KEY  (`id`)
 			) TYPE=MyISAM');
-	$db->query('INSERT INTO `' . TABLE_PANEL_IPSANDPORTS . '` ' . '(`ip`, `port`, `default`)' . 'VALUES (\'' . $settings['system']['ipaddress'] . '\', \'80\', \'1\')');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . '(`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)' . 'VALUES (\'admin\', \'admin_server.nourl\', \'admin;ipsandports;ipsandports\', \'admin_ipsandports.php?page=ipsandports\', \'40\', \'change_serversettings\', 0)');
-	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = \'1.2.12-svn2\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'');
+	$db->query('INSERT INTO `' . TABLE_PANEL_IPSANDPORTS . '` (`ip`, `port`, `default`) VALUES (\'' . $settings['system']['ipaddress'] . '\', \'80\', \'1\')');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (\'admin\', \'admin_server.nourl\', \'admin;ipsandports;ipsandports\', \'admin_ipsandports.php?page=ipsandports\', \'40\', \'change_serversettings\', 0)');
+	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'1.2.12-svn2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'');
 	$settings['panel']['version'] = '1.2.12-svn2';
 }
 
 if($settings['panel']['version'] == '1.2.12-svn2')
 {
-	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = \'1.2.13-rc1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'');
+	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'1.2.13-rc1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'');
 	$settings['panel']['version'] = '1.2.13-rc1';
 }
 
 if($settings['panel']['version'] == '1.2.13-rc1')
 {
-	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = \'1.2.13-rc2\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'');
+	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'1.2.13-rc2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'');
 	$settings['panel']['version'] = '1.2.13-rc2';
 }
 
 if($settings['panel']['version'] == '1.2.13-rc2')
 {
-	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `value` = \'1.2.13-rc3\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'');
+	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'1.2.13-rc3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'');
 	$settings['panel']['version'] = '1.2.13-rc3';
 }
 
@@ -594,13 +594,13 @@ if($settings['panel']['version'] == '1.2.13-rc3')
 {
 	// update lastcronrun to current date
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = UNIX_TIMESTAMP() ' . 'WHERE `settinggroup` = \'system\' ' . 'AND `varname` = \'lastcronrun\' ';
+	$query = 'UPDATE `%s` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\' AND `varname` = \'lastcronrun\' ';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.13-rc4\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.13-rc4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.13-rc4';
@@ -610,7 +610,7 @@ if($settings['panel']['version'] == '1.2.13-rc4')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.13\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.13\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.13';
@@ -620,7 +620,7 @@ if($settings['panel']['version'] == '1.2.13')
 {
 	//get highest accountnumber
 
-	$query = 'SELECT `loginname`	' . 'FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . 'WHERE `loginname` LIKE \'' . $db->escape($settings['customer']['accountprefix']) . '%\';';
+	$query = 'SELECT `loginname`	 FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `loginname` LIKE \'' . $db->escape($settings['customer']['accountprefix']) . '%\';';
 	$result = $db->query($query);
 	$lastaccountnumber = 0;
 
@@ -636,14 +636,14 @@ if($settings['panel']['version'] == '1.2.13')
 
 	//update the lastaccountnumber to refer to the highest account availible + 1
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'' . (int)$lastaccountnumber . '\' ' . 'WHERE `settinggroup` = \'system\' ' . 'AND `varname` = \'lastaccountnumber\'';
+	$query = 'UPDATE `%s` SET `value` = \'' . (int)$lastaccountnumber . '\' WHERE `settinggroup` = \'system\' AND `varname` = \'lastaccountnumber\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['system']['lastaccountnumber'] = $lastaccountnumber;
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.13-svn1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.13-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.13-svn1';
@@ -657,7 +657,7 @@ if($settings['panel']['version'] == '1.2.13-svn1')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.13-svn2\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.13-svn2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.13-svn2';
@@ -667,12 +667,12 @@ if($settings['panel']['version'] == '1.2.13-svn2')
 {
 	// Show the logged-in username in "overview"
 
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . '(`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)' . 'VALUES (\'admin\', \'admin_index.php\', \'menue;main;username\', \'admin_index.nourl\', \'5\', \'\', 0)');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . '(`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)' . 'VALUES (\'customer\', \'customer_index.php\', \'menue;main;username\', \'customer_index.nourl\', \'5\', \'\', 0)');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (\'admin\', \'admin_index.php\', \'menue;main;username\', \'admin_index.nourl\', \'5\', \'\', 0)');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (\'customer\', \'customer_index.php\', \'menue;main;username\', \'customer_index.nourl\', \'5\', \'\', 0)');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.13-svn3\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.13-svn3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.13-svn3';
@@ -682,12 +682,12 @@ if($settings['panel']['version'] == '1.2.13-svn3')
 {
 	$result = $db->query_first('SELECT `id` FROM `' . TABLE_PANEL_IPSANDPORTS . '` WHERE `default` = \'1\' ');
 	$defaultip = $result['id'];
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'defaultip\', ' . '    `value`        = \'' . (int)$defaultip . '\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'defaultip\',  `value`        = \'' . (int)$defaultip . '\' ');
 	$db->query('ALTER TABLE `' . TABLE_PANEL_IPSANDPORTS . '` DROP `default` ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.13-svn4\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.13-svn4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.13-svn4';
@@ -695,11 +695,11 @@ if($settings['panel']['version'] == '1.2.13-svn3')
 
 if($settings['panel']['version'] == '1.2.13-svn4')
 {
-	$db->query('ALTER TABLE `' . TABLE_PANEL_SESSIONS . '` ' . ' ADD `lastpaging` VARCHAR( 255 ) NOT NULL AFTER `lastactivity` ');
+	$db->query('ALTER TABLE `' . TABLE_PANEL_SESSIONS . '`  ADD `lastpaging` VARCHAR( 255 ) NOT NULL AFTER `lastactivity` ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.13-svn5\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.13-svn5\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.13-svn5';
@@ -709,7 +709,7 @@ if($settings['panel']['version'] == '1.2.13-svn5')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc1';
@@ -721,7 +721,7 @@ if($settings['panel']['version'] == '1.2.14-rc1')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc1-svn1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc1-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc1-svn1';
@@ -731,7 +731,7 @@ if($settings['panel']['version'] == '1.2.14-rc1-svn1')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc2\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc2';
@@ -741,7 +741,7 @@ if($settings['panel']['version'] == '1.2.14-rc2')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc3\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc3';
@@ -753,7 +753,7 @@ if($settings['panel']['version'] == '1.2.14-rc3')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc3-svn1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc3-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc3-svn1';
@@ -779,7 +779,7 @@ if($settings['panel']['version'] == '1.2.14-rc3-svn1')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc3-svn2\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc3-svn2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc3-svn2';
@@ -791,7 +791,7 @@ if($settings['panel']['version'] == '1.2.14-rc3-svn2')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc3-svn3\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc3-svn3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc3-svn3';
@@ -801,7 +801,7 @@ if($settings['panel']['version'] == '1.2.14-rc3-svn3')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-rc4\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-rc4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-rc4';
@@ -811,7 +811,7 @@ if($settings['panel']['version'] == '1.2.14-rc4')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14';
@@ -830,12 +830,12 @@ if($settings['panel']['version'] == '1.2.14')
 		$apacheversion = 'apache1';
 	}
 
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'apacheversion\', ' . '    `value`        = \'' . $apacheversion . '\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'apacheversion\',  `value`        = \'' . $apacheversion . '\' ');
 	$settings['system']['apacheversion'] = $apacheversion;
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-svn1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-svn1';
@@ -857,7 +857,7 @@ if($settings['panel']['version'] == '1.2.14-svn1')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-svn2\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-svn2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-svn2';
@@ -870,7 +870,7 @@ if($settings['panel']['version'] == '1.2.14-svn2')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-svn3\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-svn3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-svn3';
@@ -882,7 +882,7 @@ if($settings['panel']['version'] == '1.2.14-svn3')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-svn4\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-svn4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-svn4';
@@ -890,11 +890,11 @@ if($settings['panel']['version'] == '1.2.14-svn3')
 
 if($settings['panel']['version'] == '1.2.14-svn4')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'phpappendopenbasedir\', ' . '    `value`        = \'/tmp/\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'phpappendopenbasedir\',  `value`        = \'/tmp/\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.14-svn5\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.14-svn5\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.14-svn5';
@@ -904,7 +904,7 @@ if($settings['panel']['version'] == '1.2.14-svn5')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.15\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.15\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.15';
@@ -918,7 +918,7 @@ if($settings['panel']['version'] == '1.2.15')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.15-svn1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.15-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.15-svn1';
@@ -928,7 +928,7 @@ if($settings['panel']['version'] == '1.2.15-svn1')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16';
@@ -936,11 +936,11 @@ if($settings['panel']['version'] == '1.2.15-svn1')
 
 if($settings['panel']['version'] == '1.2.16')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'panel\', ' . '    `varname`      = \'natsorting\', ' . '    `value`        = \'1\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'panel\',  `varname`      = \'natsorting\',  `value`        = \'1\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn1\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn1';
@@ -948,11 +948,11 @@ if($settings['panel']['version'] == '1.2.16')
 
 if($settings['panel']['version'] == '1.2.16-svn1')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'deactivateddocroot\', ' . '    `value`        = \'\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'deactivateddocroot\',  `value`        = \'\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn2\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn2';
@@ -989,7 +989,7 @@ if($settings['panel']['version'] == '1.2.16-svn2')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn3\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn3';
@@ -997,12 +997,12 @@ if($settings['panel']['version'] == '1.2.16-svn2')
 
 if($settings['panel']['version'] == '1.2.16-svn3')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `area` = \'admin\', ' . '    `parent_url` = \'admin_server.nourl\', ' . '    `lang` = \'admin;updatecounters\', ' . '    `url` = \'admin_settings.php?page=updatecounters\', ' . '    `order` = \'35\', ' . '    `required_resources` = \'change_serversettings\', ' . '    `new_window` = \'0\'');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` ' . 'SET `order` = \'25\' ' . 'WHERE `lang` = \'admin;ipsandports;ipsandports\' ' . '  AND `url` = \'admin_ipsandports.php?page=ipsandports\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area` = \'admin\',  `parent_url` = \'admin_server.nourl\',  `lang` = \'admin;updatecounters\',  `url` = \'admin_settings.php?page=updatecounters\',  `order` = \'35\',  `required_resources` = \'change_serversettings\',  `new_window` = \'0\'');
+	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order` = \'25\' WHERE `lang` = \'admin;ipsandports;ipsandports\'  AND `url` = \'admin_ipsandports.php?page=ipsandports\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn4\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn4';
@@ -1032,7 +1032,7 @@ if($settings['panel']['version'] == '1.2.16-svn4')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn5\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn5\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn5';
@@ -1042,11 +1042,11 @@ if($settings['panel']['version'] == '1.2.16-svn5')
 {
 	$db->query('ALTER TABLE `' . TABLE_PANEL_CUSTOMERS . '` ADD `reportsent` TINYINT( 4 ) unsigned NOT NULL DEFAULT \'0\' AFTER `loginfail_count` ');
 	$db->query('ALTER TABLE `' . TABLE_PANEL_ADMINS . '` ADD `reportsent` TINYINT( 4 ) unsigned NOT NULL DEFAULT \'0\' AFTER `loginfail_count` ');
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'last_traffic_report_run\', ' . '    `value`        = \'\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'last_traffic_report_run\',  `value`        = \'\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn6\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn6\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn6';
@@ -1059,7 +1059,7 @@ if($settings['panel']['version'] == '1.2.16-svn6')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn7\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn7\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn7';
@@ -1068,11 +1068,11 @@ if($settings['panel']['version'] == '1.2.16-svn6')
 if($settings['panel']['version'] == '1.2.16-svn7')
 {
 	$db->query("ALTER TABLE `" . TABLE_PANEL_SESSIONS . "` CHANGE `ipaddress` `ipaddress` VARCHAR( 255 ) NOT NULL");
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'mailpwcleartext\', ' . '    `value`        = \'1\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'mailpwcleartext\',  `value`        = \'1\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn8\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn8\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn8';
@@ -1080,11 +1080,11 @@ if($settings['panel']['version'] == '1.2.16-svn7')
 
 if($settings['panel']['version'] == '1.2.16-svn8')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'system\', ' . '    `varname`      = \'last_tasks_run\', ' . '    `value`        = \'0\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\',  `varname`      = \'last_tasks_run\',  `value`        = \'0\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn9\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn9\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn9';
@@ -1093,11 +1093,11 @@ if($settings['panel']['version'] == '1.2.16-svn8')
 if($settings['panel']['version'] == '1.2.16-svn9')
 {
 	$db->query("ALTER TABLE `" . TABLE_FTP_USERS . "` CHANGE `username` `username` VARCHAR( 255 ) NOT NULL");
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` ' . 'SET `settinggroup` = \'customer\', ' . '    `varname`      = \'ftpatdomain\', ' . '    `value`        = \'0\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'customer\',  `varname`      = \'ftpatdomain\',  `value`        = \'0\' ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn10\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn10\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn10';
@@ -1112,7 +1112,7 @@ if($settings['panel']['version'] == '1.2.16-svn10')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn11\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn11\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn11';
@@ -1126,7 +1126,7 @@ if($settings['panel']['version'] == '1.2.16-svn11')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn12\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn12\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn12';
@@ -1138,7 +1138,7 @@ if($settings['panel']['version'] == '1.2.16-svn12')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn13\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn13\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn13';
@@ -1154,7 +1154,7 @@ if($settings['panel']['version'] == '1.2.16-svn13')
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn14\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn14\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn14';
@@ -1162,11 +1162,11 @@ if($settings['panel']['version'] == '1.2.16-svn13')
 
 if($settings['panel']['version'] == '1.2.16-svn14')
 {
-	$db->query('ALTER TABLE `' . TABLE_PANEL_SESSIONS . '` ' . ' ADD `formtoken` CHAR( 32 ) NOT NULL AFTER `lastpaging` ');
+	$db->query('ALTER TABLE `' . TABLE_PANEL_SESSIONS . '`  ADD `formtoken` CHAR( 32 ) NOT NULL AFTER `lastpaging` ');
 
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.16-svn15\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn15\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.16-svn15';
@@ -1176,7 +1176,7 @@ if($settings['panel']['version'] == '1.2.16-svn15')
 {
 	// set new version
 
-	$query = 'UPDATE `%s` ' . 'SET `value` = \'1.2.17\' ' . 'WHERE `settinggroup` = \'panel\' ' . 'AND `varname` = \'version\'';
+	$query = 'UPDATE `%s` SET `value` = \'1.2.17\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.17';

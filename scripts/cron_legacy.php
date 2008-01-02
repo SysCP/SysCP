@@ -40,14 +40,14 @@ $tables = getTables($db);
 if(!isset($tables[TABLE_PANEL_CRONSCRIPT])
    || !is_array($tables[TABLE_PANEL_CRONSCRIPT]))
 {
-	$db->query('CREATE TABLE `' . TABLE_PANEL_CRONSCRIPT . '` ( ' . '  `id` int(11) unsigned NOT NULL auto_increment, ' . '  `file` varchar(255) NOT NULL default \'\', ' . '  PRIMARY KEY  (`id`) ' . ') TYPE=MyISAM ; ');
+	$db->query('CREATE TABLE `' . TABLE_PANEL_CRONSCRIPT . '` (  `id` int(11) unsigned NOT NULL auto_increment,  `file` varchar(255) NOT NULL default \'\',  PRIMARY KEY  (`id`) ) TYPE=MyISAM ; ');
 }
 
 /**
  * Backend Wrapper
  */
 
-$query = 'SELECT * ' . 'FROM `' . TABLE_PANEL_CRONSCRIPT . '` ';
+$query = 'SELECT * FROM `' . TABLE_PANEL_CRONSCRIPT . '` ';
 $cronFileIncludeResult = $db->query($query);
 
 while($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
