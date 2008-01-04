@@ -23,7 +23,7 @@ if(@php_sapi_name() != 'cli'
 	die('This script will only work in the shell.');
 }
 
-$cronscriptDebug = true;
+$cronscriptDebug = false;
 $lockdir = '/var/run/';
 $lockFilename = 'syscp_' . basename($_SERVER['PHP_SELF'], '.php') . '.lock-';
 $lockfName = $lockFilename . getmypid();
@@ -80,7 +80,7 @@ while($fName = readdir($lockDirHandle))
 
 		// Check if cron is running or has died.
 
-		$check_pid = substr(strstr($fname, "-"), 1);
+		$check_pid = substr(strstr($fName, "-"), 1);
 		system("kill -CHLD " . $check_pid . " 1> /dev/null 2> /dev/null", $check_pid_return);
 
 		if($check_pid_return == 1)
