@@ -500,7 +500,6 @@ $lng['admin']['templates']['TRAFFICUSED'] = 'Wird mit Traffic, der vom Kunden be
 
 // ADDED IN 1.2.16-svn7
 
-$lng['admin']['ipsandports']['createvhostcontainer'] = 'Erstelle vHost-Container';
 $lng['admin']['subcanemaildomain']['never'] = 'Nie';
 $lng['admin']['subcanemaildomain']['choosableno'] = 'W&auml;hlbar, Standardwert: Nein';
 $lng['admin']['subcanemaildomain']['choosableyes'] = 'W&auml;hlbar, Standardwert: Ja';
@@ -568,9 +567,15 @@ $lng['error']['formtokencompromised'] = 'Das Formular scheint manipuliert worden
 $lng['serversettings']['mysql_access_host']['title'] = 'MySQL-Access-Hosts';
 $lng['serversettings']['mysql_access_host']['description'] = 'Eine durch Komma getrennte Liste mit den Hostnamen aller Hostnames/IP-Adressen von denen sich die Benutzer einloggen d&uuml;rfen.';
 
-
 // CHANGED IN 1.2.18
 $lng['serversettings']['mod_log_sql']['description'] = '<a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> benutzen um die Webzugriffe tempor&auml;r zu speichern<br /><b>Dies ben&ouml;tigt eine spezielle <a href="http://files.syscp.org/docs/mod_log_sql/" title="mod_log_sql - Dokumentation">Apache-Konfiguration</a></b>';
 $lng['serversettings']['mod_fcgid']['description'] = 'mod_fcgid/suexec/libnss_mysql benutzen um PHP unter dem jeweiligen Useraccount laufen zu lassen<br /><b>Dies ben&ouml;tigt eine spezielle Apache-Konfiguration</b>';
+
+// ADDED IN 1.2.18-svn1
+
+$lng['admin']['ipsandports']['create_listen_statement'] = 'Erstelle Listen-Eintrag';
+$lng['admin']['ipsandports']['create_namevirtualhost_statement'] = 'Erstelle NameVirtualHost-Eintrag';
+$lng['admin']['ipsandports']['create_vhostcontainer'] = 'Erstelle vHost-Container';
+$lng['admin']['ipsandports']['create_vhostcontainer_servername_statement'] = 'Erstelle ServerName-Eintrag im vHost-Container';
 
 ?>

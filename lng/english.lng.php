@@ -501,7 +501,6 @@ $lng['admin']['templates']['TRAFFICUSED'] = 'Replaced with the traffic, which wa
 
 // ADDED IN 1.2.16-svn7
 
-$lng['admin']['ipsandports']['createvhostcontainer'] = 'Create vHost-Container';
 $lng['admin']['subcanemaildomain']['never'] = 'Never';
 $lng['admin']['subcanemaildomain']['choosableno'] = 'Choosable, default no';
 $lng['admin']['subcanemaildomain']['choosableyes'] = 'Choosable, default yes';
@@ -568,5 +567,12 @@ $lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Where should 
 $lng['error']['formtokencompromised'] = 'The request seems to be compromised. For securityreasons you were logged out.';
 $lng['serversettings']['mysql_access_host']['title'] = 'MySQL-Access-Hosts';
 $lng['serversettings']['mysql_access_host']['description'] = 'A comma separated list of hosts from which users should be allowed to connect to the MySQL-Server.';
+
+// ADDED IN 1.2.18-svn1
+
+$lng['admin']['ipsandports']['create_listen_statement'] = 'Create Listen statement';
+$lng['admin']['ipsandports']['create_namevirtualhost_statement'] = 'Create NameVirtualHost statement';
+$lng['admin']['ipsandports']['create_vhostcontainer'] = 'Create vHost-Container';
+$lng['admin']['ipsandports']['create_vhostcontainer_servername_statement'] = 'Create ServerName statement in vHost-Container';
 
 ?>

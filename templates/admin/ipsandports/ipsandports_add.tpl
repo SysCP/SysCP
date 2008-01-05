@@ -17,12 +17,24 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="port" value="" size="5" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['admin']['ipsandports']['createvhostcontainer']}:</td>
+				<td class="main_field_name">{$lng['admin']['ipsandports']['create_listen_statement']}:</td>
+				<td class="main_field_display" nowrap="nowrap">$listen_statement</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['ipsandports']['create_namevirtualhost_statement']}:</td>
+				<td class="main_field_display" nowrap="nowrap">$namevirtualhost_statement</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['ipsandports']['create_vhostcontainer']}:</td>
 				<td class="main_field_display" nowrap="nowrap">$vhostcontainer</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ownvhostsettings']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="60" name="specialsettings"></textarea></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['ipsandports']['create_vhostcontainer_servername_statement']}:</td>
+				<td class="main_field_display" nowrap="nowrap">$vhostcontainer_servername_statement</td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>

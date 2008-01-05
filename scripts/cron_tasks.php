@@ -62,16 +62,28 @@ while($row = $db->fetch_array($result_tasks))
 		}
 
 		$known_vhost_filenames = array();
-		$result_ipsandports = $db->query("SELECT `ip`, `port`, `vhostcontainer`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
+		$result_ipsandports = $db->query("SELECT `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
 
 		while($row_ipsandports = $db->fetch_array($result_ipsandports))
 		{
-			$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
-			$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+			if($row_ipsandports['listen_statement'] == '1')
+			{
+				$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+			}
+
+			if($row_ipsandports['namevirtualhost_statement'] == '1')
+			{
+				$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+			}
 
 			if($row_ipsandports['vhostcontainer'] == '1')
 			{
 				$vhosts_file.= '<VirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . '>' . "\n";
+
+				if($row_ipsandports['vhostcontainer_servername_statement'] == '1')
+				{
+					$vhosts_file.= ' ServerName '.$settings['system']['hostname']."\n";
+				}
 
 				if($row_ipsandports['specialsettings'] != '')
 				{
