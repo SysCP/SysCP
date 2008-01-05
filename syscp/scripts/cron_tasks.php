@@ -639,36 +639,35 @@ while($row = $db->fetch_array($result_tasks))
 
 				if(count($nameservers) == 0)
 				{
-					$zonefile.= '@ IN SOA ns ' . str_replace('@', '.', $settings['panel']['adminmail']) . ' (' . "\n";
+					$zonefile.= '@ IN SOA ns ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
 				}
 				else
 				{
-					$zonefile.= '@ IN SOA ' . $nameservers[0]['hostname'] . ' ' . str_replace('@', '.', $settings['panel']['adminmail']) . ' (' . "\n";
+					$zonefile.= '@ IN SOA ' . $nameservers[0]['hostname'] . ' ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
 				}
-
-				$zonefile.= '	' . $bindserial . ' ; serial' . "\n" . '	8H ; refresh' . "\n" . '	2H ; retry' . "\n" . '	1W ; expiry' . "\n" . '	11h) ; minimum' . "\n" . '';
+				$zonefile.= '	' . $bindserial . ' ; serial' . "\n" . '	8H ; refresh' . "\n" . '	2H ; retry' . "\n" . '	1W ; expiry' . "\n" . '	11h) ; minimum' . "\n";
 
 				if(count($nameservers) == 0)
 				{
-					$zonefile.= '		IN  NS	ns' . "\n" . 'ns		IN	A	' . $domain['ip'] . "\n";
+					$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	A	' . $domain['ip'] . "\n";
 				}
 				else
 				{
 					foreach($nameservers as $nameserver)
 					{
-						$zonefile.= '		IN NS ' . $nameserver['hostname'] . "\n";
+						$zonefile.= '@	IN	NS	' . trim($nameserver['hostname']) . "\n";
 					}
 				}
 
 				if(count($mxservers) == 0)
 				{
-					$zonefile.= '		IN MX	10 mail' . "\n" . 'mail	IN A	' . $domain['ip'] . "\n";
+					$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
 				}
 				else
 				{
 					foreach($mxservers as $mxserver)
 					{
-						$zonefile.= '		IN MX	' . $mxserver . "\n";
+						$zonefile.= '@	IN	MX	' . trim($mxserver) . "\n";
 					}
 				}
 
@@ -682,32 +681,31 @@ while($row = $db->fetch_array($result_tasks))
 
 						if(count($nameservers) == 0)
 						{
-							$zonefile.= $nssubdomain . '		IN  NS	ns.' . $nssubdomain . "\n";
-
-							//												'ns		IN	A	' . $domain['ip'] . "\n";
+							$zonefile.= $nssubdomain . '	IN	NS	ns.' . $nssubdomain . "\n";
 						}
 						else
 						{
 							foreach($nameservers as $nameserver)
 							{
-								$zonefile.= $nssubdomain . '		IN NS ' . $nameserver['hostname'] . "\n";
+								$zonefile.= $nssubdomain . '	IN	NS	' . trim($nameserver['hostname']) . "\n";
 							}
 						}
 					}
 				}
 
-				$zonefile.= '		IN  A ' . $domain['ip'] . "\n" . 'www	IN  A ' . $domain['ip'] . "\n";
+				$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
+				$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
 
 				if($domain['iswildcarddomain'] == '1')
 				{
-					$zonefile.= '*		IN  A ' . $domain['ip'] . "\n";
+					$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
 				}
 
 				$subdomains = $db->query('SELECT `d`.`domain`, `ip`.`ip` AS `ip` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_IPSANDPORTS . '` `ip` WHERE `parentdomainid`=\'' . $domain['id'] . '\' AND `d`.`ipandport`=`ip`.`id`');
 
 				while($subdomain = $db->fetch_array($subdomains))
 				{
-					$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN A	' . $subdomain['ip'] . "\n";
+					$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
 				}
 
 				$domain['zonefile'] = 'domains/' . $domain['domain'] . '.zone';
