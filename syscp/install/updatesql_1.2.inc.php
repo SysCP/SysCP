@@ -1192,4 +1192,17 @@ if($settings['panel']['version'] == '1.2.17')
 	$settings['panel']['version'] = '1.2.18';
 }
 
+if($settings['panel']['version'] == '1.2.18')
+{
+	$db->query('ALTER TABLE `' . TABLE_PANEL_IPSANDPORTS . '` ADD `listen_statement` TINYINT( 1 ) NOT NULL DEFAULT \'0\', ADD `namevirtualhost_statement` TINYINT( 1 ) NOT NULL DEFAULT \'0\', ADD `vhostcontainer_servername_statement` TINYINT( 1 ) NOT NULL DEFAULT \'0\' ');
+	$db->query('UPDATE `' . TABLE_PANEL_IPSANDPORTS . '` SET `listen_statement` = 0, `namevirtualhost_statement` = 1, `vhostcontainer_servername_statement` = 1 ');
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.18-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.18-svn1';
+}
+
 ?>

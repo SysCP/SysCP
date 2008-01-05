@@ -140,12 +140,27 @@ if($page == 'ipsandports'
 				'stringisempty',
 				'myport'
 			));
+			$listen_statement = intval($_POST['listen_statement']);
+			$namevirtualhost_statement = intval($_POST['namevirtualhost_statement']);
 			$vhostcontainer = intval($_POST['vhostcontainer']);
 			$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
+			$vhostcontainer_servername_statement = intval($_POST['vhostcontainer_servername_statement']);
 
+			if($listen_statement != '1')
+			{
+				$listen_statement = '0';
+			}
+			if($namevirtualhost_statement != '1')
+			{
+				$namevirtualhost_statement = '0';
+			}
 			if($vhostcontainer != '1')
 			{
 				$vhostcontainer = '0';
+			}
+			if($vhostcontainer_servername_statement != '1')
+			{
+				$vhostcontainer_servername_statement = '0';
 			}
 
 			$result_checkfordouble = $db->query_first("SELECT `id` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($ip) . "' AND `port`='" . (int)$port . "'");
@@ -156,7 +171,7 @@ if($page == 'ipsandports'
 			}
 			else
 			{
-				$db->query("INSERT INTO `" . TABLE_PANEL_IPSANDPORTS . "` (`ip`, `port`, `vhostcontainer`, `specialsettings`) VALUES ('" . $db->escape($ip) . "', '" . (int)$port . "', '" . (int)$vhostcontainer . "', '" . $db->escape($specialsettings) . "')");
+				$db->query("INSERT INTO `" . TABLE_PANEL_IPSANDPORTS . "` (`ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings`) VALUES ('" . $db->escape($ip) . "', '" . (int)$port . "', '" . (int)$vhostcontainer . "', '" . (int)$namevirtualhost_statement . "', '" . (int)$vhostcontainer . "', '" . (int)$vhostcontainer_servername_statement . "', '" . $db->escape($specialsettings) . "')");
 				inserttask('1');
 				inserttask('4');
 				redirectTo($filename, Array(
@@ -167,14 +182,17 @@ if($page == 'ipsandports'
 		}
 		else
 		{
+			$listen_statement = makeyesno('listen_statement', '1', '0', '1');
+			$namevirtualhost_statement = makeyesno('namevirtualhost_statement', '1', '0', '1');
 			$vhostcontainer = makeyesno('vhostcontainer', '1', '0', '1');
+			$vhostcontainer_servername_statement = makeyesno('vhostcontainer_servername_statement', '1', '0', '1');
 			eval("echo \"" . getTemplate("ipsandports/ipsandports_add") . "\";");
 		}
 	}
 	elseif($action == 'edit'
 	       && $id != 0)
 	{
-		$result = $db->query_first("SELECT `id`, `ip`, `port`, `vhostcontainer`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$id . "'");
+		$result = $db->query_first("SELECT `id`, `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$id . "'");
 
 		if($result['ip'] != '')
 		{
@@ -189,12 +207,28 @@ if($page == 'ipsandports'
 				));
 				$result_checkfordouble = $db->query_first("SELECT `id` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($ip) . "' AND `port`='" . (int)$port . "'");
 				$result_sameipotherport = $db->query_first("SELECT `id` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($result['ip']) . "' AND `id`!='" . (int)$id . "'");
+
+				$listen_statement = intval($_POST['listen_statement']);
+				$namevirtualhost_statement = intval($_POST['namevirtualhost_statement']);
 				$vhostcontainer = intval($_POST['vhostcontainer']);
 				$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
+				$vhostcontainer_servername_statement = intval($_POST['vhostcontainer_servername_statement']);
 
+				if($listen_statement != '1')
+				{
+					$listen_statement = '0';
+				}
+				if($namevirtualhost_statement != '1')
+				{
+					$namevirtualhost_statement = '0';
+				}
 				if($vhostcontainer != '1')
 				{
 					$vhostcontainer = '0';
+				}
+				if($vhostcontainer_servername_statement != '1')
+				{
+					$vhostcontainer_servername_statement = '0';
 				}
 
 				if($result['ip'] != $ip
@@ -210,7 +244,7 @@ if($page == 'ipsandports'
 				}
 				else
 				{
-					$db->query("UPDATE `" . TABLE_PANEL_IPSANDPORTS . "` SET `ip`='" . $db->escape($ip) . "', `port`='" . (int)$port . "', `vhostcontainer`='" . (int)$vhostcontainer . "', `specialsettings`='" . $db->escape($specialsettings) . "' WHERE `id`='" . (int)$id . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_IPSANDPORTS . "` SET `ip`='" . $db->escape($ip) . "', `port`='" . (int)$port . "', `listen_statement`='" . (int)$listen_statement . "', `namevirtualhost_statement`='" . (int)$namevirtualhost_statement . "', `vhostcontainer`='" . (int)$vhostcontainer . "', `vhostcontainer_servername_statement`='" . (int)$vhostcontainer_servername_statement . "', `specialsettings`='" . $db->escape($specialsettings) . "' WHERE `id`='" . (int)$id . "'");
 					inserttask('1');
 					inserttask('4');
 					redirectTo($filename, Array(
@@ -222,7 +256,10 @@ if($page == 'ipsandports'
 			else
 			{
 				$result = htmlentities_array($result);
+				$listen_statement = makeyesno('listen_statement', '1', '0', $result['listen_statement']);
+				$namevirtualhost_statement = makeyesno('namevirtualhost_statement', '1', '0', $result['namevirtualhost_statement']);
 				$vhostcontainer = makeyesno('vhostcontainer', '1', '0', $result['vhostcontainer']);
+				$vhostcontainer_servername_statement = makeyesno('vhostcontainer_servername_statement', '1', '0', $result['vhostcontainer_servername_statement']);
 				eval("echo \"" . getTemplate("ipsandports/ipsandports_edit") . "\";");
 			}
 		}
