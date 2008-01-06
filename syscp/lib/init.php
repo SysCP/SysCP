@@ -244,7 +244,8 @@ if(isset($s)
 	if((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid'])) || ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
 	   && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))
 	{
-		$query = 'UPDATE `' . TABLE_PANEL_SESSIONS . '` SET `lastactivity`="' . time() . '" WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"';
+		$userinfo['newformtoken'] = strtolower(md5(uniqid(microtime(), 1)));
+		$query = 'UPDATE `' . TABLE_PANEL_SESSIONS . '` SET `lastactivity`="' . time() . '", `formtoken`="' . $userinfo['newformtoken'] . '" WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"';
 		$db->query($query);
 		$nosession = 0;
 	}
@@ -413,8 +414,11 @@ if(!is_null($submittedtoken))
 	$userinfo['hadtoken'] = true;
 }
 
-unset($submittedtoken, $result, $_POST['token']);
-$userinfo['formtoken'] = strtolower(md5(uniqid(microtime(), 1)));
-$db->query('UPDATE `' . TABLE_PANEL_SESSIONS . '` SET `formtoken`="' . $userinfo['formtoken'] . '" WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"');
+unset($submittedtoken, $_POST['token']);
+if(isset($userinfo['newformtoken']))
+{
+	$userinfo['formtoken'] = $userinfo['newformtoken'];
+	unset($userinfo['newformtoken']);
+}
 
 ?>
