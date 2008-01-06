@@ -489,6 +489,7 @@ $lng['admin']['mailserversettings'] = 'Mailservereinstellungen';
 $lng['admin']['nameserversettings'] = 'Nameservereinstellungen';
 $lng['admin']['updatecounters'] = 'Ressourcenverbrauch';
 $lng['question']['admin_counters_reallyupdate'] = 'Wollen Sie den Ressourcenverbrauch neu berechnen?';
+$lng['panel']['pathDescription'] = 'Wenn das Verzeichnis nicht existiert, wird es automatisch erstellt.';
 
 // ADDED IN 1.2.16-svn6
 
