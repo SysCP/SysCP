@@ -42,7 +42,7 @@ if($page == 'email')
 		$available_templates = array(
 			'createcustomer',
 			'pop_success',
-			'trafficninetypercent',
+			'trafficninetypercent'
 		);
 
 		if($settings['panel']['sendalternativemail'] == 1)
@@ -126,7 +126,7 @@ if($page == 'email')
 		$available_templates = array(
 			'createcustomer',
 			'pop_success',
-			'trafficninetypercent',
+			'trafficninetypercent'
 		);
 
 		if($settings['panel']['sendalternativemail'] == 1)
