@@ -213,16 +213,16 @@ while($row = $db->fetch_array($result_tasks))
 									$vhosts_file.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
 								}
 							}
-						}
-					}
 
-					if($domain['safemode'] == '0') 
-					{ 
-						$vhosts_file.='  php_admin_flag safe_mode Off '."\n"; 
-					} 
-					else 
-					{ 
-						$vhosts_file.='  php_admin_flag safe_mode On '."\n"; 
+							if($domain['safemode'] == '0')
+							{
+								$vhosts_file.= '  php_admin_flag safe_mode Off ' . "\n";
+							}
+							else
+							{
+								$vhosts_file.= '  php_admin_flag safe_mode On ' . "\n";
+							}
+						}
 					}
 
 					mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
