@@ -89,9 +89,7 @@ if($page == 'overview')
 		}
 		else
 		{
-			$lookfornewversion_lable = $lng['admin']['lookfornewversion']['error'];
-			$lookfornewversion_link = htmlspecialchars($filename . '?s=' . urlencode($s) . '&page=' . urlencode($page) . '&lookfornewversion=yes');
-			$lookfornewversion_addinfo = '';
+			redirectTo('http://version.syscp.org/SysCP/legacy/' . $version . '/pretty', NULL);
 		}
 	}
 	else

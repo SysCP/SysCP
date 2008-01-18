@@ -276,6 +276,11 @@ function redirectTo($destination, $get_variables = array(), $isRelative = false)
 		header('Location: ' . $protocol . $host . $path . $destination . $params);
 		exit;
 	}
+	elseif($get_variables == null)
+	{
+		header('Location: ' . $destination);
+		exit;
+	}
 
 	return false;
 }
