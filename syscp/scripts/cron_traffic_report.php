@@ -37,7 +37,7 @@ $result = $db->query("SELECT `c`.`customerid`, `c`.`adminid`, `c`.`name`, `c`.`f
 
 while($row = $db->fetch_array($result))
 {
-	if((($row['traffic_used']*100)/$row['traffic']) >= 90)
+	if(isset($row['traffic']) && $row['traffic'] > 0 && (($row['traffic_used']*100)/$row['traffic']) >= 90)
 	{
 		$replace_arr = array(
 			'NAME' => $ow['name'],
@@ -62,7 +62,7 @@ $result = $db->query("SELECT * FROM `" . TABLE_PANEL_ADMINS . "`;");
 
 while($row = $db->fetch_array($result))
 {
-	if((($row['traffic_used']*100)/$row['traffic']) >= 90)
+	if(isset($row['traffic']) && $row['traffic'] > 0 && (($row['traffic_used']*100)/$row['traffic']) >= 90)
 	{
 		$replace_arr = array(
 			'NAME' => $row['name'],
