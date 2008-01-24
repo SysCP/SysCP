@@ -579,4 +579,13 @@ $lng['admin']['ipsandports']['create_namevirtualhost_statement'] = 'Erstelle Nam
 $lng['admin']['ipsandports']['create_vhostcontainer'] = 'Erstelle vHost-Container';
 $lng['admin']['ipsandports']['create_vhostcontainer_servername_statement'] = 'Erstelle ServerName-Eintrag im vHost-Container';
 
+// ADDED IN 1.2.18-svn2
+
+$lng['admin']['webalizersettings'] = 'Webalizereinstellungen';
+$lng['admin']['webalizer']['normal'] = 'Normal';
+$lng['admin']['webalizer']['quiet'] = 'Leise';
+$lng['admin']['webalizer']['veryquiet'] = 'Keine Ausgaben';
+$lng['serversettings']['webalizer_quiet']['title'] = 'Webalizerausgabe';
+$lng['serversettings']['webalizer_quiet']['description'] = 'Ausgabefreudigkeit des webalizer-Programms';
+
 ?>

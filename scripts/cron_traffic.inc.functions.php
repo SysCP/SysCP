@@ -57,7 +57,16 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
 			safe_exec('cp ' . escapeshellarg($outputdir . 'webalizer.hist') . ' ' . escapeshellarg($outputdir . 'webalizer.hist.1'));
 		}
 
-		safe_exec('webalizer -o ' . escapeshellarg($outputdir) . ' -n ' . escapeshellarg($caption) . $domainargs . ' ' . escapeshellarg($settings['system']['logfiles_directory'] . $logfile . '-access.log'));
+		$verbosity = '';
+		if($settings['system']['webalizer_quiet'] == '1')
+		{
+			$verbosity = '-q';
+		}
+		elseif($settings['system']['webalizer_quiet'] == '2')
+		{
+			$verbosity = '-Q';
+		}
+		safe_exec('webalizer ' . $verbosity . ' -o ' . escapeshellarg($outputdir) . ' -n ' . escapeshellarg($caption) . $domainargs . ' ' . escapeshellarg($settings['system']['logfiles_directory'] . $logfile . '-access.log'));
 
 		/**
 		 * Format of webalizer.hist-files:
