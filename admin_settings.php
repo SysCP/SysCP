@@ -293,10 +293,13 @@ if(($page == 'settings' || $page == 'overview')
 
 		if($_POST['system_webalizer_quiet'] != $settings['system']['webalizer_quiet'])
 		{
-			$value = in_array($_POST['system_webalizer_quiet'], array('0', '1', '2')) ? $_POST['system_webalizer_quiet'] : '2';
+			$value = in_array($_POST['system_webalizer_quiet'], array(
+				'0',
+				'1',
+				'2'
+			)) ? $_POST['system_webalizer_quiet'] : '2';
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_quiet'");
 		}
-
 
 		if($_POST['system_bindconf_directory'] != $settings['system']['bindconf_directory'])
 		{
@@ -567,9 +570,9 @@ if(($page == 'settings' || $page == 'overview')
 			$system_defaultip.= makeoption($row['ip'] . ':' . $row['port'], $row['id'], $settings['system']['defaultip'], true, true);
 		}
 
-		$webalizer_quiet  = makeoption($lng['admin']['webalizer']['normal'], '0', $settings['system']['webalizer_quiet'], true, true);
-		$webalizer_quiet .= makeoption($lng['admin']['webalizer']['quiet'], '1', $settings['system']['webalizer_quiet'], true, true);
-		$webalizer_quiet .= makeoption($lng['admin']['webalizer']['veryquiet'], '2', $settings['system']['webalizer_quiet'], true, true);
+		$webalizer_quiet = makeoption($lng['admin']['webalizer']['normal'], '0', $settings['system']['webalizer_quiet'], true, true);
+		$webalizer_quiet.= makeoption($lng['admin']['webalizer']['quiet'], '1', $settings['system']['webalizer_quiet'], true, true);
+		$webalizer_quiet.= makeoption($lng['admin']['webalizer']['veryquiet'], '2', $settings['system']['webalizer_quiet'], true, true);
 
 		// build the pathedit list
 

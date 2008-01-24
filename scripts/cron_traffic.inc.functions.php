@@ -58,6 +58,7 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
 		}
 
 		$verbosity = '';
+
 		if($settings['system']['webalizer_quiet'] == '1')
 		{
 			$verbosity = '-q';
@@ -66,6 +67,7 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
 		{
 			$verbosity = '-Q';
 		}
+
 		safe_exec('webalizer ' . $verbosity . ' -o ' . escapeshellarg($outputdir) . ' -n ' . escapeshellarg($caption) . $domainargs . ' ' . escapeshellarg($settings['system']['logfiles_directory'] . $logfile . '-access.log'));
 
 		/**

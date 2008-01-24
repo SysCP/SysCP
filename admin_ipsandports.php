@@ -150,14 +150,17 @@ if($page == 'ipsandports'
 			{
 				$listen_statement = '0';
 			}
+
 			if($namevirtualhost_statement != '1')
 			{
 				$namevirtualhost_statement = '0';
 			}
+
 			if($vhostcontainer != '1')
 			{
 				$vhostcontainer = '0';
 			}
+
 			if($vhostcontainer_servername_statement != '1')
 			{
 				$vhostcontainer_servername_statement = '0';
@@ -207,7 +210,6 @@ if($page == 'ipsandports'
 				));
 				$result_checkfordouble = $db->query_first("SELECT `id` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($ip) . "' AND `port`='" . (int)$port . "'");
 				$result_sameipotherport = $db->query_first("SELECT `id` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($result['ip']) . "' AND `id`!='" . (int)$id . "'");
-
 				$listen_statement = intval($_POST['listen_statement']);
 				$namevirtualhost_statement = intval($_POST['namevirtualhost_statement']);
 				$vhostcontainer = intval($_POST['vhostcontainer']);
@@ -218,14 +220,17 @@ if($page == 'ipsandports'
 				{
 					$listen_statement = '0';
 				}
+
 				if($namevirtualhost_statement != '1')
 				{
 					$namevirtualhost_statement = '0';
 				}
+
 				if($vhostcontainer != '1')
 				{
 					$vhostcontainer = '0';
 				}
+
 				if($vhostcontainer_servername_statement != '1')
 				{
 					$vhostcontainer_servername_statement = '0';
