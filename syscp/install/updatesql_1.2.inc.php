@@ -1205,4 +1205,16 @@ if($settings['panel']['version'] == '1.2.18')
 	$settings['panel']['version'] = '1.2.18-svn1';
 }
 
+if($settings['panel']['version'] == '1.2.18-svn1')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'webalizer_quiet\', `value` = \'2\' ');
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.18-svn2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.18-svn2';
+}
+
 ?>

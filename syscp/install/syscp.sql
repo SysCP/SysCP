@@ -437,6 +437,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (47, 'system', 'apacheconf_vhost', '/etc/apache/vhosts.conf');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (48, 'system', 'apacheconf_diroptions', '/etc/apache/diroptions.conf');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (49, 'system', 'apacheconf_htpasswddir', '/etc/apache/htpasswd/');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (50, 'system', 'webalizer_quiet', '2');
 
 # --------------------------------------------------------
 
