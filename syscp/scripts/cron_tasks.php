@@ -82,7 +82,7 @@ while($row = $db->fetch_array($result_tasks))
 
 				if($row_ipsandports['vhostcontainer_servername_statement'] == '1')
 				{
-					$vhosts_file.= ' ServerName '.$settings['system']['hostname']."\n";
+					$vhosts_file.= ' ServerName ' . $settings['system']['hostname'] . "\n";
 				}
 
 				if($row_ipsandports['specialsettings'] != '')
@@ -645,6 +645,7 @@ while($row = $db->fetch_array($result_tasks))
 				{
 					$zonefile.= '@ IN SOA ' . $nameservers[0]['hostname'] . ' ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
 				}
+
 				$zonefile.= '	' . $bindserial . ' ; serial' . "\n" . '	8H ; refresh' . "\n" . '	2H ; retry' . "\n" . '	1W ; expiry' . "\n" . '	11h) ; minimum' . "\n";
 
 				if(count($nameservers) == 0)

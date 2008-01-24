@@ -576,6 +576,7 @@ $lng['admin']['ipsandports']['create_vhostcontainer'] = 'Create vHost-Container'
 $lng['admin']['ipsandports']['create_vhostcontainer_servername_statement'] = 'Create ServerName statement in vHost-Container';
 
 // ADDED IN 1.2.18-svn2
+
 $lng['admin']['webalizersettings'] = 'Webalizer settings';
 $lng['admin']['webalizer']['normal'] = 'Normal';
 $lng['admin']['webalizer']['quiet'] = 'Quiet';
