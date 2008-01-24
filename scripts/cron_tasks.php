@@ -731,7 +731,7 @@ while($row = $db->fetch_array($result_tasks))
 					$bindconf_file.= '		' . $nameservers[$i]['ip'] . ';' . "\n";
 				}
 
-				$bindconf_file.= '	}' . "\n";
+				$bindconf_file.= '	};' . "\n";
 			}
 
 			$bindconf_file.= '};' . "\n";
