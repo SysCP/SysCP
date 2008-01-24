@@ -14,6 +14,8 @@
 
 				{$lng['customer']['ftps']}: <span <if $customer['ftps_used'] == $customer['ftps_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['ftps_used']} -&gt; {$customer['ftps_used_new']}</b></span> ||
 
+				{$lng['customer']['tickets']}: <span <if $customer['tickets_used'] == $customer['tickets_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['tickets_used']} -&gt; {$customer['tickets_used_new']}</b></span> ||
+
 				{$lng['customer']['subdomains']}: <span <if $customer['subdomains_used'] == $customer['subdomains_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['subdomains_used']} -&gt; {$customer['subdomains_used_new']}</b></span>
 			</td>
 		</tr>

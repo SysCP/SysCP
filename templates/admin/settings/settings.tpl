@@ -218,6 +218,46 @@ $header
 				<td class="main_field_name"><b>{$lng['serversettings']['mxservers']['title']}:</b><br />{$lng['serversettings']['mxservers']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mxservers" value="{$settings['system']['mxservers']}" /></td>
 			</tr>
+			<tr>
+				<td class="maintitle_apply_left">
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['ticketsettings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowrap="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['noreply_email']}:</b><br />{$lng['serversettings']['ticket']['noreply_email_desc']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_noreply_email" value="{$settings['ticket']['noreply_email']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['admin_email']}:</b><br />{$lng['serversettings']['ticket']['admin_email_desc']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_admin_email" value="{$settings['ticket']['admin_email']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['archiving_days']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_archiving_days" value="{$settings['ticket']['archiving_days']}" /></td>
+			</tr>      
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['worktime_all']}:</b><br />{$lng['serversettings']['ticket']['worktime_all_desc']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$ticket_worktime_all}</td>
+			</tr>        
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['worktime_begin']}:</b><br />{$lng['serversettings']['ticket']['worktime_begin_desc']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_worktime_begin" value="{$settings['ticket']['worktime_begin']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['worktime_end']}:</b><br />{$lng['serversettings']['ticket']['worktime_end_desc']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_worktime_end" value="{$settings['ticket']['worktime_end']}" /></td>
+			</tr>    
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['worktime_sat']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap">{$ticket_worktime_sat}</td>
+			</tr>  
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['worktime_sun']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap">{$ticket_worktime_sun}</td>
+			</tr>
 		</table>
 	</form>
 	<br />

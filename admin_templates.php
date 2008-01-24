@@ -42,7 +42,12 @@ if($page == 'email')
 		$available_templates = array(
 			'createcustomer',
 			'pop_success',
-			'trafficninetypercent'
+			'trafficninetypercent',
+			'new_ticket_by_customer',
+			'new_ticket_for_customer',
+			'new_ticket_by_staff',
+			'new_reply_ticket_by_customer',
+			'new_reply_ticket_by_staff'
 		);
 
 		if($settings['panel']['sendalternativemail'] == 1)
@@ -126,7 +131,12 @@ if($page == 'email')
 		$available_templates = array(
 			'createcustomer',
 			'pop_success',
-			'trafficninetypercent'
+			'trafficninetypercent',
+			'new_ticket_by_customer',
+			'new_ticket_for_customer',
+			'new_ticket_by_staff',
+			'new_reply_ticket_by_customer',
+			'new_reply_ticket_by_staff'
 		);
 
 		if($settings['panel']['sendalternativemail'] == 1)

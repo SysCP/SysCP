@@ -54,7 +54,7 @@ if($page == 'overview')
 	$userinfo['diskspace_used'] = round($userinfo['diskspace_used']/1024, 4);
 	$userinfo['traffic'] = round($userinfo['traffic']/(1024*1024), 4);
 	$userinfo['traffic_used'] = round($userinfo['traffic_used']/(1024*1024), 4);
-	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
+	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
 	eval("echo \"" . getTemplate("index/index") . "\";");
 }
 elseif($page == 'change_password')

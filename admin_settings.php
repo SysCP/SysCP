@@ -527,6 +527,54 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 		}
 
+		if($_POST['ticket_noreply_email'] != $settings['ticket']['noreply_email'])
+		{
+			$value = validate($_POST['ticket_noreply_email'], 'ticket_noreply_email');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_email'");
+		}
+
+		if($_POST['ticket_admin_email'] != $settings['ticket']['admin_email'])
+		{
+			$value = validate($_POST['ticket_admin_email'], 'ticket_admin_email');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='admin_email'");
+		}
+
+		if($_POST['ticket_archiving_days'] != $settings['ticket']['archiving_days'])
+		{
+			$value = validate($_POST['ticket_archiving_days'], 'ticket_archiving_days', '/^[0-9]{1,2}$/');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='archiving_days'");
+		}
+
+		if($_POST['ticket_worktime_all'] != $settings['ticket']['worktime_all'])
+		{
+			$value = ($_POST['ticket_worktime_all'] == '1' ? '1' : '0');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_all'");
+		}
+
+		if($_POST['ticket_worktime_begin'] != $settings['ticket']['worktime_begin'])
+		{
+			$value = validate($_POST['ticket_worktime_begin'], 'ticket_worktime_begin', '/^[012][0-9]:[0-6][0-9]$/');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_begin'");
+		}
+
+		if($_POST['ticket_worktime_end'] != $settings['ticket']['worktime_end'])
+		{
+			$value = validate($_POST['ticket_worktime_end'], 'ticket_worktime_end', '/^[012][0-9]:[0-6][0-9]$/');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_end'");
+		}
+
+		if($_POST['ticket_worktime_sat'] != $settings['ticket']['worktime_sat'])
+		{
+			$value = ($_POST['ticket_worktime_sat'] == '1' ? '1' : '0');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_sat'");
+		}
+
+		if($_POST['ticket_worktime_sun'] != $settings['ticket']['worktime_sun'])
+		{
+			$value = ($_POST['ticket_worktime_sun'] == '1' ? '1' : '0');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_sun'");
+		}
+
 		redirectTo($filename, Array(
 			'page' => $page,
 			's' => $s
@@ -591,6 +639,9 @@ if(($page == 'settings' || $page == 'overview')
 		$ftpatdomain = makeyesno('customer_ftpatdomain', '1', '0', $settings['customer']['ftpatdomain']);
 		$system_modlogsql = makeyesno('system_modlogsql', '1', '0', $settings['system']['mod_log_sql']);
 		$system_modfcgid = makeyesno('system_modfcgid', '1', '0', $settings['system']['mod_fcgid']);
+		$ticket_worktime_sat = makeyesno('ticket_worktime_sat', '1', '0', $settings['ticket']['worktime_sat']);
+		$ticket_worktime_sun = makeyesno('ticket_worktime_sun', '1', '0', $settings['ticket']['worktime_sun']);
+		$ticket_worktime_all = makeyesno('ticket_worktime_all', '1', '0', $settings['ticket']['worktime_all']);
 		$settings = htmlentities_array($settings);
 		eval("echo \"" . getTemplate("settings/settings") . "\";");
 	}

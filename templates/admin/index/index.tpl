@@ -40,6 +40,10 @@ $header
 			<td class="field_display">{$overview['ftps_used']} ({$userinfo['ftps_used']}/{$userinfo['ftps']})</td>
 		</tr>
 		<tr>
+			<td class="field_name_border_left">{$lng['customer']['tickets']}:</td>
+			<td class="field_display">{$overview['tickets_used']} ({$userinfo['tickets_used']}/{$userinfo['tickets']})</td>
+		</tr>
+		<tr>
 			<td class="field_name_border_left">{$lng['customer']['subdomains']}:</td>
 			<td class="field_display">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
 		</tr>

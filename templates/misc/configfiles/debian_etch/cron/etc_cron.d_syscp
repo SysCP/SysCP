@@ -7,4 +7,5 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #
 */5 * * * *	root	/usr/bin/php5 -q /var/www/syscp/scripts/cron_tasks.php
 0 0 * * *	root	/usr/bin/php5 -q /var/www/syscp/scripts/cron_traffic.php
+30 0 * * *	root	/usr/bin/php5 -q /var/www/syscp/scripts/cron_ticketarchive.php
 

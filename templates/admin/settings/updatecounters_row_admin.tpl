@@ -22,6 +22,8 @@
 
 				{$lng['customer']['ftps']}: <span <if $admin['ftps_used'] == $admin['ftps_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['ftps_used']} -&gt; {$admin['ftps_used_new']}</b></span> ||
 
+				{$lng['customer']['tickets']}: <span <if $admin['tickets_used'] == $admin['tickets_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['tickets_used']} -&gt; {$admin['tickets_used_new']}</b></span> ||
+
 				{$lng['customer']['subdomains']}: <span <if $admin['subdomains_used'] == $admin['subdomains_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['subdomains_used']} -&gt; {$admin['subdomains_used_new']}</b></span>
 			</td>
 		</tr>

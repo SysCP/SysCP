@@ -51,6 +51,8 @@ if($page == 'customers'
 			'c.mysqls_used' => $lng['customer']['mysqls'] . ' (' . $lng['panel']['used'] . ')',
 			'c.ftps' => $lng['customer']['ftps'],
 			'c.ftps_used' => $lng['customer']['ftps'] . ' (' . $lng['panel']['used'] . ')',
+			'c.tickets' => $lng['customer']['tickets'],
+			'c.tickets_used' => $lng['customer']['tickets'] . ' (' . $lng['panel']['used'] . ')',
 			'c.subdomains' => $lng['customer']['subdomains'],
 			'c.subdomains_used' => $lng['customer']['subdomains'] . ' (' . $lng['panel']['used'] . ')',
 			'c.emails' => $lng['customer']['emails'],
@@ -64,7 +66,7 @@ if($page == 'customers'
 		);
 		$paging = new paging($userinfo, $db, TABLE_PANEL_CUSTOMERS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
 		$customers = '';
-		$result = $db->query("SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " . "FROM `" . TABLE_PANEL_CUSTOMERS . "` `c`, `" . TABLE_PANEL_ADMINS . "` `a` " . "WHERE " . ($userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '" . (int)$userinfo['adminid'] . "' AND ") . "`c`.`adminid`=`a`.`adminid` " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+		$result = $db->query("SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`tickets`, `c`.`tickets_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " . "FROM `" . TABLE_PANEL_CUSTOMERS . "` `c`, `" . TABLE_PANEL_ADMINS . "` `a` " . "WHERE " . ($userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '" . (int)$userinfo['adminid'] . "' AND ") . "`c`.`adminid`=`a`.`adminid` " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
 		$paging->setEntries($db->num_rows($result));
 		$sortcode = $paging->getHtmlSortCode($lng, true);
 		$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
@@ -83,7 +85,7 @@ if($page == 'customers'
 				$row['traffic'] = round($row['traffic']/(1024*1024), 4);
 				$row['diskspace_used'] = round($row['diskspace_used']/1024, 2);
 				$row['diskspace'] = round($row['diskspace']/1024, 2);
-				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
+				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
 				$row = htmlentities_array($row);
 				eval("\$customers.=\"" . getTemplate("customers/customers_customer") . "\";");
 				$count++;
@@ -189,6 +191,11 @@ if($page == 'customers'
 					$admin_update_query.= ", `ftps_used` = `ftps_used` - 0" . (int)$result['ftps'];
 				}
 
+				if($result['tickets'] != '-1')
+				{
+					$admin_update_query.= ", `tickets_used` = `tickets_used` - 0" . (int)$result['tickets'];
+				}
+
 				if(($result['diskspace']/1024) != '-1')
 				{
 					$admin_update_query.= ", `diskspace_used` = `diskspace_used` - 0" . (int)$result['diskspace'];
@@ -240,6 +247,7 @@ if($page == 'customers'
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 				$ftps = intval_ressource($_POST['ftps']);
+				$tickets = intval_ressource($_POST['tickets']);
 				$mysqls = intval_ressource($_POST['mysqls']);
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$password = validate($_POST['customer_password'], 'password');
@@ -254,6 +262,7 @@ if($page == 'customers'
 				   || ((($userinfo['email_accounts_used']+$email_accounts) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
 				   || ((($userinfo['email_forwarders_used']+$email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
 				   || ((($userinfo['ftps_used']+$ftps) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
+				   || ((($userinfo['tickets_used']+$tickets) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
 				   || ((($userinfo['subdomains_used']+$subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
 				   || (($diskspace/1024) == '-1' && ($userinfo['diskspace']/1024) != '-1')
 				   || ($mysqls == '-1' && $userinfo['mysqls'] != '-1')
@@ -261,6 +270,7 @@ if($page == 'customers'
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
 				   || ($email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1')
 				   || ($ftps == '-1' && $userinfo['ftps'] != '-1')
+				   || ($tickets == '-1' && $userinfo['tickets'] != '-1')
 				   || ($subdomains == '-1' && $userinfo['subdomains'] != '-1'))
 				{
 					standard_error('youcantallocatemorethanyouhave');
@@ -355,7 +365,7 @@ if($page == 'customers'
 						$password = substr(md5(uniqid(microtime(), 1)), 12, 6);
 					}
 
-					$result = $db->query("INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` " . "(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`, `standardsubdomain`, `phpenabled`) " . " VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "', '" . $db->escape($customernumber) . "','" . $db->escape($def_language) . "', '" . $db->escape($documentroot) . "', '" . $db->escape($guid) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($mysqls) . "', '0', '" . $db->escape($phpenabled) . "')");
+					$result = $db->query("INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` " . "(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `tickets`, `mysqls`, `standardsubdomain`, `phpenabled`) " . " VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "', '" . $db->escape($customernumber) . "','" . $db->escape($def_language) . "', '" . $db->escape($documentroot) . "', '" . $db->escape($guid) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "', '0', '" . $db->escape($phpenabled) . "')");
 					$customerid = $db->insert_id();
 					$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` + 1";
 
@@ -387,6 +397,11 @@ if($page == 'customers'
 					if($ftps != '-1')
 					{
 						$admin_update_query.= ", `ftps_used` = `ftps_used` + 0" . (int)$ftps;
+					}
+
+					if($tickets != '-1')
+					{
+						$admin_update_query.= ", `tickets_used` = `tickets_used` + 0" . (int)$tickets;
 					}
 
 					if(($diskspace/1024) != '-1')
@@ -501,6 +516,7 @@ if($page == 'customers'
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 				$ftps = intval_ressource($_POST['ftps']);
+				$tickets = intval_ressource($_POST['tickets']);
 				$mysqls = intval_ressource($_POST['mysqls']);
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$deactivated = intval($_POST['deactivated']);
@@ -514,6 +530,7 @@ if($page == 'customers'
 				   || ((($userinfo['email_accounts_used']+$email_accounts-$result['email_accounts']) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
 				   || ((($userinfo['email_forwarders_used']+$email_forwarders-$result['email_forwarders']) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
 				   || ((($userinfo['ftps_used']+$ftps-$result['ftps']) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
+				   || ((($userinfo['tickets_used']+$tickets-$result['tickets']) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
 				   || ((($userinfo['subdomains_used']+$subdomains-$result['subdomains']) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
 				   || (($diskspace/1024) == '-1' && ($userinfo['diskspace']/1024) != '-1')
 				   || ($mysqls == '-1' && $userinfo['mysqls'] != '-1')
@@ -521,6 +538,7 @@ if($page == 'customers'
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
 				   || ($email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1')
 				   || ($ftps == '-1' && $userinfo['ftps'] != '-1')
+				   || ($tickets == '-1' && $userinfo['tickets'] != '-1')
 				   || ($subdomains == '-1' && $userinfo['subdomains'] != '-1'))
 				{
 					standard_error('youcantallocatemorethanyouhave');
@@ -605,7 +623,7 @@ if($page == 'customers'
 						inserttask('1');
 					}
 
-					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . $db->escape($customernumber) . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "' WHERE `customerid`='" . (int)$id . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . $db->escape($customernumber) . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "' WHERE `customerid`='" . (int)$id . "'");
 					$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` ";
 
 					if($mysqls != '-1'
@@ -701,6 +719,22 @@ if($page == 'customers'
 						if($result['ftps'] != '-1')
 						{
 							$admin_update_query.= " - 0" . (int)$result['ftps'] . " ";
+						}
+					}
+
+					if($tickets != '-1'
+					   || $result['tickets'] != '-1')
+					{
+						$admin_update_query.= ", `tickets_used` = `tickets_used` ";
+
+						if($tickets != '-1')
+						{
+							$admin_update_query.= " + 0" . (int)$tickets . " ";
+						}
+
+						if($result['tickets'] != '-1')
+						{
+							$admin_update_query.= " - 0" . (int)$result['tickets'] . " ";
 						}
 					}
 
