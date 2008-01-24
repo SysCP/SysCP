@@ -231,7 +231,7 @@ if($page == 'customers'
 				$phone = validate($_POST['phone'], 'phone', '/^[0-9\- \+]*$/');
 				$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+]*$/');
 				$email = $idna_convert->encode(validate($_POST['email'], 'email'));
-				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[a-z0-9 \-]*$/i');
+				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
 				$def_language = validate($_POST['def_language'], 'default language');
 				$diskspace = intval_ressource($_POST['diskspace']);
 				$traffic = doubleval_ressource($_POST['traffic']);
@@ -491,7 +491,7 @@ if($page == 'customers'
 				$phone = validate($_POST['phone'], 'phone', '/^[0-9\- \+]*$/');
 				$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+]*$/');
 				$email = $idna_convert->encode(validate($_POST['email'], 'email'));
-				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[a-z0-9 \-]*$/i');
+				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
 				$def_language = validate($_POST['def_language'], 'default language');
 				$password = validate($_POST['customer_password'], 'new password');
 				$diskspace = intval_ressource($_POST['diskspace']);
@@ -605,7 +605,7 @@ if($page == 'customers'
 						inserttask('1');
 					}
 
-					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . (int)$customernumber . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "' WHERE `customerid`='" . (int)$id . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . $db->escape($customernumber) . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "' WHERE `customerid`='" . (int)$id . "'");
 					$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` ";
 
 					if($mysqls != '-1'
