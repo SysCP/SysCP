@@ -194,7 +194,6 @@ $lng['error']['login_blocked'] = 'Denne konto er blevet midlertidigt lukket grun
 $lng['error']['notallreqfieldsorerrors'] = 'Alle kr&aelig;vede felter er ikke udfyldt, eller der er fejl i en eller flere af udfyldningerne.';
 $lng['error']['oldpasswordnotcorrect'] = 'Det gamle kodeord er ikke indtastet korrekt.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Du kan ikke tildele flere ressourcer end du er blevet bevilliget.';
-$lng['error']['youcantdeletechangemainadmin'] = 'P&aring; grund af sikkerhed kan du ikke &aelig;ndre eller slette hoved administrator kontoen.';
 $lng['error']['mustbeurl'] = 'Din indtastning er ikke en gyldig URL (f.eks. http://eksempel.com/fejl404.htm)';
 $lng['error']['invalidpath'] = 'Du har valgt en ikke gyldig url (m&aring;ske et problem med mappe list?)';
 $lng['error']['stringisempty'] = 'Manglende intasting i feltet';
@@ -342,8 +341,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP-Adresse';
 $lng['serversettings']['ipaddress']['description'] = 'Hvad er denne servers IP-adresse?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Hvad er denne servers hostname?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Apache konfigurations mappe';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Hvor er apache\'s konfigurationsfiler?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache genstart kommando';
 $lng['serversettings']['apachereload_command']['description'] = 'Hvad er kommandoen til at genstarte apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind konfigurations mappe';
@@ -385,8 +382,6 @@ $lng['mysql']['description'] = 'Her kan du oprette og editere dine MySQL-Databas
  */
 
 $lng['admin']['cronlastrun'] = 'Sidste Cron';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Apache konfigurations filnavn';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Hvad skal apache konfigurations filen kaldes?';
 $lng['serversettings']['paging']['title'] = 'Genstande per side';
 $lng['serversettings']['paging']['description'] = 'Hvor mange genstande skal vises per side? (0 = brug ikke side inddeling)';
 $lng['error']['ipstillhasdomains'] = 'IP/Port kombinationen du vil slette har stadig dom&aelig;ner tilknyttet. Overf&oslash;r disse dom&aelig;ner til en anden IP/Port kombination for at slette denne.';
@@ -436,7 +431,6 @@ $lng['error']['phpmyadminiswrong'] = 'phpMyAdmin linket er ikke gyldigt.';
 $lng['error']['webmailiswrong'] = 'WebMail linket er ikke gyldigt.';
 $lng['error']['webftpiswrong'] = 'WebFTP linket er ikke gyldigt.';
 $lng['domains']['hasaliasdomains'] = 'Har aliasdom&aelig;ne(r)';
-$lng['domains']['istopleveldomain'] = 'Er et top level dom&aelig;ne';
 $lng['serversettings']['defaultip']['title'] = 'Standart IP/Port';
 $lng['serversettings']['defaultip']['description'] = 'Hvilket IP/Port kombination skal bruges som standart?';
 $lng['domains']['statstics'] = 'Forbrugs statestik';

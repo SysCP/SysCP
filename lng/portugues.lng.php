@@ -194,7 +194,6 @@ $lng['error']['login_blocked'] = 'Esta conta est&aacute; suspensa por exceder as
 $lng['error']['notallreqfieldsorerrors'] = 'Voce n&atilde;o preencheu todos os campos ou preencheu algum campo incorretamente.';
 $lng['error']['oldpasswordnotcorrect'] = 'A senha antiga n&atilde;o confere.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Voce n&atilde;o pode alocar mais recursos do que voce mesmo possui.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Voce n&atilde;o pode deletar ou editar o administrador principal por raz&otilde;es de seguran&ccedil;a.';
 $lng['error']['mustbeurl'] = 'Voce n&atilde;o digitou uma URL v&aacute;lida (ex. http://seudominio.com/erro404.htm)';
 $lng['error']['invalidpath'] = 'Optou por um URL n&atilde;o v&aacute;lido (eventuais problemas na lista do direct&oacute;rio)';
 $lng['error']['stringisempty'] = 'Faltando informa&ccedil;&atilde;o no campo';
@@ -342,8 +341,6 @@ $lng['serversettings']['ipaddress']['title'] = 'Endere&ccedil;os de IP';
 $lng['serversettings']['ipaddress']['description'] = 'Quais os Endere&ccedil;os IP deste servidor?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Qual o Hostname deste servidor?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Diret&oacute;rio de configura&ccedil;&atilde;o do Apache';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Aonde est&atilde;o os arquivos de configura&ccedil;&atilde;o do apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Comando de reiniciar o Apache';
 $lng['serversettings']['apachereload_command']['description'] = 'Qual o comando para reiniciar o apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Diret&oacute;rio de configura&ccedil;&atilde;o do Bind';
@@ -379,8 +376,6 @@ $lng['serversettings']['pathedit']['description'] = 'A escolha do file tem que s
  */
 
 $lng['admin']['cronlastrun'] = 'Ultimo Agendamento';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Nome do aqrquivo de configura&ccedil;&atilde;o do Apache';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Como o arquivo de configura&ccedil;&atilde;o do apache deve ser chamado?';
 $lng['serversettings']['paging']['title'] = 'Entradas por pagina';
 $lng['serversettings']['paging']['description'] = 'Quantas entradas devem ser mostradas por pagina? (0 = desabilitar paginas)';
 $lng['error']['ipstillhasdomains'] = 'O IP/Porta que voce quer deletar ainda possui dominios associados e eles, por favor altere o IP/Porta destes dominios antes de delet&aacute;-los.';

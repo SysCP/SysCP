@@ -193,7 +193,6 @@ $lng['error']['login_blocked'] = 'Aquest compte ha estat susp&egrave;s a causa d
 $lng['error']['notallreqfieldsorerrors'] = 'No has omplert tots els camps o algun camp &eacute;s incorrecte.';
 $lng['error']['oldpasswordnotcorrect'] = 'La clau antiga no &eacute;s la correcta.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'No pots ocupar m&eacute;s espai del que tens assignat!';
-$lng['error']['youcantdeletechangemainadmin'] = 'L\'usuari admin &eacute;s sagrat...';
 $lng['error']['mustbeurl'] = 'No has escrit una URL correcte';
 $lng['error']['invalidpath'] = 'No has escrit una URL v&agrave;lida (potser hi ha algun problema en el llistat de directoris)';
 $lng['error']['stringisempty'] = 'Camp de text buit';
@@ -341,8 +340,6 @@ $lng['serversettings']['ipaddress']['title'] = 'Adre&ccedil;a IP';
 $lng['serversettings']['ipaddress']['description'] = 'Quina &eacute;s la adre&ccedil;a IP del servidor?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Quin &eacute;s el hostname del servidor?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Directori de configuraci&oacute; d\'Apache';
-$lng['serversettings']['apacheconf_directory']['description'] = 'On estan els fitxers de configuraci&oacute; d\'Apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Comanda de reinici d\'Apache';
 $lng['serversettings']['apachereload_command']['description'] = 'Quina &eacute;s la comanda per reiniciar Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Directori de configuraci&oacute; de Bind';
@@ -378,8 +375,6 @@ $lng['serversettings']['pathedit']['description'] = 'Vols que la ruta sigui escr
  */
 
 $lng['admin']['cronlastrun'] = '&Uacute;ltima volta';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Fitxer de configuraci&oacute; de l\'Apache';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Nom del fitxer de configuraci&oacute; de l\'Apache';
 $lng['serversettings']['paging']['title'] = 'Entrades per p&agrave;gina';
 $lng['serversettings']['paging']['description'] = 'Entrades per p&agrave;gina? (0 = sense paginar)';
 $lng['error']['ipstillhasdomains'] = 'La combinaci&oacute; IP/Port que vols esborrar t&eacute; dominis assignats. Si us plau, reassigna els dominis a una altra IP/Port abans d\'esborrar.';

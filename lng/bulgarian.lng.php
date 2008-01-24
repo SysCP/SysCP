@@ -55,7 +55,6 @@ $lng['login']['profile_lng'] = 'Език от профила';
  * Customer
  */
 
-$lng['customer']['login'] = 'Потребителско име';
 $lng['customer']['documentroot'] = 'Домашна директория';
 $lng['customer']['name'] = 'Фамилия';
 $lng['customer']['firstname'] = 'Име';
@@ -134,7 +133,6 @@ $lng['domain']['openbasedirpath'] = 'OpenBasedir-път';
 $lng['domain']['docroot'] = 'Път за полето по-горе';
 $lng['domain']['homedir'] = 'Домашна директория';
 $lng['domains']['hasaliasdomains'] = 'Дали да има псевдоними на домейни';
-$lng['domains']['istopleveldomain'] = 'Това домейн от главно ниво ли е';
 $lng['domains']['statstics'] = 'Статистики на потреблението';
 
 /**
@@ -218,7 +216,6 @@ $lng['error']['login_blocked'] = 'Акаунтът е замразен пора�
 $lng['error']['notallreqfieldsorerrors'] = 'Не сте попълнили всичко, или някои от полетата са попълнени неправилно.';
 $lng['error']['oldpasswordnotcorrect'] = 'Старата ви парола е неправилна.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Не можете да раздадете повече ресурси, отколкото има отделени за самите вас.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Главният администратор не може да бъде редактиран или изтриван от съображения за сигурност.';
 $lng['error']['mustbeurl'] = 'Не сте въвели правилно или пълно url (напр. http://somedomain.com/error404.htm)';
 $lng['error']['stringisempty'] = 'Липсват въведени данни в поле';
 $lng['error']['stringiswrong'] = 'Грешни въведени данни в поле';
@@ -402,8 +399,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP адрес';
 $lng['serversettings']['ipaddress']['description'] = 'Какъв е IP адресът на този сървър?';
 $lng['serversettings']['hostname']['title'] = 'Име на хост';
 $lng['serversettings']['hostname']['description'] = 'Какво е името на хост на този сървър?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Конфигурационна директория на Apache';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Къде се намират конфигурационните файлове на apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Команда за презареждане на apache';
 $lng['serversettings']['apachereload_command']['description'] = 'Каква е командата за презареждане на apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Конфигурационна директория на Bind';
@@ -433,8 +428,6 @@ $lng['serversettings']['deactivatetime']['title'] = 'Продължително�
 $lng['serversettings']['deactivatetime']['description'] = 'Време в секунди, за което ще бъде деактивирана дадена сметка при прекалено голям брой неуспешни опити за влизане.';
 $lng['serversettings']['pathedit']['title'] = 'Тип на въвеждането на пътя';
 $lng['serversettings']['pathedit']['description'] = 'Пътят да бъде избиран посредством падащо меню или поле за вход?';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Конфигурационен файл на Apache';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Как се нарича конфигурационния файл на Apache?';
 $lng['serversettings']['paging']['title'] = 'Записи на страница';
 $lng['serversettings']['paging']['description'] = 'Колко записа да бъдат показвани на страница? (0 = забранява странирането)';
 $lng['serversettings']['defaultip']['title'] = 'IP/порт по подразбиране';

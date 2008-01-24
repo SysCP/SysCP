@@ -194,7 +194,6 @@ $lng['error']['login_blocked'] = 'Esta cuenta fue cerrada transitoriamente debid
 $lng['error']['notallreqfieldsorerrors'] = 'Usted no ha llenado todos los espacios asignados o ha colocado un dato Erroneo.';
 $lng['error']['oldpasswordnotcorrect'] = 'La Clave Vieja no es correcta.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Usted no puede afectar un aparato m&aacute;s recursos que los que usted posee.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Como paso de seguiridad Usted no puede Borar/reconfigurar el administrador-principal.';
 $lng['error']['mustbeurl'] = 'Usted tiene que dar una completa direccion URL(por ejemplo: http://algo.de/error404.htm)';
 $lng['error']['invalidpath'] = 'No ha seleccionado una URL v&aacute;lida (&#191;probablemente problemas con el listado de registros?)';
 $lng['error']['stringisempty'] = 'Falta un dato';
@@ -342,8 +341,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP address';
 $lng['serversettings']['ipaddress']['description'] = '&#191;Cu&aacute;l es el IP address de este servidor?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = '&#191;Cu&aacute;l es el hostname de este servidor?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Directorio de la configuraci&oacute;n de Apache';
-$lng['serversettings']['apacheconf_directory']['description'] = '&#191;D&oacute;nde est&aacute; la configuraci&oacute;n apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Comando de la recarga de Apache';
 $lng['serversettings']['apachereload_command']['description'] = '&#191;Cu&aacute;l es el comando de la recarga de Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Directorio de la configuraci&oacute;n de Bind';
@@ -379,8 +376,6 @@ $lng['serversettings']['pathedit']['description'] = 'Prefiere seleccionar un tra
  */
 
 $lng['admin']['cronlastrun'] = '&Uacute;ltimo Cron';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Archivo de configuraci&oacute;n de Apache';
-$lng['serversettings']['apacheconf_filename']['description'] = '&iquest;Como quiere nombrar el archivo de configuraci&oacute;n de apache?';
 $lng['serversettings']['paging']['title'] = 'Entradas por p&aacute;gina';
 $lng['serversettings']['paging']['description'] = '&iquest;Cuantas entradas deben ser mostradas en una p&aacute;gina? (0=desactivar paginaci&oacute;n)';
 $lng['error']['ipstillhasdomains'] = 'La combinaci&oacute;n IP/Puerto que Usted quiere eliminar todav&iacute;a tiene dominios asignados, por favor vuelva a reasignar estas combinaciones IP/Puerto antes de eliminar esta combinaci&oacute;n IP/Puerto.';

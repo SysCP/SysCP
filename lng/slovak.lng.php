@@ -193,7 +193,6 @@ $lng['error']['login_blocked'] = 'Tento úèet bol suspendovaný z dôvodu veµkého m
 $lng['error']['notallreqfieldsorerrors'] = 'Nevyplnili ste v¹etky polia, alebo sú niektoré nesprávne.';
 $lng['error']['oldpasswordnotcorrect'] = 'Stará heslo nie je správne.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Nemô¾ete vymedzi» viac prostiedkov ako sú povolené pre Vás.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Z bezpeènostných dôvodov nemô¾ete maza» alebo upravova» hlavnú administráciu.';
 $lng['error']['mustbeurl'] = 'Nezadali ste správu alebo kompletnú URL (napr. http://vasa_domena.tlk/error404.htm)';
 $lng['error']['invalidpath'] = 'Nevybrali ste správu URL (mo¾no je problém so zoznamom adresárov)';
 $lng['error']['stringisempty'] = 'Chýbajúce vstupné pole';
@@ -341,8 +340,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP-Addresy';
 $lng['serversettings']['ipaddress']['description'] = 'Aká je IP adresa tohto servera?';
 $lng['serversettings']['hostname']['title'] = 'Názov hosta';
 $lng['serversettings']['hostname']['description'] = 'Aký je názov hosta tohto servera?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Adresár konfigurácie Apache';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Kde sú konfiguraèné súbory Apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Príkaz na pretvorenie (reload) Apache';
 $lng['serversettings']['apachereload_command']['description'] = 'Aký je príkaz na pretvorenie (reload) Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Adresár konfigurácie bind (DNS)';
@@ -384,8 +381,6 @@ $lng['mysql']['description'] = 'Tu mô¾ete vytvára» a meni» Va¹e MySQL databázy.<
  */
 
 $lng['admin']['cronlastrun'] = 'Posledný Cron';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Názov súboru apache konfigurácie';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Ako má by» apache konfiguraèný súbor nazvaný?';
 $lng['serversettings']['paging']['title'] = 'Záznamov na stránku';
 $lng['serversettings']['paging']['description'] = 'Koµko záznamov bude zobrazených na jednej stránke? (0 = zakázané stránkovanie)';
 $lng['error']['ipstillhasdomains'] = 'IP/Port kombinácia ktorú chcete zmaza» má stále priradené domenény. Pred zmazaním tejto IP/Port kombinácie prosím znovu priraïte tieto k ostatným IP/Port kombináciam.';

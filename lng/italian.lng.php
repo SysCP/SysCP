@@ -195,7 +195,6 @@ $lng['error']['login_blocked'] = 'Questo account è stato sospeso per i troppi te
 $lng['error']['notallreqfieldsorerrors'] = 'Alcuni campi sono stati lasciati vuoti o sono stati riempiti incorrettamente.';
 $lng['error']['oldpasswordnotcorrect'] = 'La vecchia password non è corretta.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Non puoi assegnare più risorse di quante ne possieda tu stesso.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Non puoi cancellare o modificare l\'admin principale per ragioni di sicurezza.';
 $lng['error']['mustbeurl'] = 'Non hai inserito un\'indirizzo valido o completo (per es. http://qualchedominio.com/errore404.htm).';
 $lng['error']['invalidpath'] = 'Non hai scelto un\'indirizzo valido.';
 $lng['error']['stringisempty'] = 'Manca il dato nel campo.';
@@ -343,8 +342,6 @@ $lng['serversettings']['ipaddress']['title'] = 'Indirizzo IP';
 $lng['serversettings']['ipaddress']['description'] = 'Qual\'è l\'indirizzo IP di questo server?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'QUal\'è l\'hostname di questo server?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Cartella configurazione Apache';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Dove sono i file di configurazione per Apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Comando riavvio Apache';
 $lng['serversettings']['apachereload_command']['description'] = 'Qual\'è il comando per riavviare Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Cartella configurazione Bind';
@@ -380,8 +377,6 @@ $lng['serversettings']['pathedit']['description'] = 'Un percorso/cartella andrà 
  */
 
 $lng['admin']['cronlastrun'] = 'Ultimo Cronjob';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Nome file configurazione Apache';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Come dovrebbe chiamarsi il file di configurazione di Apache?';
 $lng['serversettings']['paging']['title'] = 'Elementi da visualizzare per pagina';
 $lng['serversettings']['paging']['description'] = 'Quanti elementi dovrebbero essere visualizzati su una pagina? (0 = disattiva impaginazione)';
 $lng['error']['ipstillhasdomains'] = 'La combinazione IP/Porta che vuoi eliminare ha ancora dei domini assegnati, per favore riassegna questi domini ad altre combinazioni IP/Porta prima di eliminare questa.';
@@ -425,7 +420,6 @@ $lng['error']['phpmyadminiswrong'] = 'Il link a phpMyAdmin è invalido.';
 $lng['error']['webmailiswrong'] = 'Il link alla WebMail è invalido.';
 $lng['error']['webftpiswrong'] = 'Il link al WebFTP è invalido.';
 $lng['domains']['hasaliasdomains'] = 'Ha domini alias';
-$lng['domains']['istopleveldomain'] = 'È un dominio top-level';
 $lng['serversettings']['defaultip']['title'] = 'IP/Porta default';
 $lng['serversettings']['defaultip']['description'] = 'Qual\'è la combinazione IP/Porta default?';
 $lng['domains']['statstics'] = 'Statistiche d\'utilizzo';
