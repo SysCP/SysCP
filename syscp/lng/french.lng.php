@@ -195,7 +195,6 @@ $lng['error']['login_blocked'] = 'Cet acc&egrave;s &eacute;tait bloqu&eacute; &a
 $lng['error']['notallreqfieldsorerrors'] = 'Vous n\'avez pas rempli toutes les cases ou vous l\'avez rempli avec des valeurs invalides.';
 $lng['error']['oldpasswordnotcorrect'] = 'L\'ancien mot de passe n\'est pas correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus de ressource qu\'il n\'en reste.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Pour des raisons de la s&eacute;curit&eacute; ce n\'est pas possible d\'effacer ou modifier l\'administrateur principal.';
 $lng['error']['mustbeurl'] = 'Vous n\'avez pas dict&eacute; une adresse URL valide.';
 $lng['error']['invalidpath'] = 'Vous n\'avez pas choisi une adresse URL valide (Probablement &agrave; cause de probl&egrave;s avec le listing de dossiers?)';
 $lng['error']['stringisempty'] = 'Entr&eacute;e manquante';
@@ -343,8 +342,6 @@ $lng['serversettings']['ipaddress']['title'] = 'Adresse IP';
 $lng['serversettings']['ipaddress']['description'] = 'Quelle est l\'adresse IP du server?';
 $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Quel est le hostname du server?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Apache-Config-Directory';
-$lng['serversettings']['apacheconf_directory']['description'] = 'O&ugrave; est sauvegard&eacute;e la configuration de l\'Apache?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache-Reload-Command';
 $lng['serversettings']['apachereload_command']['description'] = 'Comment est la commande pour red&eacute;marrer l\Apache?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind-Config-Directory';
@@ -380,8 +377,6 @@ $lng['serversettings']['pathedit']['description'] = 'Choisir un chemin par menu 
  */
 
 $lng['admin']['cronlastrun'] = 'Derni&egrave;re Tache Cron';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Nom fichier de configuration Apache';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Quel nom utiliserez-vous pour le fichier de configuration Apache?';
 $lng['serversettings']['paging']['title'] = 'R&eacute;sultats par page';
 $lng['serversettings']['paging']['description'] = 'Combien de r&eacute;sultats par page ? (0 = D&eacute;sactive la pagination)';
 $lng['error']['ipstillhasdomains'] = 'La combinaison IP/port est encore utilis&eacute;e, svp r&eacute;assignez le ou les domaines concern&eacute;s &agrave; une autre combinaison avant de supprimer celle-ci.';
@@ -428,7 +423,6 @@ $lng['error']['phpmyadminiswrong'] = 'Le lien pour Phpmyadmin n\est pas valide.'
 $lng['error']['webmailiswrong'] = 'Le lien pour le WebMail n\'est pas valide.';
 $lng['error']['webftpiswrong'] = 'Le lien pour WebFTP n\'est pas valide.';
 $lng['domains']['hasaliasdomains'] = 'Le domaine poss&egrave;de un ou des alias';
-$lng['domains']['istopleveldomain'] = 'C\'est le nom de domaine principal';
 $lng['serversettings']['defaultip']['title'] = 'IP/Port par d&eacute;faut';
 $lng['serversettings']['defaultip']['description'] = 'Quelle est l\'IP/Port par d&eacute;faut ?';
 $lng['domains']['statstics'] = 'Fr&eacute;quentation';

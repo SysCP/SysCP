@@ -194,7 +194,6 @@ $settings['login']['deactivatetime'] . ' seconds.';
 $lng['error']['notallreqfieldsorerrors'] = 'Nem teljesen vagy helytelen&uuml;l t&ouml;lt&ouml;tte ki a mez&#337;ket.';
 $lng['error']['oldpasswordnotcorrect'] = 'A r&eacute;gi jelsz&oacute; helytelen.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Nem oszthat ki t&ouml;bb er&#337;forr&aacute;st, mint amennyit birtokol.';
-$lng['error']['youcantdeletechangemainadmin'] = 'Biztons&aacute;gi okokb&oacute;l nem t&ouml;r&ouml;lheti vagy szerkesztheti a f&#337;adminisztr&aacute;tort.';
 $lng['error']['mustbeurl'] = 'Nem teljes vagy nem &eacute;rv&eacute;nyes URL-t (pl.: http://somedomain.com/error404.htm) g&eacute;pelt be';
 $lng['error']['invalidpath'] = 'Nem v&aacute;lasztott ki &eacute;rv&eacute;nyes URL-t  (lehet, hogy probl&eacute;ma van a k&ouml;nyvt&aacute;rlist&aacute;z&aacute;ssal?).';
 $lng['error']['stringisempty'] = 'A mez&#337;ben nincs adat.';
@@ -342,8 +341,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP c&iacute;m';
 $lng['serversettings']['ipaddress']['description'] = 'Mi az  IP c&iacute;me ennek a szervernek?';
 $lng['serversettings']['hostname']['title'] = 'Hostn&eacute;v (g&eacute;pn&eacute;v)';
 $lng['serversettings']['hostname']['description'] = 'Mi legyen a neve ennek a szervernek?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Apache konfigur&aacute;ci&oacute;s k&ouml;nyvt&aacute;r';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Hol vannak az Apache konfigur&aacute;ci&oacute;s &aacute;llom&aacute;nyok?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache &uacute;jraind&iacute;t&aacute;si parancs';
 $lng['serversettings']['apachereload_command']['description'] = 'Mi az Apache &uacute;jraind&iacute;t&aacute;si parancsa?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind konfigur&aacute;ci&oacute;s k&ouml;nyvt&aacute;r';
@@ -389,8 +386,6 @@ $lng['mysql']['description'] = 'Itt hozhatja l&eacute;tre &eacute;s v&aacute;lto
  */
 
 $lng['admin']['cronlastrun'] = 'Utols&oacute; Cron fut&aacute;s';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Apache konfigur&aacute;ci&oacute;s &aacute;llom&aacute;ny';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Hogy nevezz&uuml;k el az Apache konfigur&aacute;ci&oacute;s &aacute;llom&aacute;ny&aacute;t?';
 $lng['serversettings']['paging']['title'] = 'Bejegyz&eacute;sek sz&aacute;ma egy lapon';
 $lng['serversettings']['paging']['description'] = 'H&aacute;ny bejegyz&eacute;s jelenjen meg egy lapon? (0 = lapoz&aacute;s kikapcsol&aacute;sa)';
 $lng['error']['ipstillhasdomains'] = 'A t&ouml;r&ouml;lni k&iacute;v&aacute;nt IP/Port kombin&aacute;ci&oacute;hoz domainek vannak rendelve. Rendelje hozz&aacute; ezeket egy m&aacute;sik IP/Port kombin&aacute;ci&oacute;hoz, miel&#337;tt a jelenlegi IP/Port kombin&aacute;ci&oacute;t t&ouml;rli.';

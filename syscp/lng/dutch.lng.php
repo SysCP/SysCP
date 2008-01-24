@@ -193,7 +193,6 @@ $lng['error']['login_blocked'] = 'Dit account is inactief vanwege teveel login f
 $lng['error']['notallreqfieldsorerrors'] = 'U heeft niet alle velden goed, of helemaal niet ingevuld.';
 $lng['error']['oldpasswordnotcorrect'] = 'Het oude wachtwoord is niet correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'U kunt niet meer resources gebruiken dan dat u bezit.';
-$lng['error']['youcantdeletechangemainadmin'] = 'U kunt dit domein niet aanpassen of verwijderen vanwege beveiligings redenen.';
 $lng['error']['mustbeurl'] = 'U heeft geen goed of compleet URL ingegeven (bijv. http://eenserver.com/error404.htm)';
 $lng['error']['invalidpath'] = 'U heeft geen goed URL ingegeven (misschien een probleem met dirlisting?)';
 $lng['error']['stringisempty'] = 'Geen waarde in invoerveld';
@@ -341,8 +340,6 @@ $lng['serversettings']['ipaddress']['title'] = 'IP-Adres';
 $lng['serversettings']['ipaddress']['description'] = 'Wat is het IP-adres van deze server?';
 $lng['serversettings']['hostname']['title'] = 'Hostnaam';
 $lng['serversettings']['hostname']['description'] = 'Wat is de hostnaam van deze server?';
-$lng['serversettings']['apacheconf_directory']['title'] = 'Apache configuratie map';
-$lng['serversettings']['apacheconf_directory']['description'] = 'Waar staan de apache configuratie bestanden?';
 $lng['serversettings']['apachereload_command']['title'] = 'Apache reload commando';
 $lng['serversettings']['apachereload_command']['description'] = 'Wat is het commando op apache te herladen?';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind configuratie map';
@@ -384,8 +381,6 @@ $lng['mysql']['description'] = 'Hier kunt u MySQL-Databases maken en wijzigen.<b
  */
 
 $lng['admin']['cronlastrun'] = 'Laatste Cron-run';
-$lng['serversettings']['apacheconf_filename']['title'] = 'Apache configuratie bestandsnaam';
-$lng['serversettings']['apacheconf_filename']['description'] = 'Hoe moet het apache configuratie bestand genoemd worden?';
 $lng['serversettings']['paging']['title'] = 'Vermeldingen per pagina';
 $lng['serversettings']['paging']['description'] = 'Hoeveel vermeldingen er getoond moeten worden per pagina? (0 = alles laten zien)';
 $lng['error']['ipstillhasdomains'] = 'De IP/Port combinatie die u verwijderen wilt heeft nog domeinen toegewezen, wijs deze opnieuw to aan andere IP/Poort combinaties voordat u deze IP/Poort combinatie verwijderd.';
