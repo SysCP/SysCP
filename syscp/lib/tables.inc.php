@@ -35,6 +35,8 @@ define('TABLE_PANEL_NAVIGATION', 'panel_navigation');
 define('TABLE_PANEL_LANGUAGE', 'panel_languages');
 define('TABLE_PANEL_CRONSCRIPT', 'panel_cronscript');
 define('TABLE_PANEL_IPSANDPORTS', 'panel_ipsandports');
-$version = '1.2.18-svn2';
+define('TABLE_PANEL_TICKETS', 'panel_tickets');
+define('TABLE_PANEL_TICKET_CATS', 'panel_ticket_categories');
+$version = '1.2.18-svn3';
 
 ?>

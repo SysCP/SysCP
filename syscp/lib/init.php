@@ -136,6 +136,12 @@ require ('./lib/functions.php');
 require ('./lib/class_paging.php');
 
 /**
+ * Includes the Ticket class
+ */
+
+require ('./lib/class_ticket.php');
+
+/**
  * Reverse magic_quotes_gpc=on to have clean GPC data again
  */
 

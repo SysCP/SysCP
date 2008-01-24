@@ -90,6 +90,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ftps" value="{$result['ftps']}" maxlength="9" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name">{$lng['customer']['tickets']}: *</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="tickets" value="{$result['tickets']}" maxlength="9" /></td>
+			</tr>
+			<tr>
 				<td class="main_field_name">{$lng['customer']['mysqls']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="mysqls" value="{$result['mysqls']}" maxlength="9" /></td>
 			</tr>

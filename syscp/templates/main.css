@@ -298,3 +298,18 @@ textarea.textarea_border { /*textarea_bordo*/
     border-width        : 1px;
     text-align          : right;
 }
+
+.ticket_high {
+    color		   : #ff0000;
+    font-weight         : bold;
+}
+
+.ticket_normal {
+    color		   : #ff9a38;
+    font-weight         : bold;
+}
+
+.ticket_low {
+    color		   : #5bc949;
+    font-weight         : bold;
+}

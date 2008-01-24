@@ -70,6 +70,10 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['ftps']}:</td>
 			<td class="field_display">{$userinfo['ftps_used']} ({$userinfo['ftps']})</td>
 		</tr>
+		<tr>
+			<td class="field_name_border_left">{$lng['customer']['tickets']}:</td>
+			<td class="field_display">{$userinfo['tickets_used']} ({$userinfo['tickets']})</td>
+		</tr>
 	</table>
 	<br />
 	<br />

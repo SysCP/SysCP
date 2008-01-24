@@ -212,6 +212,52 @@ function makeoption($title, $value, $selvalue = NULL, $title_trusted = false, $v
 }
 
 /**
+ * Return HTML Code for a checkbox
+ *
+ * @param string The fieldname
+ * @param string The captions
+ * @param string The Value which will be returned
+ * @param bool Add a <br /> at the end of the checkbox
+ * @param string Values which will be selected by default
+ * @param bool Whether the title may contain html or not
+ * @param bool Whether the value may contain html or not
+ * @return string HTML Code
+ * @author Michael Kaufmann <mkaufmann@nutime.de>
+ */
+
+function makecheckbox($name, $title, $value, $break = false, $selvalue = NULL, $title_trusted = false, $value_trusted = false)
+{
+	if($selvalue !== NULL
+	   && $value == $selvalue)
+	{
+		$checked = 'checked="checked"';
+	}
+	else
+	{
+		$checked = '';
+	}
+
+	if(!$title_trusted)
+	{
+		$title = htmlspecialchars($title);
+	}
+
+	if(!$value_trusted)
+	{
+		$value = htmlspecialchars($value);
+	}
+
+	$checkbox = '<input type="checkbox" name="' . $name . '" value="' . $value . '" ' . $checked . ' >&nbsp;' . $title;
+
+	if($break)
+	{
+		$checkbox.= '<br />';
+	}
+
+	return $checkbox;
+}
+
+/**
  * Sends an header ( 'Location ...' ) to the browser.
  *
  * @param   string   Destination
@@ -777,6 +823,16 @@ function updateCounters($returndebuginfo = false)
 			$admin_resources[$customer['adminid']]['ftps_used']+= intval_ressource($customer['ftps']);
 		}
 
+		if(!isset($admin_resources[$customer['adminid']]['tickets_used']))
+		{
+			$admin_resources[$customer['adminid']]['tickets_used'] = 0;
+		}
+
+		if($customer['tickets'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['tickets_used']+= intval_ressource($customer['tickets']);
+		}
+
 		if(!isset($admin_resources[$customer['adminid']]['emails_used']))
 		{
 			$admin_resources[$customer['adminid']]['emails_used'] = 0;
@@ -844,9 +900,11 @@ function updateCounters($returndebuginfo = false)
 		$customer['email_forwarders_used_new'] = $customer_email_forwarders;
 		$customer_ftps = $db->query_first('SELECT COUNT(*) AS `number_ftps` FROM `' . TABLE_FTP_USERS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 		$customer['ftps_used_new'] = ($customer_ftps['number_ftps']-1);
+		$customer_tickets = $db->query_first('SELECT COUNT(*) AS `number_tickets` FROM `' . TABLE_PANEL_TICKETS . '` WHERE `answerto` = "0" AND `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer['tickets_used_new'] = ($customer_tickets['number_tickets']-1);
 		$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '" AND `parentdomainid` <> "0"');
 		$customer['subdomains_used_new'] = $customer_subdomains['number_subdomains'];
-		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '",  `emails_used` = "' . (int)$customer['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$customer['ftps_used_new'] . '",  `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '",  `emails_used` = "' . (int)$customer['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$customer['ftps_used_new'] . '",   `tickets_used` = "' . (int)$customer['tickets_used_new'] . '",  `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 
 		if($returndebuginfo === true)
 		{
@@ -903,6 +961,12 @@ function updateCounters($returndebuginfo = false)
 			$admin_resources[$admin['adminid']]['emails_used'] = 0;
 		}
 
+		if(!isset($admin_resources[$admin['adminid']]['tickets_used']))
+		{
+			$admin_resources[$admin['adminid']]['tickets_used'] = 0;
+		}
+
+		$admin['tickets_used_new'] = $admin_resources[$admin['adminid']]['tickets_used'];
 		$admin['emails_used_new'] = $admin_resources[$admin['adminid']]['emails_used'];
 
 		if(!isset($admin_resources[$admin['adminid']]['email_accounts_used']))
@@ -925,7 +989,7 @@ function updateCounters($returndebuginfo = false)
 		}
 
 		$admin['subdomains_used_new'] = $admin_resources[$admin['adminid']]['subdomains_used'];
-		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `customers_used` = "' . (int)$admin['customers_used_new'] . '",  `domains_used` = "' . (int)$admin['domains_used_new'] . '",  `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '",  `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '",  `emails_used` = "' . (int)$admin['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$admin['ftps_used_new'] . '",  `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '",  `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
+		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `customers_used` = "' . (int)$admin['customers_used_new'] . '",  `domains_used` = "' . (int)$admin['domains_used_new'] . '",  `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '",  `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '",  `emails_used` = "' . (int)$admin['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$admin['ftps_used_new'] . '",  `tickets_used` = "' . (int)$admin['tickets_used_new'] . '",  `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '",  `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
 
 		if($returndebuginfo === true)
 		{

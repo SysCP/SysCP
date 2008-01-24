@@ -142,6 +142,8 @@ CREATE TABLE `panel_admins` (
   `email_forwarders_used` int(15) NOT NULL default '0',
   `ftps` int(15) NOT NULL default '0',
   `ftps_used` int(15) NOT NULL default '0',
+  `tickets` int(15) NOT NULL default '0',
+  `tickets_used` int(15) NOT NULL default '0',
   `subdomains` int(15) NOT NULL default '0',
   `subdomains_used` int(15) NOT NULL default '0',
   `traffic` int(15) NOT NULL default '0',
@@ -191,6 +193,8 @@ CREATE TABLE `panel_customers` (
   `email_forwarders_used` int(15) NOT NULL default '0',
   `ftps` int(15) NOT NULL default '0',
   `ftps_used` int(15) NOT NULL default '0',
+  `tickets` int(15) NOT NULL default '0',
+  `tickets_used` int(15) NOT NULL default '0',
   `subdomains` int(15) NOT NULL default '0',
   `subdomains_used` int(15) NOT NULL default '0',
   `traffic` bigint(30) NOT NULL default '0',
@@ -438,7 +442,15 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (48, 'system', 'apacheconf_diroptions', '/etc/apache/diroptions.conf');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (49, 'system', 'apacheconf_htpasswddir', '/etc/apache/htpasswd/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (50, 'system', 'webalizer_quiet', '2');
-
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (51, 'ticket', 'ticket_noreply_email', 'NO-REPLY@SERVERNAME');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (52, 'ticket', 'ticket_admin_email', 'admin@SERVERNAME');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (53, 'ticket', 'worktime_all', '1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (54, 'ticket', 'worktime_begin', '00:00');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (55, 'ticket', 'worktime_end', '23:59');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (56, 'ticket', 'worktime_sat', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (57, 'ticket', 'worktime_sun', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (58, 'ticket', 'archiving_days', '5');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (59, 'system', 'last_archive_run', '000000');
 # --------------------------------------------------------
 
 #
@@ -593,6 +605,12 @@ INSERT INTO `panel_navigation` VALUES (32, 'admin', 'admin_server.nourl', 'admin
 INSERT INTO `panel_navigation` VALUES (33, 'admin', 'admin_index.php', 'menue;main;username', 'admin_index.nourl', '5', '', 0);
 INSERT INTO `panel_navigation` VALUES (34, 'customer', 'customer_index.php', 'menue;main;username', 'customer_index.nourl', '5', '', 0);
 INSERT INTO `panel_navigation` VALUES (35, 'admin', 'admin_server.nourl', 'admin;updatecounters', 'admin_settings.php?page=updatecounters', '35', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (36, 'customer', '', 'menue;ticket;ticket', 'customer_tickets.php', '20', '', 0);
+INSERT INTO `panel_navigation` VALUES (37, 'customer', 'customer_tickets.php', 'menue;ticket;ticket', 'customer_tickets.php?page=tickets', 10, '', 0);
+INSERT INTO `panel_navigation` VALUES (38, 'admin', '', 'admin;ticketsystem', 'admin_ticketsystem.nourl', '40', '', 0);
+INSERT INTO `panel_navigation` VALUES (39, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0);
+INSERT INTO `panel_navigation` VALUES (40, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0);
+INSERT INTO `panel_navigation` VALUES (41, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);
 
 
 # --------------------------------------------------------
@@ -628,4 +646,48 @@ INSERT INTO `panel_languages` VALUES (12, 'Slovak', 'lng/slovak.lng.php');
 INSERT INTO `panel_languages` VALUES (13, 'Dutch', 'lng/dutch.lng.php');
 INSERT INTO `panel_languages` VALUES (14, 'Hungarian', 'lng/hungarian.lng.php');
 
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_tickets`
+#
+
+DROP TABLE IF EXISTS `panel_tickets`;
+CREATE TABLE `panel_tickets` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `customerid` int(11) NOT NULL,
+  `category` smallint(5) unsigned NOT NULL default '1',
+  `priority` enum('1','2','3') NOT NULL default '3',
+  `subject` varchar(70) NOT NULL,
+  `message` text NOT NULL,
+  `dt` int(15) NOT NULL,
+  `lastchange` int(15) NOT NULL,
+  `ip` varchar(20) NOT NULL,
+  `status` enum('0','1','2','3') NOT NULL default '1',
+  `lastreplier` enum('0','1') NOT NULL default '0',
+  `answerto` int(11) unsigned NOT NULL,
+  `by` enum('0','1') NOT NULL default '0',
+  `archived` enum('0','1') NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `customerid` (`customerid`)
+) ENGINE=MyISAM;
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_ticket_categories`
+#
+
+DROP TABLE IF EXISTS `panel_ticket_categories`;
+CREATE TABLE `panel_ticket_categories` (
+  `id` smallint(5) unsigned NOT NULL auto_increment,
+  `name` varchar(60) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM;
+
+#
+# Dumping data for table `panel_ticket_categories`
+#
 

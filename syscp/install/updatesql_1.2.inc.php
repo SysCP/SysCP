@@ -1217,4 +1217,57 @@ if($settings['panel']['version'] == '1.2.18-svn1')
 	$settings['panel']['version'] = '1.2.18-svn2';
 }
 
+if($settings['panel']['version'] == '1.2.18-svn2')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'ticket_noreply_email\', `value` = \'NO-REPLY@SERVERNAME\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'ticket_admin_email\', `value` = \'admin@SERVERNAME\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_all\', `value` = \'1\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_begin\', `value` = \'00:00\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_end\', `value` = \'23:59\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_sat\', `value` = \'0\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_sun\', `value` = \'0\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'archiving_days\', `value` = \'5\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'last_archive_run\', `value` = \'0\' ');
+	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `tickets` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `ftps_used`");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `tickets_used` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `tickets`");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `tickets` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `ftps_used`");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `tickets_used` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `tickets`");
+	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, lang`, `url`, `order`, `required_resources`, `new_window`)
+				VALUES
+				 ('customer', '', 'menue;ticket;ticket', 'customer_tickets.php', '20', '', 0),
+				 ('customer', 'customer_tickets.php', 'menue;ticket;ticket', 'customer_tickets.php?page=tickets', 10, '', 0),
+				 ('admin', '', 'admin;ticketsystem', 'admin_ticketsystem.nourl', '40', '', 0),
+				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0),
+				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0),
+				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);");
+	$db->query("CREATE TABLE `panel_tickets` (
+					`id` int(11) unsigned NOT NULL auto_increment,
+					`customerid` int(11) NOT NULL,
+					`category` smallint(5) unsigned NOT NULL default '1',
+					`priority` enum('1','2','3') NOT NULL default '3',
+					`subject` varchar(70) NOT NULL,
+					`message` text NOT NULL,
+					`dt` int(15) NOT NULL,
+					`lastchange` int(15) NOT NULL,
+					`ip` varchar(20) NOT NULL,
+					`status` enum('0','1','2','3') NOT NULL default '1',
+					`lastreplier` enum('0','1') NOT NULL default '0',
+					`answerto` int(11) unsigned NOT NULL,
+					`by` enum('0','1') NOT NULL default '0',
+					`archived` enum('0','1') NOT NULL default '0',
+				PRIMARY KEY  (`id`),
+				KEY `customerid` (`customerid`)) ENGINE=MyISAM;");
+	$db->query("CREATE TABLE `panel_ticket_categories` (
+					`id` smallint(5) unsigned NOT NULL auto_increment,
+					`name` varchar(60) NOT NULL,
+					PRIMARY KEY  (`id`)) ENGINE=MyISAM;");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.18-svn3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.18-svn3';
+}
+
 ?>

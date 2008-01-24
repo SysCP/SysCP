@@ -48,6 +48,8 @@ if($page == 'admins'
 			'mysqls_used' => $lng['customer']['mysqls'] . ' (' . $lng['panel']['used'] . ')',
 			'ftps' => $lng['customer']['ftps'],
 			'ftps_used' => $lng['customer']['ftps'] . ' (' . $lng['panel']['used'] . ')',
+			'tickets' => $lng['customer']['tickets'],
+			'tickets_used' => $lng['customer']['tickets'] . ' (' . $lng['panel']['used'] . ')',
 			'subdomains' => $lng['customer']['subdomains'],
 			'subdomains_used' => $lng['customer']['subdomains'] . ' (' . $lng['panel']['used'] . ')',
 			'emails' => $lng['customer']['emails'],
@@ -165,6 +167,7 @@ if($page == 'admins'
 			$email_accounts = intval_ressource($_POST['email_accounts']);
 			$email_forwarders = intval_ressource($_POST['email_forwarders']);
 			$ftps = intval_ressource($_POST['ftps']);
+			$tickets = intval_ressource($_POST['tickets']);
 			$mysqls = intval_ressource($_POST['mysqls']);
 			$customers_see_all = intval($_POST['customers_see_all']);
 			$domains_see_all = intval($_POST['domains_see_all']);
@@ -244,8 +247,8 @@ if($page == 'admins'
 					$change_serversettings = '0';
 				}
 
-				$result = $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `mysqls`)
-					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($mysqls) . "')");
+				$result = $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `tickets`, `mysqls`)
+					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "')");
 				$adminid = $db->insert_id();
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -294,6 +297,7 @@ if($page == 'admins'
 					$email_accounts = $result['email_accounts'];
 					$email_forwarders = $result['email_forwarders'];
 					$ftps = $result['ftps'];
+					$tickets = $result['tickets'];
 					$mysqls = $result['mysqls'];
 					$customers_see_all = $result['customers_see_all'];
 					$domains_see_all = $result['domains_see_all'];
@@ -313,6 +317,7 @@ if($page == 'admins'
 					$email_accounts = intval_ressource($_POST['email_accounts']);
 					$email_forwarders = intval_ressource($_POST['email_forwarders']);
 					$ftps = intval_ressource($_POST['ftps']);
+					$tickets = intval_ressource($_POST['tickets']);
 					$mysqls = intval_ressource($_POST['mysqls']);
 					$customers_see_all = intval($_POST['customers_see_all']);
 					$domains_see_all = intval($_POST['domains_see_all']);
@@ -370,7 +375,7 @@ if($page == 'admins'
 						$change_serversettings = '0';
 					}
 
-					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', " . $updatepassword . " `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', " . $updatepassword . " `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
 					redirectTo($filename, Array(
 						'page' => $page,
 						's' => $s
