@@ -29,7 +29,7 @@ $header
 			</tr>
 			<else>
 			<tr>
-				<td class="field_display_border_left" colspan="5">{$lng['admin']['domains']['nocustomeraddingavailable']}</td>
+				<td class="field_display_border_left" colspan="5">{$lng['admin']['domain_nocustomeraddingavailable']}</td>
 			</tr>
 			</if>
 		</table>
