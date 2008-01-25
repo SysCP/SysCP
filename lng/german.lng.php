@@ -690,6 +690,6 @@ $lng['serversettings']['ticket']['worktime_all'] = 'Kein zeitlich begrenzter Sup
 $lng['serversettings']['ticket']['worktime_all_desc'] = 'Wenn "Ja" &uuml;berschreibt diese Option Start- und Endzeit des Supports';
 $lng['serversettings']['ticket']['archiving_days'] = 'Nach wievielen Tagen sollen abgeschlossene Tickets archiviert werden?';
 $lng['customer']['tickets'] = 'Support-Tickets';
-$lng['admin']['domains']['nocustomeraddingavailable'] = 'Es k&ouml;nnen derzeit keine Domains angelegt werden. Sie m&uuml;ssen zuerst einen Kunden anlegen';
+$lng['admin']['domain_nocustomeraddingavailable'] = 'Es k&ouml;nnen derzeit keine Domains angelegt werden. Sie m&uuml;ssen zuerst einen Kunden anlegen';
 
 ?>
