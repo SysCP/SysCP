@@ -86,6 +86,10 @@ $header
 			<td class="field_display">$trafficlastrun</td>
 		</tr>
 		<tr>
+			<td class="field_name_border_left">{$lng['admin']['archivelastrun']}:</td>
+			<td class="field_display">$archivelastrun</td>
+		</tr>
+		<tr>
 			<td class="field_name_border_left">{$lng['admin']['installedversion']}:</td>
 			<td class="field_display">$version</td>
 		</tr>
