@@ -183,7 +183,7 @@ elseif($page == 'tickets')
 					$newticket->Set('lastreplier', '0', true, true);
 					$newticket->Set('by', '0', true, true);
 					$newticket->Insert();
-					$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` 
+					$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '`
                           SET `tickets_used`=`tickets_used`+1 WHERE `customerid`="' . (int)$userinfo['customerid'] . '"');
 
 					// Customer mail
@@ -223,10 +223,15 @@ elseif($page == 'tickets')
 				$priorities.= makeoption($lng['ticket']['unf_normal'], '2');
 				$priorities.= makeoption($lng['ticket']['unf_low'], '3');
 				$ticketsopen = 0;
-				$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '` 
-                                           WHERE `customerid` = "' . $userinfo['customerid'] . '" 
-                                           AND `answerto` = "0" 
+				$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
+                                           WHERE `customerid` = "' . $userinfo['customerid'] . '"
+                                           AND `answerto` = "0"
                                            AND (`status` = "0" OR `status` = "1" OR `status` = "2")');
+
+
+    			$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
+    	                                  '%s' => $settings['ticket']['concurrently_open']
+                               ));
 				$ticketsopen = (int)$opentickets['count'];
 				eval("echo \"" . getTemplate("ticket/tickets_new") . "\";");
 			}
@@ -315,7 +320,7 @@ elseif($page == 'tickets')
 			$subject = $mainticket->Get('subject');
 			$message = $mainticket->Get('message');
 			eval("\$ticket_replies.=\"" . getTemplate("ticket/tickets_tickets_main") . "\";");
-			$result = $db->query('SELECT `name` FROM `' . TABLE_PANEL_TICKET_CATS . '` 
+			$result = $db->query('SELECT `name` FROM `' . TABLE_PANEL_TICKET_CATS . '`
                                 WHERE `id`="' . (int)$mainticket->Get('category') . '"');
 			$row = $db->fetch_array($result);
 			$andere = $db->query('SELECT * FROM `' . TABLE_PANEL_TICKETS . '` WHERE `answerto`="' . (int)$id . '"');
@@ -382,15 +387,15 @@ elseif($page == 'tickets')
 	       && $id != 0)
 	{
 		$ticketsopen = 0;
-		$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '` 
-                                       WHERE `customerid` = "' . $userinfo['customerid'] . '" 
-                                       AND `answerto` = "0" 
+		$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
+                                       WHERE `customerid` = "' . $userinfo['customerid'] . '"
+                                       AND `answerto` = "0"
                                        AND (`status` = "0" OR `status` = "1" OR `status` = "2")');
 		$ticketsopen = (int)$opentickets['count'];
 
 		if($ticketsopen > 5)
 		{
-			standard_error('notmorethanfiveopentickets');
+			standard_error('notmorethanxopentickets');
 		}
 
 		$now = time();

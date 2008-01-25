@@ -527,10 +527,43 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 		}
 
+		if($_POST['ticketsystemenabled'] != $settings['ticket']['enabled'])
+		{
+			$value = (int)$_POST['ticketsystemenabled'];
+
+			if($value == 1)
+			{
+				$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)
+					VALUES
+					 ('customer', '', 'menue;ticket;ticket', 'customer_tickets.php', '20', '', 0),
+					 ('customer', 'customer_tickets.php', 'menue;ticket;ticket', 'customer_tickets.php?page=tickets', 10, '', 0),
+					 ('admin', '', 'admin;ticketsystem', 'admin_ticketsystem.nourl', '40', '', 0),
+					 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0),
+					 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0),
+					 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);");
+			}
+			else
+			{
+				$value = 0;
+				$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;ticket"');
+				$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "admin;ticketsystem"');
+				$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;archive"');
+				$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;categories"');
+			}
+
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='enabled'");
+		}
+
 		if($_POST['ticket_noreply_email'] != $settings['ticket']['noreply_email'])
 		{
 			$value = validate($_POST['ticket_noreply_email'], 'ticket_noreply_email');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_email'");
+		}
+
+		if($_POST['ticket_concurrently_open'] != $settings['ticket']['concurrently_open'])
+		{
+			$value = validate($_POST['ticket_concurrently_open'], 'ticket_concurrently_open');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='concurrently_open'");
 		}
 
 		if($_POST['ticket_admin_email'] != $settings['ticket']['admin_email'])
@@ -642,6 +675,7 @@ if(($page == 'settings' || $page == 'overview')
 		$ticket_worktime_sat = makeyesno('ticket_worktime_sat', '1', '0', $settings['ticket']['worktime_sat']);
 		$ticket_worktime_sun = makeyesno('ticket_worktime_sun', '1', '0', $settings['ticket']['worktime_sun']);
 		$ticket_worktime_all = makeyesno('ticket_worktime_all', '1', '0', $settings['ticket']['worktime_all']);
+		$ticketsystemenabled = makeyesno('ticketsystemenabled', '1', '0', $settings['ticket']['enabled']);
 		$settings = htmlentities_array($settings);
 		eval("echo \"" . getTemplate("settings/settings") . "\";");
 	}
