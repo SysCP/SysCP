@@ -395,7 +395,7 @@ elseif($page == 'tickets')
 
 		if($ticketsopen > 5)
 		{
-			standard_error('notmorethanxopentickets');
+			standard_error('notmorethanxopentickets', $settings['ticket']['concurrently_open']);
 		}
 
 		$now = time();
