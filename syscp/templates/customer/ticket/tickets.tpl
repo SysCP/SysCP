@@ -24,7 +24,7 @@ $header
 				<td class="maintitle_search_left"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['ticket']['ticket']}</b></td>
 				<td class="maintitle_search_right" colspan="7">{$searchcode}</td>
 			</tr>
-			<if ($userinfo['tickets_used'] < $userinfo['tickets'] || $userinfo['tickets'] == '-1') && 15 < $tickets_count >
+			<if ($userinfo['tickets_used'] < $userinfo['tickets'] || $userinfo['tickets'] == '-1') && 15 < $tickets_count && $ticketsopen < $settings['ticket']['concurrently_open'] >
 			<tr>
 				<td class="field_display_border_left" colspan="8"><a href="$filename?page=tickets&amp;action=new&amp;s=$s">{$lng['ticket']['ticket_new']}</a></td>
 			</tr>
@@ -44,7 +44,7 @@ $header
 				<td class="field_display_border_left" colspan="8" style=" text-align: center; ">{$pagingcode}</td>
 			</tr>
 			</if>
-			<if ($userinfo['emails_used'] < $userinfo['emails'] || $userinfo['emails'] == '-1') >
+			<if ($userinfo['emails_used'] < $userinfo['emails'] || $userinfo['emails'] == '-1') && $ticketsopen < $settings['ticket']['concurrently_open'] >
 			<tr>
 				<td class="field_display_border_left" colspan="8"><a href="$filename?page=tickets&amp;action=new&amp;s=$s">{$lng['ticket']['ticket_new']}</a></td>
 			</tr>

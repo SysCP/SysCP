@@ -637,7 +637,7 @@ $lng['ticket']['search'] = 'Search archive';
 $lng['ticket']['nocustomer'] = 'No choice';
 $lng['ticket']['archivesearch'] = 'Archive searchresults';
 $lng['ticket']['noresults'] = 'No tickets found';
-$lng['ticket']['notmorethanfiveopentickets'] = 'Due to spam-protection you cannot have more than five open tickets';
+$lng['ticket']['notmorethanxopentickets'] = 'Due to spam-protection you cannot have more than %s open tickets';
 $lng['ticket']['supportstatus'] = 'Support-Status';
 $lng['ticket']['supportavailable'] = '<span class="ticket_low">Our support engineers are available and ready to assist.</span>';
 $lng['ticket']['supportnotavailable'] = '<span class="ticket_high">Our support engineers are currently not available</span>';
@@ -668,7 +668,7 @@ $lng['error']['mycategory'] = '\'' . $lng['ticket']['category'] . '\'';
 $lng['error']['nomoreticketsavailable'] = 'You have used all your available tickets. Please contact your administrator.';
 $lng['error']['nocustomerforticket'] = 'Cannot create tickets without customers';
 $lng['error']['categoryhastickets'] = 'The category still has tickets in it.<br />Please delete the tickets to delete the category';
-$lng['error']['notmorethanfiveopentickets'] = $lng['ticket']['notmorethanfiveopentickets'];
+$lng['error']['notmorethanxopentickets'] = $lng['ticket']['notmorethanxopentickets'];
 $lng['admin']['ticketsettings'] = 'Support-Ticket settings';
 $lng['admin']['archivelastrun'] = 'Last ticket archiving';
 $lng['serversettings']['ticket']['noreply_email'] = 'No-reply e-mail address';
@@ -685,6 +685,11 @@ $lng['serversettings']['ticket']['worktime_all'] = 'No time limit for support';
 $lng['serversettings']['ticket']['worktime_all_desc'] = 'If "Yes" the options for start- and endtime will be overwritten';
 $lng['serversettings']['ticket']['archiving_days'] = 'After how many days should closed tickets be archived?';
 $lng['customer']['tickets'] = 'Support-tickets';
+
+// ADDED IN 1.2.18-svn4
+
 $lng['admin']['domain_nocustomeraddingavailable'] = 'It\'s not possible to add a domain currently. You first need to add at least one customer.';
+$lng['serversettings']['ticket']['enable'] = 'Enable ticketsystem';
+$lng['serversettings']['ticket']['concurrentlyopen'] = 'How many tickets shall be able to be opened at one time?'
 
 ?>
