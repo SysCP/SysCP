@@ -107,7 +107,7 @@ if($page == 'overview')
 	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
 	$cronlastrun = date("d.m.Y H:i:s", $settings['system']['last_tasks_run']);
 	$trafficlastrun = date("d.m.Y H:i:s", $settings['system']['last_traffic_run']);
-	$lastarchiverun = date("d.m.Y H:i:s", $settings['system']['last_archive_run']);
+	$archivelastrun = date("d.m.Y H:i:s", $settings['system']['last_archive_run']);
 	eval("echo \"" . getTemplate("index/index") . "\";");
 }
 elseif($page == 'change_password')
