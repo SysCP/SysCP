@@ -152,7 +152,18 @@ class db
 
 	function escape($input)
 	{
-		return mysql_real_escape_string($input, $this->link_id);
+		if(is_int($input))
+		{
+			return (int)$input;
+		}
+		elseif(is_float($input))
+		{
+			return (float)$input;
+		}
+		else
+		{
+			return mysql_real_escape_string($input, $this->link_id);
+		}
 	}
 
 	/**
