@@ -690,6 +690,10 @@ $lng['serversettings']['ticket']['worktime_all'] = 'Kein zeitlich begrenzter Sup
 $lng['serversettings']['ticket']['worktime_all_desc'] = 'Wenn "Ja" &uuml;berschreibt diese Option Start- und Endzeit des Supports';
 $lng['serversettings']['ticket']['archiving_days'] = 'Nach wievielen Tagen sollen abgeschlossene Tickets archiviert werden?';
 $lng['customer']['tickets'] = 'Support-Tickets';
-$lng['admin']['domain_nocustomeraddingavailable'] = 'Es k&ouml;nnen derzeit keine Domains angelegt werden. Sie m&uuml;ssen zuerst einen Kunden anlegen';
 
+// ADDED IN 1.2.18-svn4
+
+$lng['admin']['domain_nocustomeraddingavailable'] = 'Es k&ouml;nnen derzeit keine Domains angelegt werden. Sie m&uuml;ssen zuerst einen Kunden anlegen';
+$lng['serversettings']['ticket']['enable'] = 'Ticketsystem aktivieren';
+$lng['serversettings']['ticket']['concurrentlyopen'] = 'Wieviele Tickets kann ein Kunde gleichzeitig öffnen?';
 ?>

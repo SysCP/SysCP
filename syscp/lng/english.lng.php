@@ -690,6 +690,6 @@ $lng['customer']['tickets'] = 'Support-tickets';
 
 $lng['admin']['domain_nocustomeraddingavailable'] = 'It\'s not possible to add a domain currently. You first need to add at least one customer.';
 $lng['serversettings']['ticket']['enable'] = 'Enable ticketsystem';
-$lng['serversettings']['ticket']['concurrentlyopen'] = 'How many tickets shall be able to be opened at one time?'
+$lng['serversettings']['ticket']['concurrentlyopen'] = 'How many tickets shall be able to be opened at one time?';
 
 ?>
