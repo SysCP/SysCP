@@ -96,7 +96,7 @@ if($page == 'domains'
 
 		// Let's see how many customers we have
 
-		$customers = $db->query("SELECT `id` FROM " . TABLE_PANEL_CUSTOMERS);
+		$customers = $db->query("SELECT `customerid` FROM " . TABLE_PANEL_CUSTOMERS);
 		$countcustomers = $db->num_rows($customers);
 		unset($customers);
 
