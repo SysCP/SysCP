@@ -94,6 +94,14 @@ if($page == 'domains'
 			$i++;
 		}
 
+		// Let's see how many customers we have
+
+		$customers = $db->query("SELECT `id` FROM " . TABLE_PANEL_CUSTOMERS);
+		$countcustomers = $db->num_rows($customers);
+		unset($customers);
+
+		// Display the list
+
 		eval("echo \"" . getTemplate("domains/domains") . "\";");
 	}
 	elseif($action == 'delete'

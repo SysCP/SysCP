@@ -6,7 +6,7 @@ $header
 				<td class="maintitle_search_left"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domains']}</b></td>
 				<td class="maintitle_search_right" colspan="4">{$searchcode}</td>
 			</tr>
-			<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 15 < $count>
+			<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 15 < $count && 0 < $countcustomers >
 			<tr>
 				<td class="field_display_border_left" colspan="5"><a href="$filename?page=$page&amp;action=add&amp;s=$s">{$lng['admin']['domain_add']}</a></td>
 			</tr>
@@ -23,9 +23,13 @@ $header
 				<td class="field_display_border_left" colspan="5" style=" text-align: center; ">{$pagingcode}</td>
 			</tr>
 			</if>
-			<if $userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1'>
+			<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 0 < $countcustomers >
 			<tr>
 				<td class="field_display_border_left" colspan="5"><a href="$filename?page=$page&amp;action=add&amp;s=$s">{$lng['admin']['domain_add']}</a></td>
+			</tr>
+			<else>
+			<tr>
+				<td class="field_display_border_left" colspan="5">{$lng['admin']['domains']['nocustomeraddingavailable']}</td>
 			</tr>
 			</if>
 		</table>

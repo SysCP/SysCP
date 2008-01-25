@@ -685,5 +685,6 @@ $lng['serversettings']['ticket']['worktime_all'] = 'No time limit for support';
 $lng['serversettings']['ticket']['worktime_all_desc'] = 'If "Yes" the options for start- and endtime will be overwritten';
 $lng['serversettings']['ticket']['archiving_days'] = 'After how many days should closed tickets be archived?';
 $lng['customer']['tickets'] = 'Support-tickets';
+$lng['admin']['domains']['nocustomeraddingavailable'] = 'It\'s not possible to add a domain currently. You first need to add at least one customer.';
 
 ?>
