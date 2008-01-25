@@ -38,7 +38,14 @@ function createFcgiConfig($domain, $settings)
 	if($domain['openbasedir'] == '1')
 	{
 		$openbasedircomment = '';
-		$openbasedir = $domain['customerroot'] . ':' . $tmpdir . ':' . $peardir . ':' . $settings['system']['phpappendopenbasedir'];
+		if($domain['openbasedir_path'] == '0')
+		{
+			$openbasedir = $domain['documentroot'] . ':' . $tmpdir . ':' . $peardir . ':' . $settings['system']['phpappendopenbasedir'];
+		}
+		else
+		{
+			$openbasedir = $domain['customerroot'] . ':' . $tmpdir . ':' . $peardir . ':' . $settings['system']['phpappendopenbasedir'];
+		}
 	}
 
 	if($domain['openbasedir'] == '0')
