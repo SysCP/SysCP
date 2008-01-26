@@ -29,11 +29,6 @@ $header
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['ticket']['ticket_new']}" /></td>
 			</tr>
-      <else>
-        <tr>
-  				<td class="main_field_name" colspan="2">{$lng['ticket']['notmorethanfiveopentickets']}:</td>
-  			</tr>
-      </if>
 		</table>
 	</form>
 	<br />
