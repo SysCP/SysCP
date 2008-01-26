@@ -44,7 +44,7 @@ $header
 				<td class="field_display_border_left" colspan="8" style=" text-align: center; ">{$pagingcode}</td>
 			</tr>
 			</if>
-			<if ($userinfo['emails_used'] < $userinfo['emails'] || $userinfo['emails'] == '-1') && ($ticketsopen < $settings['ticket']['concurrently_open'] || ($settings['ticket']['concurrently_open'] == '-1' || $settings['ticket']['concurrently_open'] == '')) >
+			<if ($userinfo['tickets_used'] < $userinfo['tickets'] || $userinfo['tickets'] == '-1') && ($ticketsopen < $settings['ticket']['concurrently_open'] || ($settings['ticket']['concurrently_open'] == '-1' || $settings['ticket']['concurrently_open'] == '')) >
 			<tr>
 				<td class="field_display_border_left" colspan="8"><a href="$filename?page=tickets&amp;action=new&amp;s=$s">{$lng['ticket']['ticket_new']}</a></td>
 			</tr>

@@ -19,7 +19,7 @@ $header
 			$tickets
       </if>
       <if $tickets_count < 1 >
-        <tr><td class="field_display_border_left" colspan="5">{$lng['ticket']['noresults']}<br />{$query}</td></tr>
+        <tr><td class="field_display_border_left" colspan="5">{$lng['ticket']['noresults']}</td></tr>
       </if>
 		</table>
 	</form>

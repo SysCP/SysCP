@@ -693,5 +693,6 @@ $lng['serversettings']['ticket']['enable'] = 'Enable ticketsystem';
 $lng['serversettings']['ticket']['concurrentlyopen'] = 'How many tickets shall be able to be opened at one time?';
 $lng['error']['norepymailiswrong'] = 'The &quot;Noreply-address&quot; is wrong. Only a valid email-address is allowed.';
 $lng['error']['tadminmailiswrong'] = 'The &quot;Ticketadmin-address&quot; is wrong. Only a valid email-address is allowed.';
+$lng['ticket']['awaitingticketreply'] = 'You have %s unanswered support-ticket(s)';
 
 ?>

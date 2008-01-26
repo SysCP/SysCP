@@ -55,6 +55,22 @@ if($page == 'overview')
 	$userinfo['traffic'] = round($userinfo['traffic']/(1024*1024), 4);
 	$userinfo['traffic_used'] = round($userinfo['traffic_used']/(1024*1024), 4);
 	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
+	$opentickets = 0;
+	$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
+                                   WHERE `customerid` = "' . $userinfo['customerid'] . '"
+                                   AND `answerto` = "0"
+                                   AND (`status` = "0" OR `status` = "2")
+                                   AND `lastreplier`="1"');
+	$awaitingtickets = $opentickets['count'];
+	$awaitingtickets_text = '';
+
+	if($opentickets > 0)
+	{
+		$awaitingtickets_text = strtr($lng['ticket']['awaitingticketreply'], array(
+			'%s' => '<a href="customer_tickets.php?page=tickets&amp;s=' . $s . '">' . $opentickets['count'] . '</a>'
+		));
+	}
+
 	eval("echo \"" . getTemplate("index/index") . "\";");
 }
 elseif($page == 'change_password')

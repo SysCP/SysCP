@@ -108,6 +108,20 @@ if($page == 'overview')
 	$cronlastrun = date("d.m.Y H:i:s", $settings['system']['last_tasks_run']);
 	$trafficlastrun = date("d.m.Y H:i:s", $settings['system']['last_traffic_run']);
 	$archivelastrun = date("d.m.Y H:i:s", $settings['system']['last_archive_run']);
+	$opentickets = 0;
+	$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
+                                   WHERE `answerto` = "0" AND (`status` = "0" OR `status` = "1") 
+                                   AND `lastreplier`="0"');
+	$awaitingtickets = $opentickets['count'];
+	$awaitingtickets_text = '';
+
+	if($opentickets > 0)
+	{
+		$awaitingtickets_text = strtr($lng['ticket']['awaitingticketreply'], array(
+			'%s' => '<a href="admin_tickets.php?page=tickets&amp;s=' . $s . '">' . $opentickets['count'] . '</a>'
+		));
+	}
+
 	eval("echo \"" . getTemplate("index/index") . "\";");
 }
 elseif($page == 'change_password')

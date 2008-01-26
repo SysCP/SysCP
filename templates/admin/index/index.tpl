@@ -43,9 +43,14 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['tickets']}:</td>
 			<td class="field_display">{$overview['tickets_used']} ({$userinfo['tickets_used']}/{$userinfo['tickets']})</td>
 		</tr>
+    <if 0 < $awaitingtickets >
 		<tr>
-			<td class="field_name_border_left">{$lng['customer']['subdomains']}:</td>
-			<td class="field_display">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
+			<td class="field_name_border_left" colspan="2"><b>{$awaitingtickets_text}</b></td>
+		</tr>    
+    </if>    
+		<tr>
+			<td class="field_name_nobordersmall">{$lng['customer']['subdomains']}:</td>
+			<td class="field_display_nobordersmall">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
 		</tr>
 		<tr>
 			<td colspan="2" class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemdetails']}</b></td>
@@ -71,8 +76,8 @@ $header
 			<td class="field_display">$mysqlclientversion</td>
 		</tr>
 		<tr>
-			<td class="field_name_border_left">{$lng['admin']['webserverinterface']}:</td>
-			<td class="field_display">$webserverinterface</td>
+			<td class="field_name_nobordersmall">{$lng['admin']['webserverinterface']}:</td>
+			<td class="field_display_nobordersmall">$webserverinterface</td>
 		</tr>
 		<tr>
 			<td colspan="2" class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['syscpdetails']}</b></td>
