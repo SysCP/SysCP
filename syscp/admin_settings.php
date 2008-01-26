@@ -555,7 +555,8 @@ if(($page == 'settings' || $page == 'overview')
 			$settings['ticket']['enabled'] = $value;
 		}
 
-		if($_POST['ticket_noreply_email'] != $settings['ticket']['noreply_email'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_noreply_email'] != $settings['ticket']['noreply_email']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = validate($_POST['ticket_noreply_email'], 'ticket_noreply_email');
 
@@ -563,16 +564,19 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				standard_error('noreplymailiswrong');
 			}
+
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_email'");
 		}
 
-		if($_POST['ticket_concurrently_open'] != $settings['ticket']['concurrently_open'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_concurrently_open'] != $settings['ticket']['concurrently_open']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = validate($_POST['ticket_concurrently_open'], 'ticket_concurrently_open');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='concurrently_open'");
 		}
 
-		if($_POST['ticket_admin_email'] != $settings['ticket']['admin_email'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_admin_email'] != $settings['ticket']['admin_email']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = validate($_POST['ticket_admin_email'], 'ticket_admin_email');
 
@@ -580,40 +584,47 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				standard_error('tadminmailiswrong');
 			}
+
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='admin_email'");
 		}
 
-		if($_POST['ticket_archiving_days'] != $settings['ticket']['archiving_days'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_archiving_days'] != $settings['ticket']['archiving_days']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = validate($_POST['ticket_archiving_days'], 'ticket_archiving_days', '/^[0-9]{1,2}$/');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='archiving_days'");
 		}
 
-		if($_POST['ticket_worktime_all'] != $settings['ticket']['worktime_all'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_worktime_all'] != $settings['ticket']['worktime_all']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = ($_POST['ticket_worktime_all'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_all'");
 		}
 
-		if($_POST['ticket_worktime_begin'] != $settings['ticket']['worktime_begin'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_worktime_begin'] != $settings['ticket']['worktime_begin']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = validate($_POST['ticket_worktime_begin'], 'ticket_worktime_begin', '/^[012][0-9]:[0-6][0-9]$/');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_begin'");
 		}
 
-		if($_POST['ticket_worktime_end'] != $settings['ticket']['worktime_end'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_worktime_end'] != $settings['ticket']['worktime_end']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = validate($_POST['ticket_worktime_end'], 'ticket_worktime_end', '/^[012][0-9]:[0-6][0-9]$/');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_end'");
 		}
 
-		if($_POST['ticket_worktime_sat'] != $settings['ticket']['worktime_sat'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_worktime_sat'] != $settings['ticket']['worktime_sat']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = ($_POST['ticket_worktime_sat'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_sat'");
 		}
 
-		if($_POST['ticket_worktime_sun'] != $settings['ticket']['worktime_sun'] && $settings['ticket']['enabled'] == 1)
+		if($_POST['ticket_worktime_sun'] != $settings['ticket']['worktime_sun']
+		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = ($_POST['ticket_worktime_sun'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_sun'");

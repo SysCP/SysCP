@@ -141,6 +141,25 @@ elseif($page == 'tickets')
 			$supportavailable = 1;
 		}
 
+		$ticketsopen = 0;
+		$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
+                                         WHERE `customerid` = "' . $userinfo['customerid'] . '"
+                                         AND `answerto` = "0"
+                                         AND (`status` = "0" OR `status` = "1" OR `status` = "2")');
+
+		if($settings['ticket']['concurrently_open'] != -1
+		   && $settings['ticket']['concurrently_open'] != '')
+		{
+			$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
+				'%s' => $settings['ticket']['concurrently_open']
+			));
+		}
+		else
+		{
+			$notmorethanxopentickets = '';
+		}
+
+		$ticketsopen = (int)$opentickets['count'];
 		eval("echo \"" . getTemplate("ticket/tickets") . "\";");
 	}
 	elseif($action == 'new')
