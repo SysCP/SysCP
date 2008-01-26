@@ -1219,8 +1219,8 @@ if($settings['panel']['version'] == '1.2.18-svn1')
 
 if($settings['panel']['version'] == '1.2.18-svn2')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'ticket_noreply_email\', `value` = \'NO-REPLY@SERVERNAME\' ');
-	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'ticket_admin_email\', `value` = \'admin@SERVERNAME\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'noreply_email\', `value` = \'NO-REPLY@SERVERNAME\' ');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'admin_email\', `value` = \'admin@SERVERNAME\' ');
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_all\', `value` = \'1\' ');
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_begin\', `value` = \'00:00\' ');
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'worktime_end\', `value` = \'23:59\' ');
