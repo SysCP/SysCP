@@ -228,10 +228,18 @@ elseif($page == 'tickets')
                                            AND `answerto` = "0"
                                            AND (`status` = "0" OR `status` = "1" OR `status` = "2")');
 
+				if($settings['ticket']['concurrently_open'] != -1
+				   && $settings['ticket']['concurrently_open'] != '')
+				{
+					$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
+						'%s' => $settings['ticket']['concurrently_open']
+					));
+				}
+				else
+				{
+					$notmorethanxopentickets = '';
+				}
 
-    			$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
-    	                                  '%s' => $settings['ticket']['concurrently_open']
-                               ));
 				$ticketsopen = (int)$opentickets['count'];
 				eval("echo \"" . getTemplate("ticket/tickets_new") . "\";");
 			}
@@ -393,7 +401,9 @@ elseif($page == 'tickets')
                                        AND (`status` = "0" OR `status` = "1" OR `status` = "2")');
 		$ticketsopen = (int)$opentickets['count'];
 
-		if($ticketsopen > 5)
+		if($ticketsopen > $settings['ticket']['concurrently_open']
+		   && $settings['ticket']['concurrently_open'] != -1
+		   && $settings['ticket']['concurrently_open'] != '')
 		{
 			standard_error('notmorethanxopentickets', $settings['ticket']['concurrently_open']);
 		}

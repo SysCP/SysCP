@@ -1283,5 +1283,4 @@ if($settings['panel']['version'] == '1.2.18-svn3')
 	$settings['panel']['version'] = '1.2.18-svn4';
 }
 
-
 ?>

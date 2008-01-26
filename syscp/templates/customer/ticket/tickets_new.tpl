@@ -8,7 +8,7 @@ $header
 			<tr>
 				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['ticket']['ticket_new']}</b></td>
 			</tr>
-      <if $ticketsopen < 5 >
+      <if $ticketsopen < $settings['ticket']['concurrently_open'] && $settings['ticket']['concurrently_open'] != -1 && $settings['ticket']['concurrently_open'] != '' >
 			<tr>
 				<td class="main_field_name">{$lng['ticket']['subject']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="subject" maxlength="70" /></td>
@@ -33,7 +33,7 @@ $header
       <else>
         <tr>
   				<td class="main_field_name" colspan="2">{$lng['ticket']['notmorethanfiveopentickets']}:</td>
-  			</tr>      
+  			</tr>
       </if>
 		</table>
 	</form>
