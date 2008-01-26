@@ -271,8 +271,8 @@ $lng['admin']['overview'] = 'Overview';
 $lng['admin']['ressourcedetails'] = 'Used resources';
 $lng['admin']['systemdetails'] = 'System Details';
 $lng['admin']['syscpdetails'] = 'SysCP Details';
-$lng['admin']['installedversion'] = 'Installed Version';
-$lng['admin']['latestversion'] = 'Latest Version';
+$lng['admin']['installedversion'] = 'Installed version';
+$lng['admin']['latestversion'] = 'Latest version';
 $lng['admin']['lookfornewversion']['clickhere'] = 'search via webservice';
 $lng['admin']['lookfornewversion']['error'] = 'Error while reading';
 $lng['admin']['resources'] = 'Resources';
@@ -385,7 +385,7 @@ $lng['mysql']['description'] = 'Here you can create and change your MySQL-Databa
  * ADDED BETWEEN 1.2.12 and 1.2.13
  */
 
-$lng['admin']['cronlastrun'] = 'Last Cron';
+$lng['admin']['cronlastrun'] = 'Last generating of configfiles';
 $lng['serversettings']['paging']['title'] = 'Entries per page';
 $lng['serversettings']['paging']['description'] = 'How many entries shall be shown on one page? (0 = disable paging)';
 $lng['error']['ipstillhasdomains'] = 'The IP/Port combination you want to delete still has domains assigned to it, please reassign those to other IP/Port combinations before deleting this IP/Port combination.';
@@ -527,7 +527,7 @@ $lng['admin']['configfiles']['etc'] = 'Others (System)';
 $lng['admin']['configfiles']['choosedistribution'] = '-- Choose a distribution --';
 $lng['admin']['configfiles']['chooseservice'] = '-- Choose a service --';
 $lng['admin']['configfiles']['choosedaemon'] = '-- Choose a daemon --';
-$lng['admin']['trafficlastrun'] = 'Last Traffic calculation';
+$lng['admin']['trafficlastrun'] = 'Last traffic calculation';
 
 // ADDED IN 1.2.16-svn10
 
@@ -691,5 +691,7 @@ $lng['customer']['tickets'] = 'Support-tickets';
 $lng['admin']['domain_nocustomeraddingavailable'] = 'It\'s not possible to add a domain currently. You first need to add at least one customer.';
 $lng['serversettings']['ticket']['enable'] = 'Enable ticketsystem';
 $lng['serversettings']['ticket']['concurrentlyopen'] = 'How many tickets shall be able to be opened at one time?';
+$lng['error']['norepymailiswrong'] = 'The &quot;Noreply-address&quot; is wrong. Only a valid email-address is allowed.';
+$lng['error']['tadminmailiswrong'] = 'The &quot;Ticketadmin-address&quot; is wrong. Only a valid email-address is allowed.';
 
 ?>

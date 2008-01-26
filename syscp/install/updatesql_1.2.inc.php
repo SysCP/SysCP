@@ -1230,7 +1230,7 @@ if($settings['panel']['version'] == '1.2.18-svn2')
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'ticket\', `varname` = \'last_archive_run\', `value` = \'0\' ');
 	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `tickets` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `ftps_used`");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `tickets_used` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `tickets`");
-	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `tickets` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `ftps_used`");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `tickets` INT( 15 ) unsigned NOT NULL DEFAULT '-1' AFTER `ftps_used`");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `tickets_used` INT( 15 ) unsigned NOT NULL DEFAULT '0' AFTER `tickets`");
 	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)
 				VALUES
