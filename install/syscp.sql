@@ -142,7 +142,7 @@ CREATE TABLE `panel_admins` (
   `email_forwarders_used` int(15) NOT NULL default '0',
   `ftps` int(15) NOT NULL default '0',
   `ftps_used` int(15) NOT NULL default '0',
-  `tickets` int(15) NOT NULL default '0',
+  `tickets` int(15) NOT NULL default '-1',
   `tickets_used` int(15) NOT NULL default '0',
   `subdomains` int(15) NOT NULL default '0',
   `subdomains_used` int(15) NOT NULL default '0',

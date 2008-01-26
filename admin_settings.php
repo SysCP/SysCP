@@ -529,7 +529,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if($_POST['ticketsystemenabled'] != $settings['ticket']['enabled'])
 		{
-			$value = (int)$_POST['ticketsystemenabled'];
+			$value = (int)$_POST['ticketsystemenabled'] == 1 ? 1 : 0;
 
 			if($value == 1)
 			{
@@ -557,6 +557,11 @@ if(($page == 'settings' || $page == 'overview')
 		if($_POST['ticket_noreply_email'] != $settings['ticket']['noreply_email'])
 		{
 			$value = validate($_POST['ticket_noreply_email'], 'ticket_noreply_email');
+
+			if(!validateEmail($value))
+			{
+				standard_error('noreplymailiswrong');
+			}
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_email'");
 		}
 
@@ -569,6 +574,11 @@ if(($page == 'settings' || $page == 'overview')
 		if($_POST['ticket_admin_email'] != $settings['ticket']['admin_email'])
 		{
 			$value = validate($_POST['ticket_admin_email'], 'ticket_admin_email');
+
+			if(!validateEmail($value))
+			{
+				standard_error('tadminmailiswrong');
+			}
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='admin_email'");
 		}
 
