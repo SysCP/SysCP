@@ -23,13 +23,13 @@ $configfiles = Array(
 				'label' => $lng['admin']['configfiles']['http'],
 				'daemons' => Array(
 					'apache' => Array(
-						'label' => 'Apache',
+						'label' => 'Apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : ''),
 						'commands' => Array(
 							'touch ' . $settings['system']['apacheconf_vhost'],
 							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf'),
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -139,7 +139,7 @@ $configfiles = Array(
 							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf'),
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -267,7 +267,7 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
+							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf'),
 							'touch ' . $settings['system']['apacheconf_vhost'],
 							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
@@ -283,7 +283,7 @@ $configfiles = Array(
 				'label' => $lng['admin']['configfiles']['dns'],
 				'daemons' => Array(
 					'bind' => Array(
-						'label' => 'Bind',
+						'label' => 'Bind9',
 						'commands' => Array(
 							'echo "include \"' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf\";" >> /etc/named.conf',
 							'touch ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf'
