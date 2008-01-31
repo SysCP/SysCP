@@ -678,8 +678,6 @@ $lng['admin']['ticketsettings'] = 'Support-Ticket Einstellungen';
 $lng['admin']['archivelastrun'] = 'Letzte Ticket-Archivierung';
 $lng['serversettings']['ticket']['noreply_email'] = 'Keine-Antwort E-Mail Adresse';
 $lng['serversettings']['ticket']['noreply_email_desc'] = 'Die Absender-Adresse der Support-Tickets. Meist sowas wie KEINE-ANTWORT@domain.tld';
-$lng['serversettings']['ticket']['admin_email'] = 'Supporter E-mail Adresse';
-$lng['serversettings']['ticket']['admin_email_desc'] = 'Die Supporter E-Mail Adresse, hier werden alle Benachritigungen der Tickets geschickt';
 $lng['serversettings']['ticket']['worktime_begin'] = 'Beginn Support-Zeit (hh:mm)';
 $lng['serversettings']['ticket']['worktime_begin_desc'] = 'Beginn der Zeit in der der Support besetzt ist.';
 $lng['serversettings']['ticket']['worktime_end'] = 'Ende Support-Zeit (hh:mm)';
@@ -699,5 +697,9 @@ $lng['serversettings']['ticket']['concurrentlyopen'] = 'Wieviele Tickets kann ei
 $lng['error']['norepymailiswrong'] = 'Die &quot;Keine-Antwort-Adresse&quot; ist fehlerhaft. Es ist nur eine g&uuml;ltige E-Mail-Adresse erlaubt';
 $lng['error']['tadminmailiswrong'] = 'Die &quot;Ticket-Admin-Adresse&quot; ist fehlerhaft. Es ist nur eine g&uuml;ltige E-Mail-Adresse erlaubt';
 $lng['ticket']['awaitingticketreply'] = 'Sie haben %s unbeantwortete(s) Support-Ticket(s)';
+
+// ADDED IN 1.2.18-svn5
+
+$lng['serversettings']['ticket']['noreply_name'] = 'Ticket E-Mail Absendername';
 
 ?>

@@ -54,7 +54,7 @@ if($page == 'tickets'
 		$paging = new paging($userinfo, $db, TABLE_PANEL_TICKETS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
 		$paging->sortfield = 'lastchange';
 		$paging->sortorder = 'desc';
-		$result = $db->query('SELECT `main`.`id`, `main`.`customerid`, (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub` WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`, `main`.`lastchange`, `main`.`subject`, `main`.`status`, `main`.`lastreplier`, `main`.`priority` FROM `' . TABLE_PANEL_TICKETS . '` as `main` WHERE `main`.`answerto` = "0"  AND `archived` = "0" ' . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+		$result = $db->query('SELECT `main`.`id`, `main`.`customerid`, (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub` WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`, `main`.`lastchange`, `main`.`subject`, `main`.`status`, `main`.`lastreplier`, `main`.`priority` FROM `' . TABLE_PANEL_TICKETS . '` as `main` WHERE `main`.`answerto` = "0"  AND `archived` = "0" AND `adminid` = "' . (int)$userinfo['adminid'] . '" ' . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
 		$paging->setEntries($db->num_rows($result));
 		$sortcode = $paging->getHtmlSortCode($lng);
 		$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
@@ -181,6 +181,7 @@ if($page == 'tickets'
 				else
 				{
 					$now = time();
+					$newticket->Set('admin', $userinfo['adminid'], true, true);
 					$newticket->Set('dt', $now, true, true);
 					$newticket->Set('lastchange', $now, true, true);
 					$newticket->Set('ip', $_SERVER['REMOTE_ADDR'], true, true);
@@ -198,12 +199,12 @@ if($page == 'tickets'
 			else
 			{
 				$categories = '';
-				$result = $db->query_first('SELECT `id`, `name` FROM `' . TABLE_PANEL_TICKET_CATS . '` ORDER BY `name` ASC');
+				$result = $db->query_first('SELECT `id`, `name` FROM `' . TABLE_PANEL_TICKET_CATS . '` WHERE `adminid` = "' . $userinfo['adminid'] . '" ORDER BY `name` ASC');
 
 				if(isset($result['name'])
 				   && $result['name'] != '')
 				{
-					$result2 = $db->query('SELECT `id`, `name` FROM `' . TABLE_PANEL_TICKET_CATS . '` ORDER BY `name` ASC');
+					$result2 = $db->query('SELECT `id`, `name` FROM `' . TABLE_PANEL_TICKET_CATS . '` WHERE `adminid` = "' . $userinfo['adminid'] . '" ORDER BY `name` ASC');
 
 					while($row = $db->fetch_array($result2))
 					{
@@ -216,13 +217,13 @@ if($page == 'tickets'
 				}
 
 				$customers = '';
-				$result = $db->query_first('SELECT `customerid` FROM `' . TABLE_PANEL_CUSTOMERS . '` ORDER BY `name` ASC');
+				$result = $db->query_first('SELECT `customerid` FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . ($userinfo['customers_see_all'] ? '' : ' WHERE `adminid` = "' . (int)$userinfo['adminid'] . '" ') . 'ORDER BY `name` ASC');
 
 				if(isset($result['customerid'])
 				   && $result['customerid'] != '')
 				{
 					$result2 = $db->query('SELECT `customerid`, `loginname`, `firstname`, `name` 
-									 FROM `' . TABLE_PANEL_CUSTOMERS . '` ORDER BY `name` ASC');
+									 FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . ($userinfo['customers_see_all'] ? '' : ' WHERE `adminid` = "' . (int)$userinfo['adminid'] . '" ') . 'ORDER BY `name` ASC');
 
 					while($row = $db->fetch_array($result2))
 					{
@@ -467,13 +468,15 @@ elseif($page == 'categories'
 		$result = $db->query("SELECT `main`.`id`, `main`.`name`, (
                               SELECT COUNT(`sub`.`id`) FROM `" . TABLE_PANEL_TICKETS . "` `sub` 
                               WHERE `sub`.`category` = `main`.`id` 
-                              AND `sub`.`answerto` = '0') as `ticketcount`, (
+                              AND `sub`.`answerto` = '0' AND `sub`.`adminid` = '" . $userinfo['adminid'] . "') 
+                              as `ticketcount`, (
                               SELECT COUNT(`sub2`.`id`) FROM `" . TABLE_PANEL_TICKETS . "` `sub2` 
                               WHERE `sub2`.`category` = `main`.`id` 
                               AND `sub2`.`answerto` = '0' 
                               AND (`sub2`.`status` = '0' OR `sub2`.`status` = '1' OR `sub2`.`status` = '2')
+                              AND `sub2`.`adminid` = '" . $userinfo['adminid'] . "' 
                               ) as `ticketcountnotclosed` 
-                              FROM `" . TABLE_PANEL_TICKET_CATS . "` `main` " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+                              FROM `" . TABLE_PANEL_TICKET_CATS . "` `main` WHERE `main`.`adminid` = '" . (int)$userinfo['adminid'] . "' " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
 		$paging->setEntries($db->num_rows($result));
 		$sortcode = $paging->getHtmlSortCode($lng);
 		$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
@@ -516,7 +519,7 @@ elseif($page == 'categories'
 			}
 			else
 			{
-				ticket::addCategory($db, $category);
+				ticket::addCategory($db, $category, $userinfo['adminid']);
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -613,7 +616,7 @@ elseif($page == 'archive'
 				$categories[$x] = isset($_POST['category' . $x]) ? $_POST['category' . $x] : '';
 			}
 
-			$query = ticket::getArchiveSearchStatement($subject, $priority, $fromdate, $todate, $message, $customer, $categories);
+			$query = ticket::getArchiveSearchStatement($subject, $priority, $fromdate, $todate, $message, $customer, $userinfo['adminid'], $categories);
 			$fields = array(
 				'lastchange' => $lng['ticket']['lastchange'],
 				'ticket_answers' => $lng['ticket']['ticket_answers'],
@@ -714,7 +717,7 @@ elseif($page == 'archive'
 		else
 		{
 			$archived = array();
-			$archived = ticket::getLastArchived($db, 6);
+			$archived = ticket::getLastArchived($db, 6, $userinfo['adminid']);
 			$tickets = '';
 
 			if($archived !== false)
@@ -756,13 +759,13 @@ elseif($page == 'archive'
 			}
 
 			$customers = makeoption($lng['ticket']['nocustomer'], '-1', '-1');
-			$result = $db->query_first('SELECT `customerid` FROM `' . TABLE_PANEL_CUSTOMERS . '` ORDER BY `name` ASC');
+			$result = $db->query_first('SELECT `customerid` FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . ($userinfo['customers_see_all'] ? '' : ' WHERE `adminid` = "' . (int)$userinfo['adminid'] . '" ') . 'ORDER BY `name` ASC');
 
 			if(isset($result['customerid'])
 			   && $result['customerid'] != '')
 			{
 				$result2 = $db->query('SELECT `customerid`, `loginname`, `firstname`, `name` 
-  									          FROM `' . TABLE_PANEL_CUSTOMERS . '` ORDER BY `name` ASC');
+  									          FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . ($userinfo['customers_see_all'] ? '' : ' WHERE `adminid` = "' . (int)$userinfo['adminid'] . '" ') . ' ORDER BY `name` ASC');
 
 				while($row = $db->fetch_array($result2))
 				{

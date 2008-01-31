@@ -1240,7 +1240,7 @@ if($settings['panel']['version'] == '1.2.18-svn2')
 				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0),
 				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0),
 				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);");
-	$db->query("CREATE TABLE `panel_tickets` (
+	$db->query("CREATE TABLE `" . TABLE_PANEL_TICKETS . "` (
 					`id` int(11) unsigned NOT NULL auto_increment,
 					`customerid` int(11) NOT NULL,
 					`category` smallint(5) unsigned NOT NULL default '1',
@@ -1257,7 +1257,7 @@ if($settings['panel']['version'] == '1.2.18-svn2')
 					`archived` enum('0','1') NOT NULL default '0',
 				PRIMARY KEY  (`id`),
 				KEY `customerid` (`customerid`)) ENGINE=MyISAM;");
-	$db->query("CREATE TABLE `panel_ticket_categories` (
+	$db->query("CREATE TABLE `" . TABLE_PANEL_TICKET_CATS . "` (
 					`id` smallint(5) unsigned NOT NULL auto_increment,
 					`name` varchar(60) NOT NULL,
 					PRIMARY KEY  (`id`)) ENGINE=MyISAM;");
@@ -1272,8 +1272,8 @@ if($settings['panel']['version'] == '1.2.18-svn2')
 
 if($settings['panel']['version'] == '1.2.18-svn3')
 {
-	$db->query('INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'enabled\', \'1\');');
-	$db->query('INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'concurrently_open\', \'5\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'enabled\', \'1\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'concurrently_open\', \'5\');');
 
 	// set new version
 
@@ -1281,6 +1281,21 @@ if($settings['panel']['version'] == '1.2.18-svn3')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.18-svn4';
+}
+
+if($settings['panel']['version'] == '1.2.18-svn4')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'noreply_name\', \'SysCP Support\')');
+	$db->query('DELETE FROM `' . TABLE_PANEL_SETTINGS . '` WHERE `settinggroup` = \'ticket\' AND `varname`=\'admin_email\'');
+	$db->query('ALTER TABLE `' . TABLE_PANEL_TICKETS . '` ADD `adminid` INT( 11 ) NOT NULL DEFAULT \'1\' AFTER `customerid` ');
+	$db->query('ALTER TABLE `' . TABLE_PANEL_TICKET_CATS . '` ADD `adminid` INT( 11 ) NOT NULL DEFAULT \'1\' AFTER `name` ');
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.18-svn5\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.18-svn5';
 }
 
 ?>

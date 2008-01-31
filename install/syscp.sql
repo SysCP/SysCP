@@ -443,16 +443,16 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (49, 'system', 'apacheconf_htpasswddir', '/etc/apache/htpasswd/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (50, 'system', 'webalizer_quiet', '2');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (51, 'ticket', 'noreply_email', 'NO-REPLY@SERVERNAME');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (52, 'ticket', 'admin_email', 'admin@SERVERNAME');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (53, 'ticket', 'worktime_all', '1');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (54, 'ticket', 'worktime_begin', '00:00');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (55, 'ticket', 'worktime_end', '23:59');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (56, 'ticket', 'worktime_sat', '0');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (57, 'ticket', 'worktime_sun', '0');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (58, 'ticket', 'archiving_days', '5');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (59, 'system', 'last_archive_run', '000000');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (60, 'ticket', 'enabled', '1');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (61, 'ticket', 'concurrently_open', '5');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (52, 'ticket', 'worktime_all', '1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (53, 'ticket', 'worktime_begin', '00:00');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (54, 'ticket', 'worktime_end', '23:59');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (55, 'ticket', 'worktime_sat', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (56, 'ticket', 'worktime_sun', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (57, 'ticket', 'archiving_days', '5');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (58, 'system', 'last_archive_run', '000000');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (59, 'ticket', 'enabled', '1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (60, 'ticket', 'concurrently_open', '5');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (61, 'ticket', 'noreply_name', 'SysCP Support');
 
 # --------------------------------------------------------
 
@@ -660,6 +660,7 @@ DROP TABLE IF EXISTS `panel_tickets`;
 CREATE TABLE `panel_tickets` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `customerid` int(11) NOT NULL,
+  `adminid` int(11) NOT NULL,  
   `category` smallint(5) unsigned NOT NULL default '1',
   `priority` enum('1','2','3') NOT NULL default '3',
   `subject` varchar(70) NOT NULL,
@@ -687,6 +688,7 @@ DROP TABLE IF EXISTS `panel_ticket_categories`;
 CREATE TABLE `panel_ticket_categories` (
   `id` smallint(5) unsigned NOT NULL auto_increment,
   `name` varchar(60) NOT NULL,
+  `adminid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM;
 

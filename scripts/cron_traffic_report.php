@@ -33,7 +33,7 @@ $yesterday = time()-(60*60*24);
 
 // Warn the customers at 90% traffic-usage
 
-$result = $db->query("SELECT `c`.`customerid`, `c`.`adminid`, `c`.`name`, `c`.`firstname`, `c`.`traffic_used`, `c`.`traffic`, `c`.`email`, `a`.`name` AS `adminname`, `a`.`email` AS `adminmail` FROM `" . TABLE_PANEL_CUSTOMERS . "` AS `c` LEFT JOIN `panel_admins` AS `a` ON `a`.`adminid` = `c`.`adminid` WHERE `c`.`reportsent` = '0';");
+$result = $db->query("SELECT `c`.`customerid`, `c`.`adminid`, `c`.`name`, `c`.`firstname`, `c`.`traffic_used`, `c`.`traffic`, `c`.`email`, `c`.`def_language`, `a`.`name` AS `adminname`, `a`.`email` AS `adminmail` FROM `" . TABLE_PANEL_CUSTOMERS . "` AS `c` LEFT JOIN `" . TABLE_PANEL_ADMINS . "` AS `a` ON `a`.`adminid` = `c`.`adminid` WHERE `c`.`reportsent` = '0';");
 
 while($row = $db->fetch_array($result))
 {
@@ -53,7 +53,7 @@ while($row = $db->fetch_array($result))
 		$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
 		$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$row['adminid'] . '\' AND `language`=\'' . $db->escape($row['def_language']) . '\' AND `templategroup`=\'traffic\' AND `varname`=\'trafficninetypercent_mailbody\'');
 		$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
-		mail(buildValidMailFrom($row['firstname'] . ' ' . $row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['adminname'], $row['adminemail']));
+		mail(buildValidMailFrom($row['firstname'] . ' ' . $row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['adminname'], $row['adminmail']));
 		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `reportsent`=\'1\' WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
 	}
 }
@@ -113,7 +113,7 @@ if(date('d') == '01')
 	$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `reportsent` = \'0\';');
 }
 
-$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'   AND `varname`      = \'last_traffic_report_run\' ');
+$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\' AND `varname` = \'last_traffic_report_run\' ');
 
 /**
  * STARTING CRONSCRIPT FOOTER

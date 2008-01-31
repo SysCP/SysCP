@@ -113,6 +113,7 @@ class ticket
 	private function initData()
 	{
 		$this->Set('customer', 0, true, true);
+		$this->Set('admin', 1, true, true);
 		$this->Set('subject', '', true, true);
 		$this->Set('category', '0', true, true);
 		$this->Set('priority', '2', true, true);
@@ -138,6 +139,7 @@ class ticket
 		{
 			$_ticket = $this->db->query_first('SELECT * FROM `' . TABLE_PANEL_TICKETS . '` WHERE `id` = "' . $this->tid . '"');
 			$this->Set('customer', $_ticket['customerid'], true, false);
+			$this->Set('admin', $_ticket['adminid'], true, false);
 			$this->Set('subject', $_ticket['subject'], true, false);
 			$this->Set('category', $_ticket['category'], true, false);
 			$this->Set('priority', $_ticket['priority'], true, false);
@@ -161,6 +163,7 @@ class ticket
 	{
 		$this->db->query("INSERT INTO `" . TABLE_PANEL_TICKETS . "` 
                 (`customerid`,  
+                 `adminid`,
                  `category`, 
                  `priority`, 
                  `subject`, 
@@ -174,6 +177,7 @@ class ticket
                  `answerto`) 
                   VALUES 
                   ('" . (int)$this->Get('customer') . "', 
+                   '" . (int)$this->Get('admin') . "',
                    '" . (int)$this->Get('category') . "', 
                    '" . (int)$this->Get('priority') . "', 
                    '" . $this->db->escape($this->Get('subject')) . "', 
@@ -281,11 +285,12 @@ class ticket
 
 		if($customerid != -1)
 		{
-			mail(buildValidMailFrom($usr['firstname'] . ' ' . $usr['name'], $usr['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom('SysCP Support Ticket', $this->settings['ticket']['noreply_email']));
+			mail(buildValidMailFrom($usr['firstname'] . ' ' . $usr['name'], $usr['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($this->settings['ticket']['noreply_name'], $this->settings['ticket']['noreply_email']));
 		}
 		else
 		{
-			mail(buildValidMailFrom('SysCP Supporter', $this->settings['ticket']['admin_email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom('SysCP Support Ticket', $this->settings['ticket']['noreply_email']));
+			$admin = $this->db->query_first("SELECT `email` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$this->userinfo['adminid'] . "'");
+			mail(buildValidMailFrom($admin['firstname'] . ' ' . $admin['name'], $admin['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($this->settings['ticket']['noreply_name'], $this->settings['ticket']['noreply_email']));
 		}
 	}
 
@@ -293,12 +298,12 @@ class ticket
 	 * Add a support-categories
 	 */
 
-	static public function addCategory($_db, $_category = null)
+	static public function addCategory($_db, $_category = null, $_admin = 1)
 	{
 		if($_category != null
 		   && $_category != '')
 		{
-			$_db->query('INSERT INTO `' . TABLE_PANEL_TICKET_CATS . '` (`name`) VALUES ("' . $_db->escape($_category) . '")');
+			$_db->query('INSERT INTO `' . TABLE_PANEL_TICKET_CATS . '` (`name`, `adminid`) VALUES ("' . $_db->escape($_category) . '", "' . (int)$_admin . '")');
 			return true;
 		}
 
@@ -367,7 +372,7 @@ class ticket
 	 * returns the last x archived tickets
 	 */
 
-	static public function getLastArchived($_db, $_num = 10)
+	static public function getLastArchived($_db, $_num = 10, $_admin = 1)
 	{
 		if($_num > 0)
 		{
@@ -378,13 +383,15 @@ class ticket
                                 FROM `' . TABLE_PANEL_TICKETS . '` `sub` 
                                 WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`  
                              FROM `' . TABLE_PANEL_TICKETS . '` `main` 
-                             WHERE `main`.`answerto` = "0" AND `main`.`archived` = "1" 
+                             WHERE `main`.`answerto` = "0" 
+                             AND `main`.`archived` = "1" AND `main`.`adminid` = "' . (int)$_admin . '" 
                              ORDER BY `main`.`lastchange` DESC LIMIT 0, ' . (int)$_num);
 
 			while($row = $_db->fetch_array($result))
 			{
 				$archived[$counter]['id'] = $row['id'];
 				$archived[$counter]['customerid'] = $row['customerid'];
+				$archived[$counter]['adminid'] = $row['adminid'];
 				$archived[$counter]['lastreplier'] = $row['lastreplier'];
 				$archived[$counter]['ticket_answers'] = $row['ticket_answers'];
 				$archived[$counter]['category'] = $row['category'];
@@ -413,13 +420,13 @@ class ticket
 	 * Returns a sql-statement to search the archive
 	 */
 
-	static public function getArchiveSearchStatement($subject = NULL, $priority = NULL, $fromdate = NULL, $todate = NULL, $message = NULL, $customer = -1, $categories = NULL)
+	static public function getArchiveSearchStatement($subject = NULL, $priority = NULL, $fromdate = NULL, $todate = NULL, $message = NULL, $customer = -1, $admin = 1, $categories = NULL)
 	{
 		$query = 'SELECT `main`.*, 
                 (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub` 
                  WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers` 
               FROM `' . TABLE_PANEL_TICKETS . '` `main` 
-              WHERE `main`.`archived` = "1" AND `main`.`answerto` = "0" ';
+              WHERE `main`.`archived` = "1" AND `main`.`answerto` = "0" AND `main`.`adminid` = "' . (int)$admin . '"';
 
 		if($subject != NULL
 		   && $subject != '')
