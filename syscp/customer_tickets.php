@@ -57,7 +57,7 @@ elseif($page == 'tickets')
 		$paging = new paging($userinfo, $db, TABLE_PANEL_TICKETS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
 		$paging->sortfield = 'lastchange';
 		$paging->sortorder = 'desc';
-		$result = $db->query('SELECT `main`.`id`, (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub` WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`, `main`.`lastchange`, `main`.`subject`, `main`.`status`, `main`.`lastreplier`, `main`.`priority` FROM `' . TABLE_PANEL_TICKETS . '` as `main` WHERE `main`.`answerto` = "0" AND `archived` = "0" AND `customerid`="' . (int)$userinfo['customerid'] . '" ' . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+		$result = $db->query('SELECT `main`.`id`, (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub` WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`, `main`.`lastchange`, `main`.`subject`, `main`.`status`, `main`.`lastreplier`, `main`.`priority` FROM `' . TABLE_PANEL_TICKETS . '` as `main` WHERE `main`.`answerto` = "0" AND `archived` = "0" AND `customerid`="' . (int)$userinfo['customerid'] . '" AND `adminid`="' . (int)$userinfo['adminid'] . '" ' . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
 		$paging->setEntries($db->num_rows($result));
 		$sortcode = $paging->getHtmlSortCode($lng);
 		$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
@@ -176,6 +176,7 @@ elseif($page == 'tickets')
 				$newticket->Set('priority', validate($_POST['priority'], 'priority'), true, false);
 				$newticket->Set('category', validate($_POST['category'], 'category'), true, false);
 				$newticket->Set('customer', (int)$userinfo['customerid'], true, false);
+				$newticket->Set('admin', (int)$userinfo['adminid'], true, false);
 				$newticket->Set('message', validate(str_replace("\r\n", "\n", $_POST['message']), 'message', '/^[^\0]*$/'), true, false);
 
 				if($newticket->Get('subject') == null)

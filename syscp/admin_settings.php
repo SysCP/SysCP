@@ -568,24 +568,17 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_email'");
 		}
 
+		if($_POST['ticket_noreply_name'] != $settings['ticket']['noreply_name'])
+		{
+			$value = validate($_POST['ticket_noreply_name'], 'ticket_noreply_name');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_name'");
+		}
+
 		if($_POST['ticket_concurrently_open'] != $settings['ticket']['concurrently_open']
 		   && $settings['ticket']['enabled'] == 1)
 		{
 			$value = validate($_POST['ticket_concurrently_open'], 'ticket_concurrently_open');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='concurrently_open'");
-		}
-
-		if($_POST['ticket_admin_email'] != $settings['ticket']['admin_email']
-		   && $settings['ticket']['enabled'] == 1)
-		{
-			$value = validate($_POST['ticket_admin_email'], 'ticket_admin_email');
-
-			if(!validateEmail($value))
-			{
-				standard_error('tadminmailiswrong');
-			}
-
-			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='admin_email'");
 		}
 
 		if($_POST['ticket_archiving_days'] != $settings['ticket']['archiving_days']

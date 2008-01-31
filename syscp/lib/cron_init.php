@@ -33,19 +33,7 @@ $lockfile = $lockdir . $lockfName;
 // normally you should not need to modify this script anymore, if your
 // syscp installation isn't in /var/www/syscp
 
-$pathtophpfiles = '';
-
-if(substr($_SERVER['PHP_SELF'], 0, 1) != '/')
-{
-	$pathtophpfiles = $_SERVER['PWD'];
-}
-
-$pathtophpfiles.= '/' . $_SERVER['PHP_SELF'];
-$pathtophpfiles = str_replace(array(
-	'/./',
-	'//'
-), '/', $pathtophpfiles);
-$pathtophpfiles = dirname(dirname($pathtophpfiles));
+$pathtophpfiles = dirname(dirname(__FILE__));
 
 // should the syscp installation guessing not work correctly,
 // uncomment the following line, and put your path in there!

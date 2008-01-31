@@ -673,8 +673,6 @@ $lng['admin']['ticketsettings'] = 'Support-Ticket settings';
 $lng['admin']['archivelastrun'] = 'Last ticket archiving';
 $lng['serversettings']['ticket']['noreply_email'] = 'No-reply e-mail address';
 $lng['serversettings']['ticket']['noreply_email_desc'] = 'The sender-address for support-ticket, mostly something like no-reply@domain.tld';
-$lng['serversettings']['ticket']['admin_email'] = 'Supporter e-mail address';
-$lng['serversettings']['ticket']['admin_email_desc'] = 'The supporters e-mail address, all ticket-notifications will be sent there';
 $lng['serversettings']['ticket']['worktime_begin'] = 'Begin support-time (hh:mm)';
 $lng['serversettings']['ticket']['worktime_begin_desc'] = 'Start-time when support is available';
 $lng['serversettings']['ticket']['worktime_end'] = 'End support-time (hh:mm)';
@@ -694,5 +692,9 @@ $lng['serversettings']['ticket']['concurrentlyopen'] = 'How many tickets shall b
 $lng['error']['norepymailiswrong'] = 'The &quot;Noreply-address&quot; is wrong. Only a valid email-address is allowed.';
 $lng['error']['tadminmailiswrong'] = 'The &quot;Ticketadmin-address&quot; is wrong. Only a valid email-address is allowed.';
 $lng['ticket']['awaitingticketreply'] = 'You have %s unanswered support-ticket(s)';
+
+// ADDED IN 1.2.18-svn5
+
+$lng['serversettings']['ticket']['noreply_name'] = 'Ticket e-mail sendername';
 
 ?>
