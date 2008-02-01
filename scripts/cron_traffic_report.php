@@ -47,7 +47,7 @@ while($row = $db->fetch_array($result))
 {
 	if(isset($row['traffic'])
 	   && $row['traffic'] > 0
-     && $row['traffic_used'] != NULL
+	   && $row['traffic_used'] != NULL
 	   && (($row['traffic_used']*100)/$row['traffic']) >= 90)
 	{
 		$replace_arr = array(
@@ -55,21 +55,21 @@ while($row = $db->fetch_array($result))
 			'TRAFFIC' => $row['traffic'],
 			'TRAFFICUSED' => $row['traffic_used']
 		);
-
-    $lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
+		$lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
                                  WHERE `language` ='" . $row['def_language'] . "'");
-    if($lngfile !== NULL)
-    {
-      $langfile = $lngfile['file'];
-    }
-    else
-    {
-      $lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
-                                  WHERE `language` ='" . $settings['panel']['standardlanguage'] . "'");
-      $langfile = $lngfile['file'];
-    }
 
-    include_once (dirname(__FILE__) . '/../'.$langfile);
+		if($lngfile !== NULL)
+		{
+			$langfile = $lngfile['file'];
+		}
+		else
+		{
+			$lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
+                                  WHERE `language` ='" . $settings['panel']['standardlanguage'] . "'");
+			$langfile = $lngfile['file'];
+		}
+
+		include_once makeCorrectFile($pathtophpfiles . '/' . $langfile);
 
 		// Get mail templates from database; the ones from 'admin' are fetched for fallback
 
@@ -78,29 +78,18 @@ while($row = $db->fetch_array($result))
                                 AND `language`='" . $db->escape($row['def_language']) . "'
                                 AND `templategroup`='traffic'
                                 AND `varname`='trafficninetypercent_subject'");
-
-		$mail_subject = html_entity_decode(replace_variables((
-      ($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr)
-    );
-
+		$mail_subject = html_entity_decode(replace_variables((($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
 		$result2 = $db->query_first("SELECT `value` FROM `" . TABLE_PANEL_TEMPLATES . "`
                                 WHERE `adminid`='" . (int)$row['adminid'] . "'
                                 AND `language`='" . $db->escape($row['def_language']) . "'
                                 AND `templategroup`='traffic'
                                 AND `varname`='trafficninetypercent_mailbody'");
-
-		$mail_body = html_entity_decode(replace_variables((
-      ($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr)
-    );
-
-		mail(buildValidMailFrom($row['firstname'] . ' ' . $row['name'], $row['email']), $mail_subject, $mail_body,
-        'From: ' . buildValidMailFrom($row['adminname'], $row['adminmail']));
-
+		$mail_body = html_entity_decode(replace_variables((($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
+		mail(buildValidMailFrom($row['firstname'] . ' ' . $row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['adminname'], $row['adminmail']));
 		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `reportsent`=\'1\'
                 WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
 	}
 }
-
 
 // Warn the admins at 90% traffic-usage
 
@@ -122,21 +111,21 @@ while($row = $db->fetch_array($result))
 			'TRAFFIC' => $row['traffic'],
 			'TRAFFICUSED' => $row['traffic_used_total']
 		);
-
-    $lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
+		$lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
                                  WHERE `language` ='" . $row['def_language'] . "'");
-    if($lngfile !== NULL)
-    {
-      $langfile = $lngfile['file'];
-    }
-    else
-    {
-      $lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
-                                  WHERE `language` ='" . $settings['panel']['standardlanguage'] . "'");
-      $langfile = $lngfile['file'];
-    }
 
-    include_once (dirname(__FILE__) . '/../'.$langfile);
+		if($lngfile !== NULL)
+		{
+			$langfile = $lngfile['file'];
+		}
+		else
+		{
+			$lngfile = $db->query_first("SELECT `file` FROM `" . TABLE_PANEL_LANGUAGE . "`
+                                  WHERE `language` ='" . $settings['panel']['standardlanguage'] . "'");
+			$langfile = $lngfile['file'];
+		}
+
+		include_once makeCorrectFile($pathtophpfiles . '/' . $langfile);
 
 		// Get mail templates from database; the ones from 'admin' are fetched for fallback
 
@@ -145,24 +134,14 @@ while($row = $db->fetch_array($result))
                                 AND `language`='" . $db->escape($row['def_language']) . "'
                                 AND `templategroup`='traffic'
                                 AND `varname`='trafficninetypercent_subject'");
-
-		$mail_subject = html_entity_decode(replace_variables((
-      ($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr)
-    );
-
+		$mail_subject = html_entity_decode(replace_variables((($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['subject']), $replace_arr));
 		$result2 = $db->query_first("SELECT `value` FROM `" . TABLE_PANEL_TEMPLATES . "`
                                 WHERE `adminid`='" . (int)$row['adminid'] . "'
                                 AND `language`='" . $db->escape($row['def_language']) . "'
                                 AND `templategroup`='traffic'
                                 AND `varname`='trafficninetypercent_mailbody'");
-
-		$mail_body = html_entity_decode(replace_variables((
-      ($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr)
-    );
-
-		mail(buildValidMailFrom($row['name'], $row['email']), $mail_subject, $mail_body,
-       'From: ' . buildValidMailFrom($row['name'], $row['email']));
-
+		$mail_body = html_entity_decode(replace_variables((($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
+		mail(buildValidMailFrom($row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['name'], $row['email']));
 		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `reportsent`='1'
                 WHERE `customerid`='" . (int)$row['adminid'] . "'");
 	}
@@ -175,7 +154,6 @@ while($row = $db->fetch_array($result))
 		$mail_body = 'Trafficreport ' . date("m/y", $yesterday) . ' for ' . $row['name'] . "\n";
 		$mail_body.= '---------------------------------------------' . "\n";
 		$mail_body.= 'Loginname       Traffic used (Percent) | Traffic available' . "\n";
-
 		$customers = $db->query("SELECT `c`.*,
                             (SELECT SUM(`t`.`http` + `t`.`ftp_up` + `t`.`ftp_down` + `t`.`mail`)
                             FROM `" . TABLE_PANEL_TRAFFIC . "` `t`
@@ -185,23 +163,14 @@ while($row = $db->fetch_array($result))
 
 		while($customer = $db->fetch_array($customers))
 		{
-			$mail_body.= sprintf('%-15s', $customer['loginname']) . ' ' .
-                   sprintf('%-12d', $customer['traffic_used_total']) . ' (' .
-                   sprintf('%00.3f%%', (($customer['traffic_used_total']*100)/$customer['traffic'])) . ')   ' .
-                   $customer['traffic'] . "\n";
+			$mail_body.= sprintf('%-15s', $customer['loginname']) . ' ' . sprintf('%-12d', $customer['traffic_used_total']) . ' (' . sprintf('%00.3f%%', (($customer['traffic_used_total']*100)/$customer['traffic'])) . ')   ' . $customer['traffic'] . "\n";
 		}
 
 		$mail_body.= '---------------------------------------------' . "\n";
-		$mail_body.= sprintf('%-15s', $row['loginname']) . ' ' .
-                 sprintf('%-12d', $row['traffic_used_total']) . ' (' .
-                 sprintf('%00.3f%%', (($row['traffic_used_total']*100)/$row['traffic'])) . ')   ' .
-                 $row['traffic'] . "\n";
-
-		mail(buildValidMailFrom($row['name'], $row['email']), $mail_subject, $mail_body,
-      'From: ' . buildValidMailFrom($row['name'], $row['email']));
+		$mail_body.= sprintf('%-15s', $row['loginname']) . ' ' . sprintf('%-12d', $row['traffic_used_total']) . ' (' . sprintf('%00.3f%%', (($row['traffic_used_total']*100)/$row['traffic'])) . ')   ' . $row['traffic'] . "\n";
+		mail(buildValidMailFrom($row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['name'], $row['email']));
 	}
 }
-
 
 // Another month, reset the reportstatus
 
