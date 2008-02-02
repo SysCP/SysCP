@@ -18,17 +18,17 @@ $header
 			</tr>
  			<tr>
 				<td class="main_field_name">{$lng['ticket']['priority']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><select name="priority">$priorities</select></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="tendina_nobordo"  name="priority">$priorities</select></td>
  			</tr>
  			<tr>
 				<td class="main_field_name">{$lng['ticket']['category']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><select name="category">$categories</select></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="tendina_nobordo"  name="category">$categories</select></td>
  			</tr>
 			<tr>
 				<td class="main_field_name" colspan="2">{$lng['ticket']['message']}:</td>
  			</tr>
 			<tr>
-				<td class="main_field_display" colspan="2"><textarea class="textarea_noborder" rows="12" cols="60" name="message"></textarea></td>
+				<td class="main_field_display" colspan="2"><textarea class="textarea_border" rows="12" cols="60" name="message"></textarea></td>
  			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['ticket']['ticket_new']}" /></td>

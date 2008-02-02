@@ -24,7 +24,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['mailbody']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" name="mailbody" rows="20" cols="75">$mailbody</textarea></td>
+				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" name="mailbody" rows="20" cols="75">$mailbody</textarea></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>
