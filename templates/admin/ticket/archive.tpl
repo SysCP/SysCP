@@ -47,15 +47,15 @@ $header
 				<td class="main_field_name" colspan="2">{$lng['ticket']['message']}:</td>
       </tr>
       <tr>
-				<td class="main_field_display" nowrap="nowrap" colspan="2"><textarea class="textarea_noborder" rows="12" cols="60" name="message"></textarea></td>
+				<td class="main_field_display" nowrap="nowrap" colspan="2"><textarea class="textarea_border" rows="12" cols="60" name="message"></textarea></td>
 			</tr>
  			<tr>
 				<td class="main_field_name">{$lng['ticket']['customer']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><select name="customer">$customers</select></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="tendina_nobordo"  name="customer">$customers</select></td>
  			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['panel']['search']}" /></td>
-			</tr>                  
+			</tr>
 		</table>
-	</form>  
+	</form>
 $footer
