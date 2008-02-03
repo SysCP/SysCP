@@ -1300,6 +1300,8 @@ if($settings['panel']['version'] == '1.2.18-svn4')
 
 if($settings['panel']['version'] == '1.2.18-svn5')
 {
+	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\' WHERE `settinggroup` = \'ticket\' AND `varname` = \'last_archive_run\'');
+
 	// set new version
 
 	$query = 'UPDATE `%s` SET `value` = \'1.2.19\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
