@@ -70,14 +70,16 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['ftps']}:</td>
 			<td class="field_display">{$userinfo['ftps_used']} ({$userinfo['ftps']})</td>
 		</tr>
-    <tr>
+		<if $settings['ticket']['enabled'] == 1 >
+    	<tr>
 			<td class="field_name_border_left">{$lng['customer']['tickets']}:</td>
 			<td class="field_display">{$userinfo['tickets_used']} ({$userinfo['tickets']})</td>
 		</tr>
-    <if 0 < $awaitingtickets >
+		</if>
+    <if 0 < $awaitingtickets && $settings['ticket']['enabled'] == 1 >
 		<tr>
 			<td class="field_name_border_left" colspan="2"><b>{$awaitingtickets_text}</b></td>
-		</tr>    
+		</tr>
     </if>
 	</table>
 	<br />

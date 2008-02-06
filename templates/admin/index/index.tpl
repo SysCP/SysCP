@@ -39,15 +39,17 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['ftps']}:</td>
 			<td class="field_display">{$overview['ftps_used']} ({$userinfo['ftps_used']}/{$userinfo['ftps']})</td>
 		</tr>
+		<if $settings['ticket']['enabled'] == 1>
 		<tr>
 			<td class="field_name_border_left">{$lng['customer']['tickets']}:</td>
 			<td class="field_display">{$overview['tickets_used']} ({$userinfo['tickets_used']}/{$userinfo['tickets']})</td>
 		</tr>
-    <if 0 < $awaitingtickets >
+		</if>
+    <if 0 < $awaitingtickets && $settings['ticket']['enabled'] == 1 >
 		<tr>
 			<td class="field_name_border_left" colspan="2"><b>{$awaitingtickets_text}</b></td>
-		</tr>    
-    </if>    
+		</tr>
+    </if>
 		<tr>
 			<td class="field_name_nobordersmall">{$lng['customer']['subdomains']}:</td>
 			<td class="field_display_nobordersmall">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
@@ -90,10 +92,12 @@ $header
 			<td class="field_name_border_left">{$lng['admin']['trafficlastrun']}:</td>
 			<td class="field_display">$trafficlastrun</td>
 		</tr>
+		<if $settings['ticket']['enabled'] == 1>
 		<tr>
 			<td class="field_name_border_left">{$lng['admin']['archivelastrun']}:</td>
 			<td class="field_display">$archivelastrun</td>
 		</tr>
+		</if>
 		<tr>
 			<td class="field_name_border_left">{$lng['admin']['installedversion']}:</td>
 			<td class="field_display">$version</td>
