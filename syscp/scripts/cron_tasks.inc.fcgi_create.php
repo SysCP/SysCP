@@ -192,7 +192,7 @@ suhosin.mail.protect = 1
 		$replace[8] = 'session.save_path = "' . $tmpdir . '"';
 		$phpini = preg_replace($search, $replace, $phpini);
 		$config_file_handler = fopen($configdir . 'php.ini', 'w');
-		fwrite($config_file_handler, $config_file_php_ini);
+		fwrite($config_file_handler, $phpini);
 		fclose($config_file_handler);
 		safe_exec('chown root:0 "' . $configdir . 'php.ini"');
 		safe_exec('chmod 0644 "' . $configdir . 'php.ini"');
