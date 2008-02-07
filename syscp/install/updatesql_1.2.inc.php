@@ -1310,4 +1310,17 @@ if($settings['panel']['version'] == '1.2.18-svn5')
 	$settings['panel']['version'] = '1.2.19';
 }
 
+if($settings['panel']['version'] == '1.2.19')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'system\', \'mod_fcgid_configdir\', \'/var/www/php-fcgi-scripts\')');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'system\', \'mod_fcgid_tmpdir\', \'/var/kunden/tmp\')');
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn1';
+}
+
 ?>

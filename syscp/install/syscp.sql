@@ -453,7 +453,8 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (59, 'ticket', 'enabled', '1');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (60, 'ticket', 'concurrently_open', '5');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (61, 'ticket', 'noreply_name', 'SysCP Support');
-
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (62, 'system', 'mod_fcgid_configdir', '/var/www/php-fcgi-scripts');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (63, 'system', 'mod_fcgid_tmpdir', '/var/kunden/tmp');
 # --------------------------------------------------------
 
 #
@@ -660,7 +661,7 @@ DROP TABLE IF EXISTS `panel_tickets`;
 CREATE TABLE `panel_tickets` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `customerid` int(11) NOT NULL,
-  `adminid` int(11) NOT NULL,  
+  `adminid` int(11) NOT NULL,
   `category` smallint(5) unsigned NOT NULL default '1',
   `priority` enum('1','2','3') NOT NULL default '3',
   `subject` varchar(70) NOT NULL,
