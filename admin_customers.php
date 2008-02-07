@@ -62,11 +62,13 @@ if($page == 'customers'
 			'c.deactivated' => $lng['admin']['deactivated'],
 			'c.phpenabled' => $lng['admin']['phpenabled']
 		);
+
 		if($settings['ticket']['enabled'] == 1)
 		{
 			$fields['c.tickets'] = $lng['customer']['tickets'];
 			$fields['c.tickets_used'] = $lng['customer']['tickets'] . ' (' . $lng['panel']['used'] . ')';
 		}
+
 		$paging = new paging($userinfo, $db, TABLE_PANEL_CUSTOMERS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
 		$customers = '';
 		$result = $db->query("SELECT `c`.`customerid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`diskspace`, `c`.`diskspace_used`, `c`.`traffic`, `c`.`traffic_used`, `c`.`mysqls`, `c`.`mysqls_used`, `c`.`emails`, `c`.`emails_used`, `c`.`email_accounts`, `c`.`email_accounts_used`, `c`.`deactivated`, `c`.`ftps`, `c`.`ftps_used`, `c`.`tickets`, `c`.`tickets_used`, `c`.`subdomains`, `c`.`subdomains_used`, `c`.`email_forwarders`, `c`.`email_forwarders_used`, `c`.`standardsubdomain`, `a`.`loginname` AS `adminname` " . "FROM `" . TABLE_PANEL_CUSTOMERS . "` `c`, `" . TABLE_PANEL_ADMINS . "` `a` " . "WHERE " . ($userinfo['customers_see_all'] ? '' : " `c`.`adminid` = '" . (int)$userinfo['adminid'] . "' AND ") . "`c`.`adminid`=`a`.`adminid` " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
@@ -402,7 +404,8 @@ if($page == 'customers'
 						$admin_update_query.= ", `ftps_used` = `ftps_used` + 0" . (int)$ftps;
 					}
 
-					if($tickets != '-1' &&  $settings['ticket']['enabled'] == 1)
+					if($tickets != '-1'
+					   && $settings['ticket']['enabled'] == 1)
 					{
 						$admin_update_query.= ", `tickets_used` = `tickets_used` + 0" . (int)$tickets;
 					}
