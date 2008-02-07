@@ -292,7 +292,7 @@ if($page == 'tickets'
 				$mainticket->Set('lastreplier', '1');
 				$mainticket->Set('status', '1');
 				$mainticket->Update();
-				$mainticket->sendMail((int)$mainticket->Get('customer'), 'new_reply_by_staff_subject', $lng['mails']['new_reply_ticket_by_staff']['subject'], 'new_reply_by_staff_mailbody', $lng['mails']['new_reply_ticket_by_staff']['mailbody']);
+				$mainticket->sendMail((int)$mainticket->Get('customer'), 'new_reply_ticket_by_staff_subject', $lng['mails']['new_reply_ticket_by_staff']['subject'], 'new_reply_ticket_by_staff_mailbody', $lng['mails']['new_reply_ticket_by_staff']['mailbody']);
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
