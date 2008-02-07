@@ -147,6 +147,14 @@ $header
 				<td class="main_field_display" nowrap="nowrap">{$system_modfcgid}</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['configdir']}:</b><br />{$lng['serversettings']['mod_fcgid']['configdir_desc']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mod_fcgid_configdir" value="{$settings['system']['mod_fcgid_configdir']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['tmpdir']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mod_fcgid_tmpdir" value="{$settings['system']['mod_fcgid_tmpdir']}" /></td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['phpappendopenbasedir']['title']}:</b><br />{$lng['serversettings']['phpappendopenbasedir']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_phpappendopenbasedir" value="{$settings['system']['phpappendopenbasedir']}" /></td>
 			</tr>
@@ -237,7 +245,7 @@ $header
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['noreply_name']}:</b></td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_noreply_name" value="{$settings['ticket']['noreply_name']}" /></td>
-			</tr>      
+			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['concurrentlyopen']}:</b></td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_concurrently_open" value="{$settings['ticket']['concurrently_open']}" /></td>

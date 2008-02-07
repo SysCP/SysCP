@@ -702,4 +702,10 @@ $lng['ticket']['awaitingticketreply'] = 'Sie haben %s unbeantwortete(s) Support-
 
 $lng['serversettings']['ticket']['noreply_name'] = 'Ticket E-Mail Absendername';
 
+// ADDED IN 1.2.19-svn
+
+$lng['serversettings']['mod_fcgid']['configdir'] = 'FCGI Konfigurations-Verzeichnis';
+$lng['serversettings']['mod_fcgid']['configdir_desc'] = 'Wo sollen alle Konfigurationsdateien von FCGI liegen?';
+$lng['serversettings']['mod_fcgid']['tmpdir'] = 'FCGI Temp Verzeichnis';
+
 ?>

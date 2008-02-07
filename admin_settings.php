@@ -256,6 +256,20 @@ if(($page == 'settings' || $page == 'overview')
 			inserttask('1');
 		}
 
+		if($_POST['system_mod_fcgid_configdir'] != $settings['system']['mod_fcgid_configdir'])
+		{
+			$value = validate($_POST['system_mod_fcgid_configdir'], 'fcgid configdir');
+			$value = makeCorrectDir($value);
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_configdir'");
+		}
+
+		if($_POST['system_mod_fcgid_tmpdir'] != $settings['system']['mod_fcgid_tmpdir'])
+		{
+			$value = validate($_POST['system_mod_fcgid_tmpdir'], 'fcgid tmpdir');
+			$value = makeCorrectDir($value);
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_tmpdir'");
+		}
+
 		if($_POST['system_phpappendopenbasedir'] != $settings['system']['phpappendopenbasedir'])
 		{
 			$value = validate($_POST['system_phpappendopenbasedir'], 'phpappendopenbasedir');

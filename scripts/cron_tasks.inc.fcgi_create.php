@@ -29,8 +29,8 @@ if(@php_sapi_name() != 'cli'
 
 function createFcgiConfig($domain, $settings)
 {
-	$baseconfigdir = '/var/www/php-fcgi-scripts';
-	$basetmpdir = '/var/kunden/tmp';
+	$baseconfigdir = $settings['system']['mod_fcgid_configdir'];
+	$basetmpdir = $settings['system']['mod_fcgid_tmpdir'];
 	$peardir = '/usr/share/php/:/usr/share/php5/';
 	$configdir = $baseconfigdir . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/';
 	$tmpdir = $basetmpdir . '/' . $domain['loginname'] . '/';

@@ -184,7 +184,7 @@ while($row = $db->fetch_array($result_tasks))
 
 							if($db->num_rows($result_ftp) > 0)
 							{
-								$vhosts_file.= '  ScriptAlias /php/ /var/www/php-fcgi-scripts/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . "\n";
+								$vhosts_file.= '  ScriptAlias /php/ ' . $settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . "\n";
 								$vhosts_file.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
 								createFcgiConfig($domain, $settings);
 							}
