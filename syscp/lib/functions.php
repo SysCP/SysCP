@@ -901,7 +901,7 @@ function updateCounters($returndebuginfo = false)
 		$customer_ftps = $db->query_first('SELECT COUNT(*) AS `number_ftps` FROM `' . TABLE_FTP_USERS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 		$customer['ftps_used_new'] = ($customer_ftps['number_ftps']-1);
 		$customer_tickets = $db->query_first('SELECT COUNT(*) AS `number_tickets` FROM `' . TABLE_PANEL_TICKETS . '` WHERE `answerto` = "0" AND `customerid` = "' . (int)$customer['customerid'] . '"');
-		$customer['tickets_used_new'] = ($customer_tickets['number_tickets']-1);
+		$customer['tickets_used_new'] = $customer_tickets['number_tickets'];
 		$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '" AND `parentdomainid` <> "0"');
 		$customer['subdomains_used_new'] = $customer_subdomains['number_subdomains'];
 		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '",  `emails_used` = "' . (int)$customer['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$customer['ftps_used_new'] . '",   `tickets_used` = "' . (int)$customer['tickets_used_new'] . '",  `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
