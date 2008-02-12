@@ -703,4 +703,14 @@ $lng['serversettings']['mod_fcgid']['configdir'] = 'FCGI configuration directory
 $lng['serversettings']['mod_fcgid']['configdir_desc'] = 'Where should all fcgi-configuration files be stored?';
 $lng['serversettings']['mod_fcgid']['tmpdir'] = 'FCGI temp directory';
 
+// ADDED IN 1.2.19-svn3
+
+$lng['serversettings']['ticket']['reset_cycle'] = 'Reset used tickets cycle';
+$lng['serversettings']['ticket']['reset_cycle_desc'] = 'Reset the customers used ticket counter to 0 in the chosen cycle';
+$lng['admin']['tickets']['daily'] = 'Daily';
+$lng['admin']['tickets']['weekly'] = 'Weekly';
+$lng['admin']['tickets']['monthly'] = 'Monthly';
+$lng['admin']['tickets']['yearly'] = 'Yearly';
+$lng['error']['ticketresetcycleiswrong'] = 'The cycle for ticket-resets has to be "daily", "weekly", "monthly" or "yearly".';
+
 ?>

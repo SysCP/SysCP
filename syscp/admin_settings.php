@@ -588,6 +588,23 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_name'");
 		}
 
+		if($_POST['ticket_reset_cycle'] != $settings['ticket']['reset_cycle'])
+		{
+			$value = $_POST['ticket_reset_cycle'];
+
+			if(!in_array($value, array(
+				0,
+				1,
+				2,
+				3
+			)))
+			{
+				standard_error('ticketresetcycleiswrong');
+			}
+
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='reset_cycle'");
+		}
+
 		if($_POST['ticket_concurrently_open'] != $settings['ticket']['concurrently_open']
 		   && $settings['ticket']['enabled'] == 1)
 		{
@@ -683,6 +700,10 @@ if(($page == 'settings' || $page == 'overview')
 		$webalizer_quiet = makeoption($lng['admin']['webalizer']['normal'], '0', $settings['system']['webalizer_quiet'], true, true);
 		$webalizer_quiet.= makeoption($lng['admin']['webalizer']['quiet'], '1', $settings['system']['webalizer_quiet'], true, true);
 		$webalizer_quiet.= makeoption($lng['admin']['webalizer']['veryquiet'], '2', $settings['system']['webalizer_quiet'], true, true);
+		$ticket_reset_cycle = makeoption($lng['admin']['tickets']['daily'], '0', $settings['ticket']['reset_cycle'], true, true);
+		$ticket_reset_cycle.= makeoption($lng['admin']['tickets']['weekly'], '1', $settings['ticket']['reset_cycle'], true, true);
+		$ticket_reset_cycle.= makeoption($lng['admin']['tickets']['monthly'], '2', $settings['ticket']['reset_cycle'], true, true);
+		$ticket_reset_cycle.= makeoption($lng['admin']['tickets']['yearly'], '3', $settings['ticket']['reset_cycle'], true, true);
 
 		// build the pathedit list
 

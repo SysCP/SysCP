@@ -247,6 +247,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_noreply_name" value="{$settings['ticket']['noreply_name']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['reset_cycle']}:</b><br />{$lng['serversettings']['ticket']['reset_cycle_desc']}</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="ticket_reset_cycle">{$ticket_reset_cycle}</select></td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['concurrentlyopen']}:</b></td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ticket_concurrently_open" value="{$settings['ticket']['concurrently_open']}" /></td>
 			</tr>
