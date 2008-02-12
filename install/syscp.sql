@@ -649,6 +649,7 @@ INSERT INTO `panel_languages` VALUES (11, 'Bulgarian', 'lng/bulgarian.lng.php');
 INSERT INTO `panel_languages` VALUES (12, 'Slovak', 'lng/slovak.lng.php');
 INSERT INTO `panel_languages` VALUES (13, 'Dutch', 'lng/dutch.lng.php');
 INSERT INTO `panel_languages` VALUES (14, 'Hungarian', 'lng/hungarian.lng.php');
+INSERT INTO `panel_languages` VALUES (15, 'Swedish', 'lng/swedish.lng.php');
 
 
 # --------------------------------------------------------
