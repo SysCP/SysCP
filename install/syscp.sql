@@ -455,6 +455,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (61, 'ticket', 'noreply_name', 'SysCP Support');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (62, 'system', 'mod_fcgid_configdir', '/var/www/php-fcgi-scripts');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (63, 'system', 'mod_fcgid_tmpdir', '/var/kunden/tmp');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (64, 'ticket', 'reset_cycle', '2');
 # --------------------------------------------------------
 
 #

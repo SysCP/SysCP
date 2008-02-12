@@ -708,4 +708,14 @@ $lng['serversettings']['mod_fcgid']['configdir'] = 'FCGI Konfigurations-Verzeich
 $lng['serversettings']['mod_fcgid']['configdir_desc'] = 'Wo sollen alle Konfigurationsdateien von FCGI liegen?';
 $lng['serversettings']['mod_fcgid']['tmpdir'] = 'FCGI Temp Verzeichnis';
 
+// ADDED IN 1.2.19-svn3
+
+$lng['serversettings']['ticket']['reset_cycle'] = 'Turnus verbrauchte Tickets zur&uuml;cksetzen';
+$lng['serversettings']['ticket']['reset_cycle_desc'] = 'Setzt die Anzahl der vom Kunden verbrauchten Tickets in dem angegebenen Turnus auf 0';
+$lng['admin']['tickets']['daily'] = 'T&auml;glich';
+$lng['admin']['tickets']['weekly'] = 'W&ouml;chentlich';
+$lng['admin']['tickets']['monthly'] = 'Monatlich';
+$lng['admin']['tickets']['yearly'] = 'J&auml;hrlich';
+$lng['error']['ticketresetcycleiswrong'] = 'Der Turnus des Ticket-Zur&uuml;cksetzen muss "T&auml;glich", "W&ouml;chentlich", "Monatlich" oder "J&auml;hrlich" sein.';
+
 ?>

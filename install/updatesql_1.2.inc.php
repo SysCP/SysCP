@@ -1335,5 +1335,16 @@ if($settings['panel']['version'] == '1.2.19-svn1')
 	$settings['panel']['version'] = '1.2.19-svn2';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn2')
+{
+	$db->query('INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'reset_cycle\', \'2\')');
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn3';
+}
 
 ?>
