@@ -79,7 +79,7 @@ $configfiles = Array(
 							'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
 							'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
+							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf'
 						),
 						'commands' => Array(
 							'mkdir -p /etc/postfix/sasl',
@@ -88,7 +88,15 @@ $configfiles = Array(
 							'groupadd -g ' . $settings['system']['vmail_gid'] . ' vmail',
 							'useradd -u ' . $settings['system']['vmail_uid'] . ' -g vmail vmail',
 							'mkdir -p ' . $settings['system']['vmail_homedir'],
-							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir']
+							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir'],
+							'chmod 660 /etc/postfix/mysql-virtual_alias_maps.cf',
+							'chmod 660 /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'chmod 660 /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'chmod 660 /etc/postfix/sasl/smtpd.conf',
+							'chgrp postfix /etc/postfix/mysql-virtual_alias_maps.cf',
+							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'chgrp postfix /etc/postfix/sasl/smtpd.conf'
 						),
 						'restart' => Array(
 							'/etc/init.d/postfix restart'
@@ -210,7 +218,7 @@ $configfiles = Array(
 							'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
 							'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf',
+							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf'
 						),
 						'commands' => Array(
 							'mkdir -p /etc/postfix/sasl',
@@ -219,7 +227,15 @@ $configfiles = Array(
 							'groupadd -g ' . $settings['system']['vmail_gid'] . ' vmail',
 							'useradd -u ' . $settings['system']['vmail_uid'] . ' -g vmail vmail',
 							'mkdir -p ' . $settings['system']['vmail_homedir'],
-							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir']
+							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir'],
+							'chmod 660 /etc/postfix/mysql-virtual_alias_maps.cf',
+							'chmod 660 /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'chmod 660 /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'chmod 660 /etc/postfix/sasl/smtpd.conf',
+							'chgrp postfix /etc/postfix/mysql-virtual_alias_maps.cf',
+							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'chgrp postfix /etc/postfix/sasl/smtpd.conf'
 						),
 						'restart' => Array(
 							'/etc/init.d/postfix restart'
@@ -320,14 +336,22 @@ $configfiles = Array(
 							'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
 							'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'usr_lib_sasl2_smtpd.conf' => '/usr/lib/sasl2/smtpd.conf',
+							'usr_lib_sasl2_smtpd.conf' => '/usr/lib/sasl2/smtpd.conf'
 						),
 						'commands' => Array(
 							'mkdir -p /var/spool/postfix/etc/pam.d',
 							'groupadd -g ' . $settings['system']['vmail_gid'] . ' vmail',
 							'useradd -u ' . $settings['system']['vmail_uid'] . ' -g vmail vmail',
 							'mkdir -p ' . $settings['system']['vmail_homedir'],
-							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir']
+							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir'],
+							'chmod 660 /etc/postfix/mysql-virtual_alias_maps.cf',
+							'chmod 660 /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'chmod 660 /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'chmod 660 /usr/lib/sasl2/smtpd.conf',
+							'chgrp postfix /etc/postfix/mysql-virtual_alias_maps.cf',
+							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'chgrp postfix /usr/lib/sasl2/smtpd.conf'
 						),
 						'restart' => Array(
 							'/etc/init.d/postfix restart'
