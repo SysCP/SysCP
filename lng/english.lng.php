@@ -713,4 +713,28 @@ $lng['admin']['tickets']['monthly'] = 'Monthly';
 $lng['admin']['tickets']['yearly'] = 'Yearly';
 $lng['error']['ticketresetcycleiswrong'] = 'The cycle for ticket-resets has to be "daily", "weekly", "monthly" or "yearly".';
 
+// ADDED IN 1.2.19-svn4
+
+$lng['menue']['traffic']['traffic'] = 'Traffic';
+$lng['menue']['traffic']['current'] = 'Current Month';
+$lng['traffic']['month'] = "Month";
+$lng['traffic']['day'] = "Day";
+$lng['traffic']['months'][1] = "January";
+$lng['traffic']['months'][2] = "February";
+$lng['traffic']['months'][3] = "March";
+$lng['traffic']['months'][4] = "April";
+$lng['traffic']['months'][5] = "May";
+$lng['traffic']['months'][6] = "June";
+$lng['traffic']['months'][7] = "July";
+$lng['traffic']['months'][8] = "August";
+$lng['traffic']['months'][9] = "September";
+$lng['traffic']['months'][10] = "October";
+$lng['traffic']['months'][11] = "November";
+$lng['traffic']['months'][12] = "December";
+$lng['traffic']['mb'] = "Traffic (MB)";
+$lng['traffic']['distribution'] = '<font color="#019522">FTP</font> | <font color="#0000FF">HTTP</font> | <font color="#800000">Mail</font>';
+$lng['traffic']['sumhttp'] = 'Summation HTTP-Traffic in';
+$lng['traffic']['sumftp'] = 'Summation FTP-Traffic in';
+$lng['traffic']['summail'] = 'Summation Mail-Traffic in';
+
 ?>

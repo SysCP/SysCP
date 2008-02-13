@@ -9,7 +9,7 @@
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
  *
  * @copyright  (c) the authors
- * @author     Staffan Starberg <staff@starberg.com> 
+ * @author     Staffan Starberg <staff@starberg.com>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
  * @version    $Id$
@@ -471,7 +471,7 @@ $lng['error']['youcanteditallfieldsofyourself'] = 'Notera: Av säkerhetsskäl går 
 // ADDED IN 1.2.16-svn1
 
 $lng['serversettings']['natsorting']['title'] = 'Använd mänsklig sortertering i listvisning';
-$lng['serversettings']['natsorting']['description'] = 'Sorterar listan så här web1 -> web2 -> web11 istället för web1 -> web11 -> web2.'; 
+$lng['serversettings']['natsorting']['description'] = 'Sorterar listan så här web1 -> web2 -> web11 istället för web1 -> web11 -> web2.';
 
 // ADDED IN 1.2.16-svn2
 
