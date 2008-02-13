@@ -1337,7 +1337,7 @@ if($settings['panel']['version'] == '1.2.19-svn1')
 
 if($settings['panel']['version'] == '1.2.19-svn2')
 {
-	$db->query('INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'reset_cycle\', \'2\')');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'ticket\', \'reset_cycle\', \'2\')');
 
 	// set new version
 
@@ -1345,6 +1345,19 @@ if($settings['panel']['version'] == '1.2.19-svn2')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn3';
+}
+
+if($settings['panel']['version'] == '1.2.19-svn3')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'\', `lang`=\'menue;traffic;traffic\', `url`=\'customer_traffic.php\', `order`=\'80\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'customer_traffic.php\', `lang`=\'menue;traffic;current\', `url`=\'customer_traffic.php?page=current\', `order`=\'10\');');
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn4';
 }
 
 ?>

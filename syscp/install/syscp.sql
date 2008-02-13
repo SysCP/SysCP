@@ -616,7 +616,8 @@ INSERT INTO `panel_navigation` VALUES (38, 'admin', '', 'admin;ticketsystem', 'a
 INSERT INTO `panel_navigation` VALUES (39, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (40, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0);
 INSERT INTO `panel_navigation` VALUES (41, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);
-
+INSERT INTO `panel_navigation` VALUES (42, 'customer', '', 'menue;traffic;traffic', 'customer_traffic.php', 80, '', 0);
+INSERT INTO `panel_navigation` VALUES (43, 'customer', 'customer_traffic.php', 'menue;traffic;current', 'customer_traffic.php?page=current', 10, '', 0);
 
 # --------------------------------------------------------
 

@@ -454,4 +454,28 @@ $lng['domains']['isassigneddomain'] = 'est le domaine assign&eacute;';
 $lng['serversettings']['phpappendopenbasedir']['title'] = 'Chemin pour se rendre &agrave; OpenBasedir';
 $lng['serversettings']['phpappendopenbasedir']['description'] = 'Ce chemin (s&eacute;par&eacute; par des deux points) sera ajout&eacute; &agrave; OpenBasedir-statement dans chaque conteneurs vhost.';
 
+// ADDED IN 1.2.19-svn4
+
+$lng['menue']['traffic']['traffic'] = 'Traffic';
+$lng['menue']['traffic']['current'] = 'Mois Actuel';
+$lng['traffic']['month'] = "Mois";
+$lng['traffic']['months'][1] = "Janvier";
+$lng['traffic']['months'][2] = "F�vrier";
+$lng['traffic']['months'][3] = "Mars";
+$lng['traffic']['months'][4] = "Avril";
+$lng['traffic']['months'][5] = "Mai";
+$lng['traffic']['months'][6] = "Juin";
+$lng['traffic']['months'][7] = "Juillet";
+$lng['traffic']['months'][8] = "Ao�t";
+$lng['traffic']['months'][9] = "Septembre";
+$lng['traffic']['months'][10] = "Octobre";
+$lng['traffic']['months'][11] = "Novembre";
+$lng['traffic']['months'][12] = "D�cembre";
+$lng['traffic']['mb'] = "Traffic (MB)";
+$lng['traffic']['day'] = "Jour";
+$lng['traffic']['distribution'] = '<font color="#019522">FTP</font> | <font color="#0000FF">HTTP</font> | <font color="#800000">Mail</font>';
+$lng['traffic']['sumhttp'] = 'Total HTTP-Traffic en';
+$lng['traffic']['sumftp'] = 'Total FTP-Traffic en';
+$lng['traffic']['summail'] = 'Total Mail-Traffic en';
+
 ?>
