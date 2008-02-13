@@ -9,7 +9,7 @@
  * COPYING file online at http://files.syscp.org/misc/COPYING.txt
  *
  * @copyright  (c) the authors
- * @author     Staffan Starberg <staff@starberg.com>
+ * @author     Staffan Starberg <staff@starberg.com> 
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
  * @version    $Id$
@@ -471,7 +471,7 @@ $lng['error']['youcanteditallfieldsofyourself'] = 'Notera: Av säkerhetsskäl går 
 // ADDED IN 1.2.16-svn1
 
 $lng['serversettings']['natsorting']['title'] = 'Använd mänsklig sortertering i listvisning';
-$lng['serversettings']['natsorting']['description'] = 'Sorterar listan så här web1 -> web2 -> web11 istället för web1 -> web11 -> web2.';
+$lng['serversettings']['natsorting']['description'] = 'Sorterar listan så här web1 -> web2 -> web11 istället för web1 -> web11 -> web2.'; 
 
 // ADDED IN 1.2.16-svn2
 
@@ -673,8 +673,6 @@ $lng['admin']['ticketsettings'] = 'Supportärende inställningar';
 $lng['admin']['archivelastrun'] = 'Sista supportärende som arkiverats';
 $lng['serversettings']['ticket']['noreply_email'] = 'Svara-Inte E-post adress';
 $lng['serversettings']['ticket']['noreply_email_desc'] = 'Avsändaradressen för support-ticket, exempel: inget-svar@syscp.se';
-$lng['serversettings']['ticket']['admin_email'] = 'Supportens E-post adress';
-$lng['serversettings']['ticket']['admin_email_desc'] = 'Detta är supportens E-post adress, alla ärenden kommer att skickas hit';
 $lng['serversettings']['ticket']['worktime_begin'] = 'Start av support-tid (hh:mm)';
 $lng['serversettings']['ticket']['worktime_begin_desc'] = 'Start-tid, när supporten är tillgänglig';
 $lng['serversettings']['ticket']['worktime_end'] = 'Slut på support-tid (hh:mm)';
@@ -694,5 +692,25 @@ $lng['serversettings']['ticket']['concurrentlyopen'] = 'Maximalt antal tickets s
 $lng['error']['norepymailiswrong'] = 'Den här adressen  &quot;Noreply-address&quot; är felaktig. Bara giltiga E-post adresser är tillåtna.';
 $lng['error']['tadminmailiswrong'] = 'Den här adressen &quot;Ticketadmin-address&quot; är felaktig. Bara giltiga E-post adresser är tillåtna.';
 $lng['ticket']['awaitingticketreply'] = 'Du har %s obesvarade support-ticket(s)';
+
+// ADDED IN 1.2.18-svn5
+
+$lng['serversettings']['ticket']['noreply_name'] = 'Supportärendes namn på E-postadressen';
+
+// ADDED IN 1.2.19-svn1
+
+$lng['serversettings']['mod_fcgid']['configdir'] = 'FCGI konfigurationskatalog';
+$lng['serversettings']['mod_fcgid']['configdir_desc'] = 'I vilken katalog skall alla fcgi-konfigurationfiler lagras?';
+$lng['serversettings']['mod_fcgid']['tmpdir'] = 'FCGI temporärkatalog';
+
+// ADDED IN 1.2.19-svn3
+
+$lng['serversettings']['ticket']['reset_cycle'] = 'Återställ cykeln för använda supportärenden';
+$lng['serversettings']['ticket']['reset_cycle_desc'] = 'Återställ kundens räknare för använda supportärenden. Vald cykel = 0';
+$lng['admin']['tickets']['daily'] = 'Dagligen';
+$lng['admin']['tickets']['weekly'] = 'Varje vecka';
+$lng['admin']['tickets']['monthly'] = 'Varje månad';
+$lng['admin']['tickets']['yearly'] = 'Varje år';
+$lng['error']['ticketresetcycleiswrong'] = 'Cykeln för återställning av supportärenden måste vara "Dagligen", "Varje vecka", "varje månad" or "varje år".';
 
 ?>
