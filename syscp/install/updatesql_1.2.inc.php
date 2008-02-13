@@ -1349,8 +1349,8 @@ if($settings['panel']['version'] == '1.2.19-svn2')
 
 if($settings['panel']['version'] == '1.2.19-svn3')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'\', `lang`=\'menue;traffic;traffic\', `url`=\'customer_traffic.php\', `order`=\'80\');');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'customer_traffic.php\', `lang`=\'menue;traffic;current\', `url`=\'customer_traffic.php?page=current\', `order`=\'10\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'\', `lang`=\'menue;traffic;traffic\', `url`=\'customer_traffic.php\', `order`=\'80\';');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'customer_traffic.php\', `lang`=\'menue;traffic;current\', `url`=\'customer_traffic.php?page=current\', `order`=\'10\';');
 
 	// set new version
 
