@@ -133,7 +133,7 @@ if(!is_null($month)
 
 		$traf['byte'] = bcdiv($traf['byte'], 1024, 4);
 		eval("\$traffic.=\"" . getTemplate("traffic/traffic_month") . "\";");
-		$show = $lng['traffic']['month'][intval($row['month'])] . " " . $row['year'];
+		$show = $lng['traffic']['months'][intval($row['month'])] . " " . $row['year'];
 	}
 
 	$traffic_complete['http'] = bcdiv($traffic_complete['http'], 1024, 2);
@@ -172,7 +172,7 @@ else
 		$traffic_complete['mail']+= $mail;
 		$traf['month'] = $row['month'];
 		$traf['year'] = $row['year'];
-		$traf['monthname'] = $lng['traffic']['month'][intval($row['month'])] . " " . $row['year'];
+		$traf['monthname'] = $lng['traffic']['months'][intval($row['month'])] . " " . $row['year'];
 		$traf['byte'] = $http+$ftp_up+$ftp_down+$mail;
 		$traf['ftptext'] = bcdiv($ftp_up, 1024*1024, 4) . " GB up/ " . bcdiv($ftp_down, 1024*1024, 4) . " GB down (FTP)";
 		$traf['httptext'] = bcdiv($http, 1024*1024, 4) . " GB (HTTP)";
