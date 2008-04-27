@@ -34,12 +34,14 @@ elseif(isset($_GET['id']))
 
 if($page == 'overview')
 {
+	$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_extras");
 	eval("echo \"" . getTemplate("extras/extras") . "\";");
 }
 elseif($page == 'htpasswds')
 {
 	if($action == '')
 	{
+		$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_extras::htpasswds");
 		$fields = array(
 			'username' => $lng['login']['username'],
 			'path' => $lng['panel']['path']
@@ -87,6 +89,7 @@ elseif($page == 'htpasswds')
 			{
 				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='$id'");
+				$log->logAction(USR_ACTION, LOG_INFO, "deleted htpasswd for '" . $result['username'] . " (" . $result['path'] . ")'");
 				inserttask('3');
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -162,6 +165,7 @@ elseif($page == 'htpasswds')
 			else
 			{
 				$db->query("INSERT INTO `" . TABLE_PANEL_HTPASSWDS . "` (`customerid`, `username`, `password`, `path`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($username) . "', '" . $db->escape($password) . "', '" . $db->escape($path) . "')");
+				$log->logAction(USR_ACTION, LOG_INFO, "added htpasswd for '" . $username . " (" . $path . ")'");
 				inserttask('3');
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -209,6 +213,7 @@ elseif($page == 'htpasswds')
 				else
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_HTPASSWDS . "` SET `password`='" . $db->escape($password) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+					$log->logAction(USR_ACTION, LOG_INFO, "edited htpasswd for '" . $result['username'] . " (" . $result['path'] . ")'");
 					inserttask('3');
 					redirectTo($filename, Array(
 						'page' => $page,
@@ -233,6 +238,7 @@ elseif($page == 'htaccess')
 {
 	if($action == '')
 	{
+		$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_extras::htaccess");
 		$fields = array(
 			'path' => $lng['panel']['path'],
 			'options_indexes' => $lng['extras']['view_directory'],
@@ -286,6 +292,7 @@ elseif($page == 'htaccess')
 			{
 				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+				$log->logAction(USR_ACTION, LOG_INFO, "deleted htaccess for '" . str_replace($userinfo['documentroot'], '', $result['path']) . "'");
 				inserttask('3');
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -359,6 +366,7 @@ elseif($page == 'htaccess')
 			else
 			{
 				$db->query('INSERT INTO `' . TABLE_PANEL_HTACCESS . '`  (`customerid`,  `path`,  `options_indexes`,  `error404path`,  `error403path`,  `error500path`  ) VALUES ("' . (int)$userinfo['customerid'] . '",  "' . $db->escape($path) . '",  "' . $db->escape($_POST['options_indexes'] == '1' ? '1' : '0') . '",  "' . $db->escape($error404path) . '",  "' . $db->escape($error403path) . '",  "' . $db->escape($error500path) . '"  )');
+				$log->logAction(USR_ACTION, LOG_INFO, "added htaccess for '" . $path . "'");
 				inserttask('3');
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -430,6 +438,7 @@ elseif($page == 'htaccess')
 				{
 					inserttask('3');
 					$db->query('UPDATE `' . TABLE_PANEL_HTACCESS . '` SET `options_indexes` = "' . $db->escape($option_indexes) . '", `error404path`    = "' . $db->escape($error404path) . '",  `error403path`    = "' . $db->escape($error403path) . '",  `error500path`    = "' . $db->escape($error500path) . '" WHERE `customerid` = "' . (int)$userinfo['customerid'] . '"  AND `id` = "' . (int)$id . '"');
+					$log->logAction(USR_ACTION, LOG_INFO, "edited htaccess for '" . str_replace($userinfo['documentroot'], '', $result['path']) . "'");
 				}
 
 				redirectTo($filename, Array(

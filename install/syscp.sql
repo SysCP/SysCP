@@ -457,6 +457,12 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (63, 'system', 'mod_fcgid_tmpdir', '/var/kunden/tmp');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (64, 'ticket', 'reset_cycle', '2');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (65, 'panel', 'no_robots', '1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (66, 'logger', 'enabled', '1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (67, 'logger', 'log_cron', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (68, 'logger', 'logfile', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (69, 'logger', 'logtypes', 'syslog');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (70, 'logger', 'severity', '2');
+
 # --------------------------------------------------------
 
 #
@@ -604,7 +610,7 @@ INSERT INTO `panel_navigation` VALUES (25, 'admin', 'admin_resources.nourl', 'ad
 INSERT INTO `panel_navigation` VALUES (26, 'admin', '', 'admin;server', 'admin_server.nourl', '30', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (27, 'admin', 'admin_server.nourl', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', '10', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (28, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', '20', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;templates;templates', 'admin_templates.nourl', '40', '', 0);
+INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;templates;templates', 'admin_templates.nourl', '50', '', 0);
 INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_templates.nourl', 'admin;templates;email', 'admin_templates.php?page=email', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (31, 'admin', 'admin_server.nourl', 'admin;rebuildconf', 'admin_settings.php?page=rebuildconfigs', '30', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (32, 'admin', 'admin_server.nourl', 'admin;ipsandports;ipsandports', 'admin_ipsandports.php?page=ipsandports', '25', 'change_serversettings', 0);
@@ -619,6 +625,8 @@ INSERT INTO `panel_navigation` VALUES (40, 'admin', 'admin_ticketsystem.nourl', 
 INSERT INTO `panel_navigation` VALUES (41, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);
 INSERT INTO `panel_navigation` VALUES (42, 'customer', '', 'menue;traffic;traffic', 'customer_traffic.php', 80, '', 0);
 INSERT INTO `panel_navigation` VALUES (43, 'customer', 'customer_traffic.php', 'menue;traffic;current', 'customer_traffic.php?page=current', 10, '', 0);
+INSERT INTO `panel_navigation` VALUES (44, 'admin', '', 'admin;loggersystem', 'admin_loggersystem.nourl', '60', '', 0);
+INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_loggersystem.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', '10', '', 0);
 
 # --------------------------------------------------------
 
@@ -699,5 +707,27 @@ CREATE TABLE `panel_ticket_categories` (
 
 #
 # Dumping data for table `panel_ticket_categories`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_syslog`
+#
+
+DROP TABLE IF EXISTS `panel_syslog`;
+CREATE TABLE IF NOT EXISTS `panel_syslog` (
+  `logid` bigint(20) NOT NULL auto_increment,
+  `action` int(5) NOT NULL default '10',
+  `type` int(5) NOT NULL default '0',
+  `date` int(15) NOT NULL,
+  `user` varchar(50) NOT NULL,
+  `text` text NOT NULL,
+  PRIMARY KEY  (`logid`)
+) ENGINE=MyISAM;
+
+#
+# Dumping data for table `panel_syslog`
 #
 

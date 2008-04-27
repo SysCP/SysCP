@@ -37,6 +37,7 @@ if($page == 'customers'
 {
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_customers");
 		$fields = array(
 			'c.loginname' => $lng['login']['username'],
 			'a.loginname' => $lng['admin']['admin'],
@@ -111,6 +112,7 @@ if($page == 'customers'
 			$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid`='" . (int)$userinfo['userid'] . "'");
 			$s = md5(uniqid(microtime(), 1));
 			$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . $db->escape($s) . "', '" . (int)$id . "', '" . $db->escape($result['ipaddress']) . "', '" . $db->escape($result['useragent']) . "', '" . time() . "', '" . $db->escape($result['language']) . "', '0')");
+			$log->logAction(ADM_ACTION, LOG_INFO, "switched user and is now '" . $result['loginname'] . "'");
 			redirectTo('customer_index.php', Array(
 				's' => $s
 			));
@@ -208,6 +210,7 @@ if($page == 'customers'
 
 				$admin_update_query.= " WHERE `adminid` = '" . (int)$result['adminid'] . "'";
 				$db->query($admin_update_query);
+				$log->logAction(ADM_ACTION, LOG_INFO, "deleted user '" . $result['loginname'] . "'");
 				inserttask('1');
 				inserttask('4');
 				redirectTo($filename, Array(
@@ -424,6 +427,7 @@ if($page == 'customers'
 						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` " . "SET `value`='" . $db->escape($accountnumber) . "' " . "WHERE `settinggroup`='system' AND `varname`='lastaccountnumber'");
 					}
 
+					$log->logAction(ADM_ACTION, LOG_INFO, "added user '" . $loginname . "'");
 					inserttask('2', $loginname, $guid, $guid);
 
 					// Add htpasswd for the webalizer stats
@@ -441,15 +445,18 @@ if($page == 'customers'
 					}
 
 					$db->query("INSERT INTO `" . TABLE_PANEL_HTPASSWDS . "` " . "(`customerid`, `username`, `password`, `path`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', '" . $db->escape($htpasswdPassword) . "', '" . $db->escape($path) . "')");
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added htpasswd for user '" . $loginname . "'");
 					inserttask('3');
 					$result = $db->query("INSERT INTO `" . TABLE_FTP_USERS . "` " . "(`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', ENCRYPT('" . $db->escape($password) . "'), '" . $db->escape($documentroot) . "/', 'y', '" . (int)$guid . "', '" . (int)$guid . "')");
 					$result = $db->query("INSERT INTO `" . TABLE_FTP_GROUPS . "` " . "(`customerid`, `groupname`, `gid`, `members`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', '" . $db->escape($guid) . "', '" . $db->escape($loginname) . "')");
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added ftp-account for user '" . $loginname . "'");
 
 					if($createstdsubdomain == '1')
 					{
 						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` " . "(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " . "VALUES ('" . $db->escape($loginname . '.' . $settings['system']['hostname']) . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '-1', '" . $db->escape($settings['system']['defaultip']) . "', '" . $db->escape($documentroot) . "', '', '0', '0', '1', '1', '0', '')");
 						$domainid = $db->insert_id();
 						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'' . (int)$domainid . '\' WHERE `customerid`=\'' . (int)$customerid . '\'');
+						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added standardsubdomain for user '" . $loginname . "'");
 						inserttask('1');
 					}
 
@@ -469,6 +476,7 @@ if($page == 'customers'
 						$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
 						$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['createcustomer']['mailbody']), $replace_arr));
 						mail(buildValidMailFrom($firstname . ' ' . $name, $email), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($userinfo['name'], $userinfo['email']));
+						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically sent password to user '" . $loginname . "'");
 					}
 
 					redirectTo($filename, Array(
@@ -600,6 +608,7 @@ if($page == 'customers'
 						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` " . "(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings`) " . "VALUES ('" . $db->escape($result['loginname'] . '.' . $settings['system']['hostname']) . "', '" . (int)$result['customerid'] . "', '" . (int)$userinfo['adminid'] . "', '-1', '" . $db->escape($settings['system']['defaultip']) . "', '" . $db->escape($result['documentroot']) . "', '', '0', '0', '1', '1', '0', '')");
 						$domainid = $db->insert_id();
 						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'' . (int)$domainid . '\' WHERE `customerid`=\'' . (int)$result['customerid'] . '\'');
+						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added standardsubdomain for user '" . $result['loginname'] . "'");
 						inserttask('1');
 					}
 
@@ -608,6 +617,7 @@ if($page == 'customers'
 					{
 						$db->query('DELETE FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `id`=\'' . (int)$result['standardsubdomain'] . '\'');
 						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'0\' WHERE `customerid`=\'' . (int)$result['customerid'] . '\'');
+						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically deleted standardsubdomain for user '" . $result['loginname'] . "'");
 						inserttask('1');
 					}
 
@@ -626,6 +636,7 @@ if($page == 'customers'
 						$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `postfix`='" . (($deactivated) ? 'N' : 'Y') . "' WHERE `customerid`='" . (int)$id . "'");
 						$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `login_enabled`='" . (($deactivated) ? 'N' : 'Y') . "' WHERE `customerid`='" . (int)$id . "'");
 						$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `deactivated`='" . (int)$deactivated . "' WHERE `customerid`='" . (int)$id . "'");
+						$log->logAction(ADM_ACTION, LOG_INFO, "deactivated user '" . $result['loginname'] . "'");
 						inserttask('1');
 					}
 
@@ -762,6 +773,7 @@ if($page == 'customers'
 
 					$admin_update_query.= " WHERE `adminid` = '" . (int)$result['adminid'] . "'";
 					$db->query($admin_update_query);
+					$log->logAction(ADM_ACTION, LOG_INFO, "edited user '" . $result['loginname'] . "'");
 					redirectTo($filename, Array(
 						'page' => $page,
 						's' => $s

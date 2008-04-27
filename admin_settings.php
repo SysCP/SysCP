@@ -35,18 +35,21 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = validate($_POST['session_sessiontimeout'], 'session timeout', '/^[0-9]+$/', 'sessiontimeoutiswrong');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='session' AND `varname`='sessiontimeout'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed session_sessiontimeout from '" . $settings['session']['sessiontimeout'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['login_maxloginattempts'] != $settings['login']['maxloginattempts'])
 		{
 			$value = validate($_POST['login_maxloginattempts'], 'max login attempts', '/^[0-9]+$/', 'maxloginattemptsiswrong');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='login' AND `varname`='maxloginattempts'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed login_maxloginattempts from '" . $settings['login']['maxloginattempts'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['login_deactivatetime'] != $settings['login']['deactivatetime'])
 		{
 			$value = validate($_POST['login_deactivatetime'], 'deactivate time', '/^[0-9]+$/', 'deactivatetimiswrong');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='login' AND `varname`='deactivatetime'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed login_deactivatetime from '" . $settings['login']['deactivatetime'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['customer_accountprefix'] != $settings['customer']['accountprefix'])
@@ -56,6 +59,7 @@ if(($page == 'settings' || $page == 'overview')
 			if(validateUsername($value))
 			{
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='accountprefix'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_accountprefix from '" . $settings['customer']['accountprefix'] . "' to '" . $value . "'");
 			}
 			else
 			{
@@ -71,6 +75,7 @@ if(($page == 'settings' || $page == 'overview')
 			if(validateUsername($value))
 			{
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='mysqlprefix'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_mysqlprefix from '" . $settings['customer']['mysqlprefix'] . "' to '" . $value . "'");
 			}
 			else
 			{
@@ -86,6 +91,7 @@ if(($page == 'settings' || $page == 'overview')
 			if(validateUsername($value))
 			{
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='ftpprefix'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_ftpprefix from '" . $settings['customer']['ftpprefix'] . "' to '" . $value . "'");
 			}
 			else
 			{
@@ -98,6 +104,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = ($_POST['customer_ftpatdomain'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='ftpatdomain'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_ftpatdomain from '" . $settings['customer']['ftpatdomain'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_documentroot_prefix'] != $settings['system']['documentroot_prefix'])
@@ -105,6 +112,7 @@ if(($page == 'settings' || $page == 'overview')
 			$value = validate($_POST['system_documentroot_prefix'], 'documentroot prefix');
 			$value = makeCorrectDir($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='documentroot_prefix'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_documentroot_prefix from '" . $settings['system']['documentroot_prefix'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_logfiles_directory'] != $settings['system']['logfiles_directory'])
@@ -112,6 +120,7 @@ if(($page == 'settings' || $page == 'overview')
 			$value = validate($_POST['system_logfiles_directory'], 'logfiles directory');
 			$value = makeCorrectDir($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='logfiles_directory'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_logfiles_directory from '" . $settings['system']['logfiles_directory'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_ipaddress'] != $settings['system']['ipaddress'])
@@ -126,12 +135,14 @@ if(($page == 'settings' || $page == 'overview')
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ipaddress'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_ipaddress from '" . $settings['system']['ipaddress'] . "' to '" . $value . "'");
 			inserttask('1');
 			$mysql_access_host_array = array_map('trim', explode(',', $settings['system']['mysql_access_host']));
 			$mysql_access_host_array[] = $value;
 			$mysql_access_host_array = array_unique($mysql_access_host_array);
 			$mysql_access_host = implode(',', $mysql_access_host_array);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($mysql_access_host) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mysql_access_host from '" . $settings['system']['mysql_access_host'] . "' to '" . $mysql_access_host . "'");
 			$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
 			correctMysqlUsers($db, $db_root, $mysql_access_host_array);
 			$db_root->close();
@@ -160,15 +171,18 @@ if(($page == 'settings' || $page == 'overview')
 			if(count($ids) > 0)
 			{
 				$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `ipandport`=\'' . (int)$value . '\' WHERE `id` IN (\'' . join("','", $ids) . '\')');
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "changed domains-ipandport (" . explode(',', $ids) . ") to '" . $value . "'");
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='defaultip'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_defaultip from '" . $settings['system']['defaultip'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_hostname'] != $settings['system']['hostname'])
 		{
 			$value = $idna_convert->encode(validate($_POST['system_hostname'], 'hostname'));
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='hostname'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_hostname from '" . $settings['system']['hostname'] . "' to '" . $value . "'");
 			$result = $db->query('SELECT `standardsubdomain` FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `standardsubdomain`!=\'0\'');
 			$domains = array();
 
@@ -181,6 +195,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$domains = join($domains, ',');
 				$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `domain`=REPLACE(`domain`,\'' . $db->escape($settings['system']['hostname']) . '\',\'' . $db->escape($value) . '\') WHERE `id` IN (' . $domains . ')');
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "changed domains (" . explode(',', $domains) . " to '" . $value . "'");
 				inserttask('1');
 			}
 		}
@@ -205,6 +220,7 @@ if(($page == 'settings' || $page == 'overview')
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mysql_access_host from '" . $settings['system']['mysql_access_host'] . "' to '" . $value . "'");
 			$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
 			correctMysqlUsers($db, $db_root, $mysql_access_host_array);
 			$db_root->close();
@@ -216,6 +232,7 @@ if(($page == 'settings' || $page == 'overview')
 			$value = validate($_POST['system_apacheconf_vhost'], 'apacheconf vhost');
 			$value = makeSecurePath($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_vhost'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_apacheconf_vhost from '" . $settings['system']['apacheconf_vhost'] . "' to '" . $value . "'");
 			inserttask('1');
 		}
 
@@ -224,6 +241,7 @@ if(($page == 'settings' || $page == 'overview')
 			$value = validate($_POST['system_apacheconf_diroptions'], 'apacheconf diroptions');
 			$value = makeSecurePath($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_diroptions'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_apacheconf_diroptions from '" . $settings['system']['apacheconf_diroptions'] . "' to '" . $value . "'");
 			inserttask('3');
 		}
 
@@ -232,6 +250,7 @@ if(($page == 'settings' || $page == 'overview')
 			$value = validate($_POST['system_apacheconf_htpasswddir'], 'apacheconf htpasswddir');
 			$value = makeCorrectDir($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_htpasswddir'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_apacheconf_htpasswddir from '" . $settings['system']['apacheconf_htpasswddir'] . "' to '" . $value . "'");
 			inserttask('3');
 		}
 
@@ -239,6 +258,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = validate($_POST['system_apachereload_command'], 'apache reload command');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apachereload_command'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_apachereload_command from '" . $settings['system']['apachereload_command'] . "' to '" . $value . "'");
 			inserttask('1');
 		}
 
@@ -246,6 +266,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = ($_POST['system_modlogsql'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_log_sql'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mod_log_sql from '" . $settings['system']['mod_log_sql'] . "' to '" . $value . "'");
 			inserttask('1');
 		}
 
@@ -253,6 +274,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = ($_POST['system_modfcgid'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mod_fcgid from '" . $settings['system']['mod_fcgid'] . "' to '" . $value . "'");
 			inserttask('1');
 		}
 
@@ -289,6 +311,7 @@ if(($page == 'settings' || $page == 'overview')
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='phpappendopenbasedir'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_phpappendopenbasedir from '" . $settings['system']['phpappendopenbasedir'] . "' to '" . $value . "'");
 			inserttask('1');
 		}
 
@@ -302,6 +325,7 @@ if(($page == 'settings' || $page == 'overview')
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='deactivateddocroot'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_deactivateddocroot from '" . $settings['system']['deactivateddocroot'] . "' to '" . $value . "'");
 			inserttask('1');
 		}
 
@@ -313,6 +337,7 @@ if(($page == 'settings' || $page == 'overview')
 				'2'
 			)) ? $_POST['system_webalizer_quiet'] : '2';
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_quiet'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_quiet from '" . $settings['system']['webalizer_quiet'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_bindconf_directory'] != $settings['system']['bindconf_directory'])
@@ -320,36 +345,42 @@ if(($page == 'settings' || $page == 'overview')
 			$value = validate($_POST['system_bindconf_directory'], 'bind conf directory');
 			$value = makeCorrectDir($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='bindconf_directory'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_bindconf_directory from '" . $settings['system']['bindconf_directory'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_bindreload_command'] != $settings['system']['bindreload_command'])
 		{
 			$value = validate($_POST['system_bindreload_command'], 'bind reload command');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='bindreload_command'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_bindreload_command from '" . $settings['system']['bindreload_command'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_nameservers'] != $settings['system']['nameservers'])
 		{
 			$value = validate($_POST['system_nameservers'], 'nameservers', '/^(([a-z0-9\-\._]+, ?)*[a-z0-9\-\._]+)?$/i');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='nameservers'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_nameservers from '" . $settings['system']['nameservers'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_mxservers'] != $settings['system']['mxservers'])
 		{
 			$value = validate($_POST['system_mxservers'], 'mxservers', '/^(([0-9]+ [a-z0-9\-\._]+, ?)*[0-9]+ [a-z0-9\-\._]+)?$/i');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mxservers'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mxservers from '" . $settings['system']['mxservers'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_vmail_uid'] != $settings['system']['vmail_uid'])
 		{
 			$value = validate($_POST['system_vmail_uid'], 'vmail uid', '/^[0-9]{1,5}$/', 'vmailuidiswrong');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='vmail_uid'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_vmail_uid from '" . $settings['system']['vmail_uid'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_vmail_gid'] != $settings['system']['vmail_gid'])
 		{
 			$value = validate($_POST['system_vmail_gid'], 'vmail gid', '/^[0-9]{1,5}$/', 'vmailgidiswrong');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='vmail_gid'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_vmail_gid from '" . $settings['system']['vmail_gid'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_vmail_homedir'] != $settings['system']['vmail_homedir'])
@@ -357,18 +388,21 @@ if(($page == 'settings' || $page == 'overview')
 			$value = validate($_POST['system_vmail_homedir'], 'vmail homedir');
 			$value = makeCorrectDir($value);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='vmail_homedir'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_vmail_homedir from '" . $settings['system']['vmail_homedir'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['system_mailpwcleartext'] != $settings['system']['mailpwcleartext'])
 		{
 			$value = ($_POST['system_mailpwcleartext'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mailpwcleartext from '" . $settings['system']['mailpwcleartext'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_sendalternativemail'] != $settings['panel']['sendalternativemail'])
 		{
 			$value = ($_POST['panel_sendalternativemail'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='sendalternativemail'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_sendalternativemail from '" . $settings['panel']['sendalternativemail'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_adminmail'] != $settings['panel']['adminmail'])
@@ -382,18 +416,21 @@ if(($page == 'settings' || $page == 'overview')
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_adminmail from '" . $settings['panel']['adminmail'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_paging'] != $settings['panel']['paging'])
 		{
 			$value = validate($_POST['panel_paging'], 'paging', '/^[0-9]+$/', 'pagingiswrong');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='panel' AND `varname`='paging'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_paging from '" . $settings['panel']['paging'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_natsorting'] != $settings['panel']['natsorting'])
 		{
 			$value = ($_POST['panel_natsorting'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='natsorting'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_natsorting from '" . $settings['panel']['natsorting'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_no_robots'] != $settings['panel']['no_robots'])
@@ -414,12 +451,14 @@ if(($page == 'settings' || $page == 'overview')
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='standardlanguage'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_standardlanguage from '" . $settings['panel']['standardlanguage'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_pathedit'] != $settings['panel']['pathedit'])
 		{
 			$value = validate($_POST['panel_pathedit'], 'path edit', '/^(?:Manual|Dropdown)$/');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='pathedit'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_pathedit from '" . $settings['panel']['pathedit'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_phpmyadmin_url'] != $settings['panel']['phpmyadmin_url'])
@@ -442,12 +481,14 @@ if(($page == 'settings' || $page == 'overview')
 					//delete
 
 					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin"';
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "removed panel_phpmyadmin_url from navigation table");
 				}
 				else
 				{
 					//update
 
 					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;mysql;phpmyadmin"';
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_phpmyadmin_url in navigation to '" . $value . "'");
 				}
 			}
 			else
@@ -462,6 +503,7 @@ if(($page == 'settings' || $page == 'overview')
 
 			$db->query($query);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='phpmyadmin_url'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_phpmyadmin_url from '" . $settings['panel']['phpmyadmin_url'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_webmail_url'] != $settings['panel']['webmail_url'])
@@ -484,12 +526,14 @@ if(($page == 'settings' || $page == 'overview')
 					//delete
 
 					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;email;webmail"';
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "removed panel_webmail_url from navigation table");
 				}
 				else
 				{
 					//update
 
 					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;email;webmail"';
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webmail_url in navigation to '" . $value . "'");
 				}
 			}
 			else
@@ -504,6 +548,7 @@ if(($page == 'settings' || $page == 'overview')
 
 			$db->query($query);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webmail_url'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webmail_url from '" . $settings['panel']['webmail_url'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['panel_webftp_url'] != $settings['panel']['webftp_url'])
@@ -526,12 +571,14 @@ if(($page == 'settings' || $page == 'overview')
 					//delete
 
 					$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ftp;webftp"';
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "removed panel_webftp_url from navigation table");
 				}
 				else
 				{
 					//update
 
 					$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;ftp;webftp"';
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webftp_url in navigation to '" . $value . "'");
 				}
 			}
 			else
@@ -546,6 +593,42 @@ if(($page == 'settings' || $page == 'overview')
 
 			$db->query($query);
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webftp_url from '" . $settings['panel']['webftp_url'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['loggingenabled'] != $settings['logger']['enabled'])
+		{
+			$value = validate($_POST['loggingenabled'], 'loggingenabled');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='enabled'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_enabled from '" . $settings['logger']['enabled'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['logger_severity'] != $settings['logger']['severity'])
+		{
+			$value = validate($_POST['logger_severity'], 'logger_severity');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='severity'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_severity from '" . $settings['logger']['severity'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['logger_logtypes'] != $settings['logger']['logtypes'])
+		{
+			$value = validate($_POST['logger_logtypes'], 'logger_logtypes');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='logtypes'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_logtypes from '" . $settings['logger']['logtypes'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['logger_logfile'] != $settings['logger']['logfile'])
+		{
+			$value = validate($_POST['logger_logfile'], 'logger_logfile');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='logfile'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_logfile from '" . $settings['logger']['logfile'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['logger_log_cron'] != $settings['logger']['log_cron'])
+		{
+			$value = validate($_POST['logger_log_cron'], 'logger_log_cron');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='log_cron'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_log_cron from '" . $settings['logger']['log_cron'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticketsystemenabled'] != $settings['ticket']['enabled'])
@@ -562,6 +645,7 @@ if(($page == 'settings' || $page == 'overview')
 					 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0),
 					 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0),
 					 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);");
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "added ticketsystem to navigation");
 			}
 			else
 			{
@@ -570,9 +654,11 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "admin;ticketsystem"');
 				$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;archive"');
 				$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;categories"');
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "removed ticketsystem from navigation");
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='enabled'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_enabled from '" . $settings['ticket']['enabled'] . "' to '" . $value . "'");
 			$settings['ticket']['enabled'] = $value;
 		}
 
@@ -587,12 +673,14 @@ if(($page == 'settings' || $page == 'overview')
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_email'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_noreply_email from '" . $settings['ticket']['noreply_email'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_noreply_name'] != $settings['ticket']['noreply_name'])
 		{
 			$value = validate($_POST['ticket_noreply_name'], 'ticket_noreply_name');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='noreply_name'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_noreply_name from '" . $settings['ticket']['noreply_name'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_reset_cycle'] != $settings['ticket']['reset_cycle'])
@@ -617,6 +705,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = validate($_POST['ticket_concurrently_open'], 'ticket_concurrently_open');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='concurrently_open'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_concurrently_open from '" . $settings['ticket']['concurrently_open'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_archiving_days'] != $settings['ticket']['archiving_days']
@@ -624,6 +713,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = validate($_POST['ticket_archiving_days'], 'ticket_archiving_days', '/^[0-9]{1,2}$/');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='archiving_days'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_archiving_days from '" . $settings['ticket']['archiving_days'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_worktime_all'] != $settings['ticket']['worktime_all']
@@ -631,6 +721,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = ($_POST['ticket_worktime_all'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_all'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_worktime_all from '" . $settings['ticket']['worktime_all'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_worktime_begin'] != $settings['ticket']['worktime_begin']
@@ -638,6 +729,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = validate($_POST['ticket_worktime_begin'], 'ticket_worktime_begin', '/^[012][0-9]:[0-6][0-9]$/');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_begin'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_worktime_begin from '" . $settings['ticket']['worktime_begin'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_worktime_end'] != $settings['ticket']['worktime_end']
@@ -645,6 +737,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = validate($_POST['ticket_worktime_end'], 'ticket_worktime_end', '/^[012][0-9]:[0-6][0-9]$/');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_end'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_worktime_end from '" . $settings['ticket']['worktime_end'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_worktime_sat'] != $settings['ticket']['worktime_sat']
@@ -652,6 +745,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = ($_POST['ticket_worktime_sat'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_sat'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_worktime_sat from '" . $settings['ticket']['worktime_sat'] . "' to '" . $value . "'");
 		}
 
 		if($_POST['ticket_worktime_sun'] != $settings['ticket']['worktime_sun']
@@ -659,6 +753,7 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$value = ($_POST['ticket_worktime_sun'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ticket' AND `varname`='worktime_sun'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_worktime_sun from '" . $settings['ticket']['worktime_sun'] . "' to '" . $value . "'");
 		}
 
 		redirectTo($filename, Array(
@@ -668,6 +763,8 @@ if(($page == 'settings' || $page == 'overview')
 	}
 	else
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_settings");
+
 		// build the languages list
 
 		$query = 'SELECT * FROM `' . TABLE_PANEL_LANGUAGE . '` ';
@@ -707,10 +804,15 @@ if(($page == 'settings' || $page == 'overview')
 		$webalizer_quiet = makeoption($lng['admin']['webalizer']['normal'], '0', $settings['system']['webalizer_quiet'], true, true);
 		$webalizer_quiet.= makeoption($lng['admin']['webalizer']['quiet'], '1', $settings['system']['webalizer_quiet'], true, true);
 		$webalizer_quiet.= makeoption($lng['admin']['webalizer']['veryquiet'], '2', $settings['system']['webalizer_quiet'], true, true);
+
 		$ticket_reset_cycle = makeoption($lng['admin']['tickets']['daily'], '0', $settings['ticket']['reset_cycle'], true, true);
 		$ticket_reset_cycle.= makeoption($lng['admin']['tickets']['weekly'], '1', $settings['ticket']['reset_cycle'], true, true);
 		$ticket_reset_cycle.= makeoption($lng['admin']['tickets']['monthly'], '2', $settings['ticket']['reset_cycle'], true, true);
 		$ticket_reset_cycle.= makeoption($lng['admin']['tickets']['yearly'], '3', $settings['ticket']['reset_cycle'], true, true);
+
+		$loggingseverity = makeoption($lng['admin']['logger']['normal'], '1', $settings['logger']['severity'], true, true);
+		$loggingseverity.= makeoption($lng['admin']['logger']['paranoid'], '2', $settings['logger']['severity'], true, true);
+
 
 		// build the pathedit list
 
@@ -733,7 +835,12 @@ if(($page == 'settings' || $page == 'overview')
 		$ticket_worktime_sun = makeyesno('ticket_worktime_sun', '1', '0', $settings['ticket']['worktime_sun']);
 		$ticket_worktime_all = makeyesno('ticket_worktime_all', '1', '0', $settings['ticket']['worktime_all']);
 		$ticketsystemenabled = makeyesno('ticketsystemenabled', '1', '0', $settings['ticket']['enabled']);
+
 		$no_robots = makeyesno('panel_no_robots', '1', '0', $settings['panel']['no_robots']);
+
+		$loggingenabled = makeyesno('loggingenabled', '1', '0', $settings['logger']['enabled']);
+		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
+
 		$settings = htmlentities_array($settings);
 		eval("echo \"" . getTemplate("settings/settings") . "\";");
 	}
@@ -745,6 +852,7 @@ elseif($page == 'rebuildconfigs'
 	   && $_POST['send'] == 'send')
 	{
 		wasFormCompromised();
+		$log->logAction(ADM_ACTION, LOG_INFO, "rebuild configfiles");
 		inserttask('1');
 		inserttask('3');
 		inserttask('4');
@@ -767,6 +875,7 @@ elseif($page == 'updatecounters'
 	   && $_POST['send'] == 'send')
 	{
 		wasFormCompromised();
+		$log->logAction(ADM_ACTION, LOG_INFO, "updated resource-counters");
 		$updatecounters = updateCounters(true);
 		$customers = '';
 		foreach($updatecounters['customers'] as $customerid => $customer)
@@ -796,6 +905,7 @@ elseif($page == 'wipecleartextmailpws'
 	   && $_POST['send'] == 'send')
 	{
 		wasFormCompromised();
+		$log->logAction(ADM_ACTION, LOG_INFO, "wiped all cleartext mail passwords");
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `password`='' ");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='0' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
 		redirectTo('admin_settings.php', array(

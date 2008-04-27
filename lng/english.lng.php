@@ -741,4 +741,25 @@ $lng['traffic']['summail'] = 'Summation Mail-Traffic in';
 
 $lng['serversettings']['no_robots']['title'] = 'Allow searchengine-robots to index your SysCP';
 
+// ADDED IN 1.2.19-svn6
+
+$lng['admin']['loggersettings'] = 'Log settings';
+$lng['serversettings']['logger']['enable'] = 'Logging enabled/disabled';
+$lng['serversettings']['logger']['severity'] = 'Logging level';
+$lng['admin']['logger']['normal'] = 'normal';
+$lng['admin']['logger']['paranoid'] = 'paranoid';
+$lng['serversettings']['logger']['types'] = 'Log-type(s)';
+$lng['serversettings']['logger']['types_desc'] = 'Specify logtypes seperated by comma.<br />Available logtypes are: syslog, file, mysql';
+$lng['serversettings']['logger']['logfile'] = 'Logfile path including filename';
+$lng['error']['logerror'] = 'Log-Error: %s';
+$lng['serversettings']['logger']['logcron'] = 'Log cronjobs (one run)';
+$lng['question']['logger_reallytruncate'] = 'Do you really want to truncate the table "%s"?';
+$lng['admin']['loggersystem'] = 'System-logging';
+$lng['menue']['logger']['logger'] = 'System-logging';
+$lng['logger']['date'] = 'Date';
+$lng['logger']['type'] = 'Type';
+$lng['logger']['action'] = 'Action';
+$lng['logger']['user'] = 'User';
+$lng['logger']['truncate'] = 'Empty log';
+
 ?>

@@ -39,6 +39,7 @@ if($page == 'ipsandports'
 {
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_ipsandports");
 		$fields = array(
 			'ip' => $lng['admin']['ipsandports']['ip'],
 			'port' => $lng['admin']['ipsandports']['port']
@@ -96,6 +97,7 @@ if($page == 'ipsandports'
 							{
 								wasFormCompromised();
 								$db->query("DELETE FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$id . "'");
+								$log->logAction(ADM_ACTION, LOG_WARNING, "deleted IP/port '" . $result['ip'] . ":" . $result['port'] . "'");
 								inserttask('1');
 								inserttask('4');
 								redirectTo($filename, Array(
@@ -175,6 +177,7 @@ if($page == 'ipsandports'
 			else
 			{
 				$db->query("INSERT INTO `" . TABLE_PANEL_IPSANDPORTS . "` (`ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings`) VALUES ('" . $db->escape($ip) . "', '" . (int)$port . "', '" . (int)$vhostcontainer . "', '" . (int)$namevirtualhost_statement . "', '" . (int)$vhostcontainer . "', '" . (int)$vhostcontainer_servername_statement . "', '" . $db->escape($specialsettings) . "')");
+				$log->logAction(ADM_ACTION, LOG_WARNING, "added IP/port '" . $ip . ":" . $port . "'");
 				inserttask('1');
 				inserttask('4');
 				redirectTo($filename, Array(
@@ -250,6 +253,7 @@ if($page == 'ipsandports'
 				else
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_IPSANDPORTS . "` SET `ip`='" . $db->escape($ip) . "', `port`='" . (int)$port . "', `listen_statement`='" . (int)$listen_statement . "', `namevirtualhost_statement`='" . (int)$namevirtualhost_statement . "', `vhostcontainer`='" . (int)$vhostcontainer . "', `vhostcontainer_servername_statement`='" . (int)$vhostcontainer_servername_statement . "', `specialsettings`='" . $db->escape($specialsettings) . "' WHERE `id`='" . (int)$id . "'");
+					$log->logAction(ADM_ACTION, LOG_WARNING, "changed IP/port from '" . $result['ip'] . ":" . $result['port'] . "' to '" . $ip . ":" . $port . "'");
 					inserttask('1');
 					inserttask('4');
 					redirectTo($filename, Array(

@@ -37,6 +37,7 @@ if($page == 'admins'
 {
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_admins");
 		$fields = array(
 			'loginname' => $lng['login']['username'],
 			'name' => $lng['customer']['name'],
@@ -100,6 +101,7 @@ if($page == 'admins'
 			$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid`='" . (int)$userinfo['userid'] . "'");
 			$s = md5(uniqid(microtime(), 1));
 			$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . $db->escape($s) . "', '" . (int)$id . "', '" . $db->escape($result['ipaddress']) . "', '" . $db->escape($result['useragent']) . "', '" . time() . "', '" . $db->escape($result['language']) . "', '1')");
+			$log->logAction(ADM_ACTION, LOG_INFO, "switched adminuser and is now '" . $result['loginname'] . "'");
 			redirectTo('admin_index.php', Array(
 				's' => $s
 			));
@@ -132,6 +134,7 @@ if($page == 'admins'
 				$db->query("DELETE FROM `" . TABLE_PANEL_TRAFFIC_ADMINS . "` WHERE `adminid`='" . (int)$id . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `adminid` = '" . (int)$userinfo['userid'] . "' WHERE `adminid` = '" . (int)$id . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `adminid` = '" . (int)$userinfo['userid'] . "' WHERE `adminid` = '" . (int)$id . "'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "deleted admin '" . $result['loginname'] . "'");
 				updateCounters();
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -250,6 +253,7 @@ if($page == 'admins'
 				$result = $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `tickets`, `mysqls`)
 					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "')");
 				$adminid = $db->insert_id();
+				$log->logAction(ADM_ACTION, LOG_INFO, "added admin '" . $loginname . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -376,6 +380,7 @@ if($page == 'admins'
 					}
 
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', " . $updatepassword . " `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "edited admin '#" . $id . "'");
 					redirectTo($filename, Array(
 						'page' => $page,
 						's' => $s

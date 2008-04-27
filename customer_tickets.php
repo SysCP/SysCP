@@ -40,12 +40,14 @@ elseif(isset($_GET['id']))
 
 if($page == 'overview')
 {
+	$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_tickets");
 	eval("echo \"" . getTemplate("ticket/ticket") . "\";");
 }
 elseif($page == 'tickets')
 {
 	if($action == '')
 	{
+		$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_tickets::tickets");
 		$fields = array(
 			'status' => $lng['ticket']['status'],
 			'priority' => $lng['ticket']['priority'],
@@ -203,6 +205,7 @@ elseif($page == 'tickets')
 					$newticket->Set('lastreplier', '0', true, true);
 					$newticket->Set('by', '0', true, true);
 					$newticket->Insert();
+					$log->logAction(USR_ACTION, LOG_NOTICE, "opened support-ticket '" . $newticket->Get('subject') . "'");
 					$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '`
                           SET `tickets_used`=`tickets_used`+1 WHERE `customerid`="' . (int)$userinfo['customerid'] . '"');
 
@@ -312,6 +315,7 @@ elseif($page == 'tickets')
 				$mainticket->Set('lastreplier', '0');
 				$mainticket->Set('status', '2');
 				$mainticket->Update();
+				$log->logAction(USR_ACTION, LOG_NOTICE, "answered support-ticket '" . $mainticket->Get('subject') . "'");
 				$mainticket->sendMail(-1, 'new_reply_ticket_by_customer_subject', $lng['mails']['new_reply_ticket_by_customer']['subject'], 'new_reply_ticket_by_customer_mailbody', $lng['mails']['new_reply_ticket_by_customer']['mailbody']);
 				redirectTo($filename, Array(
 					'page' => $page,
@@ -396,6 +400,7 @@ elseif($page == 'tickets')
 			$mainticket->Set('lastreplier', '0', true, true);
 			$mainticket->Set('status', '3', true, true);
 			$mainticket->Update();
+			$log->logAction(USR_ACTION, LOG_NOTICE, "closed support-ticket '" . $mainticket->Get('subject') . "'");
 			redirectTo($filename, Array(
 				'page' => $page,
 				's' => $s
@@ -434,6 +439,7 @@ elseif($page == 'tickets')
 		$mainticket->Set('lastreplier', '0', true, true);
 		$mainticket->Set('status', '0', true, true);
 		$mainticket->Update();
+		$log->logAction(USR_ACTION, LOG_NOTICE, "reopened support-ticket '" . $mainticket->Get('subject') . "'");
 		redirectTo($filename, Array(
 			'page' => $page,
 			's' => $s

@@ -142,6 +142,21 @@ require ('./lib/class_paging.php');
 require ('./lib/class_ticket.php');
 
 /**
+ * Includes Logger-Classes
+ */
+
+require ('./lib/abstract/abstract_class_logger.php');
+require ('./lib/class_syslogger.php');
+require ('./lib/class_filelogger.php');
+require ('./lib/class_mysqllogger.php');
+
+/**
+ * Includes the SyscpLogger class
+ */
+
+require ('./lib/class_syscplogger.php');
+
+/**
  * Reverse magic_quotes_gpc=on to have clean GPC data again
  */
 
@@ -357,6 +372,12 @@ if(isset($userinfo['loginname'])
    && $userinfo['loginname'] != '')
 {
 	$lng['menue']['main']['username'].= $userinfo['loginname'];
+
+	/**
+	 * Initialize logging
+	 */
+
+	$log = SysCPLogger::getInstanceOf($userinfo, $db, $settings);
 }
 
 /**

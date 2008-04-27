@@ -34,12 +34,14 @@ elseif(isset($_GET['id']))
 
 if($page == 'overview')
 {
+	$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_email");
 	eval("echo \"" . getTemplate("email/email") . "\";");
 }
 elseif($page == 'emails')
 {
 	if($action == '')
 	{
+		$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_email::emails");
 		$fields = array(
 			'd.domain' => $lng['domains']['domainname'],
 			'm.email_full' => $lng['emails']['emailaddress'],
@@ -162,6 +164,7 @@ elseif($page == 'emails')
 						$db->query("DELETE FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$result['popaccountid'] . "'");
 						$update_users_query_addon = " , `email_accounts_used` = `email_accounts_used` - 1 ";
 						$number_forwarders-= 1;
+						$log->logAction(USR_ACTION, LOG_NOTICE, "deleted forwarder for email address '" . $result['email'] . "'");
 					}
 				}
 				else
@@ -171,6 +174,7 @@ elseif($page == 'emails')
 
 				$db->query("DELETE FROM `" . TABLE_MAIL_VIRTUAL . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `emails_used`=`emails_used` - 1 , `email_forwarders_used` = `email_forwarders_used` - " . (int)$number_forwarders . " $update_users_query_addon WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+				$log->logAction(USR_ACTION, LOG_INFO, "deleted email address '" . $result['email'] . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -251,6 +255,7 @@ elseif($page == 'emails')
 					$db->query("INSERT INTO `" . TABLE_MAIL_VIRTUAL . "` (`customerid`, `email`, `email_full`, `iscatchall`, `domainid`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($email) . "', '" . $db->escape($email_full) . "', '" . $db->escape($iscatchall) . "', '" . (int)$domain_check['id'] . "')");
 					$address_id = $db->insert_id();
 					$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS . " SET `emails_used` = `emails_used` + 1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+					$log->logAction(USR_ACTION, LOG_INFO, "added email address '" . $email_full . "'");
 					redirectTo($filename, Array(
 						'page' => $page,
 						'action' => 'edit',
@@ -339,6 +344,7 @@ elseif($page == 'emails')
 				else
 				{
 					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `email` = '$email' , `iscatchall` = '1' WHERE `customerid`='" . $userinfo['customerid'] . "' AND `id`='" . $result['id'] . "'");
+					$log->logAction(USR_ACTION, LOG_INFO, "edited email address '" . $email . "'");
 				}
 			}
 
@@ -401,6 +407,7 @@ elseif($page == 'accounts')
 						$result['destination'].= ' ' . $email_full;
 						$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "', `popaccountid` = '" . (int)$popaccountid . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 						$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_accounts_used`=`email_accounts_used`+1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+						$log->logAction(USR_ACTION, LOG_INFO, "added email account for '" . $email_full . "'");
 						$replace_arr = array(
 							'EMAIL' => $email_full,
 							'USERNAME' => $username,
@@ -468,6 +475,7 @@ elseif($page == 'accounts')
 				}
 				else
 				{
+					$log->logAction(USR_ACTION, LOG_NOTICE, "changed email password for '" . $result['email_full'] . "'");
 					$result = $db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET " . ($settings['system']['mailpwcleartext'] == '1' ? "`password` = '" . $db->escape($password) . "', " : '') . " `password_enc`=ENCRYPT('" . $db->escape($password) . "') WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$result['popaccountid'] . "'");
 					redirectTo($filename, Array(
 						'page' => 'emails',
@@ -501,6 +509,7 @@ elseif($page == 'accounts')
 				$result['destination'] = str_replace($result['email_full'], '', $result['destination']);
 				$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "', `popaccountid` = '0' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_accounts_used` = `email_accounts_used` - 1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+				$log->logAction(USR_ACTION, LOG_INFO, "deleted email account for '" . $result['email_full'] . "'");
 				redirectTo($filename, Array(
 					'page' => 'emails',
 					'action' => 'edit',
@@ -560,6 +569,7 @@ elseif($page == 'forwarders')
 						$result['destination'].= ' ' . $destination;
 						$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 						$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_forwarders_used` = `email_forwarders_used` + 1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+						$log->logAction(USR_ACTION, LOG_NOTICE, "added email forwarder for '" . $result['email_full'] . "'");
 						redirectTo($filename, Array(
 							'page' => 'emails',
 							'action' => 'edit',
@@ -620,6 +630,7 @@ elseif($page == 'forwarders')
 					$result['destination'] = str_replace($forwarder, '', $result['destination']);
 					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_forwarders_used` = `email_forwarders_used` - 1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+					$log->logAction(USR_ACTION, LOG_NOTICE, "deleted email forwarder for '" . $result['email_full'] . "'");
 					redirectTo($filename, Array(
 						'page' => 'emails',
 						'action' => 'edit',

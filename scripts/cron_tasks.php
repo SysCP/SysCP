@@ -34,6 +34,7 @@ include (dirname(__FILE__) . '/../lib/cron_init.php');
  */
 
 fwrite($debugHandler, '  cron_tasks: Searching for tasks to do' . "\n");
+$cronlog->logAction(CRON_ACTION, LOG_INFO, "Searching for tasks to do");
 $result_tasks = $db->query("SELECT `id`, `type`, `data` FROM `" . TABLE_PANEL_TASKS . "` ORDER BY `id` ASC");
 $resultIDs = array();
 
@@ -53,12 +54,14 @@ while($row = $db->fetch_array($result_tasks))
 	if($row['type'] == '1')
 	{
 		fwrite($debugHandler, '  cron_tasks: Task1 started - ' . $settings['system']['apacheconf_vhost'] . ' rebuild' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, "Task1 started - " . $settings['system']['apacheconf_vhost'] . " rebuild");
 		$vhosts_file = '';
 
 		if(isConfigDir($settings['system']['apacheconf_vhost'])
 		   && !file_exists($settings['system']['apacheconf_vhost']))
 		{
 			safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
 		}
 
 		$known_vhost_filenames = array();
@@ -69,11 +72,13 @@ while($row = $db->fetch_array($result_tasks))
 			if($row_ipsandports['listen_statement'] == '1')
 			{
 				$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted listen-statement');
 			}
 
 			if($row_ipsandports['namevirtualhost_statement'] == '1')
 			{
 				$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted namevirtualhost-statement');
 			}
 
 			if($row_ipsandports['vhostcontainer'] == '1')
@@ -91,6 +96,7 @@ while($row = $db->fetch_array($result_tasks))
 				}
 
 				$vhosts_file.= '</VirtualHost>' . "\n";
+				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted vhostcontainer');
 			}
 
 			if(isConfigDir($settings['system']['apacheconf_vhost']))
@@ -124,6 +130,7 @@ while($row = $db->fetch_array($result_tasks))
 		{
 			fwrite($debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
 			$vhosts_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
+			$cronlog->logAction(CRON_ACTION, LOG_INFO, 'creating vhostcontainer for domain #' . $domain['id'] . ', Customer ' . $domain['loginname']);
 
 			if($domain['deactivated'] != '1'
 			   || $settings['system']['deactivateddocroot'] != '')
@@ -346,6 +353,7 @@ while($row = $db->fetch_array($result_tasks))
 			}
 		}
 
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'reloading apache');
 		safe_exec($settings['system']['apachereload_command']);
 		fwrite($debugHandler, '   cron_tasks: Task1 - Apache reloaded' . "\n");
 	}
@@ -356,13 +364,19 @@ while($row = $db->fetch_array($result_tasks))
 	elseif ($row['type'] == '2')
 	{
 		fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
 
 		if(is_array($row['data']))
 		{
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/webalizer'));
 			safe_exec('mkdir -p ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/webalizer'));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
 			safe_exec('mkdir -p ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: cp -a ' . $pathtophpfiles . '/templates/misc/standardcustomer/* ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/'));
 			safe_exec('cp -a ' . $pathtophpfiles . '/templates/misc/standardcustomer/* ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/'));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname']));
 			safe_exec('chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname']));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
 			safe_exec('chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
 		}
 	}
@@ -373,11 +387,13 @@ while($row = $db->fetch_array($result_tasks))
 	elseif ($row['type'] == '3')
 	{
 		fwrite($debugHandler, '  cron_tasks: Task3 started - create/change/del htaccess/htpasswd' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task3 started - create/change/del htaccess/htpasswd');
 		$diroptions_file = '';
 
 		if(isConfigDir($settings['system']['apacheconf_diroptions'])
 		   && !file_exists($settings['system']['apacheconf_diroptions']))
 		{
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_diroptions'])));
 			safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_diroptions'])));
 		}
 
@@ -392,6 +408,7 @@ while($row = $db->fetch_array($result_tasks))
 		{
 			fwrite($debugHandler, '  cron_tasks: WARNING!!! ' . $settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!' . "\n");
 			echo 'WARNING!!! ' . $settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!';
+			$cronlog->logAction(CRON_ACTION, LOG_WARNING, 'WARNING!!! ' . $settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!');
 		}
 
 		$result = $db->query('SELECT `htac`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_PANEL_HTACCESS . '` `htac` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ORDER BY `htac`.`path`');
@@ -559,12 +576,14 @@ while($row = $db->fetch_array($result_tasks))
 					   && preg_match('/^40_syscp_diroption_(.+)\.conf$/', $diroptions_filename)
 					   && file_exists(makeCorrectFile($settings['system']['apacheconf_diroptions'] . '/' . $diroptions_filename)))
 					{
+						$cronlog->logAction(CRON_ACTION, LOG_WARNING, 'Deleting ' . makeCorrectFile($settings['system']['apacheconf_diroptions'] . '/' . $diroptions_filename));
 						unlink(makeCorrectFile($settings['system']['apacheconf_diroptions'] . '/' . $diroptions_filename));
 					}
 				}
 			}
 		}
 
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Reloading apache');
 		safe_exec($settings['system']['apachereload_command']);
 		$htpasswd_dir = makeCorrectDir($settings['system']['apacheconf_htpasswddir']);
 
@@ -580,6 +599,7 @@ while($row = $db->fetch_array($result_tasks))
 				   && !in_array($htpasswd_filename, $known_htpasswd_files)
 				   && file_exists(makeCorrectFile($settings['system']['apacheconf_htpasswddir'] . '/' . $htpasswd_filename)))
 				{
+					$cronlog->logAction(CRON_ACTION, LOG_WARNING, 'Deleting ' . makeCorrectFile($settings['system']['apacheconf_htpasswddir'] . '/' . $htpasswd_filename));
 					unlink(makeCorrectFile($settings['system']['apacheconf_htpasswddir'] . '/' . $htpasswd_filename));
 				}
 			}
@@ -592,9 +612,11 @@ while($row = $db->fetch_array($result_tasks))
 	elseif ($row['type'] == '4')
 	{
 		fwrite($debugHandler, '  cron_tasks: Task4 started - Rebuilding syscp_bind.conf' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task4 started - Rebuilding syscp_bind.conf');
 
 		if(!file_exists($settings['system']['bindconf_directory'] . 'domains/'))
 		{
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/')));
 			safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/')));
 		}
 
@@ -629,6 +651,7 @@ while($row = $db->fetch_array($result_tasks))
 		while($domain = $db->fetch_array($result_domains))
 		{
 			fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+			$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Writing ' . $domain['id'] . '::' . $domain['domain']);
 
 			if($domain['zonefile'] == '')
 			{
@@ -741,10 +764,12 @@ while($row = $db->fetch_array($result_tasks))
 			fwrite($bindconf_file_handler, $bindconf_file);
 			fclose($bindconf_file_handler);
 			fwrite($debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
+			$cronlog->logAction(CRON_ACTION, LOG_INFO, 'syscp_bind.conf written');
 		}
 
 		safe_exec($settings['system']['bindreload_command']);
 		fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Bind9 reloaded');
 		$domains_dir = makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/');
 
 		if(file_exists($domains_dir)
@@ -760,6 +785,7 @@ while($row = $db->fetch_array($result_tasks))
 				   && file_exists(makeCorrectFile($domains_dir . '/' . $domain_filename)))
 				{
 					fwrite($debugHandler, '  cron_tasks: Task4 - unlinking ' . $domain_filename . "\n");
+					$cronlog->logAction(CRON_ACTION, LOG_WARNING, 'Deleting ' . $domain_filename);
 					unlink(makeCorrectFile($domains_dir . '/' . $domain_filename));
 				}
 			}
@@ -771,6 +797,7 @@ while($row = $db->fetch_array($result_tasks))
 	 */
 	elseif ($row['type'] == '5')
 	{
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Creating new FTP-home');
 		$result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_FTP_USERS . '` `f` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ');
 
 		while($directory = $db->fetch_array($result_directories))

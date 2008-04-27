@@ -1372,4 +1372,30 @@ if($settings['panel']['version'] == '1.2.19-svn4')
 	$settings['panel']['version'] = '1.2.19-svn4.5';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn4.5')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'enabled\', \'1\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'log_cron\', \'0\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'logfile\', \'\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'logtypes\', \'syslog\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'severity\', \'2\');');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'admin\', `parent_url`=\'\', `lang`=\'admin;loggersystem\', `url`=\'admin_loggersystem.nourl\', `order`=\'60\';');
+	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'admin\', `parent_url`=\'admin_loggersystem.nourl\', `lang`=\'menue;logger;logger\', `url`=\'admin_logger.php?page=log\', `order`=\'10\';');
+	$db->query('CREATE TABLE IF NOT EXISTS `panel_syslog` (
+	  `logid` bigint(20) NOT NULL auto_increment,
+	  `action` int(5) NOT NULL default \'10\',
+	  `type` int(5) NOT NULL default \'0\',
+	  `date` int(15) NOT NULL,
+	  `user` varchar(50) NOT NULL,
+	  `text` text NOT NULL,
+	  PRIMARY KEY  (`logid`)
+	  ) ENGINE=MyISAM;');
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn6\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn6';
+}
+
 ?>

@@ -34,12 +34,14 @@ elseif(isset($_GET['id']))
 
 if($page == 'overview')
 {
+	$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_ftp");
 	eval("echo \"" . getTemplate("ftp/ftp") . "\";");
 }
 elseif($page == 'accounts')
 {
 	if($action == '')
 	{
+		$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_ftp::accounts");
 		$fields = array(
 			'username' => $lng['login']['username'],
 			'homedir' => $lng['panel']['path']
@@ -93,6 +95,7 @@ elseif($page == 'accounts')
 				wasFormCompromised();
 				$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `up_count`=`up_count`+'" . (int)$result['up_count'] . "', `up_bytes`=`up_bytes`+'" . (int)$result['up_bytes'] . "', `down_count`=`down_count`+'" . (int)$result['down_count'] . "', `down_bytes`=`down_bytes`+'" . (int)$result['down_bytes'] . "' WHERE `username`='" . $db->escape($userinfo['loginname']) . "'");
 				$db->query("DELETE FROM `" . TABLE_FTP_USERS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+				$log->logAction(USR_ACTION, LOG_INFO, "deleted ftp-account '" . $result['username'] . "'");
 				$db->query("UPDATE `" . TABLE_FTP_GROUPS . "` SET `members`=REPLACE(`members`,'," . $db->escape($result['username']) . "','') WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
 
 				//					$db->query("DELETE FROM `".TABLE_FTP_GROUPS."` WHERE `customerid`='".$userinfo['customerid']."' AND `id`='$id'");
@@ -198,6 +201,7 @@ elseif($page == 'accounts')
 
 					//						$db->query("UPDATE `".TABLE_PANEL_SETTINGS."` SET `value`='$uid' WHERE settinggroup='ftp' AND varname='lastguid'");
 
+					$log->logAction(USR_ACTION, LOG_INFO, "added ftp-account '" . $username . " (" . $path . ")'");
 					inserttask(5);
 					redirectTo($filename, Array(
 						'page' => $page,
@@ -248,6 +252,7 @@ elseif($page == 'accounts')
 				else
 				{
 					$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `password`=ENCRYPT('" . $db->escape($password) . "') WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+					$log->logAction(USR_ACTION, LOG_INFO, "edited ftp-account '" . $result['username'] . "'");
 					redirectTo($filename, Array(
 						'page' => $page,
 						's' => $s

@@ -25,6 +25,7 @@ require ("./lib/init.php");
 
 if($action == 'logout')
 {
+	$log->logAction(ADM_ACTION, LOG_NOTICE, "logged out");
 	$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['adminid'] . "' AND `adminsession` = '1'");
 	redirectTo('index.php');
 	exit;
@@ -41,6 +42,7 @@ elseif(isset($_GET['id']))
 
 if($page == 'overview')
 {
+	$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_index");
 	$overview = $db->query_first("SELECT COUNT(*) AS `number_customers`,
 				SUM(`diskspace_used`) AS `diskspace_used`,
 				SUM(`mysqls_used`) AS `mysqls_used`,
@@ -169,6 +171,7 @@ elseif($page == 'change_password')
 		else
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($new_password) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `password`='" . md5($old_password) . "'");
+			$log->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her password from '" . $old_password . "' to '" . $new_password . "'");
 			redirectTo($filename, Array(
 				's' => $s
 			));
@@ -193,6 +196,7 @@ elseif($page == 'change_language')
 			$db->query("UPDATE `" . TABLE_PANEL_SESSIONS . "` SET `language`='" . $db->escape($def_language) . "' WHERE `hash`='" . $db->escape($s) . "'");
 		}
 
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her default language to '" . $def_language . "'");
 		redirectTo($filename, Array(
 			's' => $s
 		));
