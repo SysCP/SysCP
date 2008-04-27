@@ -37,6 +37,7 @@ define('TABLE_PANEL_CRONSCRIPT', 'panel_cronscript');
 define('TABLE_PANEL_IPSANDPORTS', 'panel_ipsandports');
 define('TABLE_PANEL_TICKETS', 'panel_tickets');
 define('TABLE_PANEL_TICKET_CATS', 'panel_ticket_categories');
-$version = '1.2.19-svn4.5';
+define('TABLE_PANEL_LOG', 'panel_syslog');
+$version = '1.2.19-svn6';
 
 ?>

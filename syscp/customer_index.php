@@ -25,6 +25,7 @@ require ("./lib/init.php");
 
 if($action == 'logout')
 {
+	$log->logAction(USR_ACTION, LOG_NOTICE, "logged out");
 	$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['customerid'] . "' AND `adminsession` = '0'");
 	redirectTo('index.php');
 	exit;
@@ -32,6 +33,7 @@ if($action == 'logout')
 
 if($page == 'overview')
 {
+	$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_index");
 	$domains = '';
 	$result = $db->query("SELECT `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `id` <> '" . (int)$userinfo['standardsubdomain'] . "' ");
 	$domainArray = array();
@@ -118,11 +120,13 @@ elseif($page == 'change_password')
 		else
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($new_password) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `password`='" . md5($old_password) . "'");
+			$log->logAction(USR_ACTION, LOG_NOTICE, "changed his password from '" . $old_password . "' to '" . $new_password . "'");
 
 			if(isset($_POST['change_main_ftp'])
 			   && $_POST['change_main_ftp'] == 'true')
 			{
 				$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `password`=ENCRYPT('" . $db->escape($new_password) . "') WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `username`='" . $db->escape($userinfo['loginname']) . "'");
+				$log->logAction(USR_ACTION, LOG_NOTICE, "changed main ftp password (" . $userinfo['loginname'] . ") to '" . $new_password . "'");
 			}
 
 			if(isset($_POST['change_webalizer'])
@@ -163,6 +167,7 @@ elseif($page == 'change_language')
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `def_language`='" . $db->escape($def_language) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
 			$db->query("UPDATE `" . TABLE_PANEL_SESSIONS . "` SET `language`='" . $db->escape($def_language) . "' WHERE `hash`='" . $db->escape($s) . "'");
+			$log->logAction(USR_ACTION, LOG_NOTICE, "changed default language to '" . $def_language . "'");
 		}
 
 		redirectTo($filename, Array(

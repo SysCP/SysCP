@@ -34,6 +34,7 @@ elseif(isset($_GET['id']))
 
 if($page == 'overview')
 {
+	$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_mysql");
 	$lng['mysql']['description'] = str_replace('<SQL_HOST>', $sql['host'], $lng['mysql']['description']);
 	eval("echo \"" . getTemplate("mysql/mysql") . "\";");
 }
@@ -41,6 +42,7 @@ elseif($page == 'mysqls')
 {
 	if($action == '')
 	{
+		$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_mysql::mysqls");
 		$fields = array(
 			'databasename' => $lng['mysql']['databasename'],
 			'description' => $lng['mysql']['databasedescription']
@@ -155,10 +157,12 @@ elseif($page == 'mysqls')
 					$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 					unset($db_root->password);
 					$db_root->query('CREATE DATABASE `' . $db_root->escape($username) . '`');
+					$log->logAction(USR_ACTION, LOG_INFO, "created database '" . $username . "'");
 					foreach(array_map('trim', explode(',', $settings['system']['mysql_access_host'])) as $mysql_access_host)
 					{
 						$db_root->query('GRANT ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '`.* TO `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` IDENTIFIED BY \'password\'');
 						$db_root->query('SET PASSWORD FOR `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` = PASSWORD(\'' . $db_root->escape($password) . '\')');
+						$log->logAction(USR_ACTION, LOG_NOTICE, "grant all privileges for '" . $username . "'@'" . $mysql_access_host . "'");
 					}
 
 					$db_root->query('FLUSH PRIVILEGES');
@@ -218,6 +222,7 @@ elseif($page == 'mysqls')
 
 				// Update the Database description -- PH 2004-11-29
 
+				$log->logAction(USR_ACTION, LOG_INFO, "edited database '" . $result['databasename'] . "'");
 				$databasedescription = validate($_POST['description'], 'description');
 				$result = $db->query('UPDATE `' . TABLE_PANEL_DATABASES . '` SET `description`="' . $db->escape($databasedescription) . '" WHERE `customerid`="' . (int)$userinfo['customerid'] . '" AND `id`="' . (int)$id . '"');
 				redirectTo($filename, Array(

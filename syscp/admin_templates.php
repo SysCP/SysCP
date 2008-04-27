@@ -110,6 +110,7 @@ if($page == 'email')
 			{
 				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_TEMPLATES . "` WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND (`id`='" . (int)$subjectid . "' OR `id`='" . (int)$mailbodyid . "')");
+				$log->logAction(ADM_ACTION, LOG_INFO, "deleted template '" . $result['language'] . ' - ' . $lng['admin']['templates'][str_replace('_subject', '', $result['varname'])] . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -194,6 +195,7 @@ if($page == 'email')
 					                   VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($language) . "', 'mails', '" . $db->escape($template) . "_subject','" . $db->escape($subject) . "')");
 				$result = $db->query("INSERT INTO `" . TABLE_PANEL_TEMPLATES . "` (`adminid`, `language`, `templategroup`, `varname`, `value`)
 					                   VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($language) . "', 'mails', '" . $db->escape($template) . "_mailbody','" . $db->escape($mailbody) . "')");
+				$log->logAction(ADM_ACTION, LOG_INFO, "added template '" . $language . ' - ' . $template . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -247,6 +249,7 @@ if($page == 'email')
 				$mailbody = validate($_POST['mailbody'], 'mailbody', '/^[^\0]+$/', 'nomailbodycreate');
 				$db->query("UPDATE `" . TABLE_PANEL_TEMPLATES . "` SET `value`='" . $db->escape($subject) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `id`='" . (int)$subjectid . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_TEMPLATES . "` SET `value`='" . $db->escape($mailbody) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `id`='" . (int)$mailbodyid . "'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "edited template '" . $result['varname'] . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s

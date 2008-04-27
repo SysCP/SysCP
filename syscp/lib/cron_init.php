@@ -220,3 +220,25 @@ while(false !== ($checkfile = readdir($crondir)))
 closedir($crondir);
 unset($completeName, $crondir, $cronname, $cronscriptFullName, $cron_filename, $cronbasedir);
 fwrite($debugHandler, 'Functions have been included' . "\n");
+
+/**
+ * Includes Logger-Classes
+ */
+
+require ($pathtophpfiles . '/lib/abstract/abstract_class_logger.php');
+require ($pathtophpfiles . '/lib/class_syslogger.php');
+require ($pathtophpfiles . '/lib/class_filelogger.php');
+require ($pathtophpfiles . '/lib/class_mysqllogger.php');
+
+/**
+ * Includes the SyscpLogger class
+ */
+
+require ($pathtophpfiles . '/lib/class_syscplogger.php');
+
+/**
+ * Initialize logging
+ */
+
+$cronlog = SysCPLogger::getInstanceOf(null, $db, $settings);
+fwrite($debugHandler, 'Logger has been included' . "\n");

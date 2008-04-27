@@ -746,4 +746,25 @@ $lng['traffic']['summail'] = 'Summe Mail-Traffic in';
 
 $lng['serversettings']['no_robots']['title'] = 'Erlaube die Indizierung deines SysCP durch Suchmaschinen';
 
+// ADDED IN 1.2.19-svn6
+
+$lng['admin']['loggersettings'] = 'Log Einstellungen';
+$lng['serversettings']['logger']['enable'] = 'Logging ja/nein';
+$lng['serversettings']['logger']['severity'] = 'Logging Level';
+$lng['admin']['logger']['normal'] = 'Normal';
+$lng['admin']['logger']['paranoid'] = 'Paranoid';
+$lng['serversettings']['logger']['types'] = 'Log-Art(en)';
+$lng['serversettings']['logger']['types_desc'] = 'Tragen Sie hier die gew&uuml;nschten Logtypen kommagetrennt ein.<br />M&ouml;gliche Logtypen sind: syslog, file, mysql';
+$lng['serversettings']['logger']['logfile'] = 'Log-Datei Pfad inklusive Dateinamen';
+$lng['error']['logerror'] = 'Log-Fehler: %s';
+$lng['serversettings']['logger']['logcron'] = 'Log Cronjobs (einen Durchgang)';
+$lng['question']['logger_reallytruncate'] = 'Wollen Sie die Tabelle "%s" wirklich leeren?';
+$lng['admin']['loggersystem'] = 'System-Logging';
+$lng['menue']['logger']['logger'] = 'System-Logging';
+$lng['logger']['date'] = 'Datum';
+$lng['logger']['type'] = 'Typ';
+$lng['logger']['action'] = 'Aktion';
+$lng['logger']['user'] = 'Benutzer';
+$lng['logger']['truncate'] = 'Log leeren';
+
 ?>

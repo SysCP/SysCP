@@ -43,6 +43,7 @@ if($page == 'tickets'
 {
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_tickets");
 		$fields = array(
 			'status' => $lng['ticket']['status'],
 			'priority' => $lng['ticket']['priority'],
@@ -190,6 +191,7 @@ if($page == 'tickets'
 					$newticket->Set('by', '1', true, true);
 					$newticket->Insert();
 					$newticket->sendMail((int)$newticket->Get('customer'), 'new_ticket_by_staff_subject', $lng['mails']['new_ticket_by_staff']['subject'], 'new_ticket_by_staff_mailbody', $lng['mails']['new_ticket_by_staff']['mailbody']);
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "opened a new ticket for customer #" . $newticket->Get('customer') . " - '" . $newticket->Get('subject') . "'");
 					redirectTo($filename, Array(
 						'page' => $page,
 						's' => $s
@@ -293,6 +295,7 @@ if($page == 'tickets'
 				$mainticket->Set('status', '1');
 				$mainticket->Update();
 				$mainticket->sendMail((int)$mainticket->Get('customer'), 'new_reply_ticket_by_staff_subject', $lng['mails']['new_reply_ticket_by_staff']['subject'], 'new_reply_ticket_by_staff_mailbody', $lng['mails']['new_reply_ticket_by_staff']['mailbody']);
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "answered ticket '" . $mainticket->Get('subject') . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -376,6 +379,7 @@ if($page == 'tickets'
 			$mainticket->Set('lastreplier', '1', true, true);
 			$mainticket->Set('status', '3', true, true);
 			$mainticket->Update();
+			$log->logAction(ADM_ACTION, LOG_NOTICE, "closed ticket '" . $mainticket->Get('subject') . "'");
 			redirectTo($filename, Array(
 				'page' => $page,
 				's' => $s
@@ -400,6 +404,7 @@ if($page == 'tickets'
 		$mainticket->Set('lastreplier', '1', true, true);
 		$mainticket->Set('status', '0', true, true);
 		$mainticket->Update();
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "reopened ticket '" . $mainticket->Get('subject') . "'");
 		redirectTo($filename, Array(
 			'page' => $page,
 			's' => $s
@@ -419,6 +424,7 @@ if($page == 'tickets'
 			$mainticket->Set('status', '3', true, true);
 			$mainticket->Update();
 			$mainticket->Archive();
+			$log->logAction(ADM_ACTION, LOG_NOTICE, "archived ticket '" . $mainticket->Get('subject') . "'");
 			redirectTo($filename, Array(
 				'page' => $page,
 				's' => $s
@@ -442,6 +448,7 @@ if($page == 'tickets'
 		{
 			wasFormCompromised();
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
+			$log->logAction(ADM_ACTION, LOG_INFO, "deleted ticket '" . $mainticket->Get('subject') . "'");
 			$mainticket->Delete();
 			redirectTo($filename, Array(
 				'page' => $page,
@@ -464,6 +471,7 @@ elseif($page == 'categories'
 {
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_tickets::categories");
 		$fields = array(
 			'name' => $lng['ticket']['category'],
 			'ticketcount' => $lng['ticket']['ticketcount']
@@ -524,6 +532,7 @@ elseif($page == 'categories'
 			else
 			{
 				ticket::addCategory($db, $category, $userinfo['adminid']);
+				$log->logAction(ADM_ACTION, LOG_INFO, "added ticket-category '" . $category . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -554,6 +563,7 @@ elseif($page == 'categories'
 			else
 			{
 				ticket::editCategory($db, $category, $id);
+				$log->logAction(ADM_ACTION, LOG_INFO, "edited ticket-category '" . $category . "'");
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -579,6 +589,7 @@ elseif($page == 'categories'
 				standard_error('categoryhastickets');
 			}
 
+			$log->logAction(ADM_ACTION, LOG_INFO, "deleted ticket-category #" . $id);
 			redirectTo($filename, Array(
 				'page' => $page,
 				's' => $s
@@ -600,6 +611,8 @@ elseif($page == 'archive'
 {
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_tickets::archive");
+
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
@@ -783,6 +796,7 @@ elseif($page == 'archive'
 	elseif($action == 'view'
 	       && $id != 0)
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed archived-ticket #" . $id);
 		$ticket_replies = '';
 		$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 		$lastchange = date("d.m.Y H:i\h", $mainticket->Get('lastchange'));
@@ -843,6 +857,7 @@ elseif($page == 'archive'
 		{
 			wasFormCompromised();
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
+			$log->logAction(ADM_ACTION, LOG_INFO, "deleted archived ticket '" . $mainticket->Get('subject') . "'");
 			$mainticket->Delete();
 			redirectTo($filename, Array(
 				'page' => $page,
