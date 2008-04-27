@@ -23,6 +23,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap">{$natsorting}</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['no_robots']['title']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap">{$no_robots}</td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['paging']['title']}:</b><br />{$lng['serversettings']['paging']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_paging" value="{$settings['panel']['paging']}" /></td>
 			</tr>
