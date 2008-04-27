@@ -1360,4 +1360,16 @@ if($settings['panel']['version'] == '1.2.19-svn3')
 	$settings['panel']['version'] = '1.2.19-svn4';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn4')
+{
+	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'panel\', \'no_robots\', \'1\')');
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn4.5\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn4.5';
+}
+
 ?>

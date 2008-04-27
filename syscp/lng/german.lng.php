@@ -742,4 +742,8 @@ $lng['traffic']['sumhttp'] = 'Summe HTTP-Traffic in';
 $lng['traffic']['sumftp'] = 'Summe FTP-Traffic in';
 $lng['traffic']['summail'] = 'Summe Mail-Traffic in';
 
+// ADDED IN 1.2.19-svn4.5
+
+$lng['serversettings']['no_robots']['title'] = 'Erlaube die Indizierung deines SysCP durch Suchmaschinen';
+
 ?>

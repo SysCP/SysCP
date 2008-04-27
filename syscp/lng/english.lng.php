@@ -737,4 +737,8 @@ $lng['traffic']['sumhttp'] = 'Summation HTTP-Traffic in';
 $lng['traffic']['sumftp'] = 'Summation FTP-Traffic in';
 $lng['traffic']['summail'] = 'Summation Mail-Traffic in';
 
+// ADDED IN 1.2.19-svn4.5
+
+$lng['serversettings']['no_robots']['title'] = 'Allow searchengine-robots to index your SysCP';
+
 ?>

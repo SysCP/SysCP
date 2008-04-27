@@ -396,6 +396,13 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='natsorting'");
 		}
 
+		if($_POST['panel_no_robots'] != $settings['panel']['no_robots'])
+		{
+			$value = ($_POST['panel_no_robots'] == '1' ? '1' : '0');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='no_robots'");
+			$settings['panel']['no_robots'] = $value;
+		}
+
 		if($_POST['panel_standardlanguage'] != $settings['panel']['standardlanguage'])
 		{
 			$value = $_POST['panel_standardlanguage'];
@@ -726,6 +733,7 @@ if(($page == 'settings' || $page == 'overview')
 		$ticket_worktime_sun = makeyesno('ticket_worktime_sun', '1', '0', $settings['ticket']['worktime_sun']);
 		$ticket_worktime_all = makeyesno('ticket_worktime_all', '1', '0', $settings['ticket']['worktime_all']);
 		$ticketsystemenabled = makeyesno('ticketsystemenabled', '1', '0', $settings['ticket']['enabled']);
+		$no_robots = makeyesno('panel_no_robots', '1', '0', $settings['panel']['no_robots']);
 		$settings = htmlentities_array($settings);
 		eval("echo \"" . getTemplate("settings/settings") . "\";");
 	}

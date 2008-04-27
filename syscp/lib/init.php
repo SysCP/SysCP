@@ -364,7 +364,16 @@ if(isset($userinfo['loginname'])
  */
 
 $navigation = getNavigation($s, $userinfo);
-eval("\$header = \"" . getTemplate('header', '1') . "\";");
+
+if($settings['panel']['no_robots'] != '0')
+{
+	eval("\$header = \"" . getTemplate('header', '1') . "\";");
+}
+else
+{
+	eval("\$header = \"" . getTemplate('header_no_robots', '1') . "\";");
+}
+
 eval("\$footer = \"" . getTemplate('footer', '1') . "\";");
 
 if(isset($_POST['action']))
