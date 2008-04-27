@@ -1390,6 +1390,7 @@ if($settings['panel']['version'] == '1.2.19-svn4.5')
 	  `text` text NOT NULL,
 	  PRIMARY KEY  (`logid`)
 	  ) ENGINE=MyISAM;');
+
 	// set new version
 
 	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn6\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
