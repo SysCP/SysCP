@@ -232,7 +232,7 @@ if($page == 'domains'
 					$documentroot = makeCorrectDir($documentroot);
 				}
 
-				$domain_check = $db->query_first("SELECT `id`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain` = '" . $db->escape($domain) . "'");
+				$domain_check = $db->query_first("SELECT `id`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain` = '" . $db->escape(strtolower($domain)) . "'");
 				$aliasdomain_check = array(
 					'id' => 0
 				);
@@ -304,7 +304,7 @@ if($page == 'domains'
 				{
 					standard_error('adduserfirst');
 				}
-				elseif($domain_check['domain'] == $domain)
+				elseif(strtolower($domain_check['domain']) == strtolower($domain))
 				{
 					standard_error('domainalreadyexists', $idna_convert->decode($domain));
 				}
