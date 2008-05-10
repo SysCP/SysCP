@@ -768,4 +768,15 @@ $lng['logger']['action'] = 'Aktion';
 $lng['logger']['user'] = 'Benutzer';
 $lng['logger']['truncate'] = 'Log leeren';
 
+// ADDED IN 1.2.19-svn7
+
+$lng['serversettings']['ssl']['use_ssl'] = 'SSL nutzen?';
+$lng['serversettings']['ssl']['ssl_cert_file'] = 'Pfad zum Zertifikat?';
+$lng['serversettings']['ssl']['openssl_cnf'] = 'Standardwerte zum Erstellen eines Zertifikats';
+$lng['panel']['reseller'] = 'reseller';
+$lng['panel']['admin'] = 'admin';
+$lng['panel']['customer'] = 'customer';
+$lng['error']['nomessagetosend'] = 'Keine Nachricht angegeben';
+$lng['error']['noreceipientsgiven'] = 'Keine Empf&auml;nger angegeben';
+
 ?>

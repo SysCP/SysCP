@@ -767,7 +767,7 @@ $lng['logger']['action'] = 'Action';
 $lng['logger']['user'] = 'User';
 $lng['logger']['truncate'] = 'Empty log';
 
-// ADDED IN 1.2.19-dupri
+// ADDED IN 1.2.19-svn7
 
 $lng['serversettings']['ssl']['use_ssl'] = 'Use SSL?';
 $lng['serversettings']['ssl']['ssl_cert_file'] = 'Where is the Cert file located?';
@@ -776,5 +776,6 @@ $lng['panel']['reseller'] = 'reseller';
 $lng['panel']['admin'] = 'admin';
 $lng['panel']['customer'] = 'customer';
 $lng['error']['nomessagetosend'] = 'You did not enter a message.';
+$lng['error']['noreceipientsgiven'] = 'You did not specify any receipient';
 
 ?>
