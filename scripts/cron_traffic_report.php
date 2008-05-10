@@ -85,7 +85,16 @@ while($row = $db->fetch_array($result))
                                 AND `templategroup`='traffic'
                                 AND `varname`='trafficninetypercent_mailbody'");
 		$mail_body = html_entity_decode(replace_variables((($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
-		mail(buildValidMailFrom($row['firstname'] . ' ' . $row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['adminname'], $row['adminmail']));
+		$mail->From = $row['adminmail'];
+		$mail->FromName = $row['adminname'];
+		$mail->Subject = $mail_subject;
+		$mail->Body = $mail_body;
+		$mail->AddAddress($row['email'], $row['firstname'] . ' ' . $row['name']);
+		if(!$mail->Send())
+		{
+			standard_error(array('errorsendingmail', $row["email"]));
+		}
+		$mail->ClearAddresses();
 		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `reportsent`=\'1\'
                 WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
 	}
@@ -141,7 +150,16 @@ while($row = $db->fetch_array($result))
                                 AND `templategroup`='traffic'
                                 AND `varname`='trafficninetypercent_mailbody'");
 		$mail_body = html_entity_decode(replace_variables((($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
-		mail(buildValidMailFrom($row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['name'], $row['email']));
+		$mail->From = $row['email'];
+		$mail->FromName = $row['name'];
+		$mail->Subject = $mail_subject;
+		$mail->Body = $mail_body;
+		$mail->AddAddress($row['email'], $row['name']);
+		if(!$mail->Send())
+		{
+			standard_error(array('errorsendingmail', $row["email"]));
+		}
+		$mail->ClearAddresses();
 		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `reportsent`='1'
                 WHERE `customerid`='" . (int)$row['adminid'] . "'");
 	}
@@ -168,7 +186,16 @@ while($row = $db->fetch_array($result))
 
 		$mail_body.= '---------------------------------------------' . "\n";
 		$mail_body.= sprintf('%-15s', $row['loginname']) . ' ' . sprintf('%-12d', $row['traffic_used_total']) . ' (' . sprintf('%00.3f%%', (($row['traffic_used_total']*100)/$row['traffic'])) . ')   ' . $row['traffic'] . "\n";
-		mail(buildValidMailFrom($row['name'], $row['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($row['name'], $row['email']));
+		$mail->From = $row['email'];
+		$mail->FromName = $row['name'];
+		$mail->Subject = $mail_subject;
+		$mail->Body = $mail_body;
+		$mail->AddAddress($row['email'], $row['name']);
+		if(!$mail->Send())
+		{
+			standard_error(array('errorsendingmail', $row["email"]));
+		}
+		$mail->ClearAddresses();
 	}
 }
 

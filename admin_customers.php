@@ -475,7 +475,16 @@ if($page == 'customers'
 						$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['createcustomer']['subject']), $replace_arr));
 						$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
 						$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['createcustomer']['mailbody']), $replace_arr));
-						mail(buildValidMailFrom($firstname . ' ' . $name, $email), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($userinfo['name'], $userinfo['email']));
+						$mail->From = $userinfo['email'];
+						$mail->FromName = $userinfo['name'];
+						$mail->Subject = $mail_subject;
+						$mail->Body = $mail_body;
+						$mail->AddAddress($email, $firstname . ' ' . $name);
+						if(!$mail->Send())
+						{
+							standard_error(array('errorsendingmail', $email));
+						}
+						$mail->ClearAddresses();
 						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically sent password to user '" . $loginname . "'");
 					}
 

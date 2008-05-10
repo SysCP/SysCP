@@ -248,6 +248,7 @@ class ticket
 
 	public function sendMail($customerid = -1, $template_subject = null, $default_subject = null, $template_body = null, $default_body = null)
 	{
+		global $mail;
 		// Some checks are to be made here in the future
 
 		if($customerid != -1)
@@ -285,12 +286,30 @@ class ticket
 
 		if($customerid != -1)
 		{
-			mail(buildValidMailFrom($usr['firstname'] . ' ' . $usr['name'], $usr['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($this->settings['ticket']['noreply_name'], $this->settings['ticket']['noreply_email']));
+			$mail->From = $this->settings['ticket']['noreply_email'];
+			$mail->FromName = $this->settings['ticket']['noreply_name'];
+			$mail->Subject = $mail_subject;
+			$mail->Body = $mail_body;
+			$mail->AddAddress($usr['email'], $usr['firstname'] . ' ' . $usr['name']);
+			if(!$mail->Send())
+			{
+				standard_error(array('errorsendingmail', $usr['email']));
+			}
+			$mail->ClearAddresses();
 		}
 		else
 		{
 			$admin = $this->db->query_first("SELECT `email` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$this->userinfo['adminid'] . "'");
-			mail(buildValidMailFrom($admin['firstname'] . ' ' . $admin['name'], $admin['email']), $mail_subject, $mail_body, 'From: ' . buildValidMailFrom($this->settings['ticket']['noreply_name'], $this->settings['ticket']['noreply_email']));
+			$mail->From = $this->settings['ticket']['noreply_email'];
+			$mail->FromName = $this->settings['ticket']['noreply_name'];
+			$mail->Subject = $mail_subject;
+			$mail->Body = $mail_body;
+			$mail->AddAddress($admin['email'], $admin['firstname'] . ' ' . $admin['name']);
+			if(!$mail->Send())
+			{
+				standard_error(array('errorsendingmail', $admin['email']));
+			}
+			$mail->ClearAddresses();
 		}
 	}
 
