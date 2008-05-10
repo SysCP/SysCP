@@ -29,8 +29,6 @@ if(($page == 'settings' || $page == 'overview')
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
-		wasFormCompromised();
-
 		if($_POST['session_sessiontimeout'] != $settings['session']['sessiontimeout'])
 		{
 			$value = validate($_POST['session_sessiontimeout'], 'session timeout', '/^[0-9]+$/', 'sessiontimeoutiswrong');
@@ -879,7 +877,6 @@ elseif($page == 'rebuildconfigs'
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
-		wasFormCompromised();
 		$log->logAction(ADM_ACTION, LOG_INFO, "rebuild configfiles");
 		inserttask('1');
 		inserttask('3');
@@ -902,7 +899,6 @@ elseif($page == 'updatecounters'
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
-		wasFormCompromised();
 		$log->logAction(ADM_ACTION, LOG_INFO, "updated resource-counters");
 		$updatecounters = updateCounters(true);
 		$customers = '';
@@ -932,7 +928,6 @@ elseif($page == 'wipecleartextmailpws'
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
-		wasFormCompromised();
 		$log->logAction(ADM_ACTION, LOG_INFO, "wiped all cleartext mail passwords");
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `password`='' ");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='0' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");

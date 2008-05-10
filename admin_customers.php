@@ -134,7 +134,6 @@ if($page == 'customers'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$databases = $db->query("SELECT * FROM " . TABLE_PANEL_DATABASES . " WHERE customerid='" . (int)$id . "'");
 				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 				unset($db_root->password);
@@ -236,7 +235,6 @@ if($page == 'customers'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$name = validate($_POST['name'], 'name');
 				$firstname = validate($_POST['firstname'], 'first name');
 				$company = validate($_POST['company'], 'company');
@@ -482,7 +480,8 @@ if($page == 'customers'
 						$mail->AddAddress($email, $firstname . ' ' . $name);
 						if(!$mail->Send())
 						{
-							standard_error(array('errorsendingmail', $email));
+							$log->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+							standard_error('errorsendingmail', $email);
 						}
 						$mail->ClearAddresses();
 						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically sent password to user '" . $loginname . "'");

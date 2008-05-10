@@ -77,10 +77,8 @@ if($page == 'message')
 
 					if(!$mail->Send())
 					{
-						standard_error(array(
-							'errorsendingmail',
-							$row["email"]
-						));
+						$log->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+						standard_error('errorsendingmail', $row["email"]);
 					}
 
 					$mail->ClearAddresses();
