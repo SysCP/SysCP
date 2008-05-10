@@ -37,18 +37,16 @@ function getTemplate($template, $noarea = 0)
 	{
 		$filename = './templates/' . $template . '.tpl';
 
-		if(file_exists($filename))
+		if(file_exists($filename) && is_readable($filename))
 		{
 			$templatefile = addcslashes(file_get_contents($filename), '"\\');
+			$templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis', '".( ($1) ? ("$2") : ("$4") )."', $templatefile);
 		}
 		else
 		{
-			$templatefile = '<!-- TEMPLATE NOT FOUND: ' . $filename . ' -->';
+			$templatefile = 'TEMPLATE NOT FOUND: ' . $filename;
 		}
 
-		//			$templatefile = preg_replace("'<if ([^>]*?)>(.*?)</if>'si", "\".( (\\1) ? \"\\2\" : \"\").\"", $templatefile);
-
-		$templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis', '".( ($1) ? ("$2") : ("$4") )."', $templatefile);
 		$templatecache[$template] = $templatefile;
 	}
 
