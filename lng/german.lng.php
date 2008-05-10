@@ -789,5 +789,6 @@ $lng['admin']['receipient'] = 'Empf&auml;nger';
 $lng['admin']['message'] = 'Nachricht schreiben';
 $lng['admin']['text'] = 'Nachricht';
 $lng['menu']['message'] = 'Nachrichten';
+$lng['error']['errorsendingmail'] = 'Das Versenden der Nachricht an "%s" schlug fehl.';
 
 ?>

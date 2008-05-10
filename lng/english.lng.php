@@ -753,7 +753,7 @@ $lng['serversettings']['logger']['types_desc'] = 'Specify logtypes seperated by 
 $lng['serversettings']['logger']['logfile'] = 'Logfile path including filename';
 $lng['error']['logerror'] = 'Log-Error: %s';
 $lng['serversettings']['logger']['logcron'] = 'Log cronjobs (one run)';
-$lng['question']['logger_reallytruncate'] = 'Do you really want to truncate the table "%s"?';
+$lng['question']['logger_reallytruncate'] = 'Do you really want to truncate the table &quot;%s&quot;?';
 $lng['admin']['loggersystem'] = 'System-logging';
 $lng['menue']['logger']['logger'] = 'System-logging';
 $lng['logger']['date'] = 'Date';
@@ -783,5 +783,6 @@ $lng['admin']['receipient'] = 'Receipient';
 $lng['admin']['message'] = 'Write a Message';
 $lng['admin']['text'] = 'Message';
 $lng['menu']['message'] = 'Messages';
+$lng['error']['errorsendingmail'] = 'The message to &quot;%s&quot; failed';
 
 ?>
