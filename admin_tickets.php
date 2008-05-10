@@ -157,7 +157,6 @@ if($page == 'tickets'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$newticket = ticket::getInstanceOf($userinfo, $db, $settings, -1);
 				$newticket->Set('subject', validate($_POST['subject'], 'subject'), true, false);
 				$newticket->Set('priority', validate($_POST['priority'], 'priority'), true, false);
@@ -258,7 +257,6 @@ if($page == 'tickets'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$replyticket = ticket::getInstanceOf($userinfo, $db, $settings, -1);
 			$replyticket->Set('subject', validate($_POST['subject'], 'subject'), true, false);
 			$replyticket->Set('priority', validate($_POST['priority'], 'priority'), true, false);
@@ -372,7 +370,6 @@ if($page == 'tickets'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$now = time();
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 			$mainticket->Set('lastchange', $now, true, true);
@@ -416,7 +413,6 @@ if($page == 'tickets'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$now = time();
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 			$mainticket->Set('lastchange', $now, true, true);
@@ -446,7 +442,6 @@ if($page == 'tickets'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 			$log->logAction(ADM_ACTION, LOG_INFO, "deleted ticket '" . $mainticket->Get('subject') . "'");
 			$mainticket->Delete();
@@ -519,7 +514,6 @@ elseif($page == 'categories'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$category = validate($_POST['category'], 'category');
 
 			if($category == '')
@@ -550,7 +544,6 @@ elseif($page == 'categories'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$category = validate($_POST['category'], 'category');
 
 			if($category == '')
@@ -582,8 +575,6 @@ elseif($page == 'categories'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
-
 			if(ticket::deleteCategory($db, $id) == false)
 			{
 				standard_error('categoryhastickets');
@@ -616,7 +607,6 @@ elseif($page == 'archive'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$priority = array();
 			$categories = array();
 			$subject = validate($_POST['subject'], 'subject');
@@ -855,7 +845,6 @@ elseif($page == 'archive'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 			$log->logAction(ADM_ACTION, LOG_INFO, "deleted archived ticket '" . $mainticket->Get('subject') . "'");
 			$mainticket->Delete();

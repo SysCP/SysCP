@@ -157,7 +157,6 @@ if($page == 'log'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$yesterday = time()-(60*10);
 
 			/* (60*60*24); */

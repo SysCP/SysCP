@@ -172,7 +172,6 @@ elseif($page == 'tickets')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$newticket = ticket::getInstanceOf($userinfo, $db, $settings, -1);
 				$newticket->Set('subject', validate($_POST['subject'], 'subject'), true, false);
 				$newticket->Set('priority', validate($_POST['priority'], 'priority'), true, false);
@@ -278,7 +277,6 @@ elseif($page == 'tickets')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$replyticket = ticket::getInstanceOf($userinfo, $db, $settings, -1);
 			$replyticket->Set('subject', validate($_POST['subject'], 'subject'), true, false);
 			$replyticket->Set('priority', validate($_POST['priority'], 'priority'), true, false);
@@ -393,7 +391,6 @@ elseif($page == 'tickets')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$now = time();
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 			$mainticket->Set('lastchange', $now, true, true);

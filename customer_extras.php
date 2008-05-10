@@ -87,7 +87,6 @@ elseif($page == 'htpasswds')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='$id'");
 				$log->logAction(USR_ACTION, LOG_INFO, "deleted htpasswd for '" . $result['username'] . " (" . $result['path'] . ")'");
 				inserttask('3');
@@ -116,7 +115,6 @@ elseif($page == 'htpasswds')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$path = makeCorrectDir(validate($_POST['path'], 'path'));
 			$userpath = $path;
 			$path = $userinfo['documentroot'] . $path;
@@ -190,7 +188,6 @@ elseif($page == 'htpasswds')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				validate($_POST['directory_password'], 'password');
 
 				if(CRYPT_STD_DES == 1)
@@ -290,7 +287,6 @@ elseif($page == 'htaccess')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 				$log->logAction(USR_ACTION, LOG_INFO, "deleted htaccess for '" . str_replace($userinfo['documentroot'], '', $result['path']) . "'");
 				inserttask('3');
@@ -314,7 +310,6 @@ elseif($page == 'htaccess')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			wasFormCompromised();
 			$path = makeCorrectDir(validate($_POST['path'], 'path'));
 			$userpath = $path;
 			$path = $userinfo['documentroot'] . $path;
@@ -393,7 +388,6 @@ elseif($page == 'htaccess')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$option_indexes = intval($_POST['options_indexes']);
 
 				if($option_indexes != '1')
