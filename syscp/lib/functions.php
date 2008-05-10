@@ -1383,7 +1383,7 @@ function findDirs($path, $uid, $gid, $_fileList = array())
 	{
 		$path = array_pop($list);
 		$dh = @opendir($path);
-		
+
 		if($dh === false)
 		{
 			standard_error('cannotreaddir', $path);
@@ -1394,14 +1394,14 @@ function findDirs($path, $uid, $gid, $_fileList = array())
 			while(false !== ($file = @readdir($dh)))
 			{
 				if($file == '.'
-			   	  && (fileowner($path . '/' . $file) == $uid || filegroup($path . '/' . $file) == $gid))
+				   && (fileowner($path . '/' . $file) == $uid || filegroup($path . '/' . $file) == $gid))
 				{
 					$_fileList[] = $path . '/';
 				}
 
 				if(is_dir($path . '/' . $file)
-			   	  && $file != '..'
-			   	  && $file != '.')
+				   && $file != '..'
+				   && $file != '.')
 				{
 					array_push($list, $path . '/' . $file);
 				}

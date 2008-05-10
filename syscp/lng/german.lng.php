@@ -790,6 +790,6 @@ $lng['admin']['message'] = 'Nachricht schreiben';
 $lng['admin']['text'] = 'Nachricht';
 $lng['menu']['message'] = 'Nachrichten';
 $lng['error']['errorsendingmail'] = 'Das Versenden der Nachricht an "%s" schlug fehl.';
-$lng['error']['cannotreaddir'] = 'Der Ordner \'%s\' kann nicht gelesen werden'; 
+$lng['error']['cannotreaddir'] = 'Der Ordner \'%s\' kann nicht gelesen werden';
 
 ?>
