@@ -773,10 +773,21 @@ $lng['logger']['truncate'] = 'Log leeren';
 $lng['serversettings']['ssl']['use_ssl'] = 'SSL nutzen?';
 $lng['serversettings']['ssl']['ssl_cert_file'] = 'Pfad zum Zertifikat?';
 $lng['serversettings']['ssl']['openssl_cnf'] = 'Standardwerte zum Erstellen eines Zertifikats';
-$lng['panel']['reseller'] = 'reseller';
-$lng['panel']['admin'] = 'admin';
-$lng['panel']['customer'] = 'customer';
+$lng['panel']['reseller'] = 'Wiederverk&auml;fer';
+$lng['panel']['admin'] = 'Administrator';
+$lng['panel']['customer'] = 'Kunde';
 $lng['error']['nomessagetosend'] = 'Keine Nachricht angegeben';
 $lng['error']['noreceipientsgiven'] = 'Keine Empf&auml;nger angegeben';
+$lng['admin']['emaildomain'] = 'E-Maildomain';
+$lng['admin']['email_only'] = 'Nur E-Mail?';
+$lng['admin']['wwwserveralias'] = 'Einen &quit;www.&quot; ServerAlias hinzuf&uuml;gen';
+$lng['admin']['ipsandports']['enable_ssl'] = 'Ist dies ein SSL-Port?';
+$lng['admin']['ipsandports']['ssl_cert_file'] = 'Pfad zum Zertifikat';
+$lng['panel']['send'] = 'Versenden';
+$lng['admin']['subject'] = 'Betreff';
+$lng['admin']['receipient'] = 'Empf&auml;nger';
+$lng['admin']['message'] = 'Nachricht schreiben';
+$lng['admin']['text'] = 'Nachricht';
+$lng['menu']['message'] = 'Nachrichten';
 
 ?>
