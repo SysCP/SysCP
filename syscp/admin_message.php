@@ -36,6 +36,8 @@ if($page == 'message')
 {
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed panel_message");
+
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
@@ -43,16 +45,19 @@ if($page == 'message')
 
 			if($_POST['receipient'] == 0)
 			{
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "sending messages to admins");
 				$result = $db->query('SELECT `loginname`, `name`, `email`  FROM `' . TABLE_PANEL_ADMINS . "`");
 			}
 			elseif($_POST['receipient'] == 1)
 			{
 				if($userinfo['customers_see_all'] == "1")
 				{
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "sending messages to ALL customers");
 					$result = $db->query('SELECT `firstname`, `name`, `email`  FROM `' . TABLE_PANEL_CUSTOMERS . "`");
 				}
 				else
 				{
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "sending messages to customers");
 					$result = $db->query('SELECT `firstname`, `name`, `email`  FROM `' . TABLE_PANEL_CUSTOMERS . "` WHERE `adminid`='" . $userinfo['adminid'] . "'");
 				}
 			}

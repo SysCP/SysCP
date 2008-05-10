@@ -166,8 +166,6 @@ elseif($page == 'domains')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
-
 				if($result['isemaildomain'] == '1')
 				{
 					$emails = $db->query_first('SELECT COUNT(`id`) AS `count` FROM `' . TABLE_MAIL_VIRTUAL . '` WHERE `customerid`=\'' . (int)$userinfo['customerid'] . '\' AND `domainid`=\'' . (int)$id . '\'');
@@ -210,8 +208,6 @@ elseif($page == 'domains')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
-
 				/* Rules for subdomains:
 					 * - At least two characters
 					 * - Valid characters: a-z, 0-9, ".", "-" and "_"
@@ -347,8 +343,6 @@ elseif($page == 'domains')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
-
 				if(isset($_POST['url'])
 				   && $_POST['url'] != ''
 				   && validateUrl($idna_convert->encode($_POST['url'])))

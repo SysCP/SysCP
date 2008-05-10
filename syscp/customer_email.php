@@ -151,7 +151,6 @@ elseif($page == 'emails')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$update_users_query_addon = '';
 
 				if($result['destination'] != '')
@@ -198,7 +197,6 @@ elseif($page == 'emails')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$email_part = $_POST['email_part'];
 				$domain = $idna_convert->encode(validate($_POST['domain'], 'domain'));
 				$domain_check = $db->query_first("SELECT `id`, `domain`, `customerid` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($domain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `isemaildomain`='1' ");
@@ -374,7 +372,6 @@ elseif($page == 'accounts')
 				if(isset($_POST['send'])
 				   && $_POST['send'] == 'send')
 				{
-					wasFormCompromised();
 					$email_full = $result['email_full'];
 					$username = $idna_convert->decode($email_full);
 					$password = validate($_POST['email_password'], 'password');
@@ -423,10 +420,13 @@ elseif($page == 'accounts')
 						$mail->Subject = $mail_subject;
 						$mail->Body = $mail_body;
 						$mail->AddAddress($email_full, $username);
+
 						if(!$mail->Send())
 						{
-							standard_error(array('errorsendingmail', $email_full));
+							$log->logAction(USR_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+							standard_error('errorsendingmail', $email);
 						}
+
 						$mail->ClearAddresses();
 
 						if(validateEmail($alternative_email)
@@ -441,10 +441,15 @@ elseif($page == 'accounts')
 							$mail->Subject = $mail_subject;
 							$mail->Body = $mail_body;
 							$mail->AddAddress($alternative_email, $username);
+
 							if(!$mail->Send())
 							{
-								standard_error(array('errorsendingmail', $alternative_email));
+								standard_error(array(
+									'errorsendingmail',
+									$alternative_email
+								));
 							}
+
 							$mail->ClearAddresses();
 						}
 
@@ -480,7 +485,6 @@ elseif($page == 'accounts')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$password = validate($_POST['email_password'], 'password');
 
 				if($password == '')
@@ -522,7 +526,6 @@ elseif($page == 'accounts')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$db->query("DELETE FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$result['popaccountid'] . "'");
 				$result['destination'] = str_replace($result['email_full'], '', $result['destination']);
 				$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "', `popaccountid` = '0' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
@@ -562,7 +565,6 @@ elseif($page == 'forwarders')
 				if(isset($_POST['send'])
 				   && $_POST['send'] == 'send')
 				{
-					wasFormCompromised();
 					$destination = $idna_convert->encode($_POST['destination']);
 					$result['destination_array'] = explode(' ', $result['destination']);
 
@@ -644,7 +646,6 @@ elseif($page == 'forwarders')
 				if(isset($_POST['send'])
 				   && $_POST['send'] == 'send')
 				{
-					wasFormCompromised();
 					$result['destination'] = str_replace($forwarder, '', $result['destination']);
 					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_forwarders_used` = `email_forwarders_used` - 1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");

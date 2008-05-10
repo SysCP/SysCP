@@ -84,8 +84,6 @@ elseif($page == 'mysqls')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
-
 				// Begin root-session
 
 				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
@@ -138,7 +136,6 @@ elseif($page == 'mysqls')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$password = validate($_POST['mysql_password'], 'password');
 
 				if($password == '')
@@ -197,8 +194,6 @@ elseif($page == 'mysqls')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
-
 				// Only change Password if it is set, do nothing if it is empty! -- PH 2004-11-29
 
 				$password = validate($_POST['mysql_password'], 'password');

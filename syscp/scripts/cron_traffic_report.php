@@ -90,10 +90,13 @@ while($row = $db->fetch_array($result))
 		$mail->Subject = $mail_subject;
 		$mail->Body = $mail_body;
 		$mail->AddAddress($row['email'], $row['firstname'] . ' ' . $row['name']);
+
 		if(!$mail->Send())
 		{
-			standard_error(array('errorsendingmail', $row["email"]));
+			$cronlog->logAction(CRON_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+			standard_error('errorsendingmail', $row["email"]);
 		}
+
 		$mail->ClearAddresses();
 		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `reportsent`=\'1\'
                 WHERE `customerid`=\'' . (int)$row['customerid'] . '\'');
@@ -155,10 +158,13 @@ while($row = $db->fetch_array($result))
 		$mail->Subject = $mail_subject;
 		$mail->Body = $mail_body;
 		$mail->AddAddress($row['email'], $row['name']);
+
 		if(!$mail->Send())
 		{
-			standard_error(array('errorsendingmail', $row["email"]));
+			$cronlog->logAction(CRON_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+			standard_error('errorsendingmail', $row["email"]);
 		}
+
 		$mail->ClearAddresses();
 		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `reportsent`='1'
                 WHERE `customerid`='" . (int)$row['adminid'] . "'");
@@ -191,10 +197,13 @@ while($row = $db->fetch_array($result))
 		$mail->Subject = $mail_subject;
 		$mail->Body = $mail_body;
 		$mail->AddAddress($row['email'], $row['name']);
+
 		if(!$mail->Send())
 		{
-			standard_error(array('errorsendingmail', $row["email"]));
+			$cronlog->logAction(CRON_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+			standard_error('errorsendingmail', $row["email"]);
 		}
+
 		$mail->ClearAddresses();
 	}
 }

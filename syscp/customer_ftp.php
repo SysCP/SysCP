@@ -92,7 +92,6 @@ elseif($page == 'accounts')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `up_count`=`up_count`+'" . (int)$result['up_count'] . "', `up_bytes`=`up_bytes`+'" . (int)$result['up_bytes'] . "', `down_count`=`down_count`+'" . (int)$result['down_count'] . "', `down_bytes`=`down_bytes`+'" . (int)$result['down_bytes'] . "' WHERE `username`='" . $db->escape($userinfo['loginname']) . "'");
 				$db->query("DELETE FROM `" . TABLE_FTP_USERS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 				$log->logAction(USR_ACTION, LOG_INFO, "deleted ftp-account '" . $result['username'] . "'");
@@ -137,8 +136,6 @@ elseif($page == 'accounts')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
-
 				if($settings['customer']['ftpatdomain'] == '1')
 				{
 					$ftpusername = validate($_POST['ftp_username'], 'username', '/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/');
@@ -238,7 +235,6 @@ elseif($page == 'accounts')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				wasFormCompromised();
 				$password = validate($_POST['ftp_password'], 'password');
 
 				if($password == '')

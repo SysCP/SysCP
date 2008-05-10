@@ -80,7 +80,6 @@ elseif($page == 'change_password')
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
-		wasFormCompromised();
 		$old_password = validate($_POST['old_password'], 'old password');
 
 		if(md5($old_password) != $userinfo['password'])
@@ -160,7 +159,6 @@ elseif($page == 'change_language')
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
-		wasFormCompromised();
 		$def_language = validate($_POST['def_language'], 'default language');
 
 		if(isset($languages[$def_language]))

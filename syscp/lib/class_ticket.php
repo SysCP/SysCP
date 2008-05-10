@@ -249,6 +249,7 @@ class ticket
 	public function sendMail($customerid = -1, $template_subject = null, $default_subject = null, $template_body = null, $default_body = null)
 	{
 		global $mail;
+
 		// Some checks are to be made here in the future
 
 		if($customerid != -1)
@@ -291,10 +292,15 @@ class ticket
 			$mail->Subject = $mail_subject;
 			$mail->Body = $mail_body;
 			$mail->AddAddress($usr['email'], $usr['firstname'] . ' ' . $usr['name']);
+
 			if(!$mail->Send())
 			{
-				standard_error(array('errorsendingmail', $usr['email']));
+				standard_error(array(
+					'errorsendingmail',
+					$usr['email']
+				));
 			}
+
 			$mail->ClearAddresses();
 		}
 		else
@@ -305,10 +311,15 @@ class ticket
 			$mail->Subject = $mail_subject;
 			$mail->Body = $mail_body;
 			$mail->AddAddress($admin['email'], $admin['firstname'] . ' ' . $admin['name']);
+
 			if(!$mail->Send())
 			{
-				standard_error(array('errorsendingmail', $admin['email']));
+				standard_error(array(
+					'errorsendingmail',
+					$admin['email']
+				));
 			}
+
 			$mail->ClearAddresses();
 		}
 	}

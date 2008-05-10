@@ -478,11 +478,13 @@ if($page == 'customers'
 						$mail->Subject = $mail_subject;
 						$mail->Body = $mail_body;
 						$mail->AddAddress($email, $firstname . ' ' . $name);
+
 						if(!$mail->Send())
 						{
 							$log->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
 							standard_error('errorsendingmail', $email);
 						}
+
 						$mail->ClearAddresses();
 						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically sent password to user '" . $loginname . "'");
 					}
