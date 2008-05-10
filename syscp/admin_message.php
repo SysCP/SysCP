@@ -69,6 +69,7 @@ if($page == 'message')
 			else
 			{
 				standard_error('noreceipientsgiven');
+				exit;
 			}
 
 			$from = $db->query_first("SELECT `email`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE adminid='" . $userinfo['adminid'] . "'");
@@ -80,7 +81,11 @@ if($page == 'message')
 			if(!empty($message))
 			{
 				mail('', $subject, $message, $headers);
-				header("Location: $filename?page=$page&s=$s");
+
+				redirectTo($filename, Array(
+					'page' => $page,
+					's' => $s
+				));
 			}
 			else
 			{
