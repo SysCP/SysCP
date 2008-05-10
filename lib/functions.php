@@ -37,7 +37,8 @@ function getTemplate($template, $noarea = 0)
 	{
 		$filename = './templates/' . $template . '.tpl';
 
-		if(file_exists($filename) && is_readable($filename))
+		if(file_exists($filename)
+		   && is_readable($filename))
 		{
 			$templatefile = addcslashes(file_get_contents($filename), '"\\');
 			$templatefile = preg_replace('/<if[ \t]*(.*)>(.*)(<\/if>|<else>(.*)<\/if>)/Uis', '".( ($1) ? ("$2") : ("$4") )."', $templatefile);

@@ -1,12 +1,12 @@
 <?php
+
 /**
- * PHPMailer language file.  
+ * PHPMailer language file.
  * Estonian Version
  * By Indrek P&auml;ri
  */
 
 $PHPMAILER_LANG = array();
-
 $PHPMAILER_LANG["provide_address"] = 'Te peate m&auml;&auml;rama v&auml;hemalt &uuml;he saaja e-posti aadressi.';
 $PHPMAILER_LANG["mailer_not_supported"] = ' maileri tugi puudub.';
 $PHPMAILER_LANG["execute"] = 'Tegevus eba&otilde;nnestus: ';
@@ -19,4 +19,5 @@ $PHPMAILER_LANG["connect_host"] = 'SMTP Viga: Ei &otilde;nnestunud luua &uuml;he
 $PHPMAILER_LANG["file_access"] = 'Pole piisavalt &otilde;iguseid j&auml;rgneva faili avamiseks: ';
 $PHPMAILER_LANG["file_open"] = 'Faili Viga: Faili avamine eba&otilde;nnestus: ';
 $PHPMAILER_LANG["encoding"] = 'Tundmatu Unknown kodeering: ';
+
 ?>

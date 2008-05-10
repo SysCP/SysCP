@@ -1,13 +1,13 @@
 <?php
+
 /**
- * PHPMailer language file.  
+ * PHPMailer language file.
  * Romanian Version
  * @package PHPMailer
  * @author Catalin Constantin <catalin@dazoot.ro>
  */
 
 $PHPMAILER_LANG = array();
-
 $PHPMAILER_LANG["provide_address"] = 'Trebuie sa adaugati cel putin un recipient (adresa de mail).';
 $PHPMAILER_LANG["mailer_not_supported"] = ' mailer nu este suportat.';
 $PHPMAILER_LANG["execute"] = 'Nu pot executa:  ';
@@ -20,4 +20,5 @@ $PHPMAILER_LANG["connect_host"] = 'Eroare SMTP: Nu m-am putut conecta la adresa 
 $PHPMAILER_LANG["file_access"] = 'Nu pot accesa fisierul: ';
 $PHPMAILER_LANG["file_open"] = 'Eroare de fisier: Nu pot deschide fisierul: ';
 $PHPMAILER_LANG["encoding"] = 'Encodare necunoscuta: ';
+
 ?>

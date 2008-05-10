@@ -68,17 +68,24 @@ if($page == 'message')
 			{
 				$mail->Body = $message;
 				$mail->Subject = $subject;
+
 				while($row = $db->fetch_array($result))
 				{
 					$mail->AddAddress($row['name'], $row['email']);
 					$mail->From = $from['email'];
 					$mail->FromName = $from['name'];
+
 					if(!$mail->Send())
 					{
-						standard_error(array('errorsendingmail', $row["email"]));
+						standard_error(array(
+							'errorsendingmail',
+							$row["email"]
+						));
 					}
+
 					$mail->ClearAddresses();
 				}
+
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
