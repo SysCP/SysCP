@@ -159,6 +159,7 @@ require ('./lib/class_syscplogger.php');
 /**
  * Includes the mailing facility
  */
+
 require ('./lib/class.phpmailer.php');
 
 /**
@@ -439,6 +440,5 @@ if($page == '')
 
 $mail = new PHPMailer();
 $mail->From = $settings['panel']['adminmail'];
-
 
 ?>
