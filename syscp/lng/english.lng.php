@@ -283,8 +283,6 @@ $lng['admin']['customer_edit'] = 'Edit customer';
 $lng['admin']['domains'] = 'Domains';
 $lng['admin']['domain_add'] = 'Create domain';
 $lng['admin']['domain_edit'] = 'Edit domain';
-$lng['admin']['emaildomain'] = 'Emaildomain';
-$lng['admin']['email_only'] = 'Only email?';
 $lng['admin']['subdomainforemail'] = 'Subdomains as emaildomains';
 $lng['admin']['admin'] = 'Admin';
 $lng['admin']['admins'] = 'Admins';
@@ -303,7 +301,6 @@ $lng['admin']['deactivated'] = 'Deactivated';
 $lng['admin']['deactivated_user'] = 'Deactivate User';
 $lng['admin']['sendpassword'] = 'Send password';
 $lng['admin']['ownvhostsettings'] = 'Own vHost-Settings';
-$lng['admin']['wwwserveralias'] = 'Add a www. ServerAlias';
 $lng['admin']['configfiles']['serverconfiguration'] = 'Configuration';
 $lng['admin']['configfiles']['files'] = '<b>Configfiles:</b> Please change the following files or create them with<br />the following content if they do not exist.<br /><b>Please Note:</b> The MySQL-password has not been replaced for security reasons.<br />Please replace &quot;MYSQL_PASSWORD&quot; on your own. If you forgot your MySQL-password<br />you\'ll find it in &quot;lib/userdata.inc.php&quot;.';
 $lng['admin']['configfiles']['commands'] = '<b>Commands:</b> Please execute the following commands in a shell.';
@@ -405,8 +402,6 @@ $lng['admin']['ipsandports']['edit'] = 'Edit IP/Port';
 $lng['admin']['ipsandports']['ipandport'] = 'IP/Port';
 $lng['admin']['ipsandports']['ip'] = 'IP';
 $lng['admin']['ipsandports']['port'] = 'Port';
-$lng['admin']['ipsandports']['enable_ssl'] = 'Is this an SSL Port?';
-$lng['admin']['ipsandports']['ssl_cert_file'] = 'Path to the SSL Certificate';
 
 // ADDED IN 1.2.13-rc3
 
@@ -777,5 +772,16 @@ $lng['panel']['admin'] = 'admin';
 $lng['panel']['customer'] = 'customer';
 $lng['error']['nomessagetosend'] = 'You did not enter a message.';
 $lng['error']['noreceipientsgiven'] = 'You did not specify any receipient';
+$lng['admin']['emaildomain'] = 'Emaildomain';
+$lng['admin']['email_only'] = 'Only email?';
+$lng['admin']['wwwserveralias'] = 'Add a www. ServerAlias';
+$lng['admin']['ipsandports']['enable_ssl'] = 'Is this an SSL Port?';
+$lng['admin']['ipsandports']['ssl_cert_file'] = 'Path to the SSL Certificate';
+$lng['panel']['send'] = 'send';
+$lng['admin']['subject'] = 'Subject';
+$lng['admin']['receipient'] = 'Receipient';
+$lng['admin']['message'] = 'Write a Message';
+$lng['admin']['text'] = 'Message';
+$lng['menu']['message'] = 'Messages';
 
 ?>
