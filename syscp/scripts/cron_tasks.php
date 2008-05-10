@@ -968,14 +968,16 @@ while($row = $db->fetch_array($result_tasks))
 			$bindconf_file.= '	file "' . $settings['system']['bindconf_directory'] . $domain['zonefile'] . '";' . "\n";
 			$bindconf_file.= '	allow-query { any; };' . "\n";
 
-			if(count($nameservers) > 1)
+			if(count($nameservers) > 0)
 			{
 				$bindconf_file.= '	allow-transfer {' . "\n";
-				for ($i = 1;$i < count($nameservers);$i++)
+				for ($i = 0;$i < count($nameservers);$i++)
 				{
-					$bindconf_file.= '		' . $nameservers[$i]['ip'] . ';' . "\n";
+					if(ip2long($nameservers[$i]['ip']))
+					{
+						$bindconf_file.= '              ' . $nameservers[$i]['ip'] . ';' . "\n";
+					}
 				}
-
 				$bindconf_file.= '	};' . "\n";
 			}
 
