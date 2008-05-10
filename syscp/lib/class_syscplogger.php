@@ -76,6 +76,7 @@ class SysCPLogger
 		   && $this->settings['logger']['enabled'])
 		{
 			self::$logtypes[0] = 'syslog';
+			self::$logtypes[1] = 'mysql';
 		}
 		else
 		{
