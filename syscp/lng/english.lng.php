@@ -784,5 +784,6 @@ $lng['admin']['message'] = 'Write a Message';
 $lng['admin']['text'] = 'Message';
 $lng['menu']['message'] = 'Messages';
 $lng['error']['errorsendingmail'] = 'The message to &quot;%s&quot; failed';
+$lng['error']['cannotreaddir'] = 'Unable to read directory \'%s\''; 
 
 ?>
