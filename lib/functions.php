@@ -1383,24 +1383,32 @@ function findDirs($path, $uid, $gid, $_fileList = array())
 	{
 		$path = array_pop($list);
 		$dh = @opendir($path);
-
-		while(false !== ($file = @readdir($dh)))
+		
+		if($dh === false)
 		{
-			if($file == '.'
-			   && (fileowner($path . '/' . $file) == $uid || filegroup($path . '/' . $file) == $gid))
-			{
-				$_fileList[] = $path . '/';
-			}
-
-			if(is_dir($path . '/' . $file)
-			   && $file != '..'
-			   && $file != '.')
-			{
-				array_push($list, $path . '/' . $file);
-			}
+			standard_error('cannotreaddir', $path);
+			return null;
 		}
+		else
+		{
+			while(false !== ($file = @readdir($dh)))
+			{
+				if($file == '.'
+			   	  && (fileowner($path . '/' . $file) == $uid || filegroup($path . '/' . $file) == $gid))
+				{
+					$_fileList[] = $path . '/';
+				}
 
-		@closedir($dh);
+				if(is_dir($path . '/' . $file)
+			   	  && $file != '..'
+			   	  && $file != '.')
+				{
+					array_push($list, $path . '/' . $file);
+				}
+			}
+
+			@closedir($dh);
+		}
 	}
 
 	return $_fileList;

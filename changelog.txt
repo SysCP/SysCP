@@ -2,7 +2,6 @@ Things merged - need testing (chronicle order)
     * ticket_399 - Own IP-Adresses for Reseller
 
 Things merged - testing done (atari)
-    * ticket_512 - proftpd modules loading
     * ticket_559 - postfix installation instructions in SVN, correct order
     * ticket_66  - Add delete button in domain overview to disable customers std subdomain.
     * ipv6 - (seems to work so far)
