@@ -1688,32 +1688,6 @@ function isConfigDir($dir)
 	return $returnval;
 }
 
-/**
- * Checks if a valid token has been given by a submitted form
- * Logs out the user and dies if this it not the case
- *
- * @return bool   false if the form wasn't compromised
- *
- * @author Florian Aders <eleras@syscp.org>
- */
-
-function wasFormCompromised()
-{
-	global $db, $userinfo;
-
-	if($userinfo['hadtoken'] !== true)
-	{
-		$db->query('DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `hash`="' . $db->escape($userinfo['hash']) . '" AND `adminsession` = "' . $db->escape($userinfo['adminsession']) . '"');
-		standard_error('formtokencompromised');
-
-		// explicit die, if someone ever removes it from standard_error
-
-		die();
-	}
-
-	return false;
-}
-
 function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
 {
 	global $settings, $sql;

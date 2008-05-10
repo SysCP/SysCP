@@ -1,6 +1,7 @@
 $header
-	<form action="$filename?s=$s&amp;page=$page" method="post">
-		<input type="hidden" name="token" value="{$userinfo['formtoken']}" />
+	<form action="$filename" method="post">
+		<input type="hidden" name="s" value="$s" />
+		<input type="hidden" name="page" value="$page" />
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 			<tr>
 				<td class="maintitle_search_left"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['mysql']['databases']}</b></td>
