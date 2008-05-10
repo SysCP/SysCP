@@ -561,7 +561,7 @@ if($settings['panel']['version'] == '1.2.12-svn1')
 	$db->query('ALTER TABLE `' . TABLE_PANEL_DOMAINS . '` ADD `ipandport` int(11) unsigned NOT NULL default \'1\' AFTER `documentroot`');
 	$db->query('CREATE TABLE `' . TABLE_PANEL_IPSANDPORTS . '` (
 			`id` int(11) unsigned NOT NULL auto_increment,
-			`ip` varchar(15) NOT NULL default \'\',
+			`ip` varchar(39) NOT NULL default \'\',
 			`port` int(5) NOT NULL default \'80\',
 			`default` int(1) NOT NULL default \'0\',
 			PRIMARY KEY  (`id`)
@@ -1397,6 +1397,25 @@ if($settings['panel']['version'] == '1.2.19-svn4.5')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn6';
+}
+
+if($settings['panel']['version'] == '1.2.19-svn7')
+{
+	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `ip` tinyint(4) NOT NULL default '-1'");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('admin', '', 'menu;message', 'admin_message.nourl', 50, '', 0");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('admin', 'admin_message.nourl', 'admin;message', 'admin_message.php', 10, '', 0");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl` tinyint(4) NOT NULL default '0'");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl_redirect` tinyint(4) NOT NULL default '0'");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl_ipandport` tinyint(4) NOT NULL default '0'");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_IPSANDPORTS . "` ADD `ssl` tinyint(4) NOT NULL default '0'");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_IPSANDPORTS . "` ADD `ipandport` tinytext AFTER `ssl`'");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn7\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn7';
 }
 
 ?>

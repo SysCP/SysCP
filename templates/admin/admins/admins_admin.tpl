@@ -1,4 +1,4 @@
-<tr>
+<tr class="" onmouseover="this.className='RowOverSelected';" onmouseout="this.className='';">
 	<td class="field_name_border_left"><if $row['adminid'] != $userinfo['userid']><a href="$filename?s=$s&amp;page=$page&amp;action=su&amp;id={$row['adminid']}" target="_blank">{$row['loginname']}</a></if><if $row['adminid'] == $userinfo['userid']>{$row['loginname']}</if></td>
 	<td class="field_name">{$row['name']}</td>
 	<td class="field_name"><b><font color="green">{$row['customers_used']}</font></b>/<b><font color="#FD6204">{$row['customers']}</font></b><br /><b><font color="green">{$row['domains_used']}</font></b>/<b><font color="#FD6204">{$row['domains']}</font></b></td>

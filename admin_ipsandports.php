@@ -137,7 +137,7 @@ if($page == 'ipsandports'
 		   && $_POST['send'] == 'send')
 		{
 			wasFormCompromised();
-			$ip = validate($_POST['ip'], 'ip', '/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/Di', 'ipiswrong');
+			$ip = validate_ip($_POST['ip']);
 			$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array(
 				'stringisempty',
 				'myport'
@@ -176,7 +176,7 @@ if($page == 'ipsandports'
 			}
 			else
 			{
-				$db->query("INSERT INTO `" . TABLE_PANEL_IPSANDPORTS . "` (`ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings`) VALUES ('" . $db->escape($ip) . "', '" . (int)$port . "', '" . (int)$vhostcontainer . "', '" . (int)$namevirtualhost_statement . "', '" . (int)$vhostcontainer . "', '" . (int)$vhostcontainer_servername_statement . "', '" . $db->escape($specialsettings) . "')");
+				$db->query("INSERT INTO `" . TABLE_PANEL_IPSANDPORTS . "` (`ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings`, `ssl`, `ssl_cert`) VALUES ('" . $db->escape($ip) . "', '" . (int)$port . "', '" . (int)$vhostcontainer . "', '" . (int)$namevirtualhost_statement . "', '" . (int)$vhostcontainer . "', '" . (int)$vhostcontainer_servername_statement . "', '" . $db->escape($specialsettings) . "', '" . $_POST['ssl'] . "', '" . $_POST['ssl_cert_file'] . "')");
 				$log->logAction(ADM_ACTION, LOG_WARNING, "added IP/port '" . $ip . ":" . $port . "'");
 				inserttask('1');
 				inserttask('4');
@@ -188,17 +188,28 @@ if($page == 'ipsandports'
 		}
 		else
 		{
+			if(!empty($result['ssl_cert']))
+			{
+				$ssl_cert_file = $result['ssl_cert'];
+			}
+			else
+			{
+				$ssl_cert_file = $settings['system']['ssl_cert_file'];
+			}
+
+			$enable_ssl = makeyesno('ssl', '1', '0', '1');
 			$listen_statement = makeyesno('listen_statement', '1', '0', '1');
 			$namevirtualhost_statement = makeyesno('namevirtualhost_statement', '1', '0', '1');
 			$vhostcontainer = makeyesno('vhostcontainer', '1', '0', '1');
 			$vhostcontainer_servername_statement = makeyesno('vhostcontainer_servername_statement', '1', '0', '1');
+			$ssl_cert_file = $settings['system']['ssl_cert_file'];
 			eval("echo \"" . getTemplate("ipsandports/ipsandports_add") . "\";");
 		}
 	}
 	elseif($action == 'edit'
 	       && $id != 0)
 	{
-		$result = $db->query_first("SELECT `id`, `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$id . "'");
+		$result = $db->query_first("SELECT `id`, `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings`, `ssl`, `ssl_cert` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$id . "'");
 
 		if($result['ip'] != '')
 		{
@@ -206,7 +217,7 @@ if($page == 'ipsandports'
 			   && $_POST['send'] == 'send')
 			{
 				wasFormCompromised();
-				$ip = validate($_POST['ip'], 'ip', '/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/Di', 'ipiswrong');
+				$ip = validate_ip($_POST['ip']);
 				$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array(
 					'stringisempty',
 					'myport'
@@ -252,7 +263,7 @@ if($page == 'ipsandports'
 				}
 				else
 				{
-					$db->query("UPDATE `" . TABLE_PANEL_IPSANDPORTS . "` SET `ip`='" . $db->escape($ip) . "', `port`='" . (int)$port . "', `listen_statement`='" . (int)$listen_statement . "', `namevirtualhost_statement`='" . (int)$namevirtualhost_statement . "', `vhostcontainer`='" . (int)$vhostcontainer . "', `vhostcontainer_servername_statement`='" . (int)$vhostcontainer_servername_statement . "', `specialsettings`='" . $db->escape($specialsettings) . "' WHERE `id`='" . (int)$id . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_IPSANDPORTS . "` SET `ip`='" . $db->escape($ip) . "', `port`='" . (int)$port . "', `listen_statement`='" . (int)$listen_statement . "', `namevirtualhost_statement`='" . (int)$namevirtualhost_statement . "', `vhostcontainer`='" . (int)$vhostcontainer . "', `vhostcontainer_servername_statement`='" . (int)$vhostcontainer_servername_statement . "', `specialsettings`='" . $db->escape($specialsettings) . "', `ssl`='" . $_POST['ssl'] . "', `ssl_cert`='" . $_POST['ssl_cert_file'] . "' WHERE `id`='" . (int)$id . "'");
 					$log->logAction(ADM_ACTION, LOG_WARNING, "changed IP/port from '" . $result['ip'] . ":" . $result['port'] . "' to '" . $ip . ":" . $port . "'");
 					inserttask('1');
 					inserttask('4');
@@ -264,11 +275,22 @@ if($page == 'ipsandports'
 			}
 			else
 			{
+				$enable_ssl = makeyesno('ssl', '1', '0', $result['ssl']);
 				$result = htmlentities_array($result);
 				$listen_statement = makeyesno('listen_statement', '1', '0', $result['listen_statement']);
 				$namevirtualhost_statement = makeyesno('namevirtualhost_statement', '1', '0', $result['namevirtualhost_statement']);
 				$vhostcontainer = makeyesno('vhostcontainer', '1', '0', $result['vhostcontainer']);
 				$vhostcontainer_servername_statement = makeyesno('vhostcontainer_servername_statement', '1', '0', $result['vhostcontainer_servername_statement']);
+
+				if(!empty($result['ssl_cert']))
+				{
+					$ssl_cert_file = $result['ssl_cert'];
+				}
+				else
+				{
+					$ssl_cert_file = $settings['system']['ssl_cert_file'];
+				}
+
 				eval("echo \"" . getTemplate("ipsandports/ipsandports_edit") . "\";");
 			}
 		}

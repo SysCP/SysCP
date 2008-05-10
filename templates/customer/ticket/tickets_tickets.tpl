@@ -1,4 +1,4 @@
-<tr>
+<tr class="" onmouseover="this.className='RowOverSelected';" onmouseout="this.className='';">
 	<td class="field_name_border_left">{$row['lastchange']}</td>
 	<td class="field_name">{$row['ticket_answers']}</td>
 	<td class="field_name">{$row['subject']}</td>

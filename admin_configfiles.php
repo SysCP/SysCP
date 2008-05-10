@@ -98,6 +98,7 @@ if($userinfo['change_serversettings'] == '1')
 			'<SQL_HOST>' => $sql['host'],
 			'<SERVERNAME>' => $settings['system']['hostname'],
 			'<SERVERIP>' => $settings['system']['ipaddress'],
+			'<NAMESERVERS>' => $settings['system']['nameservers'],
 			'<VIRTUAL_MAILBOX_BASE>' => $settings['system']['vmail_homedir'],
 			'<VIRTUAL_UID_MAPS>' => $settings['system']['vmail_uid'],
 			'<VIRTUAL_GID_MAPS>' => $settings['system']['vmail_gid']

@@ -89,6 +89,10 @@ $configfiles = Array(
 							'useradd -u ' . $settings['system']['vmail_uid'] . ' -g vmail vmail',
 							'mkdir -p ' . $settings['system']['vmail_homedir'],
 							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir'],
+							'touch /etc/postfix/mysql-virtual_alias_maps.cf',
+							'touch /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'touch /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'touch /etc/postfix/sasl/smtpd.conf',
 							'chmod 660 /etc/postfix/mysql-virtual_alias_maps.cf',
 							'chmod 660 /etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'chmod 660 /etc/postfix/mysql-virtual_mailbox_maps.cf',
@@ -99,7 +103,8 @@ $configfiles = Array(
 							'chgrp postfix /etc/postfix/sasl/smtpd.conf'
 						),
 						'restart' => Array(
-							'/etc/init.d/postfix restart'
+							'/etc/init.d/postfix restart',
+							'newaliases'
 						)
 					),
 				)
@@ -180,6 +185,16 @@ $configfiles = Array(
 							'/etc/init.d/bind9 restart'
 						)
 					),
+					'powerdns' => Array(
+						'label' => 'PowerDNS',
+						'files' => Array(
+							'etc_powerdns_pdns.conf' => '/etc/powerdns/pdns.conf',
+							'etc_powerdns_pdns-syscp.conf' => '/etc/powerdns/pdns_syscp.conf',
+						),
+						'restart' => Array(
+							'/etc/init.d/pdns restart'
+						)
+					),
 				)
 			),
 			'mail' => Array(
@@ -228,6 +243,10 @@ $configfiles = Array(
 							'useradd -u ' . $settings['system']['vmail_uid'] . ' -g vmail vmail',
 							'mkdir -p ' . $settings['system']['vmail_homedir'],
 							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir'],
+							'touch /etc/postfix/mysql-virtual_alias_maps.cf',
+							'touch /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'touch /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'touch /etc/postfix/sasl/smtpd.conf',
 							'chmod 660 /etc/postfix/mysql-virtual_alias_maps.cf',
 							'chmod 660 /etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'chmod 660 /etc/postfix/mysql-virtual_mailbox_maps.cf',
@@ -235,10 +254,11 @@ $configfiles = Array(
 							'chgrp postfix /etc/postfix/mysql-virtual_alias_maps.cf',
 							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'chgrp postfix /etc/postfix/sasl/smtpd.conf'
+							'chgrp postfix /etc/postfix/sasl/smtpd.conf',
 						),
 						'restart' => Array(
-							'/etc/init.d/postfix restart'
+							'/etc/init.d/postfix restart',
+							'newaliases'
 						)
 					),
 				)
@@ -254,6 +274,24 @@ $configfiles = Array(
 						),
 						'restart' => Array(
 							'/etc/init.d/proftpd restart'
+						)
+					),
+					'pure-ftpd' => Array(
+						'label' => 'Pure FTPd',
+						'files' => Array(
+							'etc_pure-ftpd_conf_MinUID' => '/etc/pure-ftpd/conf/MinUID',
+							'etc_pure-ftpd_conf_MySQLConfigFile' => '/etc/pure-ftpd/MySQLConfigFile',
+							'etc_pure-ftpd_conf_NoAnonymous' => '/etc/pure-ftpd/conf/NoAnonymous',
+							'etc_pure-ftpd_conf_MaxIdleTime' => '/etc/pure-ftpd/conf/MaxIdleTime',
+							'etc_pure-ftpd_conf_ChrootEveryone' => '/etc/pure-ftpd/conf/ChrootEveryone',
+							'etc_pure-ftpd_conf_PAMAuthentication' => '/etc/pure-ftpd/conf/PAMAuthentication',
+							'etc_pure-ftpd_db_mysql.conf' => '/etc/pure-ftpd/db/mysql.conf',
+							'etc_pure-ftpd_conf_CustomerProof' => '/etc/pure-ftpd/conf/CustomerProof',
+							'etc_pure-ftpd_conf_Bind' => '/etc/pure-ftpd/conf/Bind',
+							'etc_default_pure-ftpd-common' => '/etc/default/pure-ftpd-common'
+						),
+						'restart' => Array(
+							'/etc/init.d/pure-ftpd-mysql restart'
 						)
 					),
 				)
@@ -344,6 +382,10 @@ $configfiles = Array(
 							'useradd -u ' . $settings['system']['vmail_uid'] . ' -g vmail vmail',
 							'mkdir -p ' . $settings['system']['vmail_homedir'],
 							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir'],
+							'touch /etc/postfix/mysql-virtual_alias_maps.cf',
+							'touch /etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'touch /etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'touch /usr/lib/sasl2/smtpd.conf',
 							'chmod 660 /etc/postfix/mysql-virtual_alias_maps.cf',
 							'chmod 660 /etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'chmod 660 /etc/postfix/mysql-virtual_mailbox_maps.cf',

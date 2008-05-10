@@ -83,11 +83,15 @@ class MysqlLogger extends AbstractLogger
 				return;
 			}
 
+			#echo BADABUM;
+
 			if(parent::logCron() == 1
 			   && $action != CRON_ACTION)
 			{
 				return;
 			}
+
+			#echo BADABUM;
 
 			if($action != CRON_ACTION)
 			{
@@ -97,6 +101,9 @@ class MysqlLogger extends AbstractLogger
 			{
 				$name = '';
 			}
+
+			#var_dump($text);
+			#echo BADABUM;
 
 			$now = time();
 

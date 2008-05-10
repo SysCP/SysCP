@@ -31,6 +31,12 @@ $header
 				<td class="main_field_name">{$lng['panel']['urloverridespath']}:</td>
 				<td class="main_field_display"><input type="text" name="url" value="{$urlvalue}" size="30" /></td>
 			</tr></if>
+                        <if $settings['system']['use_ssl'] == '1'>
+                        <tr>
+                                <td class="main_field_name">SSL Redirect:</td>
+                                <td class="main_field_display" nowrap="nowrap">$ssl_redirect</td>
+                        </tr>
+			</if>
 			<tr>
 				<td class="main_field_name">{$lng['domain']['openbasedirpath']}:</td>
 				<td class="main_field_display" nowrap><select name="openbasedir_path">$openbasedir</select></td>
