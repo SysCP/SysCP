@@ -1399,17 +1399,19 @@ if($settings['panel']['version'] == '1.2.19-svn4.5')
 	$settings['panel']['version'] = '1.2.19-svn6';
 }
 
-if($settings['panel']['version'] == '1.2.19-svn7')
+if($settings['panel']['version'] == '1.2.19-svn6')
 {
 	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `ip` tinyint(4) NOT NULL default '-1'");
-	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('admin', '', 'menu;message', 'admin_message.nourl', 50, '', 0");
-	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('admin', 'admin_message.nourl', 'admin;message', 'admin_message.php', 10, '', 0");
+	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `area`='admin', `parent_url`='', `lang`='menu;message', `url`='admin_message.nourl', `order`=50");
+	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `area`='admin', `parent_url`='admin_message.nourl', `lang`='admin;message', `url`='admin_message.php', `order`=10");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl` tinyint(4) NOT NULL default '0'");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl_redirect` tinyint(4) NOT NULL default '0'");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl_ipandport` tinyint(4) NOT NULL default '0'");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_IPSANDPORTS . "` ADD `ssl` tinyint(4) NOT NULL default '0'");
-	$db->query("ALTER TABLE `" . TABLE_PANEL_IPSANDPORTS . "` ADD `ipandport` tinytext AFTER `ssl`'");
-
+	$db->query("ALTER TABLE `" . TABLE_PANEL_IPSANDPORTS . "` ADD `ipandport` tinytext AFTER `ssl`");
+        $db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system','ssl_cert_file','/etc/apache2/apache2.pem')");
+        $db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system','use_ssl','1')");
+        $db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system','openssl_cnf','[ req ]\r\ndefault_bits = 1024\r\ndistinguished_name = req_distinguished_name\r\nattributes = req_attributes\r\nprompt = no\r\noutput_password =\r\ninput_password =\r\n[ req_distinguished_name ]\r\nC = DE\r\nST = syscp\r\nL = syscp    \r\nO = Testcertificate\r\nOU = syscp        \r\nCN = @@domain_name@@\r\nemailAddress = @@email@@    \r\n[ req_attributes ]\r\nchallengePassword =\r\n')");
 	// set new version
 
 	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn7\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
