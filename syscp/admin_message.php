@@ -39,16 +39,11 @@ if($page == 'message')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			$bcc_headers = '';
+			$from = $db->query_first("SELECT `email`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE adminid='" . $userinfo['adminid'] . "'");
 
 			if($_POST['receipient'] == 0)
 			{
 				$result = $db->query('SELECT `loginname`, `name`, `email`  FROM `' . TABLE_PANEL_ADMINS . "`");
-
-				while($row = $db->fetch_array($result))
-				{
-					$bcc_headers = 'Bcc: ' . $row['name'] . ' <' . $row['email'] . '> ' . "\r\n";
-				}
 			}
 			elseif($_POST['receipient'] == 1)
 			{
@@ -60,28 +55,30 @@ if($page == 'message')
 				{
 					$result = $db->query('SELECT `firstname`, `name`, `email`  FROM `' . TABLE_PANEL_CUSTOMERS . "` WHERE `adminid`='" . $userinfo['adminid'] . "'");
 				}
-
-				while($row = $db->fetch_array($result))
-				{
-					$bcc_headers = 'Bcc: ' . $row['name'] . ' <' . $row['email'] . '> ' . "\r\n";
-				}
 			}
 			else
 			{
 				standard_error('noreceipientsgiven');
-				exit;
 			}
 
-			$from = $db->query_first("SELECT `email`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE adminid='" . $userinfo['adminid'] . "'");
-			$headers = 'From: ' . $from['name'] . ' <' . $from['email'] . '>' . "\r\n";
-			$headers.= $bcc_headers;
 			$subject = $_POST['subject'];
 			$message = wordwrap($_POST['message'], 70);
 
 			if(!empty($message))
 			{
-				mail('', $subject, $message, $headers);
-
+				$mail->Body = $message;
+				$mail->Subject = $subject;
+				while($row = $db->fetch_array($result))
+				{
+					$mail->AddAddress($row['name'], $row['email']);
+					$mail->From = $from['email'];
+					$mail->FromName = $from['name'];
+					if(!$mail->Send())
+					{
+						standard_error(array('errorsendingmail', $row["email"]));
+					}
+					$mail->ClearAddresses();
+				}
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s

@@ -157,6 +157,11 @@ require ('./lib/class_mysqllogger.php');
 require ('./lib/class_syscplogger.php');
 
 /**
+ * Includes the mailing facility
+ */
+require ('./lib/class.phpmailer.php');
+
+/**
  * Reverse magic_quotes_gpc=on to have clean GPC data again
  */
 
@@ -427,5 +432,13 @@ if($page == '')
 {
 	$page = 'overview';
 }
+
+/**
+ * Initialize the mailingsystem
+ */
+
+$mail = new PHPMailer();
+$mail->From = $settings['panel']['adminmail'];
+
 
 ?>
