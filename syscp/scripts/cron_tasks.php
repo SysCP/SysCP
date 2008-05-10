@@ -69,6 +69,7 @@ while($row = $db->fetch_array($result_tasks))
 		   	&& !file_exists($settings['system']['apacheconf_vhost']))
 			{
 				safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
+				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
 			}
 
 			$known_vhost_filenames = array();
@@ -76,21 +77,49 @@ while($row = $db->fetch_array($result_tasks))
 
 			while($row_ipsandports = $db->fetch_array($result_ipsandports))
 			{
+				
 				if(!$dolighty)
 				{
 					if($row_ipsandports['listen_statement'] == '1')
 					{
-						$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+						if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						{
+							$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 listen-statement');
+						}
+						elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						{
+							$vhosts_file.= 'Listen [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
+							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 listen-statement');
+						}
 					}
 
 					if($row_ipsandports['namevirtualhost_statement'] == '1')
 					{
-						$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+						if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						{
+							$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 namevirtualhost-statement');
+						}
+						elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						{
+							$vhosts_file.= 'NameVirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
+							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 namevirtualhost-statement');
+						}
 					}
 
 					if($row_ipsandports['vhostcontainer'] == '1')
 					{
-						$vhosts_file.= '<VirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . '>' . "\n";
+						if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						{
+							$vhosts_file.= '<VirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . '>' . "\n";
+							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 vhostcontainer');
+						}
+						elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						{
+							$vhosts_file.= '<VirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . '>' . "\n";
+							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 vhostcontainer');
+						}
 
 						if($row_ipsandports['vhostcontainer_servername_statement'] == '1')
 						{
