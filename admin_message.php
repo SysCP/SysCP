@@ -68,7 +68,7 @@ if($page == 'message')
 			}
 			else
 			{
-				echo "BAM. Error!";
+				standard_error('noreceipientsgiven');
 			}
 
 			$from = $db->query_first("SELECT `email`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE adminid='" . $userinfo['adminid'] . "'");
