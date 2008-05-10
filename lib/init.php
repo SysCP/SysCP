@@ -428,39 +428,4 @@ if($page == '')
 	$page = 'overview';
 }
 
-/**
- * Check the formtoken
- */
-
-// First check if there was a token submitted
-
-$submittedtoken = isset($_POST['token']) ? $_POST['token'] : null;
-$userinfo['hadtoken'] = false;
-
-if(!is_null($submittedtoken))
-{
-	if(!preg_match('/^[0-9a-f]{32}$/D', $submittedtoken)
-	   || $userinfo['formtoken'] != $submittedtoken)
-	{
-		$db->query('DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"');
-		standard_error('formtokencompromised');
-
-		// explicit die, if someone ever removes it from standard_error
-
-		die();
-	}
-
-	// We can set this to true: if the token isn't valid, we would be out by now
-
-	$userinfo['hadtoken'] = true;
-}
-
-unset($submittedtoken, $_POST['token']);
-
-if(isset($userinfo['newformtoken']))
-{
-	$userinfo['formtoken'] = $userinfo['newformtoken'];
-	unset($userinfo['newformtoken']);
-}
-
 ?>

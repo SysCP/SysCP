@@ -1,6 +1,5 @@
 $header
 	<form action="$yesfile" method="post">
-		<input type="hidden" name="token" value="{$userinfo['formtoken']}" />
 		<input type="hidden" name="s" value="$s" />
 		<input type="hidden" name="send" value="send" />
 		$hiddenparams
