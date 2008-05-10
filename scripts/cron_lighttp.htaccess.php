@@ -31,13 +31,13 @@ include (dirname(__FILE__) . '/../lib/cron_init.php');
 /**
  * LOOK INTO EVERY CUSTOMER DIR TO SEE IF THERE ARE ANY .HTACCESS FILE TO "TRANSLATE"
  */
- 
+
 if($settings['system']['apacheversion'] == 'lighttpd')
 {
 	fwrite($debugHandler, '  cron_lighttp.htaccess: Searching for .htaccess files to translate' . "\n");
 	$lpath = makeCorrectDir(strrchr($settings['system']['apacheconf_vhost'], '/'));
 	$htaccessfh = @fopen($lpath . 'syscp-htaccess.conf', 'w');
-	
+
 	if($htaccessfh !== false)
 	{
 		read_directory($settings['system']['documentroot_prefix'], 25, $htaccessfh);
@@ -46,7 +46,6 @@ if($settings['system']['apacheversion'] == 'lighttpd')
 	{
 		fwrite($debugHandler, '  ERROR: Cannot open file ' . $lpath . 'syscp-htaccess.conf' . "\n");
 	}
-
 }
 else
 {
@@ -64,19 +63,19 @@ include ($pathtophpfiles . '/lib/cron_shutdown.php');
  */
 
 /**
- * FUNCTIONS 
+ * FUNCTIONS
  */
 
 function read_directory($dir1 = null, $min_depth = 25, $htaccessfh = null)
 {
 	global $htaccessfh;
-	
+
 	if(!is_string($dir1))
 	{
 		return false;
 	}
 
-	$depth = explode("/", $dir1); 
+	$depth = explode("/", $dir1);
 	$current_depth = sizeof($depth);
 
 	if($current_depth < $min_depth)
@@ -89,14 +88,15 @@ function read_directory($dir1 = null, $min_depth = 25, $htaccessfh = null)
 
 	while($file = readdir($dh))
 	{
-		if(($file != ".") && ($file != ".."))
+		if(($file != ".")
+		   && ($file != ".."))
 		{
-			$file = $dir."/".$file;
-
-			for($i=0;$i <= ($current_depth - $min_depth); $i++)
+			$file = $dir . "/" . $file;
+			for ($i = 0;$i <= ($current_depth-$min_depth);$i++)
 
 			// $file is sub-directory
-			if($ddh = @opendir($file)) 
+
+			if($ddh = @opendir($file))
 			{
 				read_directory($file);
 			}
@@ -109,27 +109,23 @@ function read_directory($dir1 = null, $min_depth = 25, $htaccessfh = null)
 			}
 		}
 	}
-	
+
 	closedir($dh);
 	return true;
-	
 }
 
-function parseHtaccess{$file = null)
+function parseHtaccess($file = null)
 {
 	global $debugHandler, $htaccessfh;
-	
 	$htacc = @file_get_contents($file);
-	
+
 	if($htacc != "")
 	{
 		$htlines = array();
 		$htlines = explode("\n", $htacc);
-		
 		$userhasrewrites = false;
 		$userrewrites = array();
 		$rule = array();
-		
 		foreach($htlines as $htl)
 		{
 			if(preg_match('/^RewriteEngine\ on$/si', $htl) !== null)
@@ -140,26 +136,27 @@ function parseHtaccess{$file = null)
 			{
 				$regex = isset($rule[0]) ? $rule[0] : '';
 				$relativeuri = isset($rule[1]) ? $rule[1] : '';
-				
+
 				if($regex != ''
-					&& $relativeuri != '')
+				   && $relativeuri != '')
 				{
-					$userrewrites[]['regex'] = $regex
-					$userrewrites[]['relativeuri'] = $relativeuri
+					$userrewrites[]['regex'] = $regex;
+					$userrewrites[]['relativeuri'] = $relativeuri;
 				}
 			}
 		}
-		
-		if($userhasrewrites) 
+
+		if($userhasrewrites)
 		{
-			fwrite($htaccessfh, '$PHYSICAL["path"] == "' . dirname($file) . '" {' . "\n";
-			fwrite($htaccessfh, '   url.rewrite-once = (' . "\n";
+			fwrite($htaccessfh, '$PHYSICAL["path"] == "' . dirname($file) . '" {' . "\n");
+			fwrite($htaccessfh, '   url.rewrite-once = (' . "\n");
 			$count = 1;
 			$max = count($userrewrites);
 			foreach($userrewrites as $usrrw)
 			{
 				fwrite($htaccessfh, ' "^' . $usrrw['regex'] . '$" => "' . $usrrw['relativeuri'] . '"');
-				if($count < $max) 
+
+				if($count < $max)
 				{
 					fwrite($htaccessfh, ',' . "\n");
 				}
@@ -167,15 +164,19 @@ function parseHtaccess{$file = null)
 				{
 					fwrite($htaccessfh, "\n");
 				}
+
 				$count++;
 			}
-			fwrite($htaccessfh, '   )' . "\n";
-			fwrite($htaccessfh, '}' . "\n";
+
+			fwrite($htaccessfh, '   )' . "\n");
+			fwrite($htaccessfh, '}' . "\n");
 		}
 	}
 	else
 	{
-		fwrite($debugHandler, '  WARNING: file ' .$file . ' seems to be empty or there was an error' . "\n");
+		fwrite($debugHandler, '  WARNING: file ' . $file . ' seems to be empty or there was an error' . "\n");
 		return;
 	}
 }
+
+?>

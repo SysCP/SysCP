@@ -83,11 +83,11 @@ function createFcgiConfig($domain, $settings)
 	if(!file_exists($configdir . 'php-fcgi-starter'))
 	{
 		$starter_file = "#!/bin/sh\n";
-		$starter_file .= "PHPRC=\"" . escapeshellarg($configdir) . "\"\n";
-		$starter_file .= "export PHPRC\n";
-		$starter_file .= "PHP_FCGI_CHILDREN=0\n";
-		$starter_file .= "export PHP_FCGI_CHILDREN\n";
-		$starter_file .= "exec /usr/bin/php-cgi -c " . escapeshellarg($configdir) . "\n";
+		$starter_file.= "PHPRC=\"" . escapeshellarg($configdir) . "\"\n";
+		$starter_file.= "export PHPRC\n";
+		$starter_file.= "PHP_FCGI_CHILDREN=0\n";
+		$starter_file.= "export PHP_FCGI_CHILDREN\n";
+		$starter_file.= "exec /usr/bin/php-cgi -c " . escapeshellarg($configdir) . "\n";
 		$starter_file_handler = fopen($configdir . 'php-fcgi-starter', 'w');
 		fwrite($starter_file_handler, $starter_file);
 		fclose($starter_file_handler);

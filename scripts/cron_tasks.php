@@ -55,7 +55,7 @@ while($row = $db->fetch_array($result_tasks))
 	{
 		fwrite($debugHandler, '  cron_tasks: Task1 started - ' . $settings['system']['apacheconf_vhost'] . ' rebuild' . "\n");
 		$vhosts_file = '';
-		
+
 		if($settings['system']['apacheversion'] == 'lighttpd')
 		{
 			$dolighty = true;
@@ -64,80 +64,376 @@ while($row = $db->fetch_array($result_tasks))
 		{
 			$dolighty = false;
 		}
-		
-			if(isConfigDir($settings['system']['apacheconf_vhost'])
-		   	&& !file_exists($settings['system']['apacheconf_vhost']))
+
+		if(isConfigDir($settings['system']['apacheconf_vhost'])
+		   && !file_exists($settings['system']['apacheconf_vhost']))
+		{
+			safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
+		}
+
+		$known_vhost_filenames = array();
+		$result_ipsandports = $db->query("SELECT `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
+
+		while($row_ipsandports = $db->fetch_array($result_ipsandports))
+		{
+			if(!$dolighty)
 			{
-				safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
-				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
+				if($row_ipsandports['listen_statement'] == '1')
+				{
+					if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+						$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 listen-statement');
+					}
+					elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$vhosts_file.= 'Listen [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
+						$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 listen-statement');
+					}
+				}
+
+				if($row_ipsandports['namevirtualhost_statement'] == '1')
+				{
+					if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+						$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 namevirtualhost-statement');
+					}
+					elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$vhosts_file.= 'NameVirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
+						$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 namevirtualhost-statement');
+					}
+				}
+
+				if($row_ipsandports['vhostcontainer'] == '1')
+				{
+					if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$vhosts_file.= '<VirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . '>' . "\n";
+						$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 vhostcontainer');
+					}
+					elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$vhosts_file.= '<VirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . '>' . "\n";
+						$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 vhostcontainer');
+					}
+
+					if($row_ipsandports['vhostcontainer_servername_statement'] == '1')
+					{
+						$vhosts_file.= ' ServerName ' . $settings['system']['hostname'] . "\n";
+					}
+
+					if($row_ipsandports['specialsettings'] != '')
+					{
+						$vhosts_file.= $row_ipsandports['specialsettings'] . "\n";
+					}
+
+					$vhosts_file.= '</VirtualHost>' . "\n";
+				}
 			}
 
-			$known_vhost_filenames = array();
-			$result_ipsandports = $db->query("SELECT `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
+			/* !$dolighty */
 
-			while($row_ipsandports = $db->fetch_array($result_ipsandports))
+			if(isConfigDir($settings['system']['apacheconf_vhost']))
 			{
-				
+				$vhosts_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/10_syscp_ipandport_' . $row_ipsandports['ip'] . '.' . $row_ipsandports['port'] . '.conf');
+				$known_vhost_filenames[] = basename($vhosts_filename);
+
+				// Apply header
+
+				$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
+
+				// Save partial file
+
+				$vhosts_file_handler = fopen($vhosts_filename, 'w');
+				fwrite($vhosts_file_handler, $vhosts_file);
+				fclose($vhosts_file_handler);
+
+				// Reset vhosts_file
+
+				$vhosts_file = '';
+			}
+			else
+			{
+				$vhosts_file.= "\n";
+			}
+		}
+
+		$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+
+		while($domain = $db->fetch_array($result_domains))
+		{
+			fwrite($debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+			$vhosts_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
+
+			if($domain['deactivated'] != '1'
+			   || $settings['system']['deactivateddocroot'] != '')
+			{
 				if(!$dolighty)
 				{
-					if($row_ipsandports['listen_statement'] == '1')
+					$vhosts_file.= '<VirtualHost ' . $domain['ipandport'] . '>' . "\n";
+					$vhosts_file.= '  ServerName ' . $domain['domain'] . "\n";
+				}
+				else
+				{
+					$vhosts_file.= '$HTTP["host"] =~ "^(www\.|)' . $domain['domain'] . '$" { ' . "\n";
+				}
+
+				if(!$dolighty)
+				{
+					$server_alias = '';
+					$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
+
+					while(($alias_domain = $db->fetch_array($alias_domains)) !== false)
 					{
-						if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						$server_alias.= ' ' . $alias_domain['domain'] . ' ' . (($alias_domain['iswildcarddomain'] == 1) ? '*' : 'www') . '.' . $alias_domain['domain'];
+					}
+
+					if($domain['iswildcarddomain'] == '1')
+					{
+						$alias = '*';
+					}
+					else
+					{
+						$alias = 'www';
+					}
+
+					$vhosts_file.= '  ServerAlias ' . $alias . '.' . $domain['domain'] . $server_alias . "\n";
+					$vhosts_file.= '  ServerAdmin ' . $domain['email'] . "\n";
+				}
+
+				if(preg_match('/^https?\:\/\//', $domain['documentroot']))
+				{
+					if(!$dolighty)
+					{
+						$vhosts_file.= '  Redirect / ' . $domain['documentroot'] . "\n";
+					}
+					else
+					{
+						$vhosts_file.= '  url.redirect = (' . "\n";
+						$vhosts_file.= '    "" 		=> "' . $domain['documentroot'] . '",' . "\n";
+						$vhosts_file.= '  )' . "\n";
+					}
+				}
+				else
+				{
+					$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
+					$domain['documentroot'] = makeCorrectDir($domain['documentroot']);
+
+					if($domain['deactivated'] == '1'
+					   && $settings['system']['deactivateddocroot'] != '')
+					{
+						if(!$dolighty)
 						{
-							$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
-							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 listen-statement');
+							$vhosts_file.= '  # Using docroot for deactivated users...' . "\n";
+							$vhosts_file.= '  DocumentRoot "' . $settings['system']['deactivateddocroot'] . "\"\n";
 						}
-						elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						else
 						{
-							$vhosts_file.= 'Listen [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
-							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 listen-statement');
+							$vhosts_file.= '  # Using docroot for deactivated users...' . "\n";
+							$vhosts_file.= '  server.document-root = "' . $settings['system']['deactivateddocroot'] . '"' . "\n";
+						}
+					}
+					else
+					{
+						if(!$dolighty)
+						{
+							$vhosts_file.= '  DocumentRoot "' . $domain['documentroot'] . "\"\n";
+						}
+						else
+						{
+							$vhosts_file.= '  server.document-root = "' . $domain['documentroot'] . '"' . "\n";
+							$vhosts_file.= '  server.dir-listing   = "disable"' . "\n";
 						}
 					}
 
-					if($row_ipsandports['namevirtualhost_statement'] == '1')
+					if($domain['phpenabled'] == '1')
 					{
-						if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						// This vHost has PHP enabled...
+
+						if(!$dolighty)
 						{
-							$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
-							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 namevirtualhost-statement');
+							if($settings['system']['mod_fcgid'] == 1)
+							{
+								// ...and we are using mod_fcgid
+								// TODO: Put this in the join on line 212
+
+								$sql = "SELECT * FROM `ftp_users` WHERE `customerid` = " . $domain['customerid'];
+								$result_ftp = $db->query($sql);
+
+								if($db->num_rows($result_ftp) > 0)
+								{
+									$vhosts_file.= '<Directory "' . $domain['documentroot'] . '">' . "\n";
+									$vhosts_file.= '  FCGIWrapper	' . $settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . 'php-fcgi-starter .php' . "\n";
+									$vhosts_file.= '  AddHandler		fcgid-script   .php' . "\n";
+									$vhosts_file.= '  Options		+FollowSymLinks -MultiViews +ExecCGI' . "\n";
+									$vhosts_file.= '</Directory>' . "\n";
+									$vhosts_file.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
+									createFcgiConfig($domain, $settings);
+								}
+							}
+							else
+							{
+								// ...and we are using the regular mod_php
+
+								if($domain['openbasedir'] == '1')
+								{
+									if($settings['system']['phpappendopenbasedir'] != '')
+									{
+										$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
+									}
+									else
+									{
+										$_phpappendopenbasedir = '';
+									}
+
+									if($domain['openbasedir_path'] == '1')
+									{
+										$vhosts_file.= '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
+									}
+									else
+									{
+										$vhosts_file.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
+									}
+								}
+
+								if($domain['safemode'] == '0')
+								{
+									$vhosts_file.= '  php_admin_flag safe_mode Off ' . "\n";
+								}
+								else
+								{
+									$vhosts_file.= '  php_admin_flag safe_mode On ' . "\n";
+								}
+							}
 						}
-						elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						else
 						{
-							$vhosts_file.= 'NameVirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
-							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 namevirtualhost-statement');
+							$vhosts_file.= "  fastcgi.server = (
+	\".php\" => (
+		\"localhost\" => (
+			\"socket\" => \"/tmp/lighttpd-fcgi-sock-" . $domain['loginname'] . "\",
+			\"broken-scriptfilename\" => \"enable\",
+			\"bin-path\" => \"/usr/bin/php-cgi\",
+			\"min-procs\" => 1,
+			\"max-procs\" => 1,
+			\"max-load-per-proc\" => 4,
+			\"idle-timeout\" => 60,
+			\"bin-environment\" => (
+				\"UID\" => \"" . $domain['loginname'] . "\",
+				\"GID\" => \"" . $domain['loginname'] . "\",
+				\"PHP_FCGI_CHILDREN\" => \"0\",
+				\"PHP_FCGI_MAX_REQUESTS\" => \"2000\"
+			),
+			\"bin-copy-environment\" => ( \"\" )
+		)
+	)
+  )\n";
 						}
 					}
 
-					if($row_ipsandports['vhostcontainer'] == '1')
+					mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
+
+					if($domain['speciallogfile'] == '1')
 					{
-						if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						if($domain['parentdomainid'] == '0')
 						{
-							$vhosts_file.= '<VirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . '>' . "\n";
-							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv4 vhostcontainer');
-						}
-						elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-						{
-							$vhosts_file.= '<VirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . '>' . "\n";
-							$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted IPv6 vhostcontainer');
-						}
+							$speciallogfile = '-' . $domain['domain'];
 
-						if($row_ipsandports['vhostcontainer_servername_statement'] == '1')
-						{
-							$vhosts_file.= ' ServerName ' . $settings['system']['hostname'] . "\n";
+							if(!$dolighty)
+							{
+								$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
+							}
+							else
+							{
+								$vhosts_file.= '  alias.url = (' . "\n";
+								$vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . '",' . "\n";
+								$vhosts_file.= '  )' . "\n";
+							}
 						}
-
-						if($row_ipsandports['specialsettings'] != '')
+						else
 						{
-							$vhosts_file.= $row_ipsandports['specialsettings'] . "\n";
-						}
+							$speciallogfile = '-' . $domain['parentdomain'];
 
-						$vhosts_file.= '</VirtualHost>' . "\n";
+							if(!$dolighty)
+							{
+								$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
+							}
+							else
+							{
+								$vhosts_file.= '  alias.url = (' . "\n";
+								$vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . '",' . "\n";
+								$vhosts_file.= '  )' . "\n";
+							}
+						}
 					}
-				} /* !$dolighty */
+					else
+					{
+						$speciallogfile = '';
+
+						if($domain['customerroot'] != $domain['documentroot'])
+						{
+							if(!$dolighty)
+							{
+								$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
+							}
+							else
+							{
+								$vhosts_file.= '  alias.url = (' . "\n";
+								$vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/",' . "\n";
+								$vhosts_file.= '  )' . "\n";
+							}
+						}
+					}
+
+					if($settings['system']['mod_log_sql'] == 1)
+					{
+						// We are using mod_log_sql (http://www.outoforder.cc/projects/apache/mod_log_sql/)
+						// TODO: See how we are able emulate the error_log
+
+						if(!$dolighty)
+						{
+							$vhosts_file.= '  LogSQLTransferLogTable access_log' . "\n";
+						}
+					}
+					else
+					{
+						// The normal access/error - logging is enabled
+
+						if(!$dolighty)
+						{
+							$vhosts_file.= '  ErrorLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
+							$vhosts_file.= '  CustomLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
+						}
+						else
+						{
+							// server.errorlog might only be used ONCE in the lighty config!
+							// $vhosts_file.= '  server.errorlog = "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . '-error.log"' . "\n";
+
+							$vhosts_file.= '  accesslog.filename = "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . '-access.log"' . "\n";
+						}
+					}
+				}
+
+				if($domain['specialsettings'] != '')
+				{
+					$vhosts_file.= $domain['specialsettings'] . "\n";
+				}
+
+				if(!$dolighty)
+				{
+					$vhosts_file.= '</VirtualHost>' . "\n";
+				}
+				else
+				{
+					$vhosts_file.= '}' . "\n";
+				}
 
 				if(isConfigDir($settings['system']['apacheconf_vhost']))
 				{
-					$vhosts_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/10_syscp_ipandport_' . $row_ipsandports['ip'] . '.' . $row_ipsandports['port'] . '.conf');
+					$vhosts_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/' . ($domain['iswildcarddomain'] == '1' ? '30_syscp_wildcard_vhost' : '20_syscp_normal_vhost') . '_' . $domain['domain'] . '.conf');
 					$known_vhost_filenames[] = basename($vhosts_filename);
 
 					// Apply header
@@ -159,349 +455,61 @@ while($row = $db->fetch_array($result_tasks))
 					$vhosts_file.= "\n";
 				}
 			}
-
-			$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
-
-			while($domain = $db->fetch_array($result_domains))
-			{
-				fwrite($debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
-				$vhosts_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
-
-				if($domain['deactivated'] != '1'
-			   	|| $settings['system']['deactivateddocroot'] != '')
-				{
-					if(!$dolighty)
-					{
-						$vhosts_file.= '<VirtualHost ' . $domain['ipandport'] . '>' . "\n";
-						$vhosts_file.= '  ServerName ' . $domain['domain'] . "\n";
-					}
-					else
-					{
-						$vhosts_file.= '$HTTP["host"] =~ "^(www\.|)' . $domain['domain'] . '$" { '."\n";
-					}
-
-					if(!$dolighty)
-					{
-							$server_alias = '';
-							$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
-		
-							while(($alias_domain = $db->fetch_array($alias_domains)) !== false)
-							{
-								$server_alias.= ' ' . $alias_domain['domain'] . ' ' . (($alias_domain['iswildcarddomain'] == 1) ? '*' : 'www') . '.' . $alias_domain['domain'];
-							}
-		
-							if($domain['iswildcarddomain'] == '1')
-							{
-								$alias = '*';
-							}
-							else
-							{
-								$alias = 'www';
-							}
-		
-							$vhosts_file.= '  ServerAlias ' . $alias . '.' . $domain['domain'] . $server_alias . "\n";
-							$vhosts_file.= '  ServerAdmin ' . $domain['email'] . "\n";
-					}
-
-					if(preg_match('/^https?\:\/\//', $domain['documentroot']))
-					{
-						if(!$dolighty)
-						{
-							$vhosts_file.= '  Redirect / ' . $domain['documentroot'] . "\n";
-						}
-						else
-						{
-							$vhosts_file.= '  url.redirect = (' . "\n";
-							$vhosts_file.= '    "" 		=> "' . $domain['documentroot'] . '",' . "\n";
-							$vhosts_file.= '  )' . "\n";
-						}
-					}
-					else
-					{
-						$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
-						$domain['documentroot'] = makeCorrectDir($domain['documentroot']);
-
-						if($domain['deactivated'] == '1'
-					   	&& $settings['system']['deactivateddocroot'] != '')
-						{
-							if(!$dolighty)
-							{
-								$vhosts_file.= '  # Using docroot for deactivated users...' . "\n";
-								$vhosts_file.= '  DocumentRoot "' . $settings['system']['deactivateddocroot'] . "\"\n";
-							}
-							else
-							{
-								$vhosts_file.= '  # Using docroot for deactivated users...' . "\n";
-								$vhosts_file.= '  server.document-root = "' . $settings['system']['deactivateddocroot'] . '"'."\n";
-							}
-						}
-						else
-						{
-							if(!$dolighty)
-							{
-								$vhosts_file.= '  DocumentRoot "' . $domain['documentroot'] . "\"\n";
-							}
-							else
-							{
-								$vhosts_file.= '  server.document-root = "' . $domain['documentroot'] . '"'."\n";
-								$vhosts_file.= '  server.dir-listing   = "disable"' . "\n";
-							}
-						}
-
-						if($domain['phpenabled'] == '1')
-						{
-							// This vHost has PHP enabled...
-							if(!$dolighty)
-							{
-								if($settings['system']['mod_fcgid'] == 1)
-								{
-									// ...and we are using mod_fcgid
-									// TODO: Put this in the join on line 212
-
-									$sql = "SELECT * FROM `ftp_users` WHERE `customerid` = " . $domain['customerid'];
-									$result_ftp = $db->query($sql);
-
-									if($db->num_rows($result_ftp) > 0)
-									{
-										$vhosts_file.= '<Directory "' . $domain['documentroot'] . '">' . "\n";
-										$vhosts_file.= '  FCGIWrapper	' . $settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . 'php-fcgi-starter .php' . "\n";
-										$vhosts_file.= '  AddHandler		fcgid-script   .php' . "\n";
-										$vhosts_file.= '  Options		+FollowSymLinks -MultiViews +ExecCGI' . "\n";
-										$vhosts_file.= '</Directory>'."\n";
-										$vhosts_file.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
-										createFcgiConfig($domain, $settings);
-									}
-								}
-								else
-								{
-									// ...and we are using the regular mod_php
-
-									if($domain['openbasedir'] == '1')
-									{
-										if($settings['system']['phpappendopenbasedir'] != '')
-										{
-											$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
-										}
-										else
-										{
-											$_phpappendopenbasedir = '';
-										}
-
-										if($domain['openbasedir_path'] == '1')
-										{
-											$vhosts_file.= '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
-										}
-										else
-										{
-											$vhosts_file.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
-										}
-									}
-
-									if($domain['safemode'] == '0')
-									{
-										$vhosts_file.= '  php_admin_flag safe_mode Off ' . "\n";
-									}
-									else
-									{
-										$vhosts_file.= '  php_admin_flag safe_mode On ' . "\n";
-									}
-								}
-							}
-							else
-							{
-									
-								$vhosts_file.= "  fastcgi.server = (
-	\".php\" => (
-		\"localhost\" => (
-			\"socket\" => \"/tmp/lighttpd-fcgi-sock-" . $domain['loginname'] . "\",
-			\"broken-scriptfilename\" => \"enable\",
-			\"bin-path\" => \"/usr/bin/php-cgi\",
-			\"min-procs\" => 1,
-			\"max-procs\" => 1,
-			\"max-load-per-proc\" => 4,
-			\"idle-timeout\" => 60,
-			\"bin-environment\" => (
-				\"UID\" => \"" . $domain['loginname'] . "\",
-				\"GID\" => \"" . $domain['loginname'] . "\",
-				\"PHP_FCGI_CHILDREN\" => \"0\",
-				\"PHP_FCGI_MAX_REQUESTS\" => \"2000\"
-			),
-			\"bin-copy-environment\" => ( \"\" )
-		)
-	)
-  )\n";
-							}
-						}
-
-						mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
-
-						if($domain['speciallogfile'] == '1')
-						{
-							if($domain['parentdomainid'] == '0')
-							{
-								$speciallogfile = '-' . $domain['domain'];
-								if(!$dolighty)
-								{
-									$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
-								}
-								else
-								{
-									$vhosts_file.= '  alias.url = (' . "\n";
-									$vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . '",' . "\n";
-									$vhosts_file.= '  )' . "\n";
-								}
-							}
-							else
-							{
-								$speciallogfile = '-' . $domain['parentdomain'];
-								if(!$dolighty)
-								{
-									$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
-								}
-								else
-								{
-									$vhosts_file.= '  alias.url = (' . "\n";
-									$vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . '",' . "\n";
-									$vhosts_file.= '  )' . "\n";
-								}
-							}
-						}
-						else
-						{
-							$speciallogfile = '';
-
-							if($domain['customerroot'] != $domain['documentroot'])
-							{
-								if(!$dolighty)
-								{
-									$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
-								}
-								else
-								{
-									$vhosts_file.= '  alias.url = (' . "\n";
-									$vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/",' . "\n";
-									$vhosts_file.= '  )' . "\n";
-								}
-							}
-						}
-
-						if($settings['system']['mod_log_sql'] == 1)
-						{
-							// We are using mod_log_sql (http://www.outoforder.cc/projects/apache/mod_log_sql/)
-							// TODO: See how we are able emulate the error_log
-							if(!$dolighty)
-							{
-								$vhosts_file.= '  LogSQLTransferLogTable access_log' . "\n";
-							}
-						}
-						else
-						{
-							// The normal access/error - logging is enabled
-							if(!$dolighty)
-							{
-								$vhosts_file.= '  ErrorLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
-								$vhosts_file.= '  CustomLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
-							}
-							else
-							{
-								// server.errorlog might only be used ONCE in the lighty config!
-								// $vhosts_file.= '  server.errorlog = "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . '-error.log"' . "\n";
-								$vhosts_file.= '  accesslog.filename = "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . '-access.log"' . "\n";
-							}
-						}
-					}
-
-					if($domain['specialsettings'] != '')
-					{
-						$vhosts_file.= $domain['specialsettings'] . "\n";
-					}
-
-					if(!$dolighty)
-					{
-						$vhosts_file.= '</VirtualHost>' . "\n";
-					}
-					else
-					{
-						$vhosts_file.= '}'."\n";
-					}
-
-					if(isConfigDir($settings['system']['apacheconf_vhost']))
-					{
-						$vhosts_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/' . ($domain['iswildcarddomain'] == '1' ? '30_syscp_wildcard_vhost' : '20_syscp_normal_vhost') . '_' . $domain['domain'] . '.conf');
-						$known_vhost_filenames[] = basename($vhosts_filename);
-
-						// Apply header
-
-						$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
-
-						// Save partial file
-
-						$vhosts_file_handler = fopen($vhosts_filename, 'w');
-						fwrite($vhosts_file_handler, $vhosts_file);
-						fclose($vhosts_file_handler);
-
-						// Reset vhosts_file
-
-						$vhosts_file = '';
-					}
-					else
-					{
-						$vhosts_file.= "\n";
-					}
-				}
-				else
-				{
-					$vhosts_file.= '# Customer deactivated and a docroot for deactivated users hasn\'t been set.' . "\n";
-				}
-			}
-
-			if(!isConfigDir($settings['system']['apacheconf_vhost']))
-			{
-				if(file_exists($settings['system']['apacheconf_diroptions']))
-				{
-					if(!$dolighty);
-					{
-						$vhosts_file.= 'Include ' . $settings['system']['apacheconf_diroptions'] . "\n\n";
-					}
-				}
-
-				$vhosts_filename = $settings['system']['apacheconf_vhost'];
-
-				// Apply header
-
-				$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
-
-				// Save big file
-
-				$vhosts_file_handler = fopen($vhosts_filename, 'w');
-				fwrite($vhosts_file_handler, $vhosts_file);
-				fclose($vhosts_file_handler);
-			}
 			else
 			{
-				$vhosts_dir = makeCorrectDir($settings['system']['apacheconf_vhost']);
+				$vhosts_file.= '# Customer deactivated and a docroot for deactivated users hasn\'t been set.' . "\n";
+			}
+		}
 
-				if(file_exists($vhosts_dir)
-			   	&& is_dir($vhosts_dir))
+		if(!isConfigDir($settings['system']['apacheconf_vhost']))
+		{
+			if(file_exists($settings['system']['apacheconf_diroptions']))
+			{
+				if(!$dolighty);
+				
 				{
-					$vhost_file_dirhandle = opendir($vhosts_dir);
-
-					while(false !== ($vhost_filename = readdir($vhost_file_dirhandle)))
-					{
-						if($vhost_filename != '.'
-					   	&& $vhost_filename != '..'
-					   	&& !in_array($vhost_filename, $known_vhost_filenames)
-					   	&& preg_match('/^(10|20|30)_syscp_(ipandport|normal_vhost|wildcard_vhost)_(.+)\.conf$/', $vhost_filename)
-					   	&& file_exists(makeCorrectFile($vhosts_dir . '/' . $vhost_filename)))
-						{
-							fwrite($debugHandler, '  cron_tasks: Task1 - unlinking ' . $vhost_filename . "\n");
-							unlink(makeCorrectFile($vhosts_dir . '/' . $vhost_filename));
-						}
-					}
+					$vhosts_file.= 'Include ' . $settings['system']['apacheconf_diroptions'] . "\n\n";
 				}
 			}
 
+			$vhosts_filename = $settings['system']['apacheconf_vhost'];
+
+			// Apply header
+
+			$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
+
+			// Save big file
+
+			$vhosts_file_handler = fopen($vhosts_filename, 'w');
+			fwrite($vhosts_file_handler, $vhosts_file);
+			fclose($vhosts_file_handler);
+		}
+		else
+		{
+			$vhosts_dir = makeCorrectDir($settings['system']['apacheconf_vhost']);
+
+			if(file_exists($vhosts_dir)
+			   && is_dir($vhosts_dir))
+			{
+				$vhost_file_dirhandle = opendir($vhosts_dir);
+
+				while(false !== ($vhost_filename = readdir($vhost_file_dirhandle)))
+				{
+					if($vhost_filename != '.'
+					   && $vhost_filename != '..'
+					   && !in_array($vhost_filename, $known_vhost_filenames)
+					   && preg_match('/^(10|20|30)_syscp_(ipandport|normal_vhost|wildcard_vhost)_(.+)\.conf$/', $vhost_filename)
+					   && file_exists(makeCorrectFile($vhosts_dir . '/' . $vhost_filename)))
+					{
+						fwrite($debugHandler, '  cron_tasks: Task1 - unlinking ' . $vhost_filename . "\n");
+						unlink(makeCorrectFile($vhosts_dir . '/' . $vhost_filename));
+					}
+				}
+			}
+		}
+
 		safe_exec($settings['system']['apachereload_command']);
+
 		if($dolighty)
 		{
 			fwrite($debugHandler, '   cron_tasks: Task1 - Lighttpd reloaded' . "\n");
@@ -536,7 +544,7 @@ while($row = $db->fetch_array($result_tasks))
 	{
 		fwrite($debugHandler, '  cron_tasks: Task3 started - create/change/del htaccess/htpasswd' . "\n");
 		$diroptions_file = '';
-		
+
 		if($settings['system']['apacheversion'] == 'lighttpd')
 		{
 			$dolighty = true;
@@ -628,6 +636,7 @@ while($row = $db->fetch_array($result_tasks))
 					{
 						$diroptions_file.= '  server.dir-listing   = "enable"' . "\n";
 					}
+
 					fwrite($debugHandler, '  cron_tasks: Task3 - Setting Options +Indexes' . "\n");
 				}
 
@@ -642,6 +651,7 @@ while($row = $db->fetch_array($result_tasks))
 					{
 						$diroptions_file.= '  server.dir-listing   = "disable"' . "\n";
 					}
+
 					fwrite($debugHandler, '  cron_tasks: Task3 - Setting Options -Indexes' . "\n");
 				}
 
@@ -695,6 +705,7 @@ while($row = $db->fetch_array($result_tasks))
 					   && is_dir($settings['system']['apacheconf_htpasswddir']))
 					{
 						fwrite($debugHandler, '  cron_tasks: Task3 - Setting Password' . "\n");
+
 						if(!$dolighty)
 						{
 							$diroptions_file.= '  AuthType Basic' . "\n";
@@ -705,15 +716,15 @@ while($row = $db->fetch_array($result_tasks))
 						}
 						else
 						{
-						  	$diroptions_file.= '  auth.backend = "htpasswd"' . "\n";
-  							$diroptions_file.= '  auth.backend.htpasswd.userfile = "' . $htpasswd_filename . '"' . "\n";
-  							$diroptions_file.= '  auth.require = ("' . $row_diroptions['path'] .'" => (' . "\n";
+							$diroptions_file.= '  auth.backend = "htpasswd"' . "\n";
+							$diroptions_file.= '  auth.backend.htpasswd.userfile = "' . $htpasswd_filename . '"' . "\n";
+							$diroptions_file.= '  auth.require = ("' . $row_diroptions['path'] . '" => (' . "\n";
 							$diroptions_file.= '       "method"  => "basic",' . "\n";
 							$diroptions_file.= '       "realm"   => "Restricted Area",' . "\n";
 							$diroptions_file.= '       "require" => "valid-user"' . "\n";
 							$diroptions_file.= '  ))' . "\n";
-
 						}
+
 						fwrite($htpasswd_file_handler, $htpasswd_file);
 						fclose($htpasswd_file_handler);
 					}
@@ -727,7 +738,6 @@ while($row = $db->fetch_array($result_tasks))
 				{
 					$diroptions_file.= '}' . "\n";
 				}
-				
 
 				if(isConfigDir($settings['system']['apacheconf_diroptions']))
 				{
@@ -766,9 +776,10 @@ while($row = $db->fetch_array($result_tasks))
 			if($dolighty)
 			{
 				// we include the syscp-htaccess.conf file for customer .htaccess support
+
 				$diroptions_file.= "\n\n" . 'include "syscp-htaccess.conf"' . "\n";
 			}
-				
+
 			// Save big file
 
 			$diroptions_file_handler = fopen($diroptions_filename, 'w');
@@ -797,7 +808,7 @@ while($row = $db->fetch_array($result_tasks))
 				}
 			}
 		}
-		
+
 		safe_exec($settings['system']['apachereload_command']);
 		$htpasswd_dir = makeCorrectDir($settings['system']['apacheconf_htpasswddir']);
 
