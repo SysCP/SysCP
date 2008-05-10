@@ -255,15 +255,20 @@ CREATE TABLE `panel_domains` (
   `ipandport` int(11) unsigned NOT NULL default '1',
   `isbinddomain` tinyint(1) NOT NULL default '0',
   `isemaildomain` tinyint(1) NOT NULL default '0',
+  `email_only` tinyint(1) NOT NULL default '0',
   `iswildcarddomain` tinyint(1) NOT NULL default '0',
   `subcanemaildomain` tinyint(1) NOT NULL default '0',
   `caneditdomain` tinyint(1) NOT NULL default '1',
   `zonefile` varchar(255) NOT NULL default '',
+  `wwwserveralias` tinyint(1) NOT NULL default '1',
   `parentdomainid` int(11) unsigned NOT NULL default '0',
   `openbasedir` tinyint(1) NOT NULL default '0',
   `openbasedir_path` tinyint(1) NOT NULL default '0',
   `safemode` tinyint(1) NOT NULL default '0',
   `speciallogfile` tinyint(1) NOT NULL default '0',
+  `ssl` tinyint(4) NOT NULL default '0',
+  `ssl_redirect` tinyint(4) NOT NULL default '0',
+  `ssl_ipandport` tinyint(4) NOT NULL default '0',
   `specialsettings` text NOT NULL,
   `deactivated` tinyint(1) NOT NULL default '0',
   `bindserial` varchar(10) NOT NULL default '2000010100',
@@ -286,13 +291,15 @@ CREATE TABLE `panel_domains` (
 DROP TABLE IF EXISTS `panel_ipsandports`;
 CREATE TABLE `panel_ipsandports` (
   `id` int(11) unsigned NOT NULL auto_increment,
-  `ip` varchar(15) NOT NULL default '',
+  `ip` varchar(39) NOT NULL default '',
   `port` int(5) NOT NULL default '80',
   `listen_statement` tinyint(1) NOT NULL default '0',
   `namevirtualhost_statement` tinyint(1) NOT NULL default '0',
   `vhostcontainer` tinyint(1) NOT NULL default '0',
   `vhostcontainer_servername_statement` tinyint(1) NOT NULL default '0',
   `specialsettings` text NOT NULL,
+  `ssl` tinyint(4) NOT NULL default '0',
+  `ssl_cert` tinytext,
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 
@@ -462,7 +469,9 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (68, 'logger', 'logfile', '');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (69, 'logger', 'logtypes', 'syslog');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (70, 'logger', 'severity', '2');
-
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (71,'system','ssl_cert_file','/etc/apache2/apache2.pem');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (72,'system','use_ssl','1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (73,'system','openssl_cnf','[ req ]\r\ndefault_bits = 1024\r\ndistinguished_name = req_distinguished_name\r\nattributes = req_attributes\r\nprompt = no\r\noutput_password =\r\ninput_password =\r\n[ req_distinguished_name ]\r\nC = DE\r\nST = syscp\r\nL = syscp    \r\nO = Testcertificate\r\nOU = syscp        \r\nCN = @@domain_name@@\r\nemailAddress = @@email@@    \r\n[ req_attributes ]\r\nchallengePassword =\r\n');
 # --------------------------------------------------------
 
 #
@@ -627,6 +636,8 @@ INSERT INTO `panel_navigation` VALUES (42, 'customer', '', 'menue;traffic;traffi
 INSERT INTO `panel_navigation` VALUES (43, 'customer', 'customer_traffic.php', 'menue;traffic;current', 'customer_traffic.php?page=current', 10, '', 0);
 INSERT INTO `panel_navigation` VALUES (44, 'admin', '', 'admin;loggersystem', 'admin_loggersystem.nourl', '60', '', 0);
 INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_loggersystem.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', '10', '', 0);
+INSERT INTO `panel_navigation` VALUES (46, 'admin', '', 'menu;message', 'admin_message.nourl', 50, '', 0);
+INSERT INTO `panel_navigation` VALUES (47, 'admin', 'admin_message.nourl', 'admin;message', 'admin_message.php?page=message', 10, '', 0);
 
 # --------------------------------------------------------
 

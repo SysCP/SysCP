@@ -1031,7 +1031,8 @@ function updateCounters($returndebuginfo = false)
 		'chmod',
 		'chattr',
 		$settings['system']['apachereload_command'],
-		$settings['system']['bindreload_command']
+		$settings['system']['bindreload_command'],
+		'openssl'
 	);
 
 	//
@@ -1777,6 +1778,25 @@ function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
 	}
 
 	$db_root->query('FLUSH PRIVILEGES');
+}
+
+/**
+ * Checks whether it is a valid ip
+ *
+ * @return bool   false if it's not a valid ip
+ */
+
+function validate_ip($ip)
+{
+	if(filter_var($ip, FILTER_VALIDATE_IP) === FALSE)
+	{
+		standard_error($lng, ip);
+		exit;
+	}
+	else
+	{
+		return $ip;
+	}
 }
 
 ?>

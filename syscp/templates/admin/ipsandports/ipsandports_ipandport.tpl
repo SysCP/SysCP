@@ -1,4 +1,4 @@
-<tr>
+<tr class="" onmouseover="this.className='RowOverSelected';" onmouseout="this.className='';">
 	<td class="field_name_border_left"><font size="-1">{$row['ip']}:{$row['port']}</font></td>
 	<td class="field_name"><font size="-1"><if $row['listen_statement']=='1'>{$lng['panel']['yes']}<else>{$lng['panel']['no']}</if></font></td>
 	<td class="field_name"><font size="-1"><if $row['namevirtualhost_statement']=='1'>{$lng['panel']['yes']}<else>{$lng['panel']['no']}</if></font></td>

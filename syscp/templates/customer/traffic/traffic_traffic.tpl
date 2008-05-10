@@ -1,4 +1,4 @@
-<tr>
+<tr class="" onmouseover="this.className='RowOverSelected';" onmouseout="this.className='';">
 	<td class="field_name_border_left" width="80">
 		<a href="customer_traffic.php?month={$traf['month']}&year={$traf['year']}&s=$s">{$traf['monthname']}</a>
 	</td>

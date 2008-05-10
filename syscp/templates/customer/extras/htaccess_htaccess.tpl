@@ -1,4 +1,4 @@
-<tr>
+<tr class="" onmouseover="this.className='RowOverSelected';" onmouseout="this.className='';">
 	<td class="field_name_border_left">{$row['path']}</td>
 	<td class="field_name">{$row['options_indexes']}</td>
 	<td class="field_name">{$row['error404path']}</td>

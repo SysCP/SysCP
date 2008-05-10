@@ -756,6 +756,39 @@ if(($page == 'settings' || $page == 'overview')
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_worktime_sun from '" . $settings['ticket']['worktime_sun'] . "' to '" . $value . "'");
 		}
 
+		if($_POST['use_ssl'] != $settings['system']['use_ssl']
+		   && $settings['system']['use_ssl'] != "")
+		{
+			$value = ($_POST['use_ssl'] == '1' ? '1' : '0');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='use_ssl'");
+		}
+		elseif($settings['system']['use_ssl'] == "")
+		{
+			$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'use_ssl', '" . $_POST['use_ssl'] . "')");
+		}
+
+		if($_POST['ssl_cert_file'] != $settings['system']['ssl_cert_file']
+		   && $settings['system']['ssl_cert_file'] != "")
+		{
+			$value = $_POST['ssl_cert_file'];
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ssl_cert_file'");
+		}
+		elseif($settings['system']['ssl_cert_file'] == "")
+		{
+			$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'ssl_cert_file', '" . $_POST['ssl_cert_file'] . "')");
+		}
+
+		if($_POST['openssl_cnf'] != $settings['system']['openssl_cnf']
+		   && $settings['system']['openssl_cnf'] != "")
+		{
+			$value = $_POST['openssl_cnf'];
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ssl' AND `varname`='openssl_cnf'");
+		}
+		elseif($settings['system']['ssl_cert_file'] == "")
+		{
+			$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'openssl_cnf', '" . $_POST['openssl_cnf'] . "')");
+		}
+
 		redirectTo($filename, Array(
 			'page' => $page,
 			's' => $s
@@ -835,6 +868,7 @@ if(($page == 'settings' || $page == 'overview')
 		$no_robots = makeyesno('panel_no_robots', '1', '0', $settings['panel']['no_robots']);
 		$loggingenabled = makeyesno('loggingenabled', '1', '0', $settings['logger']['enabled']);
 		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
+		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['ticket']['enabled']);
 		$settings = htmlentities_array($settings);
 		eval("echo \"" . getTemplate("settings/settings") . "\";");
 	}

@@ -1,4 +1,4 @@
-<tr>
+<tr class="" onmouseover="this.className='RowOverSelected';" onmouseout="this.className='';">
 	<td class="field_name_border_left"><a href="$filename?s=$s&amp;page=$page&amp;action=su&amp;id={$row['customerid']}" target="_blank">{$row['loginname']}</a></td>
 	<if $userinfo['customers_see_all']>
 	<td class="field_name">{$row['adminname']}</td>

@@ -64,26 +64,55 @@ while($row = $db->fetch_array($result_tasks))
 			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($settings['system']['apacheconf_vhost'])));
 		}
 
+		/*
+		 *	Write the ipandport conf for apache
+		*/
+
 		$known_vhost_filenames = array();
-		$result_ipsandports = $db->query("SELECT `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
+		$result_ipsandports = $db->query("SELECT `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer` ,`vhostcontainer_servername_statement`, `specialsettings` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
 
 		while($row_ipsandports = $db->fetch_array($result_ipsandports))
 		{
+			$vhosts_file = '';
+
 			if($row_ipsandports['listen_statement'] == '1')
 			{
-				$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+				if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+				{
+					$vhosts_file.= 'Listen ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+				}
+				elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+				{
+					$vhosts_file.= 'Listen [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
+				}
+
 				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted listen-statement');
 			}
 
 			if($row_ipsandports['namevirtualhost_statement'] == '1')
 			{
-				$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+				if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+				{
+					$vhosts_file.= 'NameVirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . "\n";
+				}
+				elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+				{
+					$vhosts_file.= 'NameVirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . "\n";
+				}
+
 				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'inserted namevirtualhost-statement');
 			}
 
 			if($row_ipsandports['vhostcontainer'] == '1')
 			{
-				$vhosts_file.= '<VirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . '>' . "\n";
+				if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+				{
+					$vhosts_file.= '<VirtualHost ' . $row_ipsandports['ip'] . ':' . $row_ipsandports['port'] . '>' . "\n";
+				}
+				elseif(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+				{
+					$vhosts_file.= '<VirtualHost [' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'] . '>' . "\n";
+				}
 
 				if($row_ipsandports['vhostcontainer_servername_statement'] == '1')
 				{
@@ -106,7 +135,7 @@ while($row = $db->fetch_array($result_tasks))
 
 				// Apply header
 
-				$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
+				$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . $vhosts_file;
 
 				// Save partial file
 
@@ -124,173 +153,430 @@ while($row = $db->fetch_array($result_tasks))
 			}
 		}
 
-		$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+		/*
+                 *      Write the vhost confs for apache
+                */
+		// CHECK	$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+
+		$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`wwwserveralias`,`d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`ssl`, `d`.`ssl_redirect`, `d`.`ssl_ipandport`,`d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL AND `d`.`email_only`='0' ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 
 		while($domain = $db->fetch_array($result_domains))
 		{
-			fwrite($debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
-			$vhosts_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
-			$cronlog->logAction(CRON_ACTION, LOG_INFO, 'creating vhostcontainer for domain #' . $domain['id'] . ', Customer ' . $domain['loginname']);
-
-			if($domain['deactivated'] != '1'
-			   || $settings['system']['deactivateddocroot'] != '')
+			if(!empty($domain['domain']))
 			{
-				$vhosts_file.= '<VirtualHost ' . $domain['ipandport'] . '>' . "\n";
-				$vhosts_file.= '  ServerName ' . $domain['domain'] . "\n";
-				$server_alias = '';
-				$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
+				fwrite($debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+				$vhosts_header = '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
+				$cronlog->logAction(CRON_ACTION, LOG_INFO, 'creating vhostcontainer for domain #' . $domain['id'] . ', Customer ' . $domain['loginname']);
 
-				while(($alias_domain = $db->fetch_array($alias_domains)) !== false)
+				if($domain['deactivated'] == '1'
+				   && $settings['system']['deactivateddocroot'] == '')
 				{
-					$server_alias.= ' ' . $alias_domain['domain'] . ' ' . (($alias_domain['iswildcarddomain'] == 1) ? '*' : 'www') . '.' . $alias_domain['domain'];
+					$vhosts_data.= '# Customer deactivated and a docroot for deactivated users hasn\'t been set.' . "\n";
+				}
+				elseif($domain['deactivated'] == '1'
+				       && $settings['system']['deactivateddocroot'] != '')
+				{
+					$documentroot = '  # Using docroot for deactivated users...' . "\n";
+					$documentroot.= '  DocumentRoot "' . $settings['system']['deactivateddocroot'] . "\"\n";
+				}
+				elseif(preg_match('/^https?\:\/\//', $domain['documentroot']))
+				{
+					$documentroot = '  Redirect / ' . $domain['documentroot'] . "\n";
+				}
+				else
+				{
+					$documentroot = '  DocumentRoot "' . $domain['documentroot'] . "\"\n";
 				}
 
-				if($domain['iswildcarddomain'] == '1')
+				if(isset($documentroot))
 				{
-					$alias = '*';
+					$vhosts_data = '';
+
+					//create the documentroot
+
+					$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
+					mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
+					$ssl = $domain['ssl'];
+					$ipandport = $domain['ipandport'];
+					$adminemail = $domain['email'];
+					$domain_name = $domain['domain'];
+					$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
+
+					while(($alias_domain = $db->fetch_array($alias_domains)) !== false)
+					{
+						$server_alias.= ' ' . $alias_domain['domain'] . ' ' . (($alias_domain['iswildcarddomain'] == 1) ? '*' : 'www') . '.' . $alias_domain['domain'];
+					}
+
+					if($domain['iswildcarddomain'] == '1')
+					{
+						$alias = '*';
+					}
+				}
+
+				$ipandport = $db->query_first('SELECT * FROM ' . TABLE_PANEL_IPSANDPORTS . ' WHERE `id`="' . $domain[ipandport] . '"');
+
+				if(filter_var($ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+				{
+					$domain['ipandport'] = $ipandport['ip'] . ':' . $ipandport['port'];
+				}
+				elseif(filter_var($ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+				{
+					$domain['ipandport'] = '[' . $ipandport['ip'] . ']:' . $ipandport['port'];
 				}
 				else
 				{
 					$alias = 'www';
 				}
 
-				$vhosts_file.= '  ServerAlias ' . $alias . '.' . $domain['domain'] . $server_alias . "\n";
-				$vhosts_file.= '  ServerAdmin ' . $domain['email'] . "\n";
-
-				if(preg_match('/^https?\:\/\//', $domain['documentroot']))
+				if($domain['phpenabled'] == '1')
 				{
-					$vhosts_file.= '  Redirect / ' . $domain['documentroot'] . "\n";
-				}
-				else
-				{
-					$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
-					$domain['documentroot'] = makeCorrectDir($domain['documentroot']);
+					// This vHost has PHP enabled...
 
-					if($domain['deactivated'] == '1'
-					   && $settings['system']['deactivateddocroot'] != '')
+					if($settings['system']['mod_fcgid'] == 1)
 					{
-						$vhosts_file.= '  # Using docroot for deactivated users...' . "\n";
-						$vhosts_file.= '  DocumentRoot "' . $settings['system']['deactivateddocroot'] . "\"\n";
+						// ...and we are using mod_fcgid
+						// TODO: Put this in the join on line 212
+
+						$sql = "SELECT * FROM `ftp_users` WHERE `customerid` = " . $domain['customerid'];
+						$result_ftp = $db->query($sql);
+
+						if($db->num_rows($result_ftp) > 0)
+						{
+							$php_openbasedir = '  ScriptAlias /php/ ' . $settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . "\n";
+							$php_openbasedir.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
+							createFcgiConfig($domain, $settings);
+						}
+					}
+
+					if($domain['iswildcarddomain'] == '1')
+					{
+						$alias = '*';
 					}
 					else
 					{
-						$vhosts_file.= '  DocumentRoot "' . $domain['documentroot'] . "\"\n";
+						$alias = 'www';
 					}
 
-					if($domain['phpenabled'] == '1')
+					if($domain['wwwserveralias'] == '1')
 					{
-						// This vHost has PHP enabled...
+						$alias = 'www';
+					}
+					else
+					{
+						$alias = '';
+					}
 
-						if($settings['system']['mod_fcgid'] == 1)
+					$adminemail = $domain['email'];
+
+					if(preg_match('/^https?\:\/\//', $domain['documentroot']))
+					{
+						$redirect = '  Redirect / ' . $domain['documentroot'] . "\n";
+					}
+					else
+					{
+						$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
+						$domain['documentroot'] = makeCorrectDir($domain['documentroot']);
+						$alias_domains = $db->query('SELECT `domain`, `iswildcarddomain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
+
+						while(($alias_domain = $db->fetch_array($alias_domains)) !== false)
+
+						// ...and we are using the regular mod_php
+
+						if($domain['openbasedir'] == '1')
 						{
-							// ...and we are using mod_fcgid
-							// TODO: Put this in the join on line 212
+							$server_alias.= ' ' . $alias_domain['domain'] . ' ' . (($alias_domain['iswildcarddomain'] == 1) ? '*' : 'www') . '.' . $alias_domain['domain'];
 
-							$sql = "SELECT * FROM `ftp_users` WHERE `customerid` = " . $domain['customerid'];
-							$result_ftp = $db->query($sql);
-
-							if($db->num_rows($result_ftp) > 0)
+							if($settings['system']['phpappendopenbasedir'] != '')
 							{
-								$vhosts_file.= '  ScriptAlias /php/ ' . $settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . "\n";
-								$vhosts_file.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
-								createFcgiConfig($domain, $settings);
+								$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
 							}
+						}
+
+						if($domain['deactivated'] == '1'
+						   && $settings['system']['deactivateddocroot'] != '')
+						{
+							$documentroot.= '  # Using docroot for deactivated users...' . "\n";
+							$documentroot.= '  DocumentRoot "' . $settings['system']['deactivateddocroot'] . "\"\n";
 						}
 						else
 						{
-							// ...and we are using the regular mod_php
+							$documentroot.= '  DocumentRoot "' . $domain['documentroot'] . "\"\n";
+						}
 
-							if($domain['openbasedir'] == '1')
+						if($domain['phpenabled'] == '1')
+						{
+							// This vHost has PHP enabled...
+
+							if($settings['system']['mod_fcgid'] == 1)
 							{
-								if($settings['system']['phpappendopenbasedir'] != '')
-								{
-									$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
-								}
-								else
-								{
-									$_phpappendopenbasedir = '';
-								}
+								// ...and we are using mod_fcgid
+								// TODO: Put this in the join on line 212
 
-								if($domain['openbasedir_path'] == '1')
-								{
-									$vhosts_file.= '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
-								}
-								else
-								{
-									$vhosts_file.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
-								}
-							}
-
-							if($domain['safemode'] == '0')
-							{
-								$vhosts_file.= '  php_admin_flag safe_mode Off ' . "\n";
+								$sql = "SELECT * FROM `ftp_users` WHERE `customerid` = " . $domain['customerid'];
+								$result_ftp = $db->query($sql);
 							}
 							else
 							{
-								$vhosts_file.= '  php_admin_flag safe_mode On ' . "\n";
+								// ...and we are using the regular mod_php
+
+								if($domain['openbasedir'] == '1')
+								{
+									if($settings['system']['phpappendopenbasedir'] != '')
+									{
+										$_phpappendopenbasedir = ':' . $settings['system']['phpappendopenbasedir'];
+									}
+									else
+									{
+										$_phpappendopenbasedir = '';
+									}
+
+									if($domain['openbasedir_path'] == '1')
+									{
+										$php_openbasedir.= '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
+									}
+									else
+									{
+										$php_openbasedir.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
+									}
+								}
+
+								if($domain['safemode'] == '0')
+								{
+									$safe_mode.= '  php_admin_flag safe_mode Off ' . "\n";
+								}
+								else
+								{
+									$safe_mode.= '  php_admin_flag safe_mode On ' . "\n";
+								}
+
+								$_phpappendopenbasedir = '';
 							}
 						}
-					}
 
-					mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
+						mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
 
-					if($domain['speciallogfile'] == '1')
-					{
-						if($domain['parentdomainid'] == '0')
+						if($settings['system']['mod_log_sql'] == 1)
 						{
-							$speciallogfile = '-' . $domain['domain'];
-							$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
+							// We are using mod_log_sql (http://www.outoforder.cc/projects/apache/mod_log_sql/)
+							// TODO: See how we are able emulate the error_log
+
+							$log_file.= '  LogSQLTransferLogTable access_log' . "\n";
 						}
 						else
 						{
-							$speciallogfile = '-' . $domain['parentdomain'];
-							$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
-						}
-					}
-					else
-					{
-						$speciallogfile = '';
+							// The normal access/error - logging is enabled
 
-						if($domain['customerroot'] != $domain['documentroot'])
-						{
-							$vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
+							$log_file.= '  ErrorLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
+							$log_file.= '  CustomLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
 						}
 					}
 
-					if($settings['system']['mod_log_sql'] == 1)
+					if($domain['specialsettings'] != '')
 					{
-						// We are using mod_log_sql (http://www.outoforder.cc/projects/apache/mod_log_sql/)
-						// TODO: See how we are able emulate the error_log
+						$specialsettings.= $domain['specialsettings'] . "\n";
+					}
 
-						$vhosts_file.= '  LogSQLTransferLogTable access_log' . "\n";
+					if($domain['openbasedir_path'] == '1')
+					{
+						$php_openbasedir = '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
 					}
 					else
 					{
-						// The normal access/error - logging is enabled
+						$php_openbasedir = '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
+					}
 
-						$vhosts_file.= '  ErrorLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
-						$vhosts_file.= '  CustomLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
+					if($domain['safemode'] == '0')
+					{
+						$safe_mode = '  php_admin_flag safe_mode Off ' . "\n";
+					}
+					else
+					{
+						$safe_mode = '  php_admin_flag safe_mode On ' . "\n";
 					}
 				}
 
-				if($domain['specialsettings'] != '')
+				if($domain['speciallogfile'] == '1')
 				{
-					$vhosts_file.= $domain['specialsettings'] . "\n";
+					if($domain['parentdomainid'] == '0')
+					{
+						$speciallogfile = '-' . $domain['domain'];
+						$alias_webalizer = '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
+					}
+					else
+					{
+						$speciallogfile = '-' . $domain['parentdomain'];
+						$alias_webalizer = '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
+					}
 				}
 
-				$vhosts_file.= '</VirtualHost>' . "\n";
+				if($domain['customerroot'] != $domain['documentroot'])
+				{
+					$alias_webalizer = '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
+				}
+
+				if($settings['system']['mod_log_sql'] == 1)
+				{
+					// We are using mod_log_sql (http://www.outoforder.cc/projects/apache/mod_log_sql/)
+					// TODO: See how we are able emulate the error_log
+
+					$log_file = '  LogSQLTransferLogTable access_log' . "\n";
+				}
+				else
+				{
+					// The normal access/error - logging is enabled
+
+					$log_file = '  ErrorLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
+					$log_file.= '  CustomLog "' . $settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
+				}
+			}
+
+			$php_sendmail = '  php_admin_value sendmail_path "/usr/sbin/sendmail -t -f ' . $domain['email'] . '"' . "\n";
+
+			if($domain['specialsettings'] != '')
+			{
+				$specialsettings = $domain['specialsettings'] . "\n";
+			}
+
+			$vhosts_data = '';
+			$vhosts_data.= $vhosts_header . "\n";
+			$vhosts_data.= '<VirtualHost ' . $ipandport . '>' . "\n";
+			$vhosts_data.= '  ServerName ' . $domain_name . "\n";
+
+			if($domain['wwwserveralias'] == '1')
+			{
+				$vhosts_data.= '  ServerAlias ' . $alias . '.' . $domain_name . $server_alias . "\n";
+			}
+
+			$vhosts_data.= '  ServerAdmin ' . $adminemail . "\n";
+			$vhosts_data.= $documentroot;
+			$vhosts_data.= $alias_webalizer;
+			$vhosts_data.= $php_openbasedir;
+			$vhosts_data.= $php_sendmail;
+			$vhosts_data.= $safe_mode;
+			$vhosts_data.= $specialsettings;
+			$vhosts_data.= $log_file;
+			$vhosts_data.= '</VirtualHost>' . "\n";
+
+			if($domain['ssl'] == "1"
+			   && $domain['ssl_ipandport'] != "0"
+			   && $settings['system']['use_ssl'] == "1")
+			{
+				if(!is_file($settings['system']['ssl_cert_file'])
+				   && isset($settings['system']['ssl_cert_file']))
+				{
+					$cert_filename = $settings['system']['ssl_cert_file'];
+
+					if($settings['system']['openssl_cnf'] != ""
+					   && isset($settings['system']['openssl_cnf']))
+					{
+						$openssl_file = $settings['system']['openssl_cnf'];
+						$openssl_file = str_replace("@@domain_name@@", $settings['system']['hostname'], $openssl_file);
+						$openssl_file = str_replace("@@email@@", $settings['panel']['adminmail'], $openssl_file);
+
+						// Apply header
+
+						$openssl_filename = dirname($settings['system']['ssl_cert_file']) . "/openssl.cnf";
+
+						// Save partial file
+
+						$openssl_file_handler = fopen($openssl_filename, 'w');
+						fwrite($openssl_file_handler, $openssl_file);
+						fclose($openssl_file_handler);
+
+						// Reset vhosts_file
+
+						$openssl_file = '';
+						$cmd = "openssl req -config " . $openssl_filename . " -new -x509 -nodes -out " . $cert_filename . " -keyout " . $cert_filename . " -days 9999";
+						$output = safe_exec($cmd);
+						unlink($openssl_filename);
+
+						// Enable SSL for apache
+						//$output = shell_exec("a2enmod ssl");
+						// Don't know how to do this. Probably leave it to the user.
+					}
+				}
+				elseif(!isset($settings['system']['ssl_cert_file']))
+				{
+					standard_error("SSL standard cert not set!\n");
+				}
+				else
+				{
+					$ssl_ipandport = $db->query_first('SELECT `ip`, `port`, `ssl_cert` FROM ' . TABLE_PANEL_IPSANDPORTS . ' WHERE `id`="' . $domain['ssl_ipandport'] . '"');
+					$ssl_cert = $ssl_ipandport['ssl_cert'];
+
+					if(filter_var($ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$ssl_ipandport = '[' . $ssl_ipandport['ip'] . ']:' . $ssl_ipandport['port'];
+					}
+					else
+					{
+						$ssl_ipandport = $ssl_ipandport['ip'] . ":" . $ssl_ipandport['port'];
+					}
+
+					if($domain['ssl_redirect'] == "1")
+					{
+						/*
+						 * Let's overwrite the vhosts_data if it's only a redirect
+						*/
+
+						$vhosts_data = '';
+						$vhosts_data = $vhosts_header . "\n";
+						$vhosts_data.= '<VirtualHost ' . $ssl_ipandport . '>' . "\n";
+						$vhosts_data.= '  Redirect permanent / https://' . $domain['name'] . '/ ' . "\n";
+						$vhosts_data.= '  ServerName ' . $domain['name'] . "\n";
+						$vhosts_data.= '  ServerAlias ' . $alias . '.' . $domain['name'] . $server_alias . "\n";
+						$vhosts_data.= '  ServerAdmin ' . $adminemail . "\n";
+						$vhosts_data.= $log_file;
+						$vhosts_data.= '</VirtualHost>' . "\n";
+					}
+
+					$vhosts_ssl_data.= $vhosts_ssl_header . "\n";
+					$vhosts_ssl_data.= '<VirtualHost ' . $ssl_ipandport . '>' . "\n";
+					$vhosts_ssl_data.= '  ServerName ' . $domain_name . "\n";
+
+					if($domain['wwwserveralias'] == '1')
+					{
+						$vhosts_ssl_data.= '  ServerAlias ' . $alias . '.' . $domain_name . $server_alias . "\n";
+					}
+
+					$vhosts_ssl_data.= '  ServerAdmin ' . $adminemail . "\n";
+					$vhosts_ssl_data.= $documentroot;
+					$vhosts_ssl_data.= $alias_webalizer;
+					$vhosts_ssl_data.= $php_openbasedir;
+					$vhosts_ssl_data.= $php_sendmail;
+					$vhosts_ssl_data.= $safe_mode;
+					$vhosts_ssl_data.= $specialsettings;
+					$vhosts_ssl_data.= $log_file;
+					$vhosts_ssl_data.= '  #SSL Stuff' . "\n";
+					$vhosts_ssl_data.= '  SSLEngine On' . "\n";
+
+					if(empty($ssl_cert))
+					{
+						$ssl_cert_file = $settings['system']['ssl_cert_file'];
+					}
+					else
+					{
+						$vhosts_file.= "\n";
+						$ssl_cert_file = $ssl_cert;
+					}
+
+					$vhosts_ssl_data.= '  SSLCertificateFile ' . $ssl_cert_file . "\n";
+					$vhosts_ssl_data.= '</VirtualHost>' . "\n";
+					$vhosts_ssl_file.= $vhosts_ssl_data;
+				}
+
+				$vhosts_file.= $vhosts_data;
 
 				if(isConfigDir($settings['system']['apacheconf_vhost']))
 				{
 					$vhosts_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/' . ($domain['iswildcarddomain'] == '1' ? '30_syscp_wildcard_vhost' : '20_syscp_normal_vhost') . '_' . $domain['domain'] . '.conf');
+					$vhosts_ssl_filename = makeCorrectFile($settings['system']['apacheconf_vhost'] . '/' . ($domain['iswildcarddomain'] == '1' ? '30_syscp_wildcard_vhost' : '20_syscp_ssl_vhost') . '_' . $domain['domain'] . '.conf');
 					$known_vhost_filenames[] = basename($vhosts_filename);
+					$known_vhost_ssl_filenames[] = basename($vhosts_ssl_filename);
 
-					// Apply header
+					// Apply header (normal vhost)
 
 					$vhosts_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
-
-					// Save partial file
-
 					$vhosts_file_handler = fopen($vhosts_filename, 'w');
 					fwrite($vhosts_file_handler, $vhosts_file);
 					fclose($vhosts_file_handler);
@@ -298,15 +584,36 @@ while($row = $db->fetch_array($result_tasks))
 					// Reset vhosts_file
 
 					$vhosts_file = '';
+
+					if($domain['ssl'] == "1"
+					   && $domain['ssl_ipandport'] != "0")
+					{
+						// Apply header (ssl vhost)
+
+						$vhosts_ssl_file = '# ' . $vhosts_filename . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_ssl_file;
+
+						// Save partial file
+
+						$vhosts_ssl_file_handler = fopen($vhosts_ssl_filename, 'w');
+						fwrite($vhosts_ssl_file_handler, $vhosts_ssl_file);
+						fclose($vhosts_ssl_file_handler);
+
+						// Reset vhosts_file
+
+						$vhosts_ssl_file = '';
+					}
 				}
 				else
 				{
+					$vhosts_file.= '# Customer deactivated and a docroot for deactivated users hasn\'t been set.' . "\n";
 					$vhosts_file.= "\n";
+
+					if($domain['ssl'] == "1"
+					   && $domain['ssl_ipandport'] != "0")
+					{
+						$vhosts_ssl_file.= "\n";
+					}
 				}
-			}
-			else
-			{
-				$vhosts_file.= '# Customer deactivated and a docroot for deactivated users hasn\'t been set.' . "\n";
 			}
 		}
 
@@ -353,7 +660,6 @@ while($row = $db->fetch_array($result_tasks))
 			}
 		}
 
-		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'reloading apache');
 		safe_exec($settings['system']['apachereload_command']);
 		fwrite($debugHandler, '   cron_tasks: Task1 - Apache reloaded' . "\n");
 	}
@@ -650,19 +956,23 @@ while($row = $db->fetch_array($result_tasks))
 
 		while($domain = $db->fetch_array($result_domains))
 		{
+			$zonefile = '';
 			fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
 			$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Writing ' . $domain['id'] . '::' . $domain['domain']);
 
-			if($domain['zonefile'] == '')
+			if(!empty($domain['domain']))
 			{
-				$date = date('Ymd');
-				$bindserial = (preg_match('/^' . $date . '/', $domain['bindserial']) ? $domain['bindserial']+1 : $date . '00');
-				$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `bindserial`=\'' . $bindserial . '\' WHERE `id`=\'' . $domain['id'] . '\'');
-				$zonefile = '$TTL 1W' . "\n";
-
-				if(count($nameservers) == 0)
+				if($domain['zonefile'] == '')
 				{
-					$zonefile.= '@ IN SOA ns ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
+					$date = date('Ymd');
+					$bindserial = (preg_match('/^' . $date . '/', $domain['bindserial']) ? $domain['bindserial']+1 : $date . '00');
+					$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `bindserial`=\'' . $bindserial . '\' WHERE `id`=\'' . $domain['id'] . '\'');
+					$zonefile = '$TTL 200' . "\n";
+
+					if(count($nameservers) == 0)
+					{
+						$zonefile.= '@ IN SOA ns ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
+					}
 				}
 				else
 				{
@@ -670,6 +980,55 @@ while($row = $db->fetch_array($result_tasks))
 				}
 
 				$zonefile.= '	' . $bindserial . ' ; serial' . "\n" . '	8H ; refresh' . "\n" . '	2H ; retry' . "\n" . '	1W ; expiry' . "\n" . '	11h) ; minimum' . "\n";
+
+				if(count($nameservers) == 0)
+				{
+					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= '@	IN	NS      ns' . "\n" . 'ns	IN	A	' . $domain['ip'] . "\n";
+					}
+					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= '@	IN	NS      ns' . "\n" . 'ns	IN	AAAA	' . $domain['ip'] . "\n";
+					}
+				}
+				else
+				{
+					foreach($nameservers as $nameserver)
+					{
+						$zonefile.= '@ IN SOA ns ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
+					}
+				}
+
+				if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+				{
+					$zonefile.= $domain[domain] . '.  IN      TXT     "v=spf1 ip4:' . $domain[ip] . ' -all"';
+				}
+				elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+				{
+					$zonefile.= $domain[domain] . '.  IN      TXT     "v=spf1 ip6:' . $domain[ip] . ' -all"';
+				}
+
+				if(count($mxservers) == 0)
+				{
+					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
+					}
+					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	AAAA	' . $domain['ip'] . "\n";
+					}
+				}
+				else
+				{
+					foreach($mxservers as $mxserver)
+					{
+						$zonefile.= '@ IN SOA ' . $nameservers[0]['hostname'] . ' ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
+					}
+
+					$zonefile.= '	' . $bindserial . ' ; serial' . "\n" . '	8H ; refresh' . "\n" . '	2H ; retry' . "\n" . '	1W ; expiry' . "\n" . '	11h) ; minimum' . "\n";
+				}
 
 				if(count($nameservers) == 0)
 				{
@@ -717,28 +1076,59 @@ while($row = $db->fetch_array($result_tasks))
 					}
 				}
 
-				$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
-				$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
+				if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+				{
+					$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
+					$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
+				}
+				elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+				{
+					$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
+					$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
+				}
 
 				if($domain['iswildcarddomain'] == '1')
 				{
-					$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
+					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= '*	IN	A	' . $domain['ip'] . "\n";
+					}
+					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= '*	IN	AAAA	' . $domain['ip'] . "\n";
+					}
 				}
 
-				$subdomains = $db->query('SELECT `d`.`domain`, `ip`.`ip` AS `ip` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_IPSANDPORTS . '` `ip` WHERE `parentdomainid`=\'' . $domain['id'] . '\' AND `d`.`ipandport`=`ip`.`id`');
+				$bindconf_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
+				$bindconf_file.= 'zone "' . $domain['domain'] . '" in {' . "\n";
+				$bindconf_file.= '	type master;' . "\n";
 
-				while($subdomain = $db->fetch_array($subdomains))
+				if(empty($domain['zonefile']))
 				{
-					$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
+					$bindconf_file.= '	file "' . $settings['system']['bindconf_directory'] . "/domains/" . $domain['domain'] . '";' . "\n";
+				}
+				else
+				{
+					$bindconf_file.= '	file "' . $domain['zonefile'] . '";' . "\n";
 				}
 
-				$domain['zonefile'] = 'domains/' . $domain['domain'] . '.zone';
-				$zonefile_name = makeCorrectFile($settings['system']['bindconf_directory'] . '/domains/' . $domain['domain'] . '.zone');
-				$known_domain_zonefiles[] = basename($zonefile_name);
-				$zonefile_handler = fopen($zonefile_name, 'w');
-				fwrite($zonefile_handler, $zonefile);
-				fclose($zonefile_handler);
-				fwrite($debugHandler, '  cron_tasks: Task4 - `' . $zonefile_name . '` zone written' . "\n");
+				$bindconf_file.= '	allow-query { any; };';
+
+				if(count($nameservers) > 0)
+				{
+					if(filter_var($subdomain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
+					}
+					elseif(filter_var($subdomain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	AAAA	' . $subdomain['ip'] . "\n";
+					}
+				}
+
+				#				$bindconf_file.= '};' . "\n";
+
+				$bindconf_file.= "\n";
 			}
 
 			$bindconf_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
@@ -756,19 +1146,26 @@ while($row = $db->fetch_array($result_tasks))
 				}
 
 				$bindconf_file.= '	};' . "\n";
+				$bindconf_file.= "\n";
 			}
 
+			file_put_contents($settings['system']['bindconf_directory'] . 'domains/' . $domain['domain'], $zonefile);
+			$known_domain_zonefiles[] = $domain['domain'];
+			fwrite($debugHandler, '  cron_tasks: Task4 - ' . $domain['domain'] . ' domain file written' . "\n");
+			$cronlog->logAction(CRON_ACTION, LOG_INFO, $domain['domain'] . 'domain file written');
 			$bindconf_file.= '};' . "\n";
 			$bindconf_file.= "\n";
-			$bindconf_file_handler = fopen(makeCorrectFile($settings['system']['bindconf_directory'] . '/syscp_bind.conf'), 'w');
-			fwrite($bindconf_file_handler, $bindconf_file);
-			fclose($bindconf_file_handler);
-			fwrite($debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
-			$cronlog->logAction(CRON_ACTION, LOG_INFO, 'syscp_bind.conf written');
 		}
 
-		safe_exec($settings['system']['bindreload_command']);
-		fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
+		file_put_contents($settings['system']['bindconf_directory'] . '/syscp_bind.conf', $bindconf_file);
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'syscp_bind.conf written');
+
+		if(is_file(substr($settings['system']['bindreload_command'], 0, strpos($settings['system']['bindreload_command'], ' '))))
+		{
+			safe_exec($settings['system']['bindreload_command']);
+			fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
+		}
+
 		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Bind9 reloaded');
 		$domains_dir = makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/');
 
@@ -816,7 +1213,9 @@ if($db->num_rows($result_tasks) != 0)
 	}
 
 	$where = implode($where, ' OR ');
-	$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE ' . $where);
+
+	#	$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE ' . $where);
+
 	unset($resultiDs);
 	unset($where);
 }

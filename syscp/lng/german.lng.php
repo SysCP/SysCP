@@ -314,6 +314,7 @@ $lng['admin']['templates']['subject'] = 'Betreff';
 $lng['admin']['templates']['mailbody'] = 'Mailtext';
 $lng['admin']['templates']['createcustomer'] = 'Willkommensmail f&uuml;r neue Kunden';
 $lng['admin']['templates']['pop_success'] = 'Willkommensmail f&uuml;r neue E-Mail Konten';
+$lng['admin']['wwwserveralias'] = 'www. ServerAlias hinzuf&uuml;gen';
 $lng['admin']['templates']['template_replace_vars'] = 'Variablen die in den Vorlagen ersetzt werden:';
 $lng['admin']['templates']['FIRSTNAME'] = 'Wird mit dem Vornamen des Kunden ersetzt.';
 $lng['admin']['templates']['NAME'] = 'Wird mit dem Namen des Kunden ersetzt.';

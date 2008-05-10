@@ -1,4 +1,4 @@
-<tr>
+<tr class="" onmouseover="this.className='RowOverSelected';" onmouseout="this.className='';">
 	<td class="field_name_border_left">{$row['email_full']}</td>
 	<td class="field_name">{$row['destination']}</td>
 	<td class="field_name"><if $row['popaccountid'] != 0>{$lng['panel']['yes']}</if><if $row['popaccountid'] == 0>{$lng['panel']['no']}</if></td>

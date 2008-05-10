@@ -42,7 +42,10 @@ elseif(isset($_GET['month'])
 	$month = intval($_GET['month']);
 	$year = intval($_GET['year']);
 }
-elseif(isset($_GET['page'])
+
+//BAM! $_GET???
+
+elseif (isset($_GET['page'])
        && $_GET['page'] == "current")
 {
 	if(date('d') != '01')
