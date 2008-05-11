@@ -241,6 +241,7 @@ $lng['error']['domainname'] = $lng['domains']['domainname'];
 $lng['question']['question'] = 'Security question';
 $lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete the customer %s? This cannot be undone!';
 $lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete the domain %s?';
+$lng['question']['admin_domain_reallyenablemailsystemhostname'] = 'Do you really want to enable the server hostname %s as mail domain?';
 $lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to deactivate these Security settings (OpenBasedir and/or SafeMode)?';
 $lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete the admin %s? Every customer and domain will be reassigned to your account.';
 $lng['question']['admin_template_reallydelete'] = 'Do you really want to delete the template \'%s\'?';
@@ -788,5 +789,6 @@ $lng['error']['cannotreaddir'] = 'Unable to read directory \'%s\'';
 $lng['message']['success'] = 'Successfully sent message to %s receipients';
 $lng['message']['noreceipients'] = 'No e-mail has been sent because there are no receipients in the database';
 $lng['admin']['sslsettings'] = 'SSL settings';
+$lng['cronjobs']['notyetrun'] = 'Not yet run';
 
 ?>
