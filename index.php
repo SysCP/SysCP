@@ -144,6 +144,7 @@ if($action == 'login')
 		eval("echo \"" . getTemplate("login") . "\";");
 	}
 }
+
 if($page == 'easter')
 {
 	if($action == 'egg')
