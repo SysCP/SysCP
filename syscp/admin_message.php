@@ -71,6 +71,7 @@ if($page == 'message')
 
 			if(!empty($message))
 			{
+				$mailcounter = 0;
 				$mail->Body = $message;
 				$mail->Subject = $subject;
 
@@ -85,13 +86,15 @@ if($page == 'message')
 						$log->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
 						standard_error('errorsendingmail', $row["email"]);
 					}
-
+					$mailcounter++;
 					$mail->ClearAddresses();
 				}
 
 				redirectTo($filename, Array(
 					'page' => $page,
-					's' => $s
+					's' => $s,
+					'action' => 'showsuccess',
+					'sentitems' => $mailcounter
 				));
 			}
 			else
@@ -99,19 +102,37 @@ if($page == 'message')
 				standard_error('nomessagetosend');
 			}
 		}
+	}
+
+	if($action == 'showsuccess')
+	{
+		$success = 1;
+		$sentitems = isset($_GET['sentitems']) ? (int)$_GET['sentitems'] : 0;
+		if($sentitems == 0)
+		{
+			$successmessage = $lng['message']['noreceipients'];
+		}
 		else
 		{
-			$receipients = '';
-
-			if($userinfo['customers_see_all'] == "1")
-			{
-				$receipients.= makeoption($lng['panel']['reseller'], 0);
-			}
-
-			$receipients.= makeoption($lng['panel']['customer'], 1);
-			eval("echo \"" . getTemplate("message/message") . "\";");
+			$successmessage = str_replace('%s', $sentitems, $lng['message']['success']);
 		}
 	}
+	else
+	{
+		$success = 0;
+		$sentitems = 0;
+		$successmessage = '';
+	}
+
+	$receipients = '';
+
+	if($userinfo['customers_see_all'] == "1")
+	{
+		$receipients.= makeoption($lng['panel']['reseller'], 0);
+	}
+
+	$receipients.= makeoption($lng['panel']['customer'], 1);
+	eval("echo \"" . getTemplate("message/message") . "\";");
 }
 
 ?>

@@ -3,6 +3,14 @@ $header
                 <input type="hidden" name="s" value="$s">
                 <input type="hidden" name="page" value="$page">
                 <input type="hidden" name="action" value="$action">
+				<if 0 < $success >
+					<table cellpadding="2" cellspacing="1" border="0" align="center" class="maintable">
+						<tr>
+							<td class="maintitle" colspan="2">&nbsp;<b>{$successmessage}</b></td>
+						</tr>
+        	        </table>
+					<br /><br />
+				</if>
                 <table cellpadding="2" cellspacing="1" border="0" align="center" class="maintable">
                         <tr>
                                 <td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['message']}</b></td>

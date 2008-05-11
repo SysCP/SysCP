@@ -773,7 +773,7 @@ $lng['logger']['truncate'] = 'Log leeren';
 $lng['serversettings']['ssl']['use_ssl'] = 'SSL nutzen?';
 $lng['serversettings']['ssl']['ssl_cert_file'] = 'Pfad zum Zertifikat?';
 $lng['serversettings']['ssl']['openssl_cnf'] = 'Standardwerte zum Erstellen eines Zertifikats';
-$lng['panel']['reseller'] = 'Wiederverkäufer';
+$lng['panel']['reseller'] = 'Wiederverk&auml;ufer';
 $lng['panel']['admin'] = 'Administrator';
 $lng['panel']['customer'] = 'Kunde';
 $lng['error']['nomessagetosend'] = 'Keine Nachricht angegeben';
@@ -791,5 +791,8 @@ $lng['admin']['text'] = 'Nachricht';
 $lng['menu']['message'] = 'Nachrichten';
 $lng['error']['errorsendingmail'] = 'Das Versenden der Nachricht an "%s" schlug fehl.';
 $lng['error']['cannotreaddir'] = 'Der Ordner \'%s\' kann nicht gelesen werden';
+$lng['message']['success'] = 'Nachricht erfolgreich an %s Empf&auml;nger gesendet';
+$lng['message']['noreceipients'] = 'Es wurde keine E-Mail versendet da sich keine Empf&auml;nger in der Datenbank befinden';
+$lng['admin']['sslsettings'] = 'SSL Einstellungen';
 
 ?>
