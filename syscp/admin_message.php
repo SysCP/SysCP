@@ -86,6 +86,7 @@ if($page == 'message')
 						$log->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
 						standard_error('errorsendingmail', $row["email"]);
 					}
+
 					$mailcounter++;
 					$mail->ClearAddresses();
 				}
@@ -108,6 +109,7 @@ if($page == 'message')
 	{
 		$success = 1;
 		$sentitems = isset($_GET['sentitems']) ? (int)$_GET['sentitems'] : 0;
+
 		if($sentitems == 0)
 		{
 			$successmessage = $lng['message']['noreceipients'];

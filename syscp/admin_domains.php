@@ -176,6 +176,31 @@ if($page == 'domains'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				if($_POST['domain'] == $settings['system']['hostname']
+				   && empty($_POST['reallydoit']))
+				{
+					ask_yesno('admin_domain_reallyenablemailsystemhostname', $filename, array(
+						'page' => $page,
+						'action' => $action,
+						'domain' => $domain,
+						'documentroot' => $documentroot,
+						'customerid' => $customerid,
+						'alias' => $aliasdomain,
+						'isbinddomain' => $isbinddomain,
+						'isemaildomain' => $isemaildomain,
+						'subcanemaildomain' => $subcanemaildomain,
+						'caneditdomain' => $caneditdomain,
+						'zonefile' => $zonefile,
+						'speciallogfile' => $speciallogfile,
+						'openbasedir' => $openbasedir,
+						'ipandport' => $ipandport,
+						'safemode' => $safemode,
+						'specialsettings' => $specialsettings,
+						'reallydoit' => 'reallydoit'
+					));
+					exit;
+				}
+
 				$domain = $idna_convert->encode(preg_replace(Array(
 					'/\:(\d)+$/',
 					'/^https?\:\/\//'
