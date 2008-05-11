@@ -785,5 +785,8 @@ $lng['admin']['text'] = 'Message';
 $lng['menu']['message'] = 'Messages';
 $lng['error']['errorsendingmail'] = 'The message to &quot;%s&quot; failed';
 $lng['error']['cannotreaddir'] = 'Unable to read directory \'%s\'';
+$lng['message']['success'] = 'Successfully sent message to %s receipients';
+$lng['message']['noreceipients'] = 'No e-mail has been sent because there are no receipients in the database';
+$lng['admin']['sslsettings'] = 'SSL settings';
 
 ?>

@@ -311,7 +311,7 @@ $header
 			</tr>
                         <tr>
                                 <td class="maintitle_apply_left">
-                                        <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['ticketsettings']}</b>
+                                        <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['sslsettings']}</b>
                                 </td>
                                 <td class="maintitle_apply_right" nowrap="nowrap">
                                         <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
@@ -327,7 +327,7 @@ $header
                         </tr>
                         <tr>
                                 <td class="main_field_name"><b>{$lng['serversettings']['ssl']['openssl_cnf']}:</b></td>
-                                <td class="main_field_display" nowrap="nowrap"><input type="text" name="openssl_cnf" value="{$settings['system']['openssl_cnf']}" /></td>
+                                <td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="40" name="openssl_cnf">{$settings['system']['openssl_cnf']}</textarea></td>
                         </tr>
 		</table>
 	</form>
