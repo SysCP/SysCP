@@ -229,15 +229,26 @@ while($row = $db->fetch_array($result))
 
 	fwrite($debugHandler, 'calculating mysqlspace usage for ' . $row['loginname'] . "\n");
 	$mysqlusage = 0;
+	$databases_list_result=$db_root->query("show databases");
+	while($database_row = $db->fetch_array($databases_list_result))
+	{
+		$databases_list[]=strtolower($database_row[Database]);
+	}
+	unset($database_row);
 	$databases_result = $db->query("SELECT `databasename` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . (int)$row['customerid'] . "'");
-
 	while($database_row = $db->fetch_array($databases_result))
 	{
-		$mysql_usage_result = $db_root->query("SHOW TABLE STATUS FROM `" . $db_root->escape($database_row['databasename']) . "`");
-
-		while($mysql_usage_row = $db_root->fetch_array($mysql_usage_result))
+		if(in_array(strtolower($database_row[databasename]), $databases_list))
 		{
-			$mysqlusage+= floatval($mysql_usage_row['Data_length']+$mysql_usage_row['Index_length']);
+			$mysql_usage_result = $db_root->query("SHOW TABLE STATUS FROM `" . $db_root->escape($database_row['databasename']) . "`");
+			while($mysql_usage_row = $db_root->fetch_array($mysql_usage_result))
+			{
+				$mysqlusage+= floatval($mysql_usage_row['Data_length']+$mysql_usage_row['Index_length']);
+			}
+		}
+		else
+		{
+			echo "Seems like the database ".$database_row['databasename']." had been removed manually.\n";
 		}
 	}
 
