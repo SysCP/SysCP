@@ -353,7 +353,7 @@ elseif($page == 'tickets')
 			$result = $db->query('SELECT `name` FROM `' . TABLE_PANEL_TICKET_CATS . '`
                                 WHERE `id`="' . (int)$mainticket->Get('category') . '"');
 			$row = $db->fetch_array($result);
-			$andere = $db->query('SELECT * FROM `' . TABLE_PANEL_TICKETS . '` WHERE `answerto`="' . (int)$id . '"');
+			$andere = $db->query('SELECT * FROM `' . TABLE_PANEL_TICKETS . '` WHERE `answerto`="' . (int)$id . '" ORDER BY `lastchange` DESC');
 
 			while($row2 = $db->fetch_array($andere))
 			{
