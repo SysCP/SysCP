@@ -36,6 +36,10 @@ $header
 			<td class="field_display">{$overview['email_forwarders_used']} ({$userinfo['email_forwarders_used']}/{$userinfo['email_forwarders']})</td>
 		</tr>
 		<tr>
+			<td class="field_name_border_left">{$lng['customer']['email_quota']}:</td>
+			<td class="field_display">{$overview['email_quota_used']} ({$userinfo['email_quota_used']}/{$userinfo['email_quota']})</td>
+		</tr>
+		<tr>
 			<td class="field_name_border_left">{$lng['customer']['ftps']}:</td>
 			<td class="field_display">{$overview['ftps_used']} ({$userinfo['ftps_used']}/{$userinfo['ftps']})</td>
 		</tr>

@@ -212,6 +212,16 @@ $header
 				<td class="main_field_display" nowrap="nowrap">{$panel_sendalternativemail}</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['mail_quota_enabled']['title']}:</b><br />{$lng['serversettings']['mail_quota_enabled']['description']}<br /><a href="$filename?page=wipequotas&amp;s=$s">{$lng['serversettings']['mail_quota_enabled']['removelink']}</a></td>
+				<td class="main_field_display" nowrap="nowrap">{$quota_enabled}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['mail_quota']['title']}:</b><br />{$lng['serversettings']['mail_quota']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">
+					<input type="text" name="system_mail_quota" value="{$quota}" size="6" />&nbsp;<select class="dropdown_noborder" name="system_mail_quota_type">$quota_type_option</select>
+				</td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['nameserversettings']}</b>
 				</td>

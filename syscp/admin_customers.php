@@ -60,6 +60,8 @@ if($page == 'customers'
 			'c.email_accounts_used' => $lng['customer']['accounts'] . ' (' . $lng['panel']['used'] . ')',
 			'c.email_forwarders' => $lng['customer']['forwarders'],
 			'c.email_forwarders_used' => $lng['customer']['forwarders'] . ' (' . $lng['panel']['used'] . ')',
+			'c.email_quota' => $lng['customer']['email_quota'],
+			'c.email_quota_used' => $lng['customer']['email_quota'] . ' (' . $lng['panel']['used'] . ')',
 			'c.deactivated' => $lng['admin']['deactivated'],
 			'c.phpenabled' => $lng['admin']['phpenabled']
 		);
@@ -186,6 +188,11 @@ if($page == 'customers'
 				{
 					$admin_update_query.= ", `email_forwarders_used` = `email_forwarders_used` - 0" . (int)$result['email_forwarders'];
 				}
+				
+				if($result['email_quota'] != '-1')
+				{
+					$admin_update_query.= ", `email_quota_used` = `email_quota_used` - 0" . (int)$result['email_quota'];
+				}
 
 				if($result['subdomains'] != '-1')
 				{
@@ -252,6 +259,9 @@ if($page == 'customers'
 				$emails = intval_ressource($_POST['emails']);
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
+				$email_quota = intval_ressource($_POST['email_quota']);
+				$email_imap = intval_ressource($_POST['email_imap']);
+				$email_pop3 = intval_ressource($_POST['email_pop3']);
 				$ftps = intval_ressource($_POST['ftps']);
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
 				$mysqls = intval_ressource($_POST['mysqls']);
@@ -267,6 +277,7 @@ if($page == 'customers'
 				   || ((($userinfo['emails_used']+$emails) > $userinfo['emails']) && $userinfo['emails'] != '-1')
 				   || ((($userinfo['email_accounts_used']+$email_accounts) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
 				   || ((($userinfo['email_forwarders_used']+$email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
+				   || ((($userinfo['email_quota_used']+$email_quota) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1')
 				   || ((($userinfo['ftps_used']+$ftps) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
 				   || ((($userinfo['tickets_used']+$tickets) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
 				   || ((($userinfo['subdomains_used']+$subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
@@ -275,6 +286,7 @@ if($page == 'customers'
 				   || ($emails == '-1' && $userinfo['emails'] != '-1')
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
 				   || ($email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1')
+				   || ($email_quota == '-1' && $userinfo['email_quota'] != '-1')
 				   || ($ftps == '-1' && $userinfo['ftps'] != '-1')
 				   || ($tickets == '-1' && $userinfo['tickets'] != '-1')
 				   || ($subdomains == '-1' && $userinfo['subdomains'] != '-1'))
@@ -371,7 +383,7 @@ if($page == 'customers'
 						$password = substr(md5(uniqid(microtime(), 1)), 12, 6);
 					}
 
-					$result = $db->query("INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` " . "(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `tickets`, `mysqls`, `standardsubdomain`, `phpenabled`) " . " VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "', '" . $db->escape($customernumber) . "','" . $db->escape($def_language) . "', '" . $db->escape($documentroot) . "', '" . $db->escape($guid) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "', '0', '" . $db->escape($phpenabled) . "')");
+					$result = $db->query("INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` " . "(`adminid`, `loginname`, `password`, `name`, `firstname`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `email`, `customernumber`, `def_language`, `documentroot`, `guid`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `email_quota`, `ftps`, `tickets`, `mysqls`, `standardsubdomain`, `phpenabled`, `imap`, `pop3`) " . " VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "', '" . $db->escape($customernumber) . "','" . $db->escape($def_language) . "', '" . $db->escape($documentroot) . "', '" . $db->escape($guid) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($email_quota) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "', '0', '" . $db->escape($phpenabled) . "', '" . $db->escape($email_imap) . "', '" . $db->escape($email_pop3) . "')");
 					$customerid = $db->insert_id();
 					$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` + 1";
 
@@ -393,6 +405,11 @@ if($page == 'customers'
 					if($email_forwarders != '-1')
 					{
 						$admin_update_query.= ", `email_forwarders_used` = `email_forwarders_used` + 0" . (int)$email_forwarders;
+					}
+					
+					if ( $email_quota != '-1' )
+					{
+						$admin_update_query .= ", `email_quota_used` = `email_quota_used` + 0" . (int)$email_quota;
 					}
 
 					if($subdomains != '-1')
@@ -505,6 +522,9 @@ if($page == 'customers'
 				}
 
 				$createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', '1');
+				$quota_type_option = makeQuotaOption();
+				$email_imap = makeyesno('email_imap', '1', '0', '1');
+				$email_pop3 = makeyesno('email_pop3', '1', '0', '1');
 				$sendpassword = makeyesno('sendpassword', '1', '0', '1');
 				$phpenabled = makeyesno('phpenabled', '1', '0', '1');
 				eval("echo \"" . getTemplate("customers/customers_add") . "\";");
@@ -539,12 +559,17 @@ if($page == 'customers'
 				$emails = intval_ressource($_POST['emails']);
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
+				$email_quota = intval_ressource($_POST['email_quota']);
+				$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
+				$email_imap = intval_ressource($_POST['email_imap']);
+				$email_pop3 = intval_ressource($_POST['email_pop3']);
 				$ftps = intval_ressource($_POST['ftps']);
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
 				$mysqls = intval_ressource($_POST['mysqls']);
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$deactivated = intval($_POST['deactivated']);
 				$phpenabled = intval($_POST['phpenabled']);
+				$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 				$diskspace = $diskspace*1024;
 				$traffic = $traffic*1024*1024;
 
@@ -553,6 +578,7 @@ if($page == 'customers'
 				   || ((($userinfo['emails_used']+$emails-$result['emails']) > $userinfo['emails']) && $userinfo['emails'] != '-1')
 				   || ((($userinfo['email_accounts_used']+$email_accounts-$result['email_accounts']) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
 				   || ((($userinfo['email_forwarders_used']+$email_forwarders-$result['email_forwarders']) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
+				   || ((($userinfo['email_quota_used']+$email_quota-$result['email_quota']) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1')
 				   || ((($userinfo['ftps_used']+$ftps-$result['ftps']) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
 				   || ((($userinfo['tickets_used']+$tickets-$result['tickets']) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
 				   || ((($userinfo['subdomains_used']+$subdomains-$result['subdomains']) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
@@ -561,6 +587,7 @@ if($page == 'customers'
 				   || ($emails == '-1' && $userinfo['emails'] != '-1')
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
 				   || ($email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1')
+				   || ($email_quota == '-1' && $userinfo['email_quota'] != '-1')
 				   || ($ftps == '-1' && $userinfo['ftps'] != '-1')
 				   || ($tickets == '-1' && $userinfo['tickets'] != '-1')
 				   || ($subdomains == '-1' && $userinfo['subdomains'] != '-1'))
@@ -648,14 +675,26 @@ if($page == 'customers'
 
 					if($deactivated != $result['deactivated'])
 					{
-						$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `postfix`='" . (($deactivated) ? 'N' : 'Y') . "' WHERE `customerid`='" . (int)$id . "'");
+						$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `postfix`='" . (($deactivated) ? 'N' : 'Y') . ", `pop3`='" . (($deactivated) ? '0' : '1') . ", `imap`='" . (($deactivated) ? '0' : '1') . "' WHERE `customerid`='" . (int)$id . "'");
 						$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `login_enabled`='" . (($deactivated) ? 'N' : 'Y') . "' WHERE `customerid`='" . (int)$id . "'");
 						$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `deactivated`='" . (int)$deactivated . "' WHERE `customerid`='" . (int)$id . "'");
 						$log->logAction(ADM_ACTION, LOG_INFO, "deactivated user '" . $result['loginname'] . "'");
 						inserttask('1');
 					}
+					
+					// Disable or enable POP3 Login for customers Mail Accounts
+					if($email_pop3 != $result['pop3'])
+					{
+						$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `pop3`='" . (int)$email_pop3 . "' WHERE `customerid`='" . (int)$id . "'");
+					}
+						
+					// Disable or enable IMAP Login for customers Mail Accounts
+					if($email_imap != $result['imap'])
+					{
+						$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `imap`='" . (int)$email_imap . "' WHERE `customerid`='" . (int)$id . "'");
+					}
 
-					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . $db->escape($customernumber) . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "' WHERE `customerid`='" . (int)$id . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . $db->escape($customernumber) . "', `def_language`='" . $db->escape($def_language) . "', $updatepassword `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "', `email_quota`='" . $db->escape($email_quota) . "', `imap`='" . $db->escape($email_imap) . "', `pop3`='" . $db->escape($email_pop3) . "' WHERE `customerid`='" . (int)$id . "'");
 					$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` ";
 
 					if($mysqls != '-1'
@@ -719,6 +758,22 @@ if($page == 'customers'
 						if($result['email_forwarders'] != '-1')
 						{
 							$admin_update_query.= " - 0" . (int)$result['email_forwarders'] . " ";
+						}
+					}
+					
+					if($email_quota != '-1' 
+					   || $result['email_quota'] != '-1')
+					{
+						$admin_update_query.= ", `email_quota_used` = `email_quota_used` ";
+						
+						if($email_quota != '-1')
+						{
+							$admin_update_query.= " + 0" . (int)$email_quota . " ";
+						}
+						
+						if($result['email_quota'] != '-1')
+						{
+							$admin_update_query.= " - 0" . (int)$result['email_quota'] . " ";
 						}
 					}
 
@@ -810,6 +865,10 @@ if($page == 'customers'
 				$createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', (($result['standardsubdomain'] != '0') ? '1' : '0'));
 				$phpenabled = makeyesno('phpenabled', '1', '0', $result['phpenabled']);
 				$deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
+				$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
+				$result['email_quota'] = getQuota($result['email_quota']);
+				$email_imap = makeyesno('email_imap', '1', '0', $result['imap']);
+				$email_pop3 = makeyesno('email_pop3', '1', '0', $result['pop3']);
 				$result = htmlentities_array($result);
 				eval("echo \"" . getTemplate("customers/customers_edit") . "\";");
 			}

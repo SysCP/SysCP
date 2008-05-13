@@ -16,6 +16,14 @@ $header
 				<td class="main_field_name">{$lng['login']['password']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="password" name="email_password" maxlength="50" /></td>
             </tr>
+			<if $settings['system']['mail_quota_enabled'] == 1>
+			<tr>
+				<td class="main_field_name">{$lng['emails']['quota']}:</td>
+				<td class="main_field_display" nowrap="nowrap">
+					<input type="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
+				</td>
+			</tr>
+			</if>
             <if $settings['panel']['sendalternativemail'] == 1>
             <tr>
                 <td class="main_field_name">{$lng['emails']['alternative_emailaddress']}:</td>

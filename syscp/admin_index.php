@@ -49,6 +49,7 @@ if($page == 'overview')
 				SUM(`emails_used`) AS `emails_used`,
 				SUM(`email_accounts_used`) AS `email_accounts_used`,
 				SUM(`email_forwarders_used`) AS `email_forwarders_used`,
+				SUM(`email_quota_used`) AS `email_quota_used`,
 				SUM(`ftps_used`) AS `ftps_used`,
 				SUM(`tickets_used`) AS `tickets_used`,
 				SUM(`subdomains_used`) AS `subdomains_used`,
@@ -106,7 +107,7 @@ if($page == 'overview')
 	$userinfo['diskspace_used'] = round($userinfo['diskspace_used']/1024, 4);
 	$userinfo['traffic'] = round($userinfo['traffic']/(1024*1024), 4);
 	$userinfo['traffic_used'] = round($userinfo['traffic_used']/(1024*1024), 4);
-	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
+	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota ftps tickets subdomains');
 
 	if($settings['system']['last_tasks_run'] == 0)
 	{

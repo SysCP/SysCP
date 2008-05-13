@@ -75,6 +75,9 @@ CREATE TABLE `mail_users` (
   `postfix` enum('Y','N') NOT NULL default 'Y',
   `domainid` int(11) NOT NULL default '0',
   `customerid` int(11) NOT NULL default '0',
+  `quota` bigint(13) NOT NULL default '0',
+  `pop3` tinyint(1) NOT NULL default '1',
+  `imap` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `email` (`email`)
 ) TYPE=MyISAM ;
@@ -140,6 +143,8 @@ CREATE TABLE `panel_admins` (
   `email_accounts_used` int(15) NOT NULL default '0',
   `email_forwarders` int(15) NOT NULL default '0',
   `email_forwarders_used` int(15) NOT NULL default '0',
+  `email_quota` bigint(13) NOT NULL default '0',
+  `email_quota_used` bigint(13) NOT NULL default '0',
   `ftps` int(15) NOT NULL default '0',
   `ftps_used` int(15) NOT NULL default '0',
   `tickets` int(15) NOT NULL default '-1',
@@ -191,6 +196,8 @@ CREATE TABLE `panel_customers` (
   `email_accounts_used` int(15) NOT NULL default '0',
   `email_forwarders` int(15) NOT NULL default '0',
   `email_forwarders_used` int(15) NOT NULL default '0',
+  `email_quota` bigint(13) NOT NULL default '0',
+  `email_quota_used` bigint(13) NOT NULL default '0',
   `ftps` int(15) NOT NULL default '0',
   `ftps_used` int(15) NOT NULL default '0',
   `tickets` int(15) NOT NULL default '0',
@@ -210,6 +217,8 @@ CREATE TABLE `panel_customers` (
   `lastlogin_fail` int(11) unsigned NOT NULL default '0',
   `loginfail_count` int(11) unsigned NOT NULL default '0',
   `reportsent` tinyint(4) unsigned NOT NULL default '0',
+  `pop3` tinyint(1) NOT NULL default '1',
+  `imap` tinyint(1) NOT NULL default '1',
    PRIMARY KEY  (`customerid`),
    UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
@@ -473,6 +482,8 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (72,'system','use_ssl','1');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (73,'system','openssl_cnf','[ req ]\r\ndefault_bits = 1024\r\ndistinguished_name = req_distinguished_name\r\nattributes = req_attributes\r\nprompt = no\r\noutput_password =\r\ninput_password =\r\n[ req_distinguished_name ]\r\nC = DE\r\nST = syscp\r\nL = syscp    \r\nO = Testcertificate\r\nOU = syscp        \r\nCN = @@domain_name@@\r\nemailAddress = @@email@@    \r\n[ req_attributes ]\r\nchallengePassword =\r\n');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (74, 'system', 'default_vhostconf', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (75, 'system', 'mail_quota_enabled', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (76, 'system', 'mail_quota', '104857600');
 # --------------------------------------------------------
 
 #

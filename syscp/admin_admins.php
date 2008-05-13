@@ -59,6 +59,8 @@ if($page == 'admins'
 			'email_accounts_used' => $lng['customer']['accounts'] . ' (' . $lng['panel']['used'] . ')',
 			'email_forwarders' => $lng['customer']['forwarders'],
 			'email_forwarders_used' => $lng['customer']['forwarders'] . ' (' . $lng['panel']['used'] . ')',
+			'email_quota' => $lng['customer']['email_quota'],
+			'email_quota_used' => $lng['customer']['email_quota'] . ' (' . $lng['panel']['used'] . ')',
 			'deactivated' => $lng['admin']['deactivated']
 		);
 		$paging = new paging($userinfo, $db, TABLE_PANEL_ADMINS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
@@ -80,7 +82,7 @@ if($page == 'admins'
 				$row['traffic'] = round($row['traffic']/(1024*1024), 4);
 				$row['diskspace_used'] = round($row['diskspace_used']/1024, 2);
 				$row['diskspace'] = round($row['diskspace']/1024, 2);
-				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders ftps subdomains');
+				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota ftps subdomains');
 				$row = htmlentities_array($row);
 				eval("\$admins.=\"" . getTemplate("admins/admins_admin") . "\";");
 				$count++;
@@ -167,6 +169,8 @@ if($page == 'admins'
 			$emails = intval_ressource($_POST['emails']);
 			$email_accounts = intval_ressource($_POST['email_accounts']);
 			$email_forwarders = intval_ressource($_POST['email_forwarders']);
+			$email_quota = intval_ressource($_POST['email_quota']);
+			$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
 			$ftps = intval_ressource($_POST['ftps']);
 			$tickets = intval_ressource($_POST['tickets']);
 			$mysqls = intval_ressource($_POST['mysqls']);
@@ -177,6 +181,7 @@ if($page == 'admins'
 			$traffic = doubleval_ressource($_POST['traffic']);
 			$diskspace = $diskspace*1024;
 			$traffic = $traffic*1024*1024;
+			$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 
 			// Check if the account already exists
 
@@ -248,8 +253,8 @@ if($page == 'admins'
 					$change_serversettings = '0';
 				}
 
-				$result = $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `ftps`, `tickets`, `mysqls`)
-					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "')");
+				$result = $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `email_quota`, `ftps`, `tickets`, `mysqls`)
+					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($email_quota) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "')");
 				$adminid = $db->insert_id();
 				$log->logAction(ADM_ACTION, LOG_INFO, "added admin '" . $loginname . "'");
 				redirectTo($filename, Array(
@@ -270,6 +275,7 @@ if($page == 'admins'
 			$change_serversettings = makeyesno('change_serversettings', '1', '0', '0');
 			$customers_see_all = makeyesno('customers_see_all', '1', '0', '0');
 			$domains_see_all = makeyesno('domains_see_all', '1', '0', '0');
+			$quota_type_option = makeQuotaOption();
 			eval("echo \"" . getTemplate("admins/admins_add") . "\";");
 		}
 	}
@@ -297,6 +303,8 @@ if($page == 'admins'
 					$emails = $result['emails'];
 					$email_accounts = $result['email_accounts'];
 					$email_forwarders = $result['email_forwarders'];
+					$email_quota = $result['email_quota'];
+					$email_quota_type = getQuotaType($result['email_quota']);
 					$ftps = $result['ftps'];
 					$tickets = $result['tickets'];
 					$mysqls = $result['mysqls'];
@@ -317,6 +325,8 @@ if($page == 'admins'
 					$emails = intval_ressource($_POST['emails']);
 					$email_accounts = intval_ressource($_POST['email_accounts']);
 					$email_forwarders = intval_ressource($_POST['email_forwarders']);
+					$email_quota = intval_ressource($_POST['email_quota']);
+					$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
 					$ftps = intval_ressource($_POST['ftps']);
 					$tickets = intval_ressource($_POST['tickets']);
 					$mysqls = intval_ressource($_POST['mysqls']);
@@ -375,8 +385,10 @@ if($page == 'admins'
 					{
 						$change_serversettings = '0';
 					}
+					
+					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 
-					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', " . $updatepassword . " `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', " . $updatepassword . " `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `email_quota`='" . $db->escape($email_quota) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "edited admin '#" . $id . "'");
 					redirectTo($filename, Array(
 						'page' => $page,
@@ -389,6 +401,8 @@ if($page == 'admins'
 				$result['traffic'] = round($result['traffic']/(1024*1024), 4);
 				$result['diskspace'] = round($result['diskspace']/1024, 2);
 				$result['email'] = $idna_convert->decode($result['email']);
+				$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
+				$result['email_quota'] = getQuota($result['email_quota']);
 				$language_options = '';
 
 				while(list($language_file, $language_name) = each($languages))

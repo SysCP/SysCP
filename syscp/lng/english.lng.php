@@ -792,5 +792,23 @@ $lng['admin']['sslsettings'] = 'SSL settings';
 $lng['cronjobs']['notyetrun'] = 'Not yet run';
 $lng['install']['servername_should_be_fqdn'] = 'The servername should be a FQDN and not an IP address';
 $lng['serversettings']['default_vhostconf']['title'] = 'Default vhost-settings';
+$lng['emails']['quota'] = 'Quota';
+$lng['emails']['quota_type']['byte'] = 'B';
+$lng['emails']['quota_type']['kilobyte'] = 'KB';
+$lng['emails']['quota_type']['megabyte'] = 'MB';
+$lng['emails']['quota_type']['gigabyte'] = 'GB';
+$lng['emails']['noquota'] = 'No quota';
+$lng['emails']['updatequota'] = 'Update';
+$lng['serversettings']['mail_quota']['title'] = 'Mailbox-quota';
+$lng['serversettings']['mail_quota']['description'] = 'The default quota for a new created mailboxes.';
+$lng['serversettings']['mail_quota_enabled']['title'] = 'Use mailbox-quota for customers';
+$lng['serversettings']['mail_quota_enabled']['description'] = 'Activate to use quotas on mailboxes. Default is <b>No</b> since this requires a special setup.';
+$lng['serversettings']['mail_quota_enabled']['removelink'] = 'Click here to wipe all quotas for mail accounts.';
+$lng['question']['admin_quotas_reallywipe'] = 'Do you really want to wipe all quotas on table mail_users? This cannot be reverted!';
+$lng['error']['vmailquotawrong'] = 'The quotasize must be between 1 and 999';
+$lng['customer']['email_quota'] = 'E-mail quota';
+$lng['customer']['email_imap'] = 'E-mail IMAP';
+$lng['customer']['email_pop3'] = 'E-mail POP3';
+$lng['customer']['mail_quota'] = 'Mailquota';
 
 ?>
