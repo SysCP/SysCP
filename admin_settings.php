@@ -423,7 +423,25 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_adminmail from '" . $settings['panel']['adminmail'] . "' to '" . $value . "'");
 		}
-
+		
+		if($_POST['panel_decimal_places'] != $settings['panel']['decimal_places'])
+		{	
+			$value = (int)$_POST['panel_decimal_places']);
+			
+			if($value < 0)
+			{
+				$value = 0;
+			}
+			/* too many decimal places are senseless */
+			if($value > 15)
+			{
+				$value = 15;
+			}
+			
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='panel' AND `varname`='decimal_places'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_decimal_places from '" . $settings['panel']['decimal_places'] . "' to '" . (int)$value . "'");
+		}
+		
 		if($_POST['system_mail_quota_enabled'] != $settings['system']['mail_quota_enabled'])
 		{
 			$value = ($_POST['system_mail_quota_enabled'] == '1' ? '1' : '0');

@@ -78,10 +78,10 @@ if($page == 'admins'
 		{
 			if($paging->checkDisplay($i))
 			{
-				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), 4);
-				$row['traffic'] = round($row['traffic']/(1024*1024), 4);
-				$row['diskspace_used'] = round($row['diskspace_used']/1024, 2);
-				$row['diskspace'] = round($row['diskspace']/1024, 2);
+				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
+				$row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
+				$row['diskspace_used'] = round($row['diskspace_used']/1024, $settings['panel']['decimal_places']);
+				$row['diskspace'] = round($row['diskspace']/1024, $settings['panel']['decimal_places']);
 				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota ftps subdomains');
 				$row = htmlentities_array($row);
 				eval("\$admins.=\"" . getTemplate("admins/admins_admin") . "\";");
@@ -397,8 +397,8 @@ if($page == 'admins'
 			}
 			else
 			{
-				$result['traffic'] = round($result['traffic']/(1024*1024), 4);
-				$result['diskspace'] = round($result['diskspace']/1024, 2);
+				$result['traffic'] = round($result['traffic']/(1024*1024), $settings['panel']['decimal_places']);
+				$result['diskspace'] = round($result['diskspace']/1024, $settings['panel']['decimal_places']);
 				$result['email'] = $idna_convert->decode($result['email']);
 				$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
 				$result['email_quota'] = getQuota($result['email_quota']);
