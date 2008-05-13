@@ -606,10 +606,29 @@ function validateUrl($url)
  * @param string $pattern the regular expression to be used for testing
  * @param string language id for the error
  * @return string the clean string
+ *
+ * If the default pattern is used and the string does not match, we try to replace the
+ * 'bad' values and log the action. 
+ *
  */
 
-function validate($str, $fieldname, $pattern = '/^[^\r\n\t\f\0]*$/D', $lng = 'stringformaterror')
+function validate($str, $fieldname, $pattern = '', $lng = 'stringformaterror')
 {
+	global $log;
+	
+	if($pattern == '')
+	{
+		$pattern = '/^[^\r\n\t\f\0]*$/D';
+		if(!preg_match($pattern, $str))
+		{
+			// Allows letters a-z, digits, space (\\040), hyphen (\\-), underscore (\\_) and backslash (\\\\), 
+			// everything else is removed from the string.
+			$allowed = "/[^a-z0-9\\040\\.\\-\\_\\\\]/i";
+			preg_replace($allowed, "", $str));
+			$log->logAction(null, LOG_WARNING, "cleaned bad formatted string (" . $str . ")");
+		}
+	}
+	
 	if(preg_match($pattern, $str))
 	{
 		return $str;
