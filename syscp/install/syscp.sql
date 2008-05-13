@@ -639,6 +639,7 @@ INSERT INTO `panel_navigation` VALUES (44, 'admin', '', 'admin;loggersystem', 'a
 INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_loggersystem.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (46, 'admin', '', 'menu;message', 'admin_message.nourl', 50, '', 0);
 INSERT INTO `panel_navigation` VALUES (47, 'admin', 'admin_message.nourl', 'admin;message', 'admin_message.php?page=message', 10, '', 0);
+INSERT INTO `panel_navigation` VALUES (48, 'customer', 'customer_email.php', 'emails;emails_add', 'customer_email.php?page=emails&action=add', '20', 'emails', 0);
 
 # --------------------------------------------------------
 
