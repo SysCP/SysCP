@@ -811,5 +811,6 @@ $lng['customer']['email_imap'] = 'E-mail IMAP';
 $lng['customer']['email_pop3'] = 'E-mail POP3';
 $lng['customer']['mail_quota'] = 'Mailquota';
 $lng['error']['invalidip'] = 'Invalid IP address: %s';
+$lng['serversettings']['decimal_places'] = 'Number of decimal places in traffic/webspace output';
 
 ?>

@@ -89,10 +89,10 @@ if($page == 'customers'
 			{
 				$domains = $db->query_first("SELECT COUNT(`id`) AS `domains` " . "FROM `" . TABLE_PANEL_DOMAINS . "` " . "WHERE `customerid`='" . (int)$row['customerid'] . "' AND `parentdomainid`='0' ");
 				$row['domains'] = intval($domains['domains']);
-				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), 4);
-				$row['traffic'] = round($row['traffic']/(1024*1024), 4);
-				$row['diskspace_used'] = round($row['diskspace_used']/1024, 2);
-				$row['diskspace'] = round($row['diskspace']/1024, 2);
+				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
+				$row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
+				$row['diskspace_used'] = round($row['diskspace_used']/1024, $settings['panel']['decimal_places']);
+				$row['diskspace'] = round($row['diskspace']/1024, $settings['panel']['decimal_places']);
 				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
 				$row = htmlentities_array($row);
 				eval("\$customers.=\"" . getTemplate("customers/customers_customer") . "\";");
@@ -861,8 +861,8 @@ if($page == 'customers'
 					$language_options.= makeoption($language_name, $language_file, $result['def_language'], true);
 				}
 
-				$result['traffic'] = round($result['traffic']/(1024*1024), 4);
-				$result['diskspace'] = round($result['diskspace']/1024, 2);
+				$result['traffic'] = round($result['traffic']/(1024*1024), $settings['panel']['decimal_places']);
+				$result['diskspace'] = round($result['diskspace']/1024, $settings['panel']['decimal_places']);
 				$result['email'] = $idna_convert->decode($result['email']);
 				$createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', (($result['standardsubdomain'] != '0') ? '1' : '0'));
 				$phpenabled = makeyesno('phpenabled', '1', '0', $result['phpenabled']);

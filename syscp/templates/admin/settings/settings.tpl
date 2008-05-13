@@ -38,6 +38,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_adminmail" value="{$settings['panel']['adminmail']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['decimal_places']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_decimal_places" value="{$settings['panel']['decimal_places']}" /></td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['phpmyadmin_url']['title']}:</b><br />{$lng['serversettings']['phpmyadmin_url']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="panel_phpmyadmin_url" value="{$settings['panel']['phpmyadmin_url']}" /></td>
 			</tr>
@@ -325,26 +329,24 @@ $header
 				<td class="main_field_name"><b>{$lng['serversettings']['ticket']['worktime_sun']}:</b></td>
 				<td class="main_field_display" nowrap="nowrap">{$ticket_worktime_sun}</td>
 			</tr>
-                        <tr>
-                                <td class="maintitle_apply_left">
-                                        <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['sslsettings']}</b>
-                                </td>
-                                <td class="maintitle_apply_right" nowrap="nowrap">
-                                        <input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-                                </td>
-                        </tr>
-                        <tr>
-                                <td class="main_field_name"><b>{$lng['serversettings']['ssl']['use_ssl']}:</b></td>
-                                <td class="main_field_display" nowrap="nowrap">$ssl_enabled</td>
-                        </tr>
-                        <tr>
-                                <td class="main_field_name"><b>{$lng['serversettings']['ssl']['ssl_cert_file']}:</b></td>
-                                <td class="main_field_display" nowrap="nowrap"><input type="text" name="ssl_cert_file" value="{$settings['system']['ssl_cert_file']}" /></td>
-                        </tr>
-                        <tr>
-                                <td class="main_field_name"><b>{$lng['serversettings']['ssl']['openssl_cnf']}:</b></td>
-                                <td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="40" name="openssl_cnf">{$settings['system']['openssl_cnf']}</textarea></td>
-                        </tr>
+			<tr>
+				<td class="maintitle_apply_left"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['sslsettings']}</b></td>
+				<td class="maintitle_apply_right" nowrap="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ssl']['use_ssl']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap">$ssl_enabled</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ssl']['ssl_cert_file']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ssl_cert_file" value="{$settings['system']['ssl_cert_file']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['ssl']['openssl_cnf']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="40" name="openssl_cnf">{$settings['system']['openssl_cnf']}</textarea></td>
+			</tr>
 		</table>
 	</form>
 	<br />

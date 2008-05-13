@@ -1418,7 +1418,7 @@ if($settings['panel']['version'] == '1.2.19-svn6')
 	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (41, 'system', 'mail_quota', '104857600')");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `email_quota` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_forwarders_used` , ADD `email_quota_used` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_quota`, ADD `imap` TINYINT( 1 ) NOT NULL DEFAULT '0', ADD `pop3` TINYINT( 1 ) NOT NULL DEFAULT '0'");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `email_quota` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_forwarders_used` , ADD `email_quota_used` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_quota`");
-
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('panel', 'decimal_places', '4')");
 	// set new version
 
 	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn7\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';

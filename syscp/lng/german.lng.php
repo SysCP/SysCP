@@ -817,5 +817,6 @@ $lng['customer']['email_imap'] = 'E-Mail IMAP';
 $lng['customer']['email_pop3'] = 'E-Mail POP3';
 $lng['customer']['mail_quota'] = 'E-Mail Kontingent';
 $lng['error']['invalidip'] = 'Ung&uuml;ltige IP Adresse: %s';
+$lng['serversettings']['decimal_places'] = 'Nachkommastellen bei der Ausgabe von Traffic/Webspace';
 
 ?>
