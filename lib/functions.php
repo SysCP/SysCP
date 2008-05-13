@@ -1783,15 +1783,22 @@ function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
 /**
  * Checks whether it is a valid ip
  *
- * @return bool   false if it's not a valid ip
+ * @return mixed 	ip address on success, standard_error on failure
  */
 
-function validate_ip($ip)
+function validate_ip($ip, $lng = 'invalidip', $installscript = false)
 {
-	if(filter_var($ip, FILTER_VALIDATE_IP) === FALSE)
+	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === FALSE)
 	{
-		standard_error($lng, ip);
-		exit;
+		if($installscript)
+		{
+			return false;
+		}
+		else
+		{
+			standard_error($lng, $ip);
+			exit;
+		}
 	}
 	else
 	{

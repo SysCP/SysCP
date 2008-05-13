@@ -775,7 +775,7 @@ $lng['error']['nomessagetosend'] = 'You did not enter a message.';
 $lng['error']['noreceipientsgiven'] = 'You did not specify any receipient';
 $lng['admin']['emaildomain'] = 'Emaildomain';
 $lng['admin']['email_only'] = 'Only email?';
-$lng['admin']['wwwserveralias'] = 'Add a www. ServerAlias';
+$lng['admin']['wwwserveralias'] = 'Add a &quot;www.&quot; ServerAlias';
 $lng['admin']['ipsandports']['enable_ssl'] = 'Is this an SSL Port?';
 $lng['admin']['ipsandports']['ssl_cert_file'] = 'Path to the SSL Certificate';
 $lng['panel']['send'] = 'send';
@@ -785,7 +785,7 @@ $lng['admin']['message'] = 'Write a Message';
 $lng['admin']['text'] = 'Message';
 $lng['menu']['message'] = 'Messages';
 $lng['error']['errorsendingmail'] = 'The message to &quot;%s&quot; failed';
-$lng['error']['cannotreaddir'] = 'Unable to read directory \'%s\'';
+$lng['error']['cannotreaddir'] = 'Unable to read directory &quot;%s&quot;';
 $lng['message']['success'] = 'Successfully sent message to %s receipients';
 $lng['message']['noreceipients'] = 'No e-mail has been sent because there are no receipients in the database';
 $lng['admin']['sslsettings'] = 'SSL settings';
@@ -810,5 +810,6 @@ $lng['customer']['email_quota'] = 'E-mail quota';
 $lng['customer']['email_imap'] = 'E-mail IMAP';
 $lng['customer']['email_pop3'] = 'E-mail POP3';
 $lng['customer']['mail_quota'] = 'Mailquota';
+$lng['error']['invalidip'] = 'Invalid IP address: %s';
 
 ?>
