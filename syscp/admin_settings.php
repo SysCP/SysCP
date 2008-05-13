@@ -327,6 +327,13 @@ if(($page == 'settings' || $page == 'overview')
 			inserttask('1');
 		}
 
+		if($_POST['system_default_vhostconf'] != $settings['system']['default_vhostconf'])
+		{
+			$value = validate(str_replace("\r\n", "\n", $_POST['system_default_vhostconf']), 'system_default_vhostconf', '/^[^\0]*$/');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='default_vhostconf'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_default_vhostconf from '" . $settings['system']['default_vhostconf'] . "' to '" . $value . "'");
+		}
+
 		if($_POST['system_webalizer_quiet'] != $settings['system']['webalizer_quiet'])
 		{
 			$value = in_array($_POST['system_webalizer_quiet'], array(

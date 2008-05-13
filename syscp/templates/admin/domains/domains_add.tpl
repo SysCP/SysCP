@@ -86,7 +86,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ownvhostsettings']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="60" name="specialsettings"></textarea></td>
+				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="60" name="specialsettings">{$settings['system']['default_vhostconf']}</textarea></td>
 			</tr>
 			</if>
 			<tr>
