@@ -61,6 +61,45 @@ $header
 				<td class="field_name_border_left"><i>{EMAIL}</i>:</td>
 				<td class="field_name">{$lng['admin']['templates']['EMAIL']}</td>
 			</tr>
+			<if $settings['panel']['sendalternativemail'] == 1>
+            <tr>
+                <td class="field_display_border_left" colspan="2"><b>{$lng['admin']['templates']['pop_success_alternative']}</b></td>
+            </tr>
+            <tr>
+                <td class="field_name_border_left"><i>{EMAIL}</i>:</td>
+                <td class="field_name">{$lng['admin']['templates']['EMAIL']}</td>
+            </tr>
+            <tr>
+                <td class="field_name_border_left"><i>{PASSWORD}</i>:</td>
+                <td class="field_name">{$lng['admin']['templates']['EMAIL_PASSWORD']}</td>
+            </tr>
+            </if>
+			<tr>
+				<td class="field_display_border_left" colspan="2"><b>{$lng['admin']['templates']['trafficninetypercent']}</b></td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left"><i>{TRAFFIC}</i>:</td>
+				<td class="field_name">{$lng['admin']['templates']['TRAFFIC']}</td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left"><i>{TRAFFICUSED}</i>:</td>
+				<td class="field_name">{$lng['admin']['templates']['TRAFFICUSED']}</td>
+			</tr>
+			<tr>
+				<td class="field_display_border_left" colspan="2"><b>{$lng['admin']['templates']['ticket']}</b></td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left"><i>{SUBJECT}</i>:</td>
+				<td class="field_name">{$lng['admin']['templates']['SUBJECT']}</td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left"><i>{FIRSTNAME}</i>:</td>
+				<td class="field_name">{$lng['admin']['templates']['FIRSTNAME']}</td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left"><i>{NAME}</i>:</td>
+				<td class="field_name">{$lng['admin']['templates']['NAME']}</td>
+			</tr>
 		</table>
 	</form>
 <br />
