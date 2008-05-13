@@ -34,6 +34,9 @@ $header
 			<td class="field_display_border_left">{$lng['emails']['forwarders']} ({$forwarders_count}):</td>
 			<td class="field_name">$forwarders<a href="$filename?page=forwarders&amp;action=add&amp;id={$result['id']}&amp;s=$s">{$lng['emails']['forwarder_add']}</a></td>
 		</tr>
+		<tr>
+			<td class="field_display_border_left" colspan="2"><a href="$filename?page=emails&amp;action=add&amp;s=$s">{$lng['emails']['emails_add']}</a></td>
+		</tr>
 	</table>
 	<br />
 	<br />
