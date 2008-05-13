@@ -626,7 +626,14 @@ class ticket
 
 			if(isset($this->t_data[$_var]))
 			{
-				return $this->t_data[$_var];
+				if(strtolower($_var) == 'message')
+				{
+					return htmlspecialchars_decode(nl2br($this->t_data[$_var]));
+				}
+				else
+				{
+					return $this->t_data[$_var];
+				}
 			}
 			else
 			{
