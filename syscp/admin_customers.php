@@ -188,7 +188,7 @@ if($page == 'customers'
 				{
 					$admin_update_query.= ", `email_forwarders_used` = `email_forwarders_used` - 0" . (int)$result['email_forwarders'];
 				}
-				
+
 				if($result['email_quota'] != '-1')
 				{
 					$admin_update_query.= ", `email_quota_used` = `email_quota_used` - 0" . (int)$result['email_quota'];
@@ -406,10 +406,10 @@ if($page == 'customers'
 					{
 						$admin_update_query.= ", `email_forwarders_used` = `email_forwarders_used` + 0" . (int)$email_forwarders;
 					}
-					
-					if ( $email_quota != '-1' )
+
+					if($email_quota != '-1')
 					{
-						$admin_update_query .= ", `email_quota_used` = `email_quota_used` + 0" . (int)$email_quota;
+						$admin_update_query.= ", `email_quota_used` = `email_quota_used` + 0" . (int)$email_quota;
 					}
 
 					if($subdomains != '-1')
@@ -681,14 +681,16 @@ if($page == 'customers'
 						$log->logAction(ADM_ACTION, LOG_INFO, "deactivated user '" . $result['loginname'] . "'");
 						inserttask('1');
 					}
-					
+
 					// Disable or enable POP3 Login for customers Mail Accounts
+
 					if($email_pop3 != $result['pop3'])
 					{
 						$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `pop3`='" . (int)$email_pop3 . "' WHERE `customerid`='" . (int)$id . "'");
 					}
-						
+
 					// Disable or enable IMAP Login for customers Mail Accounts
+
 					if($email_imap != $result['imap'])
 					{
 						$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `imap`='" . (int)$email_imap . "' WHERE `customerid`='" . (int)$id . "'");
@@ -760,17 +762,17 @@ if($page == 'customers'
 							$admin_update_query.= " - 0" . (int)$result['email_forwarders'] . " ";
 						}
 					}
-					
-					if($email_quota != '-1' 
+
+					if($email_quota != '-1'
 					   || $result['email_quota'] != '-1')
 					{
 						$admin_update_query.= ", `email_quota_used` = `email_quota_used` ";
-						
+
 						if($email_quota != '-1')
 						{
 							$admin_update_query.= " + 0" . (int)$email_quota . " ";
 						}
-						
+
 						if($result['email_quota'] != '-1')
 						{
 							$admin_update_query.= " - 0" . (int)$result['email_quota'] . " ";

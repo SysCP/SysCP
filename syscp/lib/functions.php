@@ -608,27 +608,29 @@ function validateUrl($url)
  * @return string the clean string
  *
  * If the default pattern is used and the string does not match, we try to replace the
- * 'bad' values and log the action. 
+ * 'bad' values and log the action.
  *
  */
 
 function validate($str, $fieldname, $pattern = '', $lng = 'stringformaterror')
 {
 	global $log;
-	
+
 	if($pattern == '')
 	{
 		$pattern = '/^[^\r\n\t\f\0]*$/D';
+
 		if(!preg_match($pattern, $str))
 		{
-			// Allows letters a-z, digits, space (\\040), hyphen (\\-), underscore (\\_) and backslash (\\\\), 
+			// Allows letters a-z, digits, space (\\040), hyphen (\\-), underscore (\\_) and backslash (\\\\),
 			// everything else is removed from the string.
+
 			$allowed = "/[^a-z0-9\\040\\.\\-\\_\\\\]/i";
 			preg_replace($allowed, "", $str);
 			$log->logAction(null, LOG_WARNING, "cleaned bad formatted string (" . $str . ")");
 		}
 	}
-	
+
 	if(preg_match($pattern, $str))
 	{
 		return $str;
@@ -1788,7 +1790,7 @@ function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
 
 function validate_ip($ip, $lng = 'invalidip', $installscript = false)
 {
-	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 | FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === FALSE)
+	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6|FILTER_FLAG_IPV4|FILTER_FLAG_NO_PRIV_RANGE|FILTER_FLAG_NO_RES_RANGE) === FALSE)
 	{
 		if($installscript)
 		{
@@ -1815,58 +1817,70 @@ function validate_ip($ip, $lng = 'invalidip', $installscript = false)
  *
  * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  */
+
 function getQuotaInBytes($quota, $type = 'mb')
 {
-	switch ($type)
+	switch($type)
 	{
-		case 'b':
-			$quota = $quota;
-			break;
-		case 'kb':
-			$quota = $quota * 1024;
-			break;
-		case 'mb':
-			$quota = $quota * 1024 * 1024;
-			break;
-		case 'gb':
-			$quota = $quota * 1024 * 1024 * 1024;
-			break;
+	case 'b':
+		$quota = $quota;
+		break;
+	case 'kb':
+		$quota = $quota*1024;
+		break;
+	case 'mb':
+		$quota = $quota*1024*1024;
+		break;
+	case 'gb':
+		$quota = $quota*1024*1024*1024;
+		break;
 	}
+
 	return $quota;
 }
-	
+
 /**
- * 
+ *
  * @param  int	Quota in bytes
  * @return int 	Quota in recalculated format
- * 
+ *
  * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  */
+
 function getQuota($quota)
 {
 	while($quota > 1024)
 	{
-		$quota = $quota /1024;
+		$quota = $quota/1024;
 	}
+
 	return $quota;
 }
-	
+
 /**
  * Returns type of a given Quota
- * 
+ *
  * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  * @param int Quota in bytes
  * @return string Type of Quota (b, kb, mb, gb)
  */
+
 function getQuotaType($quota)
 {
-	$quota_type_array = array('b','kb','mb','gb');
+	$quota_type_array = array(
+		'b',
+		'kb',
+		'mb',
+		'gb'
+	);
 	$i = 0;
+
 	while($quota > 1024)
 	{
-		$quota = $quota / 1024;
+		$quota = $quota/1024;
 		$i++;
 	}
+
 	return $quota_type_array[$i];
 }
 
@@ -1875,22 +1889,29 @@ function getQuotaType($quota)
  * @param  string Type of Quotq (b, kb, mb, gb)
  * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  */
+
 function makeQuotaOption($selected = 'mb')
 {
 	global $lng;
-	$quota_types = array('b', 'kb', 'mb', 'gb');
+	$quota_types = array(
+		'b',
+		'kb',
+		'mb',
+		'gb'
+	);
+
 	// Fallback if $selected mismatch $quota_types
-	if (!in_array($selected, $quota_types))
+
+	if(!in_array($selected, $quota_types))
 	{
 		$selected = 'mb';
 	}
-	
+
 	$quota_type_option = '';
 	$quota_type_option.= makeoption($lng['emails']['quota_type']['byte'], 'b', $selected);
 	$quota_type_option.= makeoption($lng['emails']['quota_type']['kilobyte'], 'kb', $selected);
 	$quota_type_option.= makeoption($lng['emails']['quota_type']['megabyte'], 'mb', $selected);
 	$quota_type_option.= makeoption($lng['emails']['quota_type']['gigabyte'], 'gb', $selected);
-	
 	return $quota_type_option;
 }
 
