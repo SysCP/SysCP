@@ -423,15 +423,15 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='adminmail'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_adminmail from '" . $settings['panel']['adminmail'] . "' to '" . $value . "'");
 		}
-		
+
 		if($_POST['system_mail_quota_enabled'] != $settings['system']['mail_quota_enabled'])
 		{
 			$value = ($_POST['system_mail_quota_enabled'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='mail_quota_enabled'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed mail_quota_enabled from '" . $settings['system']['mail_quota_enabled'] . "' to '" . $value . "'");
 		}
-		
-		if($_POST['system_mail_quota']!=$settings['system']['mail_quota'])
+
+		if($_POST['system_mail_quota'] != $settings['system']['mail_quota'])
 		{
 			$value = validate($_POST['system_mail_quota'], 'system_mail_quota', '/^[0-9]{1,3}$/D', 'vmailquotawrong');
 			$value = getQuotaInBytes($value, $_POST['system_mail_quota_type']);
@@ -874,22 +874,28 @@ if(($page == 'settings' || $page == 'overview')
 		{
 			$pathedit.= makeoption($method, $method, $settings['panel']['pathedit'], true, true);
 		}
-		
+
 		$quota_enabled = makeyesno('system_mail_quota_enabled', '1', '0', $settings['system']['mail_quota_enabled']);
-		$quota_type = array('b', 'kb', 'mb', 'gb');
+		$quota_type = array(
+			'b',
+			'kb',
+			'mb',
+			'gb'
+		);
 		$i = 0;
 		$quota = $settings['system']['mail_quota'];
-		while($quota > 1024) 
+
+		while($quota > 1024)
 		{
-			$quota = $quota / 1024;
+			$quota = $quota/1024;
 			$i++;
 		}
+
 		$quota_type_option = makeoption($lng['emails']['quota_type']['byte'], 'b', $quota_type[$i]);
 		$quota_type_option.= makeoption($lng['emails']['quota_type']['kilobyte'], 'kb', $quota_type[$i]);
 		$quota_type_option.= makeoption($lng['emails']['quota_type']['megabyte'], 'mb', $quota_type[$i]);
 		$quota_type_option.= makeoption($lng['emails']['quota_type']['gigabyte'], 'gb', $quota_type[$i]);
 		unset($i, $quota_type);
-
 		$natsorting = makeyesno('panel_natsorting', '1', '0', $settings['panel']['natsorting']);
 		$mailpwcleartext = makeyesno('system_mailpwcleartext', '1', '0', $settings['system']['mailpwcleartext']);
 		$panel_sendalternativemail = makeyesno('panel_sendalternativemail', '1', '0', $settings['panel']['sendalternativemail']);

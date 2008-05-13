@@ -385,9 +385,8 @@ if($page == 'admins'
 					{
 						$change_serversettings = '0';
 					}
-					
-					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 
+					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', " . $updatepassword . " `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `email_quota`='" . $db->escape($email_quota) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "edited admin '#" . $id . "'");
 					redirectTo($filename, Array(

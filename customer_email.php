@@ -126,17 +126,24 @@ elseif($page == 'emails')
 					{
 						$row['destination'] = substr($row['destination'], 0, 32) . '... (' . $destinations_count . ')';
 					}
-					
-					if($row['quota'] != 0 ) 
+
+					if($row['quota'] != 0)
 					{
 						$quota = $row['quota'];
-						$quota_type = array('byte', 'kilobyte', 'megabyte', 'gigabyte');
+						$quota_type = array(
+							'byte',
+							'kilobyte',
+							'megabyte',
+							'gigabyte'
+						);
 						$j = 0;
-						while($quota > 1024) 
+
+						while($quota > 1024)
 						{
-							$quota = $quota / 1024;
+							$quota = $quota/1024;
 							$j++;
 						}
+
 						$quota_type = $lng['emails']['quota_type'][$quota_type[$j]];
 					}
 
@@ -367,26 +374,25 @@ elseif($page == 'emails')
 			));
 		}
 	}
-	
-	elseif($action=='updatequota' 
-	   && $id!=0)
+	elseif($action == 'updatequota'
+	       && $id != 0)
 	{
-		$result=$db->query_first("SELECT `v`.`id`, `v`.`email`, `u`.`quota`, `c`.`email_quota_used`, `u`.`id` AS mail_user_id FROM `" . TABLE_MAIL_VIRTUAL . "` `v` LEFT JOIN `" . TABLE_MAIL_USERS . "` `u` ON (`v`.`popaccountid` = `u`.`id`) LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` ON(`v`.`customerid` = `c`.`customerid`) WHERE `v`.`customerid`='" . (int)$userinfo['customerid'] . "' AND `v`.`id`='" . (int)$id . "'");
-		
+		$result = $db->query_first("SELECT `v`.`id`, `v`.`email`, `u`.`quota`, `c`.`email_quota_used`, `u`.`id` AS mail_user_id FROM `" . TABLE_MAIL_VIRTUAL . "` `v` LEFT JOIN `" . TABLE_MAIL_USERS . "` `u` ON (`v`.`popaccountid` = `u`.`id`) LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` ON(`v`.`customerid` = `c`.`customerid`) WHERE `v`.`customerid`='" . (int)$userinfo['customerid'] . "' AND `v`.`id`='" . (int)$id . "'");
+
 		if(isset($result['email'])
-		   && $result['email']!='')
+		   && $result['email'] != '')
 		{
 			$quota = intval_ressource($_POST['email_quota_size']);
 			$quota = getQuotaInBytes($quota, $_POST['email_quota_type']);
-			$new_used_quota = $result['email_quota_used'] - $result['quota'] + $quota;
-			$db->query( "UPDATE `" . TABLE_MAIL_USERS . "` SET `quota` = '".$quota."' WHERE `mail_users`.`id` = " . $result['mail_user_id'] . " AND `customerid`='" . $userinfo['customerid'] . "'");
-			$db->query( "UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_quota_used` = ".$new_used_quota." WHERE `customerid` = '" . $userinfo['customerid'] . "'" );
+			$new_used_quota = $result['email_quota_used']-$result['quota']+$quota;
+			$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota` = '" . $quota . "' WHERE `mail_users`.`id` = " . $result['mail_user_id'] . " AND `customerid`='" . $userinfo['customerid'] . "'");
+			$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_quota_used` = " . $new_used_quota . " WHERE `customerid` = '" . $userinfo['customerid'] . "'");
 		}
-		
-		redirectTo ( $filename, Array(
-			'page' => $page, 
+
+		redirectTo($filename, Array(
+			'page' => $page,
 			'action' => 'edit',
-			'id' => $id, 
+			'id' => $id,
 			's' => $s
 		));
 	}
@@ -413,7 +419,7 @@ elseif($page == 'accounts')
 					$password = validate($_POST['email_password'], 'password');
 					$alternative_email = $idna_convert->encode(validate($_POST['alternative_email'], 'alternative_email'));
 
-					if ($settings['system']['mail_quota_enabled'] == 1)
+					if($settings['system']['mail_quota_enabled'] == 1)
 					{
 						$quota = intval_ressource($_POST['email_quota_size']);
 						$quota = getQuotaInBytes($quota, $_POST['email_quota_type']);
@@ -422,7 +428,7 @@ elseif($page == 'accounts')
 					{
 						$quota = 0;
 					}
-					
+
 					if($email_full == '')
 					{
 						standard_error(array(
