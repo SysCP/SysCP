@@ -796,5 +796,6 @@ $lng['message']['success'] = 'Nachricht erfolgreich an %s Empf&auml;nger gesende
 $lng['message']['noreceipients'] = 'Es wurde keine E-Mail versendet da sich keine Empf&auml;nger in der Datenbank befinden';
 $lng['admin']['sslsettings'] = 'SSL Einstellungen';
 $lng['cronjobs']['notyetrun'] = 'Bisher nicht gestartet';
+$lng['install']['servername_should_be_fqdn'] = 'Der Servername sollte eine FQDN sein und keine IP Adresse';
 
 ?>
