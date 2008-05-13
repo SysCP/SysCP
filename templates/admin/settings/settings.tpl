@@ -166,6 +166,12 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_deactivateddocroot" value="{$settings['system']['deactivateddocroot']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name" colspan="2"><b>{$lng['serversettings']['default_vhostconf']['title']}:</b></td>
+			</tr>
+			<tr>
+				<td class="main_field_display" nowrap="nowrap" colspan="2"><textarea class="textarea_noborder" rows="12" cols="60" name="system_default_vhostconf">{$settings['system']['default_vhostconf']}</textarea></td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webalizersettings']}</b>
 				</td>

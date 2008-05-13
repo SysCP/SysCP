@@ -797,5 +797,6 @@ $lng['message']['noreceipients'] = 'Es wurde keine E-Mail versendet da sich kein
 $lng['admin']['sslsettings'] = 'SSL Einstellungen';
 $lng['cronjobs']['notyetrun'] = 'Bisher nicht gestartet';
 $lng['install']['servername_should_be_fqdn'] = 'Der Servername sollte eine FQDN sein und keine IP Adresse';
+$lng['serversettings']['default_vhostconf']['title'] = 'Standard Vhost-Einstellungen';
 
 ?>
