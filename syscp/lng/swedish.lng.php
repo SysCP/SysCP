@@ -713,4 +713,28 @@ $lng['admin']['tickets']['monthly'] = 'Varje månad';
 $lng['admin']['tickets']['yearly'] = 'Varje år';
 $lng['error']['ticketresetcycleiswrong'] = 'Cykeln för återställning av supportärenden måste vara "Dagligen", "Varje vecka", "varje månad" or "varje år".';
 
+// ADDED IN 1.2.19-svn4
+
+$lng['menue']['traffic']['traffic'] = 'Trafik';
+$lng['menue']['traffic']['current'] = 'Nuvarande månad';
+$lng['traffic']['month'] = "Månad";
+$lng['traffic']['day'] = "Dag";
+$lng['traffic']['months'][1] = "Januari";
+$lng['traffic']['months'][2] = "Februari";
+$lng['traffic']['months'][3] = "Mars";
+$lng['traffic']['months'][4] = "April";
+$lng['traffic']['months'][5] = "Maj";
+$lng['traffic']['months'][6] = "Juni";
+$lng['traffic']['months'][7] = "Juli";
+$lng['traffic']['months'][8] = "Augusti";
+$lng['traffic']['months'][9] = "September";
+$lng['traffic']['months'][10] = "Oktober";
+$lng['traffic']['months'][11] = "November";
+$lng['traffic']['months'][12] = "December";
+$lng['traffic']['mb'] = "Trafik (MB)";
+$lng['traffic']['distribution'] = '<font color="#019522">FTP</font> | <font color="#0000FF">HTTP</font> | <font color="#800000">Mail</font>';
+$lng['traffic']['sumhttp'] = 'Summa HTTP-Trafik i';
+$lng['traffic']['sumftp'] = 'Summa FTP-Trafik i';
+$lng['traffic']['summail'] = 'Summa E-posttrafik i';
+
 ?>
