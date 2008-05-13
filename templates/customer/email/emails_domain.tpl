@@ -1,3 +1,3 @@
 <tr>
-	<td class="title" colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;<b>{$domainname}</b></td>
+	<td class="title" colspan="7">&nbsp;&nbsp;&nbsp;&nbsp;<b>{$domainname}</b></td>
 </tr>

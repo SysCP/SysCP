@@ -798,5 +798,23 @@ $lng['admin']['sslsettings'] = 'SSL Einstellungen';
 $lng['cronjobs']['notyetrun'] = 'Bisher nicht gestartet';
 $lng['install']['servername_should_be_fqdn'] = 'Der Servername sollte eine FQDN sein und keine IP Adresse';
 $lng['serversettings']['default_vhostconf']['title'] = 'Standard Vhost-Einstellungen';
+$lng['emails']['quota'] = 'Kontingent';
+$lng['emails']['quota_type']['byte'] = 'B';
+$lng['emails']['quota_type']['kilobyte'] = 'KB';
+$lng['emails']['quota_type']['megabyte'] = 'MB';
+$lng['emails']['quota_type']['gigabyte'] = 'GB';
+$lng['emails']['noquota'] = 'Kein Kontingent';
+$lng['emails']['updatequota'] = 'Update';
+$lng['serversettings']['mail_quota']['title'] = 'Mailbox-Kontingent';
+$lng['serversettings']['mail_quota']['description'] = 'Standard-Kontingent f&uuml;r neuerstellte E-Mail Accounts';
+$lng['serversettings']['mail_quota_enabled']['title'] = 'Nutze E-Mail Kontingent f&uuml;r Kunden';
+$lng['serversettings']['mail_quota_enabled']['description'] = 'Aktiviere Kontingent f&uuml;r E-Mailkonten. Standard ist <b>Nein</b> da dies eine spezielle Konfiguration voraussetzt.';
+$lng['serversettings']['mail_quota_enabled']['removelink'] = 'Hier klicken, um alle E-Mail Kontingente zu entfernen';
+$lng['question']['admin_quotas_reallywipe'] = 'Sind Sie sicher, dass alle E-Mail Kontingente aus der Tabelle mail_users entfernt werden sollen? Dieser Schritt kann nicht r&uuml;ckg&auml;ngig gemacht werden!';
+$lng['error']['vmailquotawrong'] = 'Die Kontingent-Gr&ouml;&szlig;e muss zwischen 1 und 999 liegen';
+$lng['customer']['email_quota'] = 'E-Mail Kontingent';
+$lng['customer']['email_imap'] = 'E-Mail IMAP';
+$lng['customer']['email_pop3'] = 'E-Mail POP3';
+$lng['customer']['mail_quota'] = 'E-Mail Kontingent';
 
 ?>

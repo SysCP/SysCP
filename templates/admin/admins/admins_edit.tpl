@@ -72,6 +72,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_forwarders" value="{$result['email_forwarders']}" maxlength="9" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name">{$lng['customer']['email_quota']}: *</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_quota" value="{$result['email_quota']}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select></td>
+			</tr>
+			<tr>
 				<td class="main_field_name">{$lng['customer']['ftps']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ftps" value="{$result['ftps']}" maxlength="9" /></td>
 			</tr>
