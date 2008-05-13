@@ -781,7 +781,7 @@ $lng['error']['nomessagetosend'] = 'Keine Nachricht angegeben';
 $lng['error']['noreceipientsgiven'] = 'Keine Empf&auml;nger angegeben';
 $lng['admin']['emaildomain'] = 'E-Maildomain';
 $lng['admin']['email_only'] = 'Nur E-Mail?';
-$lng['admin']['wwwserveralias'] = 'Einen &quit;www.&quot; ServerAlias hinzuf&uuml;gen';
+$lng['admin']['wwwserveralias'] = 'Einen &quot;www.&quot; ServerAlias hinzuf&uuml;gen';
 $lng['admin']['ipsandports']['enable_ssl'] = 'Ist dies ein SSL-Port?';
 $lng['admin']['ipsandports']['ssl_cert_file'] = 'Pfad zum Zertifikat';
 $lng['panel']['send'] = 'Versenden';
@@ -790,8 +790,8 @@ $lng['admin']['receipient'] = 'Empf&auml;nger';
 $lng['admin']['message'] = 'Nachricht schreiben';
 $lng['admin']['text'] = 'Nachricht';
 $lng['menu']['message'] = 'Nachrichten';
-$lng['error']['errorsendingmail'] = 'Das Versenden der Nachricht an "%s" schlug fehl.';
-$lng['error']['cannotreaddir'] = 'Der Ordner \'%s\' kann nicht gelesen werden';
+$lng['error']['errorsendingmail'] = 'Das Versenden der Nachricht an &quot;%s&quot; schlug fehl.';
+$lng['error']['cannotreaddir'] = 'Der Ordner &quot;%s&quot; kann nicht gelesen werden';
 $lng['message']['success'] = 'Nachricht erfolgreich an %s Empf&auml;nger gesendet';
 $lng['message']['noreceipients'] = 'Es wurde keine E-Mail versendet da sich keine Empf&auml;nger in der Datenbank befinden';
 $lng['admin']['sslsettings'] = 'SSL Einstellungen';
@@ -816,5 +816,6 @@ $lng['customer']['email_quota'] = 'E-Mail Kontingent';
 $lng['customer']['email_imap'] = 'E-Mail IMAP';
 $lng['customer']['email_pop3'] = 'E-Mail POP3';
 $lng['customer']['mail_quota'] = 'E-Mail Kontingent';
+$lng['error']['invalidip'] = 'Ung&uuml;ltige IP Adresse: %s';
 
 ?>

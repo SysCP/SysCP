@@ -337,8 +337,7 @@ else
 {
 	if(!empty($_SERVER['SERVER_NAME']))
 	{
-		if(!filter_var($_SERVER['SERVER_NAME'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
-		   && !filter_var($_SERVER['SERVER_NAME'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+		if(validate_ip($_SERVER['SERVER_NAME'], null, true) === false)
 		{
 			$servername = $_SERVER['SERVER_NAME'];
 		}
@@ -577,8 +576,7 @@ if(isset($_POST['installstep'])
 
 	status_message('green', 'OK');
 
-	if(filter_var($servername, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
-	   || filter_var($servername, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+	if(validate_ip($_SERVER['SERVER_NAME'], null, true) !== false)
 	{
 		status_message('red', $lng['install']['servername_should_be_fqdn']);
 	}
