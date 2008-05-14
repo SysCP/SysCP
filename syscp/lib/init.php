@@ -435,9 +435,11 @@ if($page == '')
 }
 
 /* Security stuff */
-if(($action!=null && !ereg("^[a-zA-Z0-9]+$", $action)) || preg_match('/\.\./i', $page)) 
+if(($action!=null 
+   && !ereg("^[a-zA-Z0-9]+$", $action))
+   || ($page!=null
+   && !ereg("^[a-zA-Z0-9]+$", $page)))
 {
-	
 	// we redirect any "wrong" page/action
 	if(isset($userinfo['loginname'])
 	   && $userinfo['loginname'] != '')
