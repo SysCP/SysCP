@@ -45,6 +45,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap">$domains_see_all</td>
 			</tr>
 			<tr>
+				<td class="main_field_name">{$lng['admin']['caneditphpsettings']}</td>
+				<td class="main_field_display" nowrap="nowrap">$caneditphpsettings</td>
+			</tr>
+			<tr>
 				<td class="main_field_name">{$lng['customer']['diskspace']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="diskspace" value="0" maxlength="6" /></td>
 			</tr>
