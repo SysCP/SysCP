@@ -55,16 +55,16 @@ require ('../lib/functions.php');
  * Includes Logger-Classes
  */
 
-require ('./lib/abstract/abstract_class_logger.php');
-require ('./lib/class_syslogger.php');
-require ('./lib/class_filelogger.php');
-require ('./lib/class_mysqllogger.php');
+require ('../lib/abstract/abstract_class_logger.php');
+require ('../lib/class_syslogger.php');
+require ('../lib/class_filelogger.php');
+require ('../lib/class_mysqllogger.php');
 
 /**
  * Includes the SyscpLogger class
  */
 
-require ('./lib/class_syscplogger.php');
+require ('../lib/class_syscplogger.php');
 
 $updatelog = SysCPLogger::getInstanceOf(null, $db, $settings);
 
