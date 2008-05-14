@@ -670,7 +670,7 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='log_cron'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_log_cron from '" . $settings['logger']['log_cron'] . "' to '" . $value . "'");
 		}
-		
+
 		if($_POST['dkim_prefix'] != $settings['dkim']['dkim_prefix'])
 		{
 			$value = validate($_POST['dkim_prefix'], 'dkim_prefix');
@@ -1033,12 +1033,11 @@ elseif($page == 'wipecleartextmailpws'
 		));
 	}
 }
-
 elseif($page == 'wipequotas'
-	   && $userinfo['change_serversettings'] == '1')
+       && $userinfo['change_serversettings'] == '1')
 {
 	if(isset($_POST['send'])
-		&& $_POST['send'] == 'send')
+	   && $_POST['send'] == 'send')
 	{
 		$log->logAction(ADM_ACTION, LOG_WARNING, "wiped all mailquotas");
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='0' ");
@@ -1049,7 +1048,7 @@ elseif($page == 'wipequotas'
 	else
 	{
 		ask_yesno('admin_quotas_reallywipe', $filename, array(
-			'page' => $page 
+			'page' => $page
 		));
 	}
 }

@@ -248,7 +248,7 @@ if($page == 'admins'
 				{
 					$domains_see_all = '0';
 				}
-				
+
 				if($caneditphpsettings != '1')
 				{
 					$caneditphpsettings = '0';
@@ -389,7 +389,7 @@ if($page == 'admins'
 					{
 						$domains_see_all = '0';
 					}
-					
+
 					if($caneditphpsettings != '1')
 					{
 						$caneditphpsettings = '0';
