@@ -65,7 +65,7 @@ $lng['customer']['mysqls'] = 'MySQL-Datenbanken';
 $lng['customer']['emails'] = 'E-Mail-Adressen';
 $lng['customer']['accounts'] = 'E-Mail-Konten';
 $lng['customer']['forwarders'] = 'E-Mail-Weiterleitungen';
-$lng['customer']['ftps'] = 'FTP-Accounts';
+$lng['customer']['ftps'] = 'FTP-Konten';
 $lng['customer']['subdomains'] = 'Sub-Domain(s)';
 $lng['customer']['domains'] = 'Domain(s)';
 $lng['customer']['unlimited'] = 'unbeschr&auml;nkt';
@@ -144,8 +144,8 @@ $lng['emails']['forwarder_add'] = 'Weiterleitung hinzuf&uuml;gen';
  * FTP
  */
 
-$lng['ftp']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche FTP-Accounts einrichten.<br />Die &Auml;nderungen sind sofort wirksam und die FTP-Accounts sofort benutzbar.';
-$lng['ftp']['account_add'] = 'Account anlegen';
+$lng['ftp']['description'] = 'Hier k&ouml;nnen Sie zus&auml;tzliche FTP-Konten einrichten.<br />Die &Auml;nderungen sind sofort wirksam und die FTP-Konten sofort benutzbar.';
+$lng['ftp']['account_add'] = 'Benutzerkonto anlegen';
 
 /**
  * MySQL
@@ -251,7 +251,7 @@ $lng['question']['email_reallydelete_account'] = 'Wollen Sie das Konto von %s wi
 $lng['question']['email_reallydelete_forwarder'] = 'Wollen Sie die Weiterleitung %s wirklich l&ouml;schen?';
 $lng['question']['extras_reallydelete'] = 'Wollen Sie den Verzeichnisschutz f&uuml;r %s wirklich l&ouml;schen?';
 $lng['question']['extras_reallydelete_pathoptions'] = 'Wollen Sie die Optionen f&uuml;r den Pfad %s wirklich l&ouml;schen?';
-$lng['question']['ftp_reallydelete'] = 'Wollen Sie den FTP-Account %s wirklich l&ouml;schen?';
+$lng['question']['ftp_reallydelete'] = 'Wollen Sie das FTP-Benutzerkonto %s wirklich l&ouml;schen?';
 $lng['question']['mysql_reallydelete'] = 'Wollen Sie die Datenbank %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiderruflich verloren!';
 $lng['question']['admin_configs_reallyrebuild'] = 'Wollen Sie wirklich Ihre Apache und Bind Konfigurationsdateien neu erstellen lassen?';
 
@@ -332,9 +332,9 @@ $lng['serversettings']['session_timeout']['description'] = 'Wie lange muss ein B
 $lng['serversettings']['accountprefix']['title'] = 'Kundenprefix';
 $lng['serversettings']['accountprefix']['description'] = 'Welchen Prefix sollen die Kundenaccounts haben?';
 $lng['serversettings']['mysqlprefix']['title'] = 'SQL-Prefix';
-$lng['serversettings']['mysqlprefix']['description'] = 'Welchen Prefix sollen die MySQL-Accounts haben?';
+$lng['serversettings']['mysqlprefix']['description'] = 'Welchen Prefix sollen die MySQL-Benutzerkonten haben?';
 $lng['serversettings']['ftpprefix']['title'] = 'FTP-Prefix';
-$lng['serversettings']['ftpprefix']['description'] = 'Welchen Prefix sollen die FTP-Accounts haben?';
+$lng['serversettings']['ftpprefix']['description'] = 'Welchen Prefix sollen die FTP-Benutzerkonten haben?';
 $lng['serversettings']['documentroot_prefix']['title'] = 'Heimatverzeichnis';
 $lng['serversettings']['documentroot_prefix']['description'] = 'Wo sollen alle Heimatverzeichnisse der Kunden liegen?';
 $lng['serversettings']['logfiles_directory']['title'] = 'Apache-Logdateien-Verzeichnis';
@@ -511,7 +511,7 @@ $lng['changepassword']['also_change_webalizer'] = ' Auch Passwort vom Webalizer 
 
 // ADDED IN 1.2.16-svn8
 
-$lng['serversettings']['mailpwcleartext']['title'] = 'Passw&ouml;rter der Mail-Accounts auch im Klartext in der Datenbank speichern';
+$lng['serversettings']['mailpwcleartext']['title'] = 'Passw&ouml;rter der Mail-Konten auch im Klartext in der Datenbank speichern';
 $lng['serversettings']['mailpwcleartext']['description'] = 'Wenn diese Einstellung auf Ja gesetzt wird, werden alle Passw&ouml;rter auch unverschl&uuml;sselt (also im Klartext, f&uuml;r jeden mit Zugriff auf die SysCP-Datenbank sofort lesbar) in der mail_users-Tabelle gespeichert. Aktivieren Sie diese Option nur dann, wenn Sie sie wirklich gebrauchen!';
 $lng['serversettings']['mailpwcleartext']['removelink'] = 'Klicken Sie hier, um alle unverschl&uuml;sselten Passw&ouml;rter aus der Tabelle zu entfernen.';
 $lng['question']['admin_cleartextmailpws_reallywipe'] = 'Wollen Sie wirklich alle unverschl&uuml;sselten Passw&ouml;rter aus der Tabelle mail_users entfernen? Dieser Schritt kann nicht r&uuml;ckg&auml;ngig gemacht werden!';
@@ -533,8 +533,8 @@ $lng['admin']['trafficlastrun'] = 'Letzte Trafficberechnung';
 
 // ADDED IN 1.2.16-svn10
 
-$lng['serversettings']['ftpdomain']['title'] = 'FTP-Accounts @domain';
-$lng['serversettings']['ftpdomain']['description'] = 'K&ouml;nnen Kunden FTP-Accounts user@customerdomain anlegen?';
+$lng['serversettings']['ftpdomain']['title'] = 'FTP-Benutzerkonten @domain';
+$lng['serversettings']['ftpdomain']['description'] = 'K&ouml;nnen Kunden FTP-Benutzerkonten user@customerdomain anlegen?';
 $lng['panel']['back'] = 'Zur&uuml;ck';
 
 // ADDED IN 1.2.16-svn12
@@ -806,7 +806,7 @@ $lng['emails']['quota_type']['gigabyte'] = 'GB';
 $lng['emails']['noquota'] = 'Kein Kontingent';
 $lng['emails']['updatequota'] = 'Update';
 $lng['serversettings']['mail_quota']['title'] = 'Mailbox-Kontingent';
-$lng['serversettings']['mail_quota']['description'] = 'Standard-Kontingent f&uuml;r neuerstellte E-Mail Accounts';
+$lng['serversettings']['mail_quota']['description'] = 'Standard-Kontingent f&uuml;r neuerstellte E-Mail Benutzerkonten';
 $lng['serversettings']['mail_quota_enabled']['title'] = 'Nutze E-Mail Kontingent f&uuml;r Kunden';
 $lng['serversettings']['mail_quota_enabled']['description'] = 'Aktiviere Kontingent f&uuml;r E-Mailkonten. Standard ist <b>Nein</b> da dies eine spezielle Konfiguration voraussetzt.';
 $lng['serversettings']['mail_quota_enabled']['removelink'] = 'Hier klicken, um alle E-Mail Kontingente zu entfernen';
@@ -830,5 +830,9 @@ $lng['dkim']['dkim_dkimkeys']['title'] = 'DKIM KeyList Dateiname';
 $lng['dkim']['dkim_dkimkeys']['description'] = '<strong>Dateiname</strong> der DKIM KeyList Angabe aus der dkim-milter-Konfigurationsdatei';
 $lng['dkim']['dkimrestart_command']['title'] = 'DKIM Milter Restart Kommando';
 $lng['dkim']['dkimrestart_command']['description'] = 'Wie lautet das Kommando zum Neustarten des DKIM Milter Dienstes?';
+
+// ADDED IN 1.2.19-svn9
+
+$lng['admin']['caneditphpsettings'] = 'Kann PHP-bezogene Domaineinstellungen machen?';
 
 ?>

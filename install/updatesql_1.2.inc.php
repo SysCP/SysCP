@@ -1452,4 +1452,16 @@ if($settings['panel']['version'] == '1.2.19-svn7')
 	$settings['panel']['version'] = '1.2.19-svn8';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn8')
+{
+	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `caneditphpsettings` tinyint(1) NOT NULL default '0' AFTER `domains_see_all`");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn9\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn9';
+}
+
 ?>

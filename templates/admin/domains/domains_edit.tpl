@@ -79,7 +79,7 @@ $header
 				<td class="main_field_name">{$lng['admin']['domain_edit']}:</td>
 				<td class="main_field_display" nowrap="nowrap">$caneditdomain</td>
 			</tr>
-			<if $userinfo['change_serversettings'] == '1'>
+			<if $userinfo['change_serversettings'] == '1' || $userinfo['caneditphpsettings'] == '1'>
 			<tr>
 				<td class="main_field_name">OpenBasedir:</td>
 				<td class="main_field_display" nowrap="nowrap">$openbasedir</td>
@@ -88,6 +88,8 @@ $header
 				<td class="main_field_name">Safemode:</td>
 				<td class="main_field_display" nowrap="nowrap">$safemode</td>
 			</tr>
+			</if>
+			<if $userinfo['change_serversettings'] == '1'>
 			<tr>
 				<td class="main_field_name">Speciallogfile:</td>
 				<td class="main_field_display" nowrap="nowrap"><b>$speciallogfile</b></td>

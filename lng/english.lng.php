@@ -825,4 +825,8 @@ $lng['dkim']['dkim_dkimkeys']['description'] = '<strong>Filename</strong> of the
 $lng['dkim']['dkimrestart_command']['title'] = 'DKIM milter restart command';
 $lng['dkim']['dkimrestart_command']['description'] = 'Please specify the restart command for the DKIM milter service';
 
+// ADDED IN 1.2.19-svn9
+
+$lng['admin']['caneditphpsettings'] = 'Can change php-related domain settings?';
+
 ?>
