@@ -63,10 +63,10 @@ $header
 				<td class="main_field_name">{$lng['admin']['emaildomain']}:</td>
 				<td class="main_field_display" nowrap="nowrap">$isemaildomain</td>
 			</tr>
-                        <tr>
-                                <td class="main_field_name"></td>
-                                <td class="main_field_display" nowrap="nowrap">{$lng['admin']['email_only']}: $isemail_only</td>
-                        </tr>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['email_only']}:</td>
+				<td class="main_field_display" nowrap="nowrap">$isemail_only</td>
+			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['subdomainforemail']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="subcanemaildomain">$subcanemaildomain</select></td>
