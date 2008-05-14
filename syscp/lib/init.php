@@ -434,39 +434,6 @@ if($page == '')
 	$page = 'overview';
 }
 
-/* Security stuff */
-
-if(($action != null && $action != '' && !ereg("^[a-zA-Z0-9]+$", $action))
-   || ($page != null && $page != '' && !ereg("^[a-zA-Z0-9]+$", $page)))
-{
-	// we redirect any "wrong" page/action
-
-	if(isset($userinfo['loginname'])
-	   && $userinfo['loginname'] != '')
-	{
-		if($userinfo['adminsession'] == '1')
-		{
-			$log->logAction(ADM_ACTION, LOG_INFO, "redirected to admin_index because \$action and/or \$page had an invalid value, dumping action: '" . $action . "', dumping page: '" . $page . "'");
-			redirectTo('admin_index.php', Array(
-				's' => $s
-			), true);
-		}
-		else
-		{
-			$log->logAction(USR_ACTION, LOG_INFO, "redirected to customer_index because \$action and/or \$page had an invalid value, dumping action: '" . $action . "', dumping page: '" . $page . "'");
-			redirectTo('customer_index.php', Array(
-				's' => $s
-			), true);
-		}
-	}
-	else
-	{
-		redirectTo('index.php', Array(
-			'action' => 'login'
-		));
-	}
-}
-
 /**
  * Initialize the mailingsystem
  */
