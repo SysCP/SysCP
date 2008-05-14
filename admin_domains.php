@@ -249,6 +249,19 @@ if($page == 'domains'
 						}
 					}
 				}
+				elseif($userinfo['caneditphpsettings'] == '1')
+				{
+					$isbinddomain = '1';
+					$caneditdomain = '1';
+					$zonefile = '';
+					$dkim = '1';
+					$openbasedir = intval($_POST['openbasedir']);
+					$safemode = intval($_POST['safemode']);
+					$speciallogfile = '1';
+					$specialsettings = '';
+					$wwwserveralias = '1';
+					$ipandport = $settings['system']['defaultip'];
+				}
 				else
 				{
 					$isbinddomain = '1';
@@ -581,6 +594,17 @@ if($page == 'domains'
 					{
 						$documentroot = $customer['documentroot'];
 					}
+				}
+				elseif($userinfo['caneditphpsettings'] == '1')
+				{
+					$isbinddomain = $result['isbinddomain'];
+					$zonefile = $result['zonefile'];
+					$dkim = $result['dkim'];
+					$openbasedir = intval($_POST['openbasedir']);
+					$safemode = intval($_POST['safemode']);
+					$specialsettings = $result['specialsettings'];
+					$ipandport = $result['ipandport'];
+					$documentroot = $result['documentroot'];
 				}
 				else
 				{
