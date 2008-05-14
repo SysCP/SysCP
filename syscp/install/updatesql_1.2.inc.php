@@ -1428,4 +1428,20 @@ if($settings['panel']['version'] == '1.2.19-svn6')
 	$settings['panel']['version'] = '1.2.19-svn7';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn7')
+{
+	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `dkim` tinyint(1) NOT NULL default '0' AFTER `zonefile`");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('dkim', 'dkim_prefix', '/etc/postfix/dkim/')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('dkim', 'dkim_domains', 'domains')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('dkim', 'dkim_dkimkeys', 'dkim-keys.conf')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('dkim', 'dkimrestart_command', '/etc/init.d/dkim-filter restart')");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn8\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn8';
+}
+
 ?>

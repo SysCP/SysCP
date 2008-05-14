@@ -819,4 +819,16 @@ $lng['customer']['mail_quota'] = 'E-Mail Kontingent';
 $lng['error']['invalidip'] = 'Ung&uuml;ltige IP Adresse: %s';
 $lng['serversettings']['decimal_places'] = 'Nachkommastellen bei der Ausgabe von Traffic/Webspace';
 
+// ADDED IN 1.2.19-svn8
+
+$lng['admin']['dkimsettings'] = 'DomainKey - Einstellungen';
+$lng['dkim']['dkim_prefix']['title'] = 'DKIM Prefix';
+$lng['dkim']['dkim_prefix']['description'] = 'Wie lautet der Pfad zu den DKIM RSA-Dateien sowie den Einstellungedateien des Milter-Plugins?';
+$lng['dkim']['dkim_domains']['title'] = 'DKIM Domains Dateiname';
+$lng['dkim']['dkim_domains']['description'] = '<strong>Dateiname</strong> der DKIM Domains Angabe aus der dkim-milter-Konfigurationsdatei';
+$lng['dkim']['dkim_dkimkeys']['title'] = 'DKIM KeyList Dateiname';
+$lng['dkim']['dkim_dkimkeys']['description'] = '<strong>Dateiname</strong> der DKIM KeyList Angabe aus der dkim-milter-Konfigurationsdatei';
+$lng['dkim']['dkimrestart_command']['title'] = 'DKIM Milter Restart Kommando';
+$lng['dkim']['dkimrestart_command']['description'] = 'Wie lautet das Kommando zum Neustarten des DKIM Milter Dienstes?';
+
 ?>

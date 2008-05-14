@@ -756,3 +756,16 @@ CREATE TABLE IF NOT EXISTS `panel_syslog` (
 # Dumping data for table `panel_syslog`
 #
 
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `mail_dkim`
+#
+
+CREATE TABLE `mail_dkim` (
+  `id` int(11) NOT NULL auto_increment,
+  `domain_id` int(11) NOT NULL default '0',
+  `publickey` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM;
