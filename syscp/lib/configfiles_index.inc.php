@@ -330,15 +330,14 @@ $configfiles = Array(
 							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory']						
-							),
+						),
 						'restart' => Array(
 							'rc-update add apache2 default',
 							'/etc/init.d/apache2 restart'
-						),
-						'lighttpd' => Array(
+						)
+					'lighttpd' => Array(
 						'label' => 'Lighttpd Webserver',
-						'files' => Array
-						(
+						'files' => Array(
 							'etc_lighttpd.conf' => '/etc/lighttpd/lighttpd.conf',
 							'etc_mimetypes.conf' => '/etc/lighttpd/mimetypes.conf'
 						),
@@ -355,7 +354,7 @@ $configfiles = Array(
 							'echo -e \'\\ninclude "' . $settings['system']['apacheconf_diroptions'] . '"\' >> /etc/lighttpd/lighttpd.conf',
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory']						
-							),
+						),
 						'restart' => Array(
 							'rc-update add lighttpd default',
 							'/etc/init.d/lighttpd restart'
