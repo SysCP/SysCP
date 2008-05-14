@@ -322,7 +322,7 @@ if($page == 'domains'
 				{
 					$subcanemaildomain = '0';
 				}
-				
+
 				if($dkim != '1')
 				{
 					$dkim = '0';
@@ -649,7 +649,7 @@ if($page == 'domains'
 				{
 					$subcanemaildomain = '0';
 				}
-				
+
 				if($dkim != '1')
 				{
 					$dkim = '0';

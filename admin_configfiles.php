@@ -81,7 +81,6 @@ if($userinfo['change_serversettings'] == '1')
 	   && $service != ''
 	   && $daemon != '')
 	{
-
 		$replace_arr = Array(
 			'<SQL_UNPRIVILEGED_USER>' => $sql['user'],
 			'<SQL_UNPRIVILEGED_PASSWORD>' => 'MYSQL_PASSWORD',
@@ -94,24 +93,24 @@ if($userinfo['change_serversettings'] == '1')
 			'<VIRTUAL_UID_MAPS>' => $settings['system']['vmail_uid'],
 			'<VIRTUAL_GID_MAPS>' => $settings['system']['vmail_gid']
 		);
-		
 		$files = '';
 		$configpage = '';
-
 		foreach($configfiles[$distribution]['services'][$service]['daemons'][$daemon] as $action => $value)
 		{
-			if(substr($action,0,8) == 'commands')
+			if(substr($action, 0, 8) == 'commands')
 			{
 				$commands = '';
+
 				if(is_array($value))
 				{
 					$commands = implode("\n", $value);
 					eval("\$configpage.=\"" . getTemplate("configfiles/configfiles_commands") . "\";");
 				}
 			}
-			elseif(substr($action,0,5) == 'files')
+			elseif(substr($action, 0, 5) == 'files')
 			{
 				$files = '';
+
 				if(is_array($value))
 				{
 					while(list($filename, $realname) = each($value))
@@ -122,6 +121,7 @@ if($userinfo['change_serversettings'] == '1')
 						$numbrows = count(explode("\n", $file_content));
 						eval("\$files.=\"" . getTemplate("configfiles/configfiles_file") . "\";");
 					}
+
 					eval("\$configpage.=\"" . getTemplate("configfiles/configfiles_files") . "\";");
 				}
 			}

@@ -65,8 +65,9 @@ require ('../lib/class_mysqllogger.php');
  */
 
 require ('../lib/class_syscplogger.php');
-
-$updatelog = SysCPLogger::getInstanceOf(null, $db, $settings);
+$updatelog = SysCPLogger::getInstanceOf(array(
+	'loginname' => 'updater'
+), $db, $settings);
 
 /**
  * First case: We are updating from a version < 1.0.10

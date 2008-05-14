@@ -354,14 +354,14 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 						'label' => 'Apache2 Webserver',
 						'commands' => Array(
 							'touch ' . $settings['system']['apacheconf_vhost'],
-							'chown root:0 '.$settings['system']['apacheconf_vhost'],
-							'chmod 0600 '.$settings['system']['apacheconf_vhost'],
+							'chown root:0 ' . $settings['system']['apacheconf_vhost'],
+							'chmod 0600 ' . $settings['system']['apacheconf_vhost'],
 							'touch ' . $settings['system']['apacheconf_diroptions'],
-							'chown root:0 '.$settings['system']['apacheconf_diroptions'],
-							'chmod 0600 '.$settings['system']['apacheconf_diroptions'],
+							'chown root:0 ' . $settings['system']['apacheconf_diroptions'],
+							'chmod 0600 ' . $settings['system']['apacheconf_diroptions'],
 							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
-							'mkdir -p ' . $settings['system']['logfiles_directory']						
+							'mkdir -p ' . $settings['system']['logfiles_directory']
 						),
 						'restart' => Array(
 							'rc-update add apache2 default',
@@ -376,17 +376,17 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 						),
 						'commands' => Array(
 							'touch ' . $settings['system']['apacheconf_vhost'],
-							'chown root:0 '.$settings['system']['apacheconf_vhost'],
-							'chmod 0600 '.$settings['system']['apacheconf_vhost'],
+							'chown root:0 ' . $settings['system']['apacheconf_vhost'],
+							'chmod 0600 ' . $settings['system']['apacheconf_vhost'],
 							'touch ' . $settings['system']['apacheconf_diroptions'],
-							'chown root:0 '.$settings['system']['apacheconf_diroptions'],
-							'chmod 0600 '.$settings['system']['apacheconf_diroptions'],
+							'chown root:0 ' . $settings['system']['apacheconf_diroptions'],
+							'chmod 0600 ' . $settings['system']['apacheconf_diroptions'],
 							'echo -e "# Lighttpd - SysCP vhosts\\n > "' . $settings['system']['apacheconf_vhost'],
 							'echo -e "# Lighttpd - SysCP diroptions\\n > "' . $settings['system']['apacheconf_diroptions'],
 							'echo -e \'\\ninclude "' . $settings['system']['apacheconf_vhost'] . '"\' >> /etc/lighttpd/lighttpd.conf',
 							'echo -e \'\\ninclude "' . $settings['system']['apacheconf_diroptions'] . '"\' >> /etc/lighttpd/lighttpd.conf',
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
-							'mkdir -p ' . $settings['system']['logfiles_directory']						
+							'mkdir -p ' . $settings['system']['logfiles_directory']
 						),
 						'restart' => Array(
 							'rc-update add lighttpd default',
@@ -400,19 +400,16 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 				'daemons' => Array(
 					'bind' => Array(
 						'label' => 'Bind9 Nameserver',
-						'files' => Array
-						(
+						'files' => Array(
 							'etc_bind_default.zone' => '/etc/bind/default.zone'
 						),
-						'commands' => Array
-						(
-							'echo "include \"'.$settings['system']['bindconf_directory'].'syscp_bind.conf\";" >> /etc/bind/named.conf',
-							'touch '.$settings['system']['bindconf_directory'].'syscp_bind.conf',
-							'chown root:0 '.$settings['system']['bindconf_directory'].'syscp_bind.conf',
-							'chmod 0600 '.$settings['system']['bindconf_directory'].'syscp_bind.conf'
+						'commands' => Array(
+							'echo "include \"' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf\";" >> /etc/bind/named.conf',
+							'touch ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf',
+							'chown root:0 ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf',
+							'chmod 0600 ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf'
 						),
-						'restart' => Array
-						(
+						'restart' => Array(
 							'rc-update add named default',
 							'/etc/init.d/named restart'
 						)
@@ -432,8 +429,7 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 							'etc_courier-imap_pop3d-ssl' => '/etc/courier-imap/pop3d-ssl',
 							'etc_courier-imap_imapd-ssl' => '/etc/courier-imap/imapd-ssl'
 						),
-						'commands' => Array
-						(
+						'commands' => Array(
 							'rm /etc/courier/authlib/authdaemonrc',
 							'rm /etc/courier/authlib/authmysqlrc',
 							'rm /etc/courier-imap/pop3d',
@@ -483,9 +479,9 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 							'etc_sasl2_smtpd.conf' => '/etc/sasl2/smtpd.conf'
 						),
 						'commands' => Array(
-							'mkdir -p '.$settings['system']['vmail_homedir'],
-							'chown -R vmail:vmail '.$settings['system']['vmail_homedir'],
-							'chmod 0750 '.$settings['system']['vmail_homedir'],
+							'mkdir -p ' . $settings['system']['vmail_homedir'],
+							'chown -R vmail:vmail ' . $settings['system']['vmail_homedir'],
+							'chmod 0750 ' . $settings['system']['vmail_homedir'],
 							'rm /etc/postfix/main.cf',
 							'touch /etc/postfix/main.cf',
 							'touch /etc/postfix/master.cf',
@@ -537,8 +533,7 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 						'files' => Array(
 							'etc_proftpd_proftpd.conf' => '/etc/proftpd/proftpd.conf'
 						),
-						'commands' => Array
-						(
+						'commands' => Array(
 							'touch /etc/proftpd/proftpd.conf',
 							'chown root:0 /etc/proftpd/proftpd.conf',
 							'chmod 0600 /etc/proftpd/proftpd.conf'
@@ -559,8 +554,7 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 							'etc_php_syscp-cronjob_php.ini' => '/etc/php/syscp-cronjob/php.ini',
 							'etc_cron.d_syscp' => '/etc/cron.d/syscp'
 						),
-						'commands' => Array
-						(
+						'commands' => Array(
 							'touch /etc/cron.d/syscp',
 							'chown root:0 /etc/cron.d/syscp',
 							'chmod 0640 /etc/cron.d/syscp',
@@ -581,8 +575,7 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 							'etc_libnss-mysql.cfg' => '/etc/libnss-mysql.cfg',
 							'etc_libnss-mysql-root.cfg' => '/etc/libnss-mysql-root.cfg'
 						),
-						'commands' => Array
-						(
+						'commands' => Array(
 							'# if not installed:',
 							'emerge -av libnss-mysql'
 						),
@@ -693,7 +686,6 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 							'echo "smtpd_milters = inet:localhost:8891\\n
 milter_macro_daemon_name = SIGNING\\n
 milter_default_action = accept\\n" >> /etc/postfix/main.cf'
-
 						),
 						'restart' => Array(
 							'/etc/init.d/dkim-filter restart'
