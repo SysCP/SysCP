@@ -335,6 +335,7 @@ $configfiles = Array(
 							'rc-update add apache2 default',
 							'/etc/init.d/apache2 restart'
 						)
+					),
 					'lighttpd' => Array(
 						'label' => 'Lighttpd Webserver',
 						'files' => Array(
