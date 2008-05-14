@@ -424,7 +424,7 @@ if(($page == 'settings' || $page == 'overview')
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_adminmail from '" . $settings['panel']['adminmail'] . "' to '" . $value . "'");
 		}
 
-		if($_POST['+panel_decimal_places'] != $settings['panel']['decimal_places'])
+		if($_POST['panel_decimal_places'] != $settings['panel']['decimal_places'])
 		{
 			$value = (int)$_POST['panel_decimal_places'];
 
