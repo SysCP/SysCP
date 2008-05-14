@@ -991,7 +991,7 @@ elseif($page == 'wipecleartextmailpws'
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
-		$log->logAction(ADM_ACTION, LOG_INFO, "wiped all cleartext mail passwords");
+		$log->logAction(ADM_ACTION, LOG_WARNING, "wiped all cleartext mail passwords");
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `password`='' ");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='0' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
 		redirectTo('admin_settings.php', array(
@@ -1002,6 +1002,26 @@ elseif($page == 'wipecleartextmailpws'
 	{
 		ask_yesno('admin_cleartextmailpws_reallywipe', $filename, array(
 			'page' => $page
+		));
+	}
+}
+
+elseif($page == 'wipequotas'
+	   && $userinfo['change_serversettings'] == '1')
+{
+	if(isset($_POST['send'])
+		&& $_POST['send'] == 'send')
+	{
+		$log->logAction(ADM_ACTION, LOG_WARNING, "wiped all mailquotas");
+		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='0' ");
+		redirectTo('admin_settings.php', array(
+			's' => $s
+		));
+	}
+	else
+	{
+		ask_yesno('admin_quotas_reallywipe', $filename, array(
+			'page' => $page 
 		));
 	}
 }
