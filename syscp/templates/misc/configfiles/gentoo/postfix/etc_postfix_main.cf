@@ -1,0 +1,65 @@
+# Postfix directories settings
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
+queue_directory = /var/spool/postfix
+sample_directory = /etc/postfix
+manpage_directory = /usr/share/man
+readme_directory = /usr/share/doc/postfix-2.1.5-r2/readme
+html_directory = no
+
+# Postfix programs paths settings
+mailq_path = /usr/bin/mailq
+newaliases_path = /usr/bin/newaliases
+sendmail_path = /usr/sbin/sendmail
+
+# General Postfix configuration
+myhostname = <SERVERNAME>
+mydestination = $myhostname, $mydomain, localhost.$myhostname, localhost.$mydomain, localhost
+mynetworks = 127.0.0.0/8
+inet_interfaces = all
+mail_owner = postfix
+setgid_group = postdrop
+smtpd_banner = $myhostname ESMTP Mailserver
+smtpd_helo_required = yes
+append_dot_mydomain = no
+biff = no
+
+# Postfix Debugger configuration
+debug_peer_level = 2
+debugger_command =
+    PATH=/bin:/usr/bin:/usr/local/bin; export PATH; (echo cont;
+    echo where) | gdb $daemon_directory/$process_name $process_id 2>&1
+    >$config_directory/$process_name.$process_id.log & sleep 5
+
+# Postfix performance settings
+default_destination_concurrency_limit = 20
+local_destination_concurrency_limit = 2
+
+# Virtual delivery settings
+virtual_transport = virtual
+virtual_mailbox_base = <VIRTUAL_MAILBOX_BASE>
+virtual_mailbox_maps = mysql:/etc/postfix/mysql-virtual_mailbox_maps.cf
+virtual_mailbox_domains = mysql:/etc/postfix/mysql-virtual_mailbox_domains.cf
+virtual_alias_maps = mysql:/etc/postfix/mysql-virtual_alias_maps.cf
+virtual_uid_maps = static:<VIRTUAL_UID_MAPS>
+virtual_gid_maps = static:<VIRTUAL_GID_MAPS>
+
+# Local delivery settings
+local_transport = local
+alias_database = hash:/etc/mail/aliases
+alias_maps = $alias_database
+
+# SASL settings
+smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_local_domain = $myhostname
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+
+# TLS settings
+#smtpd_use_tls = yes
+#smtpd_tls_cert_file = /etc/ssl/server/<SERVERNAME>.crt
+#smtpd_tls_key_file = /etc/ssl/server/<SERVERNAME>.key
+#smtpd_tls_auth_only = no
+#smtpd_tls_session_cache_timeout = 3600s
+#tls_random_source = dev:/dev/urandom
