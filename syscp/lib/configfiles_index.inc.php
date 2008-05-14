@@ -334,6 +334,31 @@ $configfiles = Array(
 						'restart' => Array(
 							'rc-update add apache2 default',
 							'/etc/init.d/apache2 restart'
+						),
+						'lighttpd' => Array(
+						'label' => 'Lighttpd Webserver',
+						'files' => Array
+						(
+							'etc_lighttpd.conf' => '/etc/lighttpd/lighttpd.conf',
+							'etc_mimetypes.conf' => '/etc/lighttpd/mimetypes.conf'
+						),
+						'commands' => Array(
+							'touch ' . $settings['system']['apacheconf_vhost'],
+							'chown root:0 '.$settings['system']['apacheconf_vhost'],
+							'chmod 0600 '.$settings['system']['apacheconf_vhost'],
+							'touch ' . $settings['system']['apacheconf_diroptions'],
+							'chown root:0 '.$settings['system']['apacheconf_diroptions'],
+							'chmod 0600 '.$settings['system']['apacheconf_diroptions'],
+							'echo -e "# Lighttpd - SysCP vhosts\\n > "' . $settings['system']['apacheconf_vhost'],
+							'echo -e "# Lighttpd - SysCP diroptions\\n > "' . $settings['system']['apacheconf_diroptions'],
+							'echo -e \'\\ninclude "' . $settings['system']['apacheconf_vhost'] . '"\' >> /etc/lighttpd/lighttpd.conf',
+							'echo -e \'\\ninclude "' . $settings['system']['apacheconf_diroptions'] . '"\' >> /etc/lighttpd/lighttpd.conf',
+							'mkdir -p ' . $settings['system']['documentroot_prefix'],
+							'mkdir -p ' . $settings['system']['logfiles_directory']						
+							),
+						'restart' => Array(
+							'rc-update add lighttpd default',
+							'/etc/init.d/lighttpd restart'
 						)
 					)
 				)
