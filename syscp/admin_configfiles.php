@@ -81,15 +81,6 @@ if($userinfo['change_serversettings'] == '1')
 	   && $service != ''
 	   && $daemon != '')
 	{
-		if(isset($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['commands'])
-		   && is_array($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['commands']))
-		{
-			$commands = implode("\n", $configfiles[$distribution]['services'][$service]['daemons'][$daemon]['commands']);
-		}
-		else
-		{
-			$commands = '';
-		}
 
 		$replace_arr = Array(
 			'<SQL_UNPRIVILEGED_USER>' => $sql['user'],
@@ -103,18 +94,36 @@ if($userinfo['change_serversettings'] == '1')
 			'<VIRTUAL_UID_MAPS>' => $settings['system']['vmail_uid'],
 			'<VIRTUAL_GID_MAPS>' => $settings['system']['vmail_gid']
 		);
+		
 		$files = '';
+		$configpage = '';
 
-		if(isset($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['files'])
-		   && is_array($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['files']))
+		foreach($configfiles[$distribution]['services'][$service]['daemons'][$daemon] as $action => $value)
 		{
-			while(list($filename, $realname) = each($configfiles[$distribution]['services'][$service]['daemons'][$daemon]['files']))
+			if(substr($action,0,8) == 'commands')
 			{
-				$file_content = file_get_contents('./templates/misc/configfiles/' . $distribution . '/' . $daemon . '/' . $filename);
-				$file_content = strtr($file_content, $replace_arr);
-				$file_content = htmlspecialchars($file_content);
-				$numbrows = count(explode("\n", $file_content));
-				eval("\$files.=\"" . getTemplate("configfiles/configfiles_file") . "\";");
+				$commands = '';
+				if(is_array($value))
+				{
+					$commands = implode("\n", $value);
+					eval("\$configpage.=\"" . getTemplate("configfiles/configfiles_commands") . "\";");
+				}
+			}
+			elseif(substr($action,0,5) == 'files')
+			{
+				$files = '';
+				if(is_array($value))
+				{
+					while(list($filename, $realname) = each($value))
+					{
+						$file_content = file_get_contents('./templates/misc/configfiles/' . $distribution . '/' . $daemon . '/' . $filename);
+						$file_content = strtr($file_content, $replace_arr);
+						$file_content = htmlspecialchars($file_content);
+						$numbrows = count(explode("\n", $file_content));
+						eval("\$files.=\"" . getTemplate("configfiles/configfiles_file") . "\";");
+					}
+					eval("\$configpage.=\"" . getTemplate("configfiles/configfiles_files") . "\";");
+				}
 			}
 		}
 
