@@ -191,7 +191,7 @@ if($page == 'domains'
 						'subcanemaildomain' => $subcanemaildomain,
 						'caneditdomain' => $caneditdomain,
 						'zonefile' => $zonefile,
-						'dkim' => $dkim;
+						'dkim' => $dkim,
 						'speciallogfile' => $speciallogfile,
 						'openbasedir' => $openbasedir,
 						'ipandport' => $ipandport,

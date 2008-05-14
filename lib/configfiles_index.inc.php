@@ -110,7 +110,7 @@ $configfiles = Array(
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
 						'files' => Array(
-							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
 						'commands' => Array(
 							'mkdir -p /etc/postfix/dkim',
@@ -280,7 +280,7 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
 						'files' => Array(
-							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
 						'commands' => Array(
 							'mkdir -p /etc/postfix/dkim',
@@ -514,7 +514,7 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
 						'files' => Array(
-							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
 						'commands' => Array(
 							'mkdir -p /etc/postfix/dkim',
@@ -685,7 +685,7 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
 						'files' => Array(
-							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
 						'commands' => Array(
 							'mkdir -p /etc/postfix/dkim',
