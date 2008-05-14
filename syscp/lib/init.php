@@ -436,8 +436,10 @@ if($page == '')
 
 /* Security stuff */
 if(($action!=null 
+   && $action!=''
    && !ereg("^[a-zA-Z0-9]+$", $action))
    || ($page!=null
+   && $page!=''
    && !ereg("^[a-zA-Z0-9]+$", $page)))
 {
 	// we redirect any "wrong" page/action
