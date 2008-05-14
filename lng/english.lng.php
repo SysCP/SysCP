@@ -813,4 +813,16 @@ $lng['customer']['mail_quota'] = 'Mailquota';
 $lng['error']['invalidip'] = 'Invalid IP address: %s';
 $lng['serversettings']['decimal_places'] = 'Number of decimal places in traffic/webspace output';
 
+// ADDED IN 1.2.19-svn8
+
+$lng['admin']['dkimsettings'] = 'DomainKey settings';
+$lng['dkim']['dkim_prefix']['title'] = 'DKIM Prefix';
+$lng['dkim']['dkim_prefix']['description'] = 'Please specify the path to the DKIM RSA-files as well as to the configuration files for the Milter-plugin';
+$lng['dkim']['dkim_domains']['title'] = 'DKIM Domains filename';
+$lng['dkim']['dkim_domains']['description'] = '<strong>Filename</strong> of the DKIM Domains parameter specified in the dkim-milter configuration';
+$lng['dkim']['dkim_dkimkeys']['title'] = 'DKIM KeyList filename';
+$lng['dkim']['dkim_dkimkeys']['description'] = '<strong>Filename</strong> of the  DKIM KeyList parameter specified in the dkim-milter configuration';
+$lng['dkim']['dkimrestart_command']['title'] = 'DKIM milter restart command';
+$lng['dkim']['dkimrestart_command']['description'] = 'Please specify the restart command for the DKIM milter service';
+
 ?>

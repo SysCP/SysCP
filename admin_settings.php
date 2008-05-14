@@ -670,6 +670,34 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='log_cron'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_log_cron from '" . $settings['logger']['log_cron'] . "' to '" . $value . "'");
 		}
+		
+		if($_POST['dkim_prefix'] != $settings['dkim']['dkim_prefix'])
+		{
+			$value = validate($_POST['dkim_prefix'], 'dkim_prefix');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='dkim' AND `varname`='dkim_prefix'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed dkim_prefix from '" . $settings['dkim']['dkim_prefix'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['dkim_domains'] != $settings['dkim']['dkim_domains'])
+		{
+			$value = validate($_POST['dkim_domains'], 'dkim_domains', "/^[a-z0-9\._]+$/i");
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='dkim' AND `varname`='dkim_domains'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed dkim_domains from '" . $settings['dkim']['dkim_domains'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['dkim_dkimkeys'] != $settings['dkim']['dkim_dkimkeys'])
+		{
+			$value = validate($_POST['dkim_dkimkeys'], 'dkim_dkimkeys', "/^[a-z0-9\._]+$/i");
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='dkim' AND `varname`='dkim_dkimkeys'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed dkim_dkimkeys from '" . $settings['dkim']['dkim_dkimkeys'] . "' to '" . $value . "'");
+		}
+
+		if($_POST['dkimrestart_command'] != $settings['dkim']['dkimrestart_command'])
+		{
+			$value = validate($_POST['dkimrestart_command'], 'dkimrestart_command');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='dkim' AND `varname`='dkimrestart_command'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed dkimrestart_command from '" . $settings['dkim']['dkimrestart_command'] . "' to '" . $value . "'");
+		}
 
 		if($_POST['ticketsystemenabled'] != $settings['ticket']['enabled'])
 		{

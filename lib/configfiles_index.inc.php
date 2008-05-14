@@ -107,6 +107,22 @@ $configfiles = Array(
 							'newaliases'
 						)
 					),
+					'dkim' => Array(
+						'label' => 'DomainKey filter',
+						'files' => Array(
+							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+						),
+						'commands' => Array(
+							'mkdir -p /etc/postfix/dkim',
+							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
+							'echo "smtpd_milters = inet:localhost:8891\\n
+milter_macro_daemon_name = SIGNING\\n
+milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+						),
+						'restart' => Array(
+							'/etc/init.d/dkim-filter restart'
+						)
+					)
 				)
 			),
 			'ftp' => Array(
@@ -261,6 +277,22 @@ $configfiles = Array(
 							'newaliases'
 						)
 					),
+					'dkim' => Array(
+						'label' => 'DomainKey filter',
+						'files' => Array(
+							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+						),
+						'commands' => Array(
+							'mkdir -p /etc/postfix/dkim',
+							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
+							'echo "smtpd_milters = inet:localhost:8891\\n
+milter_macro_daemon_name = SIGNING\\n
+milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+						),
+						'restart' => Array(
+							'/etc/init.d/dkim-filter restart'
+						)
+					)
 				)
 			),
 			'ftp' => Array(
@@ -479,6 +511,22 @@ $configfiles = Array(
 							'/etc/init.d/postfix restart'
 						)
 					),
+					'dkim' => Array(
+						'label' => 'DomainKey filter',
+						'files' => Array(
+							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+						),
+						'commands' => Array(
+							'mkdir -p /etc/postfix/dkim',
+							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
+							'echo "smtpd_milters = inet:localhost:8891\\n
+milter_macro_daemon_name = SIGNING\\n
+milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+						),
+						'restart' => Array(
+							'/etc/init.d/dkim-filter restart'
+						)
+					)
 				)
 			),
 			'ftp' => Array(
@@ -634,6 +682,23 @@ $configfiles = Array(
 							'/etc/init.d/postfix restart'
 						)
 					),
+					'dkim' => Array(
+						'label' => 'DomainKey filter',
+						'files' => Array(
+							'etc_postfix_main.cf' => '/etc/postfix/dkim/dkim-filter.conf'
+						),
+						'commands' => Array(
+							'mkdir -p /etc/postfix/dkim',
+							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
+							'echo "smtpd_milters = inet:localhost:8891\\n
+milter_macro_daemon_name = SIGNING\\n
+milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+
+						),
+						'restart' => Array(
+							'/etc/init.d/dkim-filter restart'
+						)
+					)
 				)
 			),
 			'ftp' => Array(

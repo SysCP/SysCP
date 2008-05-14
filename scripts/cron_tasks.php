@@ -868,11 +868,34 @@ while($row = $db->fetch_array($result_tasks))
 		}
 
 		$known_domain_zonefiles = array();
-		$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`iswildcarddomain`, `d`.`customerid`, `d`.`zonefile`, `d`.`bindserial`, `ip`.`ip`, `c`.`loginname`, `c`.`guid` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` AS `ip` ON(`d`.`ipandport`=`ip`.`id`) WHERE `d`.`isbinddomain` = '1' ORDER BY `d`.`domain` ASC");
+		$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`iswildcarddomain`, `d`.`customerid`, `d`.`zonefile`, `d`.`dkim`, `d`.`bindserial`, `ip`.`ip`, `c`.`loginname`, `c`.`guid` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` AS `ip` ON(`d`.`ipandport`=`ip`.`id`) WHERE `d`.`isbinddomain` = '1' ORDER BY `d`.`domain` ASC");
 
 		while($domain = $db->fetch_array($result_domains))
 		{
 			fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+
+			if($domain['dkim'] == '1')
+			{
+				$dkimquery = $db->query('SELECT ' . TABLE_MAIL_DKIM . '.`id`, `publickey` FROM `' . TABLE_MAIL_DKIM . '`, `' . TABLE_PANEL_DOMAINS . '` WHERE ' . TABLE_PANEL_DOMAINS . '.`id`=' . TABLE_MAIL_DKIM . '.`domain_id` AND `domain`=\'' . $domain['domain'] . '\'');
+				$dkimkey = $db->fetch_array($dkimquery);
+				if ($dkimkey['publickey'] == '')
+				{
+					// Create a new table entry
+					$db->query('INSERT INTO ' . TABLE_MAIL_DKIM . ' SET `domain_id`=' . $domain['id']);
+					$dkid = $db->insert_id() + 2000;
+
+					// Create a new private rsa certificate and put the public key into the database
+					safe_exec("openssl genrsa -out " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private 1024 2>/dev/null");
+					$txtpubkey = safe_exec("openssl rsa -in " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private -pubout -outform pem 2>/dev/null | grep -v \"^-\"  | tr -d '\n'");
+					safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix']. "dk" . $dkid . ".private");
+					$db->query('UPDATE ' . TABLE_MAIL_DKIM . ' SET `publickey`=\'' . $txtpubkey . '\' WHERE `domain_id`=\'' . $domain['id'] . '\'');
+				}
+				else
+				{
+					$dkid = (int)$dkimkey['id'] + 2000;
+					$txtpubkey = $dkimkey['publickey'];
+				}
+			}
 
 			if($domain['zonefile'] == '')
 			{
@@ -952,6 +975,11 @@ while($row = $db->fetch_array($result_tasks))
 				{
 					$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
 				}
+				
+				if($domain['dkim'] == '1')
+				{
+					$zonefile.= "dk" . $dkid . "_domainkey	IN	TXT	\"v=DKIM1; k=rsa; p=" . trim($txtpubkey) . "\"\n";
+				}
 
 				$domain['zonefile'] = 'domains/' . $domain['domain'] . '.zone';
 				$zonefile_name = makeCorrectFile($settings['system']['bindconf_directory'] . '/domains/' . $domain['domain'] . '.zone');
@@ -989,6 +1017,26 @@ while($row = $db->fetch_array($result_tasks))
 			fclose($bindconf_file_handler);
 			fwrite($debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
 		}
+		
+		$result_domains = $db->query("SELECT " . TABLE_PANEL_DOMAINS . ".`id` AS `pdid`, `domain`, " . TABLE_MAIL_DKIM . ".`id` AS `dkid` FROM `" . TABLE_PANEL_DOMAINS . "` LEFT JOIN `" . TABLE_MAIL_DKIM . "` ON (" . TABLE_MAIL_DKIM . ".`domain_id`=" . TABLE_PANEL_DOMAINS . ".`id`) WHERE " . TABLE_PANEL_DOMAINS . ".`dkim`='1'");
+
+		while($domain = $db->fetch_array($result_domains))
+		{
+			$dkimdomains.= $domain['domain'] . "\n";
+			$dkid = (int)$domain['dkid'] + 2000;
+			$dkimkeyfile.= "*@" . $domain['domain'] . ":" . $domain['domain'] . ":" . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . "\n";
+		}
+
+		$dkimdomains_handler = fopen($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains'], "w");
+		fwrite($dkimdomains_handler, $dkimdomains);
+		fclose($dkimdomains_handler);
+		safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']);
+
+		$dkimkeyfile_handler = fopen($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys'], "w");
+		fwrite($dkimkeyfile_handler, $dkimkeyfile);
+		fclose($dkimkeyfile_handler);
+		safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']);
+		safe_exec($settings['dkim']['dkimrestart_command']);
 
 		safe_exec($settings['system']['bindreload_command']);
 		fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");

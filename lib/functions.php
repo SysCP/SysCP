@@ -1052,6 +1052,7 @@ function updateCounters($returndebuginfo = false)
 		'chattr',
 		$settings['system']['apachereload_command'],
 		$settings['system']['bindreload_command'],
+		$settings['dkim']['dkimrestart_command'],
 		'openssl'
 	);
 
