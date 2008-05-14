@@ -97,13 +97,15 @@ if($page == 'admins'
 	{
 		$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid` = '" . (int)$id . "'");
 
-		if($result['loginname'] != ''
+		$destination_admin = $result['loginname'];
+
+		if($destination_admin != ''
 		   && $result['adminid'] != $userinfo['userid'])
 		{
 			$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid`='" . (int)$userinfo['userid'] . "'");
 			$s = md5(uniqid(microtime(), 1));
 			$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . $db->escape($s) . "', '" . (int)$id . "', '" . $db->escape($result['ipaddress']) . "', '" . $db->escape($result['useragent']) . "', '" . time() . "', '" . $db->escape($result['language']) . "', '1')");
-			$log->logAction(ADM_ACTION, LOG_INFO, "switched adminuser and is now '" . $result['loginname'] . "'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "switched adminuser and is now '" . $destination_admin . "'");
 			redirectTo('admin_index.php', Array(
 				's' => $s
 			));
