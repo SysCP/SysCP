@@ -1430,6 +1430,14 @@ if($settings['panel']['version'] == '1.2.19-svn6')
 
 if($settings['panel']['version'] == '1.2.19-svn7')
 {
+	$db->query("
+			CREATE TABLE `mail_dkim` (
+				`id` int(11) NOT NULL auto_increment,
+				`domain_id` int(11) NOT NULL default '0',
+				`publickey` text NOT NULL,
+				PRIMARY KEY  (`id`)
+			) ENGINE=MyISAM
+		");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `dkim` tinyint(1) NOT NULL default '0' AFTER `zonefile`");
 	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('dkim', 'dkim_prefix', '/etc/postfix/dkim/')");
 	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('dkim', 'dkim_domains', 'domains')");
