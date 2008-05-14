@@ -39,6 +39,6 @@ define('TABLE_PANEL_TICKETS', 'panel_tickets');
 define('TABLE_PANEL_TICKET_CATS', 'panel_ticket_categories');
 define('TABLE_PANEL_LOG', 'panel_syslog');
 define('TABLE_MAIL_DKIM', 'mail_dkim');
-$version = '1.2.19-svn8';
+$version = '1.2.19-svn9';
 
 ?>
