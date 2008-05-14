@@ -52,13 +52,31 @@ unset($result);
 require ('../lib/functions.php');
 
 /**
+ * Includes Logger-Classes
+ */
+
+require ('./lib/abstract/abstract_class_logger.php');
+require ('./lib/class_syslogger.php');
+require ('./lib/class_filelogger.php');
+require ('./lib/class_mysqllogger.php');
+
+/**
+ * Includes the SyscpLogger class
+ */
+
+require ('./lib/class_syscplogger.php');
+
+$updatelog = SysCPLogger::getInstanceOf(null, $db, $settings);
+
+/**
  * First case: We are updating from a version < 1.0.10
  */
 
 if(!isset($settings['panel']['version'])
    || (substr($settings['panel']['version'], 0, 3) == '1.0' && $settings['panel']['version'] != '1.0.10'))
 {
-	include ('./updatesql_1.0.inc.php');
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.0.inc.php");
+	include_once ('./updatesql_1.0.inc.php');
 }
 
 /**
@@ -67,7 +85,8 @@ if(!isset($settings['panel']['version'])
 
 if($settings['panel']['version'] == '1.0.10')
 {
-	include ('./updatesql_1.0-1.2.inc.php');
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.0-1.2.inc.php");
+	include_once ('./updatesql_1.0-1.2.inc.php');
 }
 
 /**
@@ -76,7 +95,8 @@ if($settings['panel']['version'] == '1.0.10')
 
 if(substr($settings['panel']['version'], 0, 3) == '1.2')
 {
-	include ('./updatesql_1.2.inc.php');
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.2.inc.php");
+	include_once ('./updatesql_1.2.inc.php');
 }
 
 updateCounters();
