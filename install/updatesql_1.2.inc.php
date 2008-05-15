@@ -561,7 +561,7 @@ if($settings['panel']['version'] == '1.2.12-svn1')
 	$db->query('ALTER TABLE `' . TABLE_PANEL_DOMAINS . '` ADD `ipandport` int(11) unsigned NOT NULL default \'1\' AFTER `documentroot`');
 	$db->query('CREATE TABLE `' . TABLE_PANEL_IPSANDPORTS . '` (
 			`id` int(11) unsigned NOT NULL auto_increment,
-			`ip` varchar(39) NOT NULL default \'\',
+			`ip` varchar(15) NOT NULL default \'\',
 			`port` int(5) NOT NULL default \'80\',
 			`default` int(1) NOT NULL default \'0\',
 			PRIMARY KEY  (`id`)
@@ -1474,6 +1474,19 @@ if($settings['panel']['version'] == '1.2.19-svn9')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn10';
+}
+
+if($settings['panel']['version'] == '1.2.19-svn10')
+{
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn10 to 1.2.19-svn11");
+
+	$db->query("ALTER TABLE `" . TABLE_PANEL_IPSANDPORTS . "` CHANGE `ip` `ip` VARCHAR(39) NOT NULL default ''");
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn11\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn11';
 }
 
 ?>
