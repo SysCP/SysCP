@@ -51,7 +51,11 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">SSL IP/Port:</td>
+				<if $ssl_ipsandports != ''>
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="ssl_ipandport">$ssl_ipsandports</select></td>
+				<else>
+				<td class="main_field_display" nowrap="nowrap">{$lng['panel']['nosslipsavailable']}</td>
+				</if>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['wwwserveralias']}:</td>

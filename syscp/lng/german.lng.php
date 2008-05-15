@@ -838,5 +838,6 @@ $lng['admin']['caneditphpsettings'] = 'Kann PHP-bezogene Domaineinstellungen mac
 // ADDED IN 1.2.19-svn12
 
 $lng['admin']['allips'] = 'Alle IP\'s';
+$lng['panel']['nosslipsavailable'] = 'F&uuml;r diesen Server wurden noch keine ssl IP/Port Kombination eingetragen';
 
 ?>
