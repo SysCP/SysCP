@@ -28,6 +28,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="def_language">$language_options</select></td>
 			</tr>
 			<tr>
+				<td class="main_field_name">{$lng['serversettings']['ipaddress']['title']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="ipaddress">$ipaddress</select></td>
+			</tr>
+			<tr>
 				<td class="main_field_name">{$lng['admin']['change_serversettings']}</td>
 				<td class="main_field_display" nowrap="nowrap">$change_serversettings</td>
 			</tr>

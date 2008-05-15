@@ -835,4 +835,8 @@ $lng['dkim']['dkimrestart_command']['description'] = 'Wie lautet das Kommando zu
 
 $lng['admin']['caneditphpsettings'] = 'Kann PHP-bezogene Domaineinstellungen machen?';
 
+// ADDED IN 1.2.19-svn12
+
+$lng['admin']['allips'] = 'Alle IP\'s';
+
 ?>
