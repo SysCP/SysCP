@@ -125,7 +125,7 @@ CREATE TABLE `panel_admins` (
   `password` varchar(50) NOT NULL default '',
   `name` varchar(255) NOT NULL default '',
   `email` varchar(255) NOT NULL default '',
-  `def_language` varchar(255) NOT NULL default '',^
+  `def_language` varchar(255) NOT NULL default '',
   `ip` tinyint(4) NOT NULL default '-1',
   `customers` int(15) NOT NULL default '0',
   `customers_used` int(15) NOT NULL default '0',
@@ -271,6 +271,7 @@ CREATE TABLE `panel_domains` (
   `subcanemaildomain` tinyint(1) NOT NULL default '0',
   `caneditdomain` tinyint(1) NOT NULL default '1',
   `zonefile` varchar(255) NOT NULL default '',
+  `dkim` tinyint(1) NOT NULL default '0',
   `wwwserveralias` tinyint(1) NOT NULL default '1',
   `parentdomainid` int(11) unsigned NOT NULL default '0',
   `openbasedir` tinyint(1) NOT NULL default '0',
