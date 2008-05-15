@@ -933,6 +933,7 @@ while($row = $db->fetch_array($result_tasks))
 				if(count($mxservers) == 0)
 				{
 					$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
+					$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a a:' . $domain['ip'] . ' ~all"' . "\n";
 				}
 				else
 				{
