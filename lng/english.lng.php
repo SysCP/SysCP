@@ -832,5 +832,6 @@ $lng['admin']['caneditphpsettings'] = 'Can change php-related domain settings?';
 // ADDED IN 1.2.19-svn12
 
 $lng['admin']['allips'] = 'All IP\'s';
+$lng['panel']['nosslipsavailable'] = 'There are currently no ssl ip/port combination for this server';
 
 ?>
