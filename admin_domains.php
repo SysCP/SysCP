@@ -515,6 +515,15 @@ if($page == 'domains'
 				{
 					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
 				}
+				
+				if($ssl_ipsandports == '')
+				{
+					$show_ssl_ipsandports = 0;
+				}
+				else
+				{
+					$show_ssl_ipsandports = 1;
+				}
 
 
 				$ssl = makeyesno('ssl', '1', '0', $result['ssl']);
@@ -831,6 +840,15 @@ if($page == 'domains'
 				while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
 				{
 					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
+				}
+				
+				if($ssl_ipsandports == '')
+				{
+					$show_ssl_ipsandports = 0;
+				}
+				else
+				{
+					$show_ssl_ipsandports = 1;
 				}
 
 				$result['specialsettings'] = $result['specialsettings'];

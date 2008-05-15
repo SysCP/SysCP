@@ -1791,7 +1791,7 @@ function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
 
 function validate_ip($ip, $lng = 'invalidip', $installscript = false)
 {
-	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6|FILTER_FLAG_IPV4|FILTER_FLAG_NO_PRIV_RANGE|FILTER_FLAG_NO_RES_RANGE) === FALSE)
+	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6|FILTER_FLAG_IPV4|FILTER_FLAG_NO_RES_RANGE) === FALSE)
 	{
 		if($installscript)
 		{
