@@ -83,7 +83,15 @@ if($page == 'message')
 
 					if(!$mail->Send())
 					{
-						$log->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+						if($mail->ErrorInfo != '')
+						{
+							$mailerr_msg = $mail->ErrorInfo;
+						}
+						else
+						{
+							$mailerr_msg = $row["email"];
+						}
+						$log->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
 						standard_error('errorsendingmail', $row["email"]);
 					}
 

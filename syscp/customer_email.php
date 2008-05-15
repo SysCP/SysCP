@@ -475,7 +475,15 @@ elseif($page == 'accounts')
 
 						if(!$mail->Send())
 						{
-							$log->logAction(USR_ACTION, LOG_ERR, "Error sending mail: " . $mail->ErrorInfo);
+							if($mail->ErrorInfo != '')
+							{
+								$mailerr_msg = $mail->ErrorInfo;
+							}
+							else
+							{
+								$mailerr_msg = $email;
+							}
+							$log->logAction(USR_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
 							standard_error('errorsendingmail', $email);
 						}
 
@@ -496,6 +504,15 @@ elseif($page == 'accounts')
 
 							if(!$mail->Send())
 							{
+								if($mail->ErrorInfo != '')
+								{
+									$mailerr_msg = $mail->ErrorInfo;
+								}
+								else
+								{
+									$mailerr_msg = $alternative_email;
+								}
+								$log->logAction(USR_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
 								standard_error(array(
 									'errorsendingmail',
 									$alternative_email
