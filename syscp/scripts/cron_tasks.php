@@ -166,6 +166,7 @@ while($row = $db->fetch_array($result_tasks))
 		while($domain = $db->fetch_array($result_domains))
 		{
 			fwrite($debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain']);
 			$vhosts_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
 
 			if($domain['deactivated'] != '1'
@@ -502,6 +503,7 @@ while($row = $db->fetch_array($result_tasks))
 					   && file_exists(makeCorrectFile($vhosts_dir . '/' . $vhost_filename)))
 					{
 						fwrite($debugHandler, '  cron_tasks: Task1 - unlinking ' . $vhost_filename . "\n");
+						$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - unlinking ' . $vhost_filename);
 						unlink(makeCorrectFile($vhosts_dir . '/' . $vhost_filename));
 					}
 				}
@@ -512,10 +514,12 @@ while($row = $db->fetch_array($result_tasks))
 
 		if($dolighty)
 		{
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - Lighttpd reloaded');
 			fwrite($debugHandler, '   cron_tasks: Task1 - Lighttpd reloaded' . "\n");
 		}
 		else
 		{
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - Apache reloaded');
 			fwrite($debugHandler, '   cron_tasks: Task1 - Apache reloaded' . "\n");
 		}
 	}
@@ -526,6 +530,7 @@ while($row = $db->fetch_array($result_tasks))
 	elseif ($row['type'] == '2')
 	{
 		fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task2 started - create new home');
 
 		if(is_array($row['data']))
 		{
@@ -543,6 +548,7 @@ while($row = $db->fetch_array($result_tasks))
 	elseif ($row['type'] == '3')
 	{
 		fwrite($debugHandler, '  cron_tasks: Task3 started - create/change/del htaccess/htpasswd' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task3 started - create/change/del htaccess/htpasswd');
 		$diroptions_file = '';
 
 		if($settings['system']['apacheversion'] == 'lighttpd')
@@ -569,6 +575,7 @@ while($row = $db->fetch_array($result_tasks))
 		}
 		elseif(!is_dir($settings['system']['apacheconf_htpasswddir']))
 		{
+			$cronlog->logAction(CRON_ACTION, LOG_WARNING, 'cron_tasks: WARNING!!! ' . $settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!');
 			fwrite($debugHandler, '  cron_tasks: WARNING!!! ' . $settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!' . "\n");
 			echo 'WARNING!!! ' . $settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!';
 		}
@@ -836,6 +843,7 @@ while($row = $db->fetch_array($result_tasks))
 	elseif ($row['type'] == '4')
 	{
 		fwrite($debugHandler, '  cron_tasks: Task4 started - Rebuilding syscp_bind.conf' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 started - Rebuilding syscp_bind.conf');
 
 		if(!file_exists($settings['system']['bindconf_directory'] . 'domains/'))
 		{
@@ -873,6 +881,7 @@ while($row = $db->fetch_array($result_tasks))
 		while($domain = $db->fetch_array($result_domains))
 		{
 			fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain']);
 
 			if($domain['dkim'] == '1')
 			{
@@ -920,7 +929,14 @@ while($row = $db->fetch_array($result_tasks))
 
 				if(count($nameservers) == 0)
 				{
-					$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	A	' . $domain['ip'] . "\n";
+					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	A	' . $domain['ip'] . "\n";
+					}
+					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	AAAA	' . $domain['ip'] . "\n";
+					}
 				}
 				else
 				{
@@ -932,8 +948,16 @@ while($row = $db->fetch_array($result_tasks))
 
 				if(count($mxservers) == 0)
 				{
-					$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
-					$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a a:' . $domain['ip'] . ' ~all"' . "\n";
+					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
+						$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a ipv4:' . $domain['ip'] . ' ~all"' . "\n";
+					}
+					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	AAAA	' . $domain['ip'] . "\n";
+						$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a mx ~all"' . "\n";
+					}
 				}
 				else
 				{
@@ -965,19 +989,41 @@ while($row = $db->fetch_array($result_tasks))
 					}
 				}
 
-				$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
-				$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
+				if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+				{
+					$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
+					$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
+				}
+				elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+				{
+					$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
+					$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
+				}
 
 				if($domain['iswildcarddomain'] == '1')
 				{
-					$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
+					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
+					}
+					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= '*	IN  AAAA	' . $domain['ip'] . "\n";
+					}
 				}
 
 				$subdomains = $db->query('SELECT `d`.`domain`, `ip`.`ip` AS `ip` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_IPSANDPORTS . '` `ip` WHERE `parentdomainid`=\'' . $domain['id'] . '\' AND `d`.`ipandport`=`ip`.`id`');
 
 				while($subdomain = $db->fetch_array($subdomains))
 				{
-					$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
+					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					{
+						$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
+					}
+					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					{
+						$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	AAAA	' . $subdomain['ip'] . "\n";
+					}
 				}
 
 				if($domain['dkim'] == '1')
@@ -1040,8 +1086,11 @@ while($row = $db->fetch_array($result_tasks))
 		fclose($dkimkeyfile_handler);
 		safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']);
 		safe_exec($settings['dkim']['dkimrestart_command']);
+		fwrite($debugHandler, '  cron_tasks: Task4 - DKIM reloaded' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - DKIM reloaded');
 		safe_exec($settings['system']['bindreload_command']);
 		fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - Bind9 reloaded');
 		$domains_dir = makeCorrectDir($settings['system']['bindconf_directory'] . '/domains/');
 
 		if(file_exists($domains_dir)
@@ -1068,6 +1117,7 @@ while($row = $db->fetch_array($result_tasks))
 	 */
 	elseif ($row['type'] == '5')
 	{
+		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task5 - Creating new ftp account');
 		$result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_FTP_USERS . '` `f` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ');
 
 		while($directory = $db->fetch_array($result_directories))
