@@ -493,23 +493,29 @@ if($page == 'domains'
 					}
 				}
 
-				// CHECK				if($userinfo['ip'] == "-1")
-
+				if($userinfo['ip'] == "-1")
+				{
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC");
+					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip` ASC");
+				}
+				else
+				{
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
+					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
+				}
+				
 				$ipsandports = '';
-				$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip` ASC");
-
 				while($row_ipandport = $db->fetch_array($result_ipsandports))
 				{
-					$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id'], $settings['system']['defaultip']);
+					$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id']);
 				}
-
+					
 				$ssl_ipsandports = '';
-				$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip` ASC");
-
 				while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
 				{
 					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
 				}
+
 
 				$ssl = makeyesno('ssl', '1', '0', $result['ssl']);
 				$ssl_redirect = makeyesno('ssl_redirect', '1', '0', $result['ssl_redirect']);
@@ -806,40 +812,45 @@ if($page == 'domains'
 
 				if($userinfo['ip'] == "-1")
 				{
-					$ipsandports = '';
-					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "`  WHERE `ssl`='0' ORDER BY `ip` ASC");
-
-					while($row_ipandport = $db->fetch_array($result_ipsandports))
-					{
-						$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id'], $result['ipandport']);
-					}
-
-					$result['specialsettings'] = $result['specialsettings'];
-					$isbinddomain = makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);
-					$wwwserveralias = makeyesno('wwwserveralias', '1', '0', $result['wwwserveralias']);
-					$isemaildomain = makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
-					$isemail_only = makeyesno('isemail_only', '1', '0', $result['email_only']);
-					$ssl = makeyesno('ssl', '1', '0', $result['ssl']);
-					$ssl_redirect = makeyesno('ssl_redirect', '1', '0', $result['ssl_redirect']);
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC");
 					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip` ASC");
-
-					while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
-					{
-						$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $result['ssl_ipandport']);
-					}
-
-					$subcanemaildomain = makeoption($lng['admin']['subcanemaildomain']['never'], '0', $result['subcanemaildomain'], true, true);
-					$subcanemaildomain.= makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', $result['subcanemaildomain'], true, true);
-					$subcanemaildomain.= makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', $result['subcanemaildomain'], true, true);
-					$subcanemaildomain.= makeoption($lng['admin']['subcanemaildomain']['always'], '3', $result['subcanemaildomain'], true, true);
-					$dkim = makeyesno('dkim', '1', '0', $result['dkim']);
-					$caneditdomain = makeyesno('caneditdomain', '1', '0', $result['caneditdomain']);
-					$openbasedir = makeyesno('openbasedir', '1', '0', $result['openbasedir']);
-					$safemode = makeyesno('safemode', '1', '0', $result['safemode']);
-					$speciallogfile = ($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
-					$result = htmlentities_array($result);
-					eval("echo \"" . getTemplate("domains/domains_edit") . "\";");
 				}
+				else
+				{
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
+					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
+				}
+				
+				$ipsandports = '';
+				while($row_ipandport = $db->fetch_array($result_ipsandports))
+				{
+					$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id']);
+				}
+					
+				$ssl_ipsandports = '';
+				while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
+				{
+					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
+				}
+
+				$result['specialsettings'] = $result['specialsettings'];
+				$isbinddomain = makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);
+				$wwwserveralias = makeyesno('wwwserveralias', '1', '0', $result['wwwserveralias']);
+				$isemaildomain = makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
+				$isemail_only = makeyesno('isemail_only', '1', '0', $result['email_only']);
+				$ssl = makeyesno('ssl', '1', '0', $result['ssl']);
+				$ssl_redirect = makeyesno('ssl_redirect', '1', '0', $result['ssl_redirect']);
+				$subcanemaildomain = makeoption($lng['admin']['subcanemaildomain']['never'], '0', $result['subcanemaildomain'], true, true);
+				$subcanemaildomain.= makeoption($lng['admin']['subcanemaildomain']['choosableno'], '1', $result['subcanemaildomain'], true, true);
+				$subcanemaildomain.= makeoption($lng['admin']['subcanemaildomain']['choosableyes'], '2', $result['subcanemaildomain'], true, true);
+				$subcanemaildomain.= makeoption($lng['admin']['subcanemaildomain']['always'], '3', $result['subcanemaildomain'], true, true);
+				$dkim = makeyesno('dkim', '1', '0', $result['dkim']);
+				$caneditdomain = makeyesno('caneditdomain', '1', '0', $result['caneditdomain']);
+				$openbasedir = makeyesno('openbasedir', '1', '0', $result['openbasedir']);
+				$safemode = makeyesno('safemode', '1', '0', $result['safemode']);
+				$speciallogfile = ($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
+				$result = htmlentities_array($result);
+				eval("echo \"" . getTemplate("domains/domains_edit") . "\";");
 			}
 		}
 	}

@@ -36,24 +36,24 @@ $header
 				<td class="main_field_name">Zonefile:<br />({$lng['panel']['emptyfordefault']})</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="zonefile" value="" size="60" /></td>
 			</tr>
-                        </if>
-                        <if $settings['system']['use_ssl'] == '1'>
-                        <tr>
-                                <td class="main_field_name">SSL:</td>
-                                <td class="main_field_display" nowrap="nowrap">$ssl</td>
-                        </tr>
-                        <tr>
-                                <td class="main_field_name">SSL Redirect:</td>
-                                <td class="main_field_display" nowrap="nowrap">$ssl_redirect</td>
-                        </tr>
-                        <tr>
-                                <td class="main_field_name">SSL IP/Port:</td>
-                                <td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="ssl_ipandport">$ssl_ipsandports</select></td>
-                        </tr>
-                        <tr>
-                                <td class="main_field_name">{$lng['admin']['wwwserveralias']}:</td>
-                                <td class="main_field_display" nowrap="nowrap">$wwwserveralias</td>
-                        </tr>
+			</if>
+			<if $settings['system']['use_ssl'] == '1'>
+			<tr>
+				<td class="main_field_name">SSL:</td>
+				<td class="main_field_display" nowrap="nowrap">$ssl</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">SSL Redirect:</td>
+				<td class="main_field_display" nowrap="nowrap">$ssl_redirect</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">SSL IP/Port:</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="ssl_ipandport">$ssl_ipsandports</select></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['wwwserveralias']}:</td>
+				<td class="main_field_display" nowrap="nowrap">$wwwserveralias</td>
+			</tr>
 			</if>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['emaildomain']}:</td>

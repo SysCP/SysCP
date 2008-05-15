@@ -829,4 +829,8 @@ $lng['dkim']['dkimrestart_command']['description'] = 'Please specify the restart
 
 $lng['admin']['caneditphpsettings'] = 'Can change php-related domain settings?';
 
+// ADDED IN 1.2.19-svn12
+
+$lng['admin']['allips'] = 'All IP\'s';
+
 ?>
