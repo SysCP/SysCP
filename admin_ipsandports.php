@@ -195,7 +195,7 @@ if($page == 'ipsandports'
 				$ssl_cert_file = $settings['system']['ssl_cert_file'];
 			}
 
-			$enable_ssl = makeyesno('ssl', '1', '0', '1');
+			$enable_ssl = makeyesno('ssl', '1', '0', '0');
 			$listen_statement = makeyesno('listen_statement', '1', '0', '1');
 			$namevirtualhost_statement = makeyesno('namevirtualhost_statement', '1', '0', '1');
 			$vhostcontainer = makeyesno('vhostcontainer', '1', '0', '1');
