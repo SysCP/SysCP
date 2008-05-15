@@ -242,3 +242,11 @@ require ($pathtophpfiles . '/lib/class_syscplogger.php');
 
 $cronlog = SysCPLogger::getInstanceOf(null, $db, $settings);
 fwrite($debugHandler, 'Logger has been included' . "\n");
+
+/**
+ * Includes the cron_httpd class
+ */
+
+require ($pathtophpfiles . '/lib/cron_httpd.class.php');
+fwrite($debugHandler, 'Cron_httpd has been included' . "\n");
+
