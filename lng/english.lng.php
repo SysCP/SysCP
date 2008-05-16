@@ -834,5 +834,7 @@ $lng['admin']['caneditphpsettings'] = 'Can change php-related domain settings?';
 $lng['admin']['allips'] = 'All IP\'s';
 $lng['panel']['nosslipsavailable'] = 'There are currently no ssl ip/port combinations for this server';
 $lng['ticket']['by'] = 'by';
+$lng['dkim']['use_dkim']['title'] = 'Activate DKIM support?';
+$lng['dkim']['use_dkim']['description'] = 'Would you like to use the Domain Keys (DKIM) system?';
 
 ?>

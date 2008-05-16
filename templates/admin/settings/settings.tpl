@@ -276,6 +276,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap">$logginglogcron</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['dkim']['use_dkim']['title']}</b><br />{$lng['dkim']['use_dkim']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">$dkimenabled</td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['dkimsettings']}</b>
 				</td>

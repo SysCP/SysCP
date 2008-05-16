@@ -671,6 +671,13 @@ if(($page == 'settings' || $page == 'overview')
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_log_cron from '" . $settings['logger']['log_cron'] . "' to '" . $value . "'");
 		}
 
+		if($_POST['use_dkim'] != $settings['dkim']['use_dkim'])
+		{
+			$value = (int)$_POST['use_dkim'] == 1 ? 1 : 0;
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='dkim' AND `varname`='use_dkim'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed use_dkim from '" . $settings['dkim']['use_dkim'] . "' to '" . $value . "'");
+		}
+
 		if($_POST['dkim_prefix'] != $settings['dkim']['dkim_prefix'])
 		{
 			$value = validate($_POST['dkim_prefix'], 'dkim_prefix');
@@ -958,6 +965,7 @@ if(($page == 'settings' || $page == 'overview')
 		$loggingenabled = makeyesno('loggingenabled', '1', '0', $settings['logger']['enabled']);
 		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
 		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['ticket']['enabled']);
+		$dkimenabled = makeyesno('use_dkim', '1', '0', $settings['dkim']['use_dkim']);
 		$settings = htmlentities_array($settings);
 		eval("echo \"" . getTemplate("settings/settings") . "\";");
 	}
