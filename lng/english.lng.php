@@ -833,5 +833,6 @@ $lng['admin']['caneditphpsettings'] = 'Can change php-related domain settings?';
 
 $lng['admin']['allips'] = 'All IP\'s';
 $lng['panel']['nosslipsavailable'] = 'There are currently no ssl ip/port combinations for this server';
+$lng['ticket']['by'] = 'by';
 
 ?>
