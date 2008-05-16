@@ -139,7 +139,7 @@ if($page == 'overview')
 	$opentickets = 0;
 	$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
                                    WHERE `answerto` = "0" AND (`status` = "0" OR `status` = "1")
-                                   AND `lastreplier`="0"');
+                                   AND `lastreplier`="0" AND `adminid` = "' . $userinfo['adminid'] . '"');
 	$awaitingtickets = $opentickets['count'];
 	$awaitingtickets_text = '';
 
