@@ -599,7 +599,37 @@ function validateDomain($domainname)
 
 function validateUrl($url)
 {
-	return preg_match('!^https?://((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}(:(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5])))?(/[^\s\0]*)?$!Di', $url);
+	if(preg_match('!^https?://((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}(:(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5])))?(/[^\s\0]*)?$!Di', $url))
+	{
+		return true;
+	}
+	else
+	{
+		if(strtolower(substr($url, 0, 7)) == "http://" || strtolower(substr($url, 0, 8)) == "https://")
+		{
+			if(strtolower(substr($url, 0, 7)) == "http://")
+			{
+				$ip = strtolower(substr($url, 7));
+			}
+			if(strtolower(substr($url, 0, 8)) == "https://")
+			{
+				$ip = strtolower(substr($url, 8));
+			}
+			$ip = substr($ip, 0, strpos($ip, '/'));
+			if(validate_ip($ip) !== false)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 
 /**
