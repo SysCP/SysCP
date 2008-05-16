@@ -471,6 +471,10 @@ else
 	{
 		$apacheversion = 'apache2';
 	}
+	elseif(substr(strtoupper(@php_sapi_name()), 0, 8) == "LIGHTTPD")
+	{
+		$apacheversion = 'lighttpd';
+	}
 	else
 	{
 		$apacheversion = 'apache1';
@@ -598,6 +602,13 @@ if(isset($_POST['installstep'])
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/sites-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/syscp-htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/apache2 reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
+	}
+	elseif($apacheversion == "lighttpd")
+	{
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-vhosts.conf' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-diroptions.conf' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd force-reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
 	}
 
 	// insert the lastcronrun to be the installation date
@@ -770,7 +781,7 @@ else
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $apacheversion == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['apacheversion']; ?>:</td>
-				<td class="main_field_display"><input type="radio" name="apacheversion" value="apache1" <?php echo $apacheversion == "apache1" ? 'checked="checked"' : "" ?>>Apache1&nbsp;<input type="radio" name="apacheversion" value="apache2" <?php echo $apacheversion == "apache2" ? 'checked="checked"' : "" ?>>Apache2</td>
+				<td class="main_field_display"><input type="radio" name="apacheversion" value="apache1" <?php echo $apacheversion == "apache1" ? 'checked="checked"' : "" ?>>Apache1&nbsp;<input type="radio" name="apacheversion" value="apache2" <?php echo $apacheversion == "apache2" ? 'checked="checked"' : "" ?>>Apache2&nbsp;<input type="radio" name="apacheversion" value="lighttpd" <?php echo $apacheversion == "lighttpd" ? 'checked="checked"' : "" ?>>Lighttpd</td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="language" value="<?php echo htmlspecialchars($language); ?>"><input type="hidden" name="installstep" value="1"><input class="bottom" type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"></td>
