@@ -246,9 +246,11 @@ elseif($page == 'domains')
 
 				if(!preg_match('/^https?\:\/\//', $path))
 				{
+					if(empty($_POST['path']))
+					{
+						$path = $userinfo['documentroot'] . $path;
+					}
 					$path = makeCorrectDir($path);
-					$userpath = $path;
-					$path = $userinfo['documentroot'] . $path;
 				}
 
 				if(isset($_POST['openbasedir_path'])
@@ -358,9 +360,11 @@ elseif($page == 'domains')
 
 				if(!preg_match('/^https?\:\/\//', $path))
 				{
+					if(empty($_POST['path']))
+					{
+						$path = $userinfo['documentroot'] . $path;
+					}
 					$path = makeCorrectDir($path);
-					$userpath = $path;
-					$path = $userinfo['documentroot'] . $path;
 				}
 
 				if(isset($_POST['iswildcarddomain'])

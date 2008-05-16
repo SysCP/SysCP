@@ -488,6 +488,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (75, 'system', 'mail_quota_enabled', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (76, 'system', 'mail_quota', '104857600');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (77, 'panel', 'decimal_places', '4');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (78, 'dkim', 'use_dkim', '0');
 # --------------------------------------------------------
 
 #

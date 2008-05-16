@@ -150,7 +150,8 @@ while($row = $db->fetch_array($result_tasks))
 				fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
 				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain']);
 		
-				if($domain['dkim'] == '1')
+				if($domain['dkim'] == '1'
+				   && $settings['dkim']['use_dkim'] == '1')
 				{
 					$dkimquery = $db->query('SELECT ' . TABLE_MAIL_DKIM . '.`id`, `publickey` FROM `' . TABLE_MAIL_DKIM . '`, `' . TABLE_PANEL_DOMAINS . '` WHERE ' . TABLE_PANEL_DOMAINS . '.`id`=' . TABLE_MAIL_DKIM . '.`domain_id` AND `domain`=\'' . $domain['domain'] . '\'');
 					$dkimkey = $db->fetch_array($dkimquery);
@@ -293,7 +294,8 @@ while($row = $db->fetch_array($result_tasks))
 						}
 					}
 		
-					if($domain['dkim'] == '1')
+					if($domain['dkim'] == '1'
+					   && $settings['dkim']['use_dkim'] == '1')
 					{
 						$zonefile.= "dk" . $dkid . "_domainkey	IN	TXT	\"v=DKIM1; k=rsa; p=" . trim($txtpubkey) . "\"\n";
 					}
@@ -336,38 +338,42 @@ while($row = $db->fetch_array($result_tasks))
 			}
 		}
 
-		$result_domains = $db->query("SELECT " . TABLE_PANEL_DOMAINS . ".`id` AS `pdid`, `domain`, " . TABLE_MAIL_DKIM . ".`id` AS `dkid` FROM `" . TABLE_PANEL_DOMAINS . "` LEFT JOIN `" . TABLE_MAIL_DKIM . "` ON (" . TABLE_MAIL_DKIM . ".`domain_id`=" . TABLE_PANEL_DOMAINS . ".`id`) WHERE " . TABLE_PANEL_DOMAINS . ".`dkim`='1'");
-
-		while($domain = $db->fetch_array($result_domains))
+		if($settings['dkim']['use_dkim'] == '1')
 		{
-			if(isset($domain['domain'])
-			   && $domain['domain'] != '')
+			$result_domains = $db->query("SELECT " . TABLE_PANEL_DOMAINS . ".`id` AS `pdid`, `domain`, " . TABLE_MAIL_DKIM . ".`id` AS `dkid` FROM `" . TABLE_PANEL_DOMAINS . "` LEFT JOIN `" . TABLE_MAIL_DKIM . "` ON (" . TABLE_MAIL_DKIM . ".`domain_id`=" . TABLE_PANEL_DOMAINS . ".`id`) WHERE " . TABLE_PANEL_DOMAINS . ".`dkim`='1'");
+
+			while($domain = $db->fetch_array($result_domains))
 			{
-				$dkimdomains.= $domain['domain'] . "\n";
-				$dkid = (int)$domain['dkid']+2000;
-				$dkimkeyfile.= "*@" . $domain['domain'] . ":" . $domain['domain'] . ":" . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . "\n";
+				if(isset($domain['domain'])
+				   && $domain['domain'] != '')
+				{
+					$dkimdomains.= $domain['domain'] . "\n";
+					$dkid = (int)$domain['dkid']+2000;
+					$dkimkeyfile.= "*@" . $domain['domain'] . ":" . $domain['domain'] . ":" . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . "\n";
+				}
 			}
+
+			if(!file_exists($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']))
+			{
+				safe_exec("touch " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']);
+			}
+			if(!file_exists($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']))
+			{
+				safe_exec("touch " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']);
+			}
+			$dkimdomains_handler = fopen($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains'], "w");
+			fwrite($dkimdomains_handler, $dkimdomains);
+			fclose($dkimdomains_handler);
+			safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']);
+			$dkimkeyfile_handler = fopen($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys'], "w");
+			fwrite($dkimkeyfile_handler, $dkimkeyfile);
+			fclose($dkimkeyfile_handler);
+			safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']);
+			safe_exec($settings['dkim']['dkimrestart_command']);
+			fwrite($debugHandler, '  cron_tasks: Task4 - DKIM reloaded' . "\n");
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - DKIM reloaded');
 		}
 
-		if(!file_exists($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']))
-		{
-			safe_exec("touch " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']);
-		}
-		if(!file_exists($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']))
-		{
-			safe_exec("touch " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']);
-		}
-		$dkimdomains_handler = fopen($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains'], "w");
-		fwrite($dkimdomains_handler, $dkimdomains);
-		fclose($dkimdomains_handler);
-		safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']);
-		$dkimkeyfile_handler = fopen($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys'], "w");
-		fwrite($dkimkeyfile_handler, $dkimkeyfile);
-		fclose($dkimkeyfile_handler);
-		safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_dkimkeys']);
-		safe_exec($settings['dkim']['dkimrestart_command']);
-		fwrite($debugHandler, '  cron_tasks: Task4 - DKIM reloaded' . "\n");
-		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - DKIM reloaded');
 		safe_exec($settings['system']['bindreload_command']);
 		fwrite($debugHandler, '  cron_tasks: Task4 - Bind9 reloaded' . "\n");
 		$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - Bind9 reloaded');
