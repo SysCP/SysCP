@@ -144,201 +144,209 @@ while($row = $db->fetch_array($result_tasks))
 
 		while($domain = $db->fetch_array($result_domains))
 		{
-			fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain']);
-
-			if($domain['dkim'] == '1')
+			if(isset($domain['domain'])
+			   && $domain['domain'] != '')
 			{
-				$dkimquery = $db->query('SELECT ' . TABLE_MAIL_DKIM . '.`id`, `publickey` FROM `' . TABLE_MAIL_DKIM . '`, `' . TABLE_PANEL_DOMAINS . '` WHERE ' . TABLE_PANEL_DOMAINS . '.`id`=' . TABLE_MAIL_DKIM . '.`domain_id` AND `domain`=\'' . $domain['domain'] . '\'');
-				$dkimkey = $db->fetch_array($dkimquery);
-
-				if($dkimkey['publickey'] == '')
+				fwrite($debugHandler, '  cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task4 - Writing ' . $domain['id'] . '::' . $domain['domain']);
+		
+				if($domain['dkim'] == '1')
 				{
-					// Create a new table entry
-
-					$db->query('INSERT INTO ' . TABLE_MAIL_DKIM . ' SET `domain_id`=' . $domain['id']);
-					$dkid = $db->insert_id()+2000;
-
-					// Create a new private rsa certificate and put the public key into the database
-
-					safe_exec("openssl genrsa -out " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private 1024 2>/dev/null");
-					$txtpubkey = safe_exec("openssl rsa -in " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private -pubout -outform pem 2>/dev/null | grep -v \"^-\"  | tr -d '\n'");
-					safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private");
-					$db->query('UPDATE ' . TABLE_MAIL_DKIM . ' SET `publickey`=\'' . $txtpubkey . '\' WHERE `domain_id`=\'' . $domain['id'] . '\'');
-				}
-				else
-				{
-					$dkid = (int)$dkimkey['id']+2000;
-					$txtpubkey = $dkimkey['publickey'];
-				}
-			}
-
-			if($domain['zonefile'] == '')
-			{
-				$date = date('Ymd');
-				$bindserial = (preg_match('/^' . $date . '/', $domain['bindserial']) ? $domain['bindserial']+1 : $date . '00');
-				$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `bindserial`=\'' . $bindserial . '\' WHERE `id`=\'' . $domain['id'] . '\'');
-				$zonefile = '$TTL 1W' . "\n";
-
-				if(count($nameservers) == 0)
-				{
-					$zonefile.= '@ IN SOA ns ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
-				}
-				else
-				{
-					$zonefile.= '@ IN SOA ' . $nameservers[0]['hostname'] . ' ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
-				}
-
-				$zonefile.= '	' . $bindserial . ' ; serial' . "\n" . '	8H ; refresh' . "\n" . '	2H ; retry' . "\n" . '	1W ; expiry' . "\n" . '	11h) ; minimum' . "\n";
-
-				if(count($nameservers) == 0)
-				{
-					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					$dkimquery = $db->query('SELECT ' . TABLE_MAIL_DKIM . '.`id`, `publickey` FROM `' . TABLE_MAIL_DKIM . '`, `' . TABLE_PANEL_DOMAINS . '` WHERE ' . TABLE_PANEL_DOMAINS . '.`id`=' . TABLE_MAIL_DKIM . '.`domain_id` AND `domain`=\'' . $domain['domain'] . '\'');
+					$dkimkey = $db->fetch_array($dkimquery);
+		
+					if($dkimkey['publickey'] == '')
 					{
-						$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	A	' . $domain['ip'] . "\n";
+						// Create a new table entry
+		
+						$db->query('INSERT INTO ' . TABLE_MAIL_DKIM . ' SET `domain_id`=' . $domain['id']);
+						$dkid = $db->insert_id()+2000;
+		
+						// Create a new private rsa certificate and put the public key into the database
+		
+						safe_exec("openssl genrsa -out " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private 1024 2>/dev/null");
+						$txtpubkey = safe_exec("openssl rsa -in " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private -pubout -outform pem 2>/dev/null | grep -v \"^-\"  | tr -d '\n'");
+						safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private");
+						$db->query('UPDATE ' . TABLE_MAIL_DKIM . ' SET `publickey`=\'' . $txtpubkey . '\' WHERE `domain_id`=\'' . $domain['id'] . '\'');
 					}
-					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+					else
 					{
-						$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	AAAA	' . $domain['ip'] . "\n";
+						$dkid = (int)$dkimkey['id']+2000;
+						$txtpubkey = $dkimkey['publickey'];
 					}
 				}
-				else
+		
+				if($domain['zonefile'] == '')
 				{
-					foreach($nameservers as $nameserver)
+					$date = date('Ymd');
+					$bindserial = (preg_match('/^' . $date . '/', $domain['bindserial']) ? $domain['bindserial']+1 : $date . '00');
+					$db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `bindserial`=\'' . $bindserial . '\' WHERE `id`=\'' . $domain['id'] . '\'');
+					$zonefile = '$TTL 1W' . "\n";
+		
+					if(count($nameservers) == 0)
 					{
-						$zonefile.= '@	IN	NS	' . trim($nameserver['hostname']) . "\n";
+						$zonefile.= '@ IN SOA ns ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
 					}
-				}
-
-				if(count($mxservers) == 0)
-				{
-					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+					else
 					{
-						$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
-						$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a ipv4:' . $domain['ip'] . ' ~all"' . "\n";
+						$zonefile.= '@ IN SOA ' . $nameservers[0]['hostname'] . ' ' . str_replace('@', '.', $settings['panel']['adminmail']) . '. (' . "\n";
 					}
-					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+		
+					$zonefile.= '	' . $bindserial . ' ; serial' . "\n" . '	8H ; refresh' . "\n" . '	2H ; retry' . "\n" . '	1W ; expiry' . "\n" . '	11h) ; minimum' . "\n";
+		
+					if(count($nameservers) == 0)
 					{
-						$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	AAAA	' . $domain['ip'] . "\n";
-						$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a mx ~all"' . "\n";
-					}
-				}
-				else
-				{
-					foreach($mxservers as $mxserver)
-					{
-						$zonefile.= '@	IN	MX	' . trim($mxserver) . "\n";
-					}
-				}
-
-				$nssubdomains = $db->query('SELECT `domain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `isbinddomain`=\'1\' AND `domain` LIKE \'%.' . $domain['domain'] . '\'');
-
-				while($nssubdomain = $db->fetch_array($nssubdomains))
-				{
-					if(preg_match('/^[^\.]+\.' . $domain['domain'] . '/', $nssubdomain['domain']))
-					{
-						$nssubdomain = str_replace('.' . $domain['domain'], '', $nssubdomain['domain']);
-
-						if(count($nameservers) == 0)
+						if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 						{
-							$zonefile.= $nssubdomain . '	IN	NS	ns.' . $nssubdomain . "\n";
+							$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	A	' . $domain['ip'] . "\n";
 						}
-						else
+						elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 						{
-							foreach($nameservers as $nameserver)
+							$zonefile.= '@	IN	NS	ns' . "\n" . 'ns	IN	AAAA	' . $domain['ip'] . "\n";
+						}
+					}
+					else
+					{
+						foreach($nameservers as $nameserver)
+						{
+							$zonefile.= '@	IN	NS	' . trim($nameserver['hostname']) . "\n";
+						}
+					}
+		
+					if(count($mxservers) == 0)
+					{
+						if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						{
+							$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
+							$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a ipv4:' . $domain['ip'] . ' ~all"' . "\n";
+						}
+						elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						{
+							$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	AAAA	' . $domain['ip'] . "\n";
+							$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a mx ~all"' . "\n";
+						}
+					}
+					else
+					{
+						foreach($mxservers as $mxserver)
+						{
+							$zonefile.= '@	IN	MX	' . trim($mxserver) . "\n";
+						}
+					}
+		
+					$nssubdomains = $db->query('SELECT `domain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `isbinddomain`=\'1\' AND `domain` LIKE \'%.' . $domain['domain'] . '\'');
+		
+					while($nssubdomain = $db->fetch_array($nssubdomains))
+					{
+						if(preg_match('/^[^\.]+\.' . $domain['domain'] . '/', $nssubdomain['domain']))
+						{
+							$nssubdomain = str_replace('.' . $domain['domain'], '', $nssubdomain['domain']);
+		
+							if(count($nameservers) == 0)
 							{
-								$zonefile.= $nssubdomain . '	IN	NS	' . trim($nameserver['hostname']) . "\n";
+								$zonefile.= $nssubdomain . '	IN	NS	ns.' . $nssubdomain . "\n";
+							}
+							else
+							{
+								foreach($nameservers as $nameserver)
+								{
+									$zonefile.= $nssubdomain . '	IN	NS	' . trim($nameserver['hostname']) . "\n";
+								}
 							}
 						}
 					}
-				}
-
-				if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
-				{
-					$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
-					$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
-				}
-				elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-				{
-					$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
-					$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
-				}
-
-				if($domain['iswildcarddomain'] == '1')
-				{
+		
 					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 					{
-						$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
+						$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
+						$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
 					}
 					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 					{
-						$zonefile.= '*	IN  AAAA	' . $domain['ip'] . "\n";
+						$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
+						$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
 					}
-				}
-
-				$subdomains = $db->query('SELECT `d`.`domain`, `ip`.`ip` AS `ip` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_IPSANDPORTS . '` `ip` WHERE `parentdomainid`=\'' . $domain['id'] . '\' AND `d`.`ipandport`=`ip`.`id`');
-
-				while($subdomain = $db->fetch_array($subdomains))
-				{
-					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		
+					if($domain['iswildcarddomain'] == '1')
 					{
-						$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
+						if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						{
+							$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
+						}
+						elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						{
+							$zonefile.= '*	IN  AAAA	' . $domain['ip'] . "\n";
+						}
 					}
-					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+		
+					$subdomains = $db->query('SELECT `d`.`domain`, `ip`.`ip` AS `ip` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_IPSANDPORTS . '` `ip` WHERE `parentdomainid`=\'' . $domain['id'] . '\' AND `d`.`ipandport`=`ip`.`id`');
+		
+					while($subdomain = $db->fetch_array($subdomains))
 					{
-						$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	AAAA	' . $subdomain['ip'] . "\n";
+						if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						{
+							$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	A	' . $subdomain['ip'] . "\n";
+						}
+						elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						{
+							$zonefile.= str_replace('.' . $domain['domain'], '', $subdomain['domain']) . '	IN	AAAA	' . $subdomain['ip'] . "\n";
+						}
 					}
+		
+					if($domain['dkim'] == '1')
+					{
+						$zonefile.= "dk" . $dkid . "_domainkey	IN	TXT	\"v=DKIM1; k=rsa; p=" . trim($txtpubkey) . "\"\n";
+					}
+		
+					$domain['zonefile'] = 'domains/' . $domain['domain'] . '.zone';
+					$zonefile_name = makeCorrectFile($settings['system']['bindconf_directory'] . '/domains/' . $domain['domain'] . '.zone');
+					$known_domain_zonefiles[] = basename($zonefile_name);
+					$zonefile_handler = fopen($zonefile_name, 'w');
+					fwrite($zonefile_handler, $zonefile);
+					fclose($zonefile_handler);
+					fwrite($debugHandler, '  cron_tasks: Task4 - `' . $zonefile_name . '` zone written' . "\n");
 				}
-
-				if($domain['dkim'] == '1')
+		
+				$bindconf_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
+				$bindconf_file.= 'zone "' . $domain['domain'] . '" in {' . "\n";
+				$bindconf_file.= '	type master;' . "\n";
+				$bindconf_file.= '	file "' . $settings['system']['bindconf_directory'] . $domain['zonefile'] . '";' . "\n";
+				$bindconf_file.= '	allow-query { any; };' . "\n";
+		
+				if(count($nameservers) > 0)
 				{
-					$zonefile.= "dk" . $dkid . "_domainkey	IN	TXT	\"v=DKIM1; k=rsa; p=" . trim($txtpubkey) . "\"\n";
+					$bindconf_file.= '	allow-transfer {' . "\n";
+					for ($i = 0;$i < count($nameservers);$i++)
+					{
+						if(ip2long($nameservers[$i]['ip']))
+						{
+							$bindconf_file.= '              ' . $nameservers[$i]['ip'] . ';' . "\n";
+						}
+					}
+		
+					$bindconf_file.= '	};' . "\n";
 				}
-
-				$domain['zonefile'] = 'domains/' . $domain['domain'] . '.zone';
-				$zonefile_name = makeCorrectFile($settings['system']['bindconf_directory'] . '/domains/' . $domain['domain'] . '.zone');
-				$known_domain_zonefiles[] = basename($zonefile_name);
-				$zonefile_handler = fopen($zonefile_name, 'w');
-				fwrite($zonefile_handler, $zonefile);
-				fclose($zonefile_handler);
-				fwrite($debugHandler, '  cron_tasks: Task4 - `' . $zonefile_name . '` zone written' . "\n");
+		
+				$bindconf_file.= '};' . "\n";
+				$bindconf_file.= "\n";
+				$bindconf_file_handler = fopen(makeCorrectFile($settings['system']['bindconf_directory'] . '/syscp_bind.conf'), 'w');
+				fwrite($bindconf_file_handler, $bindconf_file);
+				fclose($bindconf_file_handler);
+				fwrite($debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
 			}
-
-			$bindconf_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
-			$bindconf_file.= 'zone "' . $domain['domain'] . '" in {' . "\n";
-			$bindconf_file.= '	type master;' . "\n";
-			$bindconf_file.= '	file "' . $settings['system']['bindconf_directory'] . $domain['zonefile'] . '";' . "\n";
-			$bindconf_file.= '	allow-query { any; };' . "\n";
-
-			if(count($nameservers) > 0)
-			{
-				$bindconf_file.= '	allow-transfer {' . "\n";
-				for ($i = 0;$i < count($nameservers);$i++)
-				{
-					if(ip2long($nameservers[$i]['ip']))
-					{
-						$bindconf_file.= '              ' . $nameservers[$i]['ip'] . ';' . "\n";
-					}
-				}
-
-				$bindconf_file.= '	};' . "\n";
-			}
-
-			$bindconf_file.= '};' . "\n";
-			$bindconf_file.= "\n";
-			$bindconf_file_handler = fopen(makeCorrectFile($settings['system']['bindconf_directory'] . '/syscp_bind.conf'), 'w');
-			fwrite($bindconf_file_handler, $bindconf_file);
-			fclose($bindconf_file_handler);
-			fwrite($debugHandler, '  cron_tasks: Task4 - syscp_bind.conf written' . "\n");
 		}
 
 		$result_domains = $db->query("SELECT " . TABLE_PANEL_DOMAINS . ".`id` AS `pdid`, `domain`, " . TABLE_MAIL_DKIM . ".`id` AS `dkid` FROM `" . TABLE_PANEL_DOMAINS . "` LEFT JOIN `" . TABLE_MAIL_DKIM . "` ON (" . TABLE_MAIL_DKIM . ".`domain_id`=" . TABLE_PANEL_DOMAINS . ".`id`) WHERE " . TABLE_PANEL_DOMAINS . ".`dkim`='1'");
 
 		while($domain = $db->fetch_array($result_domains))
 		{
-			$dkimdomains.= $domain['domain'] . "\n";
-			$dkid = (int)$domain['dkid']+2000;
-			$dkimkeyfile.= "*@" . $domain['domain'] . ":" . $domain['domain'] . ":" . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . "\n";
+			if(isset($domain['domain'])
+			   && $domain['domain'] != '')
+			{
+				$dkimdomains.= $domain['domain'] . "\n";
+				$dkid = (int)$domain['dkid']+2000;
+				$dkimkeyfile.= "*@" . $domain['domain'] . ":" . $domain['domain'] . ":" . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . "\n";
+			}
 		}
 
 		if(!file_exists($settings['dkim']['dkim_prefix'] . $settings['dkim']['dkim_domains']))

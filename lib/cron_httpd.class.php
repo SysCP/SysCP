@@ -193,11 +193,15 @@ class cron_httpd
 
 		while($domain = $this->db->fetch_array($result_domains))
 		{
-			fwrite($this->debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
-			$this->cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain']);
-			$this->vhosts_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
+			if(isset($domain['domain'])
+			   && $domain['domain'] != '')
+			{
+				fwrite($this->debugHandler, '  cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain'] . "\n");
+				$this->cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - Writing Domain ' . $domain['id'] . '::' . $domain['domain']);
+				$this->vhosts_file.= '# Domain ID: ' . $domain['id'] . ' - CustomerID: ' . $domain['customerid'] . ' - CustomerLogin: ' . $domain['loginname'] . "\n";
 			
-			$this->createCustomerVhost($domain);
+				$this->createCustomerVhost($domain);
+			}
 		}
 	}
 	
