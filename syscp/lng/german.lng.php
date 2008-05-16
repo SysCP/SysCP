@@ -839,5 +839,6 @@ $lng['admin']['caneditphpsettings'] = 'Kann PHP-bezogene Domaineinstellungen mac
 
 $lng['admin']['allips'] = 'Alle IP\'s';
 $lng['panel']['nosslipsavailable'] = 'F&uuml;r diesen Server wurden noch keine SSL IP/Port Kombinationen eingetragen';
+$lng['ticket']['by'] = 'von';
 
 ?>
