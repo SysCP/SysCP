@@ -30,53 +30,53 @@ $services_select = '';
 $daemon = '';
 $daemons_select = '';
 
-if(isset($_GET['distribution'])
-   && $_GET['distribution'] != ''
-   && isset($configfiles[$_GET['distribution']])
-   && is_array($configfiles[$_GET['distribution']]))
+if($userinfo['change_serversettings'] == '1')
 {
-	$distribution = $_GET['distribution'];
-
-	if(isset($_GET['service'])
-	   && $_GET['service'] != ''
-	   && isset($configfiles[$distribution]['services'][$_GET['service']])
-	   && is_array($configfiles[$distribution]['services'][$_GET['service']]))
+	if(isset($_GET['distribution'])
+	   && $_GET['distribution'] != ''
+	   && isset($configfiles[$_GET['distribution']])
+	   && is_array($configfiles[$_GET['distribution']]))
 	{
-		$service = $_GET['service'];
-
-		if(isset($_GET['daemon'])
-		   && $_GET['daemon'] != ''
-		   && isset($configfiles[$distribution]['services'][$service]['daemons'][$_GET['daemon']])
-		   && is_array($configfiles[$distribution]['services'][$service]['daemons'][$_GET['daemon']]))
+		$distribution = $_GET['distribution'];
+	
+		if(isset($_GET['service'])
+		   && $_GET['service'] != ''
+		   && isset($configfiles[$distribution]['services'][$_GET['service']])
+		   && is_array($configfiles[$distribution]['services'][$_GET['service']]))
 		{
-			$daemon = $_GET['daemon'];
+			$service = $_GET['service'];
+	
+			if(isset($_GET['daemon'])
+			   && $_GET['daemon'] != ''
+			   && isset($configfiles[$distribution]['services'][$service]['daemons'][$_GET['daemon']])
+			   && is_array($configfiles[$distribution]['services'][$service]['daemons'][$_GET['daemon']]))
+			{
+				$daemon = $_GET['daemon'];
+			}
+			else
+			{
+				foreach($configfiles[$distribution]['services'][$service]['daemons'] as $daemon_name => $daemon_details)
+				{
+					$daemons_select.= makeoption($daemon_details['label'], $daemon_name);
+				}
+			}
 		}
 		else
 		{
-			foreach($configfiles[$distribution]['services'][$service]['daemons'] as $daemon_name => $daemon_details)
+			foreach($configfiles[$distribution]['services'] as $service_name => $service_details)
 			{
-				$daemons_select.= makeoption($daemon_details['label'], $daemon_name);
+				$services_select.= makeoption($service_details['label'], $service_name);
 			}
 		}
 	}
 	else
 	{
-		foreach($configfiles[$distribution]['services'] as $service_name => $service_details)
+		foreach($configfiles as $distribution_name => $distribution_details)
 		{
-			$services_select.= makeoption($service_details['label'], $service_name);
+			$distributions_select.= makeoption($distribution_details['label'], $distribution_name);
 		}
 	}
-}
-else
-{
-	foreach($configfiles as $distribution_name => $distribution_details)
-	{
-		$distributions_select.= makeoption($distribution_details['label'], $distribution_name);
-	}
-}
 
-if($userinfo['change_serversettings'] == '1')
-{
 	if($distribution != ''
 	   && $service != ''
 	   && $daemon != '')
