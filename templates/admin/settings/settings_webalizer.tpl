@@ -10,6 +10,7 @@ $header
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webalizersettings']}</b>
 				</td>
 				<td class="maintitle_apply_right" nowrap="nowrap">
+                                        <a href="$filename?page=settings&amp;s=$s">{$lng['panel']['backtooverview']}</a>
 				</td>
 			</tr>
 			<tr>

@@ -32,6 +32,7 @@ $lng['panel']['path'] = 'Path';
 $lng['panel']['toggle'] = 'Toggle';
 $lng['panel']['next'] = 'next';
 $lng['panel']['dirsmissing'] = 'Can not find or read the directory!';
+$lng['panel']['backtooverview'] = 'Back to overview';
 
 /**
  * Login
