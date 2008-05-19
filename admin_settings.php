@@ -1020,66 +1020,89 @@ if(($page == 'settings' || $page == 'overview')
 		$system_webalizer_enabled = makeyesno('system_webalizer_enabled', '1', '0', $settings['system']['webalizer_enabled']);
 		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled']);
 		$settings = htmlentities_array($settings);
-                if(!isset($_POST['part']) && $_POST['part'] == '' && !isset($_GET['part']))
-                {
-                        eval("echo \"" . getTemplate("settings/settings_overview") . "\";");
-                }
-                elseif($_GET['part'] == 'all')
-                {
-			eval("echo \"" . getTemplate("settings/settings") . "\";");
-		}
-                elseif($_GET['part'] == 'panel')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_panel") . "\";");
-                }
-                elseif($_GET['part'] == 'accounts')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_accounts") . "\";");
-                }
-                elseif($_GET['part'] == 'system')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_system") . "\";");
-                }
-                elseif($_GET['part'] == 'webserver')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_webserver") . "\";");
-                }
-                elseif($_GET['part'] == 'webalizer')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_webalizer") . "\";");
-                }
-                elseif($_GET['part'] == 'awstats')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_awstats") . "\";");
-                }
-                elseif($_GET['part'] == 'mail')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_mail") . "\";");
-                }
-                elseif($_GET['part'] == 'nameserver')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_nameserver") . "\";");
-                }
-                elseif($_GET['part'] == 'logging')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_logging") . "\";");
-                }
-                elseif($_GET['part'] == 'dkim')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_dkim") . "\";");
-                }
-                elseif($_GET['part'] == 'ticket')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_ticket") . "\";");
-                }
-                elseif($_GET['part'] == 'ssl')
-                {
-                        eval("echo \"" . getTemplate("settings/settings_ssl") . "\";");
-                }
-		else
+		
+		$settings_page = '';
+		
+		if(!isset($_POST['part']) && $_POST['part'] == '' && !isset($_GET['part']))
 		{
-			echo BAM;
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_overview") . "\";");
 		}
+		
+		if($_GET['part'] == 'panel'
+		   || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_panel") . "\";");
+		}
+		
+		if($_GET['part'] == 'accounts'
+		   || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_accounts") . "\";");
+		}
+		
+		if($_GET['part'] == 'system'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_system") . "\";");
+		}
+		
+		if($_GET['part'] == 'webserver'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_webserver") . "\";");
+		}
+		
+		if($_GET['part'] == 'webalizer'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_webalizer") . "\";");
+		}
+		
+		if($_GET['part'] == 'awstats'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_awstats") . "\";");
+		}
+		
+		if($_GET['part'] == 'mail'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_mail") . "\";");
+		}
+		
+		if($_GET['part'] == 'nameserver'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_nameserver") . "\";");
+		}
+		
+		if($_GET['part'] == 'logging'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_logging") . "\";");
+		}
+		
+		if($_GET['part'] == 'dkim'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_dkim") . "\";");
+		}
+		
+		if($_GET['part'] == 'ticket'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_ticket") . "\";");
+		}
+		
+		if($_GET['part'] == 'ssl'
+		  || $_GET['part'] == 'all')
+		{
+			eval("\$settings_page .= \"" . getTemplate("settings/settings_ssl") . "\";");
+		}
+		
+		eval("echo \"" . getTemplate("settings/settings_form_begin") . "\";");
+		eval("echo \"" . $settings_page . "\";");
+		eval("echo \"" . getTemplate("settings/settings_form_end") . "\";");
 	}
 }
 elseif($page == 'rebuildconfigs'
