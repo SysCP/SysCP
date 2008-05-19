@@ -1,8 +1,8 @@
 		<tr>
-			<td class="main_field_name">
+			<td class="main_field_name" style="width: 30%;">
 				<b><if $admin['adminid'] != $userinfo['userid']><a href="admin_admins.php?s=$s&amp;page=admins&amp;action=su&amp;id={$admin['adminid']}" target="_blank">{$admin['loginname']}</a></if><if $admin['adminid'] == $userinfo['userid']>{$admin['loginname']}</if>:</b>
 			</td>
-			<td class="main_field_display">
+			<td class="main_field_name">
 				<table border="0" style="text-align: left;">
 					<tr>
 						<td>{$lng['admin']['customers']}:</td>
