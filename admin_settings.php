@@ -1101,7 +1101,7 @@ if(($page == 'settings' || $page == 'overview')
 		}
 		
 		eval("echo \"" . getTemplate("settings/settings_form_begin") . "\";");
-		eval("echo \"" . $settings_page . "\";");
+		eval("echo \$settings_page;");
 		eval("echo \"" . getTemplate("settings/settings_form_end") . "\";");
 	}
 }
