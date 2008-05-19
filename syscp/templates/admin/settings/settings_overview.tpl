@@ -57,13 +57,6 @@ $header
                         </tr>
                         <tr>
                                 <td class="maintitle_apply_left">
-                                        <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webalizersettings']}</b>
-                                </td>
-                                <td class="main_field_display" nowrap="nowrap"></td>
-                                <td class="main_field_display" nowrap="nowrap"><a href="$filename?page=overview&part=webalizer&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></td>
-                        </tr>  
-                        <tr>
-                                <td class="maintitle_apply_left">
                                         <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['mailserversettings']}</b>
                                 </td>
                                 <td class="main_field_display" nowrap="nowrap"></td>
