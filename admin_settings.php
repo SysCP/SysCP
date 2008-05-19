@@ -343,7 +343,48 @@ if(($page == 'settings' || $page == 'overview')
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='default_vhostconf'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_default_vhostconf from '" . $settings['system']['default_vhostconf'] . "' to '" . $value . "'");
 		}
+		
+		if($_POST['system_awstats_enabled'] != $settings['system']['awstats_enabled'] && isset($_POST['system_awstats_enabled']))
+		{
+			$value = isset($_POST['system_awstats_enabled']) ? '1' : '0';
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_enabled from '" . $settings['system']['awstats_enabled'] . "' to '" . $value . "'");
+			$settings['system']['awstats_enabled'] = $value;
+		}
+		
+		if($_POST['system_awstats_domain_file'] != $settings['system']['awstats_domain_file'] && isset($_POST['system_awstats_domain_file']))
+		{
+			$value = validate($_POST['system_awstats_domain_file'], 'awstats domainfile directory');
+			$value = makeCorrectDir($value);
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_domain_file'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_domain_file from '" . $settings['system']['awstats_domain_file'] . "' to '" . $value . "'");
+		}
+		
+		if($_POST['system_awstats_model_file'] != $settings['system']['awstats_model_file'] && isset($_POST['system_awstats_model_file']))
+		{
+			$value = validate($_POST['system_awstats_model_file'], 'awstats model file', "/^[a-z0-9\._]+$/i");
+			$value = makeCorrectFile($value);
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_model_file'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_model_file from '" . $settings['system']['awstats_model_file'] . "' to '" . $value . "'");
+		}
 
+		if($_POST['system_webalizer_enabled'] != $settings['system']['webalizer_enabled'] && isset($_POST['system_webalizer_enabled']))
+		{
+			$value = isset($_POST['system_webalizer_enabled']) ? '1' : '0';
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_enabled'");
+			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_enabled from '" . $settings['system']['webalizer_enabled'] . "' to '" . $value . "'");
+			$settings['system']['webalizer_enabled'] = $value;
+		}
+		
+		// webalizer and awstats should not be used simultaneously
+		if($settings['system']['awstats_enabled'] == '1'
+		   && $settings['system']['webalizer_enabled'] == '1')
+		{
+			standard_error('cannotuseawstatsandwebalizeratonetime');
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='0' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
+			$settings['system']['awstats_enabled'] = '0';
+		}
+		
 		if($_POST['system_webalizer_quiet'] != $settings['system']['webalizer_quiet'] && isset($_POST['system_webalizer_quiet']))
 		{
 			$value = in_array($_POST['system_webalizer_quiet'], array(
@@ -976,6 +1017,8 @@ if(($page == 'settings' || $page == 'overview')
 		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
 		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['ticket']['enabled']);
 		$dkimenabled = makeyesno('use_dkim', '1', '0', $settings['dkim']['use_dkim']);
+		$system_webalizer_enabled = makeyesno('system_webalizer_enabled', '1', '0', $settings['system']['webalizer_enabled'];
+		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled'];
 		$settings = htmlentities_array($settings);
                 if(!isset($_POST['part']) && $_POST['part'] == '' && !isset($_GET['part']))
                 {
@@ -1004,6 +1047,10 @@ if(($page == 'settings' || $page == 'overview')
                 elseif($_GET['part'] == 'webalizer')
                 {
                         eval("echo \"" . getTemplate("settings/settings_webalizer") . "\";");
+                }
+                elseif($_GET['part'] == 'awstats')
+                {
+                        eval("echo \"" . getTemplate("settings/settings_awstats") . "\";");
                 }
                 elseif($_GET['part'] == 'mail')
                 {

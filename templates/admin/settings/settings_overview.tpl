@@ -40,14 +40,28 @@ $header
                                 </td>
                                 <td class="main_field_display" nowrap="nowrap"></td>
                                 <td class="main_field_display" nowrap="nowrap"><a href="$filename?page=overview&part=webserver&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></td>
-                        </tr>   
+                        </tr>
+                        <tr>
+                                <td class="maintitle_apply_left">
+                                        <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webalizersettings']}</b>
+                                </td>
+                                <td class="main_field_display" nowrap="nowrap">$system_webalizer_enabled</td>
+                                <td class="main_field_display" nowrap="nowrap"><if $settings['system']['webalizer_enabled'] == '1'><a href="$filename?page=overview&part=webalizer&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
+                        </tr>
+                        <tr>
+                                <td class="maintitle_apply_left">
+                                        <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['awstatssettings']}</b>
+                                </td>
+                                <td class="main_field_display" nowrap="nowrap">$system_awstats_enabled</td>
+                                <td class="main_field_display" nowrap="nowrap"><if $settings['system']['awstats_enabled'] == '1'><a href="$filename?page=overview&part=awstats&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
+                        </tr>
                         <tr>
                                 <td class="maintitle_apply_left">
                                         <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webalizersettings']}</b>
                                 </td>
                                 <td class="main_field_display" nowrap="nowrap"></td>
                                 <td class="main_field_display" nowrap="nowrap"><a href="$filename?page=overview&part=webalizer&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></td>
-                        </tr>   
+                        </tr>  
                         <tr>
                                 <td class="maintitle_apply_left">
                                         <b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['mailserversettings']}</b>

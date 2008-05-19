@@ -9,9 +9,12 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webalizersettings']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowrap="nowrap">
-                                        <a href="$filename?page=settings&amp;s=$s">{$lng['panel']['backtooverview']}</a>
+				<td class="maintitle_apply_right" nowrap="nowrap"><a href="$filename?page=settings&amp;s=$s">{$lng['panel']['backtooverview']}</a>
 				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_enabled']['title']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_webalizer_enabled">$webalizer_enabled</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_quiet']['title']}:</b><br />{$lng['serversettings']['webalizer_quiet']['description']}</td>

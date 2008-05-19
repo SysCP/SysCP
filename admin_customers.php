@@ -447,9 +447,15 @@ if($page == 'customers'
 					inserttask('2', $loginname, $guid, $guid);
 
 					// Add htpasswd for the webalizer stats
-
-					$path = $documentroot . '/webalizer/';
-
+					if($this->settings['system']['webalizier_enabled'] == '1')
+					{
+						$path = $documentroot . '/webalizer/';
+					}
+					elseif($this->settings['system']['awstats_enabled'] == '1')
+					{
+						$path = $documentroot . '/awstats/';
+					}
+					
 					if(CRYPT_STD_DES == 1)
 					{
 						$saltfordescrypt = substr(md5(uniqid(microtime(), 1)), 4, 2);

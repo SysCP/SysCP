@@ -1529,4 +1529,20 @@ if($settings['panel']['version'] == '1.2.19-svn13')
 	$settings['panel']['version'] = '1.2.19-svn14';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn14')
+{
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn14 to 1.2.19-svn15");
+
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'webalizer_enabled', '1')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'awstats_enabled', '0')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'awstats_domain_file', '/etc/awstats/')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'awstats_model_file', '/etc/awstats/awstats.model.conf.syscp')");
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn15\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn15';
+}
+
 ?>

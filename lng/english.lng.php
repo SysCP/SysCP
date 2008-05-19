@@ -838,5 +838,11 @@ $lng['ticket']['by'] = 'by';
 $lng['dkim']['use_dkim']['title'] = 'Activate DKIM support?';
 $lng['dkim']['use_dkim']['description'] = 'Would you like to use the Domain Keys (DKIM) system?';
 $lng['error']['invalidmysqlhost'] = 'Invalid MySQL host address: %s';
+$lng['error']['cannotuseawstatsandwebalizeratonetime'] = 'You cannot enable Webalizer and Awstats at the same time, please chose one of them';
+$lng['serversettings']['webalizer_enabled'] = 'Enable webalizer statistics';
+$lng['serversettings']['awstats_enabled'] = 'Enable awstats statistics';
+$lng['admin']['awstatssettings'] = 'Awstats settings';
+$lng['serversettings']['awstats_domain_file']['title'] = 'Awstats domainfiles directory';
+$lng['serversettings']['awstats_model_file']['title'] = 'Awstats model file';
 
 ?>

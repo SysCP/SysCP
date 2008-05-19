@@ -489,6 +489,10 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (76, 'system', 'mail_quota', '104857600');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (77, 'panel', 'decimal_places', '4');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (78, 'dkim', 'use_dkim', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (79, 'system', 'webalizer_enabled', '1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (80, 'system', 'awstats_enabled', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (81, 'system', 'awstats_domain_file', '/etc/awstats/');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (82, 'system', 'awstats_model_file', '/etc/awstats/awstats.model.conf.syscp');
 # --------------------------------------------------------
 
 #
