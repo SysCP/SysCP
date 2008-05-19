@@ -607,7 +607,7 @@ function validateUrl($url)
 		$url = 'http://'.$url;
 	}
 	
-	if(filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== false))
+	if(filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== false)
 	{
 		return true;
 	}
