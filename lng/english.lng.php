@@ -837,5 +837,6 @@ $lng['panel']['nosslipsavailable'] = 'There are currently no ssl ip/port combina
 $lng['ticket']['by'] = 'by';
 $lng['dkim']['use_dkim']['title'] = 'Activate DKIM support?';
 $lng['dkim']['use_dkim']['description'] = 'Would you like to use the Domain Keys (DKIM) system?';
+$lng['error']['invalidmysqlhost'] = 'Invalid MySQL host address: %s';
 
 ?>

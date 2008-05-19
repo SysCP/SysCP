@@ -568,7 +568,7 @@ function validateUsername($username)
 function validateEmail($email)
 {
 	$email = strtolower($email);
-	return preg_match('/^[\-_a-z0-9]+(\.[\-_a-z0-9]+)*@((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di', $email);
+	return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
 /**
@@ -579,12 +579,15 @@ function validateEmail($email)
  * @return boolean True if the domain is valid, false otherwise
  * @author Michael Duergner
  *
- * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
  */
 
 function validateDomain($domainname)
 {
-	return preg_match('/^((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}$/Di', $domainname);
+	// we add http:// because this makes a domain valid for the filter;
+	// but if a user gives "http://" it's not a valid domain
+	// (because for syscp, a domain mustn't have "http://" in it
+	$domainname = 'http://'.$domainname;
+	return filter_var($domainname, FILTER_VALIDATE_URL);
 }
 
 /**
@@ -594,12 +597,17 @@ function validateDomain($domainname)
  * @return bool
  * @author Christian Hoffmann
  *
- * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
  */
 
 function validateUrl($url)
 {
-	if(preg_match('!^https?://((xn--[\-a-z0-9]{1,59}\.)+|(([a-z0-9]([\-a-z0-9]{0,61}[a-z0-9])?\.)*([a-z0-9]([\-a-z0-9]{0,61})?[a-z0-9]\.)))[a-z]{2,6}(:(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5])))?(/[^\s\0]*)?$!Di', $url))
+	if(strtolower(substr($url, 0, 7)) != "http://" 
+	   && strtolower(substr($url, 0, 8)) != "https://")
+	{
+		$url = 'http://'.$url;
+	}
+	
+	if(filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== false))
 	{
 		return true;
 	}
