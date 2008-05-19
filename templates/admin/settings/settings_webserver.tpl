@@ -53,12 +53,10 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['default_vhostconf']['title']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap" colspan="2"><textarea class="textarea_noborder" rows="12" cols="40" name="system_default_vhostconf">{$settings['system']['default_vhostconf']}</textarea></td>
+				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="40" name="system_default_vhostconf">{$settings['system']['default_vhostconf']}</textarea></td>
 			</tr>
 			<tr>
-				<td class="maintitle_apply_left">
-				</td>
-				<td class="maintitle_apply_right" nowrap="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>

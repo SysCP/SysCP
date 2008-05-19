@@ -3,8 +3,7 @@
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemsettings']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowrap="nowrap">
-                                        <a href="$filename?page=settings&amp;s=$s">{$lng['panel']['backtooverview']}</a>
+				<td class="maintitle_apply_right" nowrap="nowrap"><a href="$filename?page=settings&amp;s=$s">{$lng['panel']['backtooverview']}</a>
 				</td>
 			</tr>
 			<tr>
@@ -28,9 +27,7 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mysql_access_host" value="{$settings['system']['mysql_access_host']}" /></td>
 			</tr>
 			<tr>
-				<td class="maintitle_apply_left">
-				</td>
-				<td class="maintitle_apply_right" nowrap="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
