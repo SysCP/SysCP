@@ -261,6 +261,7 @@ textarea.textarea_noborder {
 }
 
 textarea.textarea_border {
+	width				: 95%;
 	color				: black;
 	text-decoration		: none;
 	font-family			: Verdana, Arial, Helvetica, sans-serif;
