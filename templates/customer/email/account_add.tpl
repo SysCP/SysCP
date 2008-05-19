@@ -20,14 +20,14 @@ $header
 			<tr>
 				<td class="main_field_name">{$lng['emails']['quota']}:</td>
 				<td class="main_field_display" nowrap="nowrap">
-					<input type="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
+					<input type="text" class="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
 				</td>
 			</tr>
 			</if>
             <if $settings['panel']['sendalternativemail'] == 1>
             <tr>
                 <td class="main_field_name">{$lng['emails']['alternative_emailaddress']}:</td>
-                <td class="main_field_display" nowrap="nowrap"><input type="text" name="alternative_email" maxlength="255" /></td>
+                <td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="alternative_email" maxlength="255" /></td>
             </tr>
             </if>
             <tr>

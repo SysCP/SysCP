@@ -14,11 +14,11 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['name']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="name" value="{$result['name']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="name" value="{$result['name']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email" value="{$result['email']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email" value="{$result['email']}" /></td>
 			</tr>
             <if $result['adminid'] == $userinfo['userid']><tr>
 				<td class="main_field_name" colspan="2">{$lng['error']['youcanteditallfieldsofyourself']}</td>
@@ -37,7 +37,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['customers']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="customers" value="{$result['customers']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="customers" value="{$result['customers']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['customers_see_all']}</td>
@@ -45,7 +45,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['domains']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="domains" value="{$result['domains']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="domains" value="{$result['domains']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['domains_see_all']}</td>
@@ -57,43 +57,43 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['diskspace']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="diskspace" value="{$result['diskspace']}" maxlength="6" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="diskspace" value="{$result['diskspace']}" maxlength="6" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['traffic']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="traffic" value="{$result['traffic']}" maxlength="3" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="traffic" value="{$result['traffic']}" maxlength="3" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['subdomains']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="subdomains" value="{$result['subdomains']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subdomains" value="{$result['subdomains']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['emails']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="emails" value="{$result['emails']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="emails" value="{$result['emails']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['accounts']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_accounts" value="{$result['email_accounts']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_accounts" value="{$result['email_accounts']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['forwarders']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_forwarders" value="{$result['email_forwarders']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_forwarders" value="{$result['email_forwarders']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_quota']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_quota" value="{$result['email_quota']}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_quota" value="{$result['email_quota']}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['ftps']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ftps" value="{$result['ftps']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ftps" value="{$result['ftps']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['tickets']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="tickets" value="{$result['tickets']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="tickets" value="{$result['tickets']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['mysqls']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="mysqls" value="{$result['mysqls']}" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="mysqls" value="{$result['mysqls']}" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['deactivated_user']}?</td>

@@ -25,7 +25,7 @@ $header
 			<if $userinfo['change_serversettings'] == '1'>
 			<tr>
 				<td class="main_field_name">DocumentRoot:<br />({$lng['panel']['emptyfordefault']})</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="documentroot" value="{$result['documentroot']}" size="60" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="documentroot" value="{$result['documentroot']}" size="60" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">IP/Port:</td>
@@ -37,7 +37,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">Zonefile:<br />({$lng['panel']['emptyfordefault']})</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="zonefile" value="{$result['zonefile']}" size="60" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="zonefile" value="{$result['zonefile']}" size="60" /></td>
 			</tr>
 			</if>
 			<if $settings['system']['use_ssl'] == 1>

@@ -8,15 +8,15 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['vmail_uid']['title']}:</b><br />{$lng['serversettings']['vmail_uid']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_vmail_uid" value="{$settings['system']['vmail_uid']}" maxlength="5" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_vmail_uid" value="{$settings['system']['vmail_uid']}" maxlength="5" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['vmail_gid']['title']}:</b><br />{$lng['serversettings']['vmail_gid']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_vmail_gid" value="{$settings['system']['vmail_gid']}" maxlength="5" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_vmail_gid" value="{$settings['system']['vmail_gid']}" maxlength="5" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['vmail_homedir']['title']}:</b><br />{$lng['serversettings']['vmail_homedir']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_vmail_homedir" value="{$settings['system']['vmail_homedir']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_vmail_homedir" value="{$settings['system']['vmail_homedir']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['mailpwcleartext']['title']}:</b><br />{$lng['serversettings']['mailpwcleartext']['description']}<br /><a href="$filename?page=wipecleartextmailpws&amp;s=$s">{$lng['serversettings']['mailpwcleartext']['removelink']}</a></td>

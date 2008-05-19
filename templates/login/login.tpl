@@ -10,11 +10,11 @@ $header
 			<tr>
 				<td rowspan="3" class="field_name_center"><img src="images/login.gif" alt="" /></td>
 				<td class="field_name"><font size="-1">{$lng['login']['username']}:</font></td>
-				<td class="field_display"><input type="text" name="loginname" value="" maxlength="50" /></td>
+				<td class="field_display"><input type="text" class="text" name="loginname" value="" maxlength="50" /></td>
 			</tr>
 			<tr>
 				<td class="field_name"><font size="-1">{$lng['login']['password']}:</font></td>
-				<td class="field_display"><input type="password" name="password" maxlength="50" /></td>
+				<td class="field_display"><input type="password" class="text" name="password" maxlength="50" /></td>
 			</tr>
 			<tr>
 				<td class="field_name"><font size="-1">{$lng['login']['language']}:</font></td>

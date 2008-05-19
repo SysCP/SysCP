@@ -14,7 +14,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['mysql']['databasedescription']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="description" maxlength="100" value="{$result['description']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="description" maxlength="100" value="{$result['description']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['changepassword']['new_password_ifnotempty']}:</td>

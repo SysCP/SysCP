@@ -21,7 +21,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_display">{$lng['admin']['subject']}</td>
-				<td class="main_field_display"><input type="text" name="subject" value="(No Subject)"></td>
+				<td class="main_field_display"><input type="text" class="text" name="subject" value="(No Subject)"></td>
         	        </tr>
                         <tr>
                                 <td class="main_field_display">{$lng['admin']['text']}</td>

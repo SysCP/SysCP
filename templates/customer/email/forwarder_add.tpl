@@ -14,7 +14,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['emails']['to']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="destination" size="30" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="destination" size="30" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['emails']['forwarder_add']}" /></td>

@@ -8,19 +8,19 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['bindconf_directory']['title']}:</b><br />{$lng['serversettings']['bindconf_directory']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_bindconf_directory" value="{$settings['system']['bindconf_directory']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_bindconf_directory" value="{$settings['system']['bindconf_directory']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['bindreload_command']['title']}:</b><br />{$lng['serversettings']['bindreload_command']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_bindreload_command" value="{$settings['system']['bindreload_command']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_bindreload_command" value="{$settings['system']['bindreload_command']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['nameservers']['title']}:</b><br />{$lng['serversettings']['nameservers']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_nameservers" value="{$settings['system']['nameservers']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_nameservers" value="{$settings['system']['nameservers']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['mxservers']['title']}:</b><br />{$lng['serversettings']['mxservers']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mxservers" value="{$settings['system']['mxservers']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mxservers" value="{$settings['system']['mxservers']}" /></td>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />

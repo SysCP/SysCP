@@ -9,19 +9,19 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_vhost']['title']}:</b><br />{$lng['serversettings']['apacheconf_vhost']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_vhost" value="{$settings['system']['apacheconf_vhost']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_apacheconf_vhost" value="{$settings['system']['apacheconf_vhost']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_diroptions']['title']}:</b><br />{$lng['serversettings']['apacheconf_diroptions']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_diroptions" value="{$settings['system']['apacheconf_diroptions']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_apacheconf_diroptions" value="{$settings['system']['apacheconf_diroptions']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_htpasswddir']['title']}:</b><br />{$lng['serversettings']['apacheconf_htpasswddir']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apacheconf_htpasswddir" value="{$settings['system']['apacheconf_htpasswddir']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_apacheconf_htpasswddir" value="{$settings['system']['apacheconf_htpasswddir']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apachereload_command']['title']}:</b><br />{$lng['serversettings']['apachereload_command']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_apachereload_command" value="{$settings['system']['apachereload_command']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_apachereload_command" value="{$settings['system']['apachereload_command']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['mod_log_sql']['title']}:</b><br />{$lng['serversettings']['mod_log_sql']['description']}</td>
@@ -29,7 +29,7 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['logfiles_directory']['title']}:</b><br />{$lng['serversettings']['logfiles_directory']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_logfiles_directory" value="{$settings['system']['logfiles_directory']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_logfiles_directory" value="{$settings['system']['logfiles_directory']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['title']}:</b><br />{$lng['serversettings']['mod_fcgid']['description']}</td>
@@ -37,19 +37,19 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['configdir']}:</b><br />{$lng['serversettings']['mod_fcgid']['configdir_desc']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mod_fcgid_configdir" value="{$settings['system']['mod_fcgid_configdir']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mod_fcgid_configdir" value="{$settings['system']['mod_fcgid_configdir']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['tmpdir']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_mod_fcgid_tmpdir" value="{$settings['system']['mod_fcgid_tmpdir']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mod_fcgid_tmpdir" value="{$settings['system']['mod_fcgid_tmpdir']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['phpappendopenbasedir']['title']}:</b><br />{$lng['serversettings']['phpappendopenbasedir']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_phpappendopenbasedir" value="{$settings['system']['phpappendopenbasedir']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_phpappendopenbasedir" value="{$settings['system']['phpappendopenbasedir']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['deactivateddocroot']['title']}:</b><br />{$lng['serversettings']['deactivateddocroot']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_deactivateddocroot" value="{$settings['system']['deactivateddocroot']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_deactivateddocroot" value="{$settings['system']['deactivateddocroot']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['default_vhostconf']['title']}:</b></td>

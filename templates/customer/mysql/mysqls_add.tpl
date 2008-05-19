@@ -9,7 +9,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['mysql']['databasedescription']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="description" maxlength="100" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="description" maxlength="100" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['login']['password']}:</td>

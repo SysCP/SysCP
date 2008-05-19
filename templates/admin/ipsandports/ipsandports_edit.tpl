@@ -10,11 +10,11 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ipsandports']['ip']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ip" value="{$result['ip']}" size="39" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ip" value="{$result['ip']}" size="39" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ipsandports']['port']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="port" value="{$result['port']}" size="5" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="port" value="{$result['port']}" size="5" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ipsandports']['create_listen_statement']}:</td>
@@ -43,7 +43,7 @@ $header
                         </tr>
                         <tr>
                                 <td class="main_field_name">{$lng['admin']['ipsandports']['ssl_cert_file']}:</td>
-                                <td class="main_field_display" nowrap="nowrap"><input type="text" name="ssl_cert_file" value="$ssl_cert_file" size="32" /></td>
+                                <td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ssl_cert_file" value="$ssl_cert_file" size="32" /></td>
                         </tr>
                         </if>
 			<tr>
