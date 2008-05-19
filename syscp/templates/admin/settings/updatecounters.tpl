@@ -7,7 +7,7 @@ $header
 		</tr>
 {$customers}
 		<tr>
-			<td class="maintitle" colspan="2>
+			<td class="maintitle" colspan="2">
 				<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['updatecounters']}: {$lng['admin']['admins']}</b>
 			</td>
 		</tr>
