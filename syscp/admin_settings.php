@@ -346,7 +346,7 @@ if(($page == 'settings' || $page == 'overview')
 		
 		if($_POST['system_awstats_enabled'] != $settings['system']['awstats_enabled'] && isset($_POST['system_awstats_enabled']))
 		{
-			$value = isset($_POST['system_awstats_enabled']) ? '1' : '0';
+			$value = ($_POST['system_awstats_enabled'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_enabled from '" . $settings['system']['awstats_enabled'] . "' to '" . $value . "'");
 			$settings['system']['awstats_enabled'] = $value;
@@ -370,7 +370,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if($_POST['system_webalizer_enabled'] != $settings['system']['webalizer_enabled'] && isset($_POST['system_webalizer_enabled']))
 		{
-			$value = isset($_POST['system_webalizer_enabled']) ? '1' : '0';
+			$value = ($_POST['system_webalizer_enabled'] == '1' ? '1' : '0');
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_enabled'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_enabled from '" . $settings['system']['webalizer_enabled'] . "' to '" . $value . "'");
 			$settings['system']['webalizer_enabled'] = $value;
