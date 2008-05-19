@@ -12,11 +12,11 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_domain_file']['title']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_awstats_domain_file" value="{$settings['system']['awstats_domain_file']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_awstats_domain_file" value="{$settings['system']['awstats_domain_file']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_model_file']['title']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="system_awstats_model_file" value="{$settings['system']['awstats_model_file']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_awstats_model_file" value="{$settings['system']['awstats_model_file']}" /></td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">

@@ -19,7 +19,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['subject']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="subject" value="$subject" maxlength="255" size="75" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subject" value="$subject" maxlength="255" size="75" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['mailbody']}: *</td>

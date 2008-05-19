@@ -28,7 +28,7 @@ $header
 				<input type="hidden" name="id" value="{$result['id']}" />
 				<input type="hidden" name="page" value="{$page}" />
 				<input type="hidden" name="action" value="updatequota" />
-				<input type="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
+				<input type="text" class="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
 				<input type="submit" value="{$lng['emails']['updatequota']}" name="send" class="bottom" />
 			</td>
 		</tr>

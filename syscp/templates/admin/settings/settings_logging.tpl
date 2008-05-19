@@ -16,11 +16,11 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['logger']['types']}:</b><br />{$lng['serversettings']['logger']['types_desc']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="logger_logtypes" value="{$settings['logger']['logtypes']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="logger_logtypes" value="{$settings['logger']['logtypes']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['logger']['logfile']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="logger_logfile" value="{$settings['logger']['logfile']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="logger_logfile" value="{$settings['logger']['logfile']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['logger']['logcron']}:</b></td>

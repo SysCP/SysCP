@@ -9,7 +9,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['ticket']['category']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="category" maxlength="50" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="category" maxlength="50" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottone" value="{$lng['ticket']['ticket_newcateory']}" /></td>

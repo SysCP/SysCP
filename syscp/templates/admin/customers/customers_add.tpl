@@ -9,47 +9,47 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['login']['username']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="loginname" value="" maxlength="10" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="loginname" value="" maxlength="10" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['name']}: **</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="name" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="name" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['firstname']}: **</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="firstname" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="firstname" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['company']}: **</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="company" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="company" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['street']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="street" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="street" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['zipcode']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="zipcode" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="zipcode" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['city']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="city" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="city" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['phone']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="phone" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="phone" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['fax']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="fax" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="fax" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['customernumber']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="customernumber" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="customernumber" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['login']['language']}:</td>
@@ -57,31 +57,31 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['diskspace']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="diskspace" value="0" maxlength="6" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="diskspace" value="0" maxlength="6" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['traffic']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="traffic" value="0" maxlength="3" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="traffic" value="0" maxlength="3" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['subdomains']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="subdomains" value="0" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subdomains" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['emails']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="emails" value="0" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="emails" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['accounts']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_accounts" value="0" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_accounts" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['forwarders']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_forwarders" value="0" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_forwarders" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_quota']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_quota" value="0" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_quota" value="0" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_imap']}: *</td>
@@ -93,15 +93,15 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['ftps']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ftps" value="0" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ftps" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['tickets']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="tickets" value="0" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="tickets" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['mysqls']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="mysqls" value="0" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="mysqls" value="0" maxlength="9" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['phpenabled']}?</td>

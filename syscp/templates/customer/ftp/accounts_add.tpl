@@ -10,7 +10,7 @@ $header
 			<if $settings['customer']['ftpatdomain'] == '1'>
 			<tr>
 				<td class="main_field_name">{$lng['login']['username']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ftp_username" size="30" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ftp_username" size="30" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['domains']['domainname']}:</td>

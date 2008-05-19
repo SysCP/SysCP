@@ -14,7 +14,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['ticket']['subject']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="subject" value="Re: {$subject}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subject" value="Re: {$subject}" /></td>
 			</tr>
  			<tr>
 				<td class="main_field_name">{$lng['ticket']['priority']}:</td>

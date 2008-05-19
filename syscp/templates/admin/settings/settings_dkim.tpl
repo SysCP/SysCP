@@ -12,19 +12,19 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['dkim']['dkim_prefix']['title']}:</b><br />{$lng['dkim']['dkim_prefix']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="dkim_prefix" value="{$settings['dkim']['dkim_prefix']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="dkim_prefix" value="{$settings['dkim']['dkim_prefix']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['dkim']['dkim_domains']['title']}:</b><br />{$lng['dkim']['dkim_domains']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="dkim_domains" value="{$settings['dkim']['dkim_domains']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="dkim_domains" value="{$settings['dkim']['dkim_domains']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['dkim']['dkim_dkimkeys']['title']}:</b><br />{$lng['dkim']['dkim_dkimkeys']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="dkim_dkimkeys" value="{$settings['dkim']['dkim_dkimkeys']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="dkim_dkimkeys" value="{$settings['dkim']['dkim_dkimkeys']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['dkim']['dkimrestart_command']['title']}:</b><br />{$lng['dkim']['dkimrestart_command']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="dkimrestart_command" value="{$settings['dkim']['dkimrestart_command']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="dkimrestart_command" value="{$settings['dkim']['dkimrestart_command']}" /></td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">

@@ -12,7 +12,7 @@
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['ssl']['ssl_cert_file']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="ssl_cert_file" value="{$settings['system']['ssl_cert_file']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" class="text" name="ssl_cert_file" value="{$settings['system']['ssl_cert_file']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['ssl']['openssl_cnf']}:</b></td>
