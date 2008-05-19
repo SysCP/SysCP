@@ -13,8 +13,8 @@ $header
 				</td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_enabled']['title']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_webalizer_enabled">$webalizer_enabled</select></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_enabled']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_webalizer_enabled">$system_webalizer_enabled</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_quiet']['title']}:</b><br />{$lng['serversettings']['webalizer_quiet']['description']}</td>

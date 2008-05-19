@@ -183,7 +183,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_enabled']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_webalizer_enabled">$webalizer_enabled</select></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_webalizer_enabled">$system_webalizer_enabled</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_quiet']['title']}:</b><br />{$lng['serversettings']['webalizer_quiet']['description']}</td>
@@ -199,7 +199,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_enabled']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_awstats_enabled">$awstats_enabled</select></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_awstats_enabled">$system_awstats_enabled</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_domain_file']['title']}:</b></td>

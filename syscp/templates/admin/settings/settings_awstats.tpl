@@ -14,8 +14,8 @@ $header
 				</td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['awstats_enabled']['title']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_awstats_enabled">$awstats_enabled</select></td>
+				<td class="main_field_name"><b>{$lng['serversettings']['awstats_enabled']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_awstats_enabled">$system_awstats_enabled</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_domain_file']['title']}:</b></td>
