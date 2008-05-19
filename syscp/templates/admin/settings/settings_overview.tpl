@@ -90,7 +90,7 @@
 				<td class="main_field_display" nowrap="nowrap"><if $settings['system']['use_ssl'] == '1'><a href="$filename?page=overview&part=ssl&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr> 
 			<tr>
-				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
+				<td class="maintitle_apply_right" nowrap="nowrap" colspan="3">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
