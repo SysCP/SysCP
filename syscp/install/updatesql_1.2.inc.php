@@ -1515,4 +1515,18 @@ if($settings['panel']['version'] == '1.2.19-svn12')
 	$settings['panel']['version'] = '1.2.19-svn13';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn13')
+{
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn13 to 1.2.19-svn14");
+
+	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `email_only` tinyint(1) NOT NULL default '0' AFTER `isemaildomain`");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `wwwserveralias` tinyint(1) NOT NULL default '1' AFTER `dkim`");
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn14\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn14';
+}
+
 ?>

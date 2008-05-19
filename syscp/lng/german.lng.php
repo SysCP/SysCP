@@ -842,5 +842,6 @@ $lng['panel']['nosslipsavailable'] = 'F&uuml;r diesen Server wurden noch keine S
 $lng['ticket']['by'] = 'von';
 $lng['dkim']['use_dkim']['title'] = 'DKIM Support aktivieren?';
 $lng['dkim']['use_dkim']['description'] = 'Wollen Sie das Domain Keys (DKIM) System benutzen?';
+$lng['error']['invalidmysqlhost'] = 'Ung&uuml;ltige MySQL Host Adresse: %s';
 
 ?>

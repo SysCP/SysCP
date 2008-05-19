@@ -123,7 +123,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if($_POST['system_ipaddress'] != $settings['system']['ipaddress'] && isset($_POST['system_ipaddress']))
 		{
-			$value = $_POST['system_ipaddress'];
+			$value = (int)$_POST['system_ipaddress'];
 			$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($value) . "'");
 
 			if($db->num_rows($result_ipandport) == 0)
@@ -200,7 +200,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if($_POST['system_mysql_access_host'] != $settings['system']['mysql_access_host'] && isset($_POST['system_mysql_access_host']))
 		{
-			$value = validate($_POST['system_mysql_access_host'], 'MySQL Access Host', '/^([a-z0-9\-\._]+, ?)*[a-z0-9\-\._]+$/i');
+			$value = validate($_POST['system_mysql_access_host'], 'MySQL Access Host');
 			$mysql_access_host_array = array_map('trim', explode(',', $value));
 
 			if(in_array('127.0.0.1', $mysql_access_host_array)
@@ -215,6 +215,16 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value.= ',127.0.0.1';
 				$mysql_access_host_array[] = '127.0.0.1';
+			}
+			
+			foreach($mysql_access_host_array as $host_entry)
+			{
+				if(validate_ip($host_entry) == false
+				   && validateDomain($host_entry) == false
+				   && $host_entry != '%')
+				{
+					standard_error('invalidmysqlhost', $host_entry);
+				}
 			}
 
 			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
