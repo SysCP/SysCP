@@ -1017,8 +1017,8 @@ if(($page == 'settings' || $page == 'overview')
 		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
 		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['ticket']['enabled']);
 		$dkimenabled = makeyesno('use_dkim', '1', '0', $settings['dkim']['use_dkim']);
-		$system_webalizer_enabled = makeyesno('system_webalizer_enabled', '1', '0', $settings['system']['webalizer_enabled'];
-		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled'];
+		$system_webalizer_enabled = makeyesno('system_webalizer_enabled', '1', '0', $settings['system']['webalizer_enabled']);
+		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled']);
 		$settings = htmlentities_array($settings);
                 if(!isset($_POST['part']) && $_POST['part'] == '' && !isset($_GET['part']))
                 {
