@@ -37,6 +37,16 @@ input {
 	font-weight			: bold;
 	border				: 1px solid #ABC9E8;
 	background-color	: #C6DEFF;
+}
+
+input.text {
+	color				: black;
+	text-decoration		: none;
+	font-family			: Verdana, Arial, Helvetica, sans-serif;
+	font-size			: 12px;
+	font-weight			: bold;
+	border				: 1px solid #ABC9E8;
+	background-color	: #C6DEFF;
 	width				: 95%;
 }
 
