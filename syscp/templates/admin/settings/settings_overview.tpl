@@ -1,10 +1,4 @@
-$header
-	<form method="post" action="$filename">
-		<input type="hidden" name="send" value="send" />
-		<input type="hidden" name="s" value="$s" />
-		<input type="hidden" name="page" value="$page" />
-		<input type="hidden" name="action" value="$action" />
-		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_40">
+		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_60">
 			<tr>
 				<td class="maintitle" align="center" colspan="3">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['configfiles']['serverconfiguration']}</b> 
@@ -105,7 +99,3 @@ $header
                         </tr>
 
 		</table>
-	</form>
-	<br />
-	<br />
-$footer
