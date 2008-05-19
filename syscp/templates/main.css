@@ -37,6 +37,7 @@ input {
 	font-weight			: bold;
 	border				: 1px solid #ABC9E8;
 	background-color	: #C6DEFF;
+	width				: 95%;
 }
 
 select,textarea {
