@@ -195,6 +195,14 @@ input.bottom {
 	border-width		: 1px;
 }
 
+.main_field_display_small {
+	width				: 25%;
+	background-color	: #C6DEFF;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
+}
+
 .field_display {
 	background-color	: #C6DEFF;
 	border-color		: #B7B7B7;
