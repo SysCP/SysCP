@@ -383,13 +383,27 @@ class cron_httpd
 
 						if(!$this->is_lighttpd)
 						{
-							$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
+							if($this->settings['system']['webalizier_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
+							}
+							elseif($this->settings['system']['awstats_enabled'] == '1')
+							{
+								$this->vhosts_file.= createAWStatsVhost($domain['domain']);
+							}
 						}
 						else
 						{
-							$this->vhosts_file.= '  alias.url = (' . "\n";
-							$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . '",' . "\n";
-							$this->vhosts_file.= '  )' . "\n";
+							if($this->settings['system']['webalizier_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  alias.url = (' . "\n";
+								$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . '",' . "\n";
+								$this->vhosts_file.= '  )' . "\n";
+							}
+							elseif($this->settings['system']['awstats_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  # awstats for lighttpd is not yet coded' . "\n";
+							}
 						}
 					}
 					else
@@ -398,13 +412,27 @@ class cron_httpd
 
 						if(!$this->is_lighttpd)
 						{
-							$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
+							if($this->settings['system']['webalizier_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
+							}
+							elseif($this->settings['system']['awstats_enabled'] == '1')
+							{
+								$this->vhosts_file.= createAWStatsVhost($domain['parentdomain']);
+							}
 						}
 						else
 						{
-							$this->vhosts_file.= '  alias.url = (' . "\n";
-							$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . '",' . "\n";
-							$this->vhosts_file.= '  )' . "\n";
+							if($this->settings['system']['webalizier_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  alias.url = (' . "\n";
+								$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . '",' . "\n";
+								$this->vhosts_file.= '  )' . "\n";
+							}
+							elseif($this->settings['system']['awstats_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  # awstats for lighttpd is not yet coded' . "\n";
+							}
 						}
 					}
 				}
@@ -416,13 +444,27 @@ class cron_httpd
 					{
 						if(!$this->is_lighttpd)
 						{
-							$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
+							if($this->settings['system']['webalizier_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
+							}
+							elseif($this->settings['system']['awstats_enabled'] == '1')
+							{
+								$this->vhosts_file.= createAWStatsVhost($domain['domain']);
+							}
 						}
 						else
 						{
-							$this->vhosts_file.= '  alias.url = (' . "\n";
-							$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/",' . "\n";
-							$this->vhosts_file.= '  )' . "\n";
+							if($this->settings['system']['webalizier_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  alias.url = (' . "\n";
+								$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/",' . "\n";
+								$this->vhosts_file.= '  )' . "\n";
+							}
+							elseif($this->settings['system']['awstats_enabled'] == '1')
+							{
+								$this->vhosts_file.= '  # awstats for lighttpd is not yet coded' . "\n";
+							}
 						}
 					}
 				}
@@ -443,6 +485,11 @@ class cron_httpd
 
 					if(!$this->is_lighttpd)
 					{
+						if($this->settings['system']['awstats_enabled'] == '1')
+						{
+							// After inserting the AWStats information, be sure to build the awstats conf file as well
+							createAWStatsConf($settings['system']['logfiles_directory'].$domain['loginname'].$speciallogfile.'-access.log',$domain['domain'],$alias_string);
+						}
 						$this->vhosts_file.= '  ErrorLog "' . $this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
 						$this->vhosts_file.= '  CustomLog "' . $this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
 					}
