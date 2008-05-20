@@ -101,8 +101,60 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="60" name="specialsettings">{$settings['system']['default_vhostconf']}</textarea></td>
 			</tr>
 			</if>
+		<if $settings['system']['userdns'] == '1'>
+		</table>
+		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
 			<tr>
-				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>
+				<td class="maintitle" colspan="3"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_dns_settings']}</b></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['dns']['destinationip']}:</td>
+				<td class="main_field_name"><input type="radio" name="dns_destip_type" value="0" checked="checked" />&nbsp;{$lng['dns']['standardip']}</td>
+				<td class="main_field_name" nowrap="nowrap">
+					<table border="0" style="text-align: left;">
+						<tr>
+							<td><input type="radio" name="dns_destip_type" value="1" />&nbsp;{$lng['dns']['a_record']}</td>
+						</tr>
+						<tr>
+							<td>IPv4:&nbsp;<input type="text" class="text" name="dns_destinationipv4" value="" size="39" /></td>
+						</tr>
+						<tr>
+							<td>IPv6:&nbsp;<input type="text" class="text" name="dns_destinationipv6" value="" size="39" /></td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="dns_destip_type" value="2" />&nbsp;{$lng['dns']['cname_record']}</td>
+						</tr>
+						<tr>
+							<td><input type="text" class="text" name="dns_destinationcname" value="" /></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['dns']['mxrecords']}:</td>
+				<td class="main_field_name"><input type="radio" name="dns_destmx_type" value="0" checked="checked" />&nbsp;{$lng['dns']['standardmx']}</td>
+				<td class="main_field_name" nowrap="nowrap">
+					<table border="0" style="text-align: left;">
+						<tr>
+							<td><input type="radio" name="dns_destmx_type" value="1" />&nbsp;{$lng['dns']['mxconfig']}</td>
+						</tr>
+						<tr>
+							<td>{$lng['dns']['priority10']}:&nbsp;<input type="text" class="text" name="dns_mxentry10" value="" /></td>
+						</tr>
+						<tr>
+							<td>{$lng['dns']['priority20']}:&nbsp;<input type="text" class="text" name="dns_mxentry20" value="" /></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['dns']['txtrecords']}:</td>
+				<td class="main_field_name">{$lng['dns']['txtexample']}</td>
+				<td class="main_field_display"><textarea class="textarea_noborder" rows="12" cols="60" name="dns_txtrecords"></textarea></td>
+			</tr>
+		</if>
+			<tr>
+				<td class="main_field_confirm" colspan="<if $settings['system']['userdns'] == '1'>3<else>2</if>"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>
 			</tr>
 		</table>
 	</form>

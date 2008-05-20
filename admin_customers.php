@@ -447,11 +447,11 @@ if($page == 'customers'
 					inserttask('2', $loginname, $guid, $guid);
 
 					// Add htpasswd for the webalizer stats
-					if($this->settings['system']['webalizier_enabled'] == '1')
+					if($settings['system']['webalizier_enabled'] == '1')
 					{
 						$path = $documentroot . '/webalizer/';
 					}
-					elseif($this->settings['system']['awstats_enabled'] == '1')
+					elseif($settings['system']['awstats_enabled'] == '1')
 					{
 						$path = $documentroot . '/awstats/';
 					}

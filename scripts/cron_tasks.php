@@ -220,28 +220,77 @@ while($row = $db->fetch_array($result_tasks))
 							$zonefile.= '@	IN	NS	' . trim($nameserver['hostname']) . "\n";
 						}
 					}
-		
-					if(count($mxservers) == 0)
+
+					if($settings['system']['userdns'] == '1')
 					{
-						if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						$result_dns = $db->query("SELECT * FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `domainid`='" . (int)$domain['id'] . "'");
+						$row_dns = $db->fetch_array($result_dns);
+						
+						if($row_dns['mx10'] == ''
+						   && $row_dns['mx20'] == '')
 						{
-							$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
-							$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a ipv4:' . $domain['ip'] . ' ~all"' . "\n";
+							if(count($mxservers) == 0)
+							{
+								if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+								{
+									$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
+									$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a ipv4:' . $domain['ip'] . ' ~all"' . "\n";
+								}
+								elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+								{
+									$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	AAAA	' . $domain['ip'] . "\n";
+									$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a mx ~all"' . "\n";
+								}
+							}
+							else
+							{
+								foreach($mxservers as $mxserver)
+								{
+									$zonefile.= '@	IN	MX	' . trim($mxserver) . "\n";
+								}
+							}
 						}
-						elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+						else
 						{
-							$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	AAAA	' . $domain['ip'] . "\n";
-							$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a mx ~all"' . "\n";
+							if($row_dns['mx10'] != '')
+							{
+								$zonefile.= $domain['domain'] . '.	MX	10	' . $row_dns['mx10'] . "\n";
+							}
+							if($row_dns['mx20'] != '')
+							{
+								$zonefile.= $domain['domain'] . '.	MX	20	' . $row_dns['mx20'] . "\n";
+							}
+							
+							if($row_dns['txt'] != '')
+							{
+								$zonefile.= $domain['domain'] . '.	IN	TXT	"' . $row_dns['txt'] . '"' . "\n";
+							}
 						}
 					}
 					else
 					{
-						foreach($mxservers as $mxserver)
+						if(count($mxservers) == 0)
 						{
-							$zonefile.= '@	IN	MX	' . trim($mxserver) . "\n";
+							if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+							{
+								$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	A	' . $domain['ip'] . "\n";
+								$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a ipv4:' . $domain['ip'] . ' ~all"' . "\n";
+							}
+							elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+							{
+								$zonefile.= '@	IN	MX	10 mail' . "\n" . 'mail	IN	AAAA	' . $domain['ip'] . "\n";
+								$zonefile.= $domain['domain'] . '.	IN	TXT	"v=spf1 a mx ~all"' . "\n";
+							}
+						}
+						else
+						{
+							foreach($mxservers as $mxserver)
+							{
+								$zonefile.= '@	IN	MX	' . trim($mxserver) . "\n";
+							}
 						}
 					}
-		
+					
 					$nssubdomains = $db->query('SELECT `domain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `isbinddomain`=\'1\' AND `domain` LIKE \'%.' . $domain['domain'] . '\'');
 		
 					while($nssubdomain = $db->fetch_array($nssubdomains))
@@ -263,30 +312,63 @@ while($row = $db->fetch_array($result_tasks))
 							}
 						}
 					}
-		
-					if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+
+					if($settings['system']['userdns'] == '1')
 					{
-						$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
-						$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
+						$result_dns = $db->query("SELECT * FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `domainid`='" . (int)$domain['id'] . "'");
+						$row_dns = $db->fetch_array($result_dns);
+						
+						if($row_dns['ipv4'] != '')
+						{
+							$zonefile.= '@	IN	A	' . $row_dns['ipv4'] . "\n";
+							$zonefile.= 'www	IN	A	' . $row_dns['ipv4'] . "\n";
+						}
+						
+						if($row_dns['ipv6'] != '')
+						{
+							$zonefile.= '@	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+							$zonefile.= 'www	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+						}
+						
+						if($domain['iswildcarddomain'] == '1')
+						{
+							if($row_dns['ipv4'] != '')
+							{
+								$zonefile.= '*	IN	A	' . $row_dns['ipv4'] . "\n";
+							}
+						
+							if($row_dns['ipv6'] != '')
+							{
+								$zonefile.= '*	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+							}
+						}
 					}
-					elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-					{
-						$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
-						$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
-					}
-		
-					if($domain['iswildcarddomain'] == '1')
+					else
 					{
 						if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 						{
-							$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
+							$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
+							$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
 						}
 						elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 						{
-							$zonefile.= '*	IN  AAAA	' . $domain['ip'] . "\n";
+							$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
+							$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
+						}
+		
+						if($domain['iswildcarddomain'] == '1')
+						{
+							if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+							{
+								$zonefile.= '*	IN  A	' . $domain['ip'] . "\n";
+							}
+							elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+							{
+								$zonefile.= '*	IN  AAAA	' . $domain['ip'] . "\n";
+							}
 						}
 					}
-		
+					
 					$subdomains = $db->query('SELECT `d`.`domain`, `ip`.`ip` AS `ip` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_IPSANDPORTS . '` `ip` WHERE `parentdomainid`=\'' . $domain['id'] . '\' AND `d`.`ipandport`=`ip`.`id`');
 		
 					while($subdomain = $db->fetch_array($subdomains))

@@ -9,7 +9,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['domains']['domainname']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subdomain" value="" size="15" maxlength="50" /> <b>.</b> <select class="tendina_nobordo" name="domain">$domains</select></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="subdomain" value="" size="15" maxlength="50" /> <b>.</b> <select class="tendina_nobordo" name="domain">$domains</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['domains']['aliasdomain']}:</td>
