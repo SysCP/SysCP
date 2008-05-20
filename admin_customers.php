@@ -160,6 +160,10 @@ if($page == 'customers'
 				$db->query("DELETE FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . (int)$id . "'");
 				$db->query("DELETE FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `customerid`='" . (int)$id . "'");
 				$domains_deleted = $db->affected_rows();
+				if($settings['system']['userdns'] == '1')
+				{
+					$db->query("DELETE FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `customerid`='" . (int)$id . "'");
+				}
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `customerid`='" . (int)$id . "'");
 				$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid`='" . (int)$id . "' AND `adminsession` = '0'");
 				$db->query("DELETE FROM `" . TABLE_PANEL_TRAFFIC . "` WHERE `customerid`='" . (int)$id . "'");
