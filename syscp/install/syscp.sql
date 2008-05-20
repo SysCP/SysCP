@@ -493,6 +493,12 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (80, 'system', 'awstats_enabled', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (81, 'system', 'awstats_domain_file', '/etc/awstats/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (82, 'system', 'awstats_model_file', '/etc/awstats/awstats.model.conf.syscp');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (83, 'system', 'userdns', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (84, 'system', 'customerdns', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (85, 'dkim', 'dkim_prefix', '/etc/postfix/dkim/');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (86, 'dkim', 'dkim_domains', 'domains');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (87, 'dkim', 'dkim_dkimkeys', 'dkim-keys.conf');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (88, 'dkim', 'dkimrestart_command', '/etc/init.d/dkim-filter restart');
 # --------------------------------------------------------
 
 #
@@ -776,4 +782,26 @@ CREATE TABLE `mail_dkim` (
   `domain_id` int(11) NOT NULL default '0',
   `publickey` text NOT NULL,
   PRIMARY KEY  (`id`)
+) ENGINE=MyISAM;
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_dns`
+#
+
+CREATE TABLE `panel_dns` (
+  `dnsid` bigint(15) NOT NULL auto_increment,
+  `domainid` int(11) NOT NULL,
+  `customerid` int(11) NOT NULL,
+  `adminid` int(11) NOT NULL,
+  `ipv4` varchar(15) NOT NULL,
+  `ipv6` varchar(39) NOT NULL,
+  `cname` varchar(255) NOT NULL,
+  `mx10` varchar(255) NOT NULL,
+  `mx20` varchar(255) NOT NULL,
+  `txt` text NOT NULL,
+  PRIMARY KEY  (`dnsid`),
+  UNIQUE KEY `domainid` (`domainid`)
 ) ENGINE=MyISAM;

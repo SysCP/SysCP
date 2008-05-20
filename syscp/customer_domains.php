@@ -421,6 +421,117 @@ elseif($page == 'domains')
 				{
 					$openbasedir_path = '0';
 				}
+				
+				if($settings['system']['customerdns'] == '1')
+				{
+					$dns_destinationipv4 = '';
+					$dns_destinationipv6 = '';
+					$dns_destinationcname = '';
+					$dns_mx10 = '';
+					$dns_mx20 = '';
+					$dns_txt = '';
+					
+					if(isset($_POST['dns_destip_type']))
+					{
+						$dns_destip_type = (int)$_POST['dns_destip_type'];
+					}
+					else
+					{
+						$dns_destip_type = 0;
+					}
+					$dns_destmx_type = ($_POST['dns_destmx_type'] == '1' ? '1' : '0');
+					
+					if($dns_destip_type == 1)
+					{
+						if(isset($_POST['dns_destinationipv4'])
+						   && $_POST['dns_destinationipv4'] != '')
+						{
+							$dns_destinationipv4 = validate_ip($_POST['dns_destinationipv4']);
+						}
+						else
+						{
+							$dns_destinationipv4 = $settings['system']['ipaddress'];
+						}
+						if(isset($_POST['dns_destinationipv6'])
+						   && $_POST['dns_destinationipv6'] != '')
+						{
+							$dns_destinationipv6 = validate_ip($_POST['dns_destinationipv6']);
+						}
+						else
+						{
+							$dns_destinationipv6 = '';
+						}
+					}
+					elseif($dns_destip_type == 2)
+					{
+						$dns_destinationcname = validateDomain($_POST['dns_destinationcname']);
+					}
+					else
+					{
+						$dns_destinationipv4 = $settings['system']['ipaddress'];
+					}
+					
+					if($dns_destmx_type == '1')
+					{
+						if(isset($_POST['dns_mxentry10'])
+						   && $_POST['dns_mxentry10'] != '')
+						{
+							$dns_mx10 = validateDomain($_POST['dns_mxentry10']);
+						}
+						else
+						{
+							if($settings['system']['maxservers'] != '')
+							{
+								$mxsrvs = explode(',', $settings['system']['maxservers']);
+								$dns_mx10 = $mxsrvs[0];
+							}
+							else
+							{
+								$dns_mx10 = $settings['system']['hostname'];
+							}
+						}
+						if(isset($_POST['dns_mxentry20'])
+						   && $_POST['dns_mxentry20'] != '')
+						{
+							$dns_mx20 = validateDomain($_POST['dns_mxentry20']);
+						}
+						else
+						{
+							if($settings['system']['maxservers'] != '')
+							{
+								$mxsrvs = explode(',', $settings['system']['maxservers']);
+								if(isset($mxsrvs[1])
+								   && $mxsrvs[1] != '')
+								{
+									$dns_mx20 = $mxsrvs[1];
+								}
+								else
+								{
+									$dns_mx20 = $mxsrvs[0];
+								}
+							}
+							else
+							{
+								$dns_mx20 = $settings['system']['hostname'];
+							}
+						}
+					}
+					else
+					{
+						$dns_mx10 = $settings['system']['hostname'];
+						$dns_mx20 = $settings['system']['hostname'];
+					}
+					
+					if(isset($_POST['dns_txtrecords'])
+					   && $_POST['dns_txtrecords'] != '')
+					{
+						$dns_txt = validate($_POST['dns_txtrecords'], 'dns txt entry');
+					}
+					else
+					{
+						$dns_txt = '';
+					}
+				}
 
 				if($path == '')
 				{
@@ -446,6 +557,10 @@ elseif($page == 'domains')
 						inserttask('1');
 						inserttask('4');
 						$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($path) . "',`ssl_redirect`='" . $_POST['ssl_redirect'] . "', `isemaildomain`='" . (int)$isemaildomain . "', `iswildcarddomain`='" . (int)$iswildcarddomain . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ",`openbasedir_path`='" . $db->escape($openbasedir_path) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+						if($settings['system']['customerdns'] == '1')
+						{
+							$result = $db->query("UPDATE `" . TABLE_PANEL_DNSENTRY . "` SET `ipv4`='" . $db->escape($dns_destinationipv4) . "', `ipv6`='" . $db->escape($dns_destinationipv6) . "', `cname`='" . $db->escape($dns_destinationcname) . "', `mx10`='" . $db->escape($dns_mx10) . "', `mx20`='" . $db->escape($dns_mx20) . "', `txt`='" . $db->escape($dns_txt) . "' WHERE `domainid`='" . (int)$id . "'");
+						}
 					}
 
 					redirectTo($filename, Array(
@@ -484,6 +599,96 @@ elseif($page == 'domains')
 				$isemaildomain = makeyesno('isemaildomain', '1', '0', $result['isemaildomain']);
 				$openbasedir = makeoption($lng['domain']['docroot'], 0, $result['openbasedir_path'], true) . makeoption($lng['domain']['homedir'], 1, $result['openbasedir_path'], true);
 				$result = htmlentities_array($result);
+				
+				if($settings['system']['userdns'] == '1')
+				{
+					$result_dns = $db->query("SELECT * FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `domainid` = '" . (int)$result['id'] . "'");
+					$row_dns = $db->fetch_array($result_dns);
+					
+					if($row_dns['ipv4'] == $settings['system']['ipaddress']
+					   && $row_dns['ipv6'] == ''
+					   && $row_dns['cname'] == '')
+					{
+						$dns_destip_type_0_checked = 'checked="checked"';
+						$dns_destip_type_1_checked = '';
+						$dns_destip_type_2_checked = '';
+						
+						$dns_destinationipv4 = '';
+						$dns_destinationipv6 = '';
+						$dns_destinationcname = '';
+					}
+					elseif($row_dns['ipv4'] != ''
+					   && $row_dns['ipv4'] != $settings['system']['ipaddress'])
+					{
+						$dns_destip_type_0_checked = '';
+						$dns_destip_type_1_checked = 'checked="checked"';
+						$dns_destip_type_2_checked = '';
+						
+						$dns_destinationipv4 = $row_dns['ipv4'];
+						$dns_destinationipv6 = $row_dns['ipv6'];
+						$dns_destinationcname = '';
+					}
+					elseif($row_dns['cname'] != '')
+					{
+						$dns_destip_type_0_checked = '';
+						$dns_destip_type_1_checked = '';
+						$dns_destip_type_2_checked = 'checked="checked"';
+						
+						$dns_destinationipv4 = '';
+						$dns_destinationipv6 = '';
+						$dns_destinationcname = $row_dns['cname'];
+					}
+					else
+					{
+						$dns_destip_type_0_checked = 'checked="checked"';
+						$dns_destip_type_1_checked = '';
+						$dns_destip_type_2_checked = '';
+						
+						$dns_destinationipv4 = '';
+						$dns_destinationipv6 = '';
+						$dns_destinationcname = '';
+					}
+					
+					if($row_dns['mx10'] != ''
+					   && (($settings['system']['mxservers'] != ''
+					      && in_array($row_dns['mx10'], $settings['system']['mxservers']))
+					      || $row_dns['mx10'] == $settings['system']['hostname']))
+					{
+						$dns_destmx_type_0_checked = 'checked="checked"';
+						$dns_destmx_type_1_checked = '';
+						
+						$dns_mxentry10 = '';
+						$dns_mxentry20 = '';
+					}
+					elseif($row_dns['mx10'] != ''
+					   && ($settings['system']['mxservers'] == ''
+					      || !in_array($row_dns['mx10'], $settings['system']['mxservers']))
+					   && $row_dns['mx10'] != $settings['system']['hostname'])
+					{
+						$dns_destmx_type_0_checked = '';
+						$dns_destmx_type_1_checked = 'checked="checked"';
+						
+						$dns_mxentry10 = $row_dns['mx10'];
+						$dns_mxentry20 = $row_dns['mx20'];
+					}
+					else
+					{
+						$dns_destmx_type_0_checked = 'checked="checked"';
+						$dns_destmx_type_1_checked = '';
+						
+						$dns_mxentry10 = '';
+						$dns_mxentry20 = '';
+					}
+					
+					if($row_dns['txt'] != '')
+					{
+						$dns_txtrecords = $row_dns['txt'];
+					}
+					else
+					{
+						$dns_txtrecords = '';
+					}
+				}
 
 				if($settings['system']['use_ssl'] == "1")
 				{

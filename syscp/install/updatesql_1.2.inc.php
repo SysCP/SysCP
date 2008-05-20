@@ -1545,4 +1545,35 @@ if($settings['panel']['version'] == '1.2.19-svn14')
 	$settings['panel']['version'] = '1.2.19-svn15';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn15')
+{
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn15 to 1.2.19-svn16");
+
+	$db->query("
+		CREATE TABLE `panel_dns` (
+		  `dnsid` bigint(15) NOT NULL auto_increment,
+		  `domainid` int(11) NOT NULL,
+		  `customerid` int(11) NOT NULL,
+		  `adminid` int(11) NOT NULL,
+		  `ipv4` varchar(15) NOT NULL,
+		  `ipv6` varchar(39) NOT NULL,
+		  `cname` varchar(255) NOT NULL,
+		  `mx10` varchar(255) NOT NULL,
+		  `mx20` varchar(255) NOT NULL,
+		  `txt` text NOT NULL,
+		  PRIMARY KEY  (`dnsid`),
+		  UNIQUE KEY `domainid` (`domainid`)
+		) ENGINE=MyISAM;
+		");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'userdns', '0')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'customerdns', '0')");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn16\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn16';
+}
+
 ?>

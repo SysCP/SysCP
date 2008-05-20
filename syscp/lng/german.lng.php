@@ -776,7 +776,7 @@ $lng['serversettings']['ssl']['ssl_cert_file'] = 'Pfad zum Zertifikat?';
 $lng['serversettings']['ssl']['openssl_cnf'] = 'Standardwerte zum Erstellen eines Zertifikats';
 $lng['panel']['reseller'] = 'Reseller';
 $lng['panel']['admin'] = 'Administrator';
-$lng['panel']['customer'] = 'Kunde';
+$lng['panel']['customer'] = 'Kunde/n';
 $lng['error']['nomessagetosend'] = 'Keine Nachricht angegeben';
 $lng['error']['noreceipientsgiven'] = 'Keine Empf&auml;nger angegeben';
 $lng['admin']['emaildomain'] = 'E-Maildomain';
@@ -849,5 +849,22 @@ $lng['serversettings']['awstats_enabled'] = 'Nutze AWStats Statistiken';
 $lng['admin']['awstatssettings'] = 'Awstats Einstellungen';
 $lng['serversettings']['awstats_domain_file']['title'] = 'Awstats Domain-Dateien Ordner';
 $lng['serversettings']['awstats_model_file']['title'] = 'Awstats Model Datei';
+
+// ADDED IN 1.2.19-svn16
+
+$lng['admin']['domain_dns_settings'] = 'Domain DNS Einstellungen';
+$lng['dns']['destinationip'] = 'Domain IP';
+$lng['dns']['standardip'] = 'Server Standard IP';
+$lng['dns']['a_record'] = 'A-Eintrag (IPv6 optional)';
+$lng['dns']['cname_record'] = 'CNAME-Eintrag';
+$lng['dns']['mxrecords'] = 'MX Eintr&auml;ge definieren';
+$lng['dns']['standardmx'] = 'Server Standard MX Eintrag';
+$lng['dns']['mxconfig'] = 'Eigene MX Eintr&auml;ge';
+$lng['dns']['priority10'] = 'Priorit&auml;t 10';
+$lng['dns']['priority20'] = 'Priorit&auml;t 20';
+$lng['dns']['txtrecords'] = 'TXT Eintr&auml;ge definieren';
+$lng['dns']['txtexample'] = 'Beispiel (SPF-Eintrag):<br />v=spf1 ip4:xxx.xxx.xx.0/23 -all';
+$lng['serversettings']['selfdns']['title'] = 'Manuelle DNS Einstellungen f&uuml;r Domains';
+$lng['serversettings']['selfdnscustomer']['title'] = 'Erlaube Kunden eigene DNS Einstellungen vornehmen zu k&ouml;nnen';
 
 ?>

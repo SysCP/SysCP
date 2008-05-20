@@ -586,8 +586,15 @@ function validateDomain($domainname)
 	// we add http:// because this makes a domain valid for the filter;
 	// but if a user gives "http://" it's not a valid domain
 	// (because for syscp, a domain mustn't have "http://" in it
-	$domainname = 'http://'.$domainname;
-	return filter_var($domainname, FILTER_VALIDATE_URL);
+	$domainname_tmp = 'http://'.$domainname;
+	if(filter_var($domainname_tmp, FILTER_VALIDATE_URL) !== false)
+	{
+		return $domainname;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 /**

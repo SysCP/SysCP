@@ -21,9 +21,20 @@
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['mxservers']['title']}:</b><br />{$lng['serversettings']['mxservers']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mxservers" value="{$settings['system']['mxservers']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['selfdns']['title']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap">{$system_userdns}</td>
+			</tr>
+			<if $settings['system']['userdns'] == '1'>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['selfdnscustomer']['title']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap">{$system_customerdns}</td>
+			</tr>
+			</if>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
-					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+					<input type="hidden" name="part" value="nameserver" /><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
 		</table>
