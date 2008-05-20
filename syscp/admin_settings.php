@@ -55,11 +55,6 @@ if(($page == 'settings' || $page == 'overview')
 			$settings_part = false;
 			$only_enabledisbale = true;
 		}
-		
-		var_dump($_part);
-		var_dump($settings_part);
-		var_dump($settings_all);
-		var_dump($only_enabledisbale);
 				
 		if(($settings_part
 		   && $_part == 'panel')
