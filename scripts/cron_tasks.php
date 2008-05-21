@@ -318,28 +318,41 @@ while($row = $db->fetch_array($result_tasks))
 						$result_dns = $db->query("SELECT * FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `domainid`='" . (int)$domain['id'] . "'");
 						$row_dns = $db->fetch_array($result_dns);
 						
-						if($row_dns['ipv4'] != '')
+						if($row_dns['cname'] != '')
 						{
-							$zonefile.= '@	IN	A	' . $row_dns['ipv4'] . "\n";
-							$zonefile.= 'www	IN	A	' . $row_dns['ipv4'] . "\n";
+							$zonefile.= '@	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
+							$zonefile.= 'www	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
+							
+							if($domain['iswildcarddomain'] == '1')
+							{
+								$zonefile.= '*	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
+							}
 						}
-						
-						if($row_dns['ipv6'] != '')
-						{
-							$zonefile.= '@	IN	AAAA	' . $row_dns['ipv6'] . "\n";
-							$zonefile.= 'www	IN	AAAA	' . $row_dns['ipv6'] . "\n";
-						}
-						
-						if($domain['iswildcarddomain'] == '1')
+						else
 						{
 							if($row_dns['ipv4'] != '')
 							{
-								$zonefile.= '*	IN	A	' . $row_dns['ipv4'] . "\n";
+								$zonefile.= '@	IN	A	' . $row_dns['ipv4'] . "\n";
+								$zonefile.= 'www	IN	A	' . $row_dns['ipv4'] . "\n";
 							}
 						
 							if($row_dns['ipv6'] != '')
 							{
-								$zonefile.= '*	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+								$zonefile.= '@	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+								$zonefile.= 'www	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+							}
+						
+							if($domain['iswildcarddomain'] == '1')
+							{
+								if($row_dns['ipv4'] != '')
+								{
+									$zonefile.= '*	IN	A	' . $row_dns['ipv4'] . "\n";
+								}
+						
+								if($row_dns['ipv6'] != '')
+								{
+									$zonefile.= '*	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+								}
 							}
 						}
 					}
