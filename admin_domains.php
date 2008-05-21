@@ -473,6 +473,20 @@ if($page == 'domains'
 					$caneditdomain = '0';
 				}
 
+				if($settings['system']['use_ssl'] == "1"
+				   && isset($_POST['ssl_ipandport']))
+				{
+					$ssl = ($_POST['ssl'] == '1' ? '1' : '0');
+					$ssl_redirect = ($_POST['ssl_redirect'] == '1' ? '1' : '0');
+					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
+				}
+				else
+				{
+					$ssl = 0;
+					$ssl_redirect = 0;
+					$ssl_ipandport = 0;
+				}
+				
 				if($domain == '')
 				{
 					standard_error(array(
@@ -527,9 +541,9 @@ if($page == 'domains'
 							'speciallogfile' => $speciallogfile,
 							'openbasedir' => $openbasedir,
 							'ipandport' => $ipandport,
-							'ssl' => $_POST['ssl'],
-							'ssl_redirect' => $_POST['ssl_redirect'],
-							'ssl_ipandport' => $_POST['ssl_ipandport'],
+							'ssl' => $ssl,
+							'ssl_redirect' => $ssl_redirect,
+							'ssl_ipandport' => $ssl_ipandport,
 							'safemode' => $safemode,
 							'specialsettings' => $specialsettings,
 							'reallydoit' => 'reallydoit'
@@ -557,9 +571,9 @@ if($page == 'domains'
 							'speciallogfile' => $speciallogfile,
 							'openbasedir' => $openbasedir,
 							'ipandport' => $ipandport,
-							'ssl' => $_POST['ssl'],
-							'ssl_redirect' => $_POST['ssl_redirect'],
-							'ssl_ipandport' => $_POST['ssl_ipandport'],
+							'ssl' => $ssl,
+							'ssl_redirect' => $ssl_redirect,
+							'ssl_ipandport' => $ssl_ipandport,
 							'safemode' => $safemode,
 							'specialsettings' => $specialsettings,
 							'reallydocroot' => 'reallydocroot'
@@ -581,19 +595,6 @@ if($page == 'domains'
 						$isbinddomain = "1";
 						$subcanemaildomain = "0";
 						$caneditdomain = "0";
-					}
-
-					if($settings['system']['use_ssl'] == "1")
-					{
-						$ssl = $_POST['ssl'];
-						$ssl_redirect = $_POST['ssl_redirect'];
-						$ssl_ipandport = $_POST['ssl_ipandport'];
-					}
-					else
-					{
-						$ssl = 0;
-						$ssl_redirect = 0;
-						$ssl_ipandport = 0;
 					}
 
 					$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`domain`, `customerid`, `adminid`, `documentroot`, `ipandport`,`aliasdomain`, `zonefile`, `dkim`, `wwwserveralias`, `isbinddomain`, `isemaildomain`, `email_only`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`,`speciallogfile`, `specialsettings`, `ssl`, `ssl_redirect`, `ssl_ipandport`)VALUES ('" . $db->escape($domain) . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '" . $db->escape($documentroot) . "', '" . $db->escape($ipandport) . "', " . (($aliasdomain != 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", '" . $db->escape($zonefile) . "', '" . $db->escape($dkim) . "', '" . $db->escape($wwwserveralias) . "', '" . $db->escape($isbinddomain) . "', '" . $db->escape($isemaildomain) . "', '" . $db->escape($isemail_only) . "', '" . $db->escape($subcanemaildomain) . "', '" . $db->escape($caneditdomain) . "', '" . $db->escape($openbasedir) . "', '" . $db->escape($safemode) . "', '" . $db->escape($speciallogfile) . "', '" . $db->escape($specialsettings) . "', '" . $ssl . "', '" . $ssl_redirect . "' , '" . $ssl_ipandport . "')");
@@ -829,6 +830,20 @@ if($page == 'domains'
 				{
 					standard_error('domainisaliasorothercustomer');
 				}
+				
+				if($settings['system']['use_ssl'] == "1"
+				   && isset($_POST['ssl_ipandport']))
+				{
+					$ssl = ($_POST['ssl'] == '1' ? '1' : '0');
+					$ssl_redirect = ($_POST['ssl_redirect'] == '1' ? '1' : '0');
+					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
+				}
+				else
+				{
+					$ssl = 0;
+					$ssl_redirect = 0;
+					$ssl_ipandport = 0;
+				}
 
 				if(($openbasedir == '0' || $safemode == '0')
 				   && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit')
@@ -849,9 +864,9 @@ if($page == 'domains'
 						'wwwserveralias' => $wwwserveralias,
 						'openbasedir' => $openbasedir,
 						'ipandport' => $ipandport,
-						'ssl' => $_POST['ssl'],
-						'ssl_redirect' => $_POST['ssl_redirect'],
-						'ssl_ipandport' => $_POST['ssl_ipandport'],
+						'ssl' => $ssl,
+						'ssl_redirect' => $ssl_redirect,
+						'ssl_ipandport' => $ssl_ipandport,
 						'safemode' => $safemode,
 						'specialsettings' => $specialsettings,
 						'reallydoit' => 'reallydoit'
@@ -878,9 +893,9 @@ if($page == 'domains'
 						'wwwserveralias' => $wwwserveralias,
 						'openbasedir' => $openbasedir,
 						'ipandport' => $ipandport,
-						'ssl' => $_POST['ssl'],
-						'ssl_redirect' => $_POST['ssl_redirect'],
-						'ssl_ipandport' => $_POST['ssl_ipandport'],
+						'ssl' => $ssl,
+						'ssl_redirect' => $ssl_redirect,
+						'ssl_ipandport' => $ssl_ipandport,
 						'safemode' => $safemode,
 						'specialsettings' => $specialsettings,
 						'reallydocroot' => 'reallydocroot'
@@ -1053,7 +1068,7 @@ if($page == 'domains'
 
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($documentroot) . "', `ipandport`='" . $db->escape($ipandport) . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", `isbinddomain`='" . $db->escape($isbinddomain) . "', `isemaildomain`='" . $db->escape($isemaildomain) . "', `email_only`='" . $db->escape($isemail_only) . "', `subcanemaildomain`='" . $db->escape($subcanemaildomain) . "', `dkim`='" . $db->escape($dkim) . "', `caneditdomain`='" . $db->escape($caneditdomain) . "', `zonefile`='" . $db->escape($zonefile) . "', `wwwserveralias`='" . $db->escape($wwwserveralias) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `specialsettings`='" . $db->escape($specialsettings) . "' WHERE `id`='" . (int)$id . "'");
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `ipandport`='" . $db->escape($ipandport) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `specialsettings`='" . $db->escape($specialsettings) . "'" . $updatechildren . " WHERE `parentdomainid`='" . (int)$id . "'");
-				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `ssl`='" . $_POST['ssl'] . "', `ssl_redirect`='" . $_POST['ssl_redirect'] . "', `ssl_ipandport`='" . $_POST['ssl_ipandport'] . "'  WHERE `id`='" . (int)$id . "'");
+				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `ssl`='" . (int)$ssl . "', `ssl_redirect`='" . (int)$ssl_redirect . "', `ssl_ipandport`='" . (int)$ssl_ipandport . "'  WHERE `id`='" . (int)$id . "'");
 				if($settings['system']['userdns'] == '1')
 				{
 					$result = $db->query("UPDATE `" . TABLE_PANEL_DNSENTRY . "` SET `ipv4`='" . $db->escape($dns_destinationipv4) . "', `ipv6`='" . $db->escape($dns_destinationipv6) . "', `cname`='" . $db->escape($dns_destinationcname) . "', `mx10`='" . $db->escape($dns_mx10) . "', `mx20`='" . $db->escape($dns_mx20) . "', `txt`='" . $db->escape($dns_txt) . "' WHERE `domainid`='" . (int)$id . "'");
