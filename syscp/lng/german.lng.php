@@ -867,5 +867,7 @@ $lng['dns']['txtexample'] = 'Beispiel (SPF-Eintrag):<br />v=spf1 ip4:xxx.xxx.xx.
 $lng['serversettings']['selfdns']['title'] = 'Manuelle DNS Einstellungen f&uuml;r Domains';
 $lng['serversettings']['selfdnscustomer']['title'] = 'Erlaube Kunden eigene DNS Einstellungen vornehmen zu k&ouml;nnen';
 $lng['admin']['activated'] = 'Aktiviert';
+$lng['admin']['statisticsettings'] = 'Statistik Einstellungen';
+$lng['admin']['or'] = 'oder';
 
 ?>
