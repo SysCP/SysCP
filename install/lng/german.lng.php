@@ -56,5 +56,9 @@ $lng['install']['creating_configfile_temp'] = 'Datei wurde in /tmp/userdata.inc.
 $lng['install']['creating_configfile_failed'] = 'Konnte lib/userdata.inc.php nicht erstellen, bitte manuell mit folgendem Inhalt anlegen:';
 $lng['install']['syscp_succ_installed'] = 'SysCP wurde erfolgreich installiert.';
 $lng['install']['click_here_to_login'] = 'Hier geht es weiter zum Login-Fenster.';
+$lng['install']['phpmysql'] = 'Teste, ob die PHP MySQL-Erweiterung installiert ist...';
+$lng['install']['phpfilter'] = 'Teste, ob die PHP Filter-Erweiterung installiert ist...';
+$lng['install']['diedbecauseofextensions'] = 'Kann SysCP ohne diese Erweiterungen nicht installieren! Breche ab...';
+$lng['install']['notinstalled'] = 'nicht installiert!';
 
 ?>
