@@ -28,7 +28,10 @@
 			</tr>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
-					<input type="hidden" name="part" value="system" /><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+					<if $_part == 'system'>
+						<input type="hidden" name="part" value="system" />
+					</if>
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
 		</table>

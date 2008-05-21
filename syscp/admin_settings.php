@@ -55,6 +55,38 @@ if(($page == 'settings' || $page == 'overview')
 			$settings_part = false;
 			$only_enabledisbale = true;
 		}
+		
+		// webalizer and awstats should not be used simultaneously
+		if($only_enabledisbale 
+		   || ($settings_part
+		   && $_part == 'webalizer')
+		   || ($settings_part
+		   && $_part == 'awstats'))
+		{
+			if(isset($_POST['system_webalizer_enabled']))
+			{
+				$value_w = ($_POST['system_webalizer_enabled'] == '1' ? '1' : '0');
+			}
+			else
+			{
+				$value_w = $settings['system']['webalizer_enabled'];
+			}
+
+			if(isset($_POST['system_awstats_enabled']))
+			{
+				$value_a = ($_POST['system_awstats_enabled'] == '1' ? '1' : '0');
+			}
+			else
+			{
+				$value_a = $settings['system']['awstats_enabled'];
+			}
+			
+			if($value_w == '1'
+			   && $value_a == '1')
+			{
+				standard_error('cannotuseawstatsandwebalizeratonetime');
+			}
+		}
 				
 		if(($settings_part
 		   && $_part == 'panel')
@@ -612,18 +644,9 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = ($_POST['system_webalizer_enabled'] == '1' ? '1' : '0');
 				
-				// webalizer and awstats should not be used simultaneously
-				if($settings['system']['awstats_enabled'] == '1'
-				   && $value == '1')
-				{
-					standard_error('cannotuseawstatsandwebalizeratonetime');
-				}
-				else
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_enabled'");
-					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_enabled from '" . $settings['system']['webalizer_enabled'] . "' to '" . $value . "'");
-					$settings['system']['webalizer_enabled'] = $value;
-				}
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_enabled'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_enabled from '" . $settings['system']['webalizer_enabled'] . "' to '" . $value . "'");
+				$settings['system']['webalizer_enabled'] = $value;
 			}
 				
 			if(!$only_enabledisbale)
@@ -649,18 +672,10 @@ if(($page == 'settings' || $page == 'overview')
 			if($_POST['system_awstats_enabled'] != $settings['system']['awstats_enabled'] && isset($_POST['system_awstats_enabled']))
 			{
 				$value = ($_POST['system_awstats_enabled'] == '1' ? '1' : '0');
-				// webalizer and awstats should not be used simultaneously
-				if($settings['system']['webalizer_enabled'] == '1'
-				   && $value == '1')
-				{
-					standard_error('cannotuseawstatsandwebalizeratonetime');
-				}
-				else
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
-					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_enabled from '" . $settings['system']['awstats_enabled'] . "' to '" . $value . "'");
-					$settings['system']['awstats_enabled'] = $value;
-				}
+
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_enabled from '" . $settings['system']['awstats_enabled'] . "' to '" . $value . "'");
+				$settings['system']['awstats_enabled'] = $value;
 			}
 			
 			if(!$only_enabledisbale)
