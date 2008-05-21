@@ -622,6 +622,7 @@ if(($page == 'settings' || $page == 'overview')
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_enabled'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_enabled from '" . $settings['system']['webalizer_enabled'] . "' to '" . $value . "'");
+					$settings['system']['webalizer_enabled'] = $value;
 				}
 			}
 				
@@ -658,6 +659,7 @@ if(($page == 'settings' || $page == 'overview')
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_enabled from '" . $settings['system']['awstats_enabled'] . "' to '" . $value . "'");
+					$settings['system']['awstats_enabled'] = $value;
 				}
 			}
 			
@@ -799,6 +801,7 @@ if(($page == 'settings' || $page == 'overview')
 				$value = validate($_POST['loggingenabled'], 'loggingenabled');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='enabled'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_enabled from '" . $settings['logger']['enabled'] . "' to '" . $value . "'");
+				$settings['logger']['enabled'] = $value;
 			}
 
 			if(!$only_enabledisbale)
@@ -843,6 +846,7 @@ if(($page == 'settings' || $page == 'overview')
 				$value = (int)$_POST['use_dkim'] == 1 ? 1 : 0;
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='dkim' AND `varname`='use_dkim'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed use_dkim from '" . $settings['dkim']['use_dkim'] . "' to '" . $value . "'");
+				$settings['dkim']['use_dkim'] = $value;
 			}
 
 			if(!$only_enabledisbale)
@@ -1016,44 +1020,28 @@ if(($page == 'settings' || $page == 'overview')
 		   || $settings_all
 		   || $only_enabledisbale)
 		{
-			if($_POST['use_ssl'] != $settings['system']['use_ssl']
-			   && $settings['system']['use_ssl'] != "" 
-			   && isset($_POST['use_ssl']))
+			if($_POST['use_ssl'] != $settings['system']['use_ssl'] && isset($_POST['use_ssl']))
 			{
 				$value = ($_POST['use_ssl'] == '1' ? '1' : '0');
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='use_ssl'");
-			}
-			elseif($settings['system']['use_ssl'] == "" 
-			   && isset($_POST['use_ssl']))
-			{
-				$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'use_ssl', '" . $_POST['use_ssl'] . "')");
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $value . "' WHERE `settinggroup`='system' AND `varname`='use_ssl'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_use_ssl from '" . $settings['system']['use_ssl'] . "' to '" . $value . "'");
+				$settings['system']['use_ssl'] = $value;
 			}
 	
 			if(!$only_enabledisbale)
 			{
-				if($_POST['ssl_cert_file'] != $settings['system']['ssl_cert_file']
-				   && $settings['system']['ssl_cert_file'] != "" 
-				   && isset($_POST['ssl_cert_file']))
+				if($_POST['ssl_cert_file'] != $settings['system']['ssl_cert_file'] && isset($_POST['ssl_cert_file']))
 				{
-					$value = $_POST['ssl_cert_file'];
+					$value = validate($_POST['ssl_cert_file'], 'ssl_cert_file');
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ssl_cert_file'");
-				}
-				elseif($settings['system']['ssl_cert_file'] == "" && isset($_POST['ssl_cert_file']))
-				{
-					$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'ssl_cert_file', '" . $_POST['ssl_cert_file'] . "')");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_ssl_cert_file from '" . $settings['system']['ssl_cert_file'] . "' to '" . $value . "'");
 				}
 		
-				if($_POST['openssl_cnf'] != $settings['system']['openssl_cnf']
-				   && $settings['system']['openssl_cnf'] != "" 
-				   && isset($_POST['openssl_cnf']))
+				if($_POST['openssl_cnf'] != $settings['system']['openssl_cnf'] && isset($_POST['openssl_cnf']))
 				{
 					$value = $_POST['openssl_cnf'];
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ssl' AND `varname`='openssl_cnf'");
-				}
-				elseif($settings['system']['ssl_cert_file'] == "" 
-				&& isset($settings['system']['ssl_cert_file']))
-				{
-					$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'openssl_cnf', '" . $_POST['openssl_cnf'] . "')");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_openssl_cnf from '" . $settings['system']['openssl_cnf'] . "' to '" . $value . "'");
 				}
 			}
 		}
@@ -1159,7 +1147,7 @@ if(($page == 'settings' || $page == 'overview')
 		$no_robots = makeyesno('panel_no_robots', '1', '0', $settings['panel']['no_robots']);
 		$loggingenabled = makeyesno('loggingenabled', '1', '0', $settings['logger']['enabled']);
 		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
-		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['ticket']['enabled']);
+		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['system']['use_ssl']);
 		$dkimenabled = makeyesno('use_dkim', '1', '0', $settings['dkim']['use_dkim']);
 		$system_webalizer_enabled = makeyesno('system_webalizer_enabled', '1', '0', $settings['system']['webalizer_enabled']);
 		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled']);
