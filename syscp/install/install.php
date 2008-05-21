@@ -509,8 +509,36 @@ if(isset($_POST['installstep'])
 		</tr>
 <?php
 
-	//first test if we can access the database server with the given root user and password
+	$_die = false;
+	status_message('begin', $lng['install']['phpmysql']);
+	if(!extension_loaded('mysql'))
+	{
+		status_message('red', $lng['install']['notinstalled']);
+		$_die = true;
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
+	
+	status_message('begin', $lng['install']['phpfilter']);
+	if(!extension_loaded('filter'))
+	{
+		status_message('red', $lng['install']['notinstalled']);
+		$_die = true;
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
+	
+	if($_die)
+	{
+		status_message('begin', $lng['install']['diedbecauseofextensions']);
+		die();
+	}
 
+	//first test if we can access the database server with the given root user and password
 	status_message('begin', $lng['install']['testing_mysql']);
 	$db_root = new db($mysql_host, $mysql_root_user, $mysql_root_pass, '');
 
