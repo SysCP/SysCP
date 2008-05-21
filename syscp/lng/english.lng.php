@@ -861,5 +861,6 @@ $lng['dns']['txtrecords'] = 'Define TXT records';
 $lng['dns']['txtexample'] = 'Example (SPF-entry):<br />v=spf1 ip4:xxx.xxx.xx.0/23 -all';
 $lng['serversettings']['selfdns']['title'] = 'Manual domain dns settings';
 $lng['serversettings']['selfdnscustomer']['title'] = 'Allow customers to edit domain dns settings';
+$lng['admin']['activated'] = 'Activated';
 
 ?>
