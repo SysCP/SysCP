@@ -37,14 +37,14 @@
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['webalizersettings']}</b>
 				</td>
-				<td class="main_field_display_small" nowrap="nowrap">$system_webalizer_enabled</td>
+				<td class="main_field_display_small" nowrap="nowrap">{$lng['admin']['activated']}:&nbsp;$system_webalizer_enabled</td>
 				<td class="main_field_display_small" nowrap="nowrap"><if $settings['system']['webalizer_enabled'] == '1'><a href="$filename?page=overview&part=webalizer&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['awstatssettings']}</b>
 				</td>
-				<td class="main_field_display_small" nowrap="nowrap">$system_awstats_enabled</td>
+				<td class="main_field_display_small" nowrap="nowrap">{$lng['admin']['activated']}:&nbsp;$system_awstats_enabled</td>
 				<td class="main_field_display_small" nowrap="nowrap"><if $settings['system']['awstats_enabled'] == '1'><a href="$filename?page=overview&part=awstats&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr>
 			<tr>
@@ -65,28 +65,28 @@
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['loggersettings']}</b>
 				</td>
-				<td class="main_field_display_small" nowrap="nowrap">$loggingenabled</td>
+				<td class="main_field_display_small" nowrap="nowrap">{$lng['admin']['activated']}:&nbsp;$loggingenabled</td>
 				<td class="main_field_display_small" nowrap="nowrap"><if $settings['logger']['enabled'] == '1'><a href="$filename?page=overview&part=logging&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr>   
 			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['dkimsettings']}</b>
 				</td>
-				<td class="main_field_display_small" nowrap="nowrap">$dkimenabled</td>
+				<td class="main_field_display_small" nowrap="nowrap">{$lng['admin']['activated']}:&nbsp;$dkimenabled</td>
 				<td class="main_field_display_small" nowrap="nowrap"><if $settings['dkim']['use_dkim'] == '1'><a href="$filename?page=overview&part=dkim&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr>   
 			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['ticketsettings']}</b>
 				</td>
-				<td class="main_field_display_small" nowrap="nowrap">$ticketsystemenabled</td>
+				<td class="main_field_display_small" nowrap="nowrap">{$lng['admin']['activated']}:&nbsp;$ticketsystemenabled</td>
 				<td class="main_field_display_small" nowrap="nowrap"><if $settings['ticket']['enabled'] == '1'><a href="$filename?page=overview&part=ticket&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr> 
 			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['sslsettings']}</b>
 				</td>
-				<td class="main_field_display_small" nowrap="nowrap">$ssl_enabled</td>
+				<td class="main_field_display_small" nowrap="nowrap">{$lng['admin']['activated']}:&nbsp;$ssl_enabled</td>
 				<td class="main_field_display_small" nowrap="nowrap"><if $settings['system']['use_ssl'] == '1'><a href="$filename?page=overview&part=ssl&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr> 
 			<tr>
