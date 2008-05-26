@@ -7,6 +7,10 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['unix_names']['title']}:</b><br />{$lng['serversettings']['unix_names']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$unix_names}</td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['session_timeout']['title']}:</b><br />{$lng['serversettings']['session_timeout']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="session_sessiontimeout" value="{$settings['session']['sessiontimeout']}" /></td>
 			</tr>

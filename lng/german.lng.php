@@ -870,4 +870,9 @@ $lng['admin']['activated'] = 'Aktiviert';
 $lng['admin']['statisticsettings'] = 'Statistik Einstellungen';
 $lng['admin']['or'] = 'oder';
 
+// ADDED IN 1.2.19-svn17
+
+$lng['serversettings']['unix_names']['title'] = 'Benutze UNIX kompatible Benutzernamen';
+$lng['serversettings']['unix_names']['description'] = 'Erlaubt die Nutzung von <strong>-</strong> und <strong>_</strong> in Benutzernamen wenn <strong>Nein</strong>';
+
 ?>

@@ -277,6 +277,14 @@ if(($page == 'settings' || $page == 'overview')
 		   && $_part == 'accounts')
 		   || $settings_all)
 		{
+			if($_POST['panel_unix_names'] != $settings['panel']['unix_names'] && isset($_POST['panel_unix_names']))
+			{
+				$value = ($_POST['panel_unix_names'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='unix_names'");
+				$settings['panel']['unix_names'] = $value;
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_unix_names from '" . $settings['panel']['unix_names'] . "' to '" . $value . "'");
+			}
+			
 			if($_POST['session_sessiontimeout'] != $settings['session']['sessiontimeout'] && isset($_POST['session_sessiontimeout']))
 			{
 				$value = validate($_POST['session_sessiontimeout'], 'session timeout', '/^[0-9]+$/', 'sessiontimeoutiswrong');
@@ -302,7 +310,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = $_POST['customer_accountprefix'];
 	
-				if(validateUsername($value))
+				if(validateUsername($value, $settings['panel']['unix_names'], 14 - strlen($settings['customer']['mysqlprefix'])))
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='accountprefix'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_accountprefix from '" . $settings['customer']['accountprefix'] . "' to '" . $value . "'");
@@ -318,7 +326,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = $_POST['customer_mysqlprefix'];
 	
-				if(validateUsername($value))
+				if(validateUsername($value, $settings['panel']['unix_names'], 14 - strlen($_POST['customer_mysqlprefix'])))
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='mysqlprefix'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_mysqlprefix from '" . $settings['customer']['mysqlprefix'] . "' to '" . $value . "'");
@@ -334,7 +342,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = $_POST['customer_ftpprefix'];
 	
-				if(validateUsername($value))
+				if(validateUsername($value, $settings['panel']['unix_names']))
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='ftpprefix'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_ftpprefix from '" . $settings['customer']['ftpprefix'] . "' to '" . $value . "'");
@@ -352,6 +360,7 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='ftpatdomain'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_ftpatdomain from '" . $settings['customer']['ftpatdomain'] . "' to '" . $value . "'");
 			}
+
 		}
 		
 		if(($settings_part
@@ -1152,6 +1161,7 @@ if(($page == 'settings' || $page == 'overview')
 		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled']);
 		$system_userdns = makeyesno('system_userdns', '1', '0', $settings['system']['userdns']);
 		$system_customerdns = makeyesno('system_customerdns', '1', '0', $settings['system']['customerdns']);
+		$unix_names = makeyesno('panel_unix_names', '1', '0', $settings['panel']['unix_names']);
 		$settings = htmlentities_array($settings);
 		
 		$settings_page = '';
