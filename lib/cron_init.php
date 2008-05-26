@@ -212,7 +212,8 @@ while(false !== ($checkfile = readdir($crondir)))
 		else
 		{
 			fwrite($debugHandler, 'WARNING! uid and/or gid of "' . $cronscriptFullName . '" and "' . $completeNameWithPath . '" don\'t match! Execution aborted!' . "\n");
-			$keepLockFile = true;
+			fclose($debugHandler);
+			die('WARNING! uid and/or gid of "' . $cronscriptFullName . '" and "' . $completeNameWithPath . '" don\'t match! Execution aborted!');
 		}
 	}
 }

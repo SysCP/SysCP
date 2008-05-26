@@ -319,29 +319,19 @@ while($row = $db->fetch_array($result_tasks))
 						$row_dns = $db->fetch_array($result_dns);
 						
 						if($row_dns['cname'] != '')
-						{
-							$zonefile.= '@	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
-							$zonefile.= 'www	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
-							
+						{						
 							if($domain['iswildcarddomain'] == '1')
 							{
 								$zonefile.= '*	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
 							}
+							else
+							{
+								$zonefile.= '@	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
+								$zonefile.= 'www	IN	CNAME	' . $row_dns['cname'] . '.' . "\n";
+							}
 						}
 						else
-						{
-							if($row_dns['ipv4'] != '')
-							{
-								$zonefile.= '@	IN	A	' . $row_dns['ipv4'] . "\n";
-								$zonefile.= 'www	IN	A	' . $row_dns['ipv4'] . "\n";
-							}
-						
-							if($row_dns['ipv6'] != '')
-							{
-								$zonefile.= '@	IN	AAAA	' . $row_dns['ipv6'] . "\n";
-								$zonefile.= 'www	IN	AAAA	' . $row_dns['ipv6'] . "\n";
-							}
-						
+						{						
 							if($domain['iswildcarddomain'] == '1')
 							{
 								if($row_dns['ipv4'] != '')
@@ -354,21 +344,24 @@ while($row = $db->fetch_array($result_tasks))
 									$zonefile.= '*	IN	AAAA	' . $row_dns['ipv6'] . "\n";
 								}
 							}
+							else
+							{
+								if($row_dns['ipv4'] != '')
+								{
+									$zonefile.= '@	IN	A	' . $row_dns['ipv4'] . "\n";
+									$zonefile.= 'www	IN	A	' . $row_dns['ipv4'] . "\n";
+								}
+						
+								if($row_dns['ipv6'] != '')
+								{
+									$zonefile.= '@	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+									$zonefile.= 'www	IN	AAAA	' . $row_dns['ipv6'] . "\n";
+								}
+							}
 						}
 					}
 					else
-					{
-						if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
-						{
-							$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
-							$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
-						}
-						elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-						{
-							$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
-							$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
-						}
-		
+					{		
 						if($domain['iswildcarddomain'] == '1')
 						{
 							if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
@@ -378,6 +371,19 @@ while($row = $db->fetch_array($result_tasks))
 							elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 							{
 								$zonefile.= '*	IN  AAAA	' . $domain['ip'] . "\n";
+							}
+						}
+						else
+						{
+							if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+							{
+								$zonefile.= '@	IN	A	' . $domain['ip'] . "\n";
+								$zonefile.= 'www	IN	A	' . $domain['ip'] . "\n";
+							}
+							elseif(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+							{
+								$zonefile.= '@	IN	AAAA	' . $domain['ip'] . "\n";
+								$zonefile.= 'www	IN	AAAA	' . $domain['ip'] . "\n";
 							}
 						}
 					}
