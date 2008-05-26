@@ -499,6 +499,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (86, 'dkim', 'dkim_domains', 'domains');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (87, 'dkim', 'dkim_dkimkeys', 'dkim-keys.conf');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (88, 'dkim', 'dkimrestart_command', '/etc/init.d/dkim-filter restart');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (89, 'panel', 'unix_names', '1');
 # --------------------------------------------------------
 
 #

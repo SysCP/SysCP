@@ -1576,4 +1576,18 @@ if($settings['panel']['version'] == '1.2.19-svn15')
 	$settings['panel']['version'] = '1.2.19-svn16';
 }
 
+if($settings['panel']['version'] == '1.2.19-svn16')
+{
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn16 to 1.2.19-svn17");
+
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('panel', 'unix_names', '1')");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn17\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.2.19-svn17';
+}
+
 ?>

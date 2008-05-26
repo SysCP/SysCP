@@ -360,7 +360,7 @@ if($page == 'customers'
 					{
 						standard_error('loginnameexists', $loginname);
 					}
-					elseif(!validateUsername($loginname))
+					elseif(!validateUsername($loginname, $settings['panel']['unix_names'], 14 - strlen($settings['customer']['mysqlprefix'])))
 					{
 						standard_error('loginnameiswrong', $loginname);
 					}
