@@ -26,7 +26,7 @@ $header
 		</tr>
 		<tr>
 			<td class="main_field_name">{$lng['admin']['text']}</td>
-			<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="80" name="message"></textarea></td>
+			<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="80" name="message"></textarea></td>
 		</tr>
 		<tr>
 			<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send"><input class="bottom" type="submit" value="{$lng['panel']['send']}" /></td>
