@@ -22,7 +22,7 @@ $header
 	<tr>
 		<td class="title">{$lng['traffic']['day']}</td>
 		<td class="title">{$lng['traffic']['distribution']}</td>
-		<td class="title" align="right">{$lng['traffic']['MB']}</td>
+		<td class="title" align="right">{$lng['traffic']['mb']}</td>
 	</tr>
 	$traffic
 </table>
