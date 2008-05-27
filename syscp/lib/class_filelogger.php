@@ -54,7 +54,7 @@ class FileLogger extends AbstractLogger
 	{
 		parent::setupLogger($settings);
 		$this->userinfo = $userinfo;
-		$this->setLogFile($this->settings['logger']['logfile']);
+		$this->setLogFile($settings['logger']['logfile']);
 	}
 
 	/**
@@ -145,7 +145,7 @@ class FileLogger extends AbstractLogger
 				$name = '';
 			}
 
-			$fp = fopen($this->logfile, 'a');
+			$fp = @fopen($this->logfile, 'a');
 
 			if($fp !== false)
 			{
