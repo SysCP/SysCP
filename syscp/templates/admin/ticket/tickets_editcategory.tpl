@@ -13,7 +13,7 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="category" maxlength="50" value="{$row['name']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottone" value="{$lng['ticket']['ticket_editcateory']}" /></td>
+				<td class="main_field_confirm" colspan="2"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['ticket']['ticket_editcateory']}" /></td>
 			</tr>
 		</table>
 	</form>
