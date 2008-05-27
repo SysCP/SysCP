@@ -60,5 +60,7 @@ $lng['install']['phpmysql'] = 'Testing if PHP MySQL-extension is installed...';
 $lng['install']['phpfilter'] = 'Testing if PHP filter-extension is installed...';
 $lng['install']['diedbecauseofextensions'] = 'Cannot install SysCP without these extensions! Aborting...';
 $lng['install']['notinstalled'] = 'not installed!';
+$lng['install']['phpbcmath'] = 'Testing if PHP bcmath-extension is installed...';
+$lng['install']['bcmathdescription'] = 'Traffic-calculation related functions will not work correctly!';
 
 ?>
