@@ -126,12 +126,14 @@ if($page == 'message')
 		{
 			$successmessage = str_replace('%s', $sentitems, $lng['message']['success']);
 		}
+		$action = '';
 	}
 	else
 	{
 		$success = 0;
 		$sentitems = 0;
 		$successmessage = '';
+		$action = '';
 	}
 
 	$receipients = '';
