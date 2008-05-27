@@ -311,7 +311,7 @@ elseif($page == 'tickets')
 
 				$mainticket->Set('lastchange', $now);
 				$mainticket->Set('lastreplier', '0');
-				$mainticket->Set('status', '2');
+				$mainticket->Set('status', '1');
 				$mainticket->Update();
 				$log->logAction(USR_ACTION, LOG_NOTICE, "answered support-ticket '" . $mainticket->Get('subject') . "'");
 				$mainticket->sendMail(-1, 'new_reply_ticket_by_customer_subject', $lng['mails']['new_reply_ticket_by_customer']['subject'], 'new_reply_ticket_by_customer_mailbody', $lng['mails']['new_reply_ticket_by_customer']['mailbody']);

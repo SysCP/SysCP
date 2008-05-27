@@ -290,7 +290,7 @@ if($page == 'tickets'
 
 				$mainticket->Set('lastchange', $now);
 				$mainticket->Set('lastreplier', '1');
-				$mainticket->Set('status', '1');
+				$mainticket->Set('status', '2');
 				$mainticket->Update();
 				$mainticket->sendMail((int)$mainticket->Get('customer'), 'new_reply_ticket_by_staff_subject', $lng['mails']['new_reply_ticket_by_staff']['subject'], 'new_reply_ticket_by_staff_mailbody', $lng['mails']['new_reply_ticket_by_staff']['mailbody']);
 				$log->logAction(ADM_ACTION, LOG_NOTICE, "answered ticket '" . $mainticket->Get('subject') . "'");
