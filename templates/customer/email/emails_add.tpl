@@ -9,7 +9,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['emails']['emailaddress']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_part" value="" size="15" /> @ <select class="dropdown_noborder" name="domain">$domains</select></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_part" value="" size="15" /> @ <select class="dropdown_noborder" name="domain">$domains</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['emails']['iscatchall']}</td>

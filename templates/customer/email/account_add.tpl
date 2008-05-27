@@ -20,7 +20,7 @@ $header
 			<tr>
 				<td class="main_field_name">{$lng['emails']['quota']}:</td>
 				<td class="main_field_display" nowrap="nowrap">
-					<input type="text" class="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
+					<input type="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
 				</td>
 			</tr>
 			</if>

@@ -1,7 +1,7 @@
 $header
 <table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 	<tr>
-		<td colspan="3" class="maintitle">{$lng['menue']['traffic']['traffic']} $show</td>
+		<td class="maintitle" colspan="3"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['traffic']['traffic']} $show</b></td>
 	</tr>
 	<tr>
 		<td colspan="3" class="field_name_border_left">
