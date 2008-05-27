@@ -79,10 +79,12 @@ $header
 				<td class="main_field_name">{$lng['customer']['forwarders']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_forwarders" value="0" maxlength="9" /></td>
 			</tr>
+			<if $settings['system']['mail_quota_enabled'] == 1>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_quota']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_quota" value="0" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select></td>
 			</tr>
+			</if>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_imap']}: *</td>
 				<td class="main_field_display" nowrap="nowrap">$email_imap</td>
@@ -95,10 +97,12 @@ $header
 				<td class="main_field_name">{$lng['customer']['ftps']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ftps" value="0" maxlength="9" /></td>
 			</tr>
+			<if $settings['ticket']['enabled'] == 1 >
 			<tr>
 				<td class="main_field_name">{$lng['customer']['tickets']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="tickets" value="0" maxlength="9" /></td>
 			</tr>
+			</if>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['mysqls']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="mysqls" value="0" maxlength="9" /></td>
