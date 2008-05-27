@@ -874,5 +874,6 @@ $lng['admin']['or'] = 'oder';
 
 $lng['serversettings']['unix_names']['title'] = 'Benutze UNIX kompatible Benutzernamen';
 $lng['serversettings']['unix_names']['description'] = 'Erlaubt die Nutzung von <strong>-</strong> und <strong>_</strong> in Benutzernamen wenn <strong>Nein</strong>';
+$lng['error']['cannotwritetologfile'] = 'Logdatei %s konnte nicht f&uuml;r Schreiboperationen ge&ouml;ffnet werden.';
 
 ?>

@@ -831,6 +831,20 @@ if(($page == 'settings' || $page == 'overview')
 				if($_POST['logger_logfile'] != $settings['logger']['logfile'] && isset($_POST['logger_logfile']))
 				{
 					$value = validate($_POST['logger_logfile'], 'logger_logfile');
+					
+					if($value != '')
+					{
+						$fp = @fopen($value, 'a');
+						if($fp !== false)
+						{
+							fclose($fp);
+						}
+						else
+						{
+							standard_error('cannotwritetologfile', $value);
+						}
+					}
+					
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='logfile'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_logfile from '" . $settings['logger']['logfile'] . "' to '" . $value . "'");
 				}
