@@ -201,6 +201,7 @@ if($page == 'domains'
 						'ipandport' => $ipandport,
 						'safemode' => $safemode,
 						'specialsettings' => $specialsettings,
+						'wwwserveralias' => $wwwserveralias,
 						'reallydoit' => 'reallydoit'
 					));
 					exit;
@@ -356,8 +357,49 @@ if($page == 'domains'
 						}
 						else
 						{
-							$dns_mx10 = $settings['system']['hostname'];
-							$dns_mx20 = $settings['system']['hostname'];
+							if($settings['system']['mxservers'] == '')
+							{
+								$dns_mx10 = $settings['system']['hostname'];
+								$dns_mx20 = $settings['system']['hostname'];
+							}
+							else
+							{
+								$mx = explode(',', $settings['system']['mxservers']);
+								if(isset($mx[0])
+								   && $mx[0] != '')
+								{
+									if(strstr($mx[0], ' ') !== false)
+									{
+										$_mx = explode(' ', $mx[0]);
+										$dns_mx10 = $_mx[1];
+										$dns_mx20 = $_mx[1];
+									}
+									else
+									{
+										$dns_mx10 = $mx[0];
+										$dns_mx20 = $mx[0];
+									}
+									
+									if(isset($mx[1])
+									   && $mx[1] != '')
+									{
+										if(strstr($mx[1], ' ') !== false)
+										{
+											$_mx = explode(' ', $mx[1]);
+											$dns_mx20 = $_mx[1];
+										}
+										else
+										{
+											$dns_mx20 = $mx[1];
+										}
+									}
+								}
+								else
+								{
+									$dns_mx10 = $settings['system']['hostname'];
+									$dns_mx20 = $settings['system']['hostname'];
+								}
+							}
 						}
 						
 						if(isset($_POST['dns_txtrecords'])
@@ -388,8 +430,49 @@ if($page == 'domains'
 						$dns_destinationipv4 = $settings['system']['ipaddress'];
 						$dns_destinationipv6 = '';
 						$dns_destinationcname = '';
-						$dns_mx10 = $settings['system']['hostname'];
-						$dns_mx20 = $settings['system']['hostname'];
+						if($settings['system']['mxservers'] == '')
+						{
+							$dns_mx10 = $settings['system']['hostname'];
+							$dns_mx20 = $settings['system']['hostname'];
+						}
+						else
+						{
+							$mx = explode(',', $settings['system']['mxservers']);
+							if(isset($mx[0])
+							   && $mx[0] != '')
+							{
+								if(strstr($mx[0], ' ') !== false)
+								{
+									$_mx = explode(' ', $mx[0]);
+									$dns_mx10 = $_mx[1];
+									$dns_mx20 = $_mx[1];
+								}
+								else
+								{
+									$dns_mx10 = $mx[0];
+									$dns_mx20 = $mx[0];
+								}
+								
+								if(isset($mx[1])
+								   && $mx[1] != '')
+								{
+									if(strstr($mx[1], ' ') !== false)
+									{
+										$_mx = explode(' ', $mx[1]);
+										$dns_mx20 = $_mx[1];
+									}
+									else
+									{
+										$dns_mx20 = $mx[1];
+									}
+								}
+							}
+							else
+							{
+								$dns_mx10 = $settings['system']['hostname'];
+								$dns_mx20 = $settings['system']['hostname'];
+							}
+						}
 						$dns_txt = '';
 					}
 				}
@@ -410,8 +493,49 @@ if($page == 'domains'
 						$dns_destinationipv4 = $settings['system']['ipaddress'];
 						$dns_destinationipv6 = '';
 						$dns_destinationcname = '';
-						$dns_mx10 = $settings['system']['hostname'];
-						$dns_mx20 = $settings['system']['hostname'];
+						if($settings['system']['mxservers'] == '')
+						{
+							$dns_mx10 = $settings['system']['hostname'];
+							$dns_mx20 = $settings['system']['hostname'];
+						}
+						else
+						{
+							$mx = explode(',', $settings['system']['mxservers']);
+							if(isset($mx[0])
+							   && $mx[0] != '')
+							{
+								if(strstr($mx[0], ' ') !== false)
+								{
+									$_mx = explode(' ', $mx[0]);
+									$dns_mx10 = $_mx[1];
+									$dns_mx20 = $_mx[1];
+								}
+								else
+								{
+									$dns_mx10 = $mx[0];
+									$dns_mx20 = $mx[0];
+								}
+								
+								if(isset($mx[1])
+								   && $mx[1] != '')
+								{
+									if(strstr($mx[1], ' ') !== false)
+									{
+										$_mx = explode(' ', $mx[1]);
+										$dns_mx20 = $_mx[1];
+									}
+									else
+									{
+										$dns_mx20 = $mx[1];
+									}
+								}
+							}
+							else
+							{
+								$dns_mx10 = $settings['system']['hostname'];
+								$dns_mx20 = $settings['system']['hostname'];
+							}
+						}
 						$dns_txt = '';
 					}
 				}
@@ -466,6 +590,11 @@ if($page == 'domains'
 				if($dkim != '1')
 				{
 					$dkim = '0';
+				}
+				
+				if($wwwserveralias != '1')
+				{
+					$wwwserveralias = '0';
 				}
 
 				if($caneditdomain != '1')
@@ -546,6 +675,7 @@ if($page == 'domains'
 							'ssl_ipandport' => $ssl_ipandport,
 							'safemode' => $safemode,
 							'specialsettings' => $specialsettings,
+							'wwwserveralias' => $wwwserveralias,
 							'reallydoit' => 'reallydoit'
 						));
 						exit;
@@ -576,6 +706,7 @@ if($page == 'domains'
 							'ssl_ipandport' => $ssl_ipandport,
 							'safemode' => $safemode,
 							'specialsettings' => $specialsettings,
+							'wwwserveralias' => $wwwserveralias,
 							'reallydocroot' => 'reallydocroot'
 						);
 
@@ -971,7 +1102,19 @@ if($page == 'domains'
 							if($settings['system']['maxservers'] != '')
 							{
 								$mxsrvs = explode(',', $settings['system']['maxservers']);
-								$dns_mx10 = $mxsrvs[0];
+								if(isset($mxsrvs[0])
+								   && $mxsrvs[0] != '')
+								{
+									if(strstr($mxsrvs[0], ' ') !== false)
+									{
+										$_mx = explode(' ', $mxsrvs[0]);
+										$dns_mx10 = $_mx[1];
+									}
+									else
+									{
+										$dns_mx10 = $mxsrvs[0];
+									}
+								}
 							}
 							else
 							{
@@ -991,11 +1134,35 @@ if($page == 'domains'
 								if(isset($mxsrvs[1])
 								   && $mxsrvs[1] != '')
 								{
-									$dns_mx20 = $mxsrvs[1];
+									if(strstr($mxsrvs[1], ' ') !== false)
+									{
+										$_mx = explode(' ', $mxsrvs[1]);
+										$dns_mx20 = $_mx[1];
+									}
+									else
+									{
+										if(isset($mxsrvs[0])
+										   && $mxsrvs[0] != '')
+										{
+											if(strstr($mxsrvs[0], ' ') !== false)
+											{
+												$_mx = explode(' ', $mxsrvs[0]);
+												$dns_mx20 = $_mx[1];
+											}
+											else
+											{
+												$dns_mx20 = $mxsrvs[0];
+											}
+										}
+										else
+										{
+											$dns_mx20 = $settings['system']['hostname'];
+										}
+									}
 								}
 								else
 								{
-									$dns_mx20 = $mxsrvs[0];
+									$dns_mx20 = $settings['system']['hostname'];
 								}
 							}
 							else
