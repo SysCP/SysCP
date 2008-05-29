@@ -473,7 +473,7 @@ if(($page == 'settings' || $page == 'overview')
 				
 				foreach($mysql_access_host_array as $host_entry)
 				{
-					if(validate_ip($host_entry) == false
+					if(validate_ip($host_entry, true) == false
 					   && validateDomain($host_entry) == false
 					   && $host_entry != '%')
 					{

@@ -82,8 +82,22 @@ $header
 			<td class="field_display">$mysqlclientversion</td>
 		</tr>
 		<tr>
-			<td class="field_name_nobordersmall">{$lng['admin']['webserverinterface']}:</td>
-			<td class="field_display_nobordersmall">$webserverinterface</td>
+			<td class="field_name_border_left">{$lng['admin']['webserverinterface']}:</td>
+			<td class="field_display">$webserverinterface</td>
+		</tr>
+		<tr>
+			<td class="field_name_border_left">{$lng['admin']['sysload']}:</td>
+			<td class="field_display">$load</td>
+		</tr>
+		<if $showkernel == 1>
+			<tr>
+				<td class="field_name_border_left">Kernel:</td>
+				<td class="field_display">$kernel</td>
+			</tr>
+		</if>
+		<tr>
+			<td class="field_name_nobordersmall">Uptime:</td>
+			<td class="field_display_nobordersmall">$uptime</td>
 		</tr>
 		<tr>
 			<td colspan="2" class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['syscpdetails']}</b></td>

@@ -149,6 +149,61 @@ if($page == 'overview')
 			'%s' => '<a href="admin_tickets.php?page=tickets&amp;s=' . $s . '">' . $opentickets['count'] . '</a>'
 		));
 	}
+	
+	if(function_exists('sys_getloadavg')) 
+	{
+		$loadArray = sys_getloadavg();
+		$load = $loadArray[0] . " / " .$loadArray[1]. " / " . $loadArray[2];
+	}
+	else
+	{
+		$load = @file_get_contents('/proc/loadavg');
+		if(!$load)
+		{
+			$load = $lng['admin']['noloadavailable'];
+		}
+	}
+	
+	if(function_exists('posix_uname'))
+	{
+		$showkernel = 1;
+		$kernel_nfo = posix_uname();
+		$kernel = $kernel_nfo['release'] . ' (' . $kernel_nfo['machine'] . ')';
+	}
+	else
+	{
+		$showkernel = 0;
+		$kernel = '';
+	}
+	
+	if(function_exists('posix_times'))
+	{
+		$times = posix_times();
+    	$now = $times['ticks'];
+    	$days = intval($now / (60*60*24*100));
+    	$remainder = $now % (60*60*24*100);
+    	$hours = intval($remainder / (60*60*100));
+    	$remainder = $remainder % (60*60*100);
+    	$minutes = intval($remainder / (60*100));
+		$years = 0;
+		while($days > 365)
+		{
+			$years++;
+			$days -= 365;
+		}
+		if($years > 0)
+		{
+			$uptime = $years . 'y, ' . $days . 'd, ' . $hours . 'h, ' . $minutes . 'm';
+		}
+		else
+		{
+			$uptime = $days . 'd, ' . $hours . 'h, ' . $minutes . 'm';
+		}
+	}
+	else
+	{
+		$uptime = $lng['admin']['nouptimeavailable'];
+	}
 
 	eval("echo \"" . getTemplate("index/index") . "\";");
 }

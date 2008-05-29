@@ -645,7 +645,7 @@ function validateUrl($url)
 				$ip = strtolower(substr($url, 8));
 			}
 			$ip = substr($ip, 0, strpos($ip, '/'));
-			if(validate_ip($ip) !== false)
+			if(validate_ip($ip, true) !== false)
 			{
 				return true;
 			}
@@ -1852,13 +1852,13 @@ function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
  * @return mixed 	ip address on success, standard_error on failure
  */
 
-function validate_ip($ip, $lng = 'invalidip', $installscript = false)
+function validate_ip($ip, $lng = 'invalidip', $return_bool = false)
 {
 	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === FALSE
 	   && filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE
 	   && filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE) === FALSE)
 	{
-		if($installscript)
+		if($return_bool)
 		{
 			return false;
 		}
