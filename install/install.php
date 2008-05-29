@@ -576,14 +576,12 @@ if(isset($_POST['installstep'])
 	if(in_array('127.0.0.1', $mysql_access_host_array)
 	   && !in_array('localhost', $mysql_access_host_array))
 	{
-		$value.= ',localhost';
 		$mysql_access_host_array[] = 'localhost';
 	}
 
 	if(!in_array('127.0.0.1', $mysql_access_host_array)
 	   && in_array('localhost', $mysql_access_host_array))
 	{
-		$value.= ',127.0.0.1';
 		$mysql_access_host_array[] = '127.0.0.1';
 	}
 
@@ -615,12 +613,16 @@ if(isset($_POST['installstep'])
 			$result = $db->query($sql_query[$i]);
 		}
 	}
-
 	status_message('green', 'OK');
 
-	if(validate_ip($_SERVER['SERVER_NAME'], null, true) !== false)
+	status_message('begin', 'System Servername...');
+	if(validate_ip($_SERVER['SERVER_NAME'], true) !== false)
 	{
 		status_message('red', $lng['install']['servername_should_be_fqdn']);
+	}
+	else
+	{
+		status_message('green', 'OK');
 	}
 
 	//now let's change the settings in our settings-table
