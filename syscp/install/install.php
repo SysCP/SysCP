@@ -337,7 +337,7 @@ else
 {
 	if(!empty($_SERVER['SERVER_NAME']))
 	{
-		if(validate_ip($_SERVER['SERVER_NAME'], null, true) === false)
+		if(validate_ip($_SERVER['SERVER_NAME'], true) == false)
 		{
 			$servername = $_SERVER['SERVER_NAME'];
 		}

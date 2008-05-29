@@ -1852,7 +1852,7 @@ function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
  * @return mixed 	ip address on success, standard_error on failure
  */
 
-function validate_ip($ip, $lng = 'invalidip', $return_bool = false)
+function validate_ip($ip, $return_bool = false, $lng = 'invalidip')
 {
 	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === FALSE
 	   && filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE
