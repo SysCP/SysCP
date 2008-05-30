@@ -395,6 +395,10 @@ class cron_httpd
  )\n";
 					}
 				}
+				else
+				{
+					$this->vhosts_file.= '  php_flag engine off' . "\n";
+				}
 
 				mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
 
