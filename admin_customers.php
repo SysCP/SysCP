@@ -451,7 +451,7 @@ if($page == 'customers'
 					inserttask('2', $loginname, $guid, $guid);
 
 					// Add htpasswd for the webalizer stats
-					if($settings['system']['webalizier_enabled'] == '1')
+					if($settings['system']['webalizer_enabled'] == '1')
 					{
 						$path = $documentroot . '/webalizer/';
 					}
