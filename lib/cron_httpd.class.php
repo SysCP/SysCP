@@ -406,7 +406,7 @@ class cron_httpd
 
 						if(!$this->is_lighttpd)
 						{
-							if($this->settings['system']['webalizier_enabled'] == '1')
+							if($this->settings['system']['webalizer_enabled'] == '1')
 							{
 								$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
 							}
@@ -417,7 +417,7 @@ class cron_httpd
 						}
 						else
 						{
-							if($this->settings['system']['webalizier_enabled'] == '1')
+							if($this->settings['system']['webalizer_enabled'] == '1')
 							{
 								$this->vhosts_file.= '  alias.url = (' . "\n";
 								$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . '",' . "\n";
@@ -435,7 +435,7 @@ class cron_httpd
 
 						if(!$this->is_lighttpd)
 						{
-							if($this->settings['system']['webalizier_enabled'] == '1')
+							if($this->settings['system']['webalizer_enabled'] == '1')
 							{
 								$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
 							}
@@ -446,7 +446,7 @@ class cron_httpd
 						}
 						else
 						{
-							if($this->settings['system']['webalizier_enabled'] == '1')
+							if($this->settings['system']['webalizer_enabled'] == '1')
 							{
 								$this->vhosts_file.= '  alias.url = (' . "\n";
 								$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . '",' . "\n";
@@ -467,7 +467,7 @@ class cron_httpd
 					{
 						if(!$this->is_lighttpd)
 						{
-							if($this->settings['system']['webalizier_enabled'] == '1')
+							if($this->settings['system']['webalizer_enabled'] == '1')
 							{
 								$this->vhosts_file.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
 							}
@@ -478,7 +478,7 @@ class cron_httpd
 						}
 						else
 						{
-							if($this->settings['system']['webalizier_enabled'] == '1')
+							if($this->settings['system']['webalizer_enabled'] == '1')
 							{
 								$this->vhosts_file.= '  alias.url = (' . "\n";
 								$this->vhosts_file.= '  	"/webalizer/" => "' . $domain['customerroot'] . '/webalizer/",' . "\n";
