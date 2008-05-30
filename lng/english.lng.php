@@ -32,7 +32,6 @@ $lng['panel']['path'] = 'Path';
 $lng['panel']['toggle'] = 'Toggle';
 $lng['panel']['next'] = 'next';
 $lng['panel']['dirsmissing'] = 'Can not find or read the directory!';
-$lng['panel']['backtooverview'] = 'Back to overview';
 
 /**
  * Login
@@ -873,5 +872,6 @@ $lng['error']['cannotwritetologfile'] = 'Cannot open logfile %s for writing';
 $lng['admin']['sysload'] = 'System load';
 $lng['admin']['noloadavailable'] = 'not available';
 $lng['admin']['nouptimeavailable'] = 'not available';
+$lng['panel']['backtooverview'] = 'Back to overview';
 
 ?>
