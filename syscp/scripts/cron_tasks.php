@@ -79,7 +79,7 @@ while($row = $db->fetch_array($result_tasks))
 
 		if(is_array($row['data']))
 		{
-			if($settings['system']['webalizier_enabled'] == '1')
+			if($settings['system']['webalizer_enabled'] == '1')
 			{
 				safe_exec('mkdir -p ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/webalizer'));
 			}
