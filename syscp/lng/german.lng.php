@@ -878,5 +878,6 @@ $lng['error']['cannotwritetologfile'] = 'Logdatei %s konnte nicht f&uuml;r Schre
 $lng['admin']['sysload'] = 'System-Auslastung';
 $lng['admin']['noloadavailable'] = 'nicht verf&uuml;gbar';
 $lng['admin']['nouptimeavailable'] = 'nicht verf&uuml;gbar';
+$lng['panel']['backtooverview'] = 'Zur&uuml;ck zur &Uuml;bersicht';
 
 ?>
