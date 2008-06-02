@@ -107,6 +107,27 @@ $configfiles = Array(
 							'newaliases'
 						)
 					),
+					'exim4' => Array(
+						'label' => 'Exim4',
+						'commands_1' => Array(
+							'dpkg-reconfigure exim4-config',
+							'# choose "no configuration at this time" and "splitted configuration files in the dialog"'
+						),
+						'files' => Array(
+							'etc_exim4_conf.d_acl_30_exim4-config_check_rcpt.rul' => '/etc/exim4/conf.d/acl/30_exim4-config_check_rcpt.rul',
+							'etc_exim4_conf.d_auth_30_syscp-config' => '/etc/exim4/conf.d/auth/30_syscp-config',
+							'etc_exim4_conf.d_main_10_syscp-config_options' => '/etc/exim4/conf.d/main/10_syscp-config_options',
+							'etc_exim4_conf.d_router_180_syscp-config' => '/etc/exim4/conf.d/router/180_syscp-config',
+							'etc_exim4_conf.d_transport_30_syscp-config' => '/etc/exim4/conf.d/transport/30_syscp-config'
+						),
+						'commands_2' => Array(
+							'chmod o-rx /var/lib/exim4',
+							'chmod o-rx /etc/exim4/conf.d/main/10_syscp-config_options'
+						),
+						'restart' => Array(
+							'/etc/init.d/exim4 restart'
+						)
+					),
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
 						'files' => Array(
@@ -275,6 +296,27 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 						'restart' => Array(
 							'/etc/init.d/postfix restart',
 							'newaliases'
+						)
+					),
+					'exim4' => Array(
+						'label' => 'Exim4',
+						'commands_1' => Array(
+							'dpkg-reconfigure exim4-config',
+							'# choose "no configuration at this time" and "splitted configuration files in the dialog"'
+						),
+						'files' => Array(
+							'etc_exim4_conf.d_acl_30_exim4-config_check_rcpt.rul' => '/etc/exim4/conf.d/acl/30_exim4-config_check_rcpt.rul',
+							'etc_exim4_conf.d_auth_30_syscp-config' => '/etc/exim4/conf.d/auth/30_syscp-config',
+							'etc_exim4_conf.d_main_10_syscp-config_options' => '/etc/exim4/conf.d/main/10_syscp-config_options',
+							'etc_exim4_conf.d_router_180_syscp-config' => '/etc/exim4/conf.d/router/180_syscp-config',
+							'etc_exim4_conf.d_transport_30_syscp-config' => '/etc/exim4/conf.d/transport/30_syscp-config'
+						),
+						'commands_2' => Array(
+							'chmod o-rx /var/lib/exim4',
+							'chmod o-rx /etc/exim4/conf.d/main/10_syscp-config_options'
+						),
+						'restart' => Array(
+							'/etc/init.d/exim4 restart'
 						)
 					),
 					'dkim' => Array(
