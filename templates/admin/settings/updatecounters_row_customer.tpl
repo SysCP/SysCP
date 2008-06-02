@@ -5,6 +5,10 @@
 			<td class="main_field_name">
 				<table border="0" style="text-align: left;">
 					<tr>
+						<td>{$lng['customer']['subdomains']}:</td>
+						<td><span <if $customer['tickets_used'] == $customer['tickets_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['tickets_used']} -&gt; {$customer['tickets_used_new']}</b></span></td>
+					</tr>
+					<tr>
 						<td>{$lng['customer']['mysqls']}:</td>
 						<td><span <if $customer['mysqls_used'] == $customer['mysqls_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['mysqls_used']} -&gt; {$customer['mysqls_used_new']}</b></span></td>
 					</tr>
@@ -24,14 +28,12 @@
 						<td>{$lng['customer']['ftps']}:</td>
 						<td><span <if $customer['ftps_used'] == $customer['ftps_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['ftps_used']} -&gt; {$customer['ftps_used_new']}</b></span></td>
 					</tr>
+					<if $settings['ticket']['enabled'] == '1'>
 					<tr>
 						<td>{$lng['customer']['tickets']}:</td>
 						<td><span <if $customer['tickets_used'] == $customer['tickets_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['tickets_used']} -&gt; {$customer['tickets_used_new']}</b></span></td>
 					</tr>
-					<tr>
-						<td>{$lng['customer']['subdomains']}:</td>
-						<td><span <if $customer['tickets_used'] == $customer['tickets_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['tickets_used']} -&gt; {$customer['tickets_used_new']}</b></span></td>
-					</tr>
+					</if>
 				</table>
 			</td>
 		</tr>

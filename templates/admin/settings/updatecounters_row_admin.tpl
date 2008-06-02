@@ -13,6 +13,10 @@
 						<td><span <if $admin['domains_used'] == $admin['domains_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['domains_used']} -&gt; {$admin['domains_used_new']}</b></span></td>
 					</tr>
 					<tr>
+						<td>{$lng['customer']['subdomains']}:</td>
+						<td><span <if $admin['subdomains_used'] == $admin['subdomains_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['subdomains_used']} -&gt; {$admin['subdomains_used_new']}</b></span></td>
+					</tr>
+					<tr>
 						<td>{$lng['customer']['diskspace']}:</td>
 						<td><span <if $admin['diskspace_used'] == $admin['diskspace_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['diskspace_used']} -&gt; {$admin['diskspace_used_new']}</b></span></td>
 					</tr>
@@ -40,14 +44,12 @@
 						<td>{$lng['customer']['ftps']}:</td>
 						<td><span <if $admin['ftps_used'] == $admin['ftps_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['ftps_used']} -&gt; {$admin['ftps_used_new']}</b></span></td>
 					</tr>
+					<if $settings['ticket']['enabled'] == '1'>
 					<tr>
 						<td>{$lng['customer']['tickets']}:</td>
 						<td><span <if $admin['tickets_used'] == $admin['tickets_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['tickets_used']} -&gt; {$admin['tickets_used_new']}</b></span></td>
 					</tr>
-					<tr>
-						<td>{$lng['customer']['subdomains']}:</td>
-						<td><span <if $admin['subdomains_used'] == $admin['subdomains_used_new']>style="color:green"<else>style="color:red"</if>><b>{$admin['subdomains_used']} -&gt; {$admin['subdomains_used_new']}</b></span></td>
-					</tr>
+					</if>
 				</table>
 			</td>
 		</tr>

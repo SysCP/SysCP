@@ -387,7 +387,7 @@ $lng['mysql']['description'] = 'Hier k&ouml;nnen Sie MySQL-Datenbanken anlegen u
  * ADDED BETWEEN 1.2.12 and 1.2.13
  */
 
-$lng['admin']['cronlastrun'] = 'Last Cron';
+$lng['admin']['cronlastrun'] = 'Letzter Cronjob';
 $lng['serversettings']['paging']['title'] = 'Eintr&auml;ge pro Seite';
 $lng['serversettings']['paging']['description'] = 'Wieviele Eintr&auml;ge sollen auf einer Seite gezeigt werden? (0 = Paging deaktivieren)';
 $lng['error']['ipstillhasdomains'] = 'Die IP/Port Kombination, die Sie l&ouml;schen wollen ist noch bei einer oder mehreren Domains eingetragen. Bitte &auml;ndern sie die Domains vorher auf eine andere IP/Port Kombination um diese l&ouml;schen zu k&ouml;nnen.';
@@ -879,5 +879,6 @@ $lng['admin']['sysload'] = 'System-Auslastung';
 $lng['admin']['noloadavailable'] = 'nicht verf&uuml;gbar';
 $lng['admin']['nouptimeavailable'] = 'nicht verf&uuml;gbar';
 $lng['panel']['backtooverview'] = 'Zur&uuml;ck zur &Uuml;bersicht';
+$lng['admin']['nosubject'] = '(Kein Betreff)';
 
 ?>
