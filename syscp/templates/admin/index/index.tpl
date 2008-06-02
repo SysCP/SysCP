@@ -12,6 +12,10 @@ $header
 			<td class="field_display">{$overview['number_domains']} ({$userinfo['domains']})</td>
 		</tr>
 		<tr>
+			<td class="field_name_nobordersmall">{$lng['customer']['subdomains']}:</td>
+			<td class="field_display_nobordersmall">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
+		</tr>
+		<tr>
 			<td class="field_name_border_left">{$lng['customer']['diskspace']}:</td>
 			<td class="field_display">{$overview['diskspace_used']} ({$userinfo['diskspace_used']}/{$userinfo['diskspace']})</td>
 		</tr>
@@ -49,15 +53,11 @@ $header
 			<td class="field_display">{$overview['tickets_used']} ({$userinfo['tickets_used']}/{$userinfo['tickets']})</td>
 		</tr>
 		</if>
-    <if 0 < $awaitingtickets && $settings['ticket']['enabled'] == 1 >
+		<if 0 < $awaitingtickets && $settings['ticket']['enabled'] == 1 >
 		<tr>
 			<td class="field_name_border_left" colspan="2"><b>{$awaitingtickets_text}</b></td>
 		</tr>
-    </if>
-		<tr>
-			<td class="field_name_nobordersmall">{$lng['customer']['subdomains']}:</td>
-			<td class="field_display_nobordersmall">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
-		</tr>
+		</if>
 		<tr>
 			<td colspan="2" class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['systemdetails']}</b></td>
 		</tr>
@@ -124,11 +124,11 @@ $header
 			<td class="field_name_border_left">{$lng['admin']['latestversion']}:</td>
 			<td class="field_display"><a href="$lookfornewversion_link">$lookfornewversion_lable</a></td>
 		</tr>
-<if $lookfornewversion_addinfo != ''>
+		<if $lookfornewversion_addinfo != ''>
 		<tr>
 			<td class="field_name_border_left" colspan="2">$lookfornewversion_addinfo</td>
 		</tr>
-</if>
+		</if>
 	</table>
 	<br />
 	<br />

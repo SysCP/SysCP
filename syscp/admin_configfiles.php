@@ -141,6 +141,7 @@ if($userinfo['change_serversettings'] == '1')
 	}
 	elseif($page == 'overview')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_configfiles");
 		$distributions = '';
 		foreach($configfiles as $distribution_name => $distribution_details)
 		{

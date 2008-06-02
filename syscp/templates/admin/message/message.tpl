@@ -22,7 +22,7 @@ $header
 		</tr>
 		<tr>
 			<td class="main_field_name">{$lng['admin']['subject']}</td>
-			<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subject" value="(No Subject)"></td>
+			<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subject" value="{$lng['admin']['nosubject']}"></td>
 		</tr>
 		<tr>
 			<td class="main_field_name">{$lng['admin']['text']}</td>

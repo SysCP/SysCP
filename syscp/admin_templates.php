@@ -39,6 +39,7 @@ if($page == 'email')
 
 	if($action == '')
 	{
+		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_templates");
 		$available_templates = array(
 			'createcustomer',
 			'pop_success',
