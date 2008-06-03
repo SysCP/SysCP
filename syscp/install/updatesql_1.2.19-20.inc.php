@@ -14,7 +14,7 @@
  * @package    System
  * @version    $Id: $
  */
-
+ 
 if($settings['panel']['version'] == '1.2.19')
 {
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'system\', \'mod_fcgid_configdir\', \'/var/www/php-fcgi-scripts\')');
