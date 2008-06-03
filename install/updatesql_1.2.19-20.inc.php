@@ -26,6 +26,7 @@ if($settings['panel']['version'] == '1.2.19')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn1';
+	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn1')
@@ -38,6 +39,7 @@ if($settings['panel']['version'] == '1.2.19-svn1')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn2';
+	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn2')
@@ -50,6 +52,7 @@ if($settings['panel']['version'] == '1.2.19-svn2')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn3';
+	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn3')
@@ -63,6 +66,7 @@ if($settings['panel']['version'] == '1.2.19-svn3')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn4';
+	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn4')
@@ -75,6 +79,7 @@ if($settings['panel']['version'] == '1.2.19-svn4')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn4.5';
+	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn4.5')
@@ -102,6 +107,7 @@ if($settings['panel']['version'] == '1.2.19-svn4.5')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn6';
+	var_dump($settings['panel']['version']);
 }
 
 // ok, from this version on, we need the php filter-extension!
@@ -123,7 +129,6 @@ else
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn6 to 1.2.19-svn7");
 		
-		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `ip` tinyint(4) NOT NULL default '-1'");
 		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `area`='admin', `parent_url`='', `lang`='menu;message', `url`='admin_message.nourl', `order`=50");
 		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `area`='admin', `parent_url`='admin_message.nourl', `lang`='admin;message', `url`='admin_message.php?page=message', `order`=10");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl` tinyint(4) NOT NULL default '0'");
@@ -148,6 +153,7 @@ else
 		$query = sprintf($query, TABLE_PANEL_SETTINGS);
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn7';
+			var_dump($settings['panel']['version']);
 	}
 	
 	if($settings['panel']['version'] == '1.2.19-svn7')
