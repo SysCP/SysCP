@@ -108,8 +108,9 @@ if($settings['panel']['version'] == '1.2.19-svn4.5')
 if(!extension_loaded('filter'))
 {
 	$updatelog->logAction(ADM_ACTION, LOG_ERR, "You need to install the php filter-extension! Update to 1.2.19-svn6 aborted");
-	// we just skip the update-part here so it will re-run next time 
-	// (hopefully when the user installed the extension!)
+	// skipping the update will not work, this ends up in an endless redirection from index.php to updatesql.php and back to index.php
+	die("You need to install the php filter-extension! Update to 1.2.19-svn6 aborted");
+	
 }
 else
 {
