@@ -26,7 +26,6 @@ if($settings['panel']['version'] == '1.2.19')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn1';
-	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn1')
@@ -39,7 +38,6 @@ if($settings['panel']['version'] == '1.2.19-svn1')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn2';
-	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn2')
@@ -52,7 +50,6 @@ if($settings['panel']['version'] == '1.2.19-svn2')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn3';
-	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn3')
@@ -66,7 +63,6 @@ if($settings['panel']['version'] == '1.2.19-svn3')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn4';
-	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn4')
@@ -79,7 +75,6 @@ if($settings['panel']['version'] == '1.2.19-svn4')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn4.5';
-	var_dump($settings['panel']['version']);
 }
 
 if($settings['panel']['version'] == '1.2.19-svn4.5')
@@ -107,7 +102,6 @@ if($settings['panel']['version'] == '1.2.19-svn4.5')
 	$query = sprintf($query, TABLE_PANEL_SETTINGS);
 	$db->query($query);
 	$settings['panel']['version'] = '1.2.19-svn6';
-	var_dump($settings['panel']['version']);
 }
 
 // ok, from this version on, we need the php filter-extension!
@@ -153,7 +147,6 @@ else
 		$query = sprintf($query, TABLE_PANEL_SETTINGS);
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn7';
-			var_dump($settings['panel']['version']);
 	}
 	
 	if($settings['panel']['version'] == '1.2.19-svn7')
