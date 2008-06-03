@@ -72,7 +72,9 @@ class SysCPLogger
 		self::$logtypes = array();
 
 		if(!isset($this->settings['logger']['logtypes'])
-		   && $this->settings['logger']['logtypes'] == ''
+		   && (!isset($this->settings['logger']['logtypes'])
+		   || $this->settings['logger']['logtypes'] == '')
+		   && isset($this->settings['logger']['enabled'])
 		   && $this->settings['logger']['enabled'])
 		{
 			self::$logtypes[0] = 'syslog';
@@ -80,7 +82,15 @@ class SysCPLogger
 		}
 		else
 		{
-			self::$logtypes = explode(',', $this->settings['logger']['logtypes']);
+			if(isset($this->settings['logger']['logtypes'])
+			   && $this->settings['logger']['logtypes'] != '')
+			{
+				self::$logtypes = explode(',', $this->settings['logger']['logtypes']);
+			}
+			else
+			{
+				self::$logtypes = null;
+			}
 		}
 	}
 
@@ -108,6 +118,11 @@ class SysCPLogger
 
 	public function logAction($action = USR_ACTION, $type = LOG_NOTICE, $text = null)
 	{
+		if(self::$logtypes == null)
+		{
+			return;
+		}
+		
 		foreach(self::$logtypes as $logger)
 		{
 			switch($logger)
