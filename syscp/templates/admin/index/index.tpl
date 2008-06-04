@@ -12,8 +12,8 @@ $header
 			<td class="field_display">{$overview['number_domains']} ({$userinfo['domains']})</td>
 		</tr>
 		<tr>
-			<td class="field_name_nobordersmall">{$lng['customer']['subdomains']}:</td>
-			<td class="field_display_nobordersmall">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
+			<td class="field_name_border_left">{$lng['customer']['subdomains']}:</td>
+			<td class="field_display">{$overview['subdomains_used']} ({$userinfo['subdomains_used']}/{$userinfo['subdomains']})</td>
 		</tr>
 		<tr>
 			<td class="field_name_border_left">{$lng['customer']['diskspace']}:</td>
@@ -43,14 +43,19 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['email_quota']}:</td>
 			<td class="field_display">{$overview['email_quota_used']} ({$userinfo['email_quota_used']}/{$userinfo['email_quota']})</td>
 		</tr>
+		<if $settings['ticket']['enabled'] == 1>
 		<tr>
 			<td class="field_name_border_left">{$lng['customer']['ftps']}:</td>
 			<td class="field_display">{$overview['ftps_used']} ({$userinfo['ftps_used']}/{$userinfo['ftps']})</td>
 		</tr>
-		<if $settings['ticket']['enabled'] == 1>
 		<tr>
-			<td class="field_name_border_left">{$lng['customer']['tickets']}:</td>
-			<td class="field_display">{$overview['tickets_used']} ({$userinfo['tickets_used']}/{$userinfo['tickets']})</td>
+			<td class="field_name_nobordersmall">{$lng['customer']['tickets']}:</td>
+			<td class="field_display_nobordersmall">{$overview['tickets_used']} ({$userinfo['tickets_used']}/{$userinfo['tickets']})</td>
+		</tr>
+		<else>
+		<tr>
+			<td class="field_name_nobordersmall">{$lng['customer']['ftps']}:</td>
+			<td class="field_display_nobordersmall">{$overview['ftps_used']} ({$userinfo['ftps_used']}/{$userinfo['ftps']})</td>
 		</tr>
 		</if>
 		<if 0 < $awaitingtickets && $settings['ticket']['enabled'] == 1 >
