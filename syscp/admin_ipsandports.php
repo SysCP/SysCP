@@ -60,6 +60,10 @@ if($page == 'ipsandports'
 			if($paging->checkDisplay($i))
 			{
 				$row = htmlentities_array($row);
+				if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+				{
+					$row['ip'] = '[' . $row['ip'] . ']';
+				}
 				eval("\$ipsandports.=\"" . getTemplate("ipsandports/ipsandports_ipandport") . "\";");
 				$count++;
 			}
