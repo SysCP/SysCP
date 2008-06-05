@@ -531,10 +531,24 @@ if(isset($_POST['installstep'])
 	{
 		status_message('green', 'OK');
 	}
+	
 	status_message('begin', $lng['install']['phpbcmath']);
 	if(!extension_loaded('bcmath'))
 	{
 		status_message('orange', $lng['install']['notinstalled'].'<br />'.$lng['install']['bcmathdescription']);
+		$_die = false;
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
+	
+	status_message('begin', $lng['install']['openbasedir']);
+	$php_ob = @ini_get("open_basedir");
+	if(!empty($php_ob)
+	   && $php_ob != '')
+	{
+		status_message('orange', $lng['install']['openbasedirenabled']);
 		$_die = false;
 	}
 	else

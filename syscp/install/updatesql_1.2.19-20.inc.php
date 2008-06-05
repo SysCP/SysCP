@@ -119,6 +119,13 @@ else
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "The php extension 'bcmath' is not installed - SysCP will work without it but might not return exact traffic/space-usage values!");
 	}
 	
+	$php_ob = @ini_get("open_basedir");
+	if(!empty($php_ob)
+	   && $php_ob != '')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Detected enabled 'open_basedir', please disable open_basedir to make SysCP work properly!");
+	}
+	
 	if($settings['panel']['version'] == '1.2.19-svn6')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn6 to 1.2.19-svn7");
