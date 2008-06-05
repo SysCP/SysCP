@@ -62,5 +62,7 @@ $lng['install']['diedbecauseofextensions'] = 'Cannot install SysCP without these
 $lng['install']['notinstalled'] = 'not installed!';
 $lng['install']['phpbcmath'] = 'Testing if PHP bcmath-extension is installed...';
 $lng['install']['bcmathdescription'] = 'Traffic-calculation related functions will not work correctly!';
+$lng['install']['openbasedir'] = 'Testing if open_basedir is enabled...';
+$lng['install']['openbasedirenabled'] = 'enabled. SysCP will not work properly with open_basedir enabled. Please disable open_basedir for syscp';
 
 ?>
