@@ -238,10 +238,11 @@ elseif($page == 'domains')
 				   && validateUrl($idna_convert->encode($_POST['url'])))
 				{
 					$path = $_POST['url'];
+					$path = $userinfo['documentroot'] . $_POST['path'];
 				}
 				else
 				{
-					$path = $_POST['path'];
+					$path = $userinfo['documentroot'] . $_POST['path'];
 				}
 
 				if(!preg_match('/^https?\:\/\//', $path))
