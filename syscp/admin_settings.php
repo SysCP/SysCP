@@ -375,14 +375,19 @@ if(($page == 'settings' || $page == 'overview')
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_documentroot_prefix from '" . $settings['system']['documentroot_prefix'] . "' to '" . $value . "'");
 			}
 			
+			if(isset($_POST['system_ipaddress']) && substr($_POST['system_ipaddress'], 0, 1) == '[')
+			{
+				$_POST['system_ipaddress'] = substr($_POST['system_ipaddress'], 1, strlen($_POST['system_ipaddress']) - 2);
+			}
+			
 			if($_POST['system_ipaddress'] != $settings['system']['ipaddress'] && isset($_POST['system_ipaddress']))
 			{
-				$value = (int)$_POST['system_ipaddress'];
-				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($value) . "'");
+				$value = validate_ip($_POST['system_ipaddress']);
+				$result_ipandport = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $value . "'");
 	
 				if($db->num_rows($result_ipandport) == 0)
 				{
-					standard_error('ipiswrong');
+					standard_error('invalidip', $value);
 					exit;
 				}
 	
