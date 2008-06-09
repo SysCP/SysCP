@@ -153,7 +153,7 @@ if($page == 'overview')
 	if(function_exists('sys_getloadavg')) 
 	{
 		$loadArray = sys_getloadavg();
-		$load = $loadArray[0] . " / " .$loadArray[1]. " / " . $loadArray[2];
+		$load = number_format($loadArray[0], 2, '.', '') . " / " . number_format($loadArray[1], 2, '.', '') . " / " . number_format($loadArray[2], 2, '.', '');
 	}
 	else
 	{

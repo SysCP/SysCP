@@ -63,6 +63,10 @@ if($page == 'domains'
 			$row['domain'] = $idna_convert->decode($row['domain']);
 			$row['aliasdomain'] = $idna_convert->decode($row['aliasdomain']);
 			$row['domainalias'] = $idna_convert->decode($row['domainalias']);
+			if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+			{
+				$row['ipandport'] = '[' . $row['ip'] . ']:' . $row['port'];
+			}
 			$domain_array[$row['domain']] = $row;
 		}
 
@@ -780,12 +784,20 @@ if($page == 'domains'
 				$ipsandports = '';
 				while($row_ipandport = $db->fetch_array($result_ipsandports))
 				{
+					if(filter_var($row_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					{
+						$row_ipandport['ip'] = '[' . $row_ipandport['ip'] . ']';
+					}
 					$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id']);
 				}
 					
 				$ssl_ipsandports = '';
 				while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
 				{
+					if(filter_var($row_ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					{
+						$row_ssl_ipandport['ip'] = '[' . $row_ssl_ipandport['ip'] . ']';
+					}
 					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
 				}
 				
@@ -1271,12 +1283,20 @@ if($page == 'domains'
 				$ipsandports = '';
 				while($row_ipandport = $db->fetch_array($result_ipsandports))
 				{
+					if(filter_var($row_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					{
+						$row_ipandport['ip'] = '[' . $row_ipandport['ip'] . ']';
+					}
 					$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id']);
 				}
 					
 				$ssl_ipsandports = '';
 				while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
 				{
+					if(filter_var($row_ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					{
+						$row_ssl_ipandport['ip'] = '[' . $row_ssl_ipandport['ip'] . ']';
+					}
 					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
 				}
 				
