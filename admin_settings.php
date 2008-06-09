@@ -1108,6 +1108,10 @@ if(($page == 'settings' || $page == 'overview')
 			   && !in_array($row['ip'], $system_ipaddress_array))
 			{
 				$system_ipaddress_array[$row['ip']] = $row['ip'];
+				if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+				{
+					$row['ip'] = '[' . $row['ip'] . ']';
+				}
 				$system_ipaddress.= makeoption($row['ip'], $row['ip'], $settings['system']['ipaddress'], true, true);
 			}
 

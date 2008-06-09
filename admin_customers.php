@@ -264,7 +264,14 @@ if($page == 'customers'
 				$emails = intval_ressource($_POST['emails']);
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
-				$email_quota = intval_ressource($_POST['email_quota']);
+				if($settings['system']['mail_quota_enabled'] == '1')
+				{
+					$email_quota = intval_ressource($_POST['email_quota']);
+				}
+				else
+				{
+					$email_quota = '-1';
+				}
 				$email_imap = intval_ressource($_POST['email_imap']);
 				$email_pop3 = intval_ressource($_POST['email_pop3']);
 				$ftps = intval_ressource($_POST['ftps']);
@@ -578,8 +585,16 @@ if($page == 'customers'
 				$emails = intval_ressource($_POST['emails']);
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
-				$email_quota = intval_ressource($_POST['email_quota']);
-				$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
+				if($settings['system']['mail_quota_enabled'] == '1')
+				{
+					$email_quota = intval_ressource($_POST['email_quota']);
+					$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
+					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
+				}
+				else
+				{
+					$email_quota = '-1';
+				}
 				$email_imap = intval_ressource($_POST['email_imap']);
 				$email_pop3 = intval_ressource($_POST['email_pop3']);
 				$ftps = intval_ressource($_POST['ftps']);
@@ -588,7 +603,6 @@ if($page == 'customers'
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$deactivated = intval($_POST['deactivated']);
 				$phpenabled = intval($_POST['phpenabled']);
-				$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 				$diskspace = $diskspace*1024;
 				$traffic = $traffic*1024*1024;
 
