@@ -130,15 +130,17 @@ $configfiles = Array(
 					),
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
+						'commands_1' => Array(
+							'mkdir -p /etc/postfix/dkim'
+						),
 						'files' => Array(
 							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
-						'commands' => Array(
-							'mkdir -p /etc/postfix/dkim',
+						'commands_2' => Array(
 							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
-							'echo "smtpd_milters = inet:localhost:8891\\n
-milter_macro_daemon_name = SIGNING\\n
-milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+							'echo "smtpd_milters = inet:localhost:8891\n
+milter_macro_daemon_name = SIGNING\n
+milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						),
 						'restart' => Array(
 							'/etc/init.d/dkim-filter restart'
@@ -321,15 +323,17 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 					),
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
+						'commands_1' => Array(
+							'mkdir -p /etc/postfix/dkim'
+						),
 						'files' => Array(
 							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
-						'commands' => Array(
-							'mkdir -p /etc/postfix/dkim',
+						'commands_2' => Array(
 							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
-							'echo "smtpd_milters = inet:localhost:8891\\n
-milter_macro_daemon_name = SIGNING\\n
-milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+							'echo "smtpd_milters = inet:localhost:8891\n
+milter_macro_daemon_name = SIGNING\n
+milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						),
 						'restart' => Array(
 							'/etc/init.d/dkim-filter restart'
@@ -551,15 +555,17 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 					),
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
+						'commands_1' => Array(
+							'mkdir -p /etc/postfix/dkim'
+						),
 						'files' => Array(
 							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
-						'commands' => Array(
-							'mkdir -p /etc/postfix/dkim',
+						'commands_2' => Array(
 							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
-							'echo "smtpd_milters = inet:localhost:8891\\n
-milter_macro_daemon_name = SIGNING\\n
-milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+							'echo "smtpd_milters = inet:localhost:8891\n
+milter_macro_daemon_name = SIGNING\n
+milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						),
 						'restart' => Array(
 							'/etc/init.d/dkim-filter restart'
@@ -719,15 +725,17 @@ milter_default_action = accept\\n" >> /etc/postfix/main.cf'
 					),
 					'dkim' => Array(
 						'label' => 'DomainKey filter',
+						'commands_1' => Array(
+							'mkdir -p /etc/postfix/dkim'
+						),
 						'files' => Array(
 							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
 						),
-						'commands' => Array(
-							'mkdir -p /etc/postfix/dkim',
+						'commands_2' => Array(
 							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
-							'echo "smtpd_milters = inet:localhost:8891\\n
-milter_macro_daemon_name = SIGNING\\n
-milter_default_action = accept\\n" >> /etc/postfix/main.cf'
+							'echo "smtpd_milters = inet:localhost:8891\n
+milter_macro_daemon_name = SIGNING\n
+milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						),
 						'restart' => Array(
 							'/etc/init.d/dkim-filter restart'
