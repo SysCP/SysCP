@@ -172,8 +172,14 @@ while($row = $db->fetch_array($result_tasks))
 		
 						// Create a new private rsa certificate and put the public key into the database
 		
-						safe_exec("openssl genrsa -out " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private 1024 2>/dev/null");
-						$txtpubkey = safe_exec("openssl rsa -in " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private -pubout -outform pem 2>/dev/null | grep -v \"^-\"  | tr -d '\n'");
+						safe_exec("openssl genrsa -out " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private 1024");
+						$txtpubkey = safe_exec("openssl rsa -in " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private -pubout -outform pem");
+						$_txtpubkey = '';
+						for($x=1;$x<(count($txtpubkey)-1);$x++)
+						{
+							$_txtpubkey .= $txtpubkey[$x];
+						}
+						$txtpubkey = $_txtpubkey;
 						safe_exec("chmod 0640 " . $settings['dkim']['dkim_prefix'] . "dk" . $dkid . ".private");
 						$db->query('UPDATE ' . TABLE_MAIL_DKIM . ' SET `publickey`=\'' . $txtpubkey . '\' WHERE `domain_id`=\'' . $domain['id'] . '\'');
 					}
