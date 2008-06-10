@@ -875,5 +875,13 @@ $lng['admin']['nouptimeavailable'] = 'not available';
 $lng['panel']['backtooverview'] = 'Back to overview';
 $lng['admin']['nosubject'] = '(No Subject)';
 $lng['admin']['configfiles']['statistics'] = 'Statistics';
+$lng['login']['forgotpwd'] = 'Forgot your password?';
+$lng['login']['presend'] = 'Reset password';
+$lng['login']['email'] = 'E-mail address';
+$lng['login']['remind'] = 'Reset my password';
+$lng['login']['usernotfound'] = 'Error: User not found!';
+$lng['pwdreminder']['subject'] = 'SysCP - Password reset';
+$lng['pwdreminder']['body'] = 'Hello %s,\n\nyour syscp password has been reset!\nThe new password is: %p\n\nThank you,\nthe SysCP-Team';
+$lng['pwdreminder']['success'] = 'Password reset successfully.<br />You now should receive an email with your new password.';
 
 ?>

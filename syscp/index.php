@@ -141,10 +141,92 @@ if($action == 'login')
 			$language_options.= makeoption($language_name, $language_file, 'profile', true);
 		}
 
+		$smessage = isset($_GET['showmessage']) ? (int)$_GET['showmessage'] : 0;
+		if($smessage == 1)
+		{
+			$message = $lng['pwdreminder']['success'];
+		}
+		else
+		{
+			$message = '';
+		}
+		
 		eval("echo \"" . getTemplate("login") . "\";");
 	}
 }
+if($action == 'forgotpwd')
+{
+	if(isset($_POST['send'])
+	   && $_POST['send'] == 'send')
+	{
+	
+		$loginname = validate($_POST['loginname'], 'loginname');
+		$email = validateEmail($_POST['loginemail'], 'email');
+	
+		$sql = "SELECT `customerid`, `firstname`, `name`, `email`, `loginname` FROM `" . TABLE_PANEL_CUSTOMERS . "` 
+				WHERE `loginname`='" . $db->escape($loginname) . "' 
+				AND `email`='" . $db->escape($email) . "'";
+				
+		$result = $db->query($sql);
+		$customer = $db->fetch_array($result);
+		
+		if($customer !== false)
+		{
+			$password = substr(md5(uniqid(microtime(), 1)), 12, 6);
+			$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($password) . "'
+						WHERE `loginname`='" . $customer['loginname'] . "'
+						AND `email`='" . $customer['email'] . "'");
+						
+			$body = strtr($lng['pwdreminder']['body'], array(
+				'%s' => $customer['firstname'] . ' ' . $customer['name'],
+				'%p' => $password
+			));
+			
+			$mail->From = $settings['panel']['adminmail'];
+			$mail->FromName = 'SysCP';
+			$mail->Subject = $lng['pwdreminder']['subject'];
+			$mail->Body = $body;
+			$mail->AddAddress($customer['email'], $customer['firstname'] . ' ' . $customer['name']);
 
+			if(!$mail->Send())
+			{
+				if($mail->ErrorInfo != '')
+				{
+					$mailerr_msg = $mail->ErrorInfo;
+				}
+				else
+				{
+					$mailerr_msg = $email;
+				}
+				$rstlog = SysCPLogger::getInstanceOf(array(
+														'loginname' => 'password_reset'
+													), $db, $settings);
+				$rstlog->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
+				standard_error('errorsendingmail', $email);
+			}
+
+			$mail->ClearAddresses();
+			$rstlog = SysCPLogger::getInstanceOf(array(
+													'loginname' => 'password_reset'
+												), $db, $settings);
+			$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $customer['loginname'] . "' has been reset!");
+			
+			redirectTo('index.php', Array(
+				'showmessage' => '1'
+			), true);
+		}
+		else
+		{
+			$message = $lng['login']['usernotfound'];
+		}	
+	}
+	else
+	{
+		$message = '';
+	}
+
+	eval("echo \"" . getTemplate("fpwd") . "\";");
+}
 if($page == 'easter')
 {
 	if($action == 'egg')
