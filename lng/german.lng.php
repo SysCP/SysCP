@@ -881,5 +881,13 @@ $lng['admin']['nouptimeavailable'] = 'nicht verf&uuml;gbar';
 $lng['panel']['backtooverview'] = 'Zur&uuml;ck zur &Uuml;bersicht';
 $lng['admin']['nosubject'] = '(Kein Betreff)';
 $lng['admin']['configfiles']['statistics'] = 'Statistik';
+$lng['login']['forgotpwd'] = 'Passwort vergessen?';
+$lng['login']['presend'] = 'Passwort zur&uuml;cksetzen';
+$lng['login']['email'] = 'E-Mail Adresse';
+$lng['login']['remind'] = 'Passwort zur&uuml;cksetzen';
+$lng['login']['usernotfound'] = 'Fehler: Unbekannter Benutzer!';
+$lng['pwdreminder']['subject'] = 'SysCP - Passwort zur&uuml;ckgesetzt';
+$lng['pwdreminder']['body'] = 'Hallo %s,\n\ndein SysCP Passwort wurde zur&uuml;ckgesetzt!\nDas neue Passwort lautet: %p\n\nVielen Dank,\nIhr SysCP-Team';
+$lng['pwdreminder']['success'] = 'Passwort erfolgreich zur&uuml;ckgesetzt.<br />Sie sollten nun eine E-Mail mit dem neuen Passwort erhalten.';
 
 ?>
