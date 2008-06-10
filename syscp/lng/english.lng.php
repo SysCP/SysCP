@@ -874,5 +874,6 @@ $lng['admin']['noloadavailable'] = 'not available';
 $lng['admin']['nouptimeavailable'] = 'not available';
 $lng['panel']['backtooverview'] = 'Back to overview';
 $lng['admin']['nosubject'] = '(No Subject)';
+$lng['admin']['configfiles']['statistics'] = 'Statistics';
 
 ?>

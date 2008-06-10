@@ -880,5 +880,6 @@ $lng['admin']['noloadavailable'] = 'nicht verf&uuml;gbar';
 $lng['admin']['nouptimeavailable'] = 'nicht verf&uuml;gbar';
 $lng['panel']['backtooverview'] = 'Zur&uuml;ck zur &Uuml;bersicht';
 $lng['admin']['nosubject'] = '(Kein Betreff)';
+$lng['admin']['configfiles']['statistics'] = 'Statistik';
 
 ?>

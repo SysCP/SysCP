@@ -1,0 +1,6 @@
+LogFile="{LOG_FILE}"
+LogType=W
+LogFormat = "%virtualname %host %other %logname %time1 %methodurl %code %bytesd %refererquot %uaquot"
+LogSeparator=" "
+SiteDomain="{SITE_DOMAIN}"
+HostAliases="{HOST_ALIASES}"
