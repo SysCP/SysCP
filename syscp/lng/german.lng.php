@@ -890,4 +890,9 @@ $lng['pwdreminder']['subject'] = 'SysCP - Passwort zur&uuml;ckgesetzt';
 $lng['pwdreminder']['body'] = 'Hallo %s,\n\ndein SysCP Passwort wurde zur&uuml;ckgesetzt!\nDas neue Passwort lautet: %p\n\nVielen Dank,\nIhr SysCP-Team';
 $lng['pwdreminder']['success'] = 'Passwort erfolgreich zur&uuml;ckgesetzt.<br />Sie sollten nun eine E-Mail mit dem neuen Passwort erhalten.';
 
+// ADDED IN 1.2.19-svn18
+
+$lng['serversettings']['allow_preset'] = 'Erlaube das Zur&uuml;cksetzen des Kundenpassworts';
+$lng['pwdreminder']['notallowed'] = 'Das Zur&uuml;cksetzen des Passworts ist deaktiviert';
+
 ?>

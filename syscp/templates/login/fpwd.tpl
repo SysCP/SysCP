@@ -13,6 +13,7 @@ $header
 		<br />
 		<br />
 		</if>
+		<if $settings['panel']['allow_preset'] == '1'>
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable_40">
 			<tr>
 				<td class="maintitle" colspan="3"><b><img src="images/title.gif" alt="" />&nbsp;SysCP&nbsp;-&nbsp;{$lng['login']['presend']}</b></td>
@@ -30,6 +31,7 @@ $header
 				<td class="field_name_center" colspan="3"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['login']['remind']}" /></td>
 			</tr>
 		</table>
+		</if>
 	</form>
 	<br />
 	<br />

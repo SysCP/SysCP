@@ -884,4 +884,9 @@ $lng['pwdreminder']['subject'] = 'SysCP - Password reset';
 $lng['pwdreminder']['body'] = 'Hello %s,\n\nyour syscp password has been reset!\nThe new password is: %p\n\nThank you,\nthe SysCP-Team';
 $lng['pwdreminder']['success'] = 'Password reset successfully.<br />You now should receive an email with your new password.';
 
+// ADDED IN 1.2.19-svn18
+
+$lng['serversettings']['allow_preset'] = 'Allow password reset by customers';
+$lng['pwdreminder']['notallowed'] = 'Password reset is deactivated';
+
 ?>
