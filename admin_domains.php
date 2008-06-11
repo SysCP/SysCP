@@ -875,7 +875,14 @@ if($page == 'domains'
 				{
 					$isbinddomain = intval($_POST['isbinddomain']);
 					$zonefile = validate($_POST['zonefile'], 'zonefile');
-					$dkim = intval($_POST['dkim']);
+					if($settings['dkim']['use_dkim'] == '1')
+					{
+						$dkim = intval($_POST['dkim']);
+					}
+					else
+					{
+						$dkim = $result['dkim'];
+					}
 					$openbasedir = intval($_POST['openbasedir']);
 					$safemode = intval($_POST['safemode']);
 					$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
@@ -1287,7 +1294,7 @@ if($page == 'domains'
 					{
 						$row_ipandport['ip'] = '[' . $row_ipandport['ip'] . ']';
 					}
-					$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id']);
+					$ipsandports.= makeoption($row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id'], $result['ipandport']);
 				}
 					
 				$ssl_ipsandports = '';
@@ -1297,7 +1304,7 @@ if($page == 'domains'
 					{
 						$row_ssl_ipandport['ip'] = '[' . $row_ssl_ipandport['ip'] . ']';
 					}
-					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
+					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $result['ssl_ipandport']);
 				}
 				
 				if($ssl_ipsandports == '')
