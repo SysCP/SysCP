@@ -49,8 +49,8 @@ if($cycle == '0'
    || ($cycle == '2' && date("j", $now) == '1')
    || ($cycle == '3' && date("dm", $now) == '0101'))
 {
-	fwrite($debugHandler, 'Resetting customers used ticket counter' . "\n");
-	$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `tickets_used` = '0'");
+    fwrite($debugHandler, 'Resetting customers used ticket counter' . "\n");
+    $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `tickets_used` = '0'");
 }
 
 /**

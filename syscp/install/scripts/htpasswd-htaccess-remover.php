@@ -19,7 +19,7 @@ if(@php_sapi_name() != 'cli'
    && @php_sapi_name() != 'cgi'
    && @php_sapi_name() != 'cgi-fcgi')
 {
-	die('This script will only work in the shell.');
+    die('This script will only work in the shell.');
 }
 
 $pathtophpfiles = '/var/www/syscp';
@@ -49,11 +49,11 @@ $db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 if($db->link_id == 0
    || $db_root->link_id == 0)
 {
-	/**
-	 * Do not proceed further if no database connection could be established (either normal or root)
-	 */
+    /**
+     * Do not proceed further if no database connection could be established (either normal or root)
+     */
 
-	die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+    die('Cant connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 }
 
 unset($sql['password']);
@@ -62,7 +62,7 @@ $result = $db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FRO
 
 while($row = $db->fetch_array($result))
 {
-	$settings["$row[settinggroup]"]["$row[varname]"] = $row['value'];
+    $settings["$row[settinggroup]"]["$row[varname]"] = $row['value'];
 }
 
 unset($row);
@@ -71,11 +71,11 @@ unset($result);
 if(!isset($settings['panel']['version'])
    || $settings['panel']['version'] != $version)
 {
-	/**
-	 * Do not proceed further if the Database version is not the same as the script version
-	 */
+    /**
+     * Do not proceed further if the Database version is not the same as the script version
+     */
 
-	die('Version of File doesnt match Version of Database. Exiting...');
+    die('Version of File doesnt match Version of Database. Exiting...');
 }
 
 /**
@@ -87,20 +87,20 @@ $result = $db->query('SELECT * FROM `' . TABLE_PANEL_HTACCESS . '` ');
 
 while($row = $db->fetch_array($result))
 {
-	if(file_exists($row['path'] . '.htaccess'))
-	{
-		unlink($row['path'] . '.htaccess');
-	}
+    if(file_exists($row['path'] . '.htaccess'))
+    {
+        unlink($row['path'] . '.htaccess');
+    }
 }
 
 $result = $db->query('SELECT * FROM `' . TABLE_PANEL_HTPASSWDS . '` ');
 
 while($row = $db->fetch_array($result))
 {
-	if(file_exists($row['path'] . '.htpasswd'))
-	{
-		unlink($row['path'] . '.htpasswd');
-	}
+    if(file_exists($row['path'] . '.htpasswd'))
+    {
+        unlink($row['path'] . '.htpasswd');
+    }
 }
 
 ?>
