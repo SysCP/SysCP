@@ -32,9 +32,11 @@ $header
 			<tr>
 				<td class="field_name_center" colspan="3"><input type="hidden" name="send" value="send" /><input type="submit" class="bottom" value="{$lng['login']['login']}" /></td>
 			</tr>
+			<if $settings['panel']['allow_preset'] == '1'>
 			<tr>
 				<td class="field_name_center" colspan="3"><a href="$filename?action=forgotpwd">{$lng['login']['forgotpwd']}</a></td>
 			</tr>
+			</if>
 		</table>
 	</form>
 	<br />

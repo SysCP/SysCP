@@ -360,6 +360,13 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='ftpatdomain'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_ftpatdomain from '" . $settings['customer']['ftpatdomain'] . "' to '" . $value . "'");
 			}
+			
+			if($_POST['panel_allow_preset'] != $settings['panel']['allow_preset'] && isset($_POST['panel_allow_preset']))
+			{
+				$value = ($_POST['panel_allow_preset'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='allow_preset'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_allow_preset from '" . $settings['panel']['allow_preset'] . "' to '" . $value . "'");
+			}
 
 		}
 		
@@ -1185,6 +1192,7 @@ if(($page == 'settings' || $page == 'overview')
 		$system_userdns = makeyesno('system_userdns', '1', '0', $settings['system']['userdns']);
 		$system_customerdns = makeyesno('system_customerdns', '1', '0', $settings['system']['customerdns']);
 		$unix_names = makeyesno('panel_unix_names', '1', '0', $settings['panel']['unix_names']);
+		$allow_preset = makeyesno('panel_allow_preset', '1', '0', $settings['panel']['allow_preset']);
 		$settings = htmlentities_array($settings);
 		
 		$settings_page = '';

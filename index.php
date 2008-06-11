@@ -224,6 +224,11 @@ if($action == 'forgotpwd')
 	{
 		$message = '';
 	}
+	
+	if($settings['panel']['allow_preset'] != '1')
+	{
+		$message = $lng['pwdreminder']['notallowed'];
+	}
 
 	eval("echo \"" . getTemplate("fpwd") . "\";");
 }

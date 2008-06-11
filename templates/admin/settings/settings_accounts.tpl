@@ -39,6 +39,10 @@
 				<td class="main_field_display" nowrap="nowrap">{$ftpatdomain}</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['allow_preset']}:</b></td>
+				<td class="main_field_display" nowrap="nowrap">{$allow_preset}</td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
 					<if $_part == 'accounts'>
 						<input type="hidden" name="part" value="accounts" />
