@@ -515,7 +515,7 @@ class cron_httpd
                         {
                             // After inserting the AWStats information, be sure to build the awstats conf file as well
 
-                            createAWStatsConf($settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log', $domain['domain'], $alias_string);
+                            createAWStatsConf($this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log', $domain['domain'], $alias . $server_alias);
                         }
 
                         $this->vhosts_file.= '  ErrorLog "' . $this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
