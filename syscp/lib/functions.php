@@ -1475,8 +1475,8 @@ function findDirs($path, $uid, $gid)
     while(sizeof($list) > 0)
     {
         $path = array_pop($list);
-        $dh = @opendir($path);
-
+		$path = makeCorrectDir($path);
+        $dh = opendir($path);
         if($dh === false)
         {
             standard_error('cannotreaddir', $path);
@@ -1489,7 +1489,7 @@ function findDirs($path, $uid, $gid)
                 if($file == '.'
                    && (fileowner($path . '/' . $file) == $uid || filegroup($path . '/' . $file) == $gid))
                 {
-                    $_fileList[] = $path . '/';
+					$_fileList[] = makeCorrectDir($path);
                 }
 
                 if(is_dir($path . '/' . $file)
@@ -1541,7 +1541,7 @@ function makePathfield($path, $uid, $gid, $fieldType, $value = '')
             {
                 if(strpos($dir, $path) === 0)
                 {
-                    $dir = substr($dir, strlen($path));
+                    $dir = makeCorrectDir(substr($dir, strlen($path)));
                 }
 
                 $field.= makeoption($dir, $dir, $value);
