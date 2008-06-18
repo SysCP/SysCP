@@ -362,11 +362,7 @@ elseif($page == 'domains')
 
                 if(!preg_match('/^https?\:\/\//', $path))
                 {
-                    if(!empty($_POST['path']))
-                    {
-                        $path = $userinfo['documentroot'] . $path;
-                    }
-
+                    $path = $userinfo['documentroot'] . $path;
                     $path = makeCorrectDir($path);
                 }
 
