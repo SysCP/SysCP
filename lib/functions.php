@@ -1465,7 +1465,7 @@ function stripslashes_complete($string)
  * @author Manuel Bernhardt <manuel.bernhardt@syscp.de>
  */
 
-function findDirs($path, $uid, $gid, $_fileList = array())
+function findDirs($path, $uid, $gid)
 {
     $list = array(
         $path

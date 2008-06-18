@@ -140,7 +140,7 @@ elseif($page == 'domains')
                 {
                     if(strpos($row['documentroot'], $userinfo['documentroot']) === 0)
                     {
-                        $row['documentroot'] = substr($row['documentroot'], strlen($userinfo['documentroot']));
+                        $row['documentroot'] = substr($row['documentroot'], strlen($userinfo['documentroot'])-1);
                     }
 
                     $row = htmlentities_array($row);
@@ -362,7 +362,7 @@ elseif($page == 'domains')
 
                 if(!preg_match('/^https?\:\/\//', $path))
                 {
-                    if(empty($_POST['path']))
+                    if(!empty($_POST['path']))
                     {
                         $path = $userinfo['documentroot'] . $path;
                     }
