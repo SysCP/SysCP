@@ -87,7 +87,7 @@ if($page == 'customers'
         {
             if($paging->checkDisplay($i))
             {
-                $domains = $db->query_first("SELECT COUNT(`id`) AS `domains` " . "FROM `" . TABLE_PANEL_DOMAINS . "` " . "WHERE `customerid`='" . (int)$row['customerid'] . "' AND `parentdomainid`='0' ");
+                $domains = $db->query_first("SELECT COUNT(`id`) AS `domains` " . "FROM `" . TABLE_PANEL_DOMAINS . "` " . "WHERE `customerid`='" . (int)$row['customerid'] . "' AND `parentdomainid`='0' AND `id`<> '" . (int)$row['standardsubdomain'] . "'");
                 $row['domains'] = intval($domains['domains']);
                 $row['traffic_used'] = round($row['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
                 $row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
