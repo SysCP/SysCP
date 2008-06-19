@@ -199,7 +199,7 @@ foreach($crondir as $file)
 {
 	if(!$file->isDot()
 	   && !$file->isDir()
-	   && preg_match("/^" . $cronfilename . "\.inc\..(.*)\.php$", $file->getFilename()))
+	   && preg_match("/^" . $cronfilename . "\.inc\..(.*)\.php$/D", $file->getFilename()))
 	{
 		if(fileowner($cronscriptFullName) == $file->getOwner()
 		   && filegroup($cronscriptFullName) == $file->getGroup()
