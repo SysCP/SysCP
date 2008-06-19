@@ -1,6 +1,6 @@
 <?php
 
-class Vhost
+class vHost
 {
     private $domains = array();
     private $wwwdomains = array();
