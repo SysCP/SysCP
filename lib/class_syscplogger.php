@@ -22,161 +22,161 @@
 
 class SysCPLogger
 {
-    /**
-     * Userinfo
-     * @var array
-     */
+	/**
+	 * Userinfo
+	 * @var array
+	 */
 
-    private $userinfo = array();
+	private $userinfo = array();
 
-    /**
-     * Database handler
-     * @var db
-     */
+	/**
+	 * Database handler
+	 * @var db
+	 */
 
-    private $db = false;
+	private $db = false;
 
-    /**
-     * Settings array
-     * @var settings
-     */
+	/**
+	 * Settings array
+	 * @var settings
+	 */
 
-    private $settings = array();
+	private $settings = array();
 
-    /**
-     * LogTypes Array
-     * @var logtypes
-     */
+	/**
+	 * LogTypes Array
+	 * @var logtypes
+	 */
 
-    static private $logtypes = null;
+	static private $logtypes = null;
 
-    /**
-     * Logger-Object-Array
-     * @var loggers
-     */
+	/**
+	 * Logger-Object-Array
+	 * @var loggers
+	 */
 
-    static private $loggers = null;
+	static private $loggers = null;
 
-    /**
-     * Class constructor.
-     *
-     * @param array userinfo
-     * @param array settings
-     */
+	/**
+	 * Class constructor.
+	 *
+	 * @param array userinfo
+	 * @param array settings
+	 */
 
-    protected function __construct($userinfo, $db, $settings)
-    {
-        $this->userinfo = $userinfo;
-        $this->db = $db;
-        $this->settings = $settings;
-        self::$logtypes = array();
+	protected function __construct($userinfo, $db, $settings)
+	{
+		$this->userinfo = $userinfo;
+		$this->db = $db;
+		$this->settings = $settings;
+		self::$logtypes = array();
 
-        if(!isset($this->settings['logger']['logtypes'])
-           && (!isset($this->settings['logger']['logtypes']) || $this->settings['logger']['logtypes'] == '')
-           && isset($this->settings['logger']['enabled'])
-           && $this->settings['logger']['enabled'])
-        {
-            self::$logtypes[0] = 'syslog';
-            self::$logtypes[1] = 'mysql';
-        }
-        else
-        {
-            if(isset($this->settings['logger']['logtypes'])
-               && $this->settings['logger']['logtypes'] != '')
-            {
-                self::$logtypes = explode(',', $this->settings['logger']['logtypes']);
-            }
-            else
-            {
-                self::$logtypes = null;
-            }
-        }
-    }
+		if(!isset($this->settings['logger']['logtypes'])
+		   && (!isset($this->settings['logger']['logtypes']) || $this->settings['logger']['logtypes'] == '')
+		   && isset($this->settings['logger']['enabled'])
+		   && $this->settings['logger']['enabled'])
+		{
+			self::$logtypes[0] = 'syslog';
+			self::$logtypes[1] = 'mysql';
+		}
+		else
+		{
+			if(isset($this->settings['logger']['logtypes'])
+			   && $this->settings['logger']['logtypes'] != '')
+			{
+				self::$logtypes = explode(',', $this->settings['logger']['logtypes']);
+			}
+			else
+			{
+				self::$logtypes = null;
+			}
+		}
+	}
 
-    /**
-     * Singleton ftw ;-)
-     *
-     */
+	/**
+	 * Singleton ftw ;-)
+	 *
+	 */
 
-    static public function getInstanceOf($_usernfo, $_db, $_settings)
-    {
-        if(!isset($_usernfo)
-           || $_usernfo == null)
-        {
-            $_usernfo = array();
-            $_usernfo['loginname'] = 'cronscript';
-        }
+	static public function getInstanceOf($_usernfo, $_db, $_settings)
+	{
+		if(!isset($_usernfo)
+		   || $_usernfo == null)
+		{
+			$_usernfo = array();
+			$_usernfo['loginname'] = 'cronscript';
+		}
 
-        if(!isset(self::$loggers[$_usernfo['loginname']]))
-        {
-            self::$loggers[$_usernfo['loginname']] = new SysCPLogger($_usernfo, $_db, $_settings);
-        }
+		if(!isset(self::$loggers[$_usernfo['loginname']]))
+		{
+			self::$loggers[$_usernfo['loginname']] = new SysCPLogger($_usernfo, $_db, $_settings);
+		}
 
-        return self::$loggers[$_usernfo['loginname']];
-    }
+		return self::$loggers[$_usernfo['loginname']];
+	}
 
-    public function logAction($action = USR_ACTION, $type = LOG_NOTICE, $text = null)
-    {
-        if(self::$logtypes == null)
-        {
-            return;
-        }
+	public function logAction($action = USR_ACTION, $type = LOG_NOTICE, $text = null)
+	{
+		if(self::$logtypes == null)
+		{
+			return;
+		}
 
-        foreach(self::$logtypes as $logger)
-        {
-            switch($logger)
-            {
-            case 'syslog':
-                $_log = SysLogger::getInstanceOf($this->userinfo, $this->settings);
-                break;
-            case 'file':
-                try
-                {
-                    $_log = FileLogger::getInstanceOf($this->userinfo, $this->settings);
-                }
+		foreach(self::$logtypes as $logger)
+		{
+			switch($logger)
+			{
+			case 'syslog':
+				$_log = SysLogger::getInstanceOf($this->userinfo, $this->settings);
+				break;
+			case 'file':
+				try
+				{
+					$_log = FileLogger::getInstanceOf($this->userinfo, $this->settings);
+				}
 
-                catch(Exception $e)
-                {
-                    if($action != CRON_ACTION)
-                    {
-                        standard_error('logerror', $e->getMessage());
-                    }
-                    else
-                    {
-                        echo "Log-Error: " . $e->getMessage();
-                    }
-                }
+				catch(Exception $e)
+				{
+					if($action != CRON_ACTION)
+					{
+						standard_error('logerror', $e->getMessage());
+					}
+					else
+					{
+						echo "Log-Error: " . $e->getMessage();
+					}
+				}
 
-                break;
-            case 'mysql':
-                $_log = MysqlLogger::getInstanceOf($this->userinfo, $this->settings, $this->db);
-                break;
-            default:
-                $_log = null;
-                break;
-            }
+				break;
+			case 'mysql':
+				$_log = MysqlLogger::getInstanceOf($this->userinfo, $this->settings, $this->db);
+				break;
+			default:
+				$_log = null;
+				break;
+			}
 
-            if($_log != null)
-            {
-                try
-                {
-                    $_log->logAction($action, $type, $text);
-                }
+			if($_log != null)
+			{
+				try
+				{
+					$_log->logAction($action, $type, $text);
+				}
 
-                catch(Exception $e)
-                {
-                    if($action != CRON_ACTION)
-                    {
-                        standard_error('logerror', $e->getMessage());
-                    }
-                    else
-                    {
-                        echo "Log-Error: " . $e->getMessage();
-                    }
-                }
-            }
-        }
-    }
+				catch(Exception $e)
+				{
+					if($action != CRON_ACTION)
+					{
+						standard_error('logerror', $e->getMessage());
+					}
+					else
+					{
+						echo "Log-Error: " . $e->getMessage();
+					}
+				}
+			}
+		}
+	}
 }
 
 ?>

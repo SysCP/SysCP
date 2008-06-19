@@ -28,128 +28,128 @@
 
 function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlist)
 {
-    global $settings;
-    $returnval = 0;
+	global $settings;
+	$returnval = 0;
 
-    if(file_exists($settings['system']['logfiles_directory'] . $logfile . '-access.log'))
-    {
-        $domainargs = '';
-        foreach($usersdomainlist as $domainid => $domain)
-        {
-            $domainargs.= ' -r "' . escapeshellarg($domain) . '"';
-        }
+	if(file_exists($settings['system']['logfiles_directory'] . $logfile . '-access.log'))
+	{
+		$domainargs = '';
+		foreach($usersdomainlist as $domainid => $domain)
+		{
+			$domainargs.= ' -r "' . escapeshellarg($domain) . '"';
+		}
 
-        $outputdir = makeCorrectDir($outputdir);
+		$outputdir = makeCorrectDir($outputdir);
 
-        if(!file_exists($outputdir))
-        {
-            safe_exec('mkdir -p ' . escapeshellarg($outputdir));
-        }
+		if(!file_exists($outputdir))
+		{
+			safe_exec('mkdir -p ' . escapeshellarg($outputdir));
+		}
 
-        if(file_exists($outputdir . 'webalizer.hist.1'))
-        {
-            unlink($outputdir . 'webalizer.hist.1');
-        }
+		if(file_exists($outputdir . 'webalizer.hist.1'))
+		{
+			unlink($outputdir . 'webalizer.hist.1');
+		}
 
-        if(file_exists($outputdir . 'webalizer.hist')
-           && !file_exists($outputdir . 'webalizer.hist.1'))
-        {
-            safe_exec('cp ' . escapeshellarg($outputdir . 'webalizer.hist') . ' ' . escapeshellarg($outputdir . 'webalizer.hist.1'));
-        }
+		if(file_exists($outputdir . 'webalizer.hist')
+		   && !file_exists($outputdir . 'webalizer.hist.1'))
+		{
+			safe_exec('cp ' . escapeshellarg($outputdir . 'webalizer.hist') . ' ' . escapeshellarg($outputdir . 'webalizer.hist.1'));
+		}
 
-        $verbosity = '';
+		$verbosity = '';
 
-        if($settings['system']['webalizer_quiet'] == '1')
-        {
-            $verbosity = '-q';
-        }
-        elseif($settings['system']['webalizer_quiet'] == '2')
-        {
-            $verbosity = '-Q';
-        }
+		if($settings['system']['webalizer_quiet'] == '1')
+		{
+			$verbosity = '-q';
+		}
+		elseif($settings['system']['webalizer_quiet'] == '2')
+		{
+			$verbosity = '-Q';
+		}
 
-        safe_exec('webalizer ' . $verbosity . ' -o ' . escapeshellarg($outputdir) . ' -n ' . escapeshellarg($caption) . $domainargs . ' ' . escapeshellarg($settings['system']['logfiles_directory'] . $logfile . '-access.log'));
+		safe_exec('webalizer ' . $verbosity . ' -o ' . escapeshellarg($outputdir) . ' -n ' . escapeshellarg($caption) . $domainargs . ' ' . escapeshellarg($settings['system']['logfiles_directory'] . $logfile . '-access.log'));
 
-        /**
-         * Format of webalizer.hist-files:
-         * Month: $webalizer_hist_row['0']
-         * Year:  $webalizer_hist_row['1']
-         * KB:    $webalizer_hist_row['5']
-         */
+		/**
+		 * Format of webalizer.hist-files:
+		 * Month: $webalizer_hist_row['0']
+		 * Year:  $webalizer_hist_row['1']
+		 * KB:    $webalizer_hist_row['5']
+		 */
 
-        $httptraffic = array();
-        $webalizer_hist = @file_get_contents($outputdir . 'webalizer.hist');
-        $webalizer_hist_rows = explode("\n", $webalizer_hist);
-        foreach($webalizer_hist_rows as $webalizer_hist_row)
-        {
-            if($webalizer_hist_row != '')
-            {
-                $webalizer_hist_row = explode(' ', $webalizer_hist_row);
+		$httptraffic = array();
+		$webalizer_hist = @file_get_contents($outputdir . 'webalizer.hist');
+		$webalizer_hist_rows = explode("\n", $webalizer_hist);
+		foreach($webalizer_hist_rows as $webalizer_hist_row)
+		{
+			if($webalizer_hist_row != '')
+			{
+				$webalizer_hist_row = explode(' ', $webalizer_hist_row);
 
-                if(isset($webalizer_hist_row['0'])
-                   && isset($webalizer_hist_row['1'])
-                   && isset($webalizer_hist_row['5']))
-                {
-                    $month = intval($webalizer_hist_row['0']);
-                    $year = intval($webalizer_hist_row['1']);
-                    $traffic = floatval($webalizer_hist_row['5']);
+				if(isset($webalizer_hist_row['0'])
+				   && isset($webalizer_hist_row['1'])
+				   && isset($webalizer_hist_row['5']))
+				{
+					$month = intval($webalizer_hist_row['0']);
+					$year = intval($webalizer_hist_row['1']);
+					$traffic = floatval($webalizer_hist_row['5']);
 
-                    if(!isset($httptraffic[$year]))
-                    {
-                        $httptraffic[$year] = array();
-                    }
+					if(!isset($httptraffic[$year]))
+					{
+						$httptraffic[$year] = array();
+					}
 
-                    $httptraffic[$year][$month] = $traffic;
-                }
-            }
-        }
+					$httptraffic[$year][$month] = $traffic;
+				}
+			}
+		}
 
-        reset($httptraffic);
-        $httptrafficlast = array();
-        $webalizer_lasthist = @file_get_contents($outputdir . 'webalizer.hist.1');
-        $webalizer_lasthist_rows = explode("\n", $webalizer_lasthist);
-        foreach($webalizer_lasthist_rows as $webalizer_lasthist_row)
-        {
-            if($webalizer_lasthist_row != '')
-            {
-                $webalizer_lasthist_row = explode(' ', $webalizer_lasthist_row);
+		reset($httptraffic);
+		$httptrafficlast = array();
+		$webalizer_lasthist = @file_get_contents($outputdir . 'webalizer.hist.1');
+		$webalizer_lasthist_rows = explode("\n", $webalizer_lasthist);
+		foreach($webalizer_lasthist_rows as $webalizer_lasthist_row)
+		{
+			if($webalizer_lasthist_row != '')
+			{
+				$webalizer_lasthist_row = explode(' ', $webalizer_lasthist_row);
 
-                if(isset($webalizer_lasthist_row['0'])
-                   && isset($webalizer_lasthist_row['1'])
-                   && isset($webalizer_lasthist_row['5']))
-                {
-                    $month = intval($webalizer_lasthist_row['0']);
-                    $year = intval($webalizer_lasthist_row['1']);
-                    $traffic = floatval($webalizer_lasthist_row['5']);
+				if(isset($webalizer_lasthist_row['0'])
+				   && isset($webalizer_lasthist_row['1'])
+				   && isset($webalizer_lasthist_row['5']))
+				{
+					$month = intval($webalizer_lasthist_row['0']);
+					$year = intval($webalizer_lasthist_row['1']);
+					$traffic = floatval($webalizer_lasthist_row['5']);
 
-                    if(!isset($httptrafficlast[$year]))
-                    {
-                        $httptrafficlast[$year] = array();
-                    }
+					if(!isset($httptrafficlast[$year]))
+					{
+						$httptrafficlast[$year] = array();
+					}
 
-                    $httptrafficlast[$year][$month] = $traffic;
-                }
-            }
-        }
+					$httptrafficlast[$year][$month] = $traffic;
+				}
+			}
+		}
 
-        reset($httptrafficlast);
-        foreach($httptraffic as $year => $months)
-        {
-            foreach($months as $month => $traffic)
-            {
-                if(!isset($httptrafficlast[$year][$month]))
-                {
-                    $returnval+= $traffic;
-                }
-                elseif($httptrafficlast[$year][$month] < $httptraffic[$year][$month])
-                {
-                    $returnval+= ($httptraffic[$year][$month]-$httptrafficlast[$year][$month]);
-                }
-            }
-        }
-    }
+		reset($httptrafficlast);
+		foreach($httptraffic as $year => $months)
+		{
+			foreach($months as $month => $traffic)
+			{
+				if(!isset($httptrafficlast[$year][$month]))
+				{
+					$returnval+= $traffic;
+				}
+				elseif($httptrafficlast[$year][$month] < $httptraffic[$year][$month])
+				{
+					$returnval+= ($httptraffic[$year][$month]-$httptrafficlast[$year][$month]);
+				}
+			}
+		}
+	}
 
-    return floatval($returnval);
+	return floatval($returnval);
 }
 
 /**
@@ -165,67 +165,67 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
 
 function safeSQLLogfile($domains, $loginname)
 {
-    global $db, $settings;
-    $sql = "SELECT * FROM access_log ";
-    $where = "WHERE virtual_host = ";
+	global $db, $settings;
+	$sql = "SELECT * FROM access_log ";
+	$where = "WHERE virtual_host = ";
 
-    if(!is_array($domains))
-    {
-        // If it isn't an array, it's a speciallogfile-domain
+	if(!is_array($domains))
+	{
+		// If it isn't an array, it's a speciallogfile-domain
 
-        $logname = $settings['system']['logfiles_directory'] . $loginname . '-' . $domains . '-access.log';
-        $where.= "'$domains' OR virtual_host = 'www.$domains'";
-    }
-    else
-    {
-        // If we have an array, these are all domains aggregated into a single logfile
+		$logname = $settings['system']['logfiles_directory'] . $loginname . '-' . $domains . '-access.log';
+		$where.= "'$domains' OR virtual_host = 'www.$domains'";
+	}
+	else
+	{
+		// If we have an array, these are all domains aggregated into a single logfile
 
-        if(count($domains) == 0)
-        {
-            // If the $omains-array is empty, this customer has only speciallogfile-
-            // domains, so just return, all logfiles are already written to disk
+		if(count($domains) == 0)
+		{
+			// If the $omains-array is empty, this customer has only speciallogfile-
+			// domains, so just return, all logfiles are already written to disk
 
-            return true;
-        }
+			return true;
+		}
 
-        $logname = $settings['system']['logfiles_directory'] . $loginname . '-access.log';
+		$logname = $settings['system']['logfiles_directory'] . $loginname . '-access.log';
 
-        // Build the "WHERE" - part of the sql-query
+		// Build the "WHERE" - part of the sql-query
 
-        foreach($domains as $domain)
-        {
-            // A domain may be reached with or without the "www" in front.
+		foreach($domains as $domain)
+		{
+			// A domain may be reached with or without the "www" in front.
 
-            $where.= "'$domain' OR virtual_host = 'www.$domain' OR virtual_host = ";
-        }
+			$where.= "'$domain' OR virtual_host = 'www.$domain' OR virtual_host = ";
+		}
 
-        $where = substr($where, 0, -19);
-    }
+		$where = substr($where, 0, -19);
+	}
 
-    // We want clean, ordered logfiles
+	// We want clean, ordered logfiles
 
-    $sql.= $where . " ORDER BY time_stamp;";
-    $logs = $db->query($sql);
+	$sql.= $where . " ORDER BY time_stamp;";
+	$logs = $db->query($sql);
 
-    // Don't overwrite the logfile - append the new stuff
+	// Don't overwrite the logfile - append the new stuff
 
-    file_put_contents($logname, "", FILE_APPEND);
+	file_put_contents($logname, "", FILE_APPEND);
 
-    while($logline = $db->fetch_array($logs))
-    {
-        // Create a "CustomLog" - line
+	while($logline = $db->fetch_array($logs))
+	{
+		// Create a "CustomLog" - line
 
-        $writelog = $logline['remote_host'] . " " . $logline['virtual_host'] . " " . $logline['remote_user'] . " ";
-        $writelog.= date("[d/M/Y:H:i:s O]", $logline['time_stamp']);
-        $writelog.= " \"" . $logline['request_method'] . " " . $logline['request_uri'] . " " . $logline['request_protocol'] . "\" ";
-        $writelog.= $logline['status'];
-        $writelog.= " " . $logline['bytes_sent'] . " \"" . $logline['referer'] . "\" \"" . $logline['agent'] . "\"\n";
-        file_put_contents($logname, $writelog, FILE_APPEND);
-    }
+		$writelog = $logline['remote_host'] . " " . $logline['virtual_host'] . " " . $logline['remote_user'] . " ";
+		$writelog.= date("[d/M/Y:H:i:s O]", $logline['time_stamp']);
+		$writelog.= " \"" . $logline['request_method'] . " " . $logline['request_uri'] . " " . $logline['request_protocol'] . "\" ";
+		$writelog.= $logline['status'];
+		$writelog.= " " . $logline['bytes_sent'] . " \"" . $logline['referer'] . "\" \"" . $logline['agent'] . "\"\n";
+		file_put_contents($logname, $writelog, FILE_APPEND);
+	}
 
-    // Remove the just written stuff
+	// Remove the just written stuff
 
-    $db->query("DELETE FROM access_log " . $where);
-    return true;
+	$db->query("DELETE FROM access_log " . $where);
+	return true;
 }
 

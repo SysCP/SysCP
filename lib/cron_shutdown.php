@@ -21,13 +21,13 @@ fwrite($debugHandler, 'Closing database connection' . "\n");
 
 if(isset($db_root))
 {
-    $db_root->close();
-    fwrite($debugHandler, 'Closing database rootconnection' . "\n");
+	$db_root->close();
+	fwrite($debugHandler, 'Closing database rootconnection' . "\n");
 }
 
 if($keepLockFile === true)
 {
-    fwrite($debugHandler, '=== Keep lockfile because of exception ===');
+	fwrite($debugHandler, '=== Keep lockfile because of exception ===');
 }
 
 fclose($debugHandler);
@@ -35,6 +35,6 @@ fclose($debugHandler);
 if($keepLockFile === false
    && $cronscriptDebug === false)
 {
-    unlink($lockfile);
+	unlink($lockfile);
 }
 
