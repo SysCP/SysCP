@@ -25,80 +25,80 @@ if(@php_sapi_name() != 'cli'
    && @php_sapi_name() != 'cgi'
    && @php_sapi_name() != 'cgi-fcgi')
 {
-    die('This script only works in the shell.');
+	die('This script only works in the shell.');
 }
 
 function createFcgiConfig($domain, $settings)
 {
-    $baseconfigdir = $settings['system']['mod_fcgid_configdir'];
-    $basetmpdir = $settings['system']['mod_fcgid_tmpdir'];
-    $peardir = '/usr/share/php/:/usr/share/php5/';
-    $configdir = $baseconfigdir . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/';
-    $tmpdir = $basetmpdir . '/' . $domain['loginname'] . '/';
+	$baseconfigdir = $settings['system']['mod_fcgid_configdir'];
+	$basetmpdir = $settings['system']['mod_fcgid_tmpdir'];
+	$peardir = '/usr/share/php/:/usr/share/php5/';
+	$configdir = $baseconfigdir . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/';
+	$tmpdir = $basetmpdir . '/' . $domain['loginname'] . '/';
 
-    if($domain['openbasedir'] == '1')
-    {
-        $openbasedircomment = '';
+	if($domain['openbasedir'] == '1')
+	{
+		$openbasedircomment = '';
 
-        if($domain['openbasedir_path'] == '0')
-        {
-            $openbasedir = $domain['documentroot'] . ':' . $tmpdir . ':' . $peardir . ':' . $settings['system']['phpappendopenbasedir'];
-        }
-        else
-        {
-            $openbasedir = $domain['customerroot'] . ':' . $tmpdir . ':' . $peardir . ':' . $settings['system']['phpappendopenbasedir'];
-        }
-    }
+		if($domain['openbasedir_path'] == '0')
+		{
+			$openbasedir = $domain['documentroot'] . ':' . $tmpdir . ':' . $peardir . ':' . $settings['system']['phpappendopenbasedir'];
+		}
+		else
+		{
+			$openbasedir = $domain['customerroot'] . ':' . $tmpdir . ':' . $peardir . ':' . $settings['system']['phpappendopenbasedir'];
+		}
+	}
 
-    if($domain['openbasedir'] == '0')
-    {
-        $openbasedircomment = ';';
-        $openbasedir = '';
-    }
+	if($domain['openbasedir'] == '0')
+	{
+		$openbasedircomment = ';';
+		$openbasedir = '';
+	}
 
-    $safemode = ($domain['safemode'] == '0' ? 'Off' : 'On');
+	$safemode = ($domain['safemode'] == '0' ? 'Off' : 'On');
 
-    // For future use, need to change templates for that
-    // $phperrordisplay = ($domain['php_errordisplay'] == '0' ? 'Off' : 'On');
+	// For future use, need to change templates for that
+	// $phperrordisplay = ($domain['php_errordisplay'] == '0' ? 'Off' : 'On');
 
-    $phperrordisplay = 'On';
+	$phperrordisplay = 'On';
 
-    // create config dir if necessary
+	// create config dir if necessary
 
-    if(!is_dir($configdir))
-    {
-        safe_exec('mkdir -p ' . escapeshellarg($configdir));
-        safe_exec('chown ' . $domain['guid'] . ':' . $domain['guid'] . ' ' . escapeshellarg($configdir));
-    }
+	if(!is_dir($configdir))
+	{
+		safe_exec('mkdir -p ' . escapeshellarg($configdir));
+		safe_exec('chown ' . $domain['guid'] . ':' . $domain['guid'] . ' ' . escapeshellarg($configdir));
+	}
 
-    // create tmp dir if necessary
+	// create tmp dir if necessary
 
-    if(!is_dir($tmpdir))
-    {
-        safe_exec('mkdir -p ' . escapeshellarg($tmpdir));
-        safe_exec('chown -R ' . $domain['guid'] . ':' . $domain['guid'] . ' ' . escapeshellarg($tmpdir));
-        safe_exec('chmod 0750 ' . escapeshellarg($tmpdir));
-    }
+	if(!is_dir($tmpdir))
+	{
+		safe_exec('mkdir -p ' . escapeshellarg($tmpdir));
+		safe_exec('chown -R ' . $domain['guid'] . ':' . $domain['guid'] . ' ' . escapeshellarg($tmpdir));
+		safe_exec('chmod 0750 ' . escapeshellarg($tmpdir));
+	}
 
-    if(!file_exists($configdir . 'php-fcgi-starter'))
-    {
-        $starter_file = "#!/bin/sh\n";
-        $starter_file.= "PHPRC=\"" . escapeshellarg($configdir) . "\"\n";
-        $starter_file.= "export PHPRC\n";
-        $starter_file.= "PHP_FCGI_CHILDREN=0\n";
-        $starter_file.= "export PHP_FCGI_CHILDREN\n";
-        $starter_file.= "exec /usr/bin/php-cgi -c " . escapeshellarg($configdir) . "\n";
-        $starter_file_handler = fopen($configdir . 'php-fcgi-starter', 'w');
-        fwrite($starter_file_handler, $starter_file);
-        fclose($starter_file_handler);
-        safe_exec('chmod 750 ' . escapeshellarg($configdir . 'php-fcgi-starter'));
-        safe_exec('chown ' . $domain['guid'] . ':' . $domain['guid'] . ' ' . escapeshellarg($configdir . 'php-fcgi-starter'));
-        safe_exec('chattr +i ' . escapeshellarg($configdir . 'php-fcgi-starter'));
-    }
+	if(!file_exists($configdir . 'php-fcgi-starter'))
+	{
+		$starter_file = "#!/bin/sh\n";
+		$starter_file.= "PHPRC=\"" . escapeshellarg($configdir) . "\"\n";
+		$starter_file.= "export PHPRC\n";
+		$starter_file.= "PHP_FCGI_CHILDREN=0\n";
+		$starter_file.= "export PHP_FCGI_CHILDREN\n";
+		$starter_file.= "exec /usr/bin/php-cgi -c " . escapeshellarg($configdir) . "\n";
+		$starter_file_handler = fopen($configdir . 'php-fcgi-starter', 'w');
+		fwrite($starter_file_handler, $starter_file);
+		fclose($starter_file_handler);
+		safe_exec('chmod 750 ' . escapeshellarg($configdir . 'php-fcgi-starter'));
+		safe_exec('chown ' . $domain['guid'] . ':' . $domain['guid'] . ' ' . escapeshellarg($configdir . 'php-fcgi-starter'));
+		safe_exec('chattr +i ' . escapeshellarg($configdir . 'php-fcgi-starter'));
+	}
 
-    // define the php.ini
+	// define the php.ini
 
-    $config_file_php_ini = 'short_open_tag = On
+	$config_file_php_ini = 'short_open_tag = On
 asp_tags = Off
 precision = 14
 output_buffering = 4096
@@ -164,41 +164,41 @@ suhosin.simulation = Off
 suhosin.mail.protect = 1
 ';
 
-    if(!file_exists($configdir . 'php.ini'))
-    {
-        $config_file_handler = fopen($configdir . 'php.ini', 'w');
-        fwrite($config_file_handler, $config_file_php_ini);
-        fclose($config_file_handler);
-        safe_exec('chown root:0 "' . $configdir . 'php.ini"');
-        safe_exec('chmod 0644 "' . $configdir . 'php.ini"');
-    }
-    else
-    {
-        $phpini = file_get_contents($configdir . 'php.ini');
-        $search[0] = '/safe_mode = (On|Off|1|0|True|False)/i';
-        $search[1] = '/safe_mode_include_dir = "(.*)"/i';
-        $search[2] = '/;?open_basedir = "(.*)"/i';
-        $search[3] = '/display_errors = (On|Off|1|0|True|False)/i';
-        $search[4] = '/error_log = "(.*)"/i';
-        $search[5] = '/include_path = ".:(.*)"/i';
-        $search[6] = '/upload_tmp_dir = "(.*)"/i';
-        $search[7] = '#sendmail_path = "/usr/sbin/sendmail -t -f (.*)"#i';
-        $search[8] = '/session.save_path = "(.*)"/i';
-        $replace[0] = 'safe_mode = ' . $safemode;
-        $replace[1] = 'safe_mode_include_dir = "' . $peardir . '"';
-        $replace[2] = $openbasedircomm . 'open_basedir = "' . $openbasedir . '"';
-        $replace[3] = 'display_errors = ' . $phperrordisplay;
-        $replace[4] = 'error_log = "' . $logfile . '"';
-        $replace[5] = 'include_path = ".:' . $peardir . '"';
-        $replace[6] = 'upload_tmp_dir = "' . $tmpdir . '"';
-        $replace[7] = 'sendmail_path = "/usr/sbin/sendmail -t -f ' . $domain['email'] . '"';
-        $replace[8] = 'session.save_path = "' . $tmpdir . '"';
-        $phpini = preg_replace($search, $replace, $phpini);
-        $config_file_handler = fopen($configdir . 'php.ini', 'w');
-        fwrite($config_file_handler, $phpini);
-        fclose($config_file_handler);
-        safe_exec('chown root:0 "' . $configdir . 'php.ini"');
-        safe_exec('chmod 0644 "' . $configdir . 'php.ini"');
-    }
+	if(!file_exists($configdir . 'php.ini'))
+	{
+		$config_file_handler = fopen($configdir . 'php.ini', 'w');
+		fwrite($config_file_handler, $config_file_php_ini);
+		fclose($config_file_handler);
+		safe_exec('chown root:0 "' . $configdir . 'php.ini"');
+		safe_exec('chmod 0644 "' . $configdir . 'php.ini"');
+	}
+	else
+	{
+		$phpini = file_get_contents($configdir . 'php.ini');
+		$search[0] = '/safe_mode = (On|Off|1|0|True|False)/i';
+		$search[1] = '/safe_mode_include_dir = "(.*)"/i';
+		$search[2] = '/;?open_basedir = "(.*)"/i';
+		$search[3] = '/display_errors = (On|Off|1|0|True|False)/i';
+		$search[4] = '/error_log = "(.*)"/i';
+		$search[5] = '/include_path = ".:(.*)"/i';
+		$search[6] = '/upload_tmp_dir = "(.*)"/i';
+		$search[7] = '#sendmail_path = "/usr/sbin/sendmail -t -f (.*)"#i';
+		$search[8] = '/session.save_path = "(.*)"/i';
+		$replace[0] = 'safe_mode = ' . $safemode;
+		$replace[1] = 'safe_mode_include_dir = "' . $peardir . '"';
+		$replace[2] = $openbasedircomm . 'open_basedir = "' . $openbasedir . '"';
+		$replace[3] = 'display_errors = ' . $phperrordisplay;
+		$replace[4] = 'error_log = "' . $logfile . '"';
+		$replace[5] = 'include_path = ".:' . $peardir . '"';
+		$replace[6] = 'upload_tmp_dir = "' . $tmpdir . '"';
+		$replace[7] = 'sendmail_path = "/usr/sbin/sendmail -t -f ' . $domain['email'] . '"';
+		$replace[8] = 'session.save_path = "' . $tmpdir . '"';
+		$phpini = preg_replace($search, $replace, $phpini);
+		$config_file_handler = fopen($configdir . 'php.ini', 'w');
+		fwrite($config_file_handler, $phpini);
+		fclose($config_file_handler);
+		safe_exec('chown root:0 "' . $configdir . 'php.ini"');
+		safe_exec('chmod 0644 "' . $configdir . 'php.ini"');
+	}
 }
 

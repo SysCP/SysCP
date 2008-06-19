@@ -41,66 +41,66 @@ LOG_DEBUG 	  debug-level message
 
 abstract class AbstractLogger
 {
-    /**
-     * Settings array
-     * @var settings
-     */
+	/**
+	 * Settings array
+	 * @var settings
+	 */
 
-    private $settings = array();
+	private $settings = array();
 
-    /** 
-     * Enable/Disable Logging
-     * @var logenabled
-     */
+	/** 
+	 * Enable/Disable Logging
+	 * @var logenabled
+	 */
 
-    private $logenabled = false;
+	private $logenabled = false;
 
-    /** 
-     * Enable/Disable Cronjob-Logging
-     * @var logcronjob
-     */
+	/** 
+	 * Enable/Disable Cronjob-Logging
+	 * @var logcronjob
+	 */
 
-    private $logcronjob = false;
+	private $logcronjob = false;
 
-    /** 
-     * Loggin-Severity
-     * @var severity
-     */
+	/** 
+	 * Loggin-Severity
+	 * @var severity
+	 */
 
-    private $severity = 1;
+	private $severity = 1;
 
-    // normal
+	// normal
 
-    /**
-     * setup the main logger
-     *
-     * @param array settings
-     */
+	/**
+	 * setup the main logger
+	 *
+	 * @param array settings
+	 */
 
-    protected function setupLogger($settings)
-    {
-        $this->settings = $settings;
-        $this->logenabled = $this->settings['logger']['enabled'];
-        $this->logcronjob = $this->settings['logger']['log_cron'];
-        $this->severity = $this->settings['logger']['severity'];
-    }
+	protected function setupLogger($settings)
+	{
+		$this->settings = $settings;
+		$this->logenabled = $this->settings['logger']['enabled'];
+		$this->logcronjob = $this->settings['logger']['log_cron'];
+		$this->severity = $this->settings['logger']['severity'];
+	}
 
-    protected function isEnabled()
-    {
-        return $this->logenabled;
-    }
+	protected function isEnabled()
+	{
+		return $this->logenabled;
+	}
 
-    protected function getSeverity()
-    {
-        return $this->severity;
-    }
+	protected function getSeverity()
+	{
+		return $this->severity;
+	}
 
-    protected function logCron()
-    {
-        return $this->logcronjob;
-    }
+	protected function logCron()
+	{
+		return $this->logcronjob;
+	}
 
-    abstract public function logAction();
+	abstract public function logAction();
 }
 
 ?>
