@@ -52,7 +52,7 @@ class ApacheVhost extends vHost
 
 		if($this->adminmail != '')
 		{
-			$vhost.= "\tServerAdmin {}$this->adminmail}\n";
+			$vhost.= "\tServerAdmin {$this->adminmail}\n";
 		}
 
 		// Set the docroot or make an redirect
@@ -68,3 +68,4 @@ class ApacheVhost extends vHost
 	}
 }
 
+?>
