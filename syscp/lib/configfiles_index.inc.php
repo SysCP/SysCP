@@ -637,6 +637,16 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 							'/etc/init.d/vixie-cron restart'
 						)
 					),
+					'awstats' => Array(
+						'label' => 'Awstats',
+						'files' => Array(
+							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
+							'etc_apache_vhosts_05_awstats.conf' => '/etc/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . '/sites-enabled/05_awstats.conf'
+						),
+						'restart' => Array(
+							'/etc/init.d/apache2 restart'
+						)
+					),
 					'libnss' => Array(
 						'label' => 'libnss (system login with mysql)',
 						'files' => Array(
@@ -788,6 +798,16 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						),
 						'restart' => Array(
 							'/etc/init.d/cron restart'
+						)
+					),
+					'awstats' => Array(
+						'label' => 'Awstats',
+						'files' => Array(
+							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
+							'etc_apache_vhosts_05_awstats.conf' => '/etc/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . '/sites-enabled/05_awstats.conf'
+						),
+						'restart' => Array(
+							'/etc/init.d/apache2 restart'
 						)
 					)
 				)
