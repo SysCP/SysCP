@@ -195,18 +195,18 @@ $cronbasedir = makeCorrectDir($pathtophpfiles . '/scripts/');
 $crondir = new DirectoryIterator($cronbasedir);
 $cronfilename = basename($_SERVER['PHP_SELF'], '.php');
 $cronscriptFullName = makeCorrectFile($cronbasedir . basename($_SERVER['PHP_SELF']));
+$inc_crons = array();
 foreach($crondir as $file)
 {
 	if(!$file->isDot()
 	   && !$file->isDir()
-	   && preg_match("/^" . $cronfilename . "\.inc\..(.*)\.php$/D", $file->getFilename()))
+	   && preg_match("/^" . $cronfilename . "\.inc\.(.*)\.php$/D", $file->getFilename()))
 	{
 		if(fileowner($cronscriptFullName) == $file->getOwner()
 		   && filegroup($cronscriptFullName) == $file->getGroup()
 		   && $file->isReadable())
 		{
-			fwrite($debugHandler, 'Including ...' . $file->getPathname() . "\n");
-			include ($file->getPathname());
+			$inc_crons[] = $file->getPathname();
 		}
 		else
 		{
@@ -214,6 +214,16 @@ foreach($crondir as $file)
 			fclose($debugHandler);
 			die('WARNING! uid and/or gid of "' . $cronscriptFullName . '" and "' . $file->getPathname() . '" don\'t match! Execution aborted!');
 		}
+	}
+}
+
+if(isset($inc_crons[0]))
+{
+	natsort($inc_crons);
+	foreach($inc_crons as $cfile)
+	{
+		fwrite($debugHandler, 'Including ...' . $cfile . "\n");
+		include_once ($cfile);
 	}
 }
 
@@ -248,3 +258,5 @@ fwrite($debugHandler, 'Logger has been included' . "\n");
 
 require ($pathtophpfiles . '/lib/cron_httpd.class.php');
 fwrite($debugHandler, 'Cron_httpd has been included' . "\n");
+
+?>
