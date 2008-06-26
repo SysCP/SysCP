@@ -693,7 +693,40 @@ if(isset($_POST['installstep'])
 	//last but not least create the main admin
 
 	status_message('begin', $lng['install']['adding_admin_user']);
-	$db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `email`, `customers`, `customers_used`, `customers_see_all`, `caneditphpsettings`, `domains`, `domains_used`, `domains_see_all`, `change_serversettings`, `diskspace`, `diskspace_used`, `mysqls`, `mysqls_used`, `emails`, `emails_used`, `email_accounts`, `email_accounts_used`, `email_forwarders`, `email_forwarders_used`, `email_quota`, `email_quota_used`, `ftps`, `ftps_used`, `tickets`, `tickets_used`, `subdomains`, `subdomains_used`, `traffic`, `traffic_used`, `deactivated`) VALUES ('" . $db->escape($admin_user) . "', '" . md5($admin_pass1) . "', 'Siteadmin', 'admin@" . $db->escape($servername) . "', -1, 0, 1, 1, -1, 0, 1, 1, -1024, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1048576, 0, 0)");
+	$db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` SET 
+		`loginname` = '" . $db->escape($admin_user) . ", 
+		`password` = '" . md5($admin_pass1) . "', 
+		`name` = 'Siteadmin', 
+		`email` = 'admin@" . $db->escape($servername) . "',
+		`customers` = -1,
+		`customers_used` = 0,
+		`customers_see_all` = 1, 
+		`caneditphpsettings` = 1,
+		`domains` = -1,
+		`domains_used` = 0,
+		`domains_see_all` = 1,
+		`change_serversettings` = 1,
+		`diskspace` = -1024,
+		`diskspace_used` = 0,
+		`mysqls` = -1,
+		`mysqls_used` = 0,
+		`emails` = -1,
+		`emails_used` = 0,
+		`email_accounts` = -1,
+		`email_accounts_used` = 0,
+		`email_forwarders` = -1,
+		`email_forwarders_used` = 0,
+		`email_quota` = -1,
+		`email_quota_used` = 0,
+		`ftps` = -1,
+		`ftps_used` = 0,
+		`tickets` = -1,
+		`tickets_used` = 0,
+		`subdomains` = -1,
+		`subdomains_used` = 0,
+		`traffic` = -1048576,
+		`traffic_used` = 0,
+		`deactivated` = 0");
 	status_message('green', 'OK');
 
 	//now we create the userdata.inc.php with the mysql-accounts
