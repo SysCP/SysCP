@@ -274,7 +274,6 @@ if($page == 'customers'
 				else
 				{
 					$email_quota = '-1';
-					$userinfo['email_quota'] = '-1';
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);
@@ -294,7 +293,7 @@ if($page == 'customers'
 				   || ((($userinfo['emails_used']+$emails) > $userinfo['emails']) && $userinfo['emails'] != '-1')
 				   || ((($userinfo['email_accounts_used']+$email_accounts) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
 				   || ((($userinfo['email_forwarders_used']+$email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
-				   || ((($userinfo['email_quota_used']+$email_quota) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1')
+				   || ((($userinfo['email_quota_used']+$email_quota) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
 				   || ((($userinfo['ftps_used']+$ftps) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
 				   || ((($userinfo['tickets_used']+$tickets) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
 				   || ((($userinfo['subdomains_used']+$subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
@@ -303,7 +302,7 @@ if($page == 'customers'
 				   || ($emails == '-1' && $userinfo['emails'] != '-1')
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
 				   || ($email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1')
-				   || ($email_quota == '-1' && $userinfo['email_quota'] != '-1')
+				   || ($email_quota == '-1' && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
 				   || ($ftps == '-1' && $userinfo['ftps'] != '-1')
 				   || ($tickets == '-1' && $userinfo['tickets'] != '-1')
 				   || ($subdomains == '-1' && $userinfo['subdomains'] != '-1'))
@@ -602,7 +601,6 @@ if($page == 'customers'
 				else
 				{
 					$email_quota = '-1';
-					$userinfo['email_quota'] = '-1';
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);
@@ -621,7 +619,7 @@ if($page == 'customers'
 				   || ((($userinfo['emails_used']+$emails-$result['emails']) > $userinfo['emails']) && $userinfo['emails'] != '-1')
 				   || ((($userinfo['email_accounts_used']+$email_accounts-$result['email_accounts']) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
 				   || ((($userinfo['email_forwarders_used']+$email_forwarders-$result['email_forwarders']) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
-				   || ((($userinfo['email_quota_used']+$email_quota-$result['email_quota']) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1')
+				   || ((($userinfo['email_quota_used']+$email_quota-$result['email_quota']) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
 				   || ((($userinfo['ftps_used']+$ftps-$result['ftps']) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
 				   || ((($userinfo['tickets_used']+$tickets-$result['tickets']) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
 				   || ((($userinfo['subdomains_used']+$subdomains-$result['subdomains']) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
@@ -630,7 +628,7 @@ if($page == 'customers'
 				   || ($emails == '-1' && $userinfo['emails'] != '-1')
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
 				   || ($email_forwarders == '-1' && $userinfo['email_forwarders'] != '-1')
-				   || ($email_quota == '-1' && $userinfo['email_quota'] != '-1')
+				   || ($email_quota == '-1' && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
 				   || ($ftps == '-1' && $userinfo['ftps'] != '-1')
 				   || ($tickets == '-1' && $userinfo['tickets'] != '-1')
 				   || ($subdomains == '-1' && $userinfo['subdomains'] != '-1'))
