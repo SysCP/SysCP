@@ -40,6 +40,6 @@ define('TABLE_PANEL_TICKET_CATS', 'panel_ticket_categories');
 define('TABLE_PANEL_LOG', 'panel_syslog');
 define('TABLE_MAIL_DKIM', 'mail_dkim');
 define('TABLE_PANEL_DNSENTRY', 'panel_dns');
-$version = '1.2.19-svn18';
+$version = '1.2.19-svn19';
 
 ?>

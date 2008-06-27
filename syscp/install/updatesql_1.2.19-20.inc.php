@@ -332,6 +332,31 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn18';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn18')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn18 to 1.2.19-svn19");
+
+		// Update all email-admins and give'em unlimited email_quota resources
+
+		$sql = "SELECT `adminid` FROM `" . TABLE_PANEL_ADMINS . "` 
+			WHERE `emails` = '-1' 
+			AND `email_accounts` = '-1' 
+			AND `email_forwarders` = '-1'";
+		$admins = $db->query($sql);
+
+		while($admin = $db->fetch_aray($admins))
+		{
+			$db->query("UPDATE TABLE `" . TABLE_PANEL_ADMINS . "` SET `email_quota` = '-1' WHERE `adminid` = '" . $admin['adminid'] . "'");
+		}
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn19\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn19';
+	}
 }
 
 // php filter-extension check
