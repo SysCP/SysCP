@@ -274,6 +274,7 @@ if($page == 'customers'
 				else
 				{
 					$email_quota = '-1';
+					$userinfo['email_quota'] = '-1';
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);
@@ -601,6 +602,7 @@ if($page == 'customers'
 				else
 				{
 					$email_quota = '-1';
+					$userinfo['email_quota'] = '-1';
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);

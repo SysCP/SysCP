@@ -118,7 +118,7 @@ if($page == 'domains'
 		$result = $db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`zonefile` FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `" . TABLE_PANEL_CUSTOMERS . "` `c` WHERE `d`.`id`='" . (int)$id . "' AND `d`.`id` <> `c`.`standardsubdomain`" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
 		*/
 
-		$result = $db->query_first("SELECT `id`, `customerid`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `id`='" . $id . "'");
+		$result = $db->query_first("SELECT `id`, `customerid`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `id`='" . (int)$id . "'");
 		$alias_check = $db->query_first('SELECT COUNT(`id`) AS `count` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . (int)$id . '\'');
 
 		if($result['domain'] != ''
@@ -127,7 +127,6 @@ if($page == 'domains'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				$customerid = $db->query_first('SELECT `customerid` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `id`="' . $_POST['id'] . '"');
 				$query = 'SELECT `id` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE (`id`="' . (int)$id . '" OR `parentdomainid`="' . (int)$id . '")  AND  `isemaildomain`="1"';
 				$subResult = $db->query($query);
 				$idString = array();
@@ -149,10 +148,10 @@ if($page == 'domains'
 				}
 
 				$db->query("DELETE FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `id`='" . (int)$id . "' OR `parentdomainid`='" . (int)$result['id'] . "'");
-				$deleted_domains = $db->affected_rows();
-				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` - 0" . ($deleted_domains-1) . " WHERE `customerid` = '" . (int)$result['customerid'] . "'");
+				$deleted_domains = (int)$db->affected_rows();
+				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` - " . (int)($deleted_domains-1) . " WHERE `customerid` = '" . (int)$result['customerid'] . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '" . (int)$userinfo['adminid'] . "'");
-				$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'0\' WHERE `customerid`=\'' . (int)$customerid['customerid'] . '\'');
+				$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'0\' WHERE `standardsubdomain`=\'' . (int)$result['id'] . '\' AND `customerid`=\'' . (int)$result['customerid'] . '\'');
 
 				if($settings['system']['userdns'] == '1')
 				{
@@ -176,8 +175,6 @@ if($page == 'domains'
 					'action' => $action
 				), $idna_convert->decode($result['domain']));
 			}
-
-			$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'0\' WHERE `customerid`=\'' . (int)$customerid['customerid'] . '\'');
 		}
 	}
 	elseif($action == 'add')
