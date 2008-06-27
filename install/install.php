@@ -667,7 +667,8 @@ if(isset($_POST['installstep'])
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-vhosts.conf' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-diroptions.conf' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
-		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd force-reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/lighttpd.pem' WHERE `settinggroup` = 'system' AND `varname` = 'ssl_cert_file'");
 	}
 
 	// insert the lastcronrun to be the installation date
@@ -694,7 +695,7 @@ if(isset($_POST['installstep'])
 
 	status_message('begin', $lng['install']['adding_admin_user']);
 	$db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` SET 
-		`loginname` = '" . $db->escape($admin_user) . ", 
+		`loginname` = '" . $db->escape($admin_user) . "', 
 		`password` = '" . md5($admin_pass1) . "', 
 		`name` = 'Siteadmin', 
 		`email` = 'admin@" . $db->escape($servername) . "',
