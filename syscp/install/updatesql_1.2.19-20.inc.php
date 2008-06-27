@@ -350,6 +350,12 @@ else
 			$db->query("UPDATE TABLE `" . TABLE_PANEL_ADMINS . "` SET `email_quota` = '-1' WHERE `adminid` = '" . $admin['adminid'] . "'");
 		}
 
+		if($settings['system']['apacheversion'] == 'lighttpd'
+		   && $settings['system']['apachereload_command'] == '/etc/init.d/lighttpd force-reload')
+		{
+			$db->query("UPDATE TABLE `" . TABLE_PANEL_ADMINS . "` SET `value` = '/etc/init.d/lighttpd reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
+		}
+
 		// set new version
 
 		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn19\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';

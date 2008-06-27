@@ -375,7 +375,7 @@ class cron_httpd
 						$this->vhosts_file.= "  fastcgi.server = (
 \".php\" => (
 	\"localhost\" => (
-		\"socket\" => \"/tmp/lighttpd-fcgi-sock-" . $domain['loginname'] . "\",
+		\"socket\" => \"". $this->settings['system']['mod_fcgid_tmpdir'] . "lighttpd-fcgi-sock-" . $domain['loginname'] . "\",
 		\"broken-scriptfilename\" => \"enable\",
 		\"bin-path\" => \"/usr/bin/php-cgi\",
 		\"min-procs\" => 1,
@@ -581,10 +581,13 @@ class cron_httpd
 		{
 			if(file_exists($this->settings['system']['apacheconf_diroptions']))
 			{
-				if(!$this->is_lighttpd);
-				
+				if(!$this->is_lighttpd)
 				{
 					$this->vhosts_file.= 'Include ' . $this->settings['system']['apacheconf_diroptions'] . "\n\n";
+				}
+				else
+				{
+					$this->vhosts_file.= 'include "' . $this->settings['system']['apacheconf_diroptions'] . '"' . "\n\n";
 				}
 			}
 
@@ -876,9 +879,10 @@ class cron_httpd
 
 			if($this->is_lighttpd)
 			{
-				// we include the syscp-htaccess.conf file for customer .htaccess support
-
+				// Parse user's homes for .htaccess files and write'em into syscp-htaccess.conf
+				/*
 				$this->diroptions_file.= "\n\n" . 'include "syscp-htaccess.conf"' . "\n";
+				*/
 			}
 
 			// Save big file
