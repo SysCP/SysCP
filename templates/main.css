@@ -149,6 +149,28 @@ input.bottom {
 	border-left			: none;
 }
 
+.field_name_foggy { /*nomecampo*/
+	color				: #555;
+	text-decoration		: line-through;
+	background-color	: #EBECF5;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
+	text-align			: left;
+	border-top			: none;
+	border-left			: none;
+}
+
+.field_name_red { /*nomecampo*/
+	background-color	: #FFA0A0;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
+	text-align			: left;
+	border-top			: none;
+	border-left			: none;
+}
+
 .field_name_nobordersmall {
 	background-color	: #EBECF5;
 	border-color		: #B7B7B7;
@@ -188,6 +210,26 @@ input.bottom {
 	border-top			: none;
 }
 
+.field_name_border_left_foggy { /*nomecampo_bordosx*/
+	color				: #555;
+	text-decoration		: line-through;
+	background-color	: #EBECF5;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
+	text-align			: left;
+	border-top			: none;
+}
+
+.field_name_border_left_red { /*nomecampo_bordosx*/
+	background-color	: #FFA0A0;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
+	text-align			: left;
+	border-top			: none;
+}
+
 .field_name_search {
 	background-color	: #EBECF5;
 	border-color		: #B7B7B7;
@@ -196,6 +238,14 @@ input.bottom {
 	border-top			: none;
 	border-left			: none;
 	text-align			: right;
+}
+
+.main_field_display_red { /*install_campodisplay*/
+	width				: 6%;
+	background-color	: #FFA0A0;
+	border-color		: #B7B7B7;
+	border-style		: solid;
+	border-width		: 1px;
 }
 
 .main_field_display {

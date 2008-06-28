@@ -12,7 +12,7 @@
  * @author     Florian Lippert <flo@syscp.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Panel
- * @version    $Id: admin_admins.php 1845 2008-05-02 23:51:50Z atari $
+ * @version    $Id$
  */
 
 define('AREA', 'admin');

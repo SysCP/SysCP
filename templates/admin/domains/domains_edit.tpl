@@ -4,9 +4,16 @@ $header
 		<input type="hidden" name="page" value="$page" />
 		<input type="hidden" name="action" value="$action" />
 		<input type="hidden" name="id" value="$id" />
+		<input type="hidden" name="send" value="send" />
+		<if $override_billing_data_edit === true><input type="hidden" name="override_billing_data_edit" value="1" /></if>
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
 			<tr>
-				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_edit']}</b></td>
+				<td class="maintitle_apply_left">
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_edit']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowarp="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['customer']}:</td>
@@ -105,12 +112,71 @@ $header
 				<td class="main_field_name">{$lng['admin']['ownvhostsettings']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="60" name="specialsettings">{$result['specialsettings']}</textarea></td>
 			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['domains']['add_date']}: ({$lng['panel']['dateformat']})</td>
+				<td class="main_field_display" nowrap="nowrap">{$result['add_date']}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['domains']['registration_date']}: ({$lng['panel']['dateformat']})</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="registration_date" value="{$result['registration_date']}" size="10" /></td>
+			</tr>
+			<tr>
+				<td class="maintitle_apply_left">
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowarp="nowrap">
+					<if $enable_billing_data_edit === true><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /><else><input class="bottom" type="submit" name="enable_billing_data_edit" value="{$lng['panel']['allow_modifications']}" /></if>
+				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['service']['interval_fee']}:</td>
+				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="interval_fee" value="{$result['interval_fee']}" size="18" /><else>{$result['interval_fee']}</if> &#8364;</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['service']['interval_length']}:</td>
+				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="interval_length" value="{$result['interval_length']}" size="10" /> <select class="dropdown_noborder" name="interval_type">$interval_type</select><else>{$result['interval_length']} {$lng['panel']['intervalfee_type'][$result['interval_type']]}</if></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['service']['interval_payment']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="interval_payment">$interval_payment</select></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['service']['setup_fee']}:</td>
+				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="setup_fee" value="{$result['setup_fee']}" size="18" /><else>{$result['setup_fee']}</if> &#8364;</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['billing']['taxclass']}:</td>
+				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><select class="dropdown_noborder" name="taxclass">$taxclasses_option</select><else>{$taxclasses[$result['taxclass']]}</if></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['service']['active']}?</td>
+				<td class="main_field_display" nowrap="nowrap">$service_active</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['service']['start_date']} ({$lng['panel']['dateformat']}):</td>
+				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="servicestart_date" value="{$result['servicestart_date']}" /><else>{$result['servicestart_date']}</if></td>
+			</tr>
+			<if $result['serviceend_date'] != 0>
+			<tr>
+				<td class="main_field_name">{$lng['service']['end_date']} ({$lng['panel']['dateformat']}):</td>
+				<td class="main_field_display" nowrap="nowrap">{$result['serviceend_date']}</td>
+			</tr>
+			</if>
+			<tr>
+				<td class="main_field_name">{$lng['service']['lastinvoiced_date']} ({$lng['panel']['dateformat']}):</td>
+				<td class="main_field_display" nowrap="nowrap"><if $result['lastinvoiced_date'] != 0>{$result['lastinvoiced_date']}<else>{$lng['panel']['never']}</if></td>
+			</tr>
 			</if>
 		<if $settings['system']['userdns'] == '1'>
 		</table>
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
 			<tr>
-				<td class="maintitle" colspan="3"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_dns_settings']}</b></td>
+				<td class="maintitle_apply_left" colspan="2">
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_dns_settings']}</b>
+				</td>
+				<td class="maintitle_apply_right" nowarp="nowrap">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['dns']['destinationip']}:</td>
