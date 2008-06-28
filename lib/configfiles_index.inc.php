@@ -178,10 +178,13 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						'label' => 'Awstats',
 						'files' => Array(
 							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
-							'etc_apache_vhosts_05_awstats.conf' => '/etc/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . '/sites-enabled/05_awstats.conf'
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
+						),
+						'commands' => Array(
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'echo "include \"syscp-awstats.conf\"" >> /etc/lighttpd/lighttpd.conf' : '')
 						),
 						'restart' => Array(
-							'/etc/init.d/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . ' restart'
+							($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/init.d/lighttpd restart' : '/etc/init.d/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . ' restart')
 						)
 					)
 				)
@@ -400,10 +403,13 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						'label' => 'Awstats',
 						'files' => Array(
 							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
-							'etc_apache_vhosts_05_awstats.conf' => '/etc/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . '/sites-enabled/05_awstats.conf'
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
+						),
+						'commands' => Array(
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'echo "include \"syscp-awstats.conf\"" >> /etc/lighttpd/lighttpd.conf' : '')
 						),
 						'restart' => Array(
-							'/etc/init.d/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . ' restart'
+							($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/init.d/lighttpd restart' : '/etc/init.d/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . ' restart')
 						)
 					)
 				)
@@ -641,10 +647,13 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						'label' => 'Awstats',
 						'files' => Array(
 							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
-							'etc_apache_vhosts_05_awstats.conf' => '/etc/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . '/sites-enabled/05_awstats.conf'
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
+						),
+						'commands' => Array(
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'echo "include \"syscp-awstats.conf\"" >> /etc/lighttpd/lighttpd.conf' : '')
 						),
 						'restart' => Array(
-							'/etc/init.d/apache2 restart'
+							($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/init.d/lighttpd restart' : '/etc/init.d/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . ' restart')
 						)
 					),
 					'libnss' => Array(
@@ -804,10 +813,13 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						'label' => 'Awstats',
 						'files' => Array(
 							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
-							'etc_apache_vhosts_05_awstats.conf' => '/etc/apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : '') . '/sites-enabled/05_awstats.conf'
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
+						),
+						'commands' => Array(
+							($settings['system']['apacheversion'] == 'lighttpd' ? 'echo "include \"syscp-awstats.conf\"" >> /etc/lighttpd/lighttpd.conf' : '')
 						),
 						'restart' => Array(
-							'/etc/init.d/apache2 restart'
+							($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/init.d/lighttpd restart' : '/etc/init.d/apache2 restart')
 						)
 					)
 				)

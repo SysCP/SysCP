@@ -895,4 +895,11 @@ $lng['pwdreminder']['success'] = 'Passwort erfolgreich zur&uuml;ckgesetzt.<br />
 $lng['serversettings']['allow_preset'] = 'Erlaube das Zur&uuml;cksetzen des Kundenpassworts';
 $lng['pwdreminder']['notallowed'] = 'Das Zur&uuml;cksetzen des Passworts ist deaktiviert';
 
+// ADDED IN 1.2.19-svn20
+
+$lng['serversettings']['awstats_path']['title'] = 'Pfad zum awstats cgi-bin Ordner';
+$lng['serversettings']['awstats_path']['description'] = 'z.B. /usr/share/webapps/awstats/6.1/webroot/cgi-bin/';
+$lng['serversettings']['awstats_updateall_command']['title'] = 'Pfad zu &quot;awstats_updateall.pl&quot;';
+$lng['serversettings']['awstats_updateall_command']['description'] = 'z.B. /usr/bin/awstats_updateall.pl';
+
 ?>

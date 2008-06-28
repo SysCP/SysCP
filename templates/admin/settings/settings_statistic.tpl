@@ -19,6 +19,14 @@
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_model_file']['title']}:</b></td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_awstats_model_file" value="{$settings['system']['awstats_model_file']}" /></td>
 			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['awstats_path']['title']}:</b><br />{$lng['serversettings']['awstats_path']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_awstats_path" value="{$settings['system']['awstats_path']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['awstats_updateall_command']['title']}:</b><br />{$lng['serversettings']['awstats_updateall_command']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_awstats_updateall_command" value="{$settings['system']['awstats_updateall_command']}" /></td>
+			</tr>
 			</if>
 			<tr>
 				<td class="main_field_name" colspan="2"><b>{$lng['admin']['or']}</b></td>

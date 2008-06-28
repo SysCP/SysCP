@@ -501,6 +501,8 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (88, 'dkim', 'dkimrestart_command', '/etc/init.d/dkim-filter restart');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (89, 'panel', 'unix_names', '1');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (90, 'panel', 'allow_preset', '1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (91, 'system', 'awstats_path', '/usr/share/awstats/VERSION/webroot/cgi-bin/');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (92, 'system', 'awstats_updateall_command', '/usr/bin/awstats_updateall.pl');
 # --------------------------------------------------------
 
 #

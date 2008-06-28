@@ -91,7 +91,8 @@ if($userinfo['change_serversettings'] == '1')
 			'<NAMESERVERS>' => $settings['system']['nameservers'],
 			'<VIRTUAL_MAILBOX_BASE>' => $settings['system']['vmail_homedir'],
 			'<VIRTUAL_UID_MAPS>' => $settings['system']['vmail_uid'],
-			'<VIRTUAL_GID_MAPS>' => $settings['system']['vmail_gid']
+			'<VIRTUAL_GID_MAPS>' => $settings['system']['vmail_gid'],
+			'<AWSTATS_PATH>' => $settings['system']['awstats_path']
 		);
 		$files = '';
 		$configpage = '';
@@ -104,7 +105,11 @@ if($userinfo['change_serversettings'] == '1')
 				if(is_array($value))
 				{
 					$commands = implode("\n", $value);
-					eval("\$configpage.=\"" . getTemplate("configfiles/configfiles_commands") . "\";");
+
+					if($commands != '')
+					{
+						eval("\$configpage.=\"" . getTemplate("configfiles/configfiles_commands") . "\";");
+					}
 				}
 			}
 			elseif(substr($action, 0, 5) == 'files')
