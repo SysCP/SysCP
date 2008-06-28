@@ -277,7 +277,6 @@ if($page == 'domains'
 					}
 				}
 
-
 				if($userinfo['change_serversettings'] == '1')
 				{
 					$isbinddomain = intval($_POST['isbinddomain']);
@@ -1448,7 +1447,6 @@ if($page == 'domains'
 				}
 
 				$log->logAction(ADM_ACTION, LOG_INFO, "edited domain #" . $id);
-
 				$redirect_props = Array(
 					'page' => $page,
 					's' => $s
@@ -1614,7 +1612,6 @@ if($page == 'domains'
 				$openbasedir = makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 				$safemode = makeyesno('safemode', '1', '0', $result['safemode']);
 				$speciallogfile = ($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
-
 				$interval_type = getIntervalTypes('option', $result['interval_type']);
 				$service_active = makeyesno('service_active', '1', '0', $result['service_active']);
 				$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);

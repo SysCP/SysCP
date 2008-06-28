@@ -106,32 +106,32 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['diskspace']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="diskspace" value="" maxlength="6" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="diskspace" value="" maxlength="6" />&nbsp;{$diskspace_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['traffic']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="traffic" value="" maxlength="3" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="traffic" value="" maxlength="3" />&nbsp;{$traffic_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['subdomains']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subdomains" value="" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="subdomains" value="" maxlength="9" />&nbsp;{$subdomains_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['emails']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="emails" value="" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="emails" value="" maxlength="9" />&nbsp;{$emails_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['accounts']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_accounts" value="" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="email_accounts" value="" maxlength="9" />&nbsp;{$email_accounts_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['forwarders']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="email_forwarders" value="" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="email_forwarders" value="" maxlength="9" />&nbsp;{$email_forwarders_ul}</td>
 			</tr>
 			<if $settings['system']['mail_quota_enabled'] == 1>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_quota']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_quota" value="" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_quota" value="" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>&nbsp;{$diskspace_ul}</td>
 			</tr>
 			</if>
 			<tr>
@@ -144,17 +144,17 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['ftps']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ftps" value="" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="ftps" value="" maxlength="9" />&nbsp;{$ftps_ul}</td>
 			</tr>
 			<if $settings['ticket']['enabled'] == 1 >
 			<tr>
 				<td class="main_field_name">{$lng['customer']['tickets']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="tickets" value="" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="tickets" value="" maxlength="9" />&nbsp;{$tickets_ul}</td>
 			</tr>
 			</if>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['mysqls']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="mysqls" value="" maxlength="9" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="mysqls" value="" maxlength="9" />&nbsp;{$mysqls_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['phpenabled']}?</td>
