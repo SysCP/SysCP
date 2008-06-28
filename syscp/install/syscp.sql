@@ -503,6 +503,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (90, 'panel', 'allow_preset', '1');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (91, 'system', 'awstats_path', '/usr/share/awstats/VERSION/webroot/cgi-bin/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (92, 'system', 'awstats_updateall_command', '/usr/bin/awstats_updateall.pl');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (93, 'billing', 'invoicenumber_count', '0');
 # --------------------------------------------------------
 
 #
@@ -599,6 +600,56 @@ CREATE TABLE `panel_traffic_admins` (
 #
 
 
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_diskspace`
+#
+
+CREATE TABLE `panel_diskspace` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `customerid` int(11) unsigned NOT NULL default '0',
+  `year` int(4) unsigned zerofill NOT NULL default '0000',
+  `month` int(2) unsigned zerofill NOT NULL default '00',
+  `day` int(2) unsigned zerofill NOT NULL default '00',
+  `stamp` int(11) unsigned NOT NULL default '0',
+  `webspace` bigint(30) unsigned NOT NULL default '0',
+  `mail` bigint(30) unsigned NOT NULL default '0',
+  `mysql` bigint(30) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `customerid` (`customerid`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `panel_diskspace`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_diskspace_admins`
+#
+
+CREATE TABLE `panel_diskspace_admins` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `adminid` int(11) unsigned NOT NULL default '0',
+  `year` int(4) unsigned zerofill NOT NULL default '0000',
+  `month` int(2) unsigned zerofill NOT NULL default '00',
+  `day` int(2) unsigned zerofill NOT NULL default '00',
+  `stamp` int(11) unsigned NOT NULL default '0',
+  `webspace` bigint(30) unsigned NOT NULL default '0',
+  `mail` bigint(30) unsigned NOT NULL default '0',
+  `mysql` bigint(30) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `adminid` (`adminid`)
+) TYPE=MyISAM ;
+
+#
+# Dumping data for table `panel_diskspace_admins`
+#
+
 # --------------------------------------------------------
 
 #
@@ -670,6 +721,15 @@ INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_loggersystem.nourl', 
 INSERT INTO `panel_navigation` VALUES (46, 'admin', '', 'menu;message', 'admin_message.nourl', 50, '', 0);
 INSERT INTO `panel_navigation` VALUES (47, 'admin', 'admin_message.nourl', 'admin;message', 'admin_message.php?page=message', 10, '', 0);
 INSERT INTO `panel_navigation` VALUES (48, 'customer', 'customer_email.php', 'emails;emails_add', 'customer_email.php?page=emails&action=add', '20', 'emails', 0);
+INSERT INTO `panel_navigation` VALUES (49, 'admin', '', 'billing;billing', 'billing.nourl', '100', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (50, 'admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', '110', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (51, 'admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', '115', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (52, 'admin', 'billing.nourl', 'billing;invoices', 'billing_invoices.php', '120', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (53, 'admin', 'billing.nourl', 'billing;invoices_admin', 'billing_invoices.php?mode=1', '125', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (54, 'admin', 'billing.nourl', 'billing;other', 'billing_other.php', '130', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (55, 'admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', '140', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (56, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (57, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'customers_see_all', '0');
 
 # --------------------------------------------------------
 
@@ -788,6 +848,10 @@ CREATE TABLE `mail_dkim` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM;
 
+#
+# Dumping data for table `mail_dkim`
+#
+
 
 # --------------------------------------------------------
 
@@ -809,3 +873,283 @@ CREATE TABLE `panel_dns` (
   PRIMARY KEY  (`dnsid`),
   UNIQUE KEY `domainid` (`domainid`)
 ) ENGINE=MyISAM;
+
+#
+# Dumping data for table `panel_dns`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_service_categories`
+#
+
+CREATE TABLE  `billing_service_categories` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `category_name` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_order` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `category_classname` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_classfile` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_cachefield` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_caption` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_rowcaption_setup` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_rowcaption_interval` VARCHAR( 255 ) NOT NULL DEFAULT ''
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_service_categories`
+#
+
+INSERT INTO `billing_service_categories` (`id`, `category_name`, `category_order`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (1, 'hosting', 10, 'hosting', 'lib/billing_class_hosting.php', 'invoice_fee_hosting', 'hosting_caption', 'hosting_rowcaption_setup', 'hosting_rowcaption_interval');
+INSERT INTO `billing_service_categories` (`id`, `category_name`, `category_order`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (2, 'domains', 20, 'domains', 'lib/billing_class_domains.php', 'invoice_fee_domains', 'domains_caption', 'domains_rowcaption_setup', 'domains_rowcaption_interval');
+INSERT INTO `billing_service_categories` (`id`, `category_name`, `category_order`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (3, 'traffic', 30, 'traffic', 'lib/billing_class_traffic.php', 'invoice_fee_traffic', 'traffic_caption', 'traffic_rowcaption_setup', 'traffic_rowcaption_interval');
+INSERT INTO `billing_service_categories` (`id`, `category_name`, `category_order`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (4, 'diskspace', 40, 'diskspace', 'lib/billing_class_diskspace.php', 'invoice_fee_diskspace', 'diskspace_caption', 'diskspace_rowcaption_setup', 'diskspace_rowcaption_interval');
+INSERT INTO `billing_service_categories` (`id`, `category_name`, `category_order`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (5, 'other', 50, 'other', 'lib/billing_class_other.php', 'invoice_fee_other', 'other_caption', 'other_rowcaption_setup', 'other_rowcaption_interval');
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_service_categories_admins`
+#
+
+CREATE TABLE  `billing_service_categories_admins` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `category_name` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_order` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `category_mode` TINYINT( 1 ) NOT NULL DEFAULT '0',
+ `category_classname` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_classfile` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_cachefield` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_caption` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_rowcaption_setup` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `category_rowcaption_interval` VARCHAR( 255 ) NOT NULL DEFAULT ''
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_service_categories_admins`
+#
+
+INSERT INTO `billing_service_categories_admins` (`id`, `category_name`, `category_order`, `category_mode`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (1, 'hosting', 10, 0, 'hosting', 'lib/billing_class_hosting.php', 'invoice_fee_hosting', 'hosting_caption', 'hosting_rowcaption_setup', 'hosting_rowcaption_interval');
+INSERT INTO `billing_service_categories_admins` (`id`, `category_name`, `category_order`, `category_mode`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (2, 'hosting_customers', 20, 1, 'hosting', 'lib/billing_class_hosting.php', 'invoice_fee_hosting_customers', 'hosting_caption', 'hosting_rowcaption_setup_withloginname', 'hosting_rowcaption_interval_withloginname');
+INSERT INTO `billing_service_categories_admins` (`id`, `category_name`, `category_order`, `category_mode`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (3, 'domains', 30, 1, 'domains', 'lib/billing_class_domains.php', 'invoice_fee_domains', 'domains_caption', 'domains_rowcaption_setup', 'domains_rowcaption_interval');
+INSERT INTO `billing_service_categories_admins` (`id`, `category_name`, `category_order`, `category_mode`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (4, 'traffic', 40, 0, 'traffic', 'lib/billing_class_traffic.php', 'invoice_fee_traffic', 'traffic_caption', 'traffic_rowcaption_setup', 'traffic_rowcaption_interval');
+INSERT INTO `billing_service_categories_admins` (`id`, `category_name`, `category_order`, `category_mode`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (5, 'diskspace', 50, 0, 'diskspace', 'lib/billing_class_diskspace.php', 'invoice_fee_diskspace', 'diskspace_caption', 'diskspace_rowcaption_setup', 'diskspace_rowcaption_interval');
+INSERT INTO `billing_service_categories_admins` (`id`, `category_name`, `category_order`, `category_mode`, `category_classname`, `category_classfile`, `category_cachefield`, `category_caption`, `category_rowcaption_setup`, `category_rowcaption_interval`) VALUES (6, 'other', 60, 1, 'other', 'lib/billing_class_other.php', 'invoice_fee_other', 'other_caption', 'other_rowcaption_setup', 'other_rowcaption_interval');
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_service_domains_templates`
+#
+
+CREATE TABLE  `billing_service_domains_templates` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `tld` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `valid_from` DATE NOT NULL,
+ `valid_to` DATE NOT NULL,
+ `taxclass` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `setup_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `interval_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `interval_length` INT( 11 ) NOT NULL DEFAULT '0',
+ `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'y',
+ `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0'
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_service_domains_templates`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_service_other`
+#
+
+CREATE TABLE  `billing_service_other` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `customerid` INT( 11 ) NOT NULL DEFAULT '0',
+ `templateid` INT( 11 ) NOT NULL DEFAULT '0',
+ `service_type` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `caption_setup` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `caption_interval` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `taxclass` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `quantity` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `setup_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `interval_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `interval_length` INT( 11 ) NOT NULL DEFAULT '0',
+ `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'm',
+ `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0',
+ `service_active` TINYINT( 1 ) NOT NULL DEFAULT '0',
+ `servicestart_date` DATE NOT NULL,
+ `serviceend_date` DATE NOT NULL,
+ `lastinvoiced_date` DATE NOT NULL
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_service_other`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_service_other_templates`
+#
+
+CREATE TABLE  `billing_service_other_templates` (
+ `templateid` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `valid_from` DATE NOT NULL,
+ `valid_to` DATE NOT NULL,
+ `service_type` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `caption_setup` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `caption_interval` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `taxclass` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `setup_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `interval_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `interval_length` INT( 11 ) NOT NULL DEFAULT '0',
+ `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'm',
+ `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0'
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_service_other_templates`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_taxclasses`
+#
+
+CREATE TABLE  `billing_taxclasses` (
+ `classid` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `classname` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `default` TINYINT( 1 ) NOT NULL DEFAULT '0'
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_taxclasses`
+#
+
+INSERT INTO `billing_taxclasses` (`classid`, `classname`, `default`) VALUES ( NULL, 'MwSt Deutschland', '1' );
+INSERT INTO `billing_taxclasses` (`classid`, `classname`, `default`) VALUES ( NULL, 'MwSt Deutschland (reduziert)', '0' );
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_taxrates`
+#
+
+CREATE TABLE  `billing_taxrates` (
+ `taxid` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `taxclass` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `taxrate` DECIMAL( 4, 4 ) NOT NULL ,
+ `valid_from` DATE NOT NULL
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_taxrates`
+#
+
+INSERT INTO `billing_taxrates` (`taxid`, `taxclass`, `taxrate`, `valid_from`) VALUES ( NULL, 1, 0.1600, '0' );
+INSERT INTO `billing_taxrates` (`taxid`, `taxclass`, `taxrate`, `valid_from`) VALUES ( NULL, 1, 0.1900, '2007-01-01' );
+INSERT INTO `billing_taxrates` (`taxid`, `taxclass`, `taxrate`, `valid_from`) VALUES ( NULL, 2, 0.0700, '0' );
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_invoices`
+#
+
+CREATE TABLE  `billing_invoices` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `customerid` INT( 11 ) NOT NULL DEFAULT '0',
+ `xml` LONGTEXT NOT NULL DEFAULT '',
+ `invoice_date` DATE NOT NULL,
+ `state` TINYINT( 1 ) NOT NULL DEFAULT '0',
+ `state_change` INT( 11 ) NOT NULL DEFAULT '0',
+ `invoice_number` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `total_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `total_fee_taxed` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_invoices`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_invoices_admins`
+#
+
+CREATE TABLE  `billing_invoices_admins` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `adminid` INT( 11 ) NOT NULL DEFAULT '0',
+ `xml` LONGTEXT NOT NULL DEFAULT '',
+ `invoice_date` DATE NOT NULL,
+ `state` TINYINT( 1 ) NOT NULL DEFAULT '0',
+ `state_change` INT( 11 ) NOT NULL DEFAULT '0',
+ `invoice_number` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `total_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `total_fee_taxed` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_invoices_admins`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_invoice_changes`
+#
+
+CREATE TABLE  `billing_invoice_changes` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `customerid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `userid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `timestamp` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `key` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `action` TINYINT( 1 ) NOT NULL DEFAULT '0',
+ `caption` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `interval` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `quantity` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `total_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `taxrate` DECIMAL( 4, 4 ) NOT NULL
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_invoice_changes`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `billing_invoice_changes_admins`
+#
+
+CREATE TABLE  `billing_invoice_changes_admins` (
+ `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `adminid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `userid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `timestamp` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `key` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `action` TINYINT( 1 ) NOT NULL DEFAULT '0',
+ `caption` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `interval` VARCHAR( 255 ) NOT NULL DEFAULT '',
+ `quantity` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0',
+ `total_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00',
+ `taxrate` DECIMAL( 4, 4 ) NOT NULL
+) TYPE = MYISAM ;
+
+#
+# Dumping data for table `billing_invoice_changes_admins`
+#
+

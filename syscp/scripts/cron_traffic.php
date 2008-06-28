@@ -201,17 +201,18 @@ while($row = $db->fetch_array($result))
 	 */
 
 	fwrite($debugHandler, 'total traffic for ' . $row['loginname'] . ' started' . "\n");
-	$current = array();
-	$current['http'] = floatval($httptraffic);
-	$current['ftp_up'] = floatval(($ftptraffic['up_bytes_sum']/1024));
-	$current['ftp_down'] = floatval(($ftptraffic['down_bytes_sum']/1024));
-	$current['mail'] = floatval($mailtraffic);
-	$current['all'] = $current['http']+$current['ftp_up']+$current['ftp_down']+$current['mail'];
-	$db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC . "` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['customerid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$current['http'] . "', '" . (float)$current['ftp_up'] . "', '" . (float)$current['ftp_down'] . "', '" . (float)$current['mail'] . "')");
-	$sum_month = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `" . TABLE_PANEL_TRAFFIC . "` WHERE `year`='" . date('Y') . "' AND `month`='" . date('m') . "' AND `customerid`='" . (int)$row['customerid'] . "'");
-	$sum_month['all'] = $sum_month['http']+$sum_month['ftp_up']+$sum_month['ftp_down']+$sum_month['mail'];
+	$current_traffic = array();
+	$current_traffic['http'] = floatval($httptraffic);
+	$current_traffic['ftp_up'] = floatval(($ftptraffic['up_bytes_sum']/1024));
+	$current_traffic['ftp_down'] = floatval(($ftptraffic['down_bytes_sum']/1024));
+	$current_traffic['mail'] = floatval($mailtraffic);
+	$current_traffic['all'] = $current_traffic['http']+$current_traffic['ftp_up']+$current_traffic['ftp_down']+$current_traffic['mail'];
+	$db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC . "` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['customerid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$current_traffic['http'] . "', '" . (float)$current_traffic['ftp_up'] . "', '" . (float)$current_traffic['ftp_down'] . "', '" . (float)$current_traffic['mail'] . "')");
+	$sum_month_traffic = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `" . TABLE_PANEL_TRAFFIC . "` WHERE `year`='" . date('Y') . "' AND `month`='" . date('m') . "' AND `customerid`='" . (int)$row['customerid'] . "'");
+	$sum_month_traffic['all'] = $sum_month_traffic['http']+$sum_month_traffic['ftp_up']+$sum_month_traffic['ftp_down']+$sum_month_traffic['mail'];
 
-	if(!isset($admin_traffic[$row['adminid']]))
+	if(!isset($admin_traffic[$row['adminid']])
+	   || !is_array($admin_traffic[$row['adminid']]))
 	{
 		$admin_traffic[$row['adminid']]['http'] = 0;
 		$admin_traffic[$row['adminid']]['ftp_up'] = 0;
@@ -221,12 +222,12 @@ while($row = $db->fetch_array($result))
 		$admin_traffic[$row['adminid']]['sum_month'] = 0;
 	}
 
-	$admin_traffic[$row['adminid']]['http']+= $current['http'];
-	$admin_traffic[$row['adminid']]['ftp_up']+= $current['ftp_up'];
-	$admin_traffic[$row['adminid']]['ftp_down']+= $current['ftp_down'];
-	$admin_traffic[$row['adminid']]['mail']+= $current['mail'];
-	$admin_traffic[$row['adminid']]['all']+= $current['all'];
-	$admin_traffic[$row['adminid']]['sum_month']+= $sum_month['all'];
+	$admin_traffic[$row['adminid']]['http']+= $current_traffic['http'];
+	$admin_traffic[$row['adminid']]['ftp_up']+= $current_traffic['ftp_up'];
+	$admin_traffic[$row['adminid']]['ftp_down']+= $current_traffic['ftp_down'];
+	$admin_traffic[$row['adminid']]['mail']+= $current_traffic['mail'];
+	$admin_traffic[$row['adminid']]['all']+= $current_traffic['all'];
+	$admin_traffic[$row['adminid']]['sum_month']+= $sum_month_traffic['all'];
 
 	/**
 	 * WebSpace-Usage
@@ -292,13 +293,34 @@ while($row = $db->fetch_array($result))
 	}
 
 	$mysqlusage = floatval($mysqlusage/1024);
+	$current_diskspace = array();
+	$current_diskspace['webspace'] = floatval($webspaceusage);
+	$current_diskspace['mail'] = floatval($emailusage);
+	$current_diskspace['mysql'] = floatval($mysqlusage);
+	$current_diskspace['all'] = $current_diskspace['webspace']+$current_diskspace['mail']+$current_diskspace['mysql'];
+	$db->query("INSERT INTO `" . TABLE_PANEL_DISKSPACE . "` (`customerid`, `year`, `month`, `day`, `stamp`, `webspace`, `mail`, `mysql`) VALUES('" . (int)$row['customerid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$current_diskspace['webspace'] . "', '" . (float)$current_diskspace['mail'] . "', '" . (float)$current_diskspace['mysql'] . "')");
+
+	if(!isset($admin_diskspace[$row['adminid']])
+	   || !is_array($admin_diskspace[$row['adminid']]))
+	{
+		$admin_diskspace[$row['adminid']] = array();
+		$admin_diskspace[$row['adminid']]['webspace'] = 0;
+		$admin_diskspace[$row['adminid']]['mail'] = 0;
+		$admin_diskspace[$row['adminid']]['mysql'] = 0;
+		$admin_diskspace[$row['adminid']]['all'] = 0;
+	}
+
+	$admin_diskspace[$row['adminid']]['webspace']+= $current_diskspace['webspace'];
+	$admin_diskspace[$row['adminid']]['mail']+= $current_diskspace['mail'];
+	$admin_diskspace[$row['adminid']]['mysql']+= $current_diskspace['mysql'];
+	$admin_diskspace[$row['adminid']]['all']+= $current_diskspace['all'];
 
 	/**
 	 * Total Usage
 	 */
 
 	$diskusage = floatval($webspaceusage+$emailusage+$mysqlusage);
-	$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `diskspace_used`='" . (float)$diskusage . "', `traffic_used`='" . (float)$sum_month['all'] . "' WHERE `customerid`='" . (int)$row['customerid'] . "'");
+	$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `diskspace_used`='" . (float)$current_diskspace['all'] . "', `traffic_used`='" . (float)$sum_month_traffic['all'] . "' WHERE `customerid`='" . (int)$row['customerid'] . "'");
 }
 
 /**
@@ -313,6 +335,12 @@ while($row = $db->fetch_array($result))
 	{
 		$db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC_ADMINS . "` (`adminid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['adminid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$admin_traffic[$row['adminid']]['http'] . "', '" . (float)$admin_traffic[$row['adminid']]['ftp_up'] . "', '" . (float)$admin_traffic[$row['adminid']]['ftp_down'] . "', '" . (float)$admin_traffic[$row['adminid']]['mail'] . "')");
 		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `traffic_used`='" . (float)$admin_traffic[$row['adminid']]['sum_month'] . "' WHERE `adminid`='" . (float)$row['adminid'] . "'");
+	}
+
+	if(isset($admin_diskspace[$row['adminid']]))
+	{
+		$db->query("INSERT INTO `" . TABLE_PANEL_DISKSPACE_ADMINS . "` (`adminid`, `year`, `month`, `day`, `stamp`, `webspace`, `mail`, `mysql`) VALUES('" . (int)$row['adminid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$admin_diskspace[$row['adminid']]['webspace'] . "', '" . (float)$admin_diskspace[$row['adminid']]['mail'] . "', '" . (float)$admin_diskspace[$row['adminid']]['mysql'] . "')");
+		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `traffic_used`='" . (float)$admin_diskspace[$row['adminid']]['all'] . "' WHERE `adminid`='" . (float)$row['adminid'] . "'");
 	}
 }
 

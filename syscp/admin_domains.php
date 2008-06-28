@@ -35,6 +35,18 @@ elseif(isset($_GET['id']))
 if($page == 'domains'
    || $page == 'overview')
 {
+	$taxclasses = array(
+		'0' => $lng['panel']['default']
+	);
+	$taxclasses_option = makeoption($lng['panel']['default'], 0, 0, true);
+	$taxclasses_result = $db->query('SELECT `classid`, `classname` FROM `' . TABLE_BILLING_TAXCLASSES . '` ');
+
+	while($taxclasses_row = $db->fetch_array($taxclasses_result))
+	{
+		$taxclasses[$taxclasses_row['classid']] = $taxclasses_row['classname'];
+		$taxclasses_option.= makeoption($taxclasses_row['classname'], $taxclasses_row['classid']);
+	}
+
 	if($action == '')
 	{
 		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_domains");
@@ -50,7 +62,7 @@ if($page == 'domains'
 		);
 		$paging = new paging($userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
 		$domains = '';
-		$result = $db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`zonefile`, `d`.`openbasedir`, `d`.`safemode`, `d`.`isemaildomain`, `d`.`parentdomainid`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `da`.`id` AS `domainaliasid`, `da`.`domain` AS `domainalias`, `ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `ad` ON `d`.`aliasdomain`=`ad`.`id` " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `da` ON `da`.`aliasdomain`=`d`.`id` " . "LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) " . "WHERE `d`.`parentdomainid`='0' " . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' ") . " " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+		$result = $db->query("SELECT `d`.*, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `da`.`id` AS `domainaliasid`, `da`.`domain` AS `domainalias`, `ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `ad` ON `d`.`aliasdomain`=`ad`.`id` " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `da` ON `da`.`aliasdomain`=`d`.`id` " . "LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) " . "WHERE `d`.`parentdomainid`='0' " . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' ") . " " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
 		$paging->setEntries($db->num_rows($result));
 		$sortcode = $paging->getHtmlSortCode($lng);
 		$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
@@ -93,6 +105,7 @@ if($page == 'domains'
 		{
 			if($paging->checkDisplay($i))
 			{
+				$enable_billing_data_edit = ($row['servicestart_date'] == '0000-00-00' || ($row['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $row['lastinvoiced_date']) >= 0));
 				$row = htmlentities_array($row);
 				eval("\$domains.=\"" . getTemplate("domains/domains_domain") . "\";");
 				$count++;
@@ -222,6 +235,48 @@ if($page == 'domains'
 				$aliasdomain = intval($_POST['alias']);
 				$customer = $db->query_first("SELECT `documentroot` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "'");
 				$documentroot = $customer['documentroot'];
+
+				if(intval($_POST['registration_date']) != 0)
+				{
+					$registration_date = validate($_POST['registration_date'], 'registration_date', '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+				}
+				else
+				{
+					$registration_date = 0;
+				}
+
+				$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
+				$interval_length = intval($_POST['interval_length']);
+				$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'y');
+				$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
+				$service_active = intval($_POST['service_active']);
+				$interval_payment = intval($_POST['interval_payment']);
+
+				if(isset($_POST['taxclass'])
+				   && intval($_POST['taxclass']) != 0
+				   && isset($taxclasses[$_POST['taxclass']]))
+				{
+					$taxclass = $_POST['taxclass'];
+				}
+				else
+				{
+					$taxclass = '0';
+				}
+
+				if($service_active == 1
+				   && isset($_POST['servicestart_date']))
+				{
+					if($_POST['servicestart_date'] == '0'
+					   || $_POST['servicestart_date'] == '')
+					{
+						$servicestart_date = '0';
+					}
+					else
+					{
+						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+					}
+				}
+
 
 				if($userinfo['change_serversettings'] == '1')
 				{
@@ -636,6 +691,27 @@ if($page == 'domains'
 					$ssl_ipandport = 0;
 				}
 
+				if($service_active == 1)
+				{
+					$service_active = '1';
+
+					if(!isset($servicestart_date)
+					   || $servicestart_date == '0')
+					{
+						$servicestart_date = date('Y-m-d');
+					}
+				}
+				else
+				{
+					$service_active = '0';
+					$servicestart_date = '0';
+				}
+
+				if($interval_payment != '1')
+				{
+					$interval_payment = '0';
+				}
+
 				if($domain == '')
 				{
 					standard_error(array(
@@ -671,72 +747,54 @@ if($page == 'domains'
 				}
 				else
 				{
-					if(($openbasedir == '0' || $safemode == '0')
-					   && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit'))
+					$params = array(
+						'page' => $page,
+						'action' => $action,
+						'domain' => $domain,
+						'documentroot' => $documentroot,
+						'customerid' => $customerid,
+						'alias' => $aliasdomain,
+						'isbinddomain' => $isbinddomain,
+						'isemaildomain' => $isemaildomain,
+						'subcanemaildomain' => $subcanemaildomain,
+						'caneditdomain' => $caneditdomain,
+						'zonefile' => $zonefile,
+						'dkim' => $dkim,
+						'speciallogfile' => $speciallogfile,
+						'openbasedir' => $openbasedir,
+						'ipandport' => $ipandport,
+						'ssl' => $ssl,
+						'ssl_redirect' => $ssl_redirect,
+						'ssl_ipandport' => $ssl_ipandport,
+						'safemode' => $safemode,
+						'specialsettings' => $specialsettings,
+						'wwwserveralias' => $wwwserveralias,
+						'registration_date' => $registration_date,
+						'interval_fee' => $interval_fee,
+						'interval_length' => $interval_length,
+						'interval_type' => $interval_type,
+						'interval_payment' => $interval_payment,
+						'setup_fee' => $setup_fee,
+						'servicestart_date' => $servicestart_date,
+						'service_active' => $service_active,
+					);
+					$security_questions = array(
+						'reallydisablesecuritysetting' => (($openbasedir == '0' || $safemode == '0') && $userinfo['change_serversettings'] == '1'),
+						'reallydocrootoutofcustomerroot' => (substr($documentroot, 0, strlen($customer['documentroot'])) != $customer['documentroot'] && !preg_match('/^https?\:\/\//', $documentroot))
+					);
+					foreach($security_questions as $question_name => $question_launch)
 					{
-						ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, array(
-							'page' => $page,
-							'action' => $action,
-							'domain' => $domain,
-							'documentroot' => $documentroot,
-							'customerid' => $customerid,
-							'alias' => $aliasdomain,
-							'isbinddomain' => $isbinddomain,
-							'isemaildomain' => $isemaildomain,
-							'subcanemaildomain' => $subcanemaildomain,
-							'caneditdomain' => $caneditdomain,
-							'zonefile' => $zonefile,
-							'dkim' => $dkim,
-							'speciallogfile' => $speciallogfile,
-							'openbasedir' => $openbasedir,
-							'ipandport' => $ipandport,
-							'ssl' => $ssl,
-							'ssl_redirect' => $ssl_redirect,
-							'ssl_ipandport' => $ssl_ipandport,
-							'safemode' => $safemode,
-							'specialsettings' => $specialsettings,
-							'wwwserveralias' => $wwwserveralias,
-							'reallydoit' => 'reallydoit'
-						));
-						exit;
-					}
-
-					if(strpos($documentroot, $customer['documentroot']) !== 0
-					   && (!isset($_POST['reallydocroot']) || $_POST['reallydocroot'] != 'reallydocroot')
-					   && !preg_match('/^https?\:\/\//', $documentroot))
-					{
-						$params = array(
-							'page' => $page,
-							'action' => $action,
-							'domain' => $domain,
-							'documentroot' => $documentroot,
-							'customerid' => $customerid,
-							'alias' => $aliasdomain,
-							'isbinddomain' => $isbinddomain,
-							'isemaildomain' => $isemaildomain,
-							'subcanemaildomain' => $subcanemaildomain,
-							'caneditdomain' => $caneditdomain,
-							'zonefile' => $zonefile,
-							'dkim' => $dkim,
-							'speciallogfile' => $speciallogfile,
-							'openbasedir' => $openbasedir,
-							'ipandport' => $ipandport,
-							'ssl' => $ssl,
-							'ssl_redirect' => $ssl_redirect,
-							'ssl_ipandport' => $ssl_ipandport,
-							'safemode' => $safemode,
-							'specialsettings' => $specialsettings,
-							'wwwserveralias' => $wwwserveralias,
-							'reallydocroot' => 'reallydocroot'
-						);
-
-						if(isset($_POST['reallydoit']))
+						if($question_launch !== false)
 						{
-							$params['reallydoit'] = 'reallydoit';
-						}
+							$params[$question_name] = $question_name;
 
-						ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params);
-						exit;
+							if(!isset($_POST[$question_name])
+							   || $_POST[$question_name] != $question_name)
+							{
+								ask_yesno('admin_domain_' . $question_name, $filename, $params);
+								exit;
+							}
+						}
 					}
 
 					if($_POST['isemail_only'] == '1')
@@ -748,7 +806,7 @@ if($page == 'domains'
 						$caneditdomain = "0";
 					}
 
-					$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`domain`, `customerid`, `adminid`, `documentroot`, `ipandport`,`aliasdomain`, `zonefile`, `dkim`, `wwwserveralias`, `isbinddomain`, `isemaildomain`, `email_only`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`,`speciallogfile`, `specialsettings`, `ssl`, `ssl_redirect`, `ssl_ipandport`)VALUES ('" . $db->escape($domain) . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '" . $db->escape($documentroot) . "', '" . $db->escape($ipandport) . "', " . (($aliasdomain != 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", '" . $db->escape($zonefile) . "', '" . $db->escape($dkim) . "', '" . $db->escape($wwwserveralias) . "', '" . $db->escape($isbinddomain) . "', '" . $db->escape($isemaildomain) . "', '" . $db->escape($isemail_only) . "', '" . $db->escape($subcanemaildomain) . "', '" . $db->escape($caneditdomain) . "', '" . $db->escape($openbasedir) . "', '" . $db->escape($safemode) . "', '" . $db->escape($speciallogfile) . "', '" . $db->escape($specialsettings) . "', '" . $ssl . "', '" . $ssl_redirect . "' , '" . $ssl_ipandport . "')");
+					$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`domain`, `customerid`, `adminid`, `documentroot`, `ipandport`,`aliasdomain`, `zonefile`, `dkim`, `wwwserveralias`, `isbinddomain`, `isemaildomain`, `email_only`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`,`speciallogfile`, `specialsettings`, `ssl`, `ssl_redirect`, `ssl_ipandport`, `add_date`, `registration_date`, `interval_fee`, `interval_length`, `interval_type`, `interval_payment`, `setup_fee`, `taxclass`, `service_active`, `servicestart_date`) VALUES ('" . $db->escape($domain) . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '" . $db->escape($documentroot) . "', '" . $db->escape($ipandport) . "', " . (($aliasdomain != 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", '" . $db->escape($zonefile) . "', '" . $db->escape($dkim) . "', '" . $db->escape($wwwserveralias) . "', '" . $db->escape($isbinddomain) . "', '" . $db->escape($isemaildomain) . "', '" . $db->escape($isemail_only) . "', '" . $db->escape($subcanemaildomain) . "', '" . $db->escape($caneditdomain) . "', '" . $db->escape($openbasedir) . "', '" . $db->escape($safemode) . "', '" . $db->escape($speciallogfile) . "', '" . $db->escape($specialsettings) . "', '" . $ssl . "', '" . $ssl_redirect . "' , '" . $ssl_ipandport . "', '" . $db->escape(time()) . "', '" . $db->escape($registration_date) . "', '" . $db->escape($interval_fee) . "', '" . $db->escape($interval_length) . "', '" . $db->escape($interval_type) . "', '" . $db->escape($interval_payment) . "', '" . $db->escape($setup_fee) . "', '" . $db->escape($taxclass) . "', '" . $db->escape($service_active) . "', '" . $db->escape($servicestart_date) . "')");
 					$domainid = $db->insert_id();
 					$db->query("INSERT INTO `" . TABLE_PANEL_DNSENTRY . "` (`domainid`, `customerid`, `adminid`, `ipv4`, `ipv6`, `cname`, `mx10`, `mx20`, `txt`) VALUES ('" . (int)$domainid . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '" . $db->escape($dns_destinationipv4) . "', '" . $db->escape($dns_destinationipv6) . "', '" . $db->escape($dns_destinationcname) . "', '" . $db->escape($dns_mx10) . "', '" . $db->escape($dns_mx20) . "', '" . $db->escape($dns_txt) . "')");
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$userinfo['adminid'] . "'");
@@ -763,7 +821,7 @@ if($page == 'domains'
 			}
 			else
 			{
-				$customers = '';
+				$customers = makeoption($lng['panel']['please_choose'], 0, 0, true);
 				$result_customers = $db->query("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` " . ($userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ORDER BY `name` ASC");
 
 				while($row_customer = $db->fetch_array($result_customers))
@@ -867,6 +925,10 @@ if($page == 'domains'
 				$openbasedir = makeyesno('openbasedir', '1', '0', '1');
 				$safemode = makeyesno('safemode', '1', '0', '1');
 				$speciallogfile = makeyesno('speciallogfile', '1', '0', '0');
+				$add_date = date('Y-m-d');
+				$interval_type = getIntervalTypes('option', 'y');
+				$service_active = makeyesno('service_active', '1', '0', '0');
+				$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', '0', true) . makeoption($lng['service']['interval_payment_postpaid'], '1', '0', true);
 				eval("echo \"" . getTemplate("domains/domains_add") . "\";");
 			}
 		}
@@ -874,12 +936,15 @@ if($page == 'domains'
 	elseif($action == 'edit'
 	       && $id != 0)
 	{
-		$result = $db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`email_only`, `d`.`documentroot`, `d`.`ssl`, `d`.`ssl_redirect`, `d`.`ssl_ipandport`,`d`.`ipandport`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`dkim`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "WHERE `d`.`parentdomainid`='0' AND `d`.`id`='" . (int)$id . "'" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
+		$result = $db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`email_only`, `d`.`documentroot`, `d`.`ssl`, `d`.`ssl_redirect`, `d`.`ssl_ipandport`,`d`.`ipandport`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`dkim`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `d`.`add_date`, `d`.`registration_date`, `d`.`interval_fee`, `d`.`interval_length`, `d`.`interval_type`, `d`.`interval_payment`, `d`.`setup_fee`, `d`.`taxclass`, `d`.`service_active`, `d`.`servicestart_date`, `d`.`serviceend_date`, `d`.`lastinvoiced_date`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "WHERE `d`.`parentdomainid`='0' AND `d`.`id`='" . (int)$id . "'" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
 		$alias_check = $db->query_first('SELECT COUNT(`id`) AS count FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . (int)$result['id'] . '\'');
 		$alias_check = $alias_check['count'];
 
 		if($result['domain'] != '')
 		{
+			$override_billing_data_edit = (isset($_GET['override_billing_data_edit']) && $_GET['override_billing_data_edit'] == '1') || (isset($_POST['override_billing_data_edit']) && $_POST['override_billing_data_edit'] == '1');
+			$enable_billing_data_edit = ($result['servicestart_date'] == '0000-00-00' || ($result['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $result['lastinvoiced_date']) >= 0) || $override_billing_data_edit === true);
+
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
@@ -889,6 +954,67 @@ if($page == 'domains'
 				$subcanemaildomain = intval($_POST['subcanemaildomain']);
 				$caneditdomain = intval($_POST['caneditdomain']);
 				$wwwserveralias = intval($_POST['wwwserveralias']);
+
+				if(intval($_POST['registration_date']) != 0)
+				{
+					$registration_date = validate($_POST['registration_date'], 'registration_date', '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+				}
+				else
+				{
+					$registration_date = 0;
+				}
+
+				$service_active = intval($_POST['service_active']);
+				$interval_payment = intval($_POST['interval_payment']);
+
+				if($enable_billing_data_edit === true)
+				{
+					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
+					$interval_length = intval($_POST['interval_length']);
+					$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'y');
+					$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
+
+					if(isset($_POST['taxclass'])
+					   && intval($_POST['taxclass']) != 0
+					   && isset($taxclasses[$_POST['taxclass']]))
+					{
+						$taxclass = $_POST['taxclass'];
+					}
+					else
+					{
+						$taxclass = '0';
+					}
+
+					if($result['service_active'] == 0
+					   && $service_active == 0)
+					{
+						$servicestart_date = $result['servicestart_date'];
+					}
+					else
+					{
+						if($_POST['servicestart_date'] == '0'
+						   || $_POST['servicestart_date'] == '')
+						{
+							$servicestart_date = '0';
+						}
+						else
+						{
+							$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+						}
+					}
+
+					$serviceend_date = $result['serviceend_date'];
+				}
+				else
+				{
+					$interval_fee = $result['interval_fee'];
+					$interval_length = $result['interval_length'];
+					$interval_type = $result['interval_type'];
+					$setup_fee = $result['setup_fee'];
+					$taxclass = $result['taxclass'];
+					$servicestart_date = $result['servicestart_date'];
+					$serviceend_date = $result['serviceend_date'];
+				}
 
 				if($userinfo['change_serversettings'] == '1')
 				{
@@ -988,6 +1114,11 @@ if($page == 'domains'
 					$caneditdomain = '0';
 				}
 
+				if($interval_payment != '1')
+				{
+					$interval_payment = '0';
+				}
+
 				$aliasdomain_check = array(
 					'id' => 0
 				);
@@ -1016,69 +1147,98 @@ if($page == 'domains'
 					$ssl_ipandport = 0;
 				}
 
-				if(($openbasedir == '0' || $safemode == '0')
-				   && (!isset($_POST['reallydoit']) || $_POST['reallydoit'] != 'reallydoit')
-				   && $userinfo['change_serversettings'] == '1')
+				$params = array(
+					'id' => $id,
+					'page' => $page,
+					'action' => $action,
+					'documentroot' => $documentroot,
+					'alias' => $aliasdomain,
+					'isbinddomain' => $isbinddomain,
+					'isemaildomain' => $isemaildomain,
+					'subcanemaildomain' => $subcanemaildomain,
+					'caneditdomain' => $caneditdomain,
+					'zonefile' => $zonefile,
+					'dkim' => $dkim,
+					'wwwserveralias' => $wwwserveralias,
+					'openbasedir' => $openbasedir,
+					'ipandport' => $ipandport,
+					'ssl' => $ssl,
+					'ssl_redirect' => $ssl_redirect,
+					'ssl_ipandport' => $ssl_ipandport,
+					'safemode' => $safemode,
+					'specialsettings' => $specialsettings,
+					'registration_date' => $registration_date,
+					'interval_fee' => $interval_fee,
+					'interval_length' => $interval_length,
+					'interval_type' => $interval_type,
+					'interval_payment' => $interval_payment,
+					'setup_fee' => $setup_fee,
+					'servicestart_date' => $servicestart_date,
+					'service_active' => $service_active,
+				);
+
+				if(isset($_POST['enable_billing_data_edit']))
 				{
-					ask_yesno('admin_domain_reallydisablesecuritysetting', $filename, array(
-						'id' => $id,
-						'page' => $page,
-						'action' => $action,
-						'documentroot' => $documentroot,
-						'alias' => $aliasdomain,
-						'isbinddomain' => $isbinddomain,
-						'isemaildomain' => $isemaildomain,
-						'subcanemaildomain' => $subcanemaildomain,
-						'caneditdomain' => $caneditdomain,
-						'zonefile' => $zonefile,
-						'dkim' => $dkim,
-						'wwwserveralias' => $wwwserveralias,
-						'openbasedir' => $openbasedir,
-						'ipandport' => $ipandport,
-						'ssl' => $ssl,
-						'ssl_redirect' => $ssl_redirect,
-						'ssl_ipandport' => $ssl_ipandport,
-						'safemode' => $safemode,
-						'specialsettings' => $specialsettings,
-						'reallydoit' => 'reallydoit'
-					));
-					exit;
+					$params['enable_billing_data_edit'] = '1';
 				}
 
-				if(substr($documentroot, 0, strlen($customer['documentroot'])) != $customer['documentroot']
-				   && (!isset($_POST['reallydocroot']) || $_POST['reallydocroot'] != 'reallydocroot')
-				   && !preg_match('/^https?\:\/\//', $documentroot))
+				$security_questions = array(
+					'reallydisablesecuritysetting' => (($openbasedir == '0' || $safemode == '0') && $userinfo['change_serversettings'] == '1'),
+					'reallydocrootoutofcustomerroot' => (substr($documentroot, 0, strlen($customer['documentroot'])) != $customer['documentroot'] && !preg_match('/^https?\:\/\//', $documentroot))
+				);
+				foreach($security_questions as $question_name => $question_launch)
 				{
-					$params = array(
-						'id' => $id,
-						'page' => $page,
-						'action' => $action,
-						'documentroot' => $documentroot,
-						'alias' => $aliasdomain,
-						'isbinddomain' => $isbinddomain,
-						'isemaildomain' => $isemaildomain,
-						'subcanemaildomain' => $subcanemaildomain,
-						'caneditdomain' => $caneditdomain,
-						'zonefile' => $zonefile,
-						'dkim' => $dkim,
-						'wwwserveralias' => $wwwserveralias,
-						'openbasedir' => $openbasedir,
-						'ipandport' => $ipandport,
-						'ssl' => $ssl,
-						'ssl_redirect' => $ssl_redirect,
-						'ssl_ipandport' => $ssl_ipandport,
-						'safemode' => $safemode,
-						'specialsettings' => $specialsettings,
-						'reallydocroot' => 'reallydocroot'
-					);
-
-					if(isset($_POST['reallydoit']))
+					if($question_launch !== false)
 					{
-						$params['reallydoit'] = 'reallydoit';
+						$params[$question_name] = $question_name;
+
+						if(!isset($_POST[$question_name])
+						   || $_POST[$question_name] != $question_name)
+						{
+							ask_yesno('admin_domain_' . $question_name, $filename, $params);
+							exit;
+						}
+					}
+				}
+
+				if($service_active == 1)
+				{
+					// Check whether service is already started
+
+					$service_active = '1';
+
+					if(($result['servicestart_date'] == '0000-00-00')
+					   && ($servicestart_date == '0' || $servicestart_date == ''))
+					{
+						// We are starting the service now.
+
+						$servicestart_date = date('Y-m-d');
 					}
 
-					ask_yesno('admin_domain_reallydocrootoutofcustomerroot', $filename, $params);
-					exit;
+					// Check whether service has previously ended
+
+					if($result['serviceend_date'] != '0000-00-00')
+					{
+						// We are continuing the service.
+
+						$serviceend_date = '0';
+					}
+				}
+				else
+				{
+					$service_active = '0';
+
+					// Check whether service has started and hasn't yet ended
+
+					if(($result['servicestart_date'] != '0000-00-00')
+					   && ($result['serviceend_date'] == '0000-00-00'))
+					{
+						// We are ending the service now.
+
+						$serviceend_date = date('Y-m-d');
+
+						// We don't need to set servicestart_date to 0 because the billing module will do this after the final invoice
+					}
 				}
 
 				if($settings['system']['userdns'] == '1')
@@ -1278,7 +1438,7 @@ if($page == 'domains'
 					$isemaildomain = "1";
 				}
 
-				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($documentroot) . "', `ipandport`='" . $db->escape($ipandport) . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", `isbinddomain`='" . $db->escape($isbinddomain) . "', `isemaildomain`='" . $db->escape($isemaildomain) . "', `email_only`='" . $db->escape($isemail_only) . "', `subcanemaildomain`='" . $db->escape($subcanemaildomain) . "', `dkim`='" . $db->escape($dkim) . "', `caneditdomain`='" . $db->escape($caneditdomain) . "', `zonefile`='" . $db->escape($zonefile) . "', `wwwserveralias`='" . $db->escape($wwwserveralias) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `specialsettings`='" . $db->escape($specialsettings) . "' WHERE `id`='" . (int)$id . "'");
+				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($documentroot) . "', `ipandport`='" . $db->escape($ipandport) . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", `isbinddomain`='" . $db->escape($isbinddomain) . "', `isemaildomain`='" . $db->escape($isemaildomain) . "', `email_only`='" . $db->escape($isemail_only) . "', `subcanemaildomain`='" . $db->escape($subcanemaildomain) . "', `dkim`='" . $db->escape($dkim) . "', `caneditdomain`='" . $db->escape($caneditdomain) . "', `zonefile`='" . $db->escape($zonefile) . "', `wwwserveralias`='" . $db->escape($wwwserveralias) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `specialsettings`='" . $db->escape($specialsettings) . "', `registration_date`='" . $db->escape($registration_date) . "', `interval_fee`='" . $db->escape($interval_fee) . "', `interval_length`='" . $db->escape($interval_length) . "', `interval_type`='" . $db->escape($interval_type) . "', `interval_payment`='" . $db->escape($interval_payment) . "', `setup_fee`='" . $db->escape($setup_fee) . "', `taxclass`='" . $db->escape($taxclass) . "', `service_active`='" . $db->escape($service_active) . "', `servicestart_date`='" . $db->escape($servicestart_date) . "', `serviceend_date`='" . $db->escape($serviceend_date) . "' WHERE `id`='" . (int)$id . "'");
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `ipandport`='" . $db->escape($ipandport) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `specialsettings`='" . $db->escape($specialsettings) . "'" . $updatechildren . " WHERE `parentdomainid`='" . (int)$id . "'");
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `ssl`='" . (int)$ssl . "', `ssl_redirect`='" . (int)$ssl_redirect . "', `ssl_ipandport`='" . (int)$ssl_ipandport . "'  WHERE `id`='" . (int)$id . "'");
 
@@ -1288,10 +1448,20 @@ if($page == 'domains'
 				}
 
 				$log->logAction(ADM_ACTION, LOG_INFO, "edited domain #" . $id);
-				redirectTo($filename, Array(
+
+				$redirect_props = Array(
 					'page' => $page,
 					's' => $s
-				));
+				);
+
+				if(isset($_POST['enable_billing_data_edit']))
+				{
+					$redirect_props['action'] = $action;
+					$redirect_props['id'] = $id;
+					$redirect_props['override_billing_data_edit'] = '1';
+				}
+
+				redirectTo($filename, $redirect_props);
 			}
 			else
 			{
@@ -1444,6 +1614,17 @@ if($page == 'domains'
 				$openbasedir = makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 				$safemode = makeyesno('safemode', '1', '0', $result['safemode']);
 				$speciallogfile = ($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
+
+				$interval_type = getIntervalTypes('option', $result['interval_type']);
+				$service_active = makeyesno('service_active', '1', '0', $result['service_active']);
+				$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
+				$result['add_date'] = date('Y-m-d', $result['add_date']);
+				$taxclasses_option = '';
+				foreach($taxclasses as $classid => $classname)
+				{
+					$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
+				}
+
 				$result = htmlentities_array($result);
 				eval("echo \"" . getTemplate("domains/domains_edit") . "\";");
 			}

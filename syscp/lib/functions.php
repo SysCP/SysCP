@@ -193,7 +193,7 @@ function ask_yesno($text, $yesfile, $params = array(), $targetname = '')
 function makeoption($title, $value, $selvalue = NULL, $title_trusted = false, $value_trusted = false)
 {
 	if($selvalue !== NULL
-	   && $value == $selvalue)
+	   && ((is_array($selvalue) && in_array($value, $selvalue)) || $value == $selvalue))
 	{
 		$selected = 'selected="selected"';
 	}
@@ -2087,6 +2087,559 @@ function createAWStatsVhost($siteDomain)
 	$vhosts_file.= '  RewriteRule /stats(/.*)? /awstats/awstats.pl?config=' . $siteDomain . ' [L,PT]' . "\n";
 	$vhosts_file.= '  RewriteRule /awstats.pl(.*)* /awstats/awstats.pl$1 [QSA,L,PT]' . "\n";
 	return $vhosts_file;
+}
+
+/**
+ * Get all date interval types as an array or option code
+ *
+ * @param  string Either array or option, affects the value returned by function
+ * @param  string Only relevant when first argument is option, this one will be the selected one
+ * @return mixed  Depends on first option, array of intervaltypes or optioncode of intervaltypes ready to be inserted in a select statement
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function getIntervalTypes($what = 'array', $selected = '')
+{
+	global $lng;
+	$intervalTypes = array(
+		'y',
+		'm',
+		'd'
+	);
+
+	if(!in_array($selected, $intervalTypes))
+	{
+		$selected = '';
+	}
+
+	switch($what)
+	{
+	case 'option':
+		$returnval = '';
+		foreach($intervalTypes as $intervalFeeType)
+		{
+			$returnval.= makeoption($lng['panel']['intervalfee_type'][$intervalFeeType], $intervalFeeType, $selected);
+		}
+
+		break;
+	case 'array':
+	default:
+		$returnval = $intervalTypes;
+		break;
+	}
+
+	return $returnval;
+}
+
+/**
+ * Get full month name for interval short
+ *
+ * @param  string one digit short of month (y,m,d,h,i,s)
+ * @param  bool   should we add a plural s?
+ * @return mixed  the full month name
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function getFullIntervalName($intervalType, $pluralS = false)
+{
+	switch(strtolower($intervalType))
+	{
+	case 'y':
+		$payment_every_type_fullname = 'year';
+		break;
+	case 'm':
+		$payment_every_type_fullname = 'month';
+		break;
+	case 'd':
+		$payment_every_type_fullname = 'day';
+		break;
+	default:
+		$payment_every_type_fullname = false;
+	}
+
+	if($pluralS === true
+	   && $payment_every_type_fullname !== false)
+	{
+		$payment_every_type_fullname.= 's';
+	}
+
+	return $payment_every_type_fullname;
+}
+
+/**
+ * Determines the number of days at a specified month/year.
+ *
+ * @param  int The month
+ * @param  int The year
+ * @return int Number of days
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function getDaysForMonth($month, $year)
+{
+	if((int)$month > 12)
+	{
+		$year+= (int)($month/12);
+		$month = $month%12;
+	}
+
+	if((int)($month) == 0)
+	{
+		$month = 12;
+	}
+
+	$months = array(
+		1 => 31,
+		2 => 28,
+		3 => 31,
+		4 => 30,
+		5 => 31,
+		6 => 30,
+		7 => 31,
+		8 => 31,
+		9 => 30,
+		10 => 31,
+		11 => 30,
+		12 => 31
+	);
+
+	if(getDaysForYear($month, $year) == 366)
+	{
+		$months[2] = '29';
+	}
+
+	return $months[intval($month)];
+}
+
+/**
+ * Determines the number of days at a specified year.
+ *
+ * @param  int The year
+ * @return int Number of days
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function getDaysForYear($month, $year)
+{
+	if($month >= 3)$year++;
+	return ((($year%4) == 0 && ($year%100) != 0) ? 366 : 365);
+}
+
+/**
+ * Calculates the number of days between first and second parameter
+ *
+ * @param  int Date 1
+ * @param  int Date 2
+ * @return int Number of days
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function calculateDayDifference($begin, $end)
+{
+	$daycount = 0;
+	$begin = transferDateToArray($begin);
+	$end = transferDateToArray($end);
+	$direction = 1;
+
+	if(strtotime($end['y'] . '-' . $end['m'] . '-' . $end['d']) < strtotime($begin['y'] . '-' . $begin['m'] . '-' . $begin['d']))
+	{
+		$tmp = $end;
+		$end = $begin;
+		$begin = $tmp;
+		unset($tmp);
+		$direction = (-1);
+	}
+
+	// Sanity check, if our given array is in the right format
+
+	if(checkDateArray($begin) === true
+	   && checkDateArray($end) === true)
+	{
+		$yeardiff = (int)$end['y']-(int)$begin['y'];
+		$monthdiff = ((int)$end['m']+12*$yeardiff)-(int)$begin['m'];
+		for ($i = 0;$i < abs($monthdiff);$i++)
+		{
+			$daycount+= getDaysForMonth($begin['m']+$i, $begin['y']);
+		}
+
+		$daycount+= $end['d']-$begin['d'];
+		$daycount*= $direction;
+	}
+
+	return $daycount;
+}
+
+/**
+ * Makes nice array out of a date.
+ *
+ * @param  mixed The date: either string (2008-02-14), unix timestamp, or array.
+ * @return array The array( 'y' => 2008, 'm' => 2, 'd' => 14 );
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function transferDateToArray($date)
+{
+	if(!is_array($date))
+	{
+		if(is_numeric($date))
+		{
+			$date = array(
+				'y' => (int)date('Y', $date),
+				'm' => (int)date('m', $date),
+				'd' => (int)date('d', $date)
+			);
+		}
+		else
+		{
+			$date = explode('-', $date);
+			$date = array(
+				'y' => (int)$date[0],
+				'm' => (int)$date[1],
+				'd' => (int)$date[2]
+			);
+		}
+	}
+	else
+	{
+		$date['y'] = (int)$date['y'];
+		$date['m'] = (int)$date['m'];
+		$date['d'] = (int)$date['d'];
+	}
+
+	return $date;
+}
+
+/**
+ * Checks if a date array is valid.
+ *
+ * @param  array The date array
+ * @return bool  True if valid, false otherwise.
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function checkDateArray($date)
+{
+	return (is_array($date) && isset($date['y']) && isset($date['m']) && isset($date['d']) && (int)$date['m'] >= 1 && (int)$date['m'] <= 12 && (int)$date['d'] >= 1 && (int)$date['d'] <= getDaysForMonth($date['m'], $date['y']));
+}
+
+/**
+ * Manipulates a date, like adding a month or so and correcting it afterwards
+ * (2008-01-33 -> 2008-02-02)
+ *
+ * @param  array  The date array
+ * @param  string The operation, may be '+', 'add', 'sum' or '-', 'subtract', 'subduct'
+ * @param  int    Number if days/month/years
+ * @param  string Either 'y', 'm', 'd', depending on what part to change.
+ * @param  array  A valid date array with original date, mandatory for more than one manipulation on same date.
+ * @return date   The manipulated date array
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function manipulateDate($date, $operation, $count, $type, $original_date = null)
+{
+	$newdate = $date;
+	$date = transferDateToArray($date);
+
+	if(checkDateArray($date) === true
+	   && isset($date[$type]))
+	{
+		switch($operation)
+		{
+		case '+':
+		case 'add':
+		case 'sum':
+			$date[$type]+= (int)$count;
+			break;
+		case '-':
+		case 'subtract':
+		case 'subduct':
+			$date[$type]-= (int)$count;
+			break;
+		}
+
+		if($original_date !== null
+		   && ($original_date = transferDateToArray($original_date)) !== false
+		   && $type == 'm')
+		{
+			if($original_date['d'] > getDaysForMonth($date['m'], $date['y']))
+			{
+				$date['d'] = getDaysForMonth($date['m'], $date['y'])-(getDaysForMonth($original_date['m'], $original_date['y'])-$original_date['d']);
+			}
+			else
+			{
+				$date['d'] = $original_date['d'];
+			}
+		}
+
+		while(checkDateArray($date) === false)
+		{
+			if($date['d'] > getDaysForMonth($date['m'], $date['y']))
+			{
+				$date['d']-= getDaysForMonth($date['m'], $date['y']);
+				$date['m']++;
+			}
+
+			if($date['d'] < 1)
+			{
+				$date['m']--;
+				$date['d']+= getDaysForMonth($date['m'], $date['y']);
+
+				// Adding here, because date[d] is negative
+			}
+
+			if($date['m'] > 12)
+			{
+				$date['m']-= 12;
+				$date['y']++;
+			}
+
+			if($date['m'] < 1)
+			{
+				$date['y']--;
+				$date['m']+= 12;
+			}
+		}
+
+		$newdate = $date['y'] . '-' . $date['m'] . '-' . $date['d'];
+	}
+
+	return $newdate;
+}
+
+/**
+ * Simple reformater for a date strtotime understands
+ *
+ * @param  string A date strtotime understands
+ * @param  string Time format, may contain anything date() can handle.
+ * @return string New nicely formatted date
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function makeNicePresentableDate($date, $format = 'Y-m-d')
+{
+	return date($format, strtotime($date));
+}
+
+/**
+ * Wrapper for in_array, which can also handle an array as needle.
+ *
+ * @param  mixed Either array or string, if string it behaves like in_array.
+ * @param  array A haystack to search in.
+ * @param  bool  See in_array documentation for details, will passed directly.
+ * @return bool  True if one needle is in the haystack.
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function one_in_array($needles, $haystack, $strict = false)
+{
+	$returnval = false;
+
+	if(!is_array($needles))
+	{
+		$needle = $needles;
+		unset($needles);
+		$needles = array(
+			$needle
+		);
+		unset($needle);
+	}
+
+	foreach($needles as $needle)
+	{
+		if(in_array($needle, $haystack, $strict))
+		{
+			$returnval = true;
+		}
+	}
+
+	return $returnval;
+}
+
+/**
+ * Returns appropriate table names and -keys depending on mode (admin or customer).
+ *
+ * @param  int   The mode
+ * @param  string Subject, eg tablename.
+ * @param  string Key, eg 'table' or 'key'
+ * @return string Table or Key
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function getModeDetails($mode, $subject, $key)
+{
+	$modes = array(
+		0 => array(
+			'TABLE_PANEL_USERS' => array(
+				'table' => TABLE_PANEL_CUSTOMERS,
+				'key' => 'customerid'
+			),
+			'TABLE_PANEL_TRAFFIC' => array(
+				'table' => TABLE_PANEL_TRAFFIC,
+				'key' => 'customerid'
+			),
+			'TABLE_PANEL_DISKSPACE' => array(
+				'table' => TABLE_PANEL_DISKSPACE,
+				'key' => 'customerid'
+			),
+			'TABLE_BILLING_INVOICES' => array(
+				'table' => TABLE_BILLING_INVOICES,
+				'key' => 'customerid'
+			),
+			'TABLE_BILLING_INVOICE_CHANGES' => array(
+				'table' => TABLE_BILLING_INVOICE_CHANGES,
+				'key' => 'customerid'
+			),
+			'TABLE_BILLING_SERVICE_CATEGORIES' => array(
+				'table' => TABLE_BILLING_SERVICE_CATEGORIES,
+				'key' => 'customerid'
+			),
+		),
+		1 => array(
+			'TABLE_PANEL_USERS' => array(
+				'table' => TABLE_PANEL_ADMINS,
+				'key' => 'adminid'
+			),
+			'TABLE_PANEL_TRAFFIC' => array(
+				'table' => TABLE_PANEL_TRAFFIC_ADMINS,
+				'key' => 'adminid'
+			),
+			'TABLE_PANEL_DISKSPACE' => array(
+				'table' => TABLE_PANEL_DISKSPACE_ADMINS,
+				'key' => 'adminid'
+			),
+			'TABLE_BILLING_INVOICES' => array(
+				'table' => TABLE_BILLING_INVOICES_ADMINS,
+				'key' => 'adminid'
+			),
+			'TABLE_BILLING_INVOICE_CHANGES' => array(
+				'table' => TABLE_BILLING_INVOICE_CHANGES_ADMINS,
+				'key' => 'adminid'
+			),
+			'TABLE_BILLING_SERVICE_CATEGORIES' => array(
+				'table' => TABLE_BILLING_SERVICE_CATEGORIES_ADMINS,
+				'key' => 'adminid'
+			),
+		)
+	);
+
+	if(isset($modes[$mode])
+	   && isset($modes[$mode][$subject])
+	   && isset($modes[$mode][$subject][$key]))
+	{
+		return $modes[$mode][$subject][$key];
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/**
+ * Calculates invoice fees and stores it in panel_users,
+ * according to details in billing_service_categories.
+ *
+ * @param  int   The mode
+ * @param  int   Userid to begin with Subject, eg tablename.
+ * @param  int   Number of Users we should handle in this run
+ * @param  int   Single userid we should focus on.
+ * @return array Results like current invoice fees etc.
+ *
+ * @author Former03 GmbH :: Florian Lippert <flo@syscp.org>
+ */
+
+function cacheInvoiceFees($mode = 0, $begin = null, $count = null, $userid = null)
+{
+	global $db;
+	$returnval = array();
+	$service_categories_result = $db->query('SELECT * FROM `' . getModeDetails($mode, 'TABLE_BILLING_SERVICE_CATEGORIES', 'table') . '` ORDER BY `id` ASC');
+
+	while($service_categories_row = $db->fetch_array($service_categories_result))
+	{
+		$service_categories[$service_categories_row['category_name']] = $service_categories_row;
+
+		if($service_categories_row['category_cachefield'] != '')
+		{
+			$zeroUpdates[$service_categories_row['category_cachefield']] = 0;
+		}
+	}
+
+	if($userid !== null
+	   && intval($userid) !== 0)
+	{
+		$userSelection = " WHERE `" . getModeDetails($mode, 'TABLE_PANEL_USERS', 'key') . "` = '" . $userid . "' ";
+	}
+	else
+	{
+		$userSelection = '';
+	}
+
+	if($begin !== null
+	   && intval($count) !== 0)
+	{
+		$limit = ' LIMIT ' . intval($begin) . ', ' . intval($count);
+	}
+	else
+	{
+		$limit = '';
+	}
+
+	$users = $db->query("SELECT * FROM `" . getModeDetails($mode, 'TABLE_PANEL_USERS', 'table') . "` " . $userSelection . ' ' . $limit);
+
+	while($user = $db->fetch_array($users))
+	{
+		if(!isset($user['customer_categories_once']))
+		{
+			$user['customer_categories_once'] = '';
+		}
+
+		if(!isset($user['customer_categories_period']))
+		{
+			$user['customer_categories_period'] = '';
+		}
+
+		$myInvoice = new invoice(&$db, $mode, explode('-', $user['customer_categories_once']), explode('-', $user['customer_categories_period']));
+
+		if($myInvoice->collect($user[getModeDetails($mode, 'TABLE_PANEL_USERS', 'key')]) === true)
+		{
+			$total_fee_taxed = 0;
+			$myUpdates = $zeroUpdates;
+			$total_fees_array = $myInvoice->getTotalFee($lng);
+			foreach($total_fees_array as $service_type => $total_fee_array)
+			{
+				if(isset($service_categories[$service_type])
+				   && isset($service_categories[$service_type]['category_cachefield'])
+				   && $service_categories[$service_type]['category_cachefield'] != '')
+				{
+					$myUpdates[$service_categories[$service_type]['category_cachefield']] = $total_fee_array['total_fee_taxed'];
+					$total_fee_taxed+= $total_fee_array['total_fee_taxed'];
+				}
+			}
+
+			$updates = '';
+			foreach($myUpdates as $myField => $myValue)
+			{
+				$updates.= ', `' . $myField . '` = \'' . $myValue . '\' ';
+			}
+
+			$db->query('UPDATE `' . getModeDetails($mode, 'TABLE_PANEL_USERS', 'table') . '` SET `invoice_fee` = \'' . $total_fee_taxed . '\' ' . $updates . ' WHERE `' . getModeDetails($mode, 'TABLE_PANEL_USERS', 'key') . '` = \'' . $user[getModeDetails($mode, 'TABLE_PANEL_USERS', 'key')] . '\' ');
+			$returnval[$user[getModeDetails($mode, 'TABLE_PANEL_USERS', 'key')]] = $myUpdates;
+			$returnval[$user[getModeDetails($mode, 'TABLE_PANEL_USERS', 'key')]]['total'] = $total_fee_taxed;
+			$returnval[$user[getModeDetails($mode, 'TABLE_PANEL_USERS', 'key')]]['loginname'] = $user['loginname'];
+		}
+	}
+
+	return $returnval;
 }
 
 ?>
