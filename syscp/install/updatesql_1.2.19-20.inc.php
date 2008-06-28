@@ -347,13 +347,13 @@ else
 
 		while($admin = $db->fetch_array($admins))
 		{
-			$db->query("UPDATE TABLE `" . TABLE_PANEL_ADMINS . "` SET `email_quota` = '-1' WHERE `adminid` = '" . $admin['adminid'] . "'");
+			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `email_quota` = '-1' WHERE `adminid` = '" . $admin['adminid'] . "'");
 		}
 
 		if($settings['system']['apacheversion'] == 'lighttpd'
 		   && $settings['system']['apachereload_command'] == '/etc/init.d/lighttpd force-reload')
 		{
-			$db->query("UPDATE TABLE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
 		}
 
 		// set new version
