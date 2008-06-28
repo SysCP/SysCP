@@ -1124,6 +1124,7 @@ function updateCounters($returndebuginfo = false)
 		$settings['system']['apachereload_command'],
 		$settings['system']['bindreload_command'],
 		$settings['dkim']['dkimrestart_command'],
+		$settings['system']['awstats_updateall_command'],
 		'openssl'
 	);
 

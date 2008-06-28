@@ -726,7 +726,7 @@ if(($page == 'settings' || $page == 'overview')
 					{
 						$value = validate($_POST['system_awstats_domain_file'], 'awstats domainfile directory');
 						$value = makeCorrectDir($value);
-						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_domain_file'");
+						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='awstats_domain_file'");
 						$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_domain_file from '" . $settings['system']['awstats_domain_file'] . "' to '" . $value . "'");
 					}
 
@@ -735,8 +735,26 @@ if(($page == 'settings' || $page == 'overview')
 					{
 						$value = validate($_POST['system_awstats_model_file'], 'awstats model file', "/^[a-z0-9\._]+$/i");
 						$value = makeCorrectFile($value);
-						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_model_file'");
+						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='awstats_model_file'");
 						$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_model_file from '" . $settings['system']['awstats_model_file'] . "' to '" . $value . "'");
+					}
+
+					if($_POST['system_awstats_path'] != $settings['system']['awstats_path']
+					   && isset($_POST['system_awstats_path']))
+					{
+						$value = validate($_POST['system_awstats_path'], 'awstats path');
+						$value = makeCorrectDir($value);
+						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='awstats_path'");
+						$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_path from '" . $settings['system']['awstats_path'] . "' to '" . $value . "'");
+					}
+
+					if($_POST['system_awstats_updateall_command'] != $settings['system']['awstats_updateall_command']
+					   && isset($_POST['system_awstats_updateall_command']))
+					{
+						$value = validate($_POST['system_awstats_updateall_command'], 'awstats updateall command');
+						$value = makeCorrectFile($value);
+						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='awstats_updateall_command'");
+						$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_updateall_command from '" . $settings['system']['awstats_updateall_command'] . "' to '" . $value . "'");
 					}
 				}
 			}

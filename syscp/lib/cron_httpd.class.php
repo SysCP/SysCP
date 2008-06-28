@@ -375,7 +375,7 @@ class cron_httpd
 						$this->vhosts_file.= "  fastcgi.server = (
 \".php\" => (
 	\"localhost\" => (
-		\"socket\" => \"". $this->settings['system']['mod_fcgid_tmpdir'] . "lighttpd-fcgi-sock-" . $domain['loginname'] . "\",
+		\"socket\" => \"" . $this->settings['system']['mod_fcgid_tmpdir'] . "lighttpd-fcgi-sock-" . $domain['loginname'] . "\",
 		\"broken-scriptfilename\" => \"enable\",
 		\"bin-path\" => \"/usr/bin/php-cgi\",
 		\"min-procs\" => 1,
@@ -428,7 +428,9 @@ class cron_httpd
 							}
 							elseif($this->settings['system']['awstats_enabled'] == '1')
 							{
-								$this->vhosts_file.= '  # awstats for lighttpd is not yet coded' . "\n";
+								$this->vhosts_file.= '  alias.url = (' . "\n";
+								$this->vhosts_file.= '  	"/awstats/" => "' . $domain['customerroot'] . '/awstats/' . "\n";
+								$this->vhosts_file.= '  )' . "\n";
 							}
 						}
 					}
@@ -755,6 +757,10 @@ class cron_httpd
 					{
 						$this->diroptions_file.= '  ErrorDocument 403 ' . $row_diroptions['error403path'] . "\n";
 					}
+					else
+					{
+						$this->diroptions_file.= '  server.error-handler-403 = "' . $row_diroptions['error403path'] . '"' . "\n";
+					}
 				}
 
 				if(isset($row_diroptions['error500path'])
@@ -763,6 +769,10 @@ class cron_httpd
 					if(!$this->is_lighttpd)
 					{
 						$this->diroptions_file.= '  ErrorDocument 500 ' . $row_diroptions['error500path'] . "\n";
+					}
+					else
+					{
+						$this->diroptions_file.= '  server.error-handler-500 = "' . $row_diroptions['error500path'] . '"' . "\n";
 					}
 				}
 
@@ -917,6 +927,15 @@ class cron_httpd
 
 	public function restartService()
 	{
+		if($this->settings['system']['awstats_enabled'] == '1')
+		{
+			$this->cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - Running awstats_updateall.pl');
+			fwrite($this->debugHandler, '   cron_tasks: Task1 - Running awstats_updateall.pl' . "\n");
+			safe_exec($this->settings['system']['awstats_updateall_command'] . " now -awstatsprog=" . $this->settings['system']['awstats_path'] . "awstats.pl -configdir=" . $this->settings['system']['awstats_domain_file']);
+			$this->cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'cron_tasks: Task1 - awstats_updateall.pl done');
+			fwrite($this->debugHandler, '   cron_tasks: Task1 - awstats_updateall.pl done' . "\n");
+		}
+
 		safe_exec($this->settings['system']['apachereload_command']);
 
 		if($this->is_lighttpd)

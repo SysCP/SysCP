@@ -363,6 +363,20 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn19';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn19')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn19 to 1.2.19-svn20");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'awstats_path', '/usr/share/awstats/VERSION/webroot/cgi-bin/')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'awstats_updateall_command', '/usr/bin/awstats_updateall.pl')");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn20\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn20';
+	}
 }
 
 // php filter-extension check
