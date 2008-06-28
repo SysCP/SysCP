@@ -901,8 +901,14 @@ $lng['serversettings']['awstats_updateall_command']['description'] = 'e.g. /usr/
 $lng['customer']['title'] = 'Title';
 $lng['customer']['country'] = 'Country';
 $lng['panel']['dateformat'] = 'YYYY-MM-DD';
-$lng['panel']['dateformat_function'] = 'Y-m-d'; // Y = Year, m = Month, d = Day
-$lng['panel']['timeformat_function'] = 'H:i:s'; // H = Hour, i = Minute, s = Second
+$lng['panel']['dateformat_function'] = 'Y-m-d';
+
+// Y = Year, m = Month, d = Day
+
+$lng['panel']['timeformat_function'] = 'H:i:s';
+
+// H = Hour, i = Minute, s = Second
+
 $lng['panel']['default'] = 'Default';
 $lng['panel']['never'] = 'Never';
 $lng['panel']['active'] = 'Active';

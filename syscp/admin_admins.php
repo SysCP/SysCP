@@ -114,7 +114,7 @@ if($page == 'admins'
 				$row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
 				$row['diskspace_used'] = round($row['diskspace_used']/1024, $settings['panel']['decimal_places']);
 				$row['diskspace'] = round($row['diskspace']/1024, $settings['panel']['decimal_places']);
-				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota ftps subdomains');
+				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota ftps subdomains tickets');
 				$row = htmlentities_array($row);
 				eval("\$admins.=\"" . getTemplate("admins/admins_admin") . "\";");
 				$count++;
@@ -222,22 +222,102 @@ if($page == 'admins'
 			$password = validate($_POST['admin_password'], 'password');
 			$def_language = validate($_POST['def_language'], 'default language');
 			$customers = intval_ressource($_POST['customers']);
+
+			if(isset($_POST['customers_ul']))
+			{
+				$customers = -1;
+			}
+
 			$domains = intval_ressource($_POST['domains']);
+
+			if(isset($_POST['domains_ul']))
+			{
+				$domains = -1;
+			}
+
 			$subdomains = intval_ressource($_POST['subdomains']);
+
+			if(isset($_POST['subdomains_ul']))
+			{
+				$subdomains = -1;
+			}
+
 			$emails = intval_ressource($_POST['emails']);
+
+			if(isset($_POST['emails_ul']))
+			{
+				$emails = -1;
+			}
+
 			$email_accounts = intval_ressource($_POST['email_accounts']);
+
+			if(isset($_POST['email_accounts_ul']))
+			{
+				$email_accounts = -1;
+			}
+
 			$email_forwarders = intval_ressource($_POST['email_forwarders']);
-			$email_quota = intval_ressource($_POST['email_quota']);
-			$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
+
+			if(isset($_POST['email_forwarders_ul']))
+			{
+				$email_forwarders = -1;
+			}
+
+			if($settings['system']['mail_quota_enabled'] == '1')
+			{
+				$email_quota = intval_ressource($_POST['email_quota']);
+				$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
+
+				if(isset($_POST['email_quota_ul']))
+				{
+					$email_quota = -1;
+				}
+			}
+			else
+			{
+				$email_quota = '-1';
+			}
+
 			$ftps = intval_ressource($_POST['ftps']);
+
+			if(isset($_POST['ftps_ul']))
+			{
+				$ftps = -1;
+			}
+
 			$tickets = intval_ressource($_POST['tickets']);
+
+			if(isset($_POST['tickets_ul'])
+			   && $settings['ticket']['enabled'] == '1')
+			{
+				$tickets = -1;
+			}
+
 			$mysqls = intval_ressource($_POST['mysqls']);
+
+			if(isset($_POST['mysqls_ul']))
+			{
+				$mysqls = -1;
+			}
+
 			$customers_see_all = intval($_POST['customers_see_all']);
 			$domains_see_all = intval($_POST['domains_see_all']);
 			$caneditphpsettings = intval($_POST['caneditphpsettings']);
 			$change_serversettings = intval($_POST['change_serversettings']);
 			$diskspace = intval_ressource($_POST['diskspace']);
+
+			if(isset($_POST['diskspace_ul']))
+			{
+				$diskspace = -1;
+			}
+
 			$traffic = doubleval_ressource($_POST['traffic']);
+
+			if(isset($_POST['traffic_ul']))
+			{
+				$traffic = -1;
+			}
+
 			$diskspace = $diskspace*1024;
 			$traffic = $traffic*1024*1024;
 			$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
@@ -462,6 +542,18 @@ if($page == 'admins'
 				$ipaddress.= makeoption($row['ip'], $row['id']);
 			}
 
+			$customers_ul = makecheckbox('customers_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$traffic_ul = makecheckbox('traffic_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$domains_ul = makecheckbox('domains_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$subdomains_ul = makecheckbox('subdomains_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$emails_ul = makecheckbox('emails_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$email_accounts_ul = makecheckbox('email_accounts_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$email_forwarders_ul = makecheckbox('email_forwarders_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$email_quota_ul = makecheckbox('email_quota_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$ftps_ul = makecheckbox('ftps_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$tickets_ul = makecheckbox('tickets_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+			$mysqls_ul = makecheckbox('mysqls_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 			$change_serversettings = makeyesno('change_serversettings', '1', '0', '0');
 			$customers_see_all = makeyesno('customers_see_all', '1', '0', '0');
 			$domains_see_all = makeyesno('domains_see_all', '1', '0', '0');
@@ -546,22 +638,104 @@ if($page == 'admins'
 					$def_language = validate($_POST['def_language'], 'default language');
 					$deactivated = intval($_POST['deactivated']);
 					$customers = intval_ressource($_POST['customers']);
+
+					if(isset($_POST['customers_ul']))
+					{
+						$customers = -1;
+					}
+
 					$domains = intval_ressource($_POST['domains']);
+
+					if(isset($_POST['domains_ul']))
+					{
+						$domains = -1;
+					}
+
 					$subdomains = intval_ressource($_POST['subdomains']);
+
+					if(isset($_POST['subdomains_ul']))
+					{
+						$subdomains = -1;
+					}
+
 					$emails = intval_ressource($_POST['emails']);
+
+					if(isset($_POST['emails_ul']))
+					{
+						$email = -1;
+					}
+
 					$email_accounts = intval_ressource($_POST['email_accounts']);
+
+					if(isset($_POST['email_accounts_ul']))
+					{
+						$email_accounts = -1;
+					}
+
 					$email_forwarders = intval_ressource($_POST['email_forwarders']);
-					$email_quota = intval_ressource($_POST['email_quota']);
-					$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
+
+					if(isset($_POST['email_forwarders_ul']))
+					{
+						$email_forwarders = -1;
+					}
+
+					if($settings['system']['mail_quota_enabled'] == '1')
+					{
+						if(isset($_POST['email_quota_ul']))
+						{
+							$email_quota = -1;
+						}
+						else
+						{
+							$email_quota = intval_ressource($_POST['email_quota']);
+						}
+
+						$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
+					}
+					else
+					{
+						$email_quota = -1;
+					}
+
 					$ftps = intval_ressource($_POST['ftps']);
+
+					if(isset($_POST['ftps_ul']))
+					{
+						$ftps = -1;
+					}
+
 					$tickets = intval_ressource($_POST['tickets']);
+
+					if(isset($_POST['tickets_ul']))
+					{
+						$tickets = -1;
+					}
+
 					$mysqls = intval_ressource($_POST['mysqls']);
+
+					if(isset($_POST['mysqls_ul']))
+					{
+						$mysqls = -1;
+					}
+
 					$customers_see_all = intval($_POST['customers_see_all']);
 					$domains_see_all = intval($_POST['domains_see_all']);
 					$caneditphpsettings = intval($_POST['caneditphpsettings']);
 					$change_serversettings = intval($_POST['change_serversettings']);
 					$diskspace = intval($_POST['diskspace']);
+
+					if(isset($_POST['diskspace_ul']))
+					{
+						$diskspace = -1;
+					}
+
 					$traffic = doubleval_ressource($_POST['traffic']);
+
+					if(isset($_POST['traffic_ul']))
+					{
+						$traffic = -1;
+					}
+
 					$diskspace = $diskspace*1024;
 					$traffic = $traffic*1024*1024;
 					$ipaddress = intval_ressource($_POST['ipaddress']);
@@ -818,8 +992,96 @@ if($page == 'admins'
 				$result['traffic'] = round($result['traffic']/(1024*1024), $settings['panel']['decimal_places']);
 				$result['diskspace'] = round($result['diskspace']/1024, $settings['panel']['decimal_places']);
 				$result['email'] = $idna_convert->decode($result['email']);
-				$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
-				$result['email_quota'] = getQuota($result['email_quota']);
+				$customers_ul = makecheckbox('customers_ul', $lng['customer']['unlimited'], '-1', false, $result['customers'], true, true);
+
+				if($result['customers'] == '-1')
+				{
+					$result['customers'] = '';
+				}
+
+				$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, $result['diskspace'], true, true);
+
+				if($result['diskspace'] == '-1')
+				{
+					$result['diskspace'] = '';
+				}
+
+				$traffic_ul = makecheckbox('traffic_ul', $lng['customer']['unlimited'], '-1', false, $result['traffic'], true, true);
+
+				if($result['traffic'] == '-1')
+				{
+					$result['traffic'] = '';
+				}
+
+				$domains_ul = makecheckbox('domains_ul', $lng['customer']['unlimited'], '-1', false, $result['domains'], true, true);
+
+				if($result['domains'] == '-1')
+				{
+					$result['domains'] = '';
+				}
+
+				$subdomains_ul = makecheckbox('subdomains_ul', $lng['customer']['unlimited'], '-1', false, $result['subdomains'], true, true);
+
+				if($result['subdomains'] == '-1')
+				{
+					$result['subdomains'] = '';
+				}
+
+				$emails_ul = makecheckbox('emails_ul', $lng['customer']['unlimited'], '-1', false, $result['emails'], true, true);
+
+				if($result['emails'] == '-1')
+				{
+					$result['emails'] = '';
+				}
+
+				$email_accounts_ul = makecheckbox('email_accounts_ul', $lng['customer']['unlimited'], '-1', false, $result['email_accounts'], true, true);
+
+				if($result['email_accounts'] == '-1')
+				{
+					$result['email_accounts'] = '';
+				}
+
+				$email_forwarders_ul = makecheckbox('email_forwarders_ul', $lng['customer']['unlimited'], '-1', false, $result['email_forwarders'], true, true);
+
+				if($result['email_forwarders'] == '-1')
+				{
+					$result['email_forwarders'] = '';
+				}
+
+				$email_quota_ul = makecheckbox('email_quota_ul', $lng['customer']['unlimited'], '-1', false, $result['email_quota'], true, true);
+
+				if($result['email_quota'] == '-1')
+				{
+					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
+					$result['email_quota'] = '';
+				}
+				else
+				{
+					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
+					$result['email_quota'] = getQuota($result['email_quota']);
+				}
+
+				$ftps_ul = makecheckbox('ftps_ul', $lng['customer']['unlimited'], '-1', false, $result['ftps'], true, true);
+
+				if($result['ftps'] == '-1')
+				{
+					$result['ftps'] = '';
+				}
+
+				$tickets_ul = makecheckbox('tickets_ul', $lng['customer']['unlimited'], '-1', false, $result['tickets'], true, true);
+
+				if($result['tickets'] == '-1')
+				{
+					$result['tickets'] = '';
+				}
+
+				$mysqls_ul = makecheckbox('mysqls_ul', $lng['customer']['unlimited'], '-1', false, $result['mysqls'], true, true);
+
+				if($result['mysqls'] == '-1')
+				{
+					$result['mysqls'] = '';
+				}
+
 				$language_options = '';
 
 				while(list($language_file, $language_name) = each($languages))

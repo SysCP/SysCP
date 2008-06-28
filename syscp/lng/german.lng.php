@@ -907,8 +907,14 @@ $lng['serversettings']['awstats_updateall_command']['description'] = 'z.B. /usr/
 $lng['customer']['title'] = 'Titel';
 $lng['customer']['country'] = 'Land';
 $lng['panel']['dateformat'] = 'JJJJ-MM-TT';
-$lng['panel']['dateformat_function'] = 'd.m.Y'; // Y = Year, m = Month, d = Day
-$lng['panel']['timeformat_function'] = 'H:i:s'; // H = Hour, i = Minute, s = Second
+$lng['panel']['dateformat_function'] = 'd.m.Y';
+
+// Y = Year, m = Month, d = Day
+
+$lng['panel']['timeformat_function'] = 'H:i:s';
+
+// H = Hour, i = Minute, s = Second
+
 $lng['panel']['default'] = 'Standard';
 $lng['panel']['never'] = 'Nie';
 $lng['panel']['active'] = 'Aktiv';

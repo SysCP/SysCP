@@ -16,7 +16,7 @@
  * @author     Michael Kaufmann <mkaufmann@nutime.de>
  * @license    http://www.gnu.org/licenses/gpl.txt
  * @package    Panel
- * @version    CVS: $Id:$
+ * @version    CVS: $Id$
  * @link       http://www.nutime.de/
  * @since      File available since Release 1.2.20
  */

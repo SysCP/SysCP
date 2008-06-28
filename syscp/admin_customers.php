@@ -287,15 +287,55 @@ if($page == 'customers'
 
 				$def_language = validate($_POST['def_language'], 'default language');
 				$diskspace = intval_ressource($_POST['diskspace']);
+
+				if(isset($_POST['diskspace_ul']))
+				{
+					$diskspace = -1;
+				}
+
 				$traffic = doubleval_ressource($_POST['traffic']);
+
+				if(isset($_POST['traffic_ul']))
+				{
+					$traffic = -1;
+				}
+
 				$subdomains = intval_ressource($_POST['subdomains']);
+
+				if(isset($_POST['subdomains_ul']))
+				{
+					$subdomains = -1;
+				}
+
 				$emails = intval_ressource($_POST['emails']);
+
+				if(isset($_POST['emails_ul']))
+				{
+					$emails = -1;
+				}
+
 				$email_accounts = intval_ressource($_POST['email_accounts']);
+
+				if(isset($_POST['email_accounts_ul']))
+				{
+					$email_accounts = -1;
+				}
+
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
+
+				if(isset($_POST['email_forwarders_ul']))
+				{
+					$email_forwarders = -1;
+				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
 				{
 					$email_quota = intval_ressource($_POST['email_quota']);
+
+					if(isset($_POST['email_quota_ul']))
+					{
+						$email_quota = -1;
+					}
 				}
 				else
 				{
@@ -305,8 +345,27 @@ if($page == 'customers'
 				$email_imap = intval_ressource($_POST['email_imap']);
 				$email_pop3 = intval_ressource($_POST['email_pop3']);
 				$ftps = intval_ressource($_POST['ftps']);
+
+				if(isset($_POST['ftps_ul']))
+				{
+					$ftps = -1;
+				}
+
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
+
+				if(isset($_POST['tickets_ul'])
+				   && $settings['ticket']['enabled'] == '1')
+				{
+					$tickets = -1;
+				}
+
 				$mysqls = intval_ressource($_POST['mysqls']);
+
+				if(isset($_POST['mysqls_ul']))
+				{
+					$mysqls = -1;
+				}
+
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$password = validate($_POST['customer_password'], 'password');
 				$sendpassword = intval($_POST['sendpassword']);
@@ -484,7 +543,6 @@ if($page == 'customers'
 						$payment_method = 0;
 					}
 
-
 					if(file_exists($documentroot))
 					{
 						standard_error('documentrootexists', $documentroot);
@@ -660,6 +718,16 @@ if($page == 'customers'
 					$language_options.= makeoption($language_name, $language_file, $userinfo['def_language'], true);
 				}
 
+				$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$traffic_ul = makecheckbox('traffic_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$subdomains_ul = makecheckbox('subdomains_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$emails_ul = makecheckbox('emails_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$email_accounts_ul = makecheckbox('email_accounts_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$email_forwarders_ul = makecheckbox('email_forwarders_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$email_quota_ul = makecheckbox('email_quota_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$ftps_ul = makecheckbox('ftps_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$tickets_ul = makecheckbox('tickets_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
+				$mysqls_ul = makecheckbox('mysqls_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 				$createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', '1');
 				$quota_type_option = makeQuotaOption();
 				$email_imap = makeyesno('email_imap', '1', '0', '1');
@@ -720,15 +788,57 @@ if($page == 'customers'
 				$def_language = validate($_POST['def_language'], 'default language');
 				$password = validate($_POST['customer_password'], 'new password');
 				$diskspace = intval_ressource($_POST['diskspace']);
+				$diskspace = intval_ressource($_POST['diskspace']);
+
+				if(isset($_POST['diskspace_ul']))
+				{
+					$diskspace = -1;
+				}
+
 				$traffic = doubleval_ressource($_POST['traffic']);
+
+				if(isset($_POST['traffic_ul']))
+				{
+					$traffic = -1;
+				}
+
 				$subdomains = intval_ressource($_POST['subdomains']);
+
+				if(isset($_POST['subdomains_ul']))
+				{
+					$subdomains = -1;
+				}
+
 				$emails = intval_ressource($_POST['emails']);
+
+				if(isset($_POST['emails_ul']))
+				{
+					$emails = -1;
+				}
+
 				$email_accounts = intval_ressource($_POST['email_accounts']);
+
+				if(isset($_POST['email_accounts_ul']))
+				{
+					$email_accounts = -1;
+				}
+
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
+
+				if(isset($_POST['email_accounts_ul']))
+				{
+					$email_forwarders = -1;
+				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
 				{
 					$email_quota = intval_ressource($_POST['email_quota']);
+
+					if(isset($_POST['email_quota_ul']))
+					{
+						$email_quota = -1;
+					}
+
 					$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
 					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 				}
@@ -740,8 +850,27 @@ if($page == 'customers'
 				$email_imap = intval_ressource($_POST['email_imap']);
 				$email_pop3 = intval_ressource($_POST['email_pop3']);
 				$ftps = intval_ressource($_POST['ftps']);
+
+				if(isset($_POST['ftps_ul']))
+				{
+					$ftps = -1;
+				}
+
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
+
+				if(isset($_POST['tickets_ul'])
+				   && $settings['ticket']['enabled'] == '1')
+				{
+					$tickets = -1;
+				}
+
 				$mysqls = intval_ressource($_POST['mysqls']);
+
+				if(isset($_POST['mysqls_ul']))
+				{
+					$mysqls = -1;
+				}
+
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$deactivated = intval($_POST['deactivated']);
 				$phpenabled = intval($_POST['phpenabled']);
@@ -1004,7 +1133,6 @@ if($page == 'customers'
 					}
 
 					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `title`='" . $db->escape($title) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `country`='" . $db->escape($country) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `customernumber`='" . $db->escape($customernumber) . "', `def_language`='" . $db->escape($def_language) . "', `password` = '" . $password . "', `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `deactivated`='" . $db->escape($deactivated) . "', `phpenabled`='" . $db->escape($phpenabled) . "', `email_quota`='" . $db->escape($email_quota) . "', `imap`='" . $db->escape($email_imap) . "', `pop3`='" . $db->escape($email_pop3) . "', `contract_date`='" . $db->escape($contract_date) . "', `contract_number`='" . $db->escape($contract_number) . "', `taxid`='" . $db->escape($taxid) . "', `included_domains_qty`='" . $db->escape($included_domains_qty) . "', `included_domains_tld`='" . $db->escape($included_domains_tld) . "', `additional_traffic_fee`='" . $db->escape($additional_traffic_fee) . "', `additional_traffic_unit`='" . $db->escape($additional_traffic_unit) . "', `additional_diskspace_fee`='" . $db->escape($additional_diskspace_fee) . "', `additional_diskspace_unit`='" . $db->escape($additional_diskspace_unit) . "', `interval_fee`='" . $db->escape($interval_fee) . "', `interval_length`='" . $db->escape($interval_length) . "', `interval_type`='" . $db->escape($interval_type) . "', `interval_payment`='" . $db->escape($interval_payment) . "', `setup_fee`='" . $db->escape($setup_fee) . "', `taxclass`='" . $db->escape($taxclass) . "', `service_active`='" . $db->escape($service_active) . "', `servicestart_date`='" . $db->escape($servicestart_date) . "', `serviceend_date`='" . $db->escape($serviceend_date) . "', `term_of_payment`='" . $db->escape($term_of_payment) . "', `calc_tax`='" . $db->escape($calc_tax) . "', `payment_every`='" . $db->escape($payment_every) . "', `payment_method`='" . $db->escape($payment_method) . "', `bankaccount_holder`='" . $db->escape($bankaccount_holder) . "', `bankaccount_number`='" . $db->escape($bankaccount_number) . "', `bankaccount_blz`='" . $db->escape($bankaccount_blz) . "', `bankaccount_bank`='" . $db->escape($bankaccount_bank) . "', `additional_service_description`='" . $db->escape($additional_service_description) . "' WHERE `customerid`='" . (int)$id . "'");
-
 					$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` ";
 
 					if($mysqls != '-1'
@@ -1181,11 +1309,85 @@ if($page == 'customers'
 				$result['traffic'] = round($result['traffic']/(1024*1024), $settings['panel']['decimal_places']);
 				$result['diskspace'] = round($result['diskspace']/1024, $settings['panel']['decimal_places']);
 				$result['email'] = $idna_convert->decode($result['email']);
+				$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, $result['diskspace'], true, true);
+
+				if($result['diskspace'] == '-1')
+				{
+					$result['diskspace'] = '';
+				}
+
+				$traffic_ul = makecheckbox('traffic_ul', $lng['customer']['unlimited'], '-1', false, $result['traffic'], true, true);
+
+				if($result['traffic'] == '-1')
+				{
+					$result['traffic'] = '';
+				}
+
+				$subdomains_ul = makecheckbox('subdomains_ul', $lng['customer']['unlimited'], '-1', false, $result['subdomains'], true, true);
+
+				if($result['subdomains'] == '-1')
+				{
+					$result['subdomains'] = '';
+				}
+
+				$emails_ul = makecheckbox('emails_ul', $lng['customer']['unlimited'], '-1', false, $result['emails'], true, true);
+
+				if($result['emails'] == '-1')
+				{
+					$result['emails'] = '';
+				}
+
+				$email_accounts_ul = makecheckbox('email_accounts_ul', $lng['customer']['unlimited'], '-1', false, $result['email_accounts'], true, true);
+
+				if($result['email_accounts'] == '-1')
+				{
+					$result['email_accounts'] = '';
+				}
+
+				$email_forwarders_ul = makecheckbox('email_forwarders_ul', $lng['customer']['unlimited'], '-1', false, $result['email_forwarders'], true, true);
+
+				if($result['email_forwarders'] == '-1')
+				{
+					$result['email_forwarders'] = '';
+				}
+
+				$email_quota_ul = makecheckbox('email_quota_ul', $lng['customer']['unlimited'], '-1', false, $result['email_quota'], true, true);
+
+				if($result['email_quota'] == '-1')
+				{
+					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
+					$result['email_quota'] = '';
+				}
+				else
+				{
+					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
+					$result['email_quota'] = getQuota($result['email_quota']);
+				}
+
+				$ftps_ul = makecheckbox('ftps_ul', $lng['customer']['unlimited'], '-1', false, $result['ftps'], true, true);
+
+				if($result['ftps'] == '-1')
+				{
+					$result['ftps'] = '';
+				}
+
+				$tickets_ul = makecheckbox('tickets_ul', $lng['customer']['unlimited'], '-1', false, $result['tickets'], true, true);
+
+				if($result['tickets'] == '-1')
+				{
+					$result['tickets'] = '';
+				}
+
+				$mysqls_ul = makecheckbox('mysqls_ul', $lng['customer']['unlimited'], '-1', false, $result['mysqls'], true, true);
+
+				if($result['mysqls'] == '-1')
+				{
+					$result['mysqls'] = '';
+				}
+
 				$createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', (($result['standardsubdomain'] != '0') ? '1' : '0'));
 				$phpenabled = makeyesno('phpenabled', '1', '0', $result['phpenabled']);
 				$deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
-				$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
-				$result['email_quota'] = getQuota($result['email_quota']);
 				$email_imap = makeyesno('email_imap', '1', '0', $result['imap']);
 				$email_pop3 = makeyesno('email_pop3', '1', '0', $result['pop3']);
 				$result['additional_traffic_unit'] = round($result['additional_traffic_unit']/(1024*1024), 4);
