@@ -161,29 +161,51 @@ if($action == 'forgotpwd')
 	if(isset($_POST['send'])
 	   && $_POST['send'] == 'send')
 	{
+		$adminchecked = false;
 		$loginname = validate($_POST['loginname'], 'loginname');
 		$email = validateEmail($_POST['loginemail'], 'email');
 		$sql = "SELECT `customerid`, `firstname`, `name`, `email`, `loginname` FROM `" . TABLE_PANEL_CUSTOMERS . "` 
 				WHERE `loginname`='" . $db->escape($loginname) . "' 
 				AND `email`='" . $db->escape($email) . "'";
 		$result = $db->query($sql);
-		$customer = $db->fetch_array($result);
 
-		if($customer !== false)
+		if($db->num_rows() == 0)
+		{
+			$sql = "SELECT `adminid`, `firstname`, `name`, `email`, `loginname` FROM `" . TABLE_PANEL_ADMINS . "`
+				WHERE `loginname`='" . $db->escape($loginname) . "'
+				AND `email`='" . $db->escape($email) . "'";
+			$result = $db->query($sql);
+			$adminchecked = true;
+		}
+
+		$user = $db->fetch_array($result);
+
+		if($user !== false)
 		{
 			$password = substr(md5(uniqid(microtime(), 1)), 12, 6);
-			$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($password) . "'
-						WHERE `loginname`='" . $customer['loginname'] . "'
-						AND `email`='" . $customer['email'] . "'");
+
+			if($adminchecked)
+			{
+				$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($password) . "'
+						WHERE `loginname`='" . $user['loginname'] . "'
+						AND `email`='" . $user['email'] . "'");
+			}
+			else
+			{
+				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($password) . "'
+						WHERE `loginname`='" . $user['loginname'] . "'
+						AND `email`='" . $user['email'] . "'");
+			}
+
 			$body = strtr($lng['pwdreminder']['body'], array(
-				'%s' => $customer['firstname'] . ' ' . $customer['name'],
+				'%s' => $user['firstname'] . ' ' . $user['name'],
 				'%p' => $password
 			));
 			$mail->From = $settings['panel']['adminmail'];
 			$mail->FromName = 'SysCP';
 			$mail->Subject = $lng['pwdreminder']['subject'];
 			$mail->Body = $body;
-			$mail->AddAddress($customer['email'], $customer['firstname'] . ' ' . $customer['name']);
+			$mail->AddAddress($user['email'], $user['firstname'] . ' ' . $user['name']);
 
 			if(!$mail->Send())
 			{
@@ -207,7 +229,7 @@ if($action == 'forgotpwd')
 			$rstlog = SysCPLogger::getInstanceOf(array(
 				'loginname' => 'password_reset'
 			), $db, $settings);
-			$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $customer['loginname'] . "' has been reset!");
+			$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user['loginname'] . "' has been reset!");
 			redirectTo('index.php', Array(
 				'showmessage' => '1'
 			), true);
@@ -216,6 +238,8 @@ if($action == 'forgotpwd')
 		{
 			$message = $lng['login']['usernotfound'];
 		}
+
+		unset($user, $adminchecked);
 	}
 	else
 	{
