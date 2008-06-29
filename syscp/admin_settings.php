@@ -385,6 +385,14 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='allow_preset'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_allow_preset from '" . $settings['panel']['allow_preset'] . "' to '" . $value . "'");
 			}
+
+			if($_POST['panel_allow_preset_admin'] != $settings['panel']['allow_preset_admin']
+			   && isset($_POST['panel_allow_preset_admin']))
+			{
+				$value = ($_POST['panel_allow_preset_admin'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='allow_preset_admin'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_allow_preset_admin from '" . $settings['panel']['allow_preset'] . "' to '" . $value . "'");
+			}
 		}
 
 		if(($settings_part && $_part == 'system')
@@ -1283,6 +1291,7 @@ if(($page == 'settings' || $page == 'overview')
 		$system_customerdns = makeyesno('system_customerdns', '1', '0', $settings['system']['customerdns']);
 		$unix_names = makeyesno('panel_unix_names', '1', '0', $settings['panel']['unix_names']);
 		$allow_preset = makeyesno('panel_allow_preset', '1', '0', $settings['panel']['allow_preset']);
+		$allow_preset_admin = makeyesno('panel_allow_preset_admin', '1', '0', $settings['panel']['allow_preset_admin']);
 		$settings = htmlentities_array($settings);
 		$settings_page = '';
 		$_part = isset($_GET['part']) ? $_GET['part'] : '';

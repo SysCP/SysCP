@@ -1069,4 +1069,10 @@ $lng['question']['billing_other_template_reallydelete'] = 'Wollen Sie die Vorlag
 $lng['question']['billing_other_service_reallydelete'] = 'Wollen Sie diese Dienstleistung wirklich l&ouml;schen?';
 $lng['question']['billing_taxrate_reallydelete'] = 'Wollen Sie diesen Steuersart wirklich l&ouml;schen?';
 
+// ADDED IN 1.2.19-svn22
+
+$lng['serversettings']['allow_preset_desc'] = 'Kunden k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
+$lng['serversettings']['allow_preset_admin'] = 'Erlaube das Zur&uuml;cksetzen von Admin-/Reseller-Passw&ouml;rtern.';
+$lng['serversettings']['allow_preset_admin_desc'] = 'Admins/Reseller k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
+
 ?>

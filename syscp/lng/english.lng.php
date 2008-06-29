@@ -1063,4 +1063,10 @@ $lng['question']['billing_other_template_reallydelete'] = 'Do you really want to
 $lng['question']['billing_other_service_reallydelete'] = 'Do you really want to delete this service?';
 $lng['question']['billing_taxrate_reallydelete'] = 'Do you really want to delete this taxrate?';
 
+// ADDED IN 1.2.19-svn22
+
+$lng['serversettings']['allow_preset_desc'] = 'Customers can reset their password and a new passwort will be sent to their e-mail address';
+$lng['serversettings']['allow_preset_admin'] = 'Allow password reset by admins';
+$lng['serversettings']['allow_preset_admin_desc'] = 'Admins/reseller can reset their password and a new passwort will be sent to their e-mail address';
+
 ?>

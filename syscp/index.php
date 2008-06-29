@@ -180,66 +180,78 @@ if($action == 'forgotpwd')
 
 		$user = $db->fetch_array($result);
 
-		if($user !== false)
+		if(($adminchecked && $settings['panel']['allow_preset_admin'] == '1')
+		   || $adminchecked == false)
 		{
-			$password = substr(md5(uniqid(microtime(), 1)), 12, 6);
-
-			if($adminchecked)
+			if($user !== false)
 			{
-				$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($password) . "'
-						WHERE `loginname`='" . $user['loginname'] . "'
-						AND `email`='" . $user['email'] . "'");
-			}
-			else
-			{
-				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($password) . "'
-						WHERE `loginname`='" . $user['loginname'] . "'
-						AND `email`='" . $user['email'] . "'");
-			}
+				$password = substr(md5(uniqid(microtime(), 1)), 12, 6);
 
-			$body = strtr($lng['pwdreminder']['body'], array(
-				'%s' => $user['firstname'] . ' ' . $user['name'],
-				'%p' => $password
-			));
-			$mail->From = $settings['panel']['adminmail'];
-			$mail->FromName = 'SysCP';
-			$mail->Subject = $lng['pwdreminder']['subject'];
-			$mail->Body = $body;
-			$mail->AddAddress($user['email'], $user['firstname'] . ' ' . $user['name']);
-
-			if(!$mail->Send())
-			{
-				if($mail->ErrorInfo != '')
+				if($adminchecked)
 				{
-					$mailerr_msg = $mail->ErrorInfo;
+					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($password) . "'
+							WHERE `loginname`='" . $user['loginname'] . "'
+							AND `email`='" . $user['email'] . "'");
 				}
 				else
 				{
-					$mailerr_msg = $email;
+					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($password) . "'
+							WHERE `loginname`='" . $user['loginname'] . "'
+							AND `email`='" . $user['email'] . "'");
 				}
 
 				$rstlog = SysCPLogger::getInstanceOf(array(
 					'loginname' => 'password_reset'
 				), $db, $settings);
-				$rstlog->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
-				standard_error('errorsendingmail', $email);
+				$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user['loginname'] . "' has been reset!");
+				$body = strtr($lng['pwdreminder']['body'], array(
+					'%s' => $user['firstname'] . ' ' . $user['name'],
+					'%p' => $password
+				));
+				$mail->From = $settings['panel']['adminmail'];
+				$mail->FromName = 'SysCP';
+				$mail->Subject = $lng['pwdreminder']['subject'];
+				$mail->Body = $body;
+				$mail->AddAddress($user['email'], $user['firstname'] . ' ' . $user['name']);
+
+				if(!$mail->Send())
+				{
+					if($mail->ErrorInfo != '')
+					{
+						$mailerr_msg = $mail->ErrorInfo;
+					}
+					else
+					{
+						$mailerr_msg = $email;
+					}
+
+					$rstlog = SysCPLogger::getInstanceOf(array(
+						'loginname' => 'password_reset'
+					), $db, $settings);
+					$rstlog->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
+					standard_error('errorsendingmail', $email);
+				}
+
+				$mail->ClearAddresses();
+				redirectTo('index.php', Array(
+					'showmessage' => '1'
+				), true);
+			}
+			else
+			{
+				$rstlog = SysCPLogger::getInstanceOf(array(
+					'loginname' => 'password_reset'
+				), $db, $settings);
+				$rstlog->logAction(USR_ACTION, LOG_WARNING, "User '" . $loginname . "' tried to reset pwd but wasn't found in database!");
+				$message = $lng['login']['usernotfound'];
 			}
 
-			$mail->ClearAddresses();
-			$rstlog = SysCPLogger::getInstanceOf(array(
-				'loginname' => 'password_reset'
-			), $db, $settings);
-			$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user['loginname'] . "' has been reset!");
-			redirectTo('index.php', Array(
-				'showmessage' => '1'
-			), true);
+			unset($user, $adminchecked);
 		}
 		else
 		{
-			$message = $lng['login']['usernotfound'];
+			$message = '';
 		}
-
-		unset($user, $adminchecked);
 	}
 	else
 	{

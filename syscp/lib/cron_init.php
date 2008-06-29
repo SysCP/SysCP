@@ -249,7 +249,9 @@ require ($pathtophpfiles . '/lib/class_syscplogger.php');
  * Initialize logging
  */
 
-$cronlog = SysCPLogger::getInstanceOf(null, $db, $settings);
+$cronlog = SysCPLogger::getInstanceOf(array(
+	'loginname' => 'cronjob'
+), $db, $settings);
 fwrite($debugHandler, 'Logger has been included' . "\n");
 
 /**
