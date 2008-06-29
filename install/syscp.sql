@@ -504,6 +504,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (91, 'system', 'awstats_path', '/usr/share/awstats/VERSION/webroot/cgi-bin/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (92, 'system', 'awstats_updateall_command', '/usr/bin/awstats_updateall.pl');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (93, 'billing', 'invoicenumber_count', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (94, 'panel', 'allow_preset_admin', '0');
 # --------------------------------------------------------
 
 #
