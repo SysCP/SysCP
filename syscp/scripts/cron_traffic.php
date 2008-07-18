@@ -340,7 +340,7 @@ while($row = $db->fetch_array($result))
 	if(isset($admin_diskspace[$row['adminid']]))
 	{
 		$db->query("INSERT INTO `" . TABLE_PANEL_DISKSPACE_ADMINS . "` (`adminid`, `year`, `month`, `day`, `stamp`, `webspace`, `mail`, `mysql`) VALUES('" . (int)$row['adminid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$admin_diskspace[$row['adminid']]['webspace'] . "', '" . (float)$admin_diskspace[$row['adminid']]['mail'] . "', '" . (float)$admin_diskspace[$row['adminid']]['mysql'] . "')");
-		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `traffic_used`='" . (float)$admin_diskspace[$row['adminid']]['all'] . "' WHERE `adminid`='" . (float)$row['adminid'] . "'");
+		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `diskspace_used`='" . (float)$admin_diskspace[$row['adminid']]['all'] . "' WHERE `adminid`='" . (float)$row['adminid'] . "'");
 	}
 }
 
