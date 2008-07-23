@@ -1075,7 +1075,19 @@ $lng['serversettings']['allow_preset_desc'] = 'Kunden k&ouml;nnen ihr Passwort z
 $lng['serversettings']['allow_preset_admin'] = 'Erlaube das Zur&uuml;cksetzen von Admin-/Reseller-Passw&ouml;rtern.';
 $lng['serversettings']['allow_preset_admin_desc'] = 'Admins/Reseller k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
 
+// ADDED IN 1.2.19-svn23
+
 $lng['admin']['edit_billingdata'] = 'Kann Abrechnungsdaten bearbeiten?';
 $lng['error']['service_still_active'] = 'Die Dienstleistung ist noch aktiv.';
+
+// ADDED IN 1.2.19-svn23
+
+$lng['admin']['billingsettings'] = 'Abrechungseinstellungen';
+$lng['serversettings']['billing']['activate_billing']['title'] = 'Abrechnungssystem aktivieren';
+$lng['serversettings']['billing']['activate_billing']['description'] = 'Hier k&ouml;nnen Sie das Abrechnungssystem global aktivieren bzw deaktivieren.';
+$lng['serversettings']['billing']['highlight_inactive']['title'] = 'Inaktive Abrechnung markieren';
+$lng['serversettings']['billing']['highlight_inactive']['description'] = 'Sollen Zeilen, deren Abrechnung inaktiv ist, farblich hervorgehoben werden?';
+$lng['serversettings']['billing']['invoicenumber_count']['title'] = 'Aktuelle Rechnungsnummer';
+$lng['serversettings']['billing']['invoicenumber_count']['description'] = 'Diese Nummer entspricht der Anzahl der bisher generierten Rechnungen. &Auml;nderungen k&ouml;nnen &Auml;rger in der Buchhaltung machen!';
 
 ?>

@@ -1069,7 +1069,19 @@ $lng['serversettings']['allow_preset_desc'] = 'Customers can reset their passwor
 $lng['serversettings']['allow_preset_admin'] = 'Allow password reset by admins';
 $lng['serversettings']['allow_preset_admin_desc'] = 'Admins/reseller can reset their password and a new passwort will be sent to their e-mail address';
 
+// ADDED IN 1.2.19-svn23
+
 $lng['admin']['edit_billingdata'] = 'Can edit billing data?';
 $lng['error']['service_still_active'] = 'Service still active.';
+
+// ADDED IN 1.2.19-svn23
+
+$lng['admin']['billingsettings'] = 'Billing settings';
+$lng['serversettings']['billing']['activate_billing']['title'] = 'Activate billing';
+$lng['serversettings']['billing']['activate_billing']['description'] = 'Here you can activate/deactivate the billing system globally.';
+$lng['serversettings']['billing']['highlight_inactive']['title'] = 'Highlight inaktive billing';
+$lng['serversettings']['billing']['highlight_inactive']['description'] = 'Should rows, whose billing is not active, be highlighted?';
+$lng['serversettings']['billing']['invoicenumber_count']['title'] = 'Current invoice number';
+$lng['serversettings']['billing']['invoicenumber_count']['description'] = 'This is the number of fixed invoices. Changes could result in an argue with your accountant.';
 
 ?>

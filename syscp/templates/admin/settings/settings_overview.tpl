@@ -83,6 +83,13 @@
 				<td class="main_field_display_small" nowrap="nowrap"><if $settings['system']['use_ssl'] == '1'><a href="$filename?page=overview&part=ssl&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
 			</tr> 
 			<tr>
+				<td class="maintitle_apply_left">
+					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingsettings']}</b>
+				</td>
+				<td class="main_field_display_small" nowrap="nowrap">{$lng['admin']['activated']}:&nbsp;$billing_activate_billing</td>
+				<td class="main_field_display_small" nowrap="nowrap"><if $settings['billing']['activate_billing'] == '1'><a href="$filename?page=overview&part=billing&amp;s=$s">{$lng['admin']['configfiles']['serverconfiguration']}</a></if></td>
+			</tr> 
+			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="3">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
