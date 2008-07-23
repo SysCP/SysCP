@@ -41,9 +41,7 @@ if($page == 'message')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			$from = $db->query_first("SELECT `email`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE adminid='" . $userinfo['adminid'] . "'");
-
-			if($_POST['receipient'] == 0)
+			if($_POST['receipient'] == 0 && $userinfo['customers_see_all'] == '1')
 			{
 				$log->logAction(ADM_ACTION, LOG_NOTICE, "sending messages to admins");
 				$result = $db->query('SELECT `loginname`, `name`, `email`  FROM `' . TABLE_PANEL_ADMINS . "`");
@@ -78,8 +76,8 @@ if($page == 'message')
 				while($row = $db->fetch_array($result))
 				{
 					$mail->AddAddress($row['name'], $row['email']);
-					$mail->From = $from['email'];
-					$mail->FromName = $from['name'];
+					$mail->From = $userinfo['email'];
+					$mail->FromName = $userinfo['firstname'] . ' ' . $userinfo['name'];
 
 					if(!$mail->Send())
 					{

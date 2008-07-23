@@ -30,7 +30,7 @@ define('AREA', 'admin');
 require ("./lib/init.php");
 
 if($page == 'log'
-   && $userinfo['customers'] != '0')
+   && $userinfo['change_serversettings'] == '1')
 {
 	if($action == '')
 	{
