@@ -1069,4 +1069,7 @@ $lng['serversettings']['allow_preset_desc'] = 'Customers can reset their passwor
 $lng['serversettings']['allow_preset_admin'] = 'Allow password reset by admins';
 $lng['serversettings']['allow_preset_admin_desc'] = 'Admins/reseller can reset their password and a new passwort will be sent to their e-mail address';
 
+$lng['admin']['edit_billingdata'] = 'Can edit billing data?';
+$lng['error']['service_still_active'] = 'Service still active.';
+
 ?>

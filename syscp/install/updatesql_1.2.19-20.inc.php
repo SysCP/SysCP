@@ -686,6 +686,21 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn22';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn22')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn22 to 1.2.19-svn23");
+		$db->query("ALTER TABLE  `" . TABLE_PANEL_ADMINS . "` ADD  `edit_billingdata` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER  `change_serversettings`");
+		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `edit_billingdata` = '1' WHERE `customers_see_all` = '1'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'edit_billingdata' WHERE `required_resources` = 'customers_see_all' AND `url` LIKE 'billing%'");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn23\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn23';
+	}
 }
 
 // php filter-extension check

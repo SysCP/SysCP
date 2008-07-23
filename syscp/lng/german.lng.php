@@ -1075,4 +1075,7 @@ $lng['serversettings']['allow_preset_desc'] = 'Kunden k&ouml;nnen ihr Passwort z
 $lng['serversettings']['allow_preset_admin'] = 'Erlaube das Zur&uuml;cksetzen von Admin-/Reseller-Passw&ouml;rtern.';
 $lng['serversettings']['allow_preset_admin_desc'] = 'Admins/Reseller k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
 
+$lng['admin']['edit_billingdata'] = 'Kann Abrechnungsdaten bearbeiten?';
+$lng['error']['service_still_active'] = 'Die Dienstleistung ist noch aktiv.';
+
 ?>

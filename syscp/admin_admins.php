@@ -304,6 +304,7 @@ if($page == 'admins'
 			$domains_see_all = intval($_POST['domains_see_all']);
 			$caneditphpsettings = intval($_POST['caneditphpsettings']);
 			$change_serversettings = intval($_POST['change_serversettings']);
+			$edit_billingdata = intval($_POST['edit_billingdata']);
 			$diskspace = intval_ressource($_POST['diskspace']);
 
 			if(isset($_POST['diskspace_ul']))
@@ -514,8 +515,13 @@ if($page == 'admins'
 					$change_serversettings = '0';
 				}
 
-				$result = $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `firstname`, `title`, `company`, `street`, `zipcode`, `city`, `country`, `phone`, `fax`, `email`, `def_language`, `change_serversettings`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `caneditphpsettings`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `email_quota`, `ftps`, `tickets`, `mysqls`, `ip`, `contract_date`, `contract_number`, `taxid`, `additional_traffic_fee`, `additional_traffic_unit`,`additional_diskspace_fee`, `additional_diskspace_unit`, `interval_fee`, `interval_length`, `interval_type`, `interval_payment`, `setup_fee`, `taxclass`, `service_active`, `servicestart_date`, `term_of_payment`, `calc_tax`, `payment_every`, `payment_method`, `bankaccount_holder`, `bankaccount_number`, `bankaccount_blz`, `bankaccount_bank`, `customer_categories_once`, `customer_categories_period`)
-					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($title) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($country) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . (int)$caneditphpsettings . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($email_quota) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "', '" . (int)$ipaddress . "', '" . $db->escape($contract_date) . "', '" . $db->escape($contract_number) . "', '" . $db->escape($taxid) . "', '" . $db->escape($additional_traffic_fee) . "', '" . $db->escape($additional_traffic_unit) . "','" . $db->escape($additional_diskspace_fee) . "', '" . $db->escape($additional_diskspace_unit) . "','" . $db->escape($interval_fee) . "', '" . $db->escape($interval_length) . "', '" . $db->escape($interval_type) . "', '" . $db->escape($interval_payment) . "', '" . $db->escape($setup_fee) . "', '" . $db->escape($taxclass) . "', '" . $db->escape($service_active) . "', '" . $db->escape($servicestart_date) . "', '" . $db->escape($term_of_payment) . "', '" . $db->escape($calc_tax) . "', '" . $db->escape($payment_every) . "', '" . $db->escape($payment_method) . "', '" . $db->escape($bankaccount_holder) . "', '" . $db->escape($bankaccount_number) . "', '" . $db->escape($bankaccount_blz) . "', '" . $db->escape($bankaccount_bank) . "', '" . $db->escape($customer_categories_once) . "', '" . $db->escape($customer_categories_period) . "')");
+				if($edit_billingdata != '1')
+				{
+					$edit_billingdata = '0';
+				}
+
+				$result = $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` (`loginname`, `password`, `name`, `firstname`, `title`, `company`, `street`, `zipcode`, `city`, `country`, `phone`, `fax`, `email`, `def_language`, `change_serversettings`, `edit_billingdata`, `customers`, `customers_see_all`, `domains`, `domains_see_all`, `caneditphpsettings`, `diskspace`, `traffic`, `subdomains`, `emails`, `email_accounts`, `email_forwarders`, `email_quota`, `ftps`, `tickets`, `mysqls`, `ip`, `contract_date`, `contract_number`, `taxid`, `additional_traffic_fee`, `additional_traffic_unit`,`additional_diskspace_fee`, `additional_diskspace_unit`, `interval_fee`, `interval_length`, `interval_type`, `interval_payment`, `setup_fee`, `taxclass`, `service_active`, `servicestart_date`, `term_of_payment`, `calc_tax`, `payment_every`, `payment_method`, `bankaccount_holder`, `bankaccount_number`, `bankaccount_blz`, `bankaccount_bank`, `customer_categories_once`, `customer_categories_period`)
+					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($title) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($country) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($edit_billingdata) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . (int)$caneditphpsettings . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($email_quota) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "', '" . (int)$ipaddress . "', '" . $db->escape($contract_date) . "', '" . $db->escape($contract_number) . "', '" . $db->escape($taxid) . "', '" . $db->escape($additional_traffic_fee) . "', '" . $db->escape($additional_traffic_unit) . "','" . $db->escape($additional_diskspace_fee) . "', '" . $db->escape($additional_diskspace_unit) . "','" . $db->escape($interval_fee) . "', '" . $db->escape($interval_length) . "', '" . $db->escape($interval_type) . "', '" . $db->escape($interval_payment) . "', '" . $db->escape($setup_fee) . "', '" . $db->escape($taxclass) . "', '" . $db->escape($service_active) . "', '" . $db->escape($servicestart_date) . "', '" . $db->escape($term_of_payment) . "', '" . $db->escape($calc_tax) . "', '" . $db->escape($payment_every) . "', '" . $db->escape($payment_method) . "', '" . $db->escape($bankaccount_holder) . "', '" . $db->escape($bankaccount_number) . "', '" . $db->escape($bankaccount_blz) . "', '" . $db->escape($bankaccount_bank) . "', '" . $db->escape($customer_categories_once) . "', '" . $db->escape($customer_categories_period) . "')");
 				$adminid = $db->insert_id();
 				$log->logAction(ADM_ACTION, LOG_INFO, "added admin '" . $loginname . "'");
 				redirectTo($filename, Array(
@@ -555,6 +561,7 @@ if($page == 'admins'
 			$tickets_ul = makecheckbox('tickets_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 			$mysqls_ul = makecheckbox('mysqls_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 			$change_serversettings = makeyesno('change_serversettings', '1', '0', '0');
+			$edit_billingdata = makeyesno('edit_billingdata', '1', '0', '0');
 			$customers_see_all = makeyesno('customers_see_all', '1', '0', '0');
 			$domains_see_all = makeyesno('domains_see_all', '1', '0', '0');
 			$caneditphpsettings = makeyesno('caneditphpsettings', '1', '0', '0');
@@ -628,6 +635,7 @@ if($page == 'admins'
 					$domains_see_all = $result['domains_see_all'];
 					$caneditphpsettings = $result['caneditphpsettings'];
 					$change_serversettings = $result['change_serversettings'];
+					$edit_billingdata = $result['edit_billingdata'];
 					$diskspace = $result['diskspace'];
 					$traffic = $result['traffic'];
 					$ipaddress = $result['ip'];
@@ -722,6 +730,7 @@ if($page == 'admins'
 					$domains_see_all = intval($_POST['domains_see_all']);
 					$caneditphpsettings = intval($_POST['caneditphpsettings']);
 					$change_serversettings = intval($_POST['change_serversettings']);
+					$edit_billingdata = intval($_POST['edit_billingdata']);
 					$diskspace = intval($_POST['diskspace']);
 
 					if(isset($_POST['diskspace_ul']))
@@ -1111,6 +1120,7 @@ if($page == 'admins'
 				}
 
 				$change_serversettings = makeyesno('change_serversettings', '1', '0', $result['change_serversettings']);
+				$edit_billingdata = makeyesno('edit_billingdata', '1', '0', $result['edit_billingdata']);
 				$customers_see_all = makeyesno('customers_see_all', '1', '0', $result['customers_see_all']);
 				$domains_see_all = makeyesno('domains_see_all', '1', '0', $result['domains_see_all']);
 				$caneditphpsettings = makeyesno('caneditphpsettings', '1', '0', $result['caneditphpsettings']);

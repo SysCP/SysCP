@@ -66,7 +66,7 @@ if($userinfo['customers_see_all'] == '1')
 					'u.invoice_fee' => $lng['billing']['invoice_fee'],
 				);
 				$paging = new paging($userinfo, $db, getModeDetails($mode, 'TABLE_PANEL_USERS', 'table'), $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
-				$result = $db->query("SELECT `u`.`adminid`, `u`.`loginname`, `u`.`name`, `u`.`firstname`, `u`.`company`, `u`.`street`, `u`.`zipcode`, `u`.`city`, `u`.`contract_number`, `u`.`contract_date`, `u`.`servicestart_date`, `u`.`lastinvoiced_date`, `u`.`invoice_fee` " . "FROM `" . getModeDetails($mode, 'TABLE_PANEL_USERS', 'table') . "` `u` " . "WHERE `u`.`invoice_fee_hosting_customers` > 0 " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+				$result = $db->query("SELECT `u`.`adminid`, `u`.`loginname`, `u`.`name`, `u`.`firstname`, `u`.`company`, `u`.`street`, `u`.`zipcode`, `u`.`city`, `u`.`contract_number`, `u`.`contract_date`, `u`.`servicestart_date`, `u`.`lastinvoiced_date`, `u`.`invoice_fee` " . "FROM `" . getModeDetails($mode, 'TABLE_PANEL_USERS', 'table') . "` `u` " . "WHERE ( `u`.`invoice_fee_hosting` > 0 OR `u`.`invoice_fee_hosting_customers` > 0 ) " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
 				$paging->setEntries($db->num_rows($result));
 			}
 			else

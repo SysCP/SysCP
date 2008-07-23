@@ -97,6 +97,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap">$change_serversettings</td>
 			</tr>
 			<tr>
+				<td class="main_field_name">{$lng['admin']['edit_billingdata']}</td>
+				<td class="main_field_display" nowrap="nowrap">$edit_billingdata</td>
+			</tr>
+			<tr>
 				<td class="main_field_name">{$lng['admin']['customers']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="customers" value="0" maxlength="9" />&nbsp;{$customers_ul}</td>
 			</tr>
