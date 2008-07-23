@@ -107,6 +107,7 @@ if($page == 'customers'
 				$row['diskspace'] = round($row['diskspace']/1024, $settings['panel']['decimal_places']);
 				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
 				$enable_billing_data_edit = ($row['servicestart_date'] == '0000-00-00' || ($row['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $row['lastinvoiced_date']) >= 0));
+				$highlight_row = ( $row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1' );
 				$row = htmlentities_array($row);
 				eval("\$customers.=\"" . getTemplate("customers/customers_customer") . "\";");
 				$count++;
@@ -381,7 +382,7 @@ if($page == 'customers'
 				$diskspace = $diskspace*1024;
 				$traffic = $traffic*1024*1024;
 				
-				if( $userinfo['edit_billingdata'] == '1' )
+				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
 				{
 					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
 					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
@@ -917,7 +918,7 @@ if($page == 'customers'
 				$diskspace = $diskspace*1024;
 				$traffic = $traffic*1024*1024;
 				
-				if( $userinfo['edit_billingdata'] == '1' )
+				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1')
 				{
 					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
 					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
@@ -948,7 +949,7 @@ if($page == 'customers'
 					$additional_service_description = $result['additional_service_description'];
 				}
 
-				if($enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1')
+				if($enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
@@ -1476,7 +1477,7 @@ if($page == 'customers'
 			}
 		}
 	}
-	elseif($action == 'pdf')
+	elseif($action == 'pdf' && $settings['billing']['activate_billing'] == '1')
 	{
 		$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$id . "' " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' "));
 

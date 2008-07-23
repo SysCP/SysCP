@@ -386,12 +386,29 @@ if(isset($userinfo['loginname'])
 	$log = SysCPLogger::getInstanceOf($userinfo, $db, $settings);
 }
 
-include_once ('./lib/billing_class_invoice.php');
-include_once ('./lib/billing_class_taxcontroller.php');
-include_once ('./lib/billing_class_servicecategory.php');
-include_once ('./lib/billing_class_pdf.php');
-include_once ('./lib/billing_class_pdfinvoice.php');
-include_once ('./lib/billing_class_pdfreminder.php');
+if( $settings['billing']['activate_billing'] == '1' )
+{
+
+	/**
+	 * Include Billing classes
+	 */
+
+	require ('./lib/billing_class_invoice.php');
+	require ('./lib/billing_class_taxcontroller.php');
+	require ('./lib/billing_class_servicecategory.php');
+	require ('./lib/billing_class_pdf.php');
+	require ('./lib/billing_class_pdfinvoice.php');
+	require ('./lib/billing_class_pdfreminder.php');
+}
+else
+{
+
+	/**
+	 * Deactivate Billing for all users
+	 */
+
+	$userinfo['edit_billingdata'] = '0';
+}
 
 /**
  * Fills variables for navigation, header and footer

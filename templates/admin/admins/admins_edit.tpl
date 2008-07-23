@@ -118,10 +118,12 @@ $header
 				<td class="main_field_name">{$lng['admin']['change_serversettings']}</td>
 				<td class="main_field_display" nowrap="nowrap">$change_serversettings</td>
 			</tr>
+			<if $settings['billing']['activate_billing'] == '1'>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['edit_billingdata']}</td>
 				<td class="main_field_display" nowrap="nowrap">$edit_billingdata</td>
 			</tr>
+			</if>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['customers']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="customers" value="{$result['customers']}" maxlength="9" />&nbsp;{$customers_ul}</td>
@@ -132,7 +134,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['domains']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="domains" value="{$result['domains']}" maxlength="9" />&nbsp;{domains_ul}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="domains" value="{$result['domains']}" maxlength="9" />&nbsp;{$domains_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['domains_see_all']}</td>
@@ -185,6 +187,7 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="mysqls" value="{$result['mysqls']}" maxlength="9" />&nbsp;{$mysqls_ul}</td>
 			</tr>
 			</if>
+			<if $settings['billing']['activate_billing'] == '1'>
 			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
@@ -295,6 +298,7 @@ $header
 				<td class="main_field_name">{$lng['customer']['bankaccount_bank']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="bankaccount_bank" value="{$result['bankaccount_bank']}" /></td>
 			</tr>
+			</if>
 		</table>
 	</form>
 	<br />

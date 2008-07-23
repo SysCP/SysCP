@@ -110,6 +110,7 @@ if($page == 'admins'
 		{
 			if($paging->checkDisplay($i))
 			{
+				$highlight_row = ( $row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1' );
 				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
 				$row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
 				$row['diskspace_used'] = round($row['diskspace_used']/1024, $settings['panel']['decimal_places']);
@@ -304,7 +305,14 @@ if($page == 'admins'
 			$domains_see_all = intval($_POST['domains_see_all']);
 			$caneditphpsettings = intval($_POST['caneditphpsettings']);
 			$change_serversettings = intval($_POST['change_serversettings']);
-			$edit_billingdata = intval($_POST['edit_billingdata']);
+			if( $settings['billing']['activate_billing'] == '1' )
+			{
+				$edit_billingdata = intval($_POST['edit_billingdata']);
+			}
+			else
+			{
+				$edit_billingdata = $result['edit_billingdata'];
+			}
 			$diskspace = intval_ressource($_POST['diskspace']);
 
 			if(isset($_POST['diskspace_ul']))
@@ -323,91 +331,127 @@ if($page == 'admins'
 			$traffic = $traffic*1024*1024;
 			$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 			$ipaddress = intval_ressource($_POST['ipaddress']);
-			$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-			$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
-			$included_domains_qty = intval($_POST['included_domains_qty']);
-			$included_domains_tld = $idna_convert->encode(validate($_POST['included_domains_tld'], html_entity_decode($lng['customer']['included_domains'])));
-			$additional_traffic_fee = doubleval(str_replace(',', '.', $_POST['additional_traffic_fee']));
-			$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit'])*1024*1024;
-			$additional_diskspace_fee = doubleval(str_replace(',', '.', $_POST['additional_diskspace_fee']));
-			$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit'])*1024;
-			$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
-			$interval_length = intval($_POST['interval_length']);
-			$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'm');
-			$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
-			$calc_tax = intval($_POST['calc_tax']);
-			$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
-			$payment_every = intval($_POST['payment_every']);
-			$payment_method = intval($_POST['payment_method']);
-			$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
-			$bankaccount_number = validate($_POST['bankaccount_number'], html_entity_decode($lng['customer']['bankaccount_number']));
-			$bankaccount_blz = validate($_POST['bankaccount_blz'], html_entity_decode($lng['customer']['bankaccount_blz']));
-			$bankaccount_bank = validate($_POST['bankaccount_bank'], html_entity_decode($lng['customer']['bankaccount_bank']));
-			$service_active = intval($_POST['service_active']);
-			$interval_payment = intval($_POST['interval_payment']);
+			
+			if( $settings['billing']['activate_billing'] == '1' )
+			{
+				$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+				$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
+				$included_domains_qty = intval($_POST['included_domains_qty']);
+				$included_domains_tld = $idna_convert->encode(validate($_POST['included_domains_tld'], html_entity_decode($lng['customer']['included_domains'])));
+				$additional_traffic_fee = doubleval(str_replace(',', '.', $_POST['additional_traffic_fee']));
+				$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit'])*1024*1024;
+				$additional_diskspace_fee = doubleval(str_replace(',', '.', $_POST['additional_diskspace_fee']));
+				$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit'])*1024;
+				$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
+				$interval_length = intval($_POST['interval_length']);
+				$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'm');
+				$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
+				$calc_tax = intval($_POST['calc_tax']);
+				$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
+				$payment_every = intval($_POST['payment_every']);
+				$payment_method = intval($_POST['payment_method']);
+				$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
+				$bankaccount_number = validate($_POST['bankaccount_number'], html_entity_decode($lng['customer']['bankaccount_number']));
+				$bankaccount_blz = validate($_POST['bankaccount_blz'], html_entity_decode($lng['customer']['bankaccount_blz']));
+				$bankaccount_bank = validate($_POST['bankaccount_bank'], html_entity_decode($lng['customer']['bankaccount_bank']));
+				$service_active = intval($_POST['service_active']);
+				$interval_payment = intval($_POST['interval_payment']);
 
-			if(isset($_POST['taxclass'])
-			   && intval($_POST['taxclass']) != 0
-			   && isset($taxclasses[$_POST['taxclass']]))
-			{
-				$taxclass = $_POST['taxclass'];
-			}
-			else
-			{
-				$taxclass = '0';
-			}
-
-			if($service_active == 1
-			   && isset($_POST['servicestart_date']))
-			{
-				if($_POST['servicestart_date'] == '0'
-				   || $_POST['servicestart_date'] == '')
+				if(isset($_POST['taxclass'])
+				   && intval($_POST['taxclass']) != 0
+				   && isset($taxclasses[$_POST['taxclass']]))
 				{
-					$servicestart_date = '0';
+					$taxclass = $_POST['taxclass'];
 				}
 				else
 				{
-					$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+					$taxclass = '0';
 				}
-			}
 
-			$customer_categories_once_array = array();
-
-			if(is_array($_POST['customer_categories_once']))
-			{
-				foreach($_POST['customer_categories_once'] as $service_category_id)
+				if($service_active == 1
+				   && isset($_POST['servicestart_date']))
 				{
-					if(isset($service_categories[$service_category_id]))
+					if($_POST['servicestart_date'] == '0'
+					   || $_POST['servicestart_date'] == '')
 					{
-						$customer_categories_once_array[] = $service_category_id;
+						$servicestart_date = '0';
+					}
+					else
+					{
+						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
 					}
 				}
 
-				$customer_categories_once = implode('-', $customer_categories_once_array);
+				$customer_categories_once_array = array();
+
+				if(is_array($_POST['customer_categories_once']))
+				{
+					foreach($_POST['customer_categories_once'] as $service_category_id)
+					{
+						if(isset($service_categories[$service_category_id]))
+						{
+							$customer_categories_once_array[] = $service_category_id;
+						}
+					}
+
+					$customer_categories_once = implode('-', $customer_categories_once_array);
+				}
+				else
+				{
+					$customer_categories_once = '';
+				}
+
+				$customer_categories_period_array = array();
+
+				if(is_array($_POST['customer_categories_period']))
+				{
+					foreach($_POST['customer_categories_period'] as $service_category_id)
+					{
+						if(isset($service_categories[$service_category_id]))
+						{
+							$customer_categories_period_array[] = $service_category_id;
+						}
+					}
+
+					$customer_categories_period = implode('-', $customer_categories_period_array);
+				}
+				else
+				{
+					$customer_categories_period = '';
+				}
 			}
 			else
 			{
+				$contract_date = '0000-00-00';
+				$contract_number = '0';
+				$included_domains_qty = 0;
+				$included_domains_tld = '';
+				$additional_traffic_fee = 0;
+				$additional_traffic_unit = 0;
+				$additional_diskspace_fee = 0;
+				$additional_diskspace_unit = 0;
+				$interval_fee = 0;
+				$interval_length = 0;
+				$interval_type = 'm';
+				$setup_fee = 0;
+				$calc_tax = 0;
+				$term_of_payment = '';
+				$payment_every = 0;
+				$payment_method = 0;
+				$bankaccount_holder = '';
+				$bankaccount_number = '';
+				$bankaccount_blz = '';
+				$bankaccount_bank = '';
+				$service_active = 0;
+				$interval_payment = 0;
+				$taxclass = '0';
+				$servicestart_date = '0000-00-00';
+				$customer_categories_once_array = array();
 				$customer_categories_once = '';
-			}
-
-			$customer_categories_period_array = array();
-
-			if(is_array($_POST['customer_categories_period']))
-			{
-				foreach($_POST['customer_categories_period'] as $service_category_id)
-				{
-					if(isset($service_categories[$service_category_id]))
-					{
-						$customer_categories_period_array[] = $service_category_id;
-					}
-				}
-
-				$customer_categories_period = implode('-', $customer_categories_period_array);
-			}
-			else
-			{
+				$customer_categories_period_array = array();
 				$customer_categories_period = '';
 			}
+
 
 			// Check if the account already exists
 
@@ -730,7 +774,14 @@ if($page == 'admins'
 					$domains_see_all = intval($_POST['domains_see_all']);
 					$caneditphpsettings = intval($_POST['caneditphpsettings']);
 					$change_serversettings = intval($_POST['change_serversettings']);
-					$edit_billingdata = intval($_POST['edit_billingdata']);
+					if( $settings['billing']['activate_billing'] == '1' )
+					{
+						$edit_billingdata = intval($_POST['edit_billingdata']);
+					}
+					else
+					{
+						$edit_billingdata = $result['edit_billingdata'];
+					}
 					$diskspace = intval($_POST['diskspace']);
 
 					if(isset($_POST['diskspace_ul']))
@@ -750,56 +801,78 @@ if($page == 'admins'
 					$ipaddress = intval_ressource($_POST['ipaddress']);
 				}
 
-				$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-				$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
-				$calc_tax = intval($_POST['calc_tax']);
-				$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
-				$payment_method = intval($_POST['payment_method']);
-				$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
-				$bankaccount_number = validate($_POST['bankaccount_number'], html_entity_decode($lng['customer']['bankaccount_number']));
-				$bankaccount_blz = validate($_POST['bankaccount_blz'], html_entity_decode($lng['customer']['bankaccount_blz']));
-				$bankaccount_bank = validate($_POST['bankaccount_bank'], html_entity_decode($lng['customer']['bankaccount_bank']));
-				$service_active = intval($_POST['service_active']);
-				$interval_payment = intval($_POST['interval_payment']);
-				$customer_categories_once_array = array();
-
-				if(is_array($_POST['customer_categories_once']))
+				if( $settings['billing']['activate_billing'] == '1' )
 				{
-					foreach($_POST['customer_categories_once'] as $service_category_id)
+					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
+					$calc_tax = intval($_POST['calc_tax']);
+					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
+					$payment_method = intval($_POST['payment_method']);
+					$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
+					$bankaccount_number = validate($_POST['bankaccount_number'], html_entity_decode($lng['customer']['bankaccount_number']));
+					$bankaccount_blz = validate($_POST['bankaccount_blz'], html_entity_decode($lng['customer']['bankaccount_blz']));
+					$bankaccount_bank = validate($_POST['bankaccount_bank'], html_entity_decode($lng['customer']['bankaccount_bank']));
+					$service_active = intval($_POST['service_active']);
+					$interval_payment = intval($_POST['interval_payment']);
+					$customer_categories_once_array = array();
+
+					if(is_array($_POST['customer_categories_once']))
 					{
-						if(isset($service_categories[$service_category_id]))
+						foreach($_POST['customer_categories_once'] as $service_category_id)
 						{
-							$customer_categories_once_array[] = $service_category_id;
+							if(isset($service_categories[$service_category_id]))
+							{
+								$customer_categories_once_array[] = $service_category_id;
+							}
 						}
+
+						$customer_categories_once = implode('-', $customer_categories_once_array);
+					}
+					else
+					{
+						$customer_categories_once = '';
 					}
 
-					$customer_categories_once = implode('-', $customer_categories_once_array);
+					$customer_categories_period_array = array();
+
+					if(is_array($_POST['customer_categories_period']))
+					{
+						foreach($_POST['customer_categories_period'] as $service_category_id)
+						{
+							if(isset($service_categories[$service_category_id]))
+							{
+								$customer_categories_period_array[] = $service_category_id;
+							}
+						}
+
+						$customer_categories_period = implode('-', $customer_categories_period_array);
+					}
+					else
+					{
+						$customer_categories_period = '';
+					}
 				}
 				else
 				{
-					$customer_categories_once = '';
+					$contract_date = $result['contract_date'];
+					$contract_number = $result['contract_number'];
+					$calc_tax = $result['calc_tax'];
+					$term_of_payment = $result['term_of_payment'];
+					$payment_method = $result['payment_method'];
+					$bankaccount_holder = $result['bankaccount_holder'];
+					$bankaccount_number = $result['bankaccount_number'];
+					$bankaccount_blz = $result['bankaccount_blz'];
+					$bankaccount_bank = $result['bankaccount_bank'];
+					$service_active = $result['service_active'];
+					$interval_payment = $result['interval_payment'];
+
+					$customer_categories_once_array = explode( '-', $result['customer_categories_once'] );
+					$customer_categories_once = $result['customer_categories_once'];
+					$customer_categories_period_array = explode( '-', $result['customer_categories_period'] );
+					$customer_categories_period = $result['customer_categories_period'];
 				}
 
-				$customer_categories_period_array = array();
-
-				if(is_array($_POST['customer_categories_period']))
-				{
-					foreach($_POST['customer_categories_period'] as $service_category_id)
-					{
-						if(isset($service_categories[$service_category_id]))
-						{
-							$customer_categories_period_array[] = $service_category_id;
-						}
-					}
-
-					$customer_categories_period = implode('-', $customer_categories_period_array);
-				}
-				else
-				{
-					$customer_categories_period = '';
-				}
-
-				if($enable_billing_data_edit === true)
+				if( $enable_billing_data_edit === true && $settings['billing']['activate_billing'] == '1' )
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
@@ -979,7 +1052,7 @@ if($page == 'admins'
 					}
 
 					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
-					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `title`='" . $db->escape($title) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `country`='" . $db->escape($country) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', `caneditphpsettings` = '" . (int)$caneditphpsettings . "', `password` = '" . $password . "', `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `email_quota`='" . $db->escape($email_quota) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `ip`='" . (int)$ipaddress . "', `contract_date`='" . $db->escape($contract_date) . "', `contract_number`='" . $db->escape($contract_number) . "', `taxid`='" . $db->escape($taxid) . "', `additional_traffic_fee`='" . $db->escape($additional_traffic_fee) . "', `additional_traffic_unit`='" . $db->escape($additional_traffic_unit) . "', `additional_diskspace_fee`='" . $db->escape($additional_diskspace_fee) . "', `additional_diskspace_unit`='" . $db->escape($additional_diskspace_unit) . "', `interval_fee`='" . $db->escape($interval_fee) . "', `interval_length`='" . $db->escape($interval_length) . "', `interval_type`='" . $db->escape($interval_type) . "', `interval_payment`='" . $db->escape($interval_payment) . "', `setup_fee`='" . $db->escape($setup_fee) . "', `taxclass`='" . $db->escape($taxclass) . "', `service_active`='" . $db->escape($service_active) . "', `servicestart_date`='" . $db->escape($servicestart_date) . "', `serviceend_date`='" . $db->escape($serviceend_date) . "', `term_of_payment`='" . $db->escape($term_of_payment) . "', `calc_tax`='" . $db->escape($calc_tax) . "', `payment_every`='" . $db->escape($payment_every) . "', `payment_method`='" . $db->escape($payment_method) . "', `bankaccount_holder`='" . $db->escape($bankaccount_holder) . "', `bankaccount_number`='" . $db->escape($bankaccount_number) . "', `bankaccount_blz`='" . $db->escape($bankaccount_blz) . "', `bankaccount_bank`='" . $db->escape($bankaccount_bank) . "', `customer_categories_once`='" . $db->escape($customer_categories_once) . "', `customer_categories_period`='" . $db->escape($customer_categories_period) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
+					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `title`='" . $db->escape($title) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `country`='" . $db->escape($country) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `edit_billingdata` = '" . $db->escape($edit_billingdata) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', `caneditphpsettings` = '" . (int)$caneditphpsettings . "', `password` = '" . $password . "', `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `email_quota`='" . $db->escape($email_quota) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `ip`='" . (int)$ipaddress . "', `contract_date`='" . $db->escape($contract_date) . "', `contract_number`='" . $db->escape($contract_number) . "', `taxid`='" . $db->escape($taxid) . "', `additional_traffic_fee`='" . $db->escape($additional_traffic_fee) . "', `additional_traffic_unit`='" . $db->escape($additional_traffic_unit) . "', `additional_diskspace_fee`='" . $db->escape($additional_diskspace_fee) . "', `additional_diskspace_unit`='" . $db->escape($additional_diskspace_unit) . "', `interval_fee`='" . $db->escape($interval_fee) . "', `interval_length`='" . $db->escape($interval_length) . "', `interval_type`='" . $db->escape($interval_type) . "', `interval_payment`='" . $db->escape($interval_payment) . "', `setup_fee`='" . $db->escape($setup_fee) . "', `taxclass`='" . $db->escape($taxclass) . "', `service_active`='" . $db->escape($service_active) . "', `servicestart_date`='" . $db->escape($servicestart_date) . "', `serviceend_date`='" . $db->escape($serviceend_date) . "', `term_of_payment`='" . $db->escape($term_of_payment) . "', `calc_tax`='" . $db->escape($calc_tax) . "', `payment_every`='" . $db->escape($payment_every) . "', `payment_method`='" . $db->escape($payment_method) . "', `bankaccount_holder`='" . $db->escape($bankaccount_holder) . "', `bankaccount_number`='" . $db->escape($bankaccount_number) . "', `bankaccount_blz`='" . $db->escape($bankaccount_blz) . "', `bankaccount_bank`='" . $db->escape($bankaccount_bank) . "', `customer_categories_once`='" . $db->escape($customer_categories_once) . "', `customer_categories_period`='" . $db->escape($customer_categories_period) . "', `deactivated`='" . $db->escape($deactivated) . "' WHERE `adminid`='" . $db->escape($id) . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "edited admin '#" . $id . "'");
 					$redirect_props = Array(
 						'page' => $page,

@@ -155,11 +155,17 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="servicestart_date" value="0" /></td>
 			</tr>
 			</if>
-		<if $settings['system']['userdns'] == '1'>
+			<tr>
+				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
+			</tr>
 		</table>
+		<if $settings['system']['userdns'] == '1'>
+		<br />
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
 			<tr>
-				<td class="maintitle_apply_left">
+				<td class="maintitle_apply_left" colspan="2">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_dns_settings']}</b>
 				</td>
 				<td class="maintitle_apply_right" nowarp="nowrap">
@@ -211,11 +217,13 @@ $header
 				<td class="main_field_name">{$lng['dns']['txtexample']}</td>
 				<td class="main_field_display"><textarea class="textarea_noborder" rows="12" cols="60" name="dns_txtrecords"></textarea></td>
 			</tr>
-		</if>
 			<tr>
-				<td class="main_field_confirm" colspan="<if $settings['system']['userdns'] == '1'>3<else>2</if>"><input type="hidden" name="send" value="send" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /></td>
+				<td class="maintitle_apply_right" nowrap="nowrap" colspan="3">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
 			</tr>
 		</table>
+		</if>
 	</form>
 	<br />
 	<br />

@@ -160,7 +160,7 @@ $header
 				<td class="main_field_name">{$lng['admin']['phpenabled']}?</td>
 				<td class="main_field_display" nowrap="nowrap">$phpenabled</td>
 			</tr>
-			<if $userinfo['edit_billingdata'] == '1'>
+			<if $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1'>
 			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
@@ -262,6 +262,11 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="bankaccount_bank" value="" /></td>
 			</tr>
 			</if>
+			<tr>
+				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
+					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
+				</td>
+			</tr>
 		</table>
 	</form>
 	<br />

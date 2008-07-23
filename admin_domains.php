@@ -106,6 +106,7 @@ if($page == 'domains'
 			if($paging->checkDisplay($i))
 			{
 				$enable_billing_data_edit = ($row['servicestart_date'] == '0000-00-00' || ($row['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $row['lastinvoiced_date']) >= 0));
+				$highlight_row = ( $row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1' );
 				$row = htmlentities_array($row);
 				eval("\$domains.=\"" . getTemplate("domains/domains_domain") . "\";");
 				$count++;
@@ -253,7 +254,7 @@ if($page == 'domains'
 					$registration_date = 0;
 				}
 
-				if( $userinfo['edit_billingdata'] == '1' )
+				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
@@ -983,7 +984,7 @@ if($page == 'domains'
 					$registration_date = 0;
 				}
 
-				if( $userinfo['edit_billingdata'] == '1' )
+				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
 				{
 					$service_active = intval($_POST['service_active']);
 					$interval_payment = intval($_POST['interval_payment']);
@@ -994,7 +995,7 @@ if($page == 'domains'
 					$interval_payment = $result['interval_payment'];
 				}
 
-				if($enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1')
+				if($enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);

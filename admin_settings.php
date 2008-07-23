@@ -1176,6 +1176,39 @@ if(($page == 'settings' || $page == 'overview')
 			}
 		}
 
+		if(($settings_part && $_part == 'billing')
+		   || $settings_all
+		   || $only_enabledisbale)
+		{
+			if($_POST['billing_activate_billing'] != $settings['billing']['activate_billing']
+			   && isset($_POST['billing_activate_billing']))
+			{
+				$value = ($_POST['billing_activate_billing'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $value . "' WHERE `settinggroup`='billing' AND `varname`='activate_billing'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed billing_activate_billing from '" . $settings['billing']['activate_billing'] . "' to '" . $value . "'");
+				$settings['billing']['activate_billing'] = $value;
+			}
+
+			if(!$only_enabledisbale)
+			{
+				if($_POST['billing_highlight_inactive'] != $settings['billing']['highlight_inactive']
+				   && isset($_POST['billing_highlight_inactive']))
+				{
+					$value = ($_POST['billing_highlight_inactive'] == '1' ? '1' : '0');
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='billing' AND `varname`='highlight_inactive'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed billing_highlight_inactive from '" . $settings['billing']['highlight_inactive'] . "' to '" . $value . "'");
+				}
+
+				if($_POST['billing_invoicenumber_count'] != $settings['billing']['invoicenumber_count']
+				   && isset($_POST['billing_invoicenumber_count']))
+				{
+					$value = intval($_POST['billing_invoicenumber_count']);
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='billing' AND `varname`='invoicenumber_count'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed billing_invoicenumber_count from '" . $settings['billing']['invoicenumber_count'] . "' to '" . $value . "'");
+				}
+			}
+		}
+
 		redirectTo($filename, Array(
 			'page' => $page,
 			's' => $s,
@@ -1292,6 +1325,8 @@ if(($page == 'settings' || $page == 'overview')
 		$unix_names = makeyesno('panel_unix_names', '1', '0', $settings['panel']['unix_names']);
 		$allow_preset = makeyesno('panel_allow_preset', '1', '0', $settings['panel']['allow_preset']);
 		$allow_preset_admin = makeyesno('panel_allow_preset_admin', '1', '0', $settings['panel']['allow_preset_admin']);
+		$billing_activate_billing = makeyesno('billing_activate_billing', '1', '0', $settings['billing']['activate_billing']);
+		$billing_highlight_inactive = makeyesno('billing_highlight_inactive', '1', '0', $settings['billing']['highlight_inactive']);
 		$settings = htmlentities_array($settings);
 		$settings_page = '';
 		$_part = isset($_GET['part']) ? $_GET['part'] : '';
@@ -1373,6 +1408,12 @@ if(($page == 'settings' || $page == 'overview')
 			   || $_part == 'all')
 			{
 				eval("\$settings_page .= \"" . getTemplate("settings/settings_ssl") . "\";");
+			}
+
+			if($_part == 'billing'
+			   || $_part == 'all')
+			{
+				eval("\$settings_page .= \"" . getTemplate("settings/settings_billing") . "\";");
 			}
 		}
 
