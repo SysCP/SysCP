@@ -171,52 +171,52 @@ $header
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
 				</td>
 				<td class="maintitle_apply_right" nowarp="nowrap">
-					<if $enable_billing_data_edit === true><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /><else><input class="bottom" type="submit" name="enable_billing_data_edit" value="{$lng['panel']['allow_modifications']}" /></if>
+					<if $enable_billing_data_edit === true || $userinfo['edit_billingdata'] != '1'><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /><else><input class="bottom" type="submit" name="enable_billing_data_edit" value="{$lng['panel']['allow_modifications']}" /></if>
 				</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['included_domains']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="included_domains_qty" value="{$result['included_domains_qty']}" size="3" /> x <input type="text" name="included_domains_tld" value="{$result['included_domains_tld']}" size="14" /><else>{$result['included_domains_qty']} x {$result['included_domains_tld']}</if></td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="included_domains_qty" value="{$result['included_domains_qty']}" size="3" /> x <input type="text" name="included_domains_tld" value="{$result['included_domains_tld']}" size="14" /><else>{$result['included_domains_qty']} x {$result['included_domains_tld']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['additional_traffic']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="additional_traffic_fee" value="{$result['additional_traffic_fee']}" size="7" /> &#8364; / <input type="text" name="additional_traffic_unit" value="{$result['additional_traffic_unit']}" size="6" /><else>{$result['additional_traffic_fee']} &#8364; / {$result['additional_traffic_unit']}</if> GB</td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="additional_traffic_fee" value="{$result['additional_traffic_fee']}" size="7" /> &#8364; / <input type="text" name="additional_traffic_unit" value="{$result['additional_traffic_unit']}" size="6" /><else>{$result['additional_traffic_fee']} &#8364; / {$result['additional_traffic_unit']}</if> GB</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['additional_diskspace']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="additional_diskspace_fee" value="{$result['additional_diskspace_fee']}" size="7" /> &#8364; / <input type="text" name="additional_diskspace_unit" value="{$result['additional_diskspace_unit']}" size="6" /><else>{$result['additional_diskspace_fee']} &#8364; / {$result['additional_diskspace_unit']}</if> MB</td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="additional_diskspace_fee" value="{$result['additional_diskspace_fee']}" size="7" /> &#8364; / <input type="text" name="additional_diskspace_unit" value="{$result['additional_diskspace_unit']}" size="6" /><else>{$result['additional_diskspace_fee']} &#8364; / {$result['additional_diskspace_unit']}</if> MB</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['service']['interval_fee']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="interval_fee" value="{$result['interval_fee']}" size="18" /><else>{$result['interval_fee']}</if> &#8364;</td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="interval_fee" value="{$result['interval_fee']}" size="18" /><else>{$result['interval_fee']}</if> &#8364;</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['service']['interval_length']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="interval_length" value="{$result['interval_length']}" size="10" /> <select class="dropdown_noborder" name="interval_type">$interval_type</select><else>{$result['interval_length']} {$lng['panel']['intervalfee_type'][$result['interval_type']]}</if></td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="interval_length" value="{$result['interval_length']}" size="10" /> <select class="dropdown_noborder" name="interval_type">$interval_type</select><else>{$result['interval_length']} {$lng['panel']['intervalfee_type'][$result['interval_type']]}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['service']['interval_payment']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="interval_payment">$interval_payment</select></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><select class="dropdown_noborder" name="interval_payment">$interval_payment_options</select><else>$interval_payment</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['payment_every']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="payment_every" value="{$result['payment_every']}" size="5" /><else>{$result['payment_every']}</if> x {$lng['service']['interval_length']}</td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="payment_every" value="{$result['payment_every']}" size="5" /><else>{$result['payment_every']}</if> x {$lng['service']['interval_length']}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['service']['setup_fee']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="setup_fee" value="{$result['setup_fee']}" size="18" /><else>{$result['setup_fee']}</if> &#8364;</td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="setup_fee" value="{$result['setup_fee']}" size="18" /><else>{$result['setup_fee']}</if> &#8364;</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['billing']['taxclass']}:</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><select class="dropdown_noborder" name="taxclass">$taxclasses_option</select><else>{$taxclasses[$result['taxclass']]}</if></td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><select class="dropdown_noborder" name="taxclass">$taxclasses_option</select><else>{$taxclasses[$result['taxclass']]}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['service']['active']}?</td>
-				<td class="main_field_display" nowrap="nowrap">$service_active</td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'>$service_active_options<else>$service_active</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['service']['start_date']} ({$lng['panel']['dateformat']}):</td>
-				<td class="main_field_display<if $override_billing_data_edit === true>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true><input type="text" name="servicestart_date" value="{$result['servicestart_date']}" /><else>{$result['servicestart_date']}</if></td>
+				<td class="main_field_display<if $override_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'>_red</if>" nowrap="nowrap"><if $enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1'><input type="text" name="servicestart_date" value="{$result['servicestart_date']}" /><else>{$result['servicestart_date']}</if></td>
 			</tr>
 			<if $result['serviceend_date'] != 0>
 			<tr>
@@ -226,7 +226,7 @@ $header
 			</if>
 			<tr>
 				<td class="main_field_name">{$lng['service']['lastinvoiced_date']} ({$lng['panel']['dateformat']}):</td>
-				<td class="main_field_display" nowrap="nowrap"><if $result['lastinvoiced_date'] != 0>{$result['lastinvoiced_date']}<else>{$lng['panel']['never']}</if></td>
+				<td class="main_field_display" nowrap="nowrap"><if $result['lastinvoiced_date'] != '0000-00-00'>{$result['lastinvoiced_date']}<else>{$lng['panel']['never']}</if></td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
@@ -238,43 +238,43 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['contract_date']} ({$lng['panel']['dateformat']}): *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="contract_date" value="{$result['contract_date']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><input type="text" name="contract_date" value="{$result['contract_date']}" /><else>{$result['contract_date']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['contract_number']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="contract_number" value="{$result['contract_number']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><input type="text" name="contract_number" value="{$result['contract_number']}" /><else>{$result['contract_number']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['additional_service_description']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><textarea name="additional_service_description" cols="20" rows="5">{$result['additional_service_description']}</textarea></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><textarea name="additional_service_description" cols="20" rows="5">{$result['additional_service_description']}</textarea><else>{$result['additional_service_description']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['term_of_payment']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="term_of_payment" value="{$result['term_of_payment']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><input type="text" name="term_of_payment" value="{$result['term_of_payment']}" /><else>{$result['term_of_payment']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['calc_tax']}?</td>
-				<td class="main_field_display" nowrap="nowrap">{$calc_tax}</td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'>$calc_tax_options<else>$calc_tax</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['payment_method']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="payment_method">{$payment_method}</select></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><select class="dropdown_noborder" name="payment_method">{$payment_method}</select><else>{$lng['customer']['payment_methods'][(int)$result['payment_method']]}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['bankaccount_holder']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><textarea name="bankaccount_holder" cols="20" rows="3">{$result['bankaccount_holder']}</textarea></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><textarea name="bankaccount_holder" cols="20" rows="3">{$result['bankaccount_holder']}</textarea><else>{$result['bankaccount_holder']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['bankaccount_number']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="bankaccount_number" value="{$result['bankaccount_number']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><input type="text" name="bankaccount_number" value="{$result['bankaccount_number']}" /><else>{$result['bankaccount_number']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['bankaccount_blz']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="bankaccount_blz" value="{$result['bankaccount_blz']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><input type="text" name="bankaccount_blz" value="{$result['bankaccount_blz']}" /><else>{$result['bankaccount_blz']}</if></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['bankaccount_bank']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="bankaccount_bank" value="{$result['bankaccount_bank']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><if $userinfo['edit_billingdata'] == '1'><input type="text" name="bankaccount_bank" value="{$result['bankaccount_bank']}" /><else>{$result['bankaccount_bank']}</if></td>
 			</tr>
 		</table>
 	</form>

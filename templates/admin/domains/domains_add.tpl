@@ -117,6 +117,7 @@ $header
 				<td class="main_field_name">{$lng['domains']['registration_date']}: ({$lng['panel']['dateformat']})</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="registration_date" value="" size="10" /></td>
 			</tr>
+			<if $userinfo['edit_billingdata'] == '1'>
 			<tr>
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
@@ -153,6 +154,7 @@ $header
 				<td class="main_field_name">{$lng['service']['start_date']} ({$lng['panel']['dateformat']}):</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" name="servicestart_date" value="0" /></td>
 			</tr>
+			</if>
 		<if $settings['system']['userdns'] == '1'>
 		</table>
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">

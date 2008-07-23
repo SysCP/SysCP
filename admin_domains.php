@@ -131,12 +131,20 @@ if($page == 'domains'
 		$result = $db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`zonefile` FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `" . TABLE_PANEL_CUSTOMERS . "` `c` WHERE `d`.`id`='" . (int)$id . "' AND `d`.`id` <> `c`.`standardsubdomain`" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
 		*/
 
-		$result = $db->query_first("SELECT `id`, `customerid`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `id`='" . (int)$id . "'");
+		$result = $db->query_first("SELECT `id`, `customerid`, `domain`,`servicestart_date`, `interval_payment`, `lastinvoiced_date` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `id`='" . (int)$id . "'");
 		$alias_check = $db->query_first('SELECT COUNT(`id`) AS `count` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . (int)$id . '\'');
 
 		if($result['domain'] != ''
 		   && $alias_check['count'] == 0)
 		{
+			$enable_billing_data_edit = ($result['servicestart_date'] == '0000-00-00' || ($result['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $result['lastinvoiced_date']) >= 0));
+
+			if( $enable_billing_data_edit !== true )
+			{
+				standard_error('service_still_active');
+				exit;
+			}
+
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
@@ -245,12 +253,24 @@ if($page == 'domains'
 					$registration_date = 0;
 				}
 
-				$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
-				$interval_length = intval($_POST['interval_length']);
-				$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'y');
-				$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
-				$service_active = intval($_POST['service_active']);
-				$interval_payment = intval($_POST['interval_payment']);
+				if( $userinfo['edit_billingdata'] == '1' )
+				{
+					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
+					$interval_length = intval($_POST['interval_length']);
+					$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'y');
+					$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
+					$service_active = intval($_POST['service_active']);
+					$interval_payment = intval($_POST['interval_payment']);
+				}
+				else
+				{
+					$interval_fee = 0;
+					$interval_length = 0;
+					$interval_type = 'y';
+					$setup_fee = 0;
+					$service_active = 0;
+					$interval_payment = 0;
+				}
 
 				if(isset($_POST['taxclass'])
 				   && intval($_POST['taxclass']) != 0
@@ -963,10 +983,18 @@ if($page == 'domains'
 					$registration_date = 0;
 				}
 
-				$service_active = intval($_POST['service_active']);
-				$interval_payment = intval($_POST['interval_payment']);
+				if( $userinfo['edit_billingdata'] == '1' )
+				{
+					$service_active = intval($_POST['service_active']);
+					$interval_payment = intval($_POST['interval_payment']);
+				}
+				else
+				{
+					$service_active = $result['service_active'];
+					$interval_payment = $result['interval_payment'];
+				}
 
-				if($enable_billing_data_edit === true)
+				if($enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1')
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
@@ -1613,8 +1641,10 @@ if($page == 'domains'
 				$safemode = makeyesno('safemode', '1', '0', $result['safemode']);
 				$speciallogfile = ($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
 				$interval_type = getIntervalTypes('option', $result['interval_type']);
-				$service_active = makeyesno('service_active', '1', '0', $result['service_active']);
-				$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
+				$service_active = ( $result['service_active'] == '0' ? $lng['panel']['no'] : '' ) . ( $result['service_active'] == '1' ? $lng['panel']['yes'] : '' );
+				$service_active_options = makeyesno('service_active', '1', '0', $result['service_active']);
+				$interval_payment = ( $result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '' ) . ( $result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '' );
+				$interval_payment_options = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
 				$result['add_date'] = date('Y-m-d', $result['add_date']);
 				$taxclasses_option = '';
 				foreach($taxclasses as $classid => $classname)

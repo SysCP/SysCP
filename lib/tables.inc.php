@@ -53,7 +53,7 @@ define('TABLE_PANEL_TICKET_CATS', 'panel_ticket_categories');
 define('TABLE_PANEL_LOG', 'panel_syslog');
 define('TABLE_MAIL_DKIM', 'mail_dkim');
 define('TABLE_PANEL_DNSENTRY', 'panel_dns');
-$version = '1.2.19-svn22';
+$version = '1.2.19-svn23';
 define('CONST_BILLING_INVOICESTATE_INVOICED', '0');
 define('CONST_BILLING_INVOICESTATE_SENT', '1');
 define('CONST_BILLING_INVOICESTATE_PAID', '2');

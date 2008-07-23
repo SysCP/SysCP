@@ -135,6 +135,7 @@ CREATE TABLE `panel_admins` (
   `domains_see_all` tinyint(1) NOT NULL default '0',
   `caneditphpsettings` tinyint(1) NOT NULL default '0',
   `change_serversettings` tinyint(1) NOT NULL default '0',
+  `edit_billingdata` tinyint(1) NOT NULL DEFAULT '0',
   `diskspace` int(15) NOT NULL default '0',
   `diskspace_used` int(15) NOT NULL default '0',
   `mysqls` int(15) NOT NULL default '0',
@@ -160,6 +161,54 @@ CREATE TABLE `panel_admins` (
   `lastlogin_fail` int(11) unsigned NOT NULL default '0',
   `loginfail_count` int(11) unsigned NOT NULL default '0',
   `reportsent` tinyint(4) unsigned NOT NULL default '0',
+  `firstname` varchar( 255 ) NOT NULL default '',
+  `title` varchar( 255 ) NOT NULL default '',
+  `company` varchar( 255 ) NOT NULL default '',
+  `street` varchar( 255 ) NOT NULL default '',
+  `zipcode` varchar( 255 ) NOT NULL default '',
+  `city` varchar( 255 ) NOT NULL default '',
+  `country` varchar( 255 ) NOT NULL default '',
+  `phone` varchar( 255 ) NOT NULL default '',
+  `fax` varchar( 255 ) NOT NULL default '',
+  `taxid` varchar( 255 ) NOT NULL default '',
+  `contract_date` date NOT NULL,
+  `contract_number` varchar( 255 ) NOT NULL default '',
+  `contract_details` text NOT NULL default '',
+  `included_domains_qty` int( 11 ) NOT NULL default '0',
+  `included_domains_tld` varchar( 255 ) NOT NULL default '',
+  `additional_traffic_fee` decimal( 10,2 ) NOT NULL default '0',
+  `additional_traffic_unit` bigint( 30 ) NOT NULL default '0',
+  `additional_diskspace_fee` decimal( 10,2 ) NOT NULL default '0',
+  `additional_diskspace_unit` bigint( 30 ) NOT NULL default '0',
+  `taxclass` int( 11 ) NOT NULL default '0',
+  `setup_fee` decimal( 10,2 ) NOT NULL default '0',
+  `interval_fee` decimal( 10,2 ) NOT NULL default '0',
+  `interval_length` int( 11 ) NOT NULL default '0',
+  `interval_type` varchar( 1 ) NOT NULL default 'm',
+  `interval_payment` tinyint( 1 ) NOT NULL default '0',
+  `calc_tax` tinyint( 1 ) NOT NULL default '1',
+  `term_of_payment` int( 11 ) NOT NULL default '0',
+  `payment_every` int( 11 ) NOT NULL default '0',
+  `payment_method` int( 11 ) NOT NULL default '0',
+  `bankaccount_holder` text NOT NULL default '',
+  `bankaccount_number` varchar( 255 ) NOT NULL default '',
+  `bankaccount_blz` varchar( 255 ) NOT NULL default '',
+  `bankaccount_bank` varchar( 255 ) NOT NULL default '',
+  `service_active` tinyint( 1 ) NOT NULL default '0',
+  `servicestart_date` date NOT NULL,
+  `serviceend_date` date NOT NULL,
+  `lastinvoiced_date` date NOT NULL,
+  `lastinvoiced_date_traffic` date NOT NULL,
+  `lastinvoiced_date_diskspace` date NOT NULL,
+  `customer_categories_once` text NOT NULL default '',
+  `customer_categories_period` text NOT NULL default '',
+  `invoice_fee` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_hosting` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_hosting_customers` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_domains` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_traffic` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_diskspace` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_other` decimal( 10,2 ) NOT NULL default '0',
    PRIMARY KEY  (`adminid`),
    UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
@@ -221,6 +270,45 @@ CREATE TABLE `panel_customers` (
   `reportsent` tinyint(4) unsigned NOT NULL default '0',
   `pop3` tinyint(1) NOT NULL default '1',
   `imap` tinyint(1) NOT NULL default '1',
+  `taxid` varchar( 255 ) NOT NULL default '',
+  `title` varchar( 255 ) NOT NULL default '',
+  `country` varchar( 255 ) NOT NULL default '',
+  `additional_service_description` text NOT NULL default '',
+  `contract_date` date NOT NULL,
+  `contract_number` varchar( 255 ) NOT NULL default '',
+  `contract_details` text NOT NULL default '',
+  `included_domains_qty` int( 11 ) NOT NULL default '0',
+  `included_domains_tld` varchar( 255 ) NOT NULL default '',
+  `additional_traffic_fee` decimal( 10,2 ) NOT NULL default '0',
+  `additional_traffic_unit` bigint( 30 ) NOT NULL default '0',
+  `additional_diskspace_fee` decimal( 10,2 ) NOT NULL default '0',
+  `additional_diskspace_unit` bigint( 30 ) NOT NULL default '0',
+  `taxclass` int( 11 ) NOT NULL default '0',
+  `setup_fee` decimal( 10,2 ) NOT NULL default '0',
+  `interval_fee` decimal( 10,2 ) NOT NULL default '0',
+  `interval_length` int( 11 ) NOT NULL default '0',
+  `interval_type` varchar( 1 ) NOT NULL default 'm',
+  `interval_payment` tinyint( 1 ) NOT NULL default '0',
+  `calc_tax` tinyint( 1 ) NOT NULL default '1',
+  `term_of_payment` int( 11 ) NOT NULL default '0',
+  `payment_every` int( 11 ) NOT NULL default '0',
+  `payment_method` int( 11 ) NOT NULL default '0',
+  `bankaccount_holder` text NOT NULL default '',
+  `bankaccount_number` varchar( 255 ) NOT NULL default '',
+  `bankaccount_blz` varchar( 255 ) NOT NULL default '',
+  `bankaccount_bank` varchar( 255 ) NOT NULL default '',
+  `service_active` tinyint( 1 ) NOT NULL default '0',
+  `servicestart_date` date NOT NULL,
+  `serviceend_date` date NOT NULL,
+  `lastinvoiced_date` date NOT NULL,
+  `lastinvoiced_date_traffic` date NOT NULL,
+  `lastinvoiced_date_diskspace` date NOT NULL,
+  `invoice_fee` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_hosting` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_domains` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_traffic` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_diskspace` decimal( 10,2 ) NOT NULL default '0',
+  `invoice_fee_other` decimal( 10,2 ) NOT NULL default '0',
    PRIMARY KEY  (`customerid`),
    UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
@@ -284,6 +372,18 @@ CREATE TABLE `panel_domains` (
   `specialsettings` text NOT NULL,
   `deactivated` tinyint(1) NOT NULL default '0',
   `bindserial` varchar(10) NOT NULL default '2000010100',
+  `add_date` int( 11 ) NOT NULL default '0',
+  `registration_date` date NOT NULL,
+  `taxclass` int( 11 ) NOT NULL default '0',
+  `setup_fee` decimal( 10,2 ) NOT NULL default '0',
+  `interval_fee` decimal( 10,2 ) NOT NULL default '0',
+  `interval_length` int( 11 ) NOT NULL default '0',
+  `interval_type` varchar( 1 ) NOT NULL default 'y',
+  `interval_payment` tinyint( 1 ) NOT NULL default '0',
+  `service_active` tinyint( 1 ) NOT NULL default '0',
+  `servicestart_date` date NOT NULL,
+  `serviceend_date` date NOT NULL,
+  `lastinvoiced_date` date NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `customerid` (`customerid`),
   KEY `parentdomain` (`parentdomainid`),
@@ -722,15 +822,15 @@ INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_loggersystem.nourl', 
 INSERT INTO `panel_navigation` VALUES (46, 'admin', '', 'menu;message', 'admin_message.nourl', 50, '', 0);
 INSERT INTO `panel_navigation` VALUES (47, 'admin', 'admin_message.nourl', 'admin;message', 'admin_message.php?page=message', 10, '', 0);
 INSERT INTO `panel_navigation` VALUES (48, 'customer', 'customer_email.php', 'emails;emails_add', 'customer_email.php?page=emails&action=add', '20', 'emails', 0);
-INSERT INTO `panel_navigation` VALUES (49, 'admin', '', 'billing;billing', 'billing.nourl', '100', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (50, 'admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', '110', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (51, 'admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', '115', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (52, 'admin', 'billing.nourl', 'billing;invoices', 'billing_invoices.php', '120', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (53, 'admin', 'billing.nourl', 'billing;invoices_admin', 'billing_invoices.php?mode=1', '125', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (54, 'admin', 'billing.nourl', 'billing;other', 'billing_other.php', '130', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (55, 'admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', '140', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (56, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'customers_see_all', '0');
-INSERT INTO `panel_navigation` VALUES (57, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'customers_see_all', '0');
+INSERT INTO `panel_navigation` VALUES (49, 'admin', '', 'billing;billing', 'billing.nourl', '100', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (50, 'admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', '110', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (51, 'admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', '115', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (52, 'admin', 'billing.nourl', 'billing;invoices', 'billing_invoices.php', '120', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (53, 'admin', 'billing.nourl', 'billing;invoices_admin', 'billing_invoices.php?mode=1', '125', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (54, 'admin', 'billing.nourl', 'billing;other', 'billing_other.php', '130', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (55, 'admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', '140', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (56, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (57, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'edit_billingdata', '0');
 
 # --------------------------------------------------------
 
