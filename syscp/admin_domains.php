@@ -1423,6 +1423,7 @@ if($page == 'domains'
 
 				if($documentroot != $result['documentroot']
 				   || $ipandport != $result['ipandport']
+				   || $wwwserveralias != $result['wwwserveralias']
 				   || $openbasedir != $result['openbasedir']
 				   || $safemode != $result['safemode']
 				   || $specialsettings != $result['specialsettings']
