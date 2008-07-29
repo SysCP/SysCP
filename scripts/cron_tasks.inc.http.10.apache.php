@@ -115,7 +115,7 @@ class apache
 			}
 		}
 
-		$result_domains = $this->db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+		$result_domains = $this->db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, CONCAT(`ip`.`ip`,':',`ip`.`port`) AS `ipandport`, `d`.`parentdomainid`, `d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`openbasedir_path`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 
 		while($domain = $this->db->fetch_array($result_domains))
 		{
@@ -128,24 +128,45 @@ class apache
 			{
 				$vhosts_file.= '<VirtualHost ' . $domain['ipandport'] . '>' . "\n";
 				$vhosts_file.= '  ServerName ' . $domain['domain'] . "\n";
-				$server_alias = '';
-				$alias_domains = $this->db->query('SELECT `domain`, `iswildcarddomain` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
-
-				while(($alias_domain = $this->db->fetch_array($alias_domains)) !== false)
-				{
-					$server_alias.= ' ' . $alias_domain['domain'] . ' ' . (($alias_domain['iswildcarddomain'] == 1) ? '*' : 'www') . '.' . $alias_domain['domain'];
-				}
 
 				if($domain['iswildcarddomain'] == '1')
 				{
-					$alias = '*';
+					$server_alias = '*.' . $domain['domain'];
 				}
 				else
 				{
-					$alias = 'www';
+					if( $domain['wwwserveralias'] == '1' )
+					{
+						$server_alias = 'www.' . $domain['domain'];
+					}
+					else
+					{
+						$server_alias = '';
+					}
 				}
 
-				$vhosts_file.= '  ServerAlias ' . $alias . '.' . $domain['domain'] . $server_alias . "\n";
+				$alias_domains = $this->db->query('SELECT `domain`, `iswildcarddomain`, `wwwserveralias` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
+				while(($alias_domain = $this->db->fetch_array($alias_domains)) !== false)
+				{
+					$server_alias .= ' ' . $alias_domain['domain'];
+					if($alias_domain['iswildcarddomain'] == '1')
+					{
+						$server_alias .= ' *.' . $alias_domain['domain'];
+					}
+					else
+					{
+						if( $alias_domain['wwwserveralias'] == '1' )
+						{
+							$server_alias .= ' www.' . $alias_domain['domain'];
+						}
+					}
+				}
+
+				if( trim( $server_alias ) != '' )
+				{
+					$vhosts_file.= '  ServerAlias ' . $server_alias . "\n";
+				}
+
 				$vhosts_file.= '  ServerAdmin ' . $domain['email'] . "\n";
 
 				if(preg_match('/^https?\:\/\//', $domain['documentroot']))
