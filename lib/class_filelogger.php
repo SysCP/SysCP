@@ -82,12 +82,6 @@ class FileLogger extends AbstractLogger
 				return;
 			}
 
-			if(parent::logCron() == 1
-			   && $action != CRON_ACTION)
-			{
-				return;
-			}
-
 			$_action = 'unknown';
 
 			switch($action)
@@ -136,13 +130,14 @@ class FileLogger extends AbstractLogger
 				break;
 			}
 
-			if($action != CRON_ACTION)
+			if(!isset($this->userinfo['loginname'])
+			   || $this->userinfo['loginname'] == '')
 			{
-				$name = " (" . $this->userinfo['loginname'] . ")";
+				$name = 'unknown';
 			}
 			else
 			{
-				$name = '';
+				$name = " (" . $this->userinfo['loginname'] . ")";
 			}
 
 			$fp = @fopen($this->logfile, 'a');
