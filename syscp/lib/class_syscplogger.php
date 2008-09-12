@@ -104,7 +104,7 @@ class SysCPLogger
 		   || $_usernfo == null)
 		{
 			$_usernfo = array();
-			$_usernfo['loginname'] = 'cronscript';
+			$_usernfo['loginname'] = 'unknown';
 		}
 
 		if(!isset(self::$loggers[$_usernfo['loginname']]))

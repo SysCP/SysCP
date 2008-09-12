@@ -74,12 +74,6 @@ class SysLogger extends AbstractLogger
 				return;
 			}
 
-			if(parent::logCron() == 1
-			   && $action != CRON_ACTION)
-			{
-				return;
-			}
-
 			$_action = 'unknown';
 
 			switch($action)
@@ -104,14 +98,15 @@ class SysLogger extends AbstractLogger
 				break;
 			}
 
-			if($action != CRON_ACTION)
-			{
-				$name = " (" . $this->userinfo['loginname'] . ")";
-			}
-			else
-			{
-				$name = '';
-			}
+                        if(!isset($this->userinfo['loginname'])
+                           || $this->userinfo['loginname'] == '')
+                        {
+                                $name = 'unknown';
+                        }
+                        else
+                        {
+                                $name = " (" . $this->userinfo['loginname'] . ")";
+                        }
 
 			openlog("SysCP", LOG_NDELAY, LOG_USER);
 

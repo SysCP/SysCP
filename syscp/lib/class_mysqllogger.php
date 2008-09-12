@@ -83,27 +83,15 @@ class MysqlLogger extends AbstractLogger
 				return;
 			}
 
-			#echo BADABUM;
-
-			if(parent::logCron() == 1
-			   && $action != CRON_ACTION)
-			{
-				return;
-			}
-
-			#echo BADABUM;
-
-			if($action != CRON_ACTION)
-			{
-				$name = $this->userinfo['loginname'];
-			}
-			else
-			{
-				$name = '';
-			}
-
-			#var_dump($text);
-			#echo BADABUM;
+                        if(!isset($this->userinfo['loginname'])
+                           || $this->userinfo['loginname'] == '')
+                        {
+                                $name = 'unknown';
+                        }
+                        else
+                        {
+                                $name = " (" . $this->userinfo['loginname'] . ")";
+                        }
 
 			$now = time();
 
