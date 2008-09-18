@@ -732,7 +732,7 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn25')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn25 to 1.2.19-svn26");
-		$db->query("INSERT INTO " . TABLE_PANEL_LANGUAGE . " SET `language` = 'Swedish', `file = 'lng/swedish.lng.php';");
+		$db->query("INSERT INTO " . TABLE_PANEL_LANGUAGE . " SET `language` = 'Swedish', `file` = 'lng/swedish.lng.php';");
 
 		// set new version
 
