@@ -49,13 +49,13 @@ if(($page == 'settings' || $page == 'overview')
 				$settings_part = true;
 			}
 
-			$only_enabledisbale = false;
+			$only_enabledisable = false;
 		}
 		else
 		{
 			$settings_all = false;
 			$settings_part = false;
-			$only_enabledisbale = true;
+			$only_enabledisable = true;
 		}
 
 		if(($settings_part && $_part == 'panel')
@@ -281,20 +281,35 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webftp_url from '" . $settings['panel']['webftp_url'] . "' to '" . $value . "'");
 			}
+
+			if($_POST['frontend_syscp_version_login'] != $settings['admin']['show_version_login']
+				&& isset($_POST['frontend_syscp_version_login']))
+			{
+				$value = ($_POST['frontend_syscp_version_login'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='admin' AND `varname`='show_version_login'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed admin_show_version_login from '" . $settings['system']['show_version_login'] . "' to '" . $value . "'");
+			}
+
+			if($_POST['frontend_syscp_version_footer'] != $settings['admin']['show_version_footer']
+				&& isset($_POST['frontend_syscp_version_footer']))
+			{
+				$value = ($_POST['frontend_syscp_version_footer'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='admin' AND `varname`='show_version_footer'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed admin_show_version_footer from '" . $settings['system']['show_version_footer'] . "' to '" . $value . "'");
+			}
+
+			if($_POST['frontend_syscp_graphic'] != $settings['admin']['syscp_graphic']
+				&& isset($_POST['frontend_syscp_graphic']))
+			{
+				$value = validate($_POST['frontend_syscp_graphic'], 'frontend_syscp_graphic');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='admin' AND `varname`='syscp_graphic'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed syscp_graphic from '" . $settings['system']['syscp_graphic'] . "' to '" . $value . "'");
+			}
 		}
 
 		if(($settings_part && $_part == 'accounts')
 		   || $settings_all)
 		{
-			if($_POST['panel_unix_names'] != $settings['panel']['unix_names']
-			   && isset($_POST['panel_unix_names']))
-			{
-				$value = ($_POST['panel_unix_names'] == '1' ? '1' : '0');
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='unix_names'");
-				$settings['panel']['unix_names'] = $value;
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_unix_names from '" . $settings['panel']['unix_names'] . "' to '" . $value . "'");
-			}
-
 			if($_POST['session_sessiontimeout'] != $settings['session']['sessiontimeout']
 			   && isset($_POST['session_sessiontimeout']))
 			{
@@ -530,11 +545,30 @@ if(($page == 'settings' || $page == 'overview')
 				$db_root->close();
 				unset($db_root);
 			}
+
+			if($_POST['index_file_extension'] != $settings['system']['index_file_extension']
+			   && isset($_POST['index_file_extension']))
+			{
+				$value = validate($_POST['index_file_extension'], 'index_file_extension', '/^[a-zA-Z0-9]{1,6}$/', 'index_file_extension');
+
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='index_file_extension'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed index_file_extension from '" . $settings['system']['index_file_extension'] . "' to '" . $value . "'");
+			}
 		}
 
 		if(($settings_part && $_part == 'webserver')
-		   || $settings_all)
+		   || $settings_all
+		   || $only_enabledisable)
 		{
+			if($_POST['panel_webserver_selected'] != $settings['system']['webserver']
+			   && isset($_POST['panel_webserver_selected']))
+			{
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($_POST[panel_webserver_selected]) . "' WHERE `settinggroup`='system' AND `varname`='webserver'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webserver from '" . $settings['system']['apacheconf_vhost'] . "' to '" . $_POST[panel_webserver_selected] . "'");
+				inserttask('1');
+				inserttask('3');
+			}
+
 			if($_POST['system_apacheconf_vhost'] != $settings['system']['apacheconf_vhost']
 			   && isset($_POST['system_apacheconf_vhost']))
 			{
@@ -592,31 +626,6 @@ if(($page == 'settings' || $page == 'overview')
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_logfiles_directory from '" . $settings['system']['logfiles_directory'] . "' to '" . $value . "'");
 			}
 
-			if($_POST['system_modfcgid'] != $settings['system']['mod_fcgid']
-			   && isset($_POST['system_modfcgid']))
-			{
-				$value = ($_POST['system_modfcgid'] == '1' ? '1' : '0');
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mod_fcgid from '" . $settings['system']['mod_fcgid'] . "' to '" . $value . "'");
-				inserttask('1');
-			}
-
-			if($_POST['system_mod_fcgid_configdir'] != $settings['system']['mod_fcgid_configdir']
-			   && isset($_POST['system_mod_fcgid_configdir']))
-			{
-				$value = validate($_POST['system_mod_fcgid_configdir'], 'fcgid configdir');
-				$value = makeCorrectDir($value);
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_configdir'");
-			}
-
-			if($_POST['system_mod_fcgid_tmpdir'] != $settings['system']['mod_fcgid_tmpdir']
-			   && isset($_POST['system_mod_fcgid_tmpdir']))
-			{
-				$value = validate($_POST['system_mod_fcgid_tmpdir'], 'fcgid tmpdir');
-				$value = makeCorrectDir($value);
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_tmpdir'");
-			}
-
 			if($_POST['system_phpappendopenbasedir'] != $settings['system']['phpappendopenbasedir']
 			   && isset($_POST['system_phpappendopenbasedir']))
 			{
@@ -667,7 +676,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if(($settings_part && $_part == 'statistic')
 		   || $settings_all
-		   || $only_enabledisbale)
+		   || $only_enabledisable)
 		{
 			if($_POST['system_webalizer_enabled'] != $settings['system']['webalizer_enabled']
 			   && isset($_POST['system_webalizer_enabled']))
@@ -711,7 +720,7 @@ if(($page == 'settings' || $page == 'overview')
 				}
 			}
 
-			if(!$only_enabledisbale)
+			if(!$only_enabledisable)
 			{
 				if($settings['system']['webalizer_enabled'] == '1')
 				{
@@ -831,6 +840,22 @@ if(($page == 'settings' || $page == 'overview')
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed mail_quota from '" . $settings['system']['mail_quota'] . "' to '" . $value . "'");
 				}
 			}
+
+			if($_POST['autoresponder_active'] != $settings['autoresponder']['autoresponder_active'])
+			{
+				$value = ($_POST['autoresponder_active'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='autoresponder' AND `varname`='autoresponder_active'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed autoresponder_active from '" . $settings['autoresponder']['autoresponder_active'] . "' to '" . $value . "'");
+
+				if((int)$value == 1)
+				{
+					$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`,  `new_window`) VALUES ('customer', 'customer_email.php', 'menue;email;autoresponder', 'customer_autoresponder.php', 40, 'emails', 0)");
+				}
+				else
+				{
+					$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");
+				}
+			}
 		}
 
 		if(($settings_part && $_part == 'nameserver')
@@ -868,38 +893,30 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mxservers'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mxservers from '" . $settings['system']['mxservers'] . "' to '" . $value . "'");
 			}
-
-			if($_POST['system_userdns'] != $settings['system']['userdns']
-			   && isset($_POST['system_userdns']))
-			{
-				$value = ($_POST['system_userdns'] == '1' ? '1' : '0');
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='userdns'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_userdns from '" . $settings['system']['userdns'] . "' to '" . $value . "'");
-			}
-
-			if($_POST['system_customerdns'] != $settings['system']['customerdns']
-			   && isset($_POST['system_customerdns']))
-			{
-				$value = ($_POST['system_customerdns'] == '1' ? '1' : '0');
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='customerdns'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_customerdns from '" . $settings['system']['customerdns'] . "' to '" . $value . "'");
-			}
 		}
 
 		if(($settings_part && $_part == 'logging')
 		   || $settings_all
-		   || $only_enabledisbale)
+		   || $only_enabledisable)
 		{
 			if($_POST['loggingenabled'] != $settings['logger']['enabled']
 			   && isset($_POST['loggingenabled']))
 			{
 				$value = validate($_POST['loggingenabled'], 'loggingenabled');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='enabled'");
+				if((int)$value == 1)
+				{
+					$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_misc.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', 10, 'change_serversettings', 0)");
+				}
+				else
+				{
+					$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `area`='admin' AND `parent_url`='admin_misc.nourl' AND `lang`='menue;logger;logger' AND `url`='admin_logger.php?page=log'");
+				}
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_enabled from '" . $settings['logger']['enabled'] . "' to '" . $value . "'");
 				$settings['logger']['enabled'] = $value;
 			}
 
-			if(!$only_enabledisbale)
+			if(!$only_enabledisable)
 			{
 				if($_POST['logger_severity'] != $settings['logger']['severity']
 				   && isset($_POST['logger_severity']))
@@ -952,7 +969,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if(($settings_part && $_part == 'dkim')
 		   || $settings_all
-		   || $only_enabledisbale)
+		   || $only_enabledisable)
 		{
 			if($_POST['use_dkim'] != $settings['dkim']['use_dkim']
 			   && isset($_POST['use_dkim']))
@@ -963,7 +980,7 @@ if(($page == 'settings' || $page == 'overview')
 				$settings['dkim']['use_dkim'] = $value;
 			}
 
-			if(!$only_enabledisbale)
+			if(!$only_enabledisable)
 			{
 				if($_POST['dkim_prefix'] != $settings['dkim']['dkim_prefix']
 				   && isset($_POST['dkim_prefix']))
@@ -1001,7 +1018,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if(($settings_part && $_part == 'ticket')
 		   || $settings_all
-		   || $only_enabledisbale)
+		   || $only_enabledisable)
 		{
 			if($_POST['ticketsystemenabled'] != $settings['ticket']['enabled']
 			   && isset($_POST['ticketsystemenabled']))
@@ -1035,7 +1052,7 @@ if(($page == 'settings' || $page == 'overview')
 				$settings['ticket']['enabled'] = $value;
 			}
 
-			if(!$only_enabledisbale)
+			if(!$only_enabledisable)
 			{
 				if($_POST['ticket_noreply_email'] != $settings['ticket']['noreply_email']
 				   && $settings['ticket']['enabled'] == 1
@@ -1145,7 +1162,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if(($settings_part && $_part == 'ssl')
 		   || $settings_all
-		   || $only_enabledisbale)
+		   || $only_enabledisable)
 		{
 			if($_POST['use_ssl'] != $settings['system']['use_ssl']
 			   && isset($_POST['use_ssl']))
@@ -1156,7 +1173,7 @@ if(($page == 'settings' || $page == 'overview')
 				$settings['system']['use_ssl'] = $value;
 			}
 
-			if(!$only_enabledisbale)
+			if(!$only_enabledisable)
 			{
 				if($_POST['ssl_cert_file'] != $settings['system']['ssl_cert_file']
 				   && isset($_POST['ssl_cert_file']))
@@ -1178,7 +1195,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		if(($settings_part && $_part == 'billing')
 		   || $settings_all
-		   || $only_enabledisbale)
+		   || $only_enabledisable)
 		{
 			if($_POST['billing_activate_billing'] != $settings['billing']['activate_billing']
 			   && isset($_POST['billing_activate_billing']))
@@ -1189,7 +1206,7 @@ if(($page == 'settings' || $page == 'overview')
 				$settings['billing']['activate_billing'] = $value;
 			}
 
-			if(!$only_enabledisbale)
+			if(!$only_enabledisable)
 			{
 				if($_POST['billing_highlight_inactive'] != $settings['billing']['highlight_inactive']
 				   && isset($_POST['billing_highlight_inactive']))
@@ -1206,6 +1223,139 @@ if(($page == 'settings' || $page == 'overview')
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='billing' AND `varname`='invoicenumber_count'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed billing_invoicenumber_count from '" . $settings['billing']['invoicenumber_count'] . "' to '" . $value . "'");
 				}
+			}
+		}
+
+		if(($settings_part && $_part == 'aps')
+		   || $settings_all
+		   || $only_enabledisable)
+		{
+			if($_POST['aps_activate_aps'] != $settings['aps']['aps_active'])
+			{
+				$value = ($_POST['aps_activate_aps'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='aps' AND `varname`='aps_active'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed aps_active from '" . $settings['aps']['aps_active'] . "' to '" . $value . "'");
+
+				if((int)$value == 1)
+				{
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "" WHERE `url` = "admin_aps.nourl"');
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "" WHERE `url` = "customer_aps.nourl"');
+				}
+				else
+				{
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps_enabled" WHERE `url` = "admin_aps.nourl"');
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps_enabled" WHERE `url` = "customer_aps.nourl"');
+				}
+			}
+
+			if(!$only_enabledisable)
+			{
+				if($_POST['upload_fields'] != $settings['aps']['upload_fields'])
+				{
+					$value = validate($_POST['upload_fields'], 'upload fields', '/^([1-9]{1,1}|[0-9]{2,99})$/');
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='aps' AND `varname`='upload_fields'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed upload_fields from '" . $settings['aps']['upload_fields'] . "' to '" . $value . "'");
+				}
+
+				if($_POST['items_per_page'] != $settings['aps']['items_per_page'])
+				{
+					$value = validate($_POST['items_per_page'], 'items per page', '/^([1-9]{1,1}|[0-9]{2,99})$/');
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='aps' AND `varname`='items_per_page'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed items_per_page from '" . $settings['aps']['items_per_page'] . "' to '" . $value . "'");
+				}
+			}
+		}
+
+		if(($settings_part && $_part == 'security')
+			|| $settings_all
+			|| $only_enabledisable)
+		{
+			if($_POST['system_mod_fcgid_tmpdir'] != $settings['system']['mod_fcgid_tmpdir']
+			   && isset($_POST['system_mod_fcgid_tmpdir']))
+			{
+				$value = validate($_POST['system_mod_fcgid_tmpdir'], 'fcgid tmpdir');
+				$value = makeCorrectDir($value);
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_tmpdir'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_tmpdir from '" . $settings['system']['mod_fcgid_tmpdir'] . "' to '" . $value . "'");
+				inserttask('1');
+			}
+
+			if($_POST['system_mod_fcgid_configdir'] != $settings['system']['mod_fcgid_configdir']
+			   && isset($_POST['system_mod_fcgid_configdir']))
+			{
+				$value = validate($_POST['system_mod_fcgid_configdir'], 'fcgid configdir');
+				$value = makeCorrectDir($value);
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_configdir'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_configdir from '" . $settings['system']['mod_fcgid_configdir'] . "' to '" . $value . "'");
+				inserttask('1');
+			}
+
+			if( isset($_POST['system_mod_fcgid_wrapper']) &&
+				$_POST['system_mod_fcgid_wrapper'] != $settings['system']['mod_fcgid_wrapper'] )
+			{
+				$value = ($_POST['system_mod_fcgid_wrapper'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_wrapper'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_wrapper from '" . $settings['system']['mod_fcgid_wrapper'] . "' to '" . $value . "'");
+				inserttask('1');
+			}
+
+			if( isset($_POST['system_mod_fcgid_starter']) &&
+				$_POST['system_mod_fcgid_starter'] != $settings['system']['mod_fcgid_starter'] )
+			{
+				$value = validate($_POST['system_mod_fcgid_starter'], 'fcgid starter', '/^[0-9]{1,999}$/');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_starter'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_starter from '" . $settings['system']['mod_fcgid_starter'] . "' to '" . $value . "'");
+				inserttask('1');
+			}
+
+			if( isset($_POST['system_mod_fcgid_peardir']) &&
+				$_POST['system_mod_fcgid_peardir'] != $settings['system']['mod_fcgid_peardir'] )
+			{
+				$value = validate($_POST['system_mod_fcgid_peardir'], 'system_mod_fcgid_peardir');
+				$value = explode(':', $value);
+				foreach($value as $number => $path)
+				{
+					$value[$number] = makeCorrectDir($path);
+				}
+
+				$value = implode(':', $value);
+
+				// If user doesn't want to append anything we should not include the root here...
+
+				if($value == '/')
+				{
+					$value = '';
+				}
+
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_peardir'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_peardir from '" . $settings['system']['mod_fcgid_peardir'] . "' to '" . $value . "'");
+				inserttask('1');
+			}
+
+			if($_POST['panel_unix_names'] != $settings['panel']['unix_names']
+			   && isset($_POST['panel_unix_names']))
+			{
+				$value = ($_POST['panel_unix_names'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='unix_names'");
+				$settings['panel']['unix_names'] = $value;
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_unix_names from '" . $settings['panel']['unix_names'] . "' to '" . $value . "'");
+			}
+
+			if($_POST['system_modfcgid'] != $settings['system']['mod_fcgid']
+			   && isset($_POST['system_modfcgid']))
+			{
+				$value = ($_POST['system_modfcgid'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid'");
+				if($value == '1')
+				{
+					$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, '', 0)");
+				}
+				else
+				{
+					$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `area`='admin' AND `parent_url`='admin_server.nourl' AND `lang`='menue;phpsettings;maintitle' AND `url`='admin_phpsettings.php?page=overview' AND `order`=80");
+				}
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mod_fcgid from '" . $settings['system']['mod_fcgid'] . "' to '" . $value . "'");
+				inserttask('1');
 			}
 		}
 
@@ -1317,18 +1467,33 @@ if(($page == 'settings' || $page == 'overview')
 		$loggingenabled = makeyesno('loggingenabled', '1', '0', $settings['logger']['enabled']);
 		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
 		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['system']['use_ssl']);
+		$webserver_selected = makeyesno('webserver', '1', '0', $settings['system']['webserver']);
 		$dkimenabled = makeyesno('use_dkim', '1', '0', $settings['dkim']['use_dkim']);
 		$system_webalizer_enabled = makeyesno('system_webalizer_enabled', '1', '0', $settings['system']['webalizer_enabled']);
 		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled']);
-		$system_userdns = makeyesno('system_userdns', '1', '0', $settings['system']['userdns']);
-		$system_customerdns = makeyesno('system_customerdns', '1', '0', $settings['system']['customerdns']);
 		$unix_names = makeyesno('panel_unix_names', '1', '0', $settings['panel']['unix_names']);
 		$allow_preset = makeyesno('panel_allow_preset', '1', '0', $settings['panel']['allow_preset']);
 		$allow_preset_admin = makeyesno('panel_allow_preset_admin', '1', '0', $settings['panel']['allow_preset_admin']);
 		$billing_activate_billing = makeyesno('billing_activate_billing', '1', '0', $settings['billing']['activate_billing']);
 		$billing_highlight_inactive = makeyesno('billing_highlight_inactive', '1', '0', $settings['billing']['highlight_inactive']);
+		$autoresponder_active = makeyesno('autoresponder_active', '1', '0', $settings['autoresponder']['autoresponder_active']);
+		$aps_activate_aps = makeyesno('aps_activate_aps', '1', '0', $settings['aps']['aps_active']);
+		$frontend_syscp_version_login = makeyesno('frontend_syscp_version_login', '1', '0', $settings['admin']['show_version_login']);
+		$frontend_syscp_version_footer = makeyesno('frontend_syscp_version_footer', '1', '0', $settings['admin']['show_version_footer']);
 		$settings = htmlentities_array($settings);
 		$settings_page = '';
+		$webserver_selected = '';
+		foreach(array(
+			'apache2',
+			'lighttpd'
+		) as $method)
+		{
+			$webserver_selected.= makeoption($method, $method, $settings['system']['webserver']);
+		}
+
+		$system_modfcgid_wrapper = makeoption('ScriptAlias', 0, $settings['system']['mod_fcgid_wrapper']);
+		$system_modfcgid_wrapper .= makeoption('FCGIWrapper', 1, $settings['system']['mod_fcgid_wrapper']);
+
 		$_part = isset($_GET['part']) ? $_GET['part'] : '';
 
 		if($_part == '')
@@ -1414,6 +1579,18 @@ if(($page == 'settings' || $page == 'overview')
 			   || $_part == 'all')
 			{
 				eval("\$settings_page .= \"" . getTemplate("settings/settings_billing") . "\";");
+			}
+
+			if($_part == 'security'
+			   || $_part == 'all')
+			{
+				eval("\$settings_page .= \"" . getTemplate("settings/settings_security") . "\";");
+			}
+
+			if($_part == 'aps'
+			   || $_part == 'all')
+			{
+				eval("\$settings_page .= \"" . getTemplate("settings/settings_aps") . "\";");
 			}
 		}
 

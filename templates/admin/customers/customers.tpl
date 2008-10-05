@@ -1,7 +1,7 @@
 $header
 	<form action="$filename" method="post">
-                <input type="hidden" name="s" value="$s">
-                <input type="hidden" name="page" value="$page">
+                <input type="hidden" name="s" value="$s"/>
+                <input type="hidden" name="page" value="$page"/>
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 			<tr>
 				<td class="maintitle_search_left" colspan="3" ><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['customers']}</b></td>
@@ -22,7 +22,7 @@ $header
 				<td class="field_display">{$lng['customer']['mysqls']}<br />{$lng['customer']['ftps']}</td>
 				<td class="field_display">{$lng['customer']['emails']}<br />{$lng['customer']['subdomains']}</td>
 				<td class="field_display">{$lng['customer']['accounts']}<br />{$lng['customer']['forwarders']}</td>
-				<td class="field_display">{$lng['admin']['deactivated']}<br />{$lng['panel']['active']}</td>
+				<td class="field_display">{$lng['admin']['deactivated']}<br />{$lng['invoice']['active']}</td>
 				<td class="field_display_search">{$sortcode}</td>
 			</tr>
 			$customers

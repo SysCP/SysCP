@@ -20,6 +20,7 @@
  * installer, (c) 1999 - 2004 phpBB Group.
  */
 
+
 if(file_exists('../lib/userdata.inc.php'))
 {
 	/**
@@ -139,9 +140,7 @@ function page_footer()
 			<tr>
 				<td width="100%" class="footer">
 					<br />SysCP &copy; 2003-2008 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
-					<br />&nbsp;
-					<br /><a href="http://validator.w3.org/check?uri=referer" target="_blank"><img src="../images/valid-xhtml10.gif" alt="Valid XHTML 1.0 Transitional" height="15" width="80" border="0" /></a>&nbsp;&nbsp;<a href="http://jigsaw.w3.org/css-validator/" target="_blank"><img style="border:0;width:80px;height:15px" src="../images/valid-css.gif" alt="Valid CSS!" border="0" /></a>
-					<br />&nbsp;
+					<br /><br/>
 				</td>
 			</tr>
 		</table>
@@ -461,17 +460,19 @@ else
 	$mysql_access_host = $serverip;
 }
 
+// gues http software
+
 if(!empty($_POST['apacheversion']))
 {
 	$apacheversion = $_POST['apacheversion'];
 }
 else
 {
-	if(strtoupper(@php_sapi_name()) == "APACHE2HANDLER")
+	if(strtoupper(@php_sapi_name()) == "APACHE2HANDLER" || stristr($_SERVER[SERVER_SOFTWARE], "apache/2"))
 	{
 		$apacheversion = 'apache2';
 	}
-	elseif(substr(strtoupper(@php_sapi_name()), 0, 8) == "LIGHTTPD")
+	elseif(substr(strtoupper(@php_sapi_name()), 0, 8) == "LIGHTTPD" || stristr($_SERVER[SERVER_SOFTWARE], "lighttpd"))
 	{
 		$apacheversion = 'lighttpd';
 	}
@@ -480,6 +481,25 @@ else
 		$apacheversion = 'apache1';
 	}
 }
+
+if(!empty($_POST['httpuser']))
+{
+	$httpuser = $_POST['httpuser'];
+}
+else
+{
+	$httpuser = '';
+}
+
+if(!empty($_POST['httpgroup']))
+{
+	$httpgroup = $_POST['httpgroup'];
+}
+else
+{
+	$httpgroup = '';
+}
+
 
 /**
  * END VARIABLES ---------------------------------------------------
@@ -498,6 +518,8 @@ if(isset($_POST['installstep'])
    && $mysql_root_pass != ''
    && $servername != ''
    && $serverip != ''
+   && $httpuser != ''
+   && $httpgroup != ''
    && $mysql_unpriv_user != $mysql_root_user)
 {
 	page_header();
@@ -574,6 +596,30 @@ if(isset($_POST['installstep'])
 
 	status_message('green', 'OK');
 
+	//first we make a backup of the old DB if it exists
+	status_message('begin', $lng['install']['backup_old_db']);
+	$result = mysql_list_tables($mysql_database);
+	if($result)
+	{
+		$filename = "/tmp/syscp_backup_".date(YmdHi).".sql";
+		if(is_file("/usr/bin/mysqldump"))
+		{
+			$command = "/usr/bin/mysqldump ".$mysql_database." -u ".$mysql_root_user." --password='".$mysql_root_pass."' --result-file=".$filename;
+			$output = exec($command);
+			if(stristr($output, "error"))
+			{
+				status_message('red', $lng['install']['backing_up_failed']);
+			}
+			else
+			{
+				status_message('green', 'OK');
+			}
+		}
+		else
+		{
+			status_message('red', $lng['install']['backing_up_binary_missing']);
+		}
+	}
 	//so first we have to delete the database and the user given for the unpriv-user if they exit
 
 	status_message('begin', $lng['install']['erasing_old_db']);
@@ -654,6 +700,9 @@ if(isset($_POST['installstep'])
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($languages[$language]) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($mysql_access_host) . "' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
+        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'webserver'"); //FIXME
+        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpuser) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpuser'");
+        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpgroup) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpgroup'");
 
 	if($apacheversion == "apache2")
 	{
@@ -664,9 +713,9 @@ if(isset($_POST['installstep'])
 	}
 	elseif($apacheversion == "lighttpd")
 	{
-		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-vhosts.conf' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
-		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-diroptions.conf' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
-		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/conf-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-diroptions/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/lighttpd.pem' WHERE `settinggroup` = 'system' AND `varname` = 'ssl_cert_file'");
 	}
@@ -694,14 +743,14 @@ if(isset($_POST['installstep'])
 	//last but not least create the main admin
 
 	status_message('begin', $lng['install']['adding_admin_user']);
-	$db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` SET 
-		`loginname` = '" . $db->escape($admin_user) . "', 
-		`password` = '" . md5($admin_pass1) . "', 
-		`name` = 'Siteadmin', 
+	$db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` SET
+		`loginname` = '" . $db->escape($admin_user) . "',
+		`password` = '" . md5($admin_pass1) . "',
+		`name` = 'Siteadmin',
 		`email` = 'admin@" . $db->escape($servername) . "',
 		`customers` = -1,
 		`customers_used` = 0,
-		`customers_see_all` = 1, 
+		`customers_see_all` = 1,
 		`caneditphpsettings` = 1,
 		`domains` = -1,
 		`domains_used` = 0,
@@ -825,60 +874,68 @@ else
 			</tr>
 			<tr>
 				<td class="main_field_name"><?php echo $lng['install']['mysql_hostname']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_host" value="<?php echo htmlspecialchars($mysql_host); ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_host" value="<?php echo htmlspecialchars($mysql_host); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><?php echo $lng['install']['mysql_database']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_database" value="<?php echo htmlspecialchars($mysql_database); ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_database" value="<?php echo htmlspecialchars($mysql_database); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_user']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_unpriv_user" value="<?php echo htmlspecialchars($mysql_unpriv_user); ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_unpriv_user" value="<?php echo htmlspecialchars($mysql_unpriv_user); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $mysql_unpriv_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_unpriv_pass']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="mysql_unpriv_pass" value="<?php echo htmlspecialchars($mysql_unpriv_pass); ?>"></td>
+				<td class="main_field_display"><input type="password" name="mysql_unpriv_pass" value="<?php echo htmlspecialchars($mysql_unpriv_pass); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo (($mysql_unpriv_user == $mysql_root_user) ? ' style="color:blue;"' : ''); ?>><?php echo $lng['install']['mysql_root_user']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="mysql_root_user" value="<?php echo htmlspecialchars($mysql_root_user); ?>"></td>
+				<td class="main_field_display"><input type="text" name="mysql_root_user" value="<?php echo htmlspecialchars($mysql_root_user); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $mysql_root_pass == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['mysql_root_pass']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="mysql_root_pass" value="<?php echo htmlspecialchars($mysql_root_pass); ?>"></td>
+				<td class="main_field_display"><input type="password" name="mysql_root_pass" value="<?php echo htmlspecialchars($mysql_root_pass); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['admin_account']; ?></b></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><?php echo $lng['install']['admin_user']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="admin_user" value="<?php echo htmlspecialchars($admin_user); ?>"></td>
+				<td class="main_field_display"><input type="text" name="admin_user" value="<?php echo htmlspecialchars($admin_user); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && ($admin_pass1 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="admin_pass1" value="<?php echo htmlspecialchars($admin_pass1); ?>"></td>
+				<td class="main_field_display"><input type="password" name="admin_pass1" value="<?php echo htmlspecialchars($admin_pass1); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && ($admin_pass2 == '' || $admin_pass1 != $admin_pass2)) ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['admin_pass_confirm']; ?>:</td>
-				<td class="main_field_display"><input type="password" name="admin_pass2" value="<?php echo htmlspecialchars($admin_pass2); ?>"></td>
+				<td class="main_field_display"><input type="password" name="admin_pass2" value="<?php echo htmlspecialchars($admin_pass2); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="maintitle" colspan="2"><b><img src="../images/title.gif" alt="" />&nbsp;<?php echo $lng['install']['serversettings']; ?></b></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $servername == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['servername']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="servername" value="<?php echo htmlspecialchars($servername); ?>"></td>
+				<td class="main_field_display"><input type="text" name="servername" value="<?php echo htmlspecialchars($servername); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['serverip']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="serverip" value="<?php echo htmlspecialchars($serverip); ?>"></td>
+				<td class="main_field_display"><input type="text" name="serverip" value="<?php echo htmlspecialchars($serverip); ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $apacheversion == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['apacheversion']; ?>:</td>
-				<td class="main_field_display"><input type="radio" name="apacheversion" value="apache1" <?php echo $apacheversion == "apache1" ? 'checked="checked"' : "" ?>>Apache1&nbsp;<br /><input type="radio" name="apacheversion" value="apache2" <?php echo $apacheversion == "apache2" ? 'checked="checked"' : "" ?>>Apache2&nbsp;<br /><input type="radio" name="apacheversion" value="lighttpd" <?php echo $apacheversion == "lighttpd" ? 'checked="checked"' : "" ?>>Lighttpd</td>
+				<td class="main_field_display"><input type="radio" name="apacheversion" value="apache1" <?php echo $apacheversion == "apache1" ? 'checked="checked"' : "" ?>/>Apache1&nbsp;<br /><input type="radio" name="apacheversion" value="apache2" <?php echo $apacheversion == "apache2" ? 'checked="checked"' : "" ?>/>Apache2&nbsp;<br /><input type="radio" name="apacheversion" value="lighttpd" <?php echo $apacheversion == "lighttpd" ? 'checked="checked"' : "" ?>/>Lighttpd</td>
 			</tr>
 			<tr>
-				<td class="main_field_confirm" colspan="2"><input type="hidden" name="language" value="<?php echo htmlspecialchars($language); ?>"><input type="hidden" name="installstep" value="1"><input class="bottom" type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"></td>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['httpuser']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="httpuser" value="<?php echo getProcessId($value=user); ?>"/></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['httpgroup']; ?>:</td>
+				<td class="main_field_display"><input type="text" name="httpgroup" value="<?php echo getProcessId($value=group); ?>"/></td>
+			</tr>
+			<tr>
+				<td class="main_field_confirm" colspan="2"><input type="hidden" name="language" value="<?php echo htmlspecialchars($language); ?>"/><input type="hidden" name="installstep" value="1"/><input class="bottom" type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"/></td>
 			</tr>
 		</table>
 	</form>

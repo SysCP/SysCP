@@ -7,6 +7,10 @@
                                         <a href="$filename?page=settings&amp;s=$s">{$lng['panel']['backtooverview']}</a>
 				</td>
 			</tr>
+                        <tr>
+                                <td class="main_field_name"><b>{$lng['admin']['webserver']}:&nbsp;</b><br /></td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="panel_webserver_selected">$webserver_selected</select></td>
+                        </tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['apacheconf_vhost']['title']}:</b><br />{$lng['serversettings']['apacheconf_vhost']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_apacheconf_vhost" value="{$settings['system']['apacheconf_vhost']}" /></td>
@@ -32,18 +36,6 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_logfiles_directory" value="{$settings['system']['logfiles_directory']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['title']}:</b><br />{$lng['serversettings']['mod_fcgid']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap">{$system_modfcgid}</td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['configdir']}:</b><br />{$lng['serversettings']['mod_fcgid']['configdir_desc']}</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mod_fcgid_configdir" value="{$settings['system']['mod_fcgid_configdir']}" /></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['mod_fcgid']['tmpdir']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mod_fcgid_tmpdir" value="{$settings['system']['mod_fcgid_tmpdir']}" /></td>
-			</tr>
-			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['phpappendopenbasedir']['title']}:</b><br />{$lng['serversettings']['phpappendopenbasedir']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_phpappendopenbasedir" value="{$settings['system']['phpappendopenbasedir']}" /></td>
 			</tr>
@@ -52,7 +44,7 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_deactivateddocroot" value="{$settings['system']['deactivateddocroot']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['default_vhostconf']['title']}:</b></td>
+				<td class="main_field_name" valign="top"><b>{$lng['serversettings']['default_vhostconf']['title']}:</b></td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="40" name="system_default_vhostconf">{$settings['system']['default_vhostconf']}</textarea></td>
 			</tr>
 			<tr>

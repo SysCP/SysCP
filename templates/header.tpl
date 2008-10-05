@@ -18,14 +18,18 @@
 // -->
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
-		<td width="800"><img src="images/header.gif" width="800" height="90" alt="" /></td>
+		<td width="800"><img src="{$settings['admin']['syscp_graphic']}" width="800" height="90" alt="" /></td>
 		<td class="header">&nbsp;</td>
 	</tr>
 </table>
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table cellspacing="0" cellpadding="0" border="0" width="<if isset($userinfo['loginname'])>100%<else>40%</if>" align="center">
 	<tr>
-		<td width="240" valign="top" bgcolor="#EBECF5">$navigation<br /></td>
-		<td width="15" class="line_shadow">&nbsp;</td>
-		<td valign="top" bgcolor="#FFFFFF">
+		<if isset($userinfo['loginname'])>
+			<td width="240" valign="top" bgcolor="#EBECF5">$navigation<br /></td>
+			<td width="15" class="line_shadow">&nbsp;</td>
+			<td valign="top" bgcolor="#FFFFFF">
+		<else>
+			<td valign="top" bgcolor="#FFFFFF">
+		</if>
 		<br />
 		<br />

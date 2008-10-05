@@ -27,6 +27,10 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mysql_access_host" value="{$settings['system']['mysql_access_host']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['index_file_extension']['title']}:</b><br />{$lng['serversettings']['index_file_extension']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="index_file_extension" value="{$settings['system']['index_file_extension']}" /></td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
 					<if $_part == 'system'>
 						<input type="hidden" name="part" value="system" />

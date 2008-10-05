@@ -55,7 +55,9 @@ if($action == 'login')
 			}
 			else
 			{
-				standard_error('login');
+				redirectTo('index.php', Array(
+					'showmessage' => '2'
+				), true);
 				exit;
 			}
 		}
@@ -65,7 +67,9 @@ if($action == 'login')
 		if($userinfo['loginfail_count'] >= $settings['login']['maxloginattempts']
 		   && $userinfo['lastlogin_fail'] > (time()-$settings['login']['deactivatetime']))
 		{
-			standard_error('login_blocked');
+			redirectTo('index.php', Array(
+					'showmessage' => '3'
+				), true);
 			exit;
 		}
 		elseif($userinfo['password'] == md5($password))
@@ -83,7 +87,9 @@ if($action == 'login')
 
 			$db->query("UPDATE $table SET `lastlogin_fail`='" . time() . "', `loginfail_count`=`loginfail_count`+1 WHERE `$uid`='" . (int)$userinfo[$uid] . "'");
 			unset($userinfo);
-			standard_error('login');
+			redirectTo('index.php', Array(
+					'showmessage' => '2'
+				), true);
 			exit;
 		}
 
@@ -118,17 +124,22 @@ if($action == 'login')
 				redirectTo('admin_index.php', Array(
 					's' => $s
 				), true);
+				exit;
 			}
 			else
 			{
 				redirectTo('customer_index.php', Array(
 					's' => $s
 				), true);
+				exit;
 			}
 		}
 		else
 		{
-			standard_error('login');
+			redirectTo('index.php', Array(
+					'showmessage' => '2'
+				), true);
+			exit;
 		}
 	}
 	else
@@ -143,13 +154,25 @@ if($action == 'login')
 
 		$smessage = isset($_GET['showmessage']) ? (int)$_GET['showmessage'] : 0;
 
-		if($smessage == 1)
+		$message = '';
+
+		switch($smessage)
 		{
-			$message = $lng['pwdreminder']['success'];
-		}
-		else
-		{
-			$message = '';
+			case 1:
+				$message = $lng['pwdreminder']['success'];
+				break;
+
+			case 2:
+				$message = $lng['error']['login'];
+				break;
+
+			case 3:
+				$message = $lng['error']['login_blocked'];
+				break;
+
+			case 4:
+				$message = $lng['error']['errorsendingmail'];
+				break;
 		}
 
 		eval("echo \"" . getTemplate("login") . "\";");
@@ -164,8 +187,8 @@ if($action == 'forgotpwd')
 		$adminchecked = false;
 		$loginname = validate($_POST['loginname'], 'loginname');
 		$email = validateEmail($_POST['loginemail'], 'email');
-		$sql = "SELECT `customerid`, `firstname`, `name`, `email`, `loginname` FROM `" . TABLE_PANEL_CUSTOMERS . "` 
-				WHERE `loginname`='" . $db->escape($loginname) . "' 
+		$sql = "SELECT `customerid`, `firstname`, `name`, `email`, `loginname` FROM `" . TABLE_PANEL_CUSTOMERS . "`
+				WHERE `loginname`='" . $db->escape($loginname) . "'
 				AND `email`='" . $db->escape($email) . "'";
 		$result = $db->query($sql);
 
@@ -229,13 +252,18 @@ if($action == 'forgotpwd')
 						'loginname' => 'password_reset'
 					), $db, $settings);
 					$rstlog->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
-					standard_error('errorsendingmail', $email);
+
+					redirectTo('index.php', Array(
+						'showmessage' => '4'
+					), true);
+					exit;
 				}
 
 				$mail->ClearAddresses();
 				redirectTo('index.php', Array(
 					'showmessage' => '1'
 				), true);
+				exit;
 			}
 			else
 			{

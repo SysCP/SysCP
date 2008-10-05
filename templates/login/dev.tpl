@@ -2,7 +2,7 @@ $header
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 			<tr>
 				<td class="maintitle" colspan="2"><b>&nbsp;<img src="images/title.gif" alt="" />&nbsp;The SysCP-team would like to thank the following people for participating to the SysCP-1.2 series:</b></td>
-			<tr>
+			</tr>
 			<tr>
 				<td class="field_name_border_left" colspan="2">&nbsp;</td>
 			</tr>
@@ -41,6 +41,10 @@ $header
 			<tr>
 				<td class="field_name_border_left">Thomas Peterhans (atari)</td>
 				<td class="field_name" nowrap="nowrap">Development, Helpdesk, Forum Moderator</td>
+			</tr>
+			<tr>
+				<td class="field_name_border_left">Sven Skrabal (RadiatioN)</td>
+				<td class="field_name" nowrap="nowrap">Development</td>
 			</tr>
 			<tr>
 				<td class="field_name_border_left">Philipp Haefelfinger (microft)</td>

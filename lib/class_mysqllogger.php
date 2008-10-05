@@ -98,12 +98,12 @@ class MysqlLogger extends AbstractLogger
 			if($text != null
 			   && $text != '')
 			{
-				$this->db->query("INSERT INTO `panel_syslog` (`type`, `date`, `action`, `user`, `text`) 
+				$this->db->query("INSERT INTO `panel_syslog` (`type`, `date`, `action`, `user`, `text`)
                           VALUES ('" . (int)$type . "', '" . $now . "', '" . (int)$action . "', '" . $this->db->escape($name) . "', '" . $this->db->escape($text) . "')");
 			}
 			else
 			{
-				$this->db->query("INSERT INTO `panel_syslog` (`type`, `date`, `action`, `userid`, `text`) 
+				$this->db->query("INSERT INTO `panel_syslog` (`type`, `date`, `action`, `userid`, `text`)
                           VALUES ('" . (int)$type . "', '" . $now . "', '" . (int)$action . "', '" . $this->db->escape($name) . "', 'No text given!!! Check scripts!')");
 			}
 		}

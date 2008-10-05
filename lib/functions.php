@@ -24,6 +24,42 @@
  * @author Florian Lippert <flo@syscp.org>
  */
 
+function getProcessId($value=user)
+{
+	if($value == 'user')
+	{
+		$processUser = posix_getpwuid(posix_geteuid());
+		if(empty($process))
+		{
+			$process = array();
+			$sys = array();
+			@exec("whoami", $sys);
+			if(isset($sys[0]))
+			{
+				$process['name'] = $sys[0];
+			}
+		}
+
+	}
+	elseif($value == 'group')
+	{
+		$process = posix_getpwuid(posix_geteuid());
+		if(empty($process))
+		{
+			$process = array();
+			$sys = array();
+			@exec("whoami", $sys);
+			if(isset($sys[0]))
+			{
+				$process['name'] = $sys[0];
+			}
+		}
+	}
+	return $process[name];
+
+}
+
+
 function getTemplate($template, $noarea = 0)
 {
 	global $templatecache;
@@ -252,7 +288,7 @@ function makecheckbox($name, $title, $value, $break = false, $selvalue = NULL, $
 		$value = htmlspecialchars($value);
 	}
 
-	$checkbox = '<input type="checkbox" name="' . $name . '" value="' . $value . '" ' . $checked . ' >&nbsp;' . $title;
+	$checkbox = '<input type="checkbox" name="' . $name . '" value="' . $value . '" ' . $checked . ' />&nbsp;' . $title;
 
 	if($break)
 	{
@@ -1092,19 +1128,20 @@ function updateCounters($returndebuginfo = false)
 }
 
 /******************************************************
-	 * Wrapper around the exec command.
-	 *
-	 * @author Martin Burchert <eremit@adm1n.de>
-	 * @version 1.2
-	 * @param string exec_string String to be executed
-	 * @return string The result of the exec()
-	 *
-	 * History:
-	 ******************************************************
-	 * 1.0 : Initial Version
-	 * 1.1 : Added |,&,>,<,`,*,$,~,? as security breaks.
-	 * 1.2 : Removed * as security break
-	 ******************************************************/function safe_exec($exec_string)
+* Wrapper around the exec command.
+*
+* @author Martin Burchert <eremit@adm1n.de>
+* @version 1.2
+* @param string exec_string String to be executed
+* @return string The result of the exec()
+*
+* History:
+******************************************************
+* 1.0 : Initial Version
+* 1.1 : Added |,&,>,<,`,*,$,~,? as security breaks.
+* 1.2 : Removed * as security break
+******************************************************/
+function safe_exec($exec_string)
 {
 	global $settings;
 
@@ -1179,19 +1216,20 @@ function updateCounters($returndebuginfo = false)
 }
 
 /******************************************************
-	 * Navigation generator
-	 *
-	 * @author Martin Burchert <eremit@adm1n.de>
-	 * @version 1.0
-	 * @param string s The session-id of the user
-	 * @param array userinfo the userinfo of the user
-	 * @return string the content of the navigation bar
-	 *
-	 * History:
-	 ******************************************************
-	 * 1.0 : Initial Version
-	 * 1.1 : Added new_window and required_resources (flo)
-	 ******************************************************/function getNavigation($s, $userinfo)
+* Navigation generator
+*
+* @author Martin Burchert <eremit@adm1n.de>
+* @version 1.0
+* @param string s The session-id of the user
+* @param array userinfo the userinfo of the user
+* @return string the content of the navigation bar
+*
+* History:
+******************************************************
+* 1.0 : Initial Version
+* 1.1 : Added new_window and required_resources (flo)
+******************************************************/
+function getNavigation($s, $userinfo)
 {
 	global $db, $lng;
 	$return = '';
@@ -1887,16 +1925,16 @@ function validate_ip($ip, $return_bool = false, $lng = 'invalidip')
 /**
  * Returns a given quota in bytes
  *
- * @param  int    The Quota
- * @param  string The Type of the Quota (b, kb, mb, gb)
+ * @param  int    The quota
+ * @param  string The Type of the quota (b, kb, mb, gb, tb, pb)
  * @return int    Quota in bytes
  *
  * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  */
 
-function getQuotaInBytes($quota, $type = 'mb')
+function getQuotaInBytes($quota, $inputtype = 'mb')
 {
-	switch($type)
+	switch($inputtype)
 	{
 	case 'b':
 		$quota = $quota;
@@ -1910,6 +1948,12 @@ function getQuotaInBytes($quota, $type = 'mb')
 	case 'gb':
 		$quota = $quota*1024*1024*1024;
 		break;
+	case 'tb':
+		$quota = $quota*1024*1024*1024*1024;
+		break;
+	case 'pb':
+		$quota = $quota*1024*1024*1024*1024*1024;
+		break;
 	}
 
 	return $quota;
@@ -1918,7 +1962,7 @@ function getQuotaInBytes($quota, $type = 'mb')
 /**
  *
  * @param  int	Quota in bytes
- * @return int 	Quota in recalculated format
+ * @return int	Quota in recalculated format
  *
  * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  */
@@ -1936,9 +1980,10 @@ function getQuota($quota)
 /**
  * Returns type of a given Quota
  *
- * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  * @param int Quota in bytes
- * @return string Type of Quota (b, kb, mb, gb)
+ * @return string Type of Quota (b, kb, mb, gb, tb, pb)
+ *
+ * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
  */
 
 function getQuotaType($quota)
@@ -1947,7 +1992,9 @@ function getQuotaType($quota)
 		'b',
 		'kb',
 		'mb',
-		'gb'
+		'gb',
+		'tb',
+		'pb'
 	);
 	$i = 0;
 
@@ -1962,8 +2009,11 @@ function getQuotaType($quota)
 
 /**
  * Returns Dropdown for Quota
- * @param  string Type of Quotq (b, kb, mb, gb)
+ * @param  string Defaultype of Quota (b, kb, mb, gb, tb, pb)
+ * @return string Dropdownlist for different quotas
+ *
  * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
+ *
  */
 
 function makeQuotaOption($selected = 'mb')
@@ -1973,7 +2023,9 @@ function makeQuotaOption($selected = 'mb')
 		'b',
 		'kb',
 		'mb',
-		'gb'
+		'gb',
+		'tb',
+		'pb'
 	);
 
 	// Fallback if $selected mismatch $quota_types
@@ -1984,10 +2036,12 @@ function makeQuotaOption($selected = 'mb')
 	}
 
 	$quota_type_option = '';
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['byte'], 'b', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['kilobyte'], 'kb', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['megabyte'], 'mb', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['gigabyte'], 'gb', $selected);
+	$quota_type_option.= makeoption($lng['panel']['size_type']['byte'], 'b', $selected);
+	$quota_type_option.= makeoption($lng['panel']['size_type']['kilobyte'], 'kb', $selected);
+	$quota_type_option.= makeoption($lng['panel']['size_type']['megabyte'], 'mb', $selected);
+	$quota_type_option.= makeoption($lng['panel']['size_type']['gigabyte'], 'gb', $selected);
+	$quota_type_option.= makeoption($lng['panel']['size_type']['terabyte'], 'tb', $selected);
+	$quota_type_option.= makeoption($lng['panel']['size_type']['petabyte'], 'pb', $selected);
 	return $quota_type_option;
 }
 

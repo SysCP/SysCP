@@ -8,19 +8,19 @@ $header
 				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['templates']['template_add']}</b></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['login']['language']}:</td>
+				<td class="main_field_name">{$lng['login']['language']}</td>
 				<td class="main_field_display" nowrap="nowrap"><b>$language</b><input type="hidden" name="language" value="$language" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['admin']['templates']['action']}:</td>
+				<td class="main_field_name">{$lng['admin']['templates']['action']}</td>
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="template">$template_options</select></td>
 			</tr>
 			<tr>
-				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['subject']}: *</td>
+				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['subject']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subject" value="" maxlength="255" size="75" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['mailbody']}: *</td>
+				<td class="main_field_name" valign="top" nowrap="nowrap">{$lng['admin']['templates']['mailbody']}</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" name="mailbody" rows="20" cols="75"></textarea></td>
 			</tr>
 			<tr>

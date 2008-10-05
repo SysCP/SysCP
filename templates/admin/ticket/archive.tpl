@@ -1,7 +1,7 @@
 $header
 	<form action="$filename" method="post">
-		<input type="hidden" name="s" value="$s">
-		<input type="hidden" name="page" value="$page">
+		<input type="hidden" name="s" value="$s"/>
+		<input type="hidden" name="page" value="$page"/>
 		<input type="hidden" name="send" value="send" />
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 		<tr>
@@ -22,8 +22,8 @@ $header
 	<br />
 	<br />
 	<form action="$filename" method="post">
-		<input type="hidden" name="s" value="$s">
-		<input type="hidden" name="page" value="$page">
+		<input type="hidden" name="s" value="$s"/>
+		<input type="hidden" name="page" value="$page"/>
 		<input type="hidden" name="send" value="send" />
 		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable_60">
 			<tr>

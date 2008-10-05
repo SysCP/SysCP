@@ -64,5 +64,7 @@ $lng['install']['phpbcmath'] = 'Teste, ob die PHP bcmath-Erweiterung installiert
 $lng['install']['bcmathdescription'] = 'Traffic-Berechnungs bezogene Funktionen stehen nicht vollst&auml;ndig zur Verf&uuml;gung!';
 $lng['install']['openbasedir'] = 'Teste, ob open_basedir genutzt wird...';
 $lng['install']['openbasedirenabled'] = 'aktiviert. SysCP wird mit aktiviertem open_basedir nicht vollst&auml;ndig funktionieren. Bitte deaktivieren Sie open_basedir f&uuml;r SysCP';
+$lng['install']['httpuser'] = 'HTTP Username';
+$lng['install']['httpgroup'] = 'HTTP Gruppenname';
 
 ?>

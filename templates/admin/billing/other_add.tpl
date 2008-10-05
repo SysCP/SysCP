@@ -9,7 +9,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['billing']['other_add']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
@@ -29,7 +29,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>

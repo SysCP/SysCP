@@ -360,6 +360,9 @@ CREATE TABLE `panel_domains` (
   `caneditdomain` tinyint(1) NOT NULL default '1',
   `zonefile` varchar(255) NOT NULL default '',
   `dkim` tinyint(1) NOT NULL default '0',
+  `dkim_id` int(11) unsigned NOT NULL,
+  `dkim_privkey` text NOT NULL,
+  `dkim_pubkey` text NOT NULL,
   `wwwserveralias` tinyint(1) NOT NULL default '1',
   `parentdomainid` int(11) unsigned NOT NULL default '0',
   `openbasedir` tinyint(1) NOT NULL default '0',
@@ -384,6 +387,7 @@ CREATE TABLE `panel_domains` (
   `servicestart_date` date NOT NULL,
   `serviceend_date` date NOT NULL,
   `lastinvoiced_date` date NOT NULL,
+  `phpsettingid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '1',
   PRIMARY KEY  (`id`),
   KEY `customerid` (`customerid`),
   KEY `parentdomain` (`parentdomainid`),
@@ -533,7 +537,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (18, 'system', 'vmail_homedir', '/var/kunden/mail/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.19');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.2.19-svn30');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -549,7 +553,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (36, 'system', 'phpappendopenbasedir', '/tmp/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (37, 'panel', 'natsorting', '1');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (38, 'system', 'deactivateddocroot', '');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (39, 'system', 'mailpwcleartext', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (39, 'system', 'mailpwcleartext', '1');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (40, 'system', 'last_tasks_run', '000000');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (41, 'customer', 'ftpatdomain', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (42, 'system', 'nameservers', '');
@@ -593,8 +597,6 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (80, 'system', 'awstats_enabled', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (81, 'system', 'awstats_domain_file', '/etc/awstats/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (82, 'system', 'awstats_model_file', '/etc/awstats/awstats.model.conf.syscp');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (83, 'system', 'userdns', '0');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (84, 'system', 'customerdns', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (85, 'dkim', 'dkim_prefix', '/etc/postfix/dkim/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (86, 'dkim', 'dkim_domains', 'domains');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (87, 'dkim', 'dkim_dkimkeys', 'dkim-keys.conf');
@@ -607,6 +609,27 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (94, 'panel', 'allow_preset_admin', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (95, 'billing', 'activate_billing', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (96, 'billing', 'highlight_inactive', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (97, 'system', 'httpuser', 'www-data');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (98, 'system', 'httpgroup', 'www-data');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (99, 'system', 'webserver', 'apache2');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (100, 'autoresponder', 'autoresponder_active', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (101, 'autoresponder', 'last_autoresponder_run', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (102, 'admin', 'show_version_login', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (103, 'admin', 'show_version_footer', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (104, 'admin', 'syscp_graphic', 'images/header.gif');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (105, 'system', 'mod_fcgid_wrapper', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (106, 'system', 'mod_fcgid_starter', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (107, 'system', 'mod_fcgid_peardir', '/usr/share/php/:/usr/share/php5/');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (108, 'system', 'index_file_extension', 'html');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (109, 'aps', 'items_per_page', '20');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (110, 'aps', 'upload_fields', '5');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (111, 'aps', 'aps_active', '0');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (112, 'aps', 'php-extension', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (113, 'aps', 'php-configuration', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (114, 'aps', 'webserver-htaccess', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (115, 'aps', 'php-function', '');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (116, 'aps', 'webserver-module', '');
+
 # --------------------------------------------------------
 
 #
@@ -804,8 +827,8 @@ INSERT INTO `panel_navigation` VALUES (25, 'admin', 'admin_resources.nourl', 'ad
 INSERT INTO `panel_navigation` VALUES (26, 'admin', '', 'admin;server', 'admin_server.nourl', '30', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (27, 'admin', 'admin_server.nourl', 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles', '10', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (28, 'admin', 'admin_server.nourl', 'admin;serversettings', 'admin_settings.php?page=settings', '20', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;templates;templates', 'admin_templates.nourl', '50', '', 0);
-INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_templates.nourl', 'admin;templates;email', 'admin_templates.php?page=email', '10', '', 0);
+INSERT INTO `panel_navigation` VALUES (29, 'admin', '', 'admin;misc', 'admin_misc.nourl', '40', '', 0);
+INSERT INTO `panel_navigation` VALUES (30, 'admin', 'admin_misc.nourl', 'admin;templates;email', 'admin_templates.php?page=email', '10', '', 0);
 INSERT INTO `panel_navigation` VALUES (31, 'admin', 'admin_server.nourl', 'admin;rebuildconf', 'admin_settings.php?page=rebuildconfigs', '30', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (32, 'admin', 'admin_server.nourl', 'admin;ipsandports;ipsandports', 'admin_ipsandports.php?page=ipsandports', '25', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (33, 'admin', 'admin_index.php', 'menue;main;username', 'admin_index.nourl', '5', '', 0);
@@ -819,20 +842,27 @@ INSERT INTO `panel_navigation` VALUES (40, 'admin', 'admin_ticketsystem.nourl', 
 INSERT INTO `panel_navigation` VALUES (41, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);
 INSERT INTO `panel_navigation` VALUES (42, 'customer', '', 'menue;traffic;traffic', 'customer_traffic.php', 80, '', 0);
 INSERT INTO `panel_navigation` VALUES (43, 'customer', 'customer_traffic.php', 'menue;traffic;current', 'customer_traffic.php?page=current', 10, '', 0);
-INSERT INTO `panel_navigation` VALUES (44, 'admin', '', 'admin;loggersystem', 'admin_loggersystem.nourl', '60', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_loggersystem.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', '10', 'change_serversettings', 0);
-INSERT INTO `panel_navigation` VALUES (46, 'admin', '', 'menu;message', 'admin_message.nourl', 50, '', 0);
-INSERT INTO `panel_navigation` VALUES (47, 'admin', 'admin_message.nourl', 'admin;message', 'admin_message.php?page=message', 10, '', 0);
-INSERT INTO `panel_navigation` VALUES (48, 'customer', 'customer_email.php', 'emails;emails_add', 'customer_email.php?page=emails&action=add', '20', 'emails', 0);
-INSERT INTO `panel_navigation` VALUES (49, 'admin', '', 'billing;billing', 'billing.nourl', '100', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (50, 'admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', '110', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (51, 'admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', '115', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (52, 'admin', 'billing.nourl', 'billing;invoices', 'billing_invoices.php', '120', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (53, 'admin', 'billing.nourl', 'billing;invoices_admin', 'billing_invoices.php?mode=1', '125', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (54, 'admin', 'billing.nourl', 'billing;other', 'billing_other.php', '130', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (55, 'admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', '140', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (56, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (57, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (44, 'admin', 'admin_misc.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', '10', 'change_serversettings', 0);
+INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_misc.nourl', 'admin;message', 'admin_message.php?page=message', 10, '', 0);
+INSERT INTO `panel_navigation` VALUES (46, 'customer', 'customer_email.php', 'emails;emails_add', 'customer_email.php?page=emails&action=add', '20', 'emails', 0);
+INSERT INTO `panel_navigation` VALUES (47, 'admin', '', 'billing;billing', 'billing.nourl', '100', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (48, 'admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', '110', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (49, 'admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', '115', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (50, 'admin', 'billing.nourl', 'billing;invoices', 'billing_invoices.php', '120', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (51, 'admin', 'billing.nourl', 'billing;invoices_admin', 'billing_invoices.php?mode=1', '125', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (52, 'admin', 'billing.nourl', 'billing;other', 'billing_other.php', '130', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (53, 'admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', '140', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (54, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (55, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'edit_billingdata', '0');
+INSERT INTO `panel_navigation` VALUES (56, 'admin', '', 'admin;aps', 'admin_aps.nourl', 45, 'aps_enabled', 0);
+INSERT INTO `panel_navigation` VALUES (57, 'admin', 'admin_aps.nourl', 'aps;scan', 'admin_aps.php?action=scan', 20, '', 0);
+INSERT INTO `panel_navigation` VALUES (58, 'admin', 'admin_aps.nourl', 'aps;upload', 'admin_aps.php?action=upload', 10, '', 0);
+INSERT INTO `panel_navigation` VALUES (59, 'admin', 'admin_aps.nourl', 'aps;managepackages', 'admin_aps.php?action=managepackages', 30, '', 0);
+INSERT INTO `panel_navigation` VALUES (60, 'admin', 'admin_aps.nourl', 'aps;manageinstances', 'admin_aps.php?action=manageinstances', 35, '', 0);
+INSERT INTO `panel_navigation` VALUES (61, 'customer', '', 'customer;aps', 'customer_aps.nourl', 50, 'aps_enabled', 0);
+INSERT INTO `panel_navigation` VALUES (62, 'customer', 'customer_aps.nourl', 'aps;overview', 'customer_aps.php?action=overview', 10, '', 0);
+INSERT INTO `panel_navigation` VALUES (63, 'customer', 'customer_aps.nourl', 'aps;status', 'customer_aps.php?action=customerstatus', 20, '', 0);
+INSERT INTO `panel_navigation` VALUES (64, 'customer', 'customer_aps.nourl', 'aps;search', 'customer_aps.php?action=search', 30, '', 0);
 
 # --------------------------------------------------------
 
@@ -935,50 +965,6 @@ CREATE TABLE IF NOT EXISTS `panel_syslog` (
 
 #
 # Dumping data for table `panel_syslog`
-#
-
-
-# --------------------------------------------------------
-
-#
-# Table structure for table `mail_dkim`
-#
-
-CREATE TABLE `mail_dkim` (
-  `id` int(11) NOT NULL auto_increment,
-  `domain_id` int(11) NOT NULL default '0',
-  `publickey` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
-
-#
-# Dumping data for table `mail_dkim`
-#
-
-
-# --------------------------------------------------------
-
-#
-# Table structure for table `panel_dns`
-#
-
-CREATE TABLE `panel_dns` (
-  `dnsid` bigint(15) NOT NULL auto_increment,
-  `domainid` int(11) NOT NULL,
-  `customerid` int(11) NOT NULL,
-  `adminid` int(11) NOT NULL,
-  `ipv4` varchar(15) NOT NULL,
-  `ipv6` varchar(39) NOT NULL,
-  `cname` varchar(255) NOT NULL,
-  `mx10` varchar(255) NOT NULL,
-  `mx20` varchar(255) NOT NULL,
-  `txt` text NOT NULL,
-  PRIMARY KEY  (`dnsid`),
-  UNIQUE KEY `domainid` (`domainid`)
-) ENGINE=MyISAM;
-
-#
-# Dumping data for table `panel_dns`
 #
 
 
@@ -1256,3 +1242,116 @@ CREATE TABLE  `billing_invoice_changes_admins` (
 # Dumping data for table `billing_invoice_changes_admins`
 #
 
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `mail_autoresponder`
+#
+
+CREATE TABLE `mail_autoresponder` (
+  `email` varchar(255) NOT NULL default '',
+  `message` text NOT NULL,
+  `enabled` tinyint(1) NOT NULL default '0',
+  `subject` varchar(255) NOT NULL default '',
+  `customerid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`email`),
+  KEY `customerid` (`customerid`),
+  FULLTEXT KEY `message` (`message`)
+) ENGINE=MyISAM;
+
+#
+# Dumping data for table `mail_autoresponder`
+#
+
+
+# --------------------------------------------------------
+
+#
+# Table structure for table `panel_phpconfigs`
+#
+
+CREATE TABLE `panel_phpconfigs` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `phpsettings` text NOT NULL,
+  `description` varchar(50) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM;
+
+#
+# Dumping data for table `panel_phpconfigs`
+#
+
+INSERT INTO `panel_phpconfigs` (`id`, `phpsettings`, `description`) VALUES(1, 'short_open_tag = On\r\nasp_tags = Off\r\nprecision = 14\r\noutput_buffering = 4096\r\nallow_call_time_pass_reference = Off\r\nsafe_mode = {SAFE_MODE}\r\nsafe_mode_gid = Off\r\nsafe_mode_include_dir = "{PEAR_DIR}"\r\nsafe_mode_allowed_env_vars = PHP_\r\nsafe_mode_protected_env_vars = LD_LIBRARY_PATH\r\nopen_basedir = "{OPEN_BASEDIR}"\r\ndisable_functions = exec,passthru,shell_exec,system,proc_close,proc_get_status,proc_nice,proc_open,proc_terminate\r\ndisable_classes =\r\nexpose_php = Off\r\nmax_execution_time = 30\r\nmax_input_time = 60\r\nmemory_limit = 16M\r\npost_max_size = 16M\r\nerror_reporting = E_ALL | ~E_NOTICE\r\ndisplay_errors = On\r\ndisplay_startup_errors = Off\r\nlog_errors = On\r\nlog_errors_max_len = 1024\r\nignore_repeated_errors = Off\r\nignore_repeated_source = Off\r\nreport_memleaks = On\r\ntrack_errors = Off\r\nhtml_errors = Off\r\nvariables_order = "GPCS"\r\nregister_globals = Off\r\nregister_argc_argv = Off\r\ngpc_order = "GPC"\r\nmagic_quotes_gpc = Off\r\nmagic_quotes_runtime = Off\r\nmagic_quotes_sybase = Off\r\ninclude_path = ".:{PEAR_DIR}"\r\nenable_dl = Off\r\nfile_uploads = On\r\nupload_tmp_dir = "{TMP_DIR}"\r\nupload_max_filesize = 32M\r\nallow_url_fopen = Off\r\nsendmail_path = "/usr/sbin/sendmail -t -f {CUSTOMER_EMAIL}"\r\nsession.save_handler = files\r\nsession.save_path = "{TMP_DIR}"\r\nsession.use_cookies = 1\r\nsession.name = PHPSESSID\r\nsession.auto_start = 0\r\nsession.cookie_lifetime = 0\r\nsession.cookie_path = /\r\nsession.cookie_domain =\r\nsession.serialize_handler = php\r\nsession.gc_probability = 1\r\nsession.gc_divisor = 1000\r\nsession.gc_maxlifetime = 1440\r\nsession.bug_compat_42 = 0\r\nsession.bug_compat_warn = 1\r\nsession.referer_check =\r\nsession.entropy_length = 16\r\nsession.entropy_file = /dev/urandom\r\nsession.cache_limiter = nocache\r\nsession.cache_expire = 180\r\nsession.use_trans_sid = 0\r\nsuhosin.simulation = Off\r\nsuhosin.mail.protect = 1\r\n', 'Default Config');
+
+# --------------------------------------------------------
+
+#
+# Tabellenstruktur für Tabelle `aps_instances`
+#
+
+CREATE TABLE IF NOT EXISTS `aps_instances` (
+  `ID` int(4) NOT NULL auto_increment,
+  `CustomerID` int(4) NOT NULL,
+  `PackageID` int(4) NOT NULL,
+  `Status` int(4) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+# --------------------------------------------------------
+
+#
+# Tabellenstruktur für Tabelle `aps_packages`
+#
+
+CREATE TABLE IF NOT EXISTS `aps_packages` (
+  `ID` int(4) NOT NULL auto_increment,
+  `Path` varchar(500) NOT NULL,
+  `Name` varchar(500) NOT NULL,
+  `Version` varchar(20) NOT NULL,
+  `Release` int(4) NOT NULL,
+  `Status` int(1) NOT NULL default '1',
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+# --------------------------------------------------------
+
+#
+# Tabellenstruktur für Tabelle `aps_settings`
+#
+
+CREATE TABLE IF NOT EXISTS `aps_settings` (
+  `ID` int(4) NOT NULL auto_increment,
+  `InstanceID` int(4) NOT NULL,
+  `Name` varchar(250) NOT NULL,
+  `Value` varchar(250) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+# --------------------------------------------------------
+
+#
+# Tabellenstruktur für Tabelle `aps_tasks`
+#
+
+CREATE TABLE IF NOT EXISTS `aps_tasks` (
+  `ID` int(4) NOT NULL auto_increment,
+  `InstanceID` int(4) NOT NULL,
+  `Task` int(4) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+# --------------------------------------------------------
+
+#
+# Tabellenstruktur für Tabelle `aps_temp_settings`
+#
+
+CREATE TABLE IF NOT EXISTS `aps_temp_settings` (
+  `ID` int(4) NOT NULL auto_increment,
+  `PackageID` int(4) NOT NULL,
+  `CustomerID` int(4) NOT NULL,
+  `Name` varchar(250) NOT NULL,
+  `Value` varchar(250) NOT NULL,
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;

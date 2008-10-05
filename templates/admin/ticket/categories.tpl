@@ -1,7 +1,7 @@
 $header
 	<form action="$filename" method="post">
-		<input type="hidden" name="s" value="$s">
-		<input type="hidden" name="page" value="$page">
+		<input type="hidden" name="s" value="$s"/>
+		<input type="hidden" name="page" value="$page"/>
 		<input type="hidden" name="send" value="send" />
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 			<tr>
@@ -15,7 +15,7 @@ $header
 			</if>
 			<tr>
 				<td class="field_display_border_left">{$lng['ticket']['category']}&nbsp;&nbsp;{$arrowcode['name']}</td>
-				<td class="field_display">{$lng['ticket']['ticketcount']}&nbsp;&nbsp;{$arrowcode['ticketcount']}</td>        
+				<td class="field_display">{$lng['ticket']['ticketcount']}&nbsp;&nbsp;{$arrowcode['ticketcount']}</td>
 				<td class="field_display_search" colspan="2">{$sortcode}</td>
 			</tr>
 			$ticketcategories
@@ -30,5 +30,5 @@ $header
 		</table>
 	</form>
 	<br />
-	<br /> 
+	<br />
 $footer

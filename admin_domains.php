@@ -106,7 +106,7 @@ if($page == 'domains'
 			if($paging->checkDisplay($i))
 			{
 				$enable_billing_data_edit = ($row['servicestart_date'] == '0000-00-00' || ($row['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $row['lastinvoiced_date']) >= 0));
-				$highlight_row = ( $row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1' );
+				$highlight_row = ($row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1');
 				$row = htmlentities_array($row);
 				eval("\$domains.=\"" . getTemplate("domains/domains_domain") . "\";");
 				$count++;
@@ -140,7 +140,7 @@ if($page == 'domains'
 		{
 			$enable_billing_data_edit = ($result['servicestart_date'] == '0000-00-00' || ($result['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $result['lastinvoiced_date']) >= 0));
 
-			if( $enable_billing_data_edit !== true )
+			if($enable_billing_data_edit !== true)
 			{
 				standard_error('service_still_active');
 				exit;
@@ -175,11 +175,6 @@ if($page == 'domains'
 				$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '" . (int)$userinfo['adminid'] . "'");
 				$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'0\' WHERE `standardsubdomain`=\'' . (int)$result['id'] . '\' AND `customerid`=\'' . (int)$result['customerid'] . '\'');
 
-				if($settings['system']['userdns'] == '1')
-				{
-					$db->query("DELETE FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `domainid`='" . (int)$id . "'");
-				}
-
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted domain/subdomains (#" . $result['id'] . ")");
 				updateCounters();
 				inserttask('1');
@@ -207,30 +202,9 @@ if($page == 'domains'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				if($_POST['domain'] == $settings['system']['hostname']
-				   && empty($_POST['reallydoit']))
+				if($_POST['domain'] == $settings['system']['hostname'])
 				{
-					ask_yesno('admin_domain_reallyenablemailsystemhostname', $filename, array(
-						'page' => $page,
-						'action' => $action,
-						'domain' => $domain,
-						'documentroot' => $documentroot,
-						'customerid' => $customerid,
-						'alias' => $aliasdomain,
-						'isbinddomain' => $isbinddomain,
-						'isemaildomain' => $isemaildomain,
-						'subcanemaildomain' => $subcanemaildomain,
-						'caneditdomain' => $caneditdomain,
-						'zonefile' => $zonefile,
-						'dkim' => $dkim,
-						'speciallogfile' => $speciallogfile,
-						'openbasedir' => $openbasedir,
-						'ipandport' => $ipandport,
-						'safemode' => $safemode,
-						'specialsettings' => $specialsettings,
-						'wwwserveralias' => $wwwserveralias,
-						'reallydoit' => 'reallydoit'
-					));
+					standard_error('admin_domain_emailsystemhostname');
 					exit;
 				}
 
@@ -254,7 +228,8 @@ if($page == 'domains'
 					$registration_date = 0;
 				}
 
-				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
+				if($userinfo['edit_billingdata'] == '1'
+				   && $settings['billing']['activate_billing'] == '1')
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
@@ -342,163 +317,6 @@ if($page == 'domains'
 							$documentroot = $_POST['documentroot'];
 						}
 					}
-
-					if($settings['system']['userdns'] == '1')
-					{
-						$dns_destinationipv4 = '';
-						$dns_destinationipv6 = '';
-						$dns_destinationcname = '';
-						$dns_mx10 = '';
-						$dns_mx20 = '';
-						$dns_txt = '';
-
-						if(isset($_POST['dns_destip_type']))
-						{
-							$dns_destip_type = (int)$_POST['dns_destip_type'];
-						}
-						else
-						{
-							$dns_destip_type = 0;
-						}
-
-						$dns_destmx_type = ($_POST['dns_destmx_type'] == '1' ? '1' : '0');
-
-						if($dns_destip_type == 1)
-						{
-							if(isset($_POST['dns_destinationipv4'])
-							   && $_POST['dns_destinationipv4'] != '')
-							{
-								$dns_destinationipv4 = validate_ip($_POST['dns_destinationipv4']);
-							}
-							else
-							{
-								$dns_destinationipv4 = $settings['system']['ipaddress'];
-							}
-
-							if(isset($_POST['dns_destinationipv6'])
-							   && $_POST['dns_destinationipv6'] != '')
-							{
-								$dns_destinationipv6 = validate_ip($_POST['dns_destinationipv6']);
-							}
-							else
-							{
-								$dns_destinationipv6 = '';
-							}
-						}
-						elseif($dns_destip_type == 2)
-						{
-							$dns_destinationcname = validateDomain($_POST['dns_destinationcname']);
-						}
-						else
-						{
-							$dns_destinationipv4 = $settings['system']['ipaddress'];
-						}
-
-						if($dns_destmx_type == '1')
-						{
-							if(isset($_POST['dns_mxentry10'])
-							   && $_POST['dns_mxentry10'] != '')
-							{
-								$dns_mx10 = validateDomain($_POST['dns_mxentry10']);
-							}
-							else
-							{
-								if($settings['system']['maxservers'] != '')
-								{
-									$mxsrvs = explode(',', $settings['system']['maxservers']);
-									$dns_mx10 = $mxsrvs[0];
-								}
-								else
-								{
-									$dns_mx10 = $settings['system']['hostname'];
-								}
-							}
-
-							if(isset($_POST['dns_mxentry20'])
-							   && $_POST['dns_mxentry20'] != '')
-							{
-								$dns_mx20 = validateDomain($_POST['dns_mxentry20']);
-							}
-							else
-							{
-								if($settings['system']['maxservers'] != '')
-								{
-									$mxsrvs = explode(',', $settings['system']['maxservers']);
-
-									if(isset($mxsrvs[1])
-									   && $mxsrvs[1] != '')
-									{
-										$dns_mx20 = $mxsrvs[1];
-									}
-									else
-									{
-										$dns_mx20 = $mxsrvs[0];
-									}
-								}
-								else
-								{
-									$dns_mx20 = $settings['system']['hostname'];
-								}
-							}
-						}
-						else
-						{
-							if($settings['system']['mxservers'] == '')
-							{
-								$dns_mx10 = $settings['system']['hostname'];
-								$dns_mx20 = $settings['system']['hostname'];
-							}
-							else
-							{
-								$mx = explode(',', $settings['system']['mxservers']);
-
-								if(isset($mx[0])
-								   && $mx[0] != '')
-								{
-									if(strstr($mx[0], ' ') !== false)
-									{
-										$_mx = explode(' ', $mx[0]);
-										$dns_mx10 = $_mx[1];
-										$dns_mx20 = $_mx[1];
-									}
-									else
-									{
-										$dns_mx10 = $mx[0];
-										$dns_mx20 = $mx[0];
-									}
-
-									if(isset($mx[1])
-									   && $mx[1] != '')
-									{
-										if(strstr($mx[1], ' ') !== false)
-										{
-											$_mx = explode(' ', $mx[1]);
-											$dns_mx20 = $_mx[1];
-										}
-										else
-										{
-											$dns_mx20 = $mx[1];
-										}
-									}
-								}
-								else
-								{
-									$dns_mx10 = $settings['system']['hostname'];
-									$dns_mx20 = $settings['system']['hostname'];
-								}
-							}
-						}
-
-						if(isset($_POST['dns_txtrecords'])
-						   && $_POST['dns_txtrecords'] != '')
-						{
-							$dns_txt = validate($_POST['dns_txtrecords'], 'dns txt entry');
-						}
-						else
-						{
-							$dns_txt = '';
-						}
-					}
 				}
 				elseif($userinfo['caneditphpsettings'] == '1')
 				{
@@ -512,60 +330,6 @@ if($page == 'domains'
 					$specialsettings = '';
 					$wwwserveralias = '1';
 					$ipandport = $settings['system']['defaultip'];
-
-					if($settings['system']['userdns'] == '1')
-					{
-						$dns_destinationipv4 = $settings['system']['ipaddress'];
-						$dns_destinationipv6 = '';
-						$dns_destinationcname = '';
-
-						if($settings['system']['mxservers'] == '')
-						{
-							$dns_mx10 = $settings['system']['hostname'];
-							$dns_mx20 = $settings['system']['hostname'];
-						}
-						else
-						{
-							$mx = explode(',', $settings['system']['mxservers']);
-
-							if(isset($mx[0])
-							   && $mx[0] != '')
-							{
-								if(strstr($mx[0], ' ') !== false)
-								{
-									$_mx = explode(' ', $mx[0]);
-									$dns_mx10 = $_mx[1];
-									$dns_mx20 = $_mx[1];
-								}
-								else
-								{
-									$dns_mx10 = $mx[0];
-									$dns_mx20 = $mx[0];
-								}
-
-								if(isset($mx[1])
-								   && $mx[1] != '')
-								{
-									if(strstr($mx[1], ' ') !== false)
-									{
-										$_mx = explode(' ', $mx[1]);
-										$dns_mx20 = $_mx[1];
-									}
-									else
-									{
-										$dns_mx20 = $mx[1];
-									}
-								}
-							}
-							else
-							{
-								$dns_mx10 = $settings['system']['hostname'];
-								$dns_mx20 = $settings['system']['hostname'];
-							}
-						}
-
-						$dns_txt = '';
-					}
 				}
 				else
 				{
@@ -579,60 +343,6 @@ if($page == 'domains'
 					$specialsettings = '';
 					$wwwserveralias = '1';
 					$ipandport = $settings['system']['defaultip'];
-
-					if($settings['system']['userdns'] == '1')
-					{
-						$dns_destinationipv4 = $settings['system']['ipaddress'];
-						$dns_destinationipv6 = '';
-						$dns_destinationcname = '';
-
-						if($settings['system']['mxservers'] == '')
-						{
-							$dns_mx10 = $settings['system']['hostname'];
-							$dns_mx20 = $settings['system']['hostname'];
-						}
-						else
-						{
-							$mx = explode(',', $settings['system']['mxservers']);
-
-							if(isset($mx[0])
-							   && $mx[0] != '')
-							{
-								if(strstr($mx[0], ' ') !== false)
-								{
-									$_mx = explode(' ', $mx[0]);
-									$dns_mx10 = $_mx[1];
-									$dns_mx20 = $_mx[1];
-								}
-								else
-								{
-									$dns_mx10 = $mx[0];
-									$dns_mx20 = $mx[0];
-								}
-
-								if(isset($mx[1])
-								   && $mx[1] != '')
-								{
-									if(strstr($mx[1], ' ') !== false)
-									{
-										$_mx = explode(' ', $mx[1]);
-										$dns_mx20 = $_mx[1];
-									}
-									else
-									{
-										$dns_mx20 = $mx[1];
-									}
-								}
-							}
-							else
-							{
-								$dns_mx10 = $settings['system']['hostname'];
-								$dns_mx20 = $settings['system']['hostname'];
-							}
-						}
-
-						$dns_txt = '';
-					}
 				}
 
 				if(!preg_match('/^https?\:\/\//', $documentroot))
@@ -826,9 +536,26 @@ if($page == 'domains'
 						$caneditdomain = "0";
 					}
 
-					$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`domain`, `customerid`, `adminid`, `documentroot`, `ipandport`,`aliasdomain`, `zonefile`, `dkim`, `wwwserveralias`, `isbinddomain`, `isemaildomain`, `email_only`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`,`speciallogfile`, `specialsettings`, `ssl`, `ssl_redirect`, `ssl_ipandport`, `add_date`, `registration_date`, `interval_fee`, `interval_length`, `interval_type`, `interval_payment`, `setup_fee`, `taxclass`, `service_active`, `servicestart_date`) VALUES ('" . $db->escape($domain) . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '" . $db->escape($documentroot) . "', '" . $db->escape($ipandport) . "', " . (($aliasdomain != 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", '" . $db->escape($zonefile) . "', '" . $db->escape($dkim) . "', '" . $db->escape($wwwserveralias) . "', '" . $db->escape($isbinddomain) . "', '" . $db->escape($isemaildomain) . "', '" . $db->escape($isemail_only) . "', '" . $db->escape($subcanemaildomain) . "', '" . $db->escape($caneditdomain) . "', '" . $db->escape($openbasedir) . "', '" . $db->escape($safemode) . "', '" . $db->escape($speciallogfile) . "', '" . $db->escape($specialsettings) . "', '" . $ssl . "', '" . $ssl_redirect . "' , '" . $ssl_ipandport . "', '" . $db->escape(time()) . "', '" . $db->escape($registration_date) . "', '" . $db->escape($interval_fee) . "', '" . $db->escape($interval_length) . "', '" . $db->escape($interval_type) . "', '" . $db->escape($interval_payment) . "', '" . $db->escape($setup_fee) . "', '" . $db->escape($taxclass) . "', '" . $db->escape($service_active) . "', '" . $db->escape($servicestart_date) . "')");
+					$phpsettindid = 1;
+					if( isset($_POST['phpconfig']) &&
+						$_POST['phpconfig'] != $result['phpsettingid'])
+					{
+						$value = validate($_POST['phpconfig'], 'phpconfig', '/^([0-9]{2,999}|[1-9]{1,1})$/');
+
+						$configs = $db->query("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$value);
+						if($db->num_rows($configs) == 1)
+						{
+							$phpsettindid = $value;
+						}
+						else
+						{
+							standard_error('phpsettingidwrong');
+							exit;
+						}
+					}
+
+					$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`domain`, `customerid`, `adminid`, `documentroot`, `ipandport`,`aliasdomain`, `zonefile`, `dkim`, `wwwserveralias`, `isbinddomain`, `isemaildomain`, `email_only`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`,`speciallogfile`, `specialsettings`, `ssl`, `ssl_redirect`, `ssl_ipandport`, `add_date`, `registration_date`, `interval_fee`, `interval_length`, `interval_type`, `interval_payment`, `setup_fee`, `taxclass`, `service_active`, `servicestart_date`, `phpsettingid`) VALUES ('" . $db->escape($domain) . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '" . $db->escape($documentroot) . "', '" . $db->escape($ipandport) . "', " . (($aliasdomain != 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", '" . $db->escape($zonefile) . "', '" . $db->escape($dkim) . "', '" . $db->escape($wwwserveralias) . "', '" . $db->escape($isbinddomain) . "', '" . $db->escape($isemaildomain) . "', '" . $db->escape($isemail_only) . "', '" . $db->escape($subcanemaildomain) . "', '" . $db->escape($caneditdomain) . "', '" . $db->escape($openbasedir) . "', '" . $db->escape($safemode) . "', '" . $db->escape($speciallogfile) . "', '" . $db->escape($specialsettings) . "', '" . $ssl . "', '" . $ssl_redirect . "' , '" . $ssl_ipandport . "', '" . $db->escape(time()) . "', '" . $db->escape($registration_date) . "', '" . $db->escape($interval_fee) . "', '" . $db->escape($interval_length) . "', '" . $db->escape($interval_type) . "', '" . $db->escape($interval_payment) . "', '" . $db->escape($setup_fee) . "', '" . $db->escape($taxclass) . "', '" . $db->escape($service_active) . "', '" . $db->escape($servicestart_date) . "', '" . (int)$phpsettindid . "')");
 					$domainid = $db->insert_id();
-					$db->query("INSERT INTO `" . TABLE_PANEL_DNSENTRY . "` (`domainid`, `customerid`, `adminid`, `ipv4`, `ipv6`, `cname`, `mx10`, `mx20`, `txt`) VALUES ('" . (int)$domainid . "', '" . (int)$customerid . "', '" . (int)$userinfo['adminid'] . "', '" . $db->escape($dns_destinationipv4) . "', '" . $db->escape($dns_destinationipv6) . "', '" . $db->escape($dns_destinationcname) . "', '" . $db->escape($dns_mx10) . "', '" . $db->escape($dns_mx20) . "', '" . $db->escape($dns_txt) . "')");
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$userinfo['adminid'] . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "added domain '" . $domain . "'");
 					inserttask('1');
@@ -935,6 +662,13 @@ if($page == 'domains'
 					$domains.= makeoption($idna_convert->decode($row_domain['domain']) . ' (' . $row_domain['loginname'] . ')', $row_domain['id']);
 				}
 
+				$phpconfigs = '';
+				$configs = $db->query("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "`");
+				while($row = $db->fetch_array($configs))
+				{
+					$phpconfigs .= makeoption($row['description'], $row['id'], '1', true, true);
+				}
+
 				$isbinddomain = makeyesno('isbinddomain', '1', '0', '1');
 				$isemaildomain = makeyesno('isemaildomain', '1', '0', '1');
 				$isemail_only = makeyesno('isemail_only', '1', '0', '0');
@@ -956,7 +690,7 @@ if($page == 'domains'
 	elseif($action == 'edit'
 	       && $id != 0)
 	{
-		$result = $db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`email_only`, `d`.`documentroot`, `d`.`ssl`, `d`.`ssl_redirect`, `d`.`ssl_ipandport`,`d`.`ipandport`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`dkim`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `d`.`add_date`, `d`.`registration_date`, `d`.`interval_fee`, `d`.`interval_length`, `d`.`interval_type`, `d`.`interval_payment`, `d`.`setup_fee`, `d`.`taxclass`, `d`.`service_active`, `d`.`servicestart_date`, `d`.`serviceend_date`, `d`.`lastinvoiced_date`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "WHERE `d`.`parentdomainid`='0' AND `d`.`id`='" . (int)$id . "'" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
+		$result = $db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`email_only`, `d`.`documentroot`, `d`.`ssl`, `d`.`ssl_redirect`, `d`.`ssl_ipandport`,`d`.`ipandport`, `d`.`aliasdomain`, `d`.`isbinddomain`, `d`.`isemaildomain`, `d`.`subcanemaildomain`, `d`.`dkim`, `d`.`caneditdomain`, `d`.`zonefile`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `d`.`add_date`, `d`.`registration_date`, `d`.`interval_fee`, `d`.`interval_length`, `d`.`interval_type`, `d`.`interval_payment`, `d`.`setup_fee`, `d`.`taxclass`, `d`.`service_active`, `d`.`servicestart_date`, `d`.`serviceend_date`, `d`.`lastinvoiced_date`, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `d`.`phpsettingid` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "WHERE `d`.`parentdomainid`='0' AND `d`.`id`='" . (int)$id . "'" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
 		$alias_check = $db->query_first('SELECT COUNT(`id`) AS count FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . (int)$result['id'] . '\'');
 		$alias_check = $alias_check['count'];
 
@@ -984,7 +718,8 @@ if($page == 'domains'
 					$registration_date = 0;
 				}
 
-				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
+				if($userinfo['edit_billingdata'] == '1'
+				   && $settings['billing']['activate_billing'] == '1')
 				{
 					$service_active = intval($_POST['service_active']);
 					$interval_payment = intval($_POST['interval_payment']);
@@ -995,7 +730,9 @@ if($page == 'domains'
 					$interval_payment = $result['interval_payment'];
 				}
 
-				if($enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
+				if($enable_billing_data_edit === true
+				   && $userinfo['edit_billingdata'] == '1'
+				   && $settings['billing']['activate_billing'] == '1')
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
@@ -1269,158 +1006,6 @@ if($page == 'domains'
 					}
 				}
 
-				if($settings['system']['userdns'] == '1')
-				{
-					$dns_destinationipv4 = '';
-					$dns_destinationipv6 = '';
-					$dns_destinationcname = '';
-					$dns_mx10 = '';
-					$dns_mx20 = '';
-					$dns_txt = '';
-
-					if(isset($_POST['dns_destip_type']))
-					{
-						$dns_destip_type = (int)$_POST['dns_destip_type'];
-					}
-					else
-					{
-						$dns_destip_type = 0;
-					}
-
-					$dns_destmx_type = ($_POST['dns_destmx_type'] == '1' ? '1' : '0');
-
-					if($dns_destip_type == 1)
-					{
-						if(isset($_POST['dns_destinationipv4'])
-						   && $_POST['dns_destinationipv4'] != '')
-						{
-							$dns_destinationipv4 = validate_ip($_POST['dns_destinationipv4']);
-						}
-						else
-						{
-							$dns_destinationipv4 = $settings['system']['ipaddress'];
-						}
-
-						if(isset($_POST['dns_destinationipv6'])
-						   && $_POST['dns_destinationipv6'] != '')
-						{
-							$dns_destinationipv6 = validate_ip($_POST['dns_destinationipv6']);
-						}
-						else
-						{
-							$dns_destinationipv6 = '';
-						}
-					}
-					elseif($dns_destip_type == 2)
-					{
-						$dns_destinationcname = validateDomain($_POST['dns_destinationcname']);
-					}
-					else
-					{
-						$dns_destinationipv4 = $settings['system']['ipaddress'];
-					}
-
-					if($dns_destmx_type == '1')
-					{
-						if(isset($_POST['dns_mxentry10'])
-						   && $_POST['dns_mxentry10'] != '')
-						{
-							$dns_mx10 = validateDomain($_POST['dns_mxentry10']);
-						}
-						else
-						{
-							if($settings['system']['maxservers'] != '')
-							{
-								$mxsrvs = explode(',', $settings['system']['maxservers']);
-
-								if(isset($mxsrvs[0])
-								   && $mxsrvs[0] != '')
-								{
-									if(strstr($mxsrvs[0], ' ') !== false)
-									{
-										$_mx = explode(' ', $mxsrvs[0]);
-										$dns_mx10 = $_mx[1];
-									}
-									else
-									{
-										$dns_mx10 = $mxsrvs[0];
-									}
-								}
-							}
-							else
-							{
-								$dns_mx10 = $settings['system']['hostname'];
-							}
-						}
-
-						if(isset($_POST['dns_mxentry20'])
-						   && $_POST['dns_mxentry20'] != '')
-						{
-							$dns_mx20 = validateDomain($_POST['dns_mxentry20']);
-						}
-						else
-						{
-							if($settings['system']['maxservers'] != '')
-							{
-								$mxsrvs = explode(',', $settings['system']['maxservers']);
-
-								if(isset($mxsrvs[1])
-								   && $mxsrvs[1] != '')
-								{
-									if(strstr($mxsrvs[1], ' ') !== false)
-									{
-										$_mx = explode(' ', $mxsrvs[1]);
-										$dns_mx20 = $_mx[1];
-									}
-									else
-									{
-										if(isset($mxsrvs[0])
-										   && $mxsrvs[0] != '')
-										{
-											if(strstr($mxsrvs[0], ' ') !== false)
-											{
-												$_mx = explode(' ', $mxsrvs[0]);
-												$dns_mx20 = $_mx[1];
-											}
-											else
-											{
-												$dns_mx20 = $mxsrvs[0];
-											}
-										}
-										else
-										{
-											$dns_mx20 = $settings['system']['hostname'];
-										}
-									}
-								}
-								else
-								{
-									$dns_mx20 = $settings['system']['hostname'];
-								}
-							}
-							else
-							{
-								$dns_mx20 = $settings['system']['hostname'];
-							}
-						}
-					}
-					else
-					{
-						$dns_mx10 = $settings['system']['hostname'];
-						$dns_mx20 = $settings['system']['hostname'];
-					}
-
-					if(isset($_POST['dns_txtrecords'])
-					   && $_POST['dns_txtrecords'] != '')
-					{
-						$dns_txt = validate($_POST['dns_txtrecords'], 'dns txt entry');
-					}
-					else
-					{
-						$dns_txt = '';
-					}
-				}
-
 				if($documentroot != $result['documentroot']
 				   || $ipandport != $result['ipandport']
 				   || $wwwserveralias != $result['wwwserveralias']
@@ -1471,9 +1056,21 @@ if($page == 'domains'
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `ipandport`='" . $db->escape($ipandport) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `specialsettings`='" . $db->escape($specialsettings) . "'" . $updatechildren . " WHERE `parentdomainid`='" . (int)$id . "'");
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `ssl`='" . (int)$ssl . "', `ssl_redirect`='" . (int)$ssl_redirect . "', `ssl_ipandport`='" . (int)$ssl_ipandport . "'  WHERE `id`='" . (int)$id . "'");
 
-				if($settings['system']['userdns'] == '1')
+				if( isset($_POST['phpconfig']) &&
+					$_POST['phpconfig'] != $result['phpsettingid'])
 				{
-					$result = $db->query("UPDATE `" . TABLE_PANEL_DNSENTRY . "` SET `ipv4`='" . $db->escape($dns_destinationipv4) . "', `ipv6`='" . $db->escape($dns_destinationipv6) . "', `cname`='" . $db->escape($dns_destinationcname) . "', `mx10`='" . $db->escape($dns_mx10) . "', `mx20`='" . $db->escape($dns_mx20) . "', `txt`='" . $db->escape($dns_txt) . "' WHERE `domainid`='" . (int)$id . "'");
+					$value = validate($_POST['phpconfig'], 'phpconfig', '/^([0-9]{2,999}|[1-9]{1,1})$/');
+
+					$configs = $db->query("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$value);
+					if($db->num_rows($configs) == 1)
+					{
+						$db->query("UPDATE " . TABLE_PANEL_DOMAINS . " SET `phpsettingid` = " . (int)$value . " WHERE `id` = " . (int)$id);
+					}
+					else
+					{
+						standard_error('phpsettingidwrong');
+						exit;
+					}
 				}
 
 				$log->logAction(ADM_ACTION, LOG_INFO, "edited domain #" . $id);
@@ -1546,86 +1143,6 @@ if($page == 'domains'
 					$show_ssl_ipsandports = 1;
 				}
 
-				if($settings['system']['userdns'] == '1')
-				{
-					$result_dns = $db->query("SELECT * FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `domainid` = '" . (int)$result['id'] . "'");
-					$row_dns = $db->fetch_array($result_dns);
-
-					if($row_dns['ipv4'] == $settings['system']['ipaddress']
-					   && $row_dns['ipv6'] == ''
-					   && $row_dns['cname'] == '')
-					{
-						$dns_destip_type_0_checked = 'checked="checked"';
-						$dns_destip_type_1_checked = '';
-						$dns_destip_type_2_checked = '';
-						$dns_destinationipv4 = '';
-						$dns_destinationipv6 = '';
-						$dns_destinationcname = '';
-					}
-					elseif($row_dns['ipv4'] != ''
-					       && $row_dns['ipv4'] != $settings['system']['ipaddress'])
-					{
-						$dns_destip_type_0_checked = '';
-						$dns_destip_type_1_checked = 'checked="checked"';
-						$dns_destip_type_2_checked = '';
-						$dns_destinationipv4 = $row_dns['ipv4'];
-						$dns_destinationipv6 = $row_dns['ipv6'];
-						$dns_destinationcname = '';
-					}
-					elseif($row_dns['cname'] != '')
-					{
-						$dns_destip_type_0_checked = '';
-						$dns_destip_type_1_checked = '';
-						$dns_destip_type_2_checked = 'checked="checked"';
-						$dns_destinationipv4 = '';
-						$dns_destinationipv6 = '';
-						$dns_destinationcname = $row_dns['cname'];
-					}
-					else
-					{
-						$dns_destip_type_0_checked = 'checked="checked"';
-						$dns_destip_type_1_checked = '';
-						$dns_destip_type_2_checked = '';
-						$dns_destinationipv4 = '';
-						$dns_destinationipv6 = '';
-						$dns_destinationcname = '';
-					}
-
-					if($row_dns['mx10'] != ''
-					   && (($settings['system']['mxservers'] != '' && in_array($row_dns['mx10'], $settings['system']['mxservers'])) || $row_dns['mx10'] == $settings['system']['hostname']))
-					{
-						$dns_destmx_type_0_checked = 'checked="checked"';
-						$dns_destmx_type_1_checked = '';
-						$dns_mxentry10 = '';
-						$dns_mxentry20 = '';
-					}
-					elseif($row_dns['mx10'] != ''
-					       && ($settings['system']['mxservers'] == '' || !in_array($row_dns['mx10'], $settings['system']['mxservers']))
-					       && $row_dns['mx10'] != $settings['system']['hostname'])
-					{
-						$dns_destmx_type_0_checked = '';
-						$dns_destmx_type_1_checked = 'checked="checked"';
-						$dns_mxentry10 = $row_dns['mx10'];
-						$dns_mxentry20 = $row_dns['mx20'];
-					}
-					else
-					{
-						$dns_destmx_type_0_checked = 'checked="checked"';
-						$dns_destmx_type_1_checked = '';
-						$dns_mxentry10 = '';
-						$dns_mxentry20 = '';
-					}
-
-					if($row_dns['txt'] != '')
-					{
-						$dns_txtrecords = $row_dns['txt'];
-					}
-					else
-					{
-						$dns_txtrecords = '';
-					}
-				}
-
 				$result['specialsettings'] = $result['specialsettings'];
 				$isbinddomain = makeyesno('isbinddomain', '1', '0', $result['isbinddomain']);
 				$wwwserveralias = makeyesno('wwwserveralias', '1', '0', $result['wwwserveralias']);
@@ -1643,15 +1160,22 @@ if($page == 'domains'
 				$safemode = makeyesno('safemode', '1', '0', $result['safemode']);
 				$speciallogfile = ($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
 				$interval_type = getIntervalTypes('option', $result['interval_type']);
-				$service_active = ( $result['service_active'] == '0' ? $lng['panel']['no'] : '' ) . ( $result['service_active'] == '1' ? $lng['panel']['yes'] : '' );
+				$service_active = ($result['service_active'] == '0' ? $lng['panel']['no'] : '') . ($result['service_active'] == '1' ? $lng['panel']['yes'] : '');
 				$service_active_options = makeyesno('service_active', '1', '0', $result['service_active']);
-				$interval_payment = ( $result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '' ) . ( $result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '' );
+				$interval_payment = ($result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '') . ($result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '');
 				$interval_payment_options = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
 				$result['add_date'] = date('Y-m-d', $result['add_date']);
 				$taxclasses_option = '';
 				foreach($taxclasses as $classid => $classname)
 				{
 					$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
+				}
+
+				$phpconfigs = '';
+				$configs = $db->query("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "`");
+				while($row = $db->fetch_array($configs))
+				{
+					$phpconfigs .= makeoption($row['description'], $row['id'], $result['phpsettingid'], true, true);
 				}
 
 				$result = htmlentities_array($result);
