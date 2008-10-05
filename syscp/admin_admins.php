@@ -110,7 +110,7 @@ if($page == 'admins'
 		{
 			if($paging->checkDisplay($i))
 			{
-				$highlight_row = ( $row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1' );
+				$highlight_row = ($row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1');
 				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
 				$row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
 				$row['diskspace_used'] = round($row['diskspace_used']/1024, $settings['panel']['decimal_places']);
@@ -169,11 +169,6 @@ if($page == 'admins'
 				$db->query("DELETE FROM `" . TABLE_PANEL_TRAFFIC_ADMINS . "` WHERE `adminid`='" . (int)$id . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `adminid` = '" . (int)$userinfo['userid'] . "' WHERE `adminid` = '" . (int)$id . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `adminid` = '" . (int)$userinfo['userid'] . "' WHERE `adminid` = '" . (int)$id . "'");
-
-				if($settings['system']['userdns'] == '1')
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_DNSENTRY . "` SET `adminid` = '" . (int)$userinfo['userid'] . "' WHERE `adminid` = '" . (int)$id . "'");
-				}
 
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted admin '" . $result['loginname'] . "'");
 				updateCounters();
@@ -305,7 +300,8 @@ if($page == 'admins'
 			$domains_see_all = intval($_POST['domains_see_all']);
 			$caneditphpsettings = intval($_POST['caneditphpsettings']);
 			$change_serversettings = intval($_POST['change_serversettings']);
-			if( $settings['billing']['activate_billing'] == '1' )
+
+			if($settings['billing']['activate_billing'] == '1')
 			{
 				$edit_billingdata = intval($_POST['edit_billingdata']);
 			}
@@ -313,6 +309,7 @@ if($page == 'admins'
 			{
 				$edit_billingdata = $result['edit_billingdata'];
 			}
+
 			$diskspace = intval_ressource($_POST['diskspace']);
 
 			if(isset($_POST['diskspace_ul']))
@@ -326,13 +323,13 @@ if($page == 'admins'
 			{
 				$traffic = -1;
 			}
-
 			$diskspace = $diskspace*1024;
 			$traffic = $traffic*1024*1024;
 			$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
+
 			$ipaddress = intval_ressource($_POST['ipaddress']);
-			
-			if( $settings['billing']['activate_billing'] == '1' )
+
+			if($settings['billing']['activate_billing'] == '1')
 			{
 				$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
 				$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
@@ -451,7 +448,6 @@ if($page == 'admins'
 				$customer_categories_period_array = array();
 				$customer_categories_period = '';
 			}
-
 
 			// Check if the account already exists
 
@@ -741,7 +737,6 @@ if($page == 'admins'
 						{
 							$email_quota = intval_ressource($_POST['email_quota']);
 						}
-
 						$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
 					}
 					else
@@ -774,7 +769,8 @@ if($page == 'admins'
 					$domains_see_all = intval($_POST['domains_see_all']);
 					$caneditphpsettings = intval($_POST['caneditphpsettings']);
 					$change_serversettings = intval($_POST['change_serversettings']);
-					if( $settings['billing']['activate_billing'] == '1' )
+
+					if($settings['billing']['activate_billing'] == '1')
 					{
 						$edit_billingdata = intval($_POST['edit_billingdata']);
 					}
@@ -782,6 +778,7 @@ if($page == 'admins'
 					{
 						$edit_billingdata = $result['edit_billingdata'];
 					}
+
 					$diskspace = intval($_POST['diskspace']);
 
 					if(isset($_POST['diskspace_ul']))
@@ -798,10 +795,11 @@ if($page == 'admins'
 
 					$diskspace = $diskspace*1024;
 					$traffic = $traffic*1024*1024;
+
 					$ipaddress = intval_ressource($_POST['ipaddress']);
 				}
 
-				if( $settings['billing']['activate_billing'] == '1' )
+				if($settings['billing']['activate_billing'] == '1')
 				{
 					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
 					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
@@ -865,14 +863,14 @@ if($page == 'admins'
 					$bankaccount_bank = $result['bankaccount_bank'];
 					$service_active = $result['service_active'];
 					$interval_payment = $result['interval_payment'];
-
-					$customer_categories_once_array = explode( '-', $result['customer_categories_once'] );
+					$customer_categories_once_array = explode('-', $result['customer_categories_once']);
 					$customer_categories_once = $result['customer_categories_once'];
-					$customer_categories_period_array = explode( '-', $result['customer_categories_period'] );
+					$customer_categories_period_array = explode('-', $result['customer_categories_period']);
 					$customer_categories_period = $result['customer_categories_period'];
 				}
 
-				if( $enable_billing_data_edit === true && $settings['billing']['activate_billing'] == '1' )
+				if($enable_billing_data_edit === true
+				   && $settings['billing']['activate_billing'] == '1')
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);

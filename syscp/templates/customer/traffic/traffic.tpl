@@ -3,7 +3,8 @@ $header
 	<tr>
 		<td class="maintitle" colspan="3"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['menue']['traffic']['traffic']}</b></td>
 	</tr>
-	<td colspan="3" class="field_name_border_left">
+	<tr>
+		<td colspan="3" class="field_name_border_left">
 			<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable" width="100%">
 				<tr>
 					<td class="title">{$lng['traffic']['sumftp']} GB</td>
@@ -17,6 +18,7 @@ $header
 				</tr>
 			</table>
 		</td>
+	</tr>
 	<tr>
 		<td class="title">{$lng['traffic']['month']}</td>
 		<td class="title">{$lng['traffic']['distribution']}</td>

@@ -1,12 +1,12 @@
 $header
 	<form action="$filename" method="post">
-		<input type="hidden" name="s" value="$s">
-		<input type="hidden" name="page" value="$page">
+		<input type="hidden" name="s" value="$s"/>
+		<input type="hidden" name="page" value="$page"/>
 		<input type="hidden" name="send" value="send" />
 		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable">
 			<tr>
 				<td class="maintitle_search_left"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['ticket']['archivesearch']}</b></td>
-        			<td class="maintitle_search_right" colspan="5">&nbsp;</td>
+				<td class="maintitle_search_right">&nbsp;</td>
 			</tr>
       			<if 0 < $tickets_count >
 			<tr>
@@ -21,7 +21,7 @@ $header
       			</if>
       			<if $tickets_count < 1 >
         		<tr>
-				<td class="field_display_border_left" colspan="5">{$lng['ticket']['noresults']}</td>
+				<td class="field_display_border_left" colspan="2">{$lng['ticket']['noresults']}</td>
 				</tr>
 			</if>
 		</table>

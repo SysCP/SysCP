@@ -386,9 +386,8 @@ if(isset($userinfo['loginname'])
 	$log = SysCPLogger::getInstanceOf($userinfo, $db, $settings);
 }
 
-if( $settings['billing']['activate_billing'] == '1' )
+if($settings['billing']['activate_billing'] == '1')
 {
-
 	/**
 	 * Include Billing classes
 	 */
@@ -402,7 +401,6 @@ if( $settings['billing']['activate_billing'] == '1' )
 }
 else
 {
-
 	/**
 	 * Deactivate Billing for all users
 	 */

@@ -36,6 +36,8 @@ $lng['install']['admin_pass_confirm'] = 'Administrator-Password (confirm)';
 $lng['install']['serversettings'] = 'Server settings';
 $lng['install']['servername'] = 'Server name (FQDN)';
 $lng['install']['serverip'] = 'Server IP';
+$lng['install']['httpuser'] = 'HTTP username';
+$lng['install']['httpgroup'] = 'HTTP groupname';
 $lng['install']['apacheversion'] = 'Apacheversion';
 $lng['install']['next'] = 'Next';
 
@@ -45,6 +47,9 @@ $lng['install']['next'] = 'Next';
 
 $lng['install']['testing_mysql'] = 'Testing if MySQL-root-username and password are correct...';
 $lng['install']['erasing_old_db'] = 'Erasing old Database...';
+$lng['install']['backup_old_db'] = 'Create backup of the old Database...';
+$lng['install']['backing_up'] = 'Backing up';
+$lng['install']['backing_up_binary_missing'] = '/usr/bin/mysqldump is missing';
 $lng['install']['create_mysqluser_and_db'] = 'Creating MySQL-database and username...';
 $lng['install']['testing_new_db'] = 'Testing if MySQL-database and username have been created correctly...';
 $lng['install']['importing_data'] = 'Importing data into MySQL-database...';

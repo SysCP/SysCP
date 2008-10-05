@@ -8,5 +8,5 @@
 	<td class="field_name<if $highlight_row>_red</if>"><b><font color="green">{$row['emails_used']}</font></b>/<b><font color="#FD6204">{$row['emails']}</font></b><br /><b><font color="green">{$row['subdomains_used']}</font></b>/<b><font color="#FD6204">{$row['subdomains']}</font></b></td>
 	<td class="field_name<if $highlight_row>_red</if>"><b><font color="green">{$row['email_accounts_used']}</font></b>/<b><font color="#FD6204">{$row['email_accounts']}</font></b><br /><b><font color="green">{$row['email_forwarders_used']}</font></b>/<b><font color="#FD6204">{$row['email_forwarders']}</font></b></td>
 	<td class="field_name<if $highlight_row>_red</if>" style=" text-align: center; "><if $row['deactivated'] == '1'>{$lng['panel']['yes']}<else>{$lng['panel']['no']}</if></td>
-	<td class="field_name<if $highlight_row>_red</if>"><a href="$filename?s=$s&amp;page=$page&amp;action=delete&amp;id={$row['adminid']}">{$lng['panel']['delete']}</a><br /><a href="$filename?s=$s&amp;page=$page&amp;action=edit&amp;id={$row['adminid']}">{$lng['panel']['edit']}</a></td>
+	<td class="field_name<if $highlight_row>_red</if>"><a href="$filename?s=$s&amp;page=$page&amp;action=edit&amp;id={$row['adminid']}">{$lng['panel']['edit']}</a><br /><a href="$filename?s=$s&amp;page=$page&amp;action=delete&amp;id={$row['adminid']}">{$lng['panel']['delete']}</a></td>
 </tr>

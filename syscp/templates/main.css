@@ -102,13 +102,14 @@ input.bottom {
 }
 
 .subsection {
-	height				: 25px;
+	padding-top			: 8px;
 	background-image	: url( '../images/subsection.gif' );
 }
 
 .endsection {
-	height				: 25px;
+	height				: 10px;
 	background-image	: url( '../images/endsection.gif' );
+	background-position : bottom;
 }
 
 .maintable {
@@ -130,6 +131,7 @@ input.bottom {
 	border-style		: solid;
 	border-width		: 1px;
 	text-align			: left;
+	font-size			: 1.3em;
 }
 
 .main_field_name {
@@ -350,6 +352,7 @@ textarea.textarea_border {
 	border-width		: 1px;
 	border-right-width	: 0px;
 	text-align			: left;
+	font-size			: 1.3em;
 }
 
 .maintitle_search_right {
@@ -399,4 +402,37 @@ TR {
 
 TR.RowOverSelected {
 	background-color : #FFFFFF;
+}
+
+/* ADDED WITH APS INSTALLER */
+
+.dataerror
+{
+	font-weight: bold;
+	color: #DD2222;
+	margin: 15px;
+	padding: 20px 20px 20px 60px;
+	background-color: #f1baba;
+	border: 1px solid #ce1d1d;
+	background-image: url('../images/error.png');
+	background-repeat: no-repeat;
+	background-position: 15px 50%;
+}
+
+.fielderror
+{
+	font-weight: bold;
+	color: #DD2222;
+	background-color: #f1baba;
+	border: 1px solid #DD2222;
+	padding: 8px;
+	margin: 8px 0 8px 0;
+}
+
+.pageitem
+{
+	padding: 6px;
+	border: 1px solid #666666;
+	margin-right: 3px;
+	background-color: #C6DEFF;
 }

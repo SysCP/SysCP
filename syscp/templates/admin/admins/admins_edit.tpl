@@ -14,7 +14,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['accountdata']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
@@ -44,7 +44,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['contactdata']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
@@ -106,7 +106,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['servicedata']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
@@ -192,7 +192,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<if $enable_billing_data_edit === true><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /><else><input class="bottom" type="submit" name="enable_billing_data_edit" value="{$lng['panel']['allow_modifications']}" /></if>
 				</td>
 			</tr>
@@ -250,7 +250,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['invoicedata']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
@@ -283,7 +283,7 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="payment_method">{$payment_method}</select></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['customer']['bankaccount_holder']}:</td>
+				<td class="main_field_name" valign="top">{$lng['customer']['bankaccount_holder']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea name="bankaccount_holder" cols="20" rows="3">{$result['bankaccount_holder']}</textarea></td>
 			</tr>
 			<tr>

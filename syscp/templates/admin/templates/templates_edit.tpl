@@ -10,19 +10,19 @@ $header
 				<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['templates']['template_edit']}</b></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['login']['language']}:</td>
+				<td class="main_field_name">{$lng['login']['language']}</td>
 				<td class="main_field_display" nowrap="nowrap"><b>{$result['language']}</b></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['admin']['templates']['action']}:</td>
+				<td class="main_field_name">{$lng['admin']['templates']['action']}</td>
 				<td class="main_field_display" nowrap="nowrap"><b>$template</b></td>
 			</tr>
 			<tr>
-				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['subject']}: *</td>
+				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['subject']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="subject" value="$subject" maxlength="255" size="75" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name" nowrap="nowrap">{$lng['admin']['templates']['mailbody']}: *</td>
+				<td class="main_field_name" valign="top" nowrap="nowrap">{$lng['admin']['templates']['mailbody']}</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" name="mailbody" rows="20" cols="75">$mailbody</textarea></td>
 			</tr>
 			<tr>

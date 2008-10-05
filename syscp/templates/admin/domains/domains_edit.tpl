@@ -11,7 +11,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_edit']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
 				</td>
 			</tr>
@@ -103,13 +103,19 @@ $header
 				<td class="main_field_display" nowrap="nowrap">$safemode</td>
 			</tr>
 			</if>
+			<if ((int)$settings['system']['mod_fcgid'] == 1) && ($userinfo['change_serversettings'] == '1' || $userinfo['caneditphpsettings'] == '1')>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['phpsettings']['title']}</td>
+				<td class="main_field_display" nowrap="nowrap"><select name="phpconfig">$phpconfigs</select></td>
+			</tr>
+			</if>
 			<if $userinfo['change_serversettings'] == '1'>
 			<tr>
 				<td class="main_field_name">Speciallogfile:</td>
 				<td class="main_field_display" nowrap="nowrap"><b>$speciallogfile</b></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['admin']['ownvhostsettings']}:</td>
+				<td class="main_field_name" valign="top">{$lng['admin']['ownvhostsettings']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="60" name="specialsettings">{$result['specialsettings']}</textarea></td>
 			</tr>
 			<tr>
@@ -126,7 +132,7 @@ $header
 				<td class="maintitle_apply_left">
 					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['billingdata']}</b>
 				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
+				<td class="maintitle_apply_right" nowrap="nowrap">
 					<if $enable_billing_data_edit === true || $userinfo['edit_billingdata'] != '1'><input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" /><else><input class="bottom" type="submit" name="enable_billing_data_edit" value="{$lng['panel']['allow_modifications']}" /></if>
 				</td>
 			</tr>
@@ -175,69 +181,6 @@ $header
 				</td>
 			</tr>
 		</table>
-		<if $settings['system']['userdns'] == '1'>
-		<br />
-		<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
-			<tr>
-				<td class="maintitle_apply_left" colspan="2">
-					<b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['domain_dns_settings']}</b>
-				</td>
-				<td class="maintitle_apply_right" nowarp="nowrap">
-					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-				</td>
-			</tr>
-			<tr>
-				<td class="main_field_name">{$lng['dns']['destinationip']}:</td>
-				<td class="main_field_name"><input type="radio" name="dns_destip_type" value="0" {$dns_destip_type_0_checked} />&nbsp;{$lng['dns']['standardip']}</td>
-				<td class="main_field_name" nowrap="nowrap">
-					<table border="0" style="text-align: left;">
-						<tr>
-							<td><input type="radio" name="dns_destip_type" value="1" {$dns_destip_type_1_checked} />&nbsp;{$lng['dns']['a_record']}</td>
-						</tr>
-						<tr>
-							<td>IPv4:&nbsp;<input type="text" class="text" name="dns_destinationipv4" value="{$dns_destinationipv4}" size="39" /></td>
-						</tr>
-						<tr>
-							<td>IPv6:&nbsp;<input type="text" class="text" name="dns_destinationipv6" value="{$dns_destinationipv6}" size="39" /></td>
-						</tr>
-						<tr>
-							<td><input type="radio" name="dns_destip_type" value="2" {$dns_destip_type_2_checked} />&nbsp;{$lng['dns']['cname_record']}</td>
-						</tr>
-						<tr>
-							<td><input type="text" class="text" name="dns_destinationcname" value="{$dns_destinationcname}" /></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td class="main_field_name">{$lng['dns']['mxrecords']}:</td>
-				<td class="main_field_name"><input type="radio" name="dns_destmx_type" value="0" {$dns_destmx_type_0_checked} />&nbsp;{$lng['dns']['standardmx']}</td>
-				<td class="main_field_name" nowrap="nowrap">
-					<table border="0" style="text-align: left;">
-						<tr>
-							<td><input type="radio" name="dns_destmx_type" value="1" {$dns_destmx_type_1_checked} />&nbsp;{$lng['dns']['mxconfig']}</td>
-						</tr>
-						<tr>
-							<td>{$lng['dns']['priority10']}:&nbsp;<input type="text" class="text" name="dns_mxentry10" value="{$dns_mxentry10}" /></td>
-						</tr>
-						<tr>
-							<td>{$lng['dns']['priority20']}:&nbsp;<input type="text" class="text" name="dns_mxentry20" value="{$dns_mxentry20}" /></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td class="main_field_name">{$lng['dns']['txtrecords']}:</td>
-				<td class="main_field_name">{$lng['dns']['txtexample']}</td>
-				<td class="main_field_display"><textarea class="textarea_noborder" rows="12" cols="60" name="dns_txtrecords">{$dns_txtrecords}</textarea></td>
-			</tr>
-			<tr>
-				<td class="maintitle_apply_right" nowrap="nowrap" colspan="3">
-					<input class="bottom" type="reset" value="{$lng['panel']['reset']}" /><input class="bottom" type="submit" value="{$lng['panel']['save']}" />
-				</td>
-			</tr>
-		</table>
-		</if>
 	</form>
 	<br />
 	<br />

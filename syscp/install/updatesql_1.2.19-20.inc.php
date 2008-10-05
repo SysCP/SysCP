@@ -339,9 +339,9 @@ else
 
 		// Update all email-admins and give'em unlimited email_quota resources
 
-		$sql = "SELECT `adminid` FROM `" . TABLE_PANEL_ADMINS . "` 
-			WHERE `emails` = '-1' 
-			AND `email_accounts` = '-1' 
+		$sql = "SELECT `adminid` FROM `" . TABLE_PANEL_ADMINS . "`
+			WHERE `emails` = '-1'
+			AND `email_accounts` = '-1'
 			AND `email_forwarders` = '-1'";
 		$admins = $db->query($sql);
 
@@ -384,107 +384,107 @@ else
 
 		// ADDING BILLING
 
-		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` 
-		  ADD `firstname` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `title` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `company` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `street` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `zipcode` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `city` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `country` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `phone` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `fax` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `taxid` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `contract_date` DATE NOT NULL, 
-		  ADD `contract_number` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `contract_details` TEXT NOT NULL DEFAULT '', 
-		  ADD `included_domains_qty` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `included_domains_tld` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `additional_traffic_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `additional_traffic_unit` BIGINT( 30 ) NOT NULL DEFAULT '0', 
-		  ADD `additional_diskspace_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `additional_diskspace_unit` BIGINT( 30 ) NOT NULL DEFAULT '0', 
-		  ADD `taxclass` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `setup_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_length` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'm', 
-		  ADD `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0', 
-		  ADD `calc_tax` TINYINT( 1 ) NOT NULL DEFAULT '1', 
-		  ADD `term_of_payment` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `payment_every` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `payment_method` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `bankaccount_holder` TEXT NOT NULL DEFAULT '', 
-		  ADD `bankaccount_number` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `bankaccount_blz` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `bankaccount_bank` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `service_active` TINYINT( 1 ) NOT NULL DEFAULT '0', 
+		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "`
+		  ADD `firstname` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `title` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `company` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `street` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `zipcode` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `city` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `country` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `phone` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `fax` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `taxid` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `contract_date` DATE NOT NULL,
+		  ADD `contract_number` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `contract_details` TEXT NOT NULL DEFAULT '',
+		  ADD `included_domains_qty` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `included_domains_tld` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `additional_traffic_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `additional_traffic_unit` BIGINT( 30 ) NOT NULL DEFAULT '0',
+		  ADD `additional_diskspace_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `additional_diskspace_unit` BIGINT( 30 ) NOT NULL DEFAULT '0',
+		  ADD `taxclass` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `setup_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `interval_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `interval_length` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'm',
+		  ADD `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0',
+		  ADD `calc_tax` TINYINT( 1 ) NOT NULL DEFAULT '1',
+		  ADD `term_of_payment` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `payment_every` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `payment_method` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `bankaccount_holder` TEXT NOT NULL DEFAULT '',
+		  ADD `bankaccount_number` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `bankaccount_blz` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `bankaccount_bank` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `service_active` TINYINT( 1 ) NOT NULL DEFAULT '0',
 		  ADD `servicestart_date` DATE NOT NULL,
 		  ADD `serviceend_date` DATE NOT NULL,
 		  ADD `lastinvoiced_date` DATE NOT NULL,
 		  ADD `lastinvoiced_date_traffic` DATE NOT NULL,
 		  ADD `lastinvoiced_date_diskspace` DATE NOT NULL,
-		  ADD `customer_categories_once` TEXT NOT NULL DEFAULT '', 
-		  ADD `customer_categories_period` TEXT NOT NULL DEFAULT '', 
-		  ADD `invoice_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_hosting` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_hosting_customers` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_domains` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_traffic` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_diskspace` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
+		  ADD `customer_categories_once` TEXT NOT NULL DEFAULT '',
+		  ADD `customer_categories_period` TEXT NOT NULL DEFAULT '',
+		  ADD `invoice_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_hosting` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_hosting_customers` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_domains` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_traffic` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_diskspace` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
 		  ADD `invoice_fee_other` DECIMAL( 10,2 ) NOT NULL DEFAULT '0';");
-		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` 
-		  ADD `taxid` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `title` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `country` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `additional_service_description` TEXT NOT NULL DEFAULT '', 
-		  ADD `contract_date` DATE NOT NULL, 
-		  ADD `contract_number` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `contract_details` TEXT NOT NULL DEFAULT '', 
-		  ADD `included_domains_qty` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `included_domains_tld` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `additional_traffic_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `additional_traffic_unit` BIGINT( 30 ) NOT NULL DEFAULT '0', 
-		  ADD `additional_diskspace_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `additional_diskspace_unit` BIGINT( 30 ) NOT NULL DEFAULT '0', 
-		  ADD `taxclass` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `setup_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_length` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'm', 
-		  ADD `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0', 
-		  ADD `calc_tax` TINYINT( 1 ) NOT NULL DEFAULT '1', 
-		  ADD `term_of_payment` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `payment_every` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `payment_method` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `bankaccount_holder` TEXT NOT NULL DEFAULT '', 
-		  ADD `bankaccount_number` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `bankaccount_blz` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `bankaccount_bank` VARCHAR( 255 ) NOT NULL DEFAULT '', 
-		  ADD `service_active` TINYINT( 1 ) NOT NULL DEFAULT '0', 
+		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "`
+		  ADD `taxid` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `title` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `country` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `additional_service_description` TEXT NOT NULL DEFAULT '',
+		  ADD `contract_date` DATE NOT NULL,
+		  ADD `contract_number` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `contract_details` TEXT NOT NULL DEFAULT '',
+		  ADD `included_domains_qty` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `included_domains_tld` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `additional_traffic_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `additional_traffic_unit` BIGINT( 30 ) NOT NULL DEFAULT '0',
+		  ADD `additional_diskspace_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `additional_diskspace_unit` BIGINT( 30 ) NOT NULL DEFAULT '0',
+		  ADD `taxclass` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `setup_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `interval_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `interval_length` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'm',
+		  ADD `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0',
+		  ADD `calc_tax` TINYINT( 1 ) NOT NULL DEFAULT '1',
+		  ADD `term_of_payment` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `payment_every` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `payment_method` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `bankaccount_holder` TEXT NOT NULL DEFAULT '',
+		  ADD `bankaccount_number` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `bankaccount_blz` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `bankaccount_bank` VARCHAR( 255 ) NOT NULL DEFAULT '',
+		  ADD `service_active` TINYINT( 1 ) NOT NULL DEFAULT '0',
 		  ADD `servicestart_date` DATE NOT NULL,
 		  ADD `serviceend_date` DATE NOT NULL,
 		  ADD `lastinvoiced_date` DATE NOT NULL,
 		  ADD `lastinvoiced_date_traffic` DATE NOT NULL,
 		  ADD `lastinvoiced_date_diskspace` DATE NOT NULL,
-		  ADD `invoice_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_hosting` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_domains` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_traffic` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `invoice_fee_diskspace` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
+		  ADD `invoice_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_hosting` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_domains` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_traffic` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `invoice_fee_diskspace` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
 		  ADD `invoice_fee_other` DECIMAL( 10,2 ) NOT NULL DEFAULT '0';");
-		$db->query("ALTER TABLE `panel_domains` 
-		  ADD `add_date` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `registration_date` DATE NOT NULL, 
-		  ADD `taxclass` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `setup_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_length` INT( 11 ) NOT NULL DEFAULT '0', 
-		  ADD `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'y', 
-		  ADD `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0', 
-		  ADD `service_active` TINYINT( 1 ) NOT NULL DEFAULT '0', 
-		  ADD `servicestart_date` DATE NOT NULL, 
-		  ADD `serviceend_date` DATE NOT NULL, 
+		$db->query("ALTER TABLE `panel_domains`
+		  ADD `add_date` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `registration_date` DATE NOT NULL,
+		  ADD `taxclass` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `setup_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `interval_fee` DECIMAL( 10,2 ) NOT NULL DEFAULT '0',
+		  ADD `interval_length` INT( 11 ) NOT NULL DEFAULT '0',
+		  ADD `interval_type` VARCHAR( 1 ) NOT NULL DEFAULT 'y',
+		  ADD `interval_payment` TINYINT( 1 ) NOT NULL DEFAULT '0',
+		  ADD `service_active` TINYINT( 1 ) NOT NULL DEFAULT '0',
+		  ADD `servicestart_date` DATE NOT NULL,
+		  ADD `serviceend_date` DATE NOT NULL,
 		  ADD `lastinvoiced_date` DATE NOT NULL;");
 		$db->query("CREATE TABLE  `" . TABLE_BILLING_SERVICE_CATEGORIES . "` (
 		 `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -733,6 +733,7 @@ else
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn25 to 1.2.19-svn26");
 		$db->query("INSERT INTO " . TABLE_PANEL_LANGUAGE . " SET `language` = 'Swedish', `file` = 'lng/swedish.lng.php';");
+		$db->query("INSERT INTO " . TABLE_PANEL_LANGUAGE . " SET `language` = 'Czech', `file` = 'lng/czech.lng.php';");
 
 		// set new version
 
@@ -741,10 +742,231 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn26';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn26')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn26 to 1.2.19-svn27");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'webserver', 'apache2')");
+		$db->query("CREATE TABLE `" . TABLE_MAIL_AUTORESPONDER . "` (
+  			`email` varchar(255) NOT NULL default '',
+  			`message` text NOT NULL,
+  			`enabled` tinyint(1) NOT NULL default '0',
+  			`subject` varchar(255) NOT NULL default '',
+  			`customerid` int(11) NOT NULL default '0',
+  			PRIMARY KEY  (`email`),
+  			KEY `customerid` (`customerid`),
+  			FULLTEXT KEY `message` (`message`)
+			) ENGINE=MyISAM");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('autoresponder', 'autoresponder_active', '0')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('autoresponder', 'last_autoresponder_run', '0')");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn27\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn27';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn27')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn27 to 1.2.19-svn28");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('admin', 'show_version_login', '0')");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn28\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn28';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn28')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn28 to 1.2.19-svn29");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('admin', 'show_version_footer', '0')");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn29\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn29';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn29')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn29 to 1.2.19-svn30");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('admin', 'syscp_graphic', 'images/header.gif')");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn30\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn30';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn30')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn30 to 1.2.19-svn31");
+
+		//fcgid improvements
+		$db->query("CREATE TABLE `" . TABLE_PANEL_PHPCONFIGS . "` (
+  					`id` int(11) unsigned NOT NULL auto_increment,
+					`phpsettings` text NOT NULL,
+					`description` varchar(50) NOT NULL,
+					PRIMARY KEY  (`id`)
+					) ENGINE=MyISAM");
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_PHPCONFIGS . "` (`id`, `phpsettings`, `description`) VALUES(1, 'short_open_tag = On\r\nasp_tags = Off\r\nprecision = 14\r\noutput_buffering = 4096\r\nallow_call_time_pass_reference = Off\r\nsafe_mode = {SAFE_MODE}\r\nsafe_mode_gid = Off\r\nsafe_mode_include_dir = \"{PEAR_DIR}\"\r\nsafe_mode_allowed_env_vars = PHP_\r\nsafe_mode_protected_env_vars = LD_LIBRARY_PATH\r\nopen_basedir = \"{OPEN_BASEDIR}\"\r\ndisable_functions = exec,passthru,shell_exec,system,proc_close,proc_get_status,proc_nice,proc_open,proc_terminate\r\ndisable_classes =\r\nexpose_php = Off\r\nmax_execution_time = 30\r\nmax_input_time = 60\r\nmemory_limit = 16M\r\npost_max_size = 16M\r\nerror_reporting = E_ALL | ~E_NOTICE\r\ndisplay_errors = On\r\ndisplay_startup_errors = Off\r\nlog_errors = On\r\nlog_errors_max_len = 1024\r\nignore_repeated_errors = Off\r\nignore_repeated_source = Off\r\nreport_memleaks = On\r\ntrack_errors = Off\r\nhtml_errors = Off\r\nvariables_order = \"GPCS\"\r\nregister_globals = Off\r\nregister_argc_argv = Off\r\ngpc_order = \"GPC\"\r\nmagic_quotes_gpc = Off\r\nmagic_quotes_runtime = Off\r\nmagic_quotes_sybase = Off\r\ninclude_path = \".:{PEAR_DIR}\"\r\nenable_dl = Off\r\nfile_uploads = On\r\nupload_tmp_dir = \"{TMP_DIR}\"\r\nupload_max_filesize = 32M\r\nallow_url_fopen = Off\r\nsendmail_path = \"/usr/sbin/sendmail -t -f {CUSTOMER_EMAIL}\"\r\nsession.save_handler = files\r\nsession.save_path = \"{TMP_DIR}\"\r\nsession.use_cookies = 1\r\nsession.name = PHPSESSID\r\nsession.auto_start = 0\r\nsession.cookie_lifetime = 0\r\nsession.cookie_path = /\r\nsession.cookie_domain =\r\nsession.serialize_handler = php\r\nsession.gc_probability = 1\r\nsession.gc_divisor = 1000\r\nsession.gc_maxlifetime = 1440\r\nsession.bug_compat_42 = 0\r\nsession.bug_compat_warn = 1\r\nsession.referer_check =\r\nsession.entropy_length = 16\r\nsession.entropy_file = /dev/urandom\r\nsession.cache_limiter = nocache\r\nsession.cache_expire = 180\r\nsession.use_trans_sid = 0\r\nsuhosin.simulation = Off\r\nsuhosin.mail.protect = 1\r\n', 'Default Config')");
+
+		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `phpsettingid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '1'");
+
+		if((int)$settings['system']['mod_fcgid'] == 1)
+		{
+			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, '', 0)");
+		}
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_wrapper', '0')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_starter', '0')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_peardir', '/usr/share/php/:/usr/share/php5/')");
+
+		//menu structure changes
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'admin;misc', `url` = 'admin_misc.nourl', `order` = '40' WHERE `lang`='admin;templates;templates' AND `url`='admin_templates.nourl'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `parent_url` = 'admin_misc.nourl' WHERE `parent_url`='admin_templates.nourl'");
+		$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `lang` = 'admin;loggersystem' AND `url` = 'admin_loggersystem.nourl'");
+		$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `lang` = 'menu;message' AND `url` = 'admin_message.nourl'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `parent_url` = 'admin_misc.nourl' WHERE `parent_url`='admin_loggersystem.nourl'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `parent_url` = 'admin_misc.nourl' WHERE `parent_url`='admin_message.nourl'");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn31\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn31';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn31')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn31 to 1.2.19-svn32");
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'index_file_extension', 'html');");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn32\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn32';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn32')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn32 to 1.2.19-svn33");
+
+		$db->query("ALTER TABLE  `" . TABLE_PANEL_DOMAINS . "` ADD  `dkim_id` INT( 11 ) UNSIGNED NOT NULL AFTER  `dkim`, ADD  `dkim_privkey` TEXT NOT NULL AFTER  `dkim_id`, ADD  `dkim_pubkey` TEXT NOT NULL AFTER  `dkim_privkey`");
+		$db->query("DROP TABLE IF EXISTS `mail_dkim`");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn33\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn33';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn33')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn33 to 1.2.19-svn34");
+
+		$db->query("DELETE FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = 'system' AND `varname` = 'userdns'");
+		$db->query("DELETE FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = 'system' AND `varname` = 'customerdns'");
+		$db->query("DROP TABLE IF EXISTS `panel_dns`");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn34\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn34';
+	}
+
+	if($settings['panel']['version'] == '1.2.19-svn34')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn34 to 1.2.19-svn35");
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', '', 'admin;aps', 'admin_aps.nourl', 45, 'aps_enabled', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;scan', 'admin_aps.php?action=scan', 20, '', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;upload', 'admin_aps.php?action=upload', 10, '', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;managepackages', 'admin_aps.php?action=managepackages', 30, '', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;manageinstances', 'admin_aps.php?action=manageinstances', 35, '', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', '', 'customer;aps', 'customer_aps.nourl', 50, 'aps_enabled', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', 'customer_aps.nourl', 'aps;overview', 'customer_aps.php?action=overview', 10, '', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', 'customer_aps.nourl', 'aps;status', 'customer_aps.php?action=customerstatus', 20, '', 0)");
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', 'customer_aps.nourl', 'aps;search', 'customer_aps.php?action=search', 30, '', 0)");
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'items_per_page', '20')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'upload_fields', '5')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'aps_active', '0')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'php-extension', '')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'php-configuration', '')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'webserver-htaccess', '')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'php-function', '')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'webserver-module', '')");
+
+		$db->query("CREATE TABLE IF NOT EXISTS `" . TABLE_APS_INSTANCES . "` (
+					`ID` int(4) NOT NULL auto_increment,
+					`CustomerID` int(4) NOT NULL,
+					`PackageID` int(4) NOT NULL,
+					`Status` int(4) NOT NULL,
+					PRIMARY KEY  (`ID`)
+					) ENGINE=MyISAM");
+
+		$db->query("CREATE TABLE IF NOT EXISTS `" . TABLE_APS_PACKAGES . "` (
+					`ID` int(4) NOT NULL auto_increment,
+					`Path` varchar(500) NOT NULL,
+					`Name` varchar(500) NOT NULL,
+					`Version` varchar(20) NOT NULL,
+					`Release` int(4) NOT NULL,
+					`Status` int(1) NOT NULL default '1',
+					PRIMARY KEY  (`ID`)
+					) ENGINE=MyISAM");
+
+		$db->query("CREATE TABLE IF NOT EXISTS `" . TABLE_APS_SETTINGS . "` (
+					`ID` int(4) NOT NULL auto_increment,
+					`InstanceID` int(4) NOT NULL,
+					`Name` varchar(250) NOT NULL,
+					`Value` varchar(250) NOT NULL,
+					PRIMARY KEY  (`ID`)
+					) ENGINE=MyISAM");
+
+		$db->query("CREATE TABLE IF NOT EXISTS `" . TABLE_APS_TASKS . "` (
+					`ID` int(4) NOT NULL auto_increment,
+					`InstanceID` int(4) NOT NULL,
+					`Task` int(4) NOT NULL,
+					PRIMARY KEY  (`ID`)
+					) ENGINE=MyISAM");
+
+		$db->query("CREATE TABLE IF NOT EXISTS `" . TABLE_APS_TEMP_SETTINGS . "` (
+					`ID` int(4) NOT NULL auto_increment,
+					`PackageID` int(4) NOT NULL,
+					`CustomerID` int(4) NOT NULL,
+					`Name` varchar(250) NOT NULL,
+					`Value` varchar(250) NOT NULL,
+					PRIMARY KEY  (`ID`)
+					) ENGINE=MyISAM");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn35\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn35';
+	}
 }
 
 // php filter-extension check
-
-
 
 ?>

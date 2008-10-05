@@ -107,7 +107,7 @@ if($page == 'customers'
 				$row['diskspace'] = round($row['diskspace']/1024, $settings['panel']['decimal_places']);
 				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
 				$enable_billing_data_edit = ($row['servicestart_date'] == '0000-00-00' || ($row['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $row['lastinvoiced_date']) >= 0));
-				$highlight_row = ( $row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1' );
+				$highlight_row = ($row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1');
 				$row = htmlentities_array($row);
 				eval("\$customers.=\"" . getTemplate("customers/customers_customer") . "\";");
 				$count++;
@@ -148,9 +148,9 @@ if($page == 'customers'
 
 		if($result['loginname'] != '')
 		{
-			$enable_billing_data_edit = ($result['servicestart_date'] == '0000-00-00' || ($result['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $result['lastinvoiced_date']) >= 0) );
+			$enable_billing_data_edit = ($result['servicestart_date'] == '0000-00-00' || ($result['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $result['lastinvoiced_date']) >= 0));
 
-			if( $enable_billing_data_edit !== true )
+			if($enable_billing_data_edit !== true)
 			{
 				standard_error('service_still_active');
 				exit;
@@ -183,11 +183,6 @@ if($page == 'customers'
 				$db->query("DELETE FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `customerid`='" . (int)$id . "'");
 				$domains_deleted = $db->affected_rows();
 
-				if($settings['system']['userdns'] == '1')
-				{
-					$db->query("DELETE FROM `" . TABLE_PANEL_DNSENTRY . "` WHERE `customerid`='" . (int)$id . "'");
-				}
-
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `customerid`='" . (int)$id . "'");
 				$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid`='" . (int)$id . "' AND `adminsession` = '0'");
 				$db->query("DELETE FROM `" . TABLE_PANEL_TRAFFIC . "` WHERE `customerid`='" . (int)$id . "'");
@@ -195,6 +190,7 @@ if($page == 'customers'
 				$db->query("DELETE FROM `" . TABLE_MAIL_VIRTUAL . "` WHERE `customerid`='" . (int)$id . "'");
 				$db->query("DELETE FROM `" . TABLE_FTP_GROUPS . "` WHERE `customerid`='" . (int)$id . "'");
 				$db->query("DELETE FROM `" . TABLE_FTP_USERS . "` WHERE `customerid`='" . (int)$id . "'");
+				$db->query("DELETE FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid`='" . (int)$id . "'");
 				$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` - 1 ";
 				$admin_update_query.= ", `domains_used` = `domains_used` - 0" . (int)($domains_deleted-$result['subdomains_used']);
 
@@ -381,7 +377,7 @@ if($page == 'customers'
 				$phpenabled = intval($_POST['phpenabled']);
 				$diskspace = $diskspace*1024;
 				$traffic = $traffic*1024*1024;
-				
+
 				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
 				{
 					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
@@ -917,7 +913,7 @@ if($page == 'customers'
 				$phpenabled = intval($_POST['phpenabled']);
 				$diskspace = $diskspace*1024;
 				$traffic = $traffic*1024*1024;
-				
+
 				if( $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1')
 				{
 					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
@@ -949,7 +945,9 @@ if($page == 'customers'
 					$additional_service_description = $result['additional_service_description'];
 				}
 
-				if($enable_billing_data_edit === true && $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1' )
+				if($enable_billing_data_edit === true
+				   && $userinfo['edit_billingdata'] == '1'
+				   && $settings['billing']['activate_billing'] == '1')
 				{
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
@@ -1454,9 +1452,9 @@ if($page == 'customers'
 				$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit']/(1024), 4);
 				$result['included_domains_tld'] = $idna_convert->decode($result['included_domains_tld']);
 				$interval_type = getIntervalTypes('option', $result['interval_type']);
-				$service_active = ( $result['service_active'] == '0' ? $lng['panel']['no'] : '' ) . ( $result['service_active'] == '1' ? $lng['panel']['yes'] : '' );
+				$service_active = ($result['service_active'] == '0' ? $lng['panel']['no'] : '') . ($result['service_active'] == '1' ? $lng['panel']['yes'] : '');
 				$service_active_options = makeyesno('service_active', '1', '0', $result['service_active']);
-				$interval_payment = ( $result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '' ) . ( $result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '' );
+				$interval_payment = ($result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '') . ($result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '');
 				$interval_payment_options = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
 				$payment_method = '';
 				foreach($lng['customer']['payment_methods'] as $payment_method_id => $payment_method_name)
@@ -1470,14 +1468,15 @@ if($page == 'customers'
 					$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
 				}
 
-				$calc_tax = ( $result['calc_tax'] == '0' ? $lng['panel']['no'] : '' ) . ( $result['calc_tax'] == '1' ? $lng['panel']['yes'] : '' );
+				$calc_tax = ($result['calc_tax'] == '0' ? $lng['panel']['no'] : '') . ($result['calc_tax'] == '1' ? $lng['panel']['yes'] : '');
 				$calc_tax_options = makeyesno('calc_tax', '1', '0', $result['calc_tax']);
 				$result = htmlentities_array($result);
 				eval("echo \"" . getTemplate("customers/customers_edit") . "\";");
 			}
 		}
 	}
-	elseif($action == 'pdf' && $settings['billing']['activate_billing'] == '1')
+	elseif($action == 'pdf'
+	       && $settings['billing']['activate_billing'] == '1')
 	{
 		$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$id . "' " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' "));
 

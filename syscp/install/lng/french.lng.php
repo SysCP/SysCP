@@ -57,5 +57,7 @@ $lng['install']['creating_configfile_temp'] = 'Le fichier a été sauvegardé dans 
 $lng['install']['creating_configfile_failed'] = 'Erreur en créant le fichier lib/userdata.inc.php, veuillez le créer avec le contenu ci-dessous :';
 $lng['install']['syscp_succ_installed'] = 'SysCP a été installé correctement.';
 $lng['install']['click_here_to_login'] = 'Cliquez ici pour vous rendre à l\'invite de connexion.';
+$lng['install']['httpuser'] = 'Nom du utilisateur du HTTP';
+$lng['install']['httpgroup'] = 'Nom du la group du HTTP';
 
 ?>

@@ -19,10 +19,6 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_vmail_homedir" value="{$settings['system']['vmail_homedir']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['mailpwcleartext']['title']}:</b><br />{$lng['serversettings']['mailpwcleartext']['description']}<br /><a href="$filename?page=wipecleartextmailpws&amp;s=$s">{$lng['serversettings']['mailpwcleartext']['removelink']}</a></td>
-				<td class="main_field_display" nowrap="nowrap">{$mailpwcleartext}</td>
-			</tr>
-			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['sendalternativemail']['title']}:</b><br />{$lng['serversettings']['sendalternativemail']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap">{$panel_sendalternativemail}</td>
 			</tr>
@@ -35,6 +31,10 @@
 				<td class="main_field_display" nowrap="nowrap">
 					<input type="text" name="system_mail_quota" value="{$quota}" size="6" />&nbsp;<select class="dropdown_noborder" name="system_mail_quota_type">$quota_type_option</select>
 				</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['autoresponder_active']['title']}:</b><br />{$lng['serversettings']['autoresponder_active']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$autoresponder_active}</td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">

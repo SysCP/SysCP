@@ -74,13 +74,6 @@ $configfiles = Array(
 				'daemons' => Array(
 					'postfix' => Array(
 						'label' => 'Postfix',
-						'files' => Array(
-							'etc_postfix_main.cf' => '/etc/postfix/main.cf',
-							'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
-							'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
-							'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf'
-						),
 						'commands' => Array(
 							'mkdir -p /etc/postfix/sasl',
 							'mkdir -p /var/spool/postfix/etc/pam.d',
@@ -102,6 +95,14 @@ $configfiles = Array(
 							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_maps.cf',
 							'chgrp postfix /etc/postfix/sasl/smtpd.conf'
 						),
+						'files' => Array(
+							'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+							'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+							'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf'
+						),
+
 						'restart' => Array(
 							'/etc/init.d/postfix restart',
 							'newaliases'
@@ -126,24 +127,6 @@ $configfiles = Array(
 						),
 						'restart' => Array(
 							'/etc/init.d/exim4 restart'
-						)
-					),
-					'dkim' => Array(
-						'label' => 'DomainKey filter',
-						'commands_1' => Array(
-							'mkdir -p /etc/postfix/dkim'
-						),
-						'files' => Array(
-							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
-						),
-						'commands_2' => Array(
-							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
-							'echo "smtpd_milters = inet:localhost:8891\n
-milter_macro_daemon_name = SIGNING\n
-milter_default_action = accept\n" >> /etc/postfix/main.cf'
-						),
-						'restart' => Array(
-							'/etc/init.d/dkim-filter restart'
 						)
 					)
 				)
@@ -332,24 +315,6 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						),
 						'restart' => Array(
 							'/etc/init.d/exim4 restart'
-						)
-					),
-					'dkim' => Array(
-						'label' => 'DomainKey filter',
-						'commands_1' => Array(
-							'mkdir -p /etc/postfix/dkim'
-						),
-						'files' => Array(
-							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
-						),
-						'commands_2' => Array(
-							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
-							'echo "smtpd_milters = inet:localhost:8891\n
-milter_macro_daemon_name = SIGNING\n
-milter_default_action = accept\n" >> /etc/postfix/main.cf'
-						),
-						'restart' => Array(
-							'/etc/init.d/dkim-filter restart'
 						)
 					)
 				)
@@ -760,24 +725,6 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						),
 						'restart' => Array(
 							'/etc/init.d/postfix restart'
-						)
-					),
-					'dkim' => Array(
-						'label' => 'DomainKey filter',
-						'commands_1' => Array(
-							'mkdir -p /etc/postfix/dkim'
-						),
-						'files' => Array(
-							'dkim-filter.conf' => '/etc/postfix/dkim/dkim-filter.conf'
-						),
-						'commands_2' => Array(
-							'chgrp postfix /etc/postfix/dkim/dkim-filter.conf',
-							'echo "smtpd_milters = inet:localhost:8891\n
-milter_macro_daemon_name = SIGNING\n
-milter_default_action = accept\n" >> /etc/postfix/main.cf'
-						),
-						'restart' => Array(
-							'/etc/init.d/dkim-filter restart'
 						)
 					)
 				)

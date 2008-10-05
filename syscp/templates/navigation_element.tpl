@@ -4,9 +4,9 @@
 		<td class="section"><b>&nbsp;&nbsp;<img src="images/title.gif" alt="" />&nbsp;$completeLink_ElementTitle</b></td>
 	</tr>
 	<tr>
-		<td class="subsection"><br />$navigation_links</td>
+		<td class="subsection">$navigation_links</td>
 	</tr>
 	<tr>
-		<td class="endsection">&nbsp;</td>
+		<td class="endsection"></td>
 	</tr>
 </table>

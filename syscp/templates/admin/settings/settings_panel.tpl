@@ -47,6 +47,24 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="panel_webftp_url" value="{$settings['panel']['webftp_url']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name">
+					<b>{$lng['admin']['show_version_login']['title']}:</b><br />{$lng['admin']['show_version_login']['description']}<br />
+				</td>
+				<td class="main_field_display" nowrap="nowrap">{$frontend_syscp_version_login}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">
+					<b>{$lng['admin']['show_version_footer']['title']}:</b><br />{$lng['admin']['show_version_footer']['description']}<br />
+				</td>
+				<td class="main_field_display" nowrap="nowrap">{$frontend_syscp_version_footer}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">
+					<b>{$lng['admin']['syscp_graphic']['title']}:</b><br />{$lng['admin']['syscp_graphic']['description']}<br />
+				</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="frontend_syscp_graphic" value="{$settings['admin']['syscp_graphic']}" /></td>
+			</tr>
+			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
 					<if $_part == 'panel'>
 						<input type="hidden" name="part" value="panel" />
