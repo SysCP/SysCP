@@ -22,10 +22,8 @@ $needrootdb = true;
 require (dirname(__FILE__) . '/../lib/cron_init.php');
 require (dirname(__FILE__) . '/../lib/class_apsparser.php');
 require (dirname(__FILE__) . '/../lib/class_apsinstaller.php');
-
 $Aps = new ApsInstaller($settings, $db, $db_root);
 $Aps->InstallHandler();
-
 require (dirname(__FILE__) . '/../lib/cron_shutdown.php');
 
 ?>

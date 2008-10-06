@@ -1095,6 +1095,7 @@ $lng['emails']['quota_type']['terabyte'] = 'TB';
 $lng['emails']['quota_type']['petabyte'] = 'PB';
 
 // Autoresponder module
+
 $lng['menue']['email']['autoresponder'] = 'Abwesenheitsnachrichten';
 $lng['autoresponder']['active'] = 'Aktiviert';
 $lng['autoresponder']['autoresponder_add'] = 'Abwesenheitsnachricht hinzuf&uuml;gen';
@@ -1112,9 +1113,7 @@ $lng['error']['autoresponderalreadyexists'] = 'F&uuml;r dieses Konto existiert b
 $lng['error']['invalidautoresponder'] = 'Das angegebene Konto ist ung&uuml;ltig.';
 $lng['serversettings']['autoresponder_active']['title'] = 'Abwesenheitsnachrichten-Modul verwenden';
 $lng['serversettings']['autoresponder_active']['description'] = 'M&ouml;chten Sie das Abwesenheitsnachrichten-Modul verwenden? Dazu muss ein separater Cronjob eingerichtet sein.';
-
 $lng['invoice']['active'] = 'Rechnung aktiviert';
-
 $lng['admin']['show_version_login']['title'] = 'Zeige SysCP Version beim Login';
 $lng['admin']['show_version_login']['description'] = 'Zeige SysCP Version in der Fu&szlig;zeile der Loginseite';
 $lng['admin']['show_version_footer']['title'] = 'Zeige SysCP Version in Fu&szlig;zeile';
@@ -1123,6 +1122,7 @@ $lng['admin']['syscp_graphic']['title'] = 'Grafik im Kopfbereich des Panels';
 $lng['admin']['syscp_graphic']['description'] = 'Welche Grafik soll im Kopfbereich des Panels anstatt des SysCP Logos angezeigt werden?';
 
 //improved syscp
+
 $lng['menue']['phpsettings']['maintitle'] = 'PHP Konfigurationen';
 $lng['admin']['phpsettings']['title'] = 'PHP Konfiguration';
 $lng['admin']['phpsettings']['description'] = 'Kurzbeschreibung';
@@ -1163,6 +1163,7 @@ $lng['serversettings']['mod_fcgid']['peardir'] = 'Globale PEAR Verzeichnisse';
 $lng['serversettings']['mod_fcgid']['peardir_desc'] = 'Welche globalen PEAR Verzeichnisse sollen in den php.ini Einstellungen ersetzt werden? Einzelne Verzeichnisse sind mit einem Doppelpunkt zu trennen.';
 
 //improved syscp 2
+
 $lng['admin']['templates']['index_html'] = 'index.html Datei f&uuml;r neu erzeugte Kundenverzeichnisse';
 $lng['admin']['templates']['SERVERNAME'] = 'Wird mit dem Servernamen ersetzt.';
 $lng['admin']['templates']['CUSTOMER'] = 'Wird mit dem Loginnamen des Kunden ersetzt.';
@@ -1176,10 +1177,10 @@ $lng['serversettings']['index_file_extension']['description'] = 'Welche Dateiend
 $lng['serversettings']['index_file_extension']['title'] = 'Dateiendung f&uuml;r index Datei in neu erstellen Kundenverzeichnissen';
 $lng['error']['index_file_extension'] = 'Die Dateiendung f&uuml;r die index Datei muss zwischen 1 und 6 Zeichen lang sein und darf nur aus den Zeichen a-z, A-Z und 0-9 bestehen';
 $lng['admin']['security_settings'] = 'Sicherheitseinstellungen';
-
 $lng['admin']['expert_settings'] = 'Experteneinstellungen!';
 
 //added with aps installer
+
 $lng['admin']['aps'] = 'APS Installer';
 $lng['customer']['aps'] = 'APS Installer';
 $lng['aps']['scan'] = 'Neue Pakete einlesen';
@@ -1296,7 +1297,6 @@ $lng['question']['reallywanttoremove'] = '<strong>Wollen Sie dieses Paket wirkli
 $lng['aps']['searchoneresult'] = '%s Paket gefunden';
 $lng['aps']['searchmultiresult'] = '%s Pakete gefunden';
 $lng['question']['reallywanttostop'] = 'Wollen Sie die Installation dieses Paketes wirklich abbrechen?<br/><br/>';
-
 $lng['aps']['packagenameandversion'] = 'Paketname &amp; Version';
 $lng['aps']['package_locked'] = 'Gesperrt';
 $lng['aps']['package_enabled'] = 'Freigegeben';
