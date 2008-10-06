@@ -1089,10 +1089,10 @@ $lng['emails']['quota_type']['megabyte'] = 'MB';
 $lng['emails']['quota_type']['gigabyte'] = 'GB';
 $lng['emails']['quota_type']['terabyte'] = 'TB';
 $lng['emails']['quota_type']['petabyte'] = 'PB';
-
 $lng['panel']['not_supported'] = 'Not supported in: ';
 
 // Autoresponder module
+
 $lng['menue']['email']['autoresponder'] = 'Autoresponder';
 $lng['autoresponder']['active'] = 'Active';
 $lng['autoresponder']['autoresponder_add'] = 'Add autoresponder';
@@ -1110,12 +1110,9 @@ $lng['error']['autoresponderalreadyexists'] = 'There is already an autoresponder
 $lng['error']['invalidautoresponder'] = 'The given account is invalid.';
 $lng['serversettings']['autoresponder_active']['title'] = 'Use autoresponder module';
 $lng['serversettings']['autoresponder_active']['description'] = 'Do you want to use the autoresponder module? Therefore an extra cronjob must be set up.';
-
 $lng['invoice']['active'] = 'Billing active';
-
 $lng['admin']['security_settings'] = 'Security Options';
 $lng['admin']['know_what_youre_doing'] = 'Change only, if you know what you\'re doing!';
-
 $lng['admin']['show_version_login']['title'] = 'Show SysCP version on login';
 $lng['admin']['show_version_login']['description'] = 'Show the SysCP version in the footer on the login page';
 $lng['admin']['show_version_footer']['title'] = 'Show SysCP version in footer';
@@ -1124,6 +1121,7 @@ $lng['admin']['syscp_graphic']['title'] = 'Header graphic for SysCP';
 $lng['admin']['syscp_graphic']['description'] = 'What graphic should be shown in the header';
 
 //improved syscp
+
 $lng['menue']['phpsettings']['maintitle'] = 'PHP Configurations';
 $lng['admin']['phpsettings']['title'] = 'PHP Configuration';
 $lng['admin']['phpsettings']['description'] = 'Short description';
@@ -1163,6 +1161,7 @@ $lng['serversettings']['mod_fcgid']['peardir'] = 'Global PEAR directories';
 $lng['serversettings']['mod_fcgid']['peardir_desc'] = 'Which global PEAR directories should be replaced in every php.ini config? Different directories must be separated by a colon.';
 
 //improved syscp 2
+
 $lng['admin']['templates']['index_html'] = 'index file for newly created customerdirectories';
 $lng['admin']['templates']['SERVERNAME'] = 'Replaced with the servername.';
 $lng['admin']['templates']['CUSTOMER'] = 'Replaced with the loginname of the customer.';
@@ -1175,10 +1174,10 @@ $lng['error']['filecontentnotset'] = 'The file cannot be empty!';
 $lng['serversettings']['index_file_extension']['description'] = 'Which fileextension should be used for the index file in newly created customer directories? This fileextension will be used, if you or one of your customers has created its own index filetemplate.';
 $lng['serversettings']['index_file_extension']['title'] = 'Fileextension for index file in newly created customer directories';
 $lng['error']['index_file_extension'] = 'The fileextension for the index file must be between 1 and 6 characters long. The extension can only contain characters like a-z, A-Z and 0-9';
-
 $lng['admin']['expert_settings'] = 'Expert settings!';
 
 //added with aps installer
+
 $lng['admin']['aps'] = 'APS Installer';
 $lng['customer']['aps'] = 'APS Installer';
 $lng['aps']['scan'] = 'Scan for new packages';
@@ -1295,7 +1294,6 @@ $lng['question']['reallywanttoremove'] = '<strong>Do you really want to uninstal
 $lng['aps']['searchoneresult'] = '%s Package found';
 $lng['aps']['searchmultiresult'] = '%s Packages found';
 $lng['question']['reallywanttostop'] = 'Do you really want to abort the Installation of this Package?<br/><br/>';
-
 $lng['aps']['packagenameandversion'] = 'Packagename &amp; Version';
 $lng['aps']['package_locked'] = 'Enabled';
 $lng['aps']['package_enabled'] = 'Locked';

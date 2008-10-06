@@ -25,6 +25,7 @@
  * These signs << . ; , ' >> should be glued to the previous letter
  * These signs << / | = >> would be preceded and followed with a white as mush as possible, it is much clear from reading.
  */
+
 /**
  * Global
  */
@@ -199,7 +200,7 @@ $lng['error']['firstdeleteallsubdomains'] = 'Il faut d\'abord supprimer tous les
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Vous avez déjà défini une adresse "catchall" pour ce domaine.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Vous ne pouvez pas supprimer votre accès principal.';
 $lng['error']['login'] = 'Identifiant / mot de passe invalide.';
-$lng['error']['login_blocked'] = 'Cet identifiant a été bloqué à cause de nombreuses tentatives de connexions invalides.<br />Veuillez réessayer dans '.$settings['login']['deactivatetime'].' secondes.';
+$lng['error']['login_blocked'] = 'Cet identifiant a été bloqué à cause de nombreuses tentatives de connexions invalides.<br />Veuillez réessayer dans ' . $settings['login']['deactivatetime'] . ' secondes.';
 $lng['error']['notallreqfieldsorerrors'] = 'Vous n\'avez pas rempli toutes les cases obligatoires ou vous les avez remplis avec des informations invalides.';
 $lng['error']['oldpasswordnotcorrect'] = 'L\'ancien mot de passe n\'est pas correct.';
 $lng['error']['youcantallocatemorethanyouhave'] = 'Vous ne pouvez pas distribuer plus de ressources qu\'il n\'en reste.';
@@ -207,15 +208,15 @@ $lng['error']['mustbeurl'] = 'Vous n\'avez pas entré une adresse URL valide.';
 $lng['error']['invalidpath'] = 'Vous n\'avez pas choisi une adresse URL valide (probablement à cause de problèmes avec le listing de dossiers ?)';
 $lng['error']['stringisempty'] = 'Entrée manquante';
 $lng['error']['stringiswrong'] = 'Entrée invalide';
-$lng['error']['myloginname'] = '"'.$lng['login']['username'].'"';
-$lng['error']['mypassword'] = '"'.$lng['login']['password'].'"';
-$lng['error']['oldpassword'] = '"'.$lng['changepassword']['old_password'].'"';
-$lng['error']['newpassword'] = '"'.$lng['changepassword']['new_password'].'"';
-$lng['error']['newpasswordconfirm'] = '"'.$lng['changepassword']['new_password_confirm'].'"';
+$lng['error']['myloginname'] = '"' . $lng['login']['username'] . '"';
+$lng['error']['mypassword'] = '"' . $lng['login']['password'] . '"';
+$lng['error']['oldpassword'] = '"' . $lng['changepassword']['old_password'] . '"';
+$lng['error']['newpassword'] = '"' . $lng['changepassword']['new_password'] . '"';
+$lng['error']['newpasswordconfirm'] = '"' . $lng['changepassword']['new_password_confirm'] . '"';
 $lng['error']['newpasswordconfirmerror'] = 'Le nouveau mot de passe et sa confirmation ne sont pas identiques pas.';
-$lng['error']['myname'] = '"'.$lng['customer']['name'].'"';
-$lng['error']['myfirstname'] = '"'.$lng['customer']['firstname'].'"';
-$lng['error']['emailadd'] = '"'.$lng['customer']['email'].'"';
+$lng['error']['myname'] = '"' . $lng['customer']['name'] . '"';
+$lng['error']['myfirstname'] = '"' . $lng['customer']['firstname'] . '"';
+$lng['error']['emailadd'] = '"' . $lng['customer']['email'] . '"';
 $lng['error']['mydomain'] = '"domaine"';
 $lng['error']['mydocumentroot'] = '"Documentroot"';
 $lng['error']['loginnameexists'] = 'L\'identifiant "%s" existe déjà.';

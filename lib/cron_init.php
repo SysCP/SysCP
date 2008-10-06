@@ -20,7 +20,7 @@ if(@php_sapi_name() != 'cli'
    && @php_sapi_name() != 'cgi'
    && @php_sapi_name() != 'cgi-fcgi')
 {
-	die('This script will only work in the shell.');
+    die('This script will only work in the shell.');
 }
 
 $cronscriptDebug = false;
@@ -51,54 +51,54 @@ $lockDirHandle = opendir($lockdir);
 
 while($fName = readdir($lockDirHandle))
 {
-	if($lockFilename == substr($fName, 0, strlen($lockFilename))
-	   && $lockfName != $fName)
-	{
-		// Check if last run jailed out with an exception
+    if($lockFilename == substr($fName, 0, strlen($lockFilename))
+       && $lockfName != $fName)
+    {
+        // Check if last run jailed out with an exception
 
-		$croncontent = file($lockdir . $fName);
-		$lastline = $croncontent[(count($croncontent)-1)];
+        $croncontent = file($lockdir . $fName);
+        $lastline = $croncontent[(count($croncontent)-1)];
 
-		if($lastline == '=== Keep lockfile because of exception ===')
-		{
-			fclose($debugHandler);
-			unlink($lockfile);
-			die('Last cron jailed out with an exception. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $fName . '* for more information!' . "\n");
-		}
+        if($lastline == '=== Keep lockfile because of exception ===')
+        {
+            fclose($debugHandler);
+            unlink($lockfile);
+            die('Last cron jailed out with an exception. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $fName . '* for more information!' . "\n");
+        }
 
-		// Check if cron is running or has died.
+        // Check if cron is running or has died.
 
-		$check_pid = substr(strstr($fName, "-"), 1);
-		system("kill -CHLD " . $check_pid . " 1> /dev/null 2> /dev/null", $check_pid_return);
+        $check_pid = substr(strstr($fName, "-"), 1);
+        system("kill -CHLD " . $check_pid . " 1> /dev/null 2> /dev/null", $check_pid_return);
 
-		if($check_pid_return == 1)
-		{
-			// Result:      Existing lockfile/pid isnt running
-			//              Most likely it has died
-			//
-			// Action:      Remove it and continue
-			//
+        if($check_pid_return == 1)
+        {
+            // Result:      Existing lockfile/pid isnt running
+            //              Most likely it has died
+            //
+            // Action:      Remove it and continue
+            //
 
-			fwrite($debugHandler, 'Previous cronjob didn\'t exit clean. PID: ' . $check_pid . "\n");
-			fwrite($debugHandler, 'Removing lockfile: ' . $lockdir . $fName . "\n");
-			unlink($lockdir . $fName);
-		}
-		else
-		{
-			// Result:      A Cronscript with this pid
-			//              is still running
-			// Action:      remove my own Lock and die
-			//
-			// close the current lockfile
+            fwrite($debugHandler, 'Previous cronjob didn\'t exit clean. PID: ' . $check_pid . "\n");
+            fwrite($debugHandler, 'Removing lockfile: ' . $lockdir . $fName . "\n");
+            unlink($lockdir . $fName);
+        }
+        else
+        {
+            // Result:      A Cronscript with this pid
+            //              is still running
+            // Action:      remove my own Lock and die
+            //
+            // close the current lockfile
 
-			fclose($debugHandler);
+            fclose($debugHandler);
 
-			// ... and delete it
+            // ... and delete it
 
-			unlink($lockfile);
-			die('There is already a Cronjob in progress. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
-		}
-	}
+            unlink($lockfile);
+            die('There is already a Cronjob in progress. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
+        }
+    }
 }
 
 /**
@@ -128,34 +128,34 @@ $db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
 if(isset($needrootdb)
    && $needrootdb === true)
 {
-	$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
+    $db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
 
-	if($db_root->link_id == 0)
-	{
-		/**
-		 * Do not proceed further if no database connection could be established
-		 */
+    if($db_root->link_id == 0)
+    {
+        /**
+         * Do not proceed further if no database connection could be established
+         */
 
-		fclose($debugHandler);
-		unlink($lockfile);
-		die('root can\'t connect to mysqlserver. Please check userdata.inc.php! Exiting...');
-	}
+        fclose($debugHandler);
+        unlink($lockfile);
+        die('root can\'t connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+    }
 
-	unset($db_root->password);
-	fwrite($debugHandler, 'Database-rootconnection established' . "\n");
+    unset($db_root->password);
+    fwrite($debugHandler, 'Database-rootconnection established' . "\n");
 }
 
 unset($sql['root_user'], $sql['root_password']);
 
 if($db->link_id == 0)
 {
-	/**
-	 * Do not proceed further if no database connection could be established
-	 */
+    /**
+     * Do not proceed further if no database connection could be established
+     */
 
-	fclose($debugHandler);
-	unlink($lockfile);
-	die('SysCP can\'t connect to mysqlserver. Please check userdata.inc.php! Exiting...');
+    fclose($debugHandler);
+    unlink($lockfile);
+    die('SysCP can\'t connect to mysqlserver. Please check userdata.inc.php! Exiting...');
 }
 
 fwrite($debugHandler, 'Database-connection established' . "\n");
@@ -165,7 +165,7 @@ $result = $db->query("SELECT `settingid`, `settinggroup`, `varname`, `value` FRO
 
 while($row = $db->fetch_array($result))
 {
-	$settings[$row['settinggroup']][$row['varname']] = $row['value'];
+    $settings[$row['settinggroup']][$row['varname']] = $row['value'];
 }
 
 unset($row);
@@ -175,13 +175,13 @@ fwrite($debugHandler, 'SysCP Settings has been loaded from the database' . "\n")
 if(!isset($settings['panel']['version'])
    || $settings['panel']['version'] != $version)
 {
-	/**
-	 * Do not proceed further if the Database version is not the same as the script version
-	 */
+    /**
+     * Do not proceed further if the Database version is not the same as the script version
+     */
 
-	fclose($debugHandler);
-	unlink($lockfile);
-	die('Version of File doesnt match Version of Database. Exiting...');
+    fclose($debugHandler);
+    unlink($lockfile);
+    die('Version of File doesnt match Version of Database. Exiting...');
 }
 
 fwrite($debugHandler, 'SysCP Version and Database Version are correct' . "\n");
@@ -198,33 +198,33 @@ $cronscriptFullName = makeCorrectFile($cronbasedir . basename($_SERVER['PHP_SELF
 $inc_crons = array();
 foreach($crondir as $file)
 {
-	if(!$file->isDot()
-	   && !$file->isDir()
-	   && preg_match("/^" . $cronfilename . "\.inc\.(.*)\.php$/D", $file->getFilename()))
-	{
-		if(fileowner($cronscriptFullName) == $file->getOwner()
-		   && filegroup($cronscriptFullName) == $file->getGroup()
-		   && $file->isReadable())
-		{
-			$inc_crons[] = $file->getPathname();
-		}
-		else
-		{
-			fwrite($debugHandler, 'WARNING! uid and/or gid of "' . $cronscriptFullName . '" and "' . $file->getPathname() . '" don\'t match! Execution aborted!' . "\n");
-			fclose($debugHandler);
-			die('WARNING! uid and/or gid of "' . $cronscriptFullName . '" and "' . $file->getPathname() . '" don\'t match! Execution aborted!');
-		}
-	}
+    if(!$file->isDot()
+       && !$file->isDir()
+       && preg_match("/^" . $cronfilename . "\.inc\.(.*)\.php$/D", $file->getFilename()))
+    {
+        if(fileowner($cronscriptFullName) == $file->getOwner()
+           && filegroup($cronscriptFullName) == $file->getGroup()
+           && $file->isReadable())
+        {
+            $inc_crons[] = $file->getPathname();
+        }
+        else
+        {
+            fwrite($debugHandler, 'WARNING! uid and/or gid of "' . $cronscriptFullName . '" and "' . $file->getPathname() . '" don\'t match! Execution aborted!' . "\n");
+            fclose($debugHandler);
+            die('WARNING! uid and/or gid of "' . $cronscriptFullName . '" and "' . $file->getPathname() . '" don\'t match! Execution aborted!');
+        }
+    }
 }
 
 if(isset($inc_crons[0]))
 {
-	natsort($inc_crons);
-	foreach($inc_crons as $cfile)
-	{
-		fwrite($debugHandler, 'Including ...' . $cfile . "\n");
-		include_once ($cfile);
-	}
+    natsort($inc_crons);
+    foreach($inc_crons as $cfile)
+    {
+        fwrite($debugHandler, 'Including ...' . $cfile . "\n");
+        include_once ($cfile);
+    }
 }
 
 unset($file, $crondir, $cronname, $cronscriptFullName, $cronfilename, $cronbasedir);
@@ -250,7 +250,7 @@ require ($pathtophpfiles . '/lib/class_syscplogger.php');
  */
 
 $cronlog = SysCPLogger::getInstanceOf(array(
-	'loginname' => 'cronjob'
+    'loginname' => 'cronjob'
 ), $db, $settings);
 fwrite($debugHandler, 'Logger has been included' . "\n");
 

@@ -106,11 +106,11 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['diskspace']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="diskspace" value="" maxlength="6" />&nbsp;{$diskspace_ul}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="diskspace" value="" maxlength="6" /><select class="dropdown_noborder" name="discspace_type">$byte_type_option</select>&nbsp;{$diskspace_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['traffic']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="traffic" value="" maxlength="3" />&nbsp;{$traffic_ul}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="traffic" value="" maxlength="3" /><select class="dropdown_noborder" name="traffic_type">$byte_type_option</select>&nbsp;{$traffic_ul}</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['subdomains']}: *</td>
@@ -131,7 +131,7 @@ $header
 			<if $settings['system']['mail_quota_enabled'] == 1>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_quota']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="email_quota" value="" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>&nbsp;{$diskspace_ul}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="email_quota" value="" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$byte_type_option</select>&nbsp;{$diskspace_ul}</td>
 			</tr>
 			</if>
 			<tr>

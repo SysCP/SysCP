@@ -1,5 +1,6 @@
 <?php
- /**
+
+/**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2008 the SysCP Team (see authors).
  *
@@ -17,170 +18,208 @@
  */
 
 // Required code
+
 define('AREA', 'customer');
-require("./lib/init.php");
+require ("./lib/init.php");
 
 // Create new autoresponder
+
 if($action == "add")
 {
-	if(isset($_POST['send']) && $_POST['send'] == 'send')
-	{
-		$account = trim($_POST['account']);
-		$subject = trim($_POST['subject']);
-		$message = trim($_POST['message']);
+    if(isset($_POST['send'])
+       && $_POST['send'] == 'send')
+    {
+        $account = trim($_POST['account']);
+        $subject = trim($_POST['subject']);
+        $message = trim($_POST['message']);
 
-		if(empty($account) || empty($subject) || empty($message))
-		{
-			standard_error('missingfields');
-		}
+        if(empty($account)
+           || empty($subject)
+           || empty($message))
+        {
+            standard_error('missingfields');
+        }
 
-		// Does account exist?
-		$result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' AND `email` = '".$db->escape($account)."' LIMIT 0,1");
-		if($db->num_rows($result) == 0)
-		{
-			standard_error('accountnotexisting');
-		}
+        // Does account exist?
 
-		// Does autoresponder exist?
-		$result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' AND `email` = '".$db->escape($account)."' LIMIT 0,1");
-		if($db->num_rows($result) == 1)
-		{
-			standard_error('autoresponderalreadyexists');
-		}
+        $result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' AND `email` = '" . $db->escape($account) . "' LIMIT 0,1");
 
-		$db->query("INSERT INTO `" . TABLE_MAIL_AUTORESPONDER . "`
-			SET `email` = '".$db->escape($account)."',
-			`message` = '".$db->escape($message)."',
-			`enabled` = '".(int)$_POST['active']."',
-			`subject` = '".$db->escape($subject)."',
-			`customerid` = '".$db->escape((int)$userinfo['customerid'])."'
+        if($db->num_rows($result) == 0)
+        {
+            standard_error('accountnotexisting');
+        }
+
+        // Does autoresponder exist?
+
+        $result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' AND `email` = '" . $db->escape($account) . "' LIMIT 0,1");
+
+        if($db->num_rows($result) == 1)
+        {
+            standard_error('autoresponderalreadyexists');
+        }
+
+        $db->query("INSERT INTO `" . TABLE_MAIL_AUTORESPONDER . "`
+			SET `email` = '" . $db->escape($account) . "',
+			`message` = '" . $db->escape($message) . "',
+			`enabled` = '" . (int)$_POST['active'] . "',
+			`subject` = '" . $db->escape($subject) . "',
+			`customerid` = '" . $db->escape((int)$userinfo['customerid']) . "'
 			");
+        redirectTo($filename, Array(
+            's' => $s
+        ));
+    }
 
-		redirectTo($filename, Array(
-			's' => $s
-		));
-	}
+    // Get accounts
 
-	// Get accounts
-	$result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' AND `email` NOT IN (SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "`) ORDER BY email ASC");
-	if($db->num_rows($result) == 0)
-	{
-		standard_error('noemailaccount');
-	}
+    $result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' AND `email` NOT IN (SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "`) ORDER BY email ASC");
 
-	$accounts = '';
-	while($row = $db->fetch_array($result))
-	{
-		$accounts .= "<option value=\"".$row['email']."\">".$row['email']."</option>";
-	}
+    if($db->num_rows($result) == 0)
+    {
+        standard_error('noemailaccount');
+    }
 
-	eval("echo \"" . getTemplate("email/autoresponder_add") . "\";");
+    $accounts = '';
+
+    while($row = $db->fetch_array($result))
+    {
+        $accounts.= "<option value=\"" . $row['email'] . "\">" . $row['email'] . "</option>";
+    }
+
+    eval("echo \"" . getTemplate("email/autoresponder_add") . "\";");
 }
+
 // Edit autoresponder
-else if($action == "edit")
-{
-	if(isset($_POST['send']) && $_POST['send'] == 'send')
-	{
-		$account = trim($_POST['account']);
-		$subject = trim($_POST['subject']);
-		$message = trim($_POST['message']);
 
-		if(empty($account) || empty($subject) || empty($message))
-		{
-			standard_error('missingfields');
-		}
-
-		// Does account exist?
-		$result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' AND `email` = '".$db->escape($account)."' LIMIT 0,1");
-		if($db->num_rows($result) == 0) {
-			standard_error('accountnotexisting');
-		}
-
-		// Does autoresponder exist?
-		$result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' AND `email` = '".$db->escape($account)."' LIMIT 0,1");
-		if($db->num_rows($result) == 0)
-		{
-			standard_error('invalidautoresponder');
-		}
-
-		$ResponderActive = 0;
-		if(isset($_POST['active']) && $_POST['active'] == '1')
-		{
-			$ResponderActive = 1;
-		}
-
-		$db->query("UPDATE `" . TABLE_MAIL_AUTORESPONDER . "`
-			SET `message` = '".$db->escape($message)."',
-			`enabled` = '".(int)$ResponderActive."',
-			`subject` = '".$db->escape($subject)."'
-			WHERE `email` = '".$db->escape($account)."'
-			AND `customerid` = '".$db->escape((int)$userinfo['customerid'])."'
-			");
-
-		redirectTo($filename, Array(
-			's' => $s
-		));
-	}
-
-	$email = trim(htmlspecialchars($_GET['email']));
-
-	// Get account data
-	$result = $db->query("SELECT * FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' AND `email` = '".$db->escape($email)."' LIMIT 0,1");
-	if($db->num_rows($result) == 0)
-	{
-		standard_error('invalidautoresponder');
-	}
-
-	$row = $db->fetch_array($result);
-	$subject = htmlspecialchars($row['subject']);
-	$message = htmlspecialchars($row['message']);
-
-	$checked = '';
-	if($row['enabled'] == 1)
-	{
-		$checked = "checked=\"checked\"";
-	}
-
-	eval("echo \"" . getTemplate("email/autoresponder_edit") . "\";");
-}
-// Delete autoresponder
-else if($action == "delete")
-{
-	if(isset($_POST['send']) && $_POST['send'] == 'send')
-	{
-		$account = trim($_POST['account']);
-
-		// Does autoresponder exist?
-		$result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' AND `email` = '".$db->escape($account)."' LIMIT 0,1");
-		if($db->num_rows($result) == 0)
-		{
-			standard_error('invalidautoresponder');
-		}
-
-		$db->query("DELETE FROM `" . TABLE_MAIL_AUTORESPONDER . "`
-			WHERE `email` = '".$db->escape($account)."'
-			AND `customerid` = '".$db->escape((int)$userinfo['customerid'])."'
-			");
-
-		redirectTo($filename, Array(
-			's' => $s
-		));
-	}
-
-	$email = trim(htmlspecialchars($_GET['email']));
-	ask_yesno('autoresponderdelete', $filename, array('action' => $action, 'account' => $email));
-}
-// List existing autoresponders
 else
-{
-	$autoresponder = '';
 
-	$result = $db->query("SELECT * FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '".(int)$userinfo['customerid']."' ORDER BY email ASC");
-	while($row = $db->fetch_array($result))
-	{
-		eval("\$autoresponder.=\"" . getTemplate("email/autoresponder_autoresponder") . "\";");
-	}
-	eval("echo \"" . getTemplate("email/autoresponder") . "\";");
+if($action == "edit")
+{
+    if(isset($_POST['send'])
+       && $_POST['send'] == 'send')
+    {
+        $account = trim($_POST['account']);
+        $subject = trim($_POST['subject']);
+        $message = trim($_POST['message']);
+
+        if(empty($account)
+           || empty($subject)
+           || empty($message))
+        {
+            standard_error('missingfields');
+        }
+
+        // Does account exist?
+
+        $result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' AND `email` = '" . $db->escape($account) . "' LIMIT 0,1");
+
+        if($db->num_rows($result) == 0)
+        {
+            standard_error('accountnotexisting');
+        }
+
+        // Does autoresponder exist?
+
+        $result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' AND `email` = '" . $db->escape($account) . "' LIMIT 0,1");
+
+        if($db->num_rows($result) == 0)
+        {
+            standard_error('invalidautoresponder');
+        }
+
+        $ResponderActive = 0;
+
+        if(isset($_POST['active'])
+           && $_POST['active'] == '1')
+        {
+            $ResponderActive = 1;
+        }
+
+        $db->query("UPDATE `" . TABLE_MAIL_AUTORESPONDER . "`
+			SET `message` = '" . $db->escape($message) . "',
+			`enabled` = '" . (int)$ResponderActive . "',
+			`subject` = '" . $db->escape($subject) . "'
+			WHERE `email` = '" . $db->escape($account) . "'
+			AND `customerid` = '" . $db->escape((int)$userinfo['customerid']) . "'
+			");
+        redirectTo($filename, Array(
+            's' => $s
+        ));
+    }
+
+    $email = trim(htmlspecialchars($_GET['email']));
+
+    // Get account data
+
+    $result = $db->query("SELECT * FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' AND `email` = '" . $db->escape($email) . "' LIMIT 0,1");
+
+    if($db->num_rows($result) == 0)
+    {
+        standard_error('invalidautoresponder');
+    }
+
+    $row = $db->fetch_array($result);
+    $subject = htmlspecialchars($row['subject']);
+    $message = htmlspecialchars($row['message']);
+    $checked = '';
+
+    if($row['enabled'] == 1)
+    {
+        $checked = "checked=\"checked\"";
+    }
+
+    eval("echo \"" . getTemplate("email/autoresponder_edit") . "\";");
+}
+
+// Delete autoresponder
+
+else
+
+if($action == "delete")
+{
+    if(isset($_POST['send'])
+       && $_POST['send'] == 'send')
+    {
+        $account = trim($_POST['account']);
+
+        // Does autoresponder exist?
+
+        $result = $db->query("SELECT `email` FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' AND `email` = '" . $db->escape($account) . "' LIMIT 0,1");
+
+        if($db->num_rows($result) == 0)
+        {
+            standard_error('invalidautoresponder');
+        }
+
+        $db->query("DELETE FROM `" . TABLE_MAIL_AUTORESPONDER . "`
+			WHERE `email` = '" . $db->escape($account) . "'
+			AND `customerid` = '" . $db->escape((int)$userinfo['customerid']) . "'
+			");
+        redirectTo($filename, Array(
+            's' => $s
+        ));
+    }
+
+    $email = trim(htmlspecialchars($_GET['email']));
+    ask_yesno('autoresponderdelete', $filename, array(
+        'action' => $action,
+        'account' => $email
+    ));
+}
+
+// List existing autoresponders
+
+else 
+{
+    $autoresponder = '';
+    $result = $db->query("SELECT * FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid` = '" . (int)$userinfo['customerid'] . "' ORDER BY email ASC");
+
+    while($row = $db->fetch_array($result))
+    {
+        eval("\$autoresponder.=\"" . getTemplate("email/autoresponder_autoresponder") . "\";");
+    }
+
+    eval("echo \"" . getTemplate("email/autoresponder") . "\";");
 }
 
 ?>

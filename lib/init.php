@@ -28,10 +28,10 @@ header("Content-type: text/html; charset=ISO-8859-1");
 
 foreach($_REQUEST as $key => $value)
 {
-	if(isset($$key))
-	{
-		unset($$key);
-	}
+    if(isset($$key))
+    {
+        unset($$key);
+    }
 }
 
 unset($_);
@@ -41,12 +41,12 @@ $filename = basename($_SERVER['PHP_SELF']);
 
 if(!file_exists('./lib/userdata.inc.php'))
 {
-	die('You have to <a href="./install/install.php">configure</a> SysCP first!');
+    die('You have to <a href="./install/install.php">configure</a> SysCP first!');
 }
 
 if(!is_readable('./lib/userdata.inc.php'))
 {
-	die('You have to make the file "./lib/userdata.inc.php" readable for the http-process!');
+    die('You have to make the file "./lib/userdata.inc.php" readable for the http-process!');
 }
 
 /**
@@ -58,7 +58,7 @@ require ('./lib/userdata.inc.php');
 if(!isset($sql)
    || !is_array($sql))
 {
-	die('You have to <a href="./install/install.php">configure</a> SysCP first!');
+    die('You have to <a href="./install/install.php">configure</a> SysCP first!');
 }
 
 /**
@@ -81,33 +81,33 @@ unset($db->password);
 
 if($filename == 'admin_configfiles.php')
 {
-	// Configfiles needs host, user, db
+    // Configfiles needs host, user, db
 
-	unset($sql['root_user']);
-	unset($sql['root_password']);
+    unset($sql['root_user']);
+    unset($sql['root_password']);
 }
 elseif($filename == 'customer_mysql.php'
        || $filename == 'admin_customers.php')
 {
-	// customer mysql needs root pw, root user, host for database creation
-	// admin customers needs it for database deletion
+    // customer mysql needs root pw, root user, host for database creation
+    // admin customers needs it for database deletion
 
-	unset($sql['user']);
-	unset($sql['db']);
+    unset($sql['user']);
+    unset($sql['db']);
 }
 elseif($filename == 'admin_settings.php')
 {
-	// admin settings needs the  host, user, db, root user, root pw
+    // admin settings needs the  host, user, db, root user, root pw
 }
 else
 {
-	// Other scripts doesn't need anything at all
+    // Other scripts doesn't need anything at all
 
-	unset($sql['host']);
-	unset($sql['user']);
-	unset($sql['db']);
-	unset($sql['root_user']);
-	unset($sql['root_password']);
+    unset($sql['host']);
+    unset($sql['user']);
+    unset($sql['db']);
+    unset($sql['root_user']);
+    unset($sql['root_password']);
 }
 
 /**
@@ -168,27 +168,27 @@ require ('./lib/class.phpmailer.php');
 
 if(get_magic_quotes_gpc())
 {
-	$in = array(
-		&$_GET,
-		&$_POST,
-		&$_COOKIE
-	);
+    $in = array(
+        &$_GET,
+        &$_POST,
+        &$_COOKIE
+    );
 
-	while(list($k, $v) = each($in))
-	{
-		foreach($v as $key => $val)
-		{
-			if(!is_array($val))
-			{
-				$in[$k][$key] = stripslashes($val);
-				continue;
-			}
+    while(list($k, $v) = each($in))
+    {
+        foreach($v as $key => $val)
+        {
+            if(!is_array($val))
+            {
+                $in[$k][$key] = stripslashes($val);
+                continue;
+            }
 
-			$in[] = &$in[$k][$key];
-		}
-	}
+            $in[] = &$in[$k][$key];
+        }
+    }
 
-	unset($in);
+    unset($in);
 }
 
 /**
@@ -200,15 +200,15 @@ $result = $db->query('SELECT `settinggroup`, `varname`, `value` FROM `' . TABLE_
 
 while($row = $db->fetch_array($result))
 {
-	if(($row['settinggroup'] == 'system' && $row['varname'] == 'hostname')
-	   || ($row['settinggroup'] == 'panel' && $row['varname'] == 'adminmail'))
-	{
-		$settings[$row['settinggroup']][$row['varname']] = $idna_convert->decode($row['value']);
-	}
-	else
-	{
-		$settings[$row['settinggroup']][$row['varname']] = $row['value'];
-	}
+    if(($row['settinggroup'] == 'system' && $row['varname'] == 'hostname')
+       || ($row['settinggroup'] == 'panel' && $row['varname'] == 'adminmail'))
+    {
+        $settings[$row['settinggroup']][$row['varname']] = $idna_convert->decode($row['value']);
+    }
+    else
+    {
+        $settings[$row['settinggroup']][$row['varname']] = $row['value'];
+    }
 }
 
 unset($row);
@@ -217,8 +217,8 @@ unset($result);
 if(!isset($settings['panel']['version'])
    || $settings['panel']['version'] != $version)
 {
-	redirectTo('install/updatesql.php');
-	exit;
+    redirectTo('install/updatesql.php');
+    exit;
 }
 
 /**
@@ -235,18 +235,18 @@ unset($s);
 
 if(isset($_POST['s']))
 {
-	$s = $_POST['s'];
-	$nosession = 0;
+    $s = $_POST['s'];
+    $nosession = 0;
 }
 elseif(isset($_GET['s']))
 {
-	$s = $_GET['s'];
-	$nosession = 0;
+    $s = $_GET['s'];
+    $nosession = 0;
 }
 else
 {
-	$s = '';
-	$nosession = 1;
+    $s = '';
+    $nosession = 1;
 }
 
 $timediff = time()-$settings['session']['sessiontimeout'];
@@ -257,38 +257,38 @@ if(isset($s)
    && $s != ""
    && $nosession != 1)
 {
-	$query = 'SELECT `s`.*, `u`.* FROM `' . TABLE_PANEL_SESSIONS . '` `s` LEFT JOIN `';
+    $query = 'SELECT `s`.*, `u`.* FROM `' . TABLE_PANEL_SESSIONS . '` `s` LEFT JOIN `';
 
-	if(AREA == 'admin')
-	{
-		$query.= TABLE_PANEL_ADMINS . '` `u` ON (`s`.`userid` = `u`.`adminid`)';
-		$adminsession = '1';
-	}
-	else
-	{
-		$query.= TABLE_PANEL_CUSTOMERS . '` `u` ON (`s`.`userid` = `u`.`customerid`)';
-		$adminsession = '0';
-	}
+    if(AREA == 'admin')
+    {
+        $query.= TABLE_PANEL_ADMINS . '` `u` ON (`s`.`userid` = `u`.`adminid`)';
+        $adminsession = '1';
+    }
+    else
+    {
+        $query.= TABLE_PANEL_CUSTOMERS . '` `u` ON (`s`.`userid` = `u`.`customerid`)';
+        $adminsession = '0';
+    }
 
-	$query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '" AND `s`.`adminsession` = "' . $db->escape($adminsession) . '"';
-	$userinfo = $db->query_first($query);
+    $query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '" AND `s`.`adminsession` = "' . $db->escape($adminsession) . '"';
+    $userinfo = $db->query_first($query);
 
-	if((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid'])) || ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
-	   && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))
-	{
-		$userinfo['newformtoken'] = strtolower(md5(uniqid(microtime(), 1)));
-		$query = 'UPDATE `' . TABLE_PANEL_SESSIONS . '` SET `lastactivity`="' . time() . '", `formtoken`="' . $userinfo['newformtoken'] . '" WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"';
-		$db->query($query);
-		$nosession = 0;
-	}
-	else
-	{
-		$nosession = 1;
-	}
+    if((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid'])) || ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
+       && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))
+    {
+        $userinfo['newformtoken'] = strtolower(md5(uniqid(microtime(), 1)));
+        $query = 'UPDATE `' . TABLE_PANEL_SESSIONS . '` SET `lastactivity`="' . time() . '", `formtoken`="' . $userinfo['newformtoken'] . '" WHERE `hash`="' . $db->escape($s) . '" AND `adminsession` = "' . $db->escape($adminsession) . '"';
+        $db->query($query);
+        $nosession = 0;
+    }
+    else
+    {
+        $nosession = 1;
+    }
 }
 else
 {
-	$nosession = 1;
+    $nosession = 1;
 }
 
 /**
@@ -307,49 +307,49 @@ $result = $db->query($query);
 
 while($row = $db->fetch_array($result))
 {
-	$langs[$row['language']][] = $row;
+    $langs[$row['language']][] = $row;
 }
 
 // buildup $languages for the login screen
 
 foreach($langs as $key => $value)
 {
-	$languages[$key] = $key;
+    $languages[$key] = $key;
 }
 
 if(!isset($userinfo['language'])
    || !isset($languages[$userinfo['language']]))
 {
-	if(isset($_GET['language'])
-	   && isset($languages[$_GET['language']]))
-	{
-		$language = $_GET['language'];
-	}
-	else
-	{
-		$language = $settings['panel']['standardlanguage'];
-	}
+    if(isset($_GET['language'])
+       && isset($languages[$_GET['language']]))
+    {
+        $language = $_GET['language'];
+    }
+    else
+    {
+        $language = $settings['panel']['standardlanguage'];
+    }
 }
 else
 {
-	$language = $userinfo['language'];
+    $language = $userinfo['language'];
 }
 
 // include every english language file we can get
 
 foreach($langs['English'] as $key => $value)
 {
-	include_once makeSecurePath($value['file']);
+    include_once makeSecurePath($value['file']);
 }
 
 // now include the selected language if its not english
 
 if($language != 'English')
 {
-	foreach($langs[$language] as $key => $value)
-	{
-		include_once makeSecurePath($value['file']);
-	}
+    foreach($langs[$language] as $key => $value)
+    {
+        include_once makeSecurePath($value['file']);
+    }
 }
 
 /**
@@ -359,9 +359,9 @@ if($language != 'English')
 if($nosession == 1
    && AREA != 'login')
 {
-	unset($userinfo);
-	redirectTo('index.php');
-	exit;
+    unset($userinfo);
+    redirectTo('index.php');
+    exit;
 }
 
 /**
@@ -377,35 +377,35 @@ $templatecache = array();
 if(isset($userinfo['loginname'])
    && $userinfo['loginname'] != '')
 {
-	$lng['menue']['main']['username'].= $userinfo['loginname'];
+    $lng['menue']['main']['username'].= $userinfo['loginname'];
 
-	/**
-	 * Initialize logging
-	 */
+    /**
+     * Initialize logging
+     */
 
-	$log = SysCPLogger::getInstanceOf($userinfo, $db, $settings);
+    $log = SysCPLogger::getInstanceOf($userinfo, $db, $settings);
 }
 
 if($settings['billing']['activate_billing'] == '1')
 {
-	/**
-	 * Include Billing classes
-	 */
+    /**
+     * Include Billing classes
+     */
 
-	require ('./lib/billing_class_invoice.php');
-	require ('./lib/billing_class_taxcontroller.php');
-	require ('./lib/billing_class_servicecategory.php');
-	require ('./lib/billing_class_pdf.php');
-	require ('./lib/billing_class_pdfinvoice.php');
-	require ('./lib/billing_class_pdfreminder.php');
+    require ('./lib/billing_class_invoice.php');
+    require ('./lib/billing_class_taxcontroller.php');
+    require ('./lib/billing_class_servicecategory.php');
+    require ('./lib/billing_class_pdf.php');
+    require ('./lib/billing_class_pdfinvoice.php');
+    require ('./lib/billing_class_pdfreminder.php');
 }
 else
 {
-	/**
-	 * Deactivate Billing for all users
-	 */
+    /**
+     * Deactivate Billing for all users
+     */
 
-	$userinfo['edit_billingdata'] = '0';
+    $userinfo['edit_billingdata'] = '0';
 }
 
 /**
@@ -416,44 +416,44 @@ $navigation = getNavigation($s, $userinfo);
 
 if($settings['panel']['no_robots'] != '0')
 {
-	eval("\$header = \"" . getTemplate('header', '1') . "\";");
+    eval("\$header = \"" . getTemplate('header', '1') . "\";");
 }
 else
 {
-	eval("\$header = \"" . getTemplate('header_no_robots', '1') . "\";");
+    eval("\$header = \"" . getTemplate('header_no_robots', '1') . "\";");
 }
 
 eval("\$footer = \"" . getTemplate('footer', '1') . "\";");
 
 if(isset($_POST['action']))
 {
-	$action = $_POST['action'];
+    $action = $_POST['action'];
 }
 elseif(isset($_GET['action']))
 {
-	$action = $_GET['action'];
+    $action = $_GET['action'];
 }
 else
 {
-	$action = '';
+    $action = '';
 }
 
 if(isset($_POST['page']))
 {
-	$page = $_POST['page'];
+    $page = $_POST['page'];
 }
 elseif(isset($_GET['page']))
 {
-	$page = $_GET['page'];
+    $page = $_GET['page'];
 }
 else
 {
-	$page = '';
+    $page = '';
 }
 
 if($page == '')
 {
-	$page = 'overview';
+    $page = 'overview';
 }
 
 /**

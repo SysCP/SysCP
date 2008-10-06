@@ -60,6 +60,7 @@ define('TABLE_APS_TASKS', 'aps_tasks');
 define('TABLE_APS_TEMP_SETTINGS', 'aps_temp_settings');
 
 // Billing constants
+
 define('CONST_BILLING_INVOICESTATE_INVOICED', '0');
 define('CONST_BILLING_INVOICESTATE_SENT', '1');
 define('CONST_BILLING_INVOICESTATE_PAID', '2');
@@ -73,6 +74,7 @@ define('CONST_BILLING_INTERVALPAYMENT_PREPAID', '0');
 define('CONST_BILLING_INTERVALPAYMENT_POSTPAID', '1');
 
 // APS constants
+
 define('TASK_INSTALL', 1);
 define('TASK_REMOVE', 2);
 define('TASK_RECONFIGURE', 3);
@@ -84,7 +86,6 @@ define('INSTANCE_ERROR', 4);
 define('INSTANCE_UNINSTALL', 5);
 define('PACKAGE_LOCKED', 1);
 define('PACKAGE_ENABLED', 2);
-
 $version = '1.2.19-svn35';
 
 ?>

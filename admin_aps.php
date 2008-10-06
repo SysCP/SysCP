@@ -1,5 +1,6 @@
 <?php
- /**
+
+/**
  * This file is part of the SysCP project.
  * Copyright (c) 2003-2008 the SysCP Team (see authors).
  *
@@ -16,19 +17,18 @@
  */
 
 // Required code
+
 define('AREA', 'admin');
-require("./lib/init.php");
-require("./lib/class_apsparser.php");
-
+require ("./lib/init.php");
+require ("./lib/class_apsparser.php");
 $Id = 0;
+
 if(isset($_GET['id']))$Id = (int)$_GET['id'];
+
 if(isset($_POST['id']))$Id = (int)$_POST['id'];
-
 eval("echo \"" . getTemplate("aps/header") . "\";");
-
 $Aps = new ApsParser($userinfo, $settings, $db);
 $Aps->MainHandler($action);
-
 eval("echo \"" . getTemplate("aps/footer") . "\";");
 
 ?>
