@@ -766,7 +766,7 @@ if($page == 'customers'
 				$tickets_ul = makecheckbox('tickets_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 				$mysqls_ul = makecheckbox('mysqls_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 				$createstdsubdomain = makeyesno('createstdsubdomain', '1', '0', '1');
-				$byte_type_option = makeByteOption();
+				$quota_type_option = makeQuotaOption();
 				$email_imap = makeyesno('email_imap', '1', '0', '1');
 				$email_pop3 = makeyesno('email_pop3', '1', '0', '1');
 				$sendpassword = makeyesno('sendpassword', '1', '0', '1');
