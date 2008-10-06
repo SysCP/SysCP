@@ -53,21 +53,21 @@ $archiving_count = 0;
 
 while($row_ticket = $db->fetch_array($result_tickets))
 {
-    $lastchange = $row_ticket['lastchange'];
-    $now = time();
-    $days = (int)(($now-$lastchange)/86400);
+	$lastchange = $row_ticket['lastchange'];
+	$now = time();
+	$days = (int)(($now-$lastchange)/86400);
 
-    if($days >= $settings['ticket']['archiving_days'])
-    {
-        fwrite($debugHandler, 'archiving ticket "' . $row_ticket['subject'] . '" (ID #' . $row_ticket['id'] . ')' . "\n");
-        $mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$row_ticket['id']);
-        $mainticket->Set('lastchange', $now, true, true);
-        $mainticket->Set('lastreplier', '1', true, true);
-        $mainticket->Set('status', '3', true, true);
-        $mainticket->Update();
-        $mainticket->Archive();
-        $archiving_count++;
-    }
+	if($days >= $settings['ticket']['archiving_days'])
+	{
+		fwrite($debugHandler, 'archiving ticket "' . $row_ticket['subject'] . '" (ID #' . $row_ticket['id'] . ')' . "\n");
+		$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$row_ticket['id']);
+		$mainticket->Set('lastchange', $now, true, true);
+		$mainticket->Set('lastreplier', '1', true, true);
+		$mainticket->Set('status', '3', true, true);
+		$mainticket->Update();
+		$mainticket->Archive();
+		$archiving_count++;
+	}
 }
 
 fwrite($debugHandler, 'Archived ' . $archiving_count . ' tickets' . "\n");

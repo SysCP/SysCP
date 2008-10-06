@@ -39,7 +39,7 @@ $result = $db->query("SELECT `settinggroup`, `varname`, `value` FROM `" . TABLE_
 
 while($row = $db->fetch_array($result))
 {
-    $settings[$row['settinggroup']][$row['varname']] = $row['value'];
+	$settings[$row['settinggroup']][$row['varname']] = $row['value'];
 }
 
 unset($row);
@@ -66,7 +66,7 @@ require ('../lib/class_mysqllogger.php');
 
 require ('../lib/class_syscplogger.php');
 $updatelog = SysCPLogger::getInstanceOf(array(
-    'loginname' => 'updater'
+	'loginname' => 'updater'
 ), $db, $settings);
 
 /**
@@ -76,8 +76,8 @@ $updatelog = SysCPLogger::getInstanceOf(array(
 if(!isset($settings['panel']['version'])
    || (substr($settings['panel']['version'], 0, 3) == '1.0' && $settings['panel']['version'] != '1.0.10'))
 {
-    $updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.0.inc.php");
-    include_once ('./updatesql_1.0.inc.php');
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.0.inc.php");
+	include_once ('./updatesql_1.0.inc.php');
 }
 
 /**
@@ -86,8 +86,8 @@ if(!isset($settings['panel']['version'])
 
 if($settings['panel']['version'] == '1.0.10')
 {
-    $updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.0-1.2.inc.php");
-    include_once ('./updatesql_1.0-1.2.inc.php');
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.0-1.2.inc.php");
+	include_once ('./updatesql_1.0-1.2.inc.php');
 }
 
 /**
@@ -96,8 +96,8 @@ if($settings['panel']['version'] == '1.0.10')
 
 if(substr($settings['panel']['version'], 0, 3) == '1.2')
 {
-    $updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.2.inc.php");
-    include_once ('./updatesql_1.2.inc.php');
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.2.inc.php");
+	include_once ('./updatesql_1.2.inc.php');
 }
 
 /**
@@ -106,8 +106,8 @@ if(substr($settings['panel']['version'], 0, 3) == '1.2')
 
 if($settings['panel']['version'] >= '1.2.19')
 {
-    $updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.2.19-20.inc.php");
-    include_once ('./updatesql_1.2.19-20.inc.php');
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.2.19-20.inc.php");
+	include_once ('./updatesql_1.2.19-20.inc.php');
 }
 
 updateCounters();

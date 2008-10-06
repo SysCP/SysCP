@@ -32,17 +32,17 @@ if((int)$settings['autoresponder']['autoresponder_active'] == 0)return;
 
 if((int)$settings['autoresponder']['last_autoresponder_run'] == 0)
 {
-    //mails from last 5 minutes, otherwise all mails will be parsed -> mailbomb prevention
+	//mails from last 5 minutes, otherwise all mails will be parsed -> mailbomb prevention
 
-    $cycle = 300;
+	$cycle = 300;
 }
 else
 {
-    $cycle = time()-(int)$settings['autoresponder']['last_autoresponder_run'];
+	$cycle = time()-(int)$settings['autoresponder']['last_autoresponder_run'];
 
-    //prevent mailbombs when cycle is bigger than two days
+	//prevent mailbombs when cycle is bigger than two days
 
-    if($cycle > (2*60*60*24))$cycle = (60*60*24);
+	if($cycle > (2*60*60*24))$cycle = (60*60*24);
 }
 
 $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . (int)time() . "' WHERE `settinggroup` = 'autoresponder' AND `varname` = 'last_autoresponder_run'");
@@ -62,115 +62,115 @@ $result = $db->query("SELECT * FROM `" . TABLE_MAIL_AUTORESPONDER . "` INNER JOI
 
 if($db->num_rows($result) > 0)
 {
-    while($row = $db->fetch_array($result))
-    {
-        $path = $row['homedir'] . $row['maildir'] . "new/";
-        $files = scandir($path);
-        foreach($files as $entry)
-        {
-            if($entry == '.'
-               || $entry == '..')continue;
+	while($row = $db->fetch_array($result))
+	{
+		$path = $row['homedir'] . $row['maildir'] . "new/";
+		$files = scandir($path);
+		foreach($files as $entry)
+		{
+			if($entry == '.'
+			   || $entry == '..')continue;
 
-            if(time()-filemtime($path . $entry)-$cycle <= 0)
-            {
-                $content = file($path . $entry);
+			if(time()-filemtime($path . $entry)-$cycle <= 0)
+			{
+				$content = file($path . $entry);
 
-                //error reading mail contents
+				//error reading mail contents
 
-                if(count($content) == 0)
-                {
-                    $log->logAction(LOG_ERROR, LOG_WARNING, "Unable to read mail from maildir: " . $entry);
-                    continue;
-                }
+				if(count($content) == 0)
+				{
+					$log->logAction(LOG_ERROR, LOG_WARNING, "Unable to read mail from maildir: " . $entry);
+					continue;
+				}
 
-                $match = array();
-                $from = '';
-                $to = '';
-                $sender = '';
-                $spam = false;
-                foreach($content as $line)
-                {
-                    if(preg_match("/^From:(.+)<(.*)>$/", $line, $match))
-                    {
-                        $from = $match[2];
-                    }
+				$match = array();
+				$from = '';
+				$to = '';
+				$sender = '';
+				$spam = false;
+				foreach($content as $line)
+				{
+					if(preg_match("/^From:(.+)<(.*)>$/", $line, $match))
+					{
+						$from = $match[2];
+					}
 
-                    if(preg_match("/^To:(.+)<(.*)>$/", $line, $match))
-                    {
-                        $to = $match[2];
-                    }
+					if(preg_match("/^To:(.+)<(.*)>$/", $line, $match))
+					{
+						$to = $match[2];
+					}
 
-                    if(preg_match("/^Sender:(.+)<(.*)>$/", $line, $match))
-                    {
-                        $sender = $match[2];
-                    }
+					if(preg_match("/^Sender:(.+)<(.*)>$/", $line, $match))
+					{
+						$sender = $match[2];
+					}
 
-                    //check for amavis/spamassassin spam headers
+					//check for amavis/spamassassin spam headers
 
-                    if(preg_match("/^X-Spam-Status: (Yes|No)(.*)$/", $line, $match))
-                    {
-                        if($match[1] == 'Yes')$spam = true;
-                    }
-                }
+					if(preg_match("/^X-Spam-Status: (Yes|No)(.*)$/", $line, $match))
+					{
+						if($match[1] == 'Yes')$spam = true;
+					}
+				}
 
-                //skip mail when marked as spam
+				//skip mail when marked as spam
 
-                if($spam == true)continue;
+				if($spam == true)continue;
 
-                //error while parsing mail
+				//error while parsing mail
 
-                if($to == ''
-                   || $from == '')
-                {
-                    $log->logAction(LOG_ERROR, LOG_WARNING, "No valid headers found in mail to parse: " . $entry);
-                    continue;
-                }
+				if($to == ''
+				   || $from == '')
+				{
+					$log->logAction(LOG_ERROR, LOG_WARNING, "No valid headers found in mail to parse: " . $entry);
+					continue;
+				}
 
-                //important! prevent mailbombs when mail comes from a maildaemon/mailrobot
-                //robot/daemon mails must go to Sender: field in envelope header
-                //refers to "Das Postfix-Buch" / RFC 2822
+				//important! prevent mailbombs when mail comes from a maildaemon/mailrobot
+				//robot/daemon mails must go to Sender: field in envelope header
+				//refers to "Das Postfix-Buch" / RFC 2822
 
-                if($sender != '')$from = $sender;
+				if($sender != '')$from = $sender;
 
-                //make message valid to email format
+				//make message valid to email format
 
-                $message = str_replace("\r\n", "\n", $row['message']);
+				$message = str_replace("\r\n", "\n", $row['message']);
 
-                //check if mail is already an answer
+				//check if mail is already an answer
 
-                $fullcontent = implode("", $content);
+				$fullcontent = implode("", $content);
 
-                if(strstr($fullcontent, $message))
-                {
-                    continue;
-                }
+				if(strstr($fullcontent, $message))
+				{
+					continue;
+				}
 
-                //send mail with mailer class
+				//send mail with mailer class
 
-                $mail->From = $to;
-                $mail->FromName = $to;
-                $mail->Subject = $row['subject'];
-                $mail->Body = html_entity_decode($message);
-                $mail->AddAddress($from, $from);
+				$mail->From = $to;
+				$mail->FromName = $to;
+				$mail->Subject = $row['subject'];
+				$mail->Body = html_entity_decode($message);
+				$mail->AddAddress($from, $from);
 
-                if(!$mail->Send())
-                {
-                    if($mail->ErrorInfo != '')
-                    {
-                        $mailerr_msg = $mail->ErrorInfo;
-                    }
-                    else
-                    {
-                        $mailerr_msg = $from;
-                    }
+				if(!$mail->Send())
+				{
+					if($mail->ErrorInfo != '')
+					{
+						$mailerr_msg = $mail->ErrorInfo;
+					}
+					else
+					{
+						$mailerr_msg = $from;
+					}
 
-                    $log->logAction(LOG_ERROR, LOG_WARNING, "Error sending autoresponder mail: " . $mailerr_msg);
-                }
+					$log->logAction(LOG_ERROR, LOG_WARNING, "Error sending autoresponder mail: " . $mailerr_msg);
+				}
 
-                $mail->ClearAddresses();
-            }
-        }
-    }
+				$mail->ClearAddresses();
+			}
+		}
+	}
 }
 
 include ($pathtophpfiles . '/lib/cron_shutdown.php');

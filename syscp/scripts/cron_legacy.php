@@ -40,7 +40,7 @@ $tables = getTables($db);
 if(!isset($tables[TABLE_PANEL_CRONSCRIPT])
    || !is_array($tables[TABLE_PANEL_CRONSCRIPT]))
 {
-    $db->query('CREATE TABLE `' . TABLE_PANEL_CRONSCRIPT . '` (  `id` int(11) unsigned NOT NULL auto_increment,  `file` varchar(255) NOT NULL default \'\',  PRIMARY KEY  (`id`) ) TYPE=MyISAM ; ');
+	$db->query('CREATE TABLE `' . TABLE_PANEL_CRONSCRIPT . '` (  `id` int(11) unsigned NOT NULL auto_increment,  `file` varchar(255) NOT NULL default \'\',  PRIMARY KEY  (`id`) ) TYPE=MyISAM ; ');
 }
 
 /**
@@ -52,20 +52,20 @@ $cronFileIncludeResult = $db->query($query);
 
 while($cronFileIncludeRow = $db->fetch_array($cronFileIncludeResult))
 {
-    $cronFileIncludeFullPath = makeSecurePath($pathtophpfiles . '/scripts/' . $cronFileIncludeRow['file']);
+	$cronFileIncludeFullPath = makeSecurePath($pathtophpfiles . '/scripts/' . $cronFileIncludeRow['file']);
 
-    if(fileowner($cronFileIncludeFullPath) == fileowner($pathtophpfiles . '/scripts/' . $filename)
-       && filegroup($cronFileIncludeFullPath) == filegroup($pathtophpfiles . '/scripts/' . $filename))
-    {
-        fwrite($debugHandler, 'Processing ...' . $cronFileIncludeFullPath . "\n");
-        include_once $cronFileIncludeFullPath;
-        fwrite($debugHandler, 'Processing done!' . "\n");
-    }
-    else
-    {
-        fwrite($debugHandler, 'WARNING! uid and/or gid of "' . $cronFileIncludeFullPath . '" and "' . $pathtophpfiles . '/scripts/' . $filename . '" don\'t match! Execution aborted!' . "\n");
-        $keepLockFile = true;
-    }
+	if(fileowner($cronFileIncludeFullPath) == fileowner($pathtophpfiles . '/scripts/' . $filename)
+	   && filegroup($cronFileIncludeFullPath) == filegroup($pathtophpfiles . '/scripts/' . $filename))
+	{
+		fwrite($debugHandler, 'Processing ...' . $cronFileIncludeFullPath . "\n");
+		include_once $cronFileIncludeFullPath;
+		fwrite($debugHandler, 'Processing done!' . "\n");
+	}
+	else
+	{
+		fwrite($debugHandler, 'WARNING! uid and/or gid of "' . $cronFileIncludeFullPath . '" and "' . $pathtophpfiles . '/scripts/' . $filename . '" don\'t match! Execution aborted!' . "\n");
+		$keepLockFile = true;
+	}
 }
 
 /**

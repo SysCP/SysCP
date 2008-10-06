@@ -40,159 +40,159 @@ $resultIDs = array();
 
 while($row = $db->fetch_array($result_tasks))
 {
-    $resultIDs[] = $row['id'];
+	$resultIDs[] = $row['id'];
 
-    if($row['data'] != '')
-    {
-        $row['data'] = unserialize($row['data']);
-    }
+	if($row['data'] != '')
+	{
+		$row['data'] = unserialize($row['data']);
+	}
 
-    /**
-     * TYPE=1 MEANS TO REBUILD APACHE VHOSTS.CONF
-     */
+	/**
+	 * TYPE=1 MEANS TO REBUILD APACHE VHOSTS.CONF
+	 */
 
-    if($row['type'] == '1')
-    {
-        if(!isset($webserver))
-        {
-            if($settings['system']['webserver'] == "apache2")
-            {
-                $webserver = new apache($db, $cronlog, $debugHandler, $settings);
-            }
-            elseif($settings['system']['webserver'] == "lighttpd")
-            {
-                $webserver = new lighttpd($db, $cronlog, $debugHandler, $settings);
-            }
-        }
+	if($row['type'] == '1')
+	{
+		if(!isset($webserver))
+		{
+			if($settings['system']['webserver'] == "apache2")
+			{
+				$webserver = new apache($db, $cronlog, $debugHandler, $settings);
+			}
+			elseif($settings['system']['webserver'] == "lighttpd")
+			{
+				$webserver = new lighttpd($db, $cronlog, $debugHandler, $settings);
+			}
+		}
 
-        if(isset($webserver))
-        {
-            $webserver->createIpPort();
-            $webserver->createVirtualHosts();
-            $webserver->writeConfigs();
-            $webserver->reload();
-        }
-        else
-        {
-            echo "Please check you Webserver settings\n";
-        }
-    }
+		if(isset($webserver))
+		{
+			$webserver->createIpPort();
+			$webserver->createVirtualHosts();
+			$webserver->writeConfigs();
+			$webserver->reload();
+		}
+		else
+		{
+			echo "Please check you Webserver settings\n";
+		}
+	}
 
-    /**
-     * TYPE=2 MEANS TO CREATE A NEW HOME AND CHOWN
-     */
-    elseif ($row['type'] == '2')
-    {
-        fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
-        $cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
+	/**
+	 * TYPE=2 MEANS TO CREATE A NEW HOME AND CHOWN
+	 */
+	elseif ($row['type'] == '2')
+	{
+		fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
 
-        if(is_array($row['data']))
-        {
-            $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/webalizer'));
-            safe_exec('mkdir -p ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/webalizer'));
-            $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
-            safe_exec('mkdir -p ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
+		if(is_array($row['data']))
+		{
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/webalizer'));
+			safe_exec('mkdir -p ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/webalizer'));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
+			safe_exec('mkdir -p ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
 
-            //check if admin of customer has added template for new customer directories
+			//check if admin of customer has added template for new customer directories
 
-            $result = $db->query("SELECT `t`.`value`, `c`.`email` AS `customer_email`, `a`.`email` AS `admin_email`, `c`.`loginname` AS `customer_login`, `a`.`loginname` AS `admin_login` FROM `" . TABLE_PANEL_CUSTOMERS . "` AS `c` INNER JOIN `" . TABLE_PANEL_ADMINS . "` AS `a` ON `c`.`adminid` = `a`.`adminid` INNER JOIN `" . TABLE_PANEL_TEMPLATES . "` AS `t` ON `a`.`adminid` = `t`.`adminid` WHERE `varname` = 'index_html' AND `c`.`loginname` = '" . $db->escape($row['data']['loginname']) . "'");
+			$result = $db->query("SELECT `t`.`value`, `c`.`email` AS `customer_email`, `a`.`email` AS `admin_email`, `c`.`loginname` AS `customer_login`, `a`.`loginname` AS `admin_login` FROM `" . TABLE_PANEL_CUSTOMERS . "` AS `c` INNER JOIN `" . TABLE_PANEL_ADMINS . "` AS `a` ON `c`.`adminid` = `a`.`adminid` INNER JOIN `" . TABLE_PANEL_TEMPLATES . "` AS `t` ON `a`.`adminid` = `t`.`adminid` WHERE `varname` = 'index_html' AND `c`.`loginname` = '" . $db->escape($row['data']['loginname']) . "'");
 
-            if($db->num_rows($result) > 0)
-            {
-                $template = $db->fetch_array($result);
-                $replace_arr = array(
-                    'SERVERNAME' => $settings['system']['hostname'],
-                    'CUSTOMER' => $template['customer_login'],
-                    'ADMIN' => $template['admin_login'],
-                    'CUSTOMER_EMAIL' => $template['customer_email'],
-                    'ADMIN_EMAIL' => $template['admin_email']
-                );
-                $htmlcontent = replace_variables($template['value'], $replace_arr);
-                $indexhtmlpath = $settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/index.' . $settings['system']['index_file_extension'];
-                $index_html_handler = fopen($indexhtmlpath, 'w');
-                fwrite($index_html_handler, $htmlcontent);
-                fclose($index_html_handler);
-                $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Creating \'index.' . $settings['system']['index_file_extension'] . '\' for Customer \'' . $template['customer_login'] . '\' based on template in directory ' . escapeshellarg($indexhtmlpath));
-            }
-            else
-            {
-                $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: cp -a ' . $pathtophpfiles . '/templates/misc/standardcustomer/* ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/'));
-                safe_exec('cp -a ' . $pathtophpfiles . '/templates/misc/standardcustomer/* ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/'));
-            }
+			if($db->num_rows($result) > 0)
+			{
+				$template = $db->fetch_array($result);
+				$replace_arr = array(
+					'SERVERNAME' => $settings['system']['hostname'],
+					'CUSTOMER' => $template['customer_login'],
+					'ADMIN' => $template['admin_login'],
+					'CUSTOMER_EMAIL' => $template['customer_email'],
+					'ADMIN_EMAIL' => $template['admin_email']
+				);
+				$htmlcontent = replace_variables($template['value'], $replace_arr);
+				$indexhtmlpath = $settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/index.' . $settings['system']['index_file_extension'];
+				$index_html_handler = fopen($indexhtmlpath, 'w');
+				fwrite($index_html_handler, $htmlcontent);
+				fclose($index_html_handler);
+				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Creating \'index.' . $settings['system']['index_file_extension'] . '\' for Customer \'' . $template['customer_login'] . '\' based on template in directory ' . escapeshellarg($indexhtmlpath));
+			}
+			else
+			{
+				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: cp -a ' . $pathtophpfiles . '/templates/misc/standardcustomer/* ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/'));
+				safe_exec('cp -a ' . $pathtophpfiles . '/templates/misc/standardcustomer/* ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname'] . '/'));
+			}
 
-            $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname']));
-            safe_exec('chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname']));
-            $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
-            safe_exec('chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
-        }
-    }
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname']));
+			safe_exec('chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($settings['system']['documentroot_prefix'] . $row['data']['loginname']));
+			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
+			safe_exec('chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['data']['loginname']));
+		}
+	}
 
-    /**
-     * TYPE=3 MEANS TO CREATE/CHANGE/DELETE A HTACCESS AND/OR HTPASSWD
-     */
-    elseif ($row['type'] == '3')
-    {
-        if(!isset($diroptions))
-        {
-            if($settings['system']['webserver'] == "apache2")
-            {
-                $diroptions = new diroptionsApache($db, $cronlog, $debugHandler, $settings);
-            }
-            elseif($settings['system']['webserver'] == "lighttpd")
-            {
-                $diroptions = new diroptionsLighttpd($db, $cronlog, $debugHandler, $settings);
-            }
-        }
+	/**
+	 * TYPE=3 MEANS TO CREATE/CHANGE/DELETE A HTACCESS AND/OR HTPASSWD
+	 */
+	elseif ($row['type'] == '3')
+	{
+		if(!isset($diroptions))
+		{
+			if($settings['system']['webserver'] == "apache2")
+			{
+				$diroptions = new diroptionsApache($db, $cronlog, $debugHandler, $settings);
+			}
+			elseif($settings['system']['webserver'] == "lighttpd")
+			{
+				$diroptions = new diroptionsLighttpd($db, $cronlog, $debugHandler, $settings);
+			}
+		}
 
-        #		$diroptions->createFileDirOptions();
-        #		$diroptions->reload();
-    }
+		#		$diroptions->createFileDirOptions();
+		#		$diroptions->reload();
+	}
 
-    /**
-     * TYPE=4 MEANS THAT SOMETHING IN THE BIND CONFIG HAS CHANGED. REBUILD syscp_bind.conf
-     */
-    elseif ($row['type'] == '4')
-    {
-        if(!isset($nameserver))
-        {
-            $nameserver = new bind($db, $cronlog, $debugHandler, $settings);
-        }
+	/**
+	 * TYPE=4 MEANS THAT SOMETHING IN THE BIND CONFIG HAS CHANGED. REBUILD syscp_bind.conf
+	 */
+	elseif ($row['type'] == '4')
+	{
+		if(!isset($nameserver))
+		{
+			$nameserver = new bind($db, $cronlog, $debugHandler, $settings);
+		}
 
-        if($settings['dkim']['use_dkim'] == '1')
-        {
-            $nameserver->writeDKIMconfigs();
-        }
+		if($settings['dkim']['use_dkim'] == '1')
+		{
+			$nameserver->writeDKIMconfigs();
+		}
 
-        $nameserver->writeConfigs();
-    }
+		$nameserver->writeConfigs();
+	}
 
-    /**
-     * TYPE=5 MEANS THAT A NEW FTP-ACCOUNT HAS BEEN CREATED, CREATE THE DIRECTORY
-     */
-    elseif ($row['type'] == '5')
-    {
-        $cronlog->logAction(CRON_ACTION, LOG_INFO, 'Creating new FTP-home');
-        $result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_FTP_USERS . '` `f` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ');
+	/**
+	 * TYPE=5 MEANS THAT A NEW FTP-ACCOUNT HAS BEEN CREATED, CREATE THE DIRECTORY
+	 */
+	elseif ($row['type'] == '5')
+	{
+		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Creating new FTP-home');
+		$result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_FTP_USERS . '` `f` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ');
 
-        while($directory = $db->fetch_array($result_directories))
-        {
-            mkDirWithCorrectOwnership($directory['customerroot'], $directory['homedir'], $directory['uid'], $directory['gid']);
-        }
-    }
+		while($directory = $db->fetch_array($result_directories))
+		{
+			mkDirWithCorrectOwnership($directory['customerroot'], $directory['homedir'], $directory['uid'], $directory['gid']);
+		}
+	}
 }
 
 if($db->num_rows($result_tasks) != 0)
 {
-    $where = array();
-    foreach($resultIDs as $id)
-    {
-        $where[] = '`id`=\'' . (int)$id . '\'';
-    }
+	$where = array();
+	foreach($resultIDs as $id)
+	{
+		$where[] = '`id`=\'' . (int)$id . '\'';
+	}
 
-    $where = implode($where, ' OR ');
-    $db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE ' . $where);
-    unset($resultIDs);
-    unset($where);
+	$where = implode($where, ' OR ');
+	$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE ' . $where);
+	unset($resultIDs);
+	unset($where);
 }
 
 $db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'   AND `varname`      = \'last_tasks_run\' ');
