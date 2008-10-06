@@ -12,7 +12,7 @@
  * @author     Florian Lippert <flo@syscp.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Language
- * @version    $Id: english.lng.php 1527 2008-01-31 19:47:55Z EleRas $
+ * @version    $Id$
  */
 
 /**
