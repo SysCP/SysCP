@@ -22,17 +22,17 @@
 
 if(file_exists('../lib/userdata.inc.php'))
 {
-    /**
-     * Includes the Usersettings eg. MySQL-Username/Passwort etc. to test if SysCP is already installed
-     */
+	/**
+	 * Includes the Usersettings eg. MySQL-Username/Passwort etc. to test if SysCP is already installed
+	 */
 
-    require ('../lib/userdata.inc.php');
+	require ('../lib/userdata.inc.php');
 
-    if(isset($sql)
-       && is_array($sql))
-    {
-        die('Sorry, SysCP is already configured...');
-    }
+	if(isset($sql)
+	   && is_array($sql))
+	{
+		die('Sorry, SysCP is already configured...');
+	}
 }
 
 /**
@@ -58,34 +58,34 @@ require ('../lib/tables.inc.php');
  */
 
 $languages = Array(
-    'german' => 'Deutsch',
-    'english' => 'English',
-    'french' => 'Francais'
+	'german' => 'Deutsch',
+	'english' => 'English',
+	'french' => 'Francais'
 );
 $standardlanguage = 'english';
 
 if(isset($_GET['language'])
    && isset($languages[$_GET['language']]))
 {
-    $language = $_GET['language'];
+	$language = $_GET['language'];
 }
 elseif(isset($_POST['language'])
        && isset($languages[$_POST['language']]))
 {
-    $language = $_POST['language'];
+	$language = $_POST['language'];
 }
 else
 {
-    $language = $standardlanguage;
+	$language = $standardlanguage;
 }
 
 if(file_exists('./lng/' . $language . '.lng.php'))
 {
-    /**
-     * Includes file /lng/$language.lng.php if it exists
-     */
+	/**
+	 * Includes file /lng/$language.lng.php if it exists
+	 */
 
-    require ('./lng/' . $language . '.lng.php');
+	require ('./lng/' . $language . '.lng.php');
 }
 
 /**
@@ -150,14 +150,14 @@ function page_footer()
 
 function status_message($case, $text)
 {
-    if($case == 'begin')
-    {
-        echo "\t\t<tr>\n\t\t\t<td class=\"main_field_name\">$text";
-    }
-    else
-    {
-        echo " <span style=\"color:$case;\">$text</span></td>\n\t\t</tr>\n";
-    }
+	if($case == 'begin')
+	{
+		echo "\t\t<tr>\n\t\t\t<td class=\"main_field_name\">$text";
+	}
+	else
+	{
+		echo " <span style=\"color:$case;\">$text</span></td>\n\t\t</tr>\n";
+	}
 }
 
 //
@@ -166,34 +166,34 @@ function status_message($case, $text)
 
 function remove_remarks($sql)
 {
-    $lines = explode("\n", $sql);
+	$lines = explode("\n", $sql);
 
-    // try to keep mem. use down
+	// try to keep mem. use down
 
-    $sql = "";
-    $linecount = count($lines);
-    $output = "";
-    for ($i = 0;$i < $linecount;$i++)
-    {
-        if(($i != ($linecount-1))
-           || (strlen($lines[$i]) > 0))
-        {
-            if(substr($lines[$i], 0, 1) != "#")
-            {
-                $output.= $lines[$i] . "\n";
-            }
-            else
-            {
-                $output.= "\n";
-            }
+	$sql = "";
+	$linecount = count($lines);
+	$output = "";
+	for ($i = 0;$i < $linecount;$i++)
+	{
+		if(($i != ($linecount-1))
+		   || (strlen($lines[$i]) > 0))
+		{
+			if(substr($lines[$i], 0, 1) != "#")
+			{
+				$output.= $lines[$i] . "\n";
+			}
+			else
+			{
+				$output.= "\n";
+			}
 
-            // Trading a bit of speed for lower mem. use here.
+			// Trading a bit of speed for lower mem. use here.
 
-            $lines[$i] = "";
-        }
-    }
+			$lines[$i] = "";
+		}
+	}
 
-    return $output;
+	return $output;
 }
 
 //
@@ -203,118 +203,118 @@ function remove_remarks($sql)
 
 function split_sql_file($sql, $delimiter)
 {
-    // Split up our string into "possible" SQL statements.
+	// Split up our string into "possible" SQL statements.
 
-    $tokens = explode($delimiter, $sql);
+	$tokens = explode($delimiter, $sql);
 
-    // try to save mem.
+	// try to save mem.
 
-    $sql = "";
-    $output = array();
+	$sql = "";
+	$output = array();
 
-    // we don't actually care about the matches preg gives us.
+	// we don't actually care about the matches preg gives us.
 
-    $matches = array();
+	$matches = array();
 
-    // this is faster than calling count($oktens) every time thru the loop.
+	// this is faster than calling count($oktens) every time thru the loop.
 
-    $token_count = count($tokens);
-    for ($i = 0;$i < $token_count;$i++)
-    {
-        // Don't wanna add an empty string as the last thing in the array.
+	$token_count = count($tokens);
+	for ($i = 0;$i < $token_count;$i++)
+	{
+		// Don't wanna add an empty string as the last thing in the array.
 
-        if(($i != ($token_count-1))
-           || (strlen($tokens[$i] > 0)))
-        {
-            // This is the total number of single quotes in the token.
+		if(($i != ($token_count-1))
+		   || (strlen($tokens[$i] > 0)))
+		{
+			// This is the total number of single quotes in the token.
 
-            $total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
+			$total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
 
-            // Counts single quotes that are preceded by an odd number of backslashes,
-            // which means they're escaped quotes.
+			// Counts single quotes that are preceded by an odd number of backslashes,
+			// which means they're escaped quotes.
 
-            $escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$i], $matches);
-            $unescaped_quotes = $total_quotes-$escaped_quotes;
+			$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$i], $matches);
+			$unescaped_quotes = $total_quotes-$escaped_quotes;
 
-            // If the number of unescaped quotes is even, then the delimiter did NOT occur inside a string literal.
+			// If the number of unescaped quotes is even, then the delimiter did NOT occur inside a string literal.
 
-            if(($unescaped_quotes%2) == 0)
-            {
-                // It's a complete sql statement.
+			if(($unescaped_quotes%2) == 0)
+			{
+				// It's a complete sql statement.
 
-                $output[] = $tokens[$i];
+				$output[] = $tokens[$i];
 
-                // save memory.
+				// save memory.
 
-                $tokens[$i] = "";
-            }
-            else
-            {
-                // incomplete sql statement. keep adding tokens until we have a complete one.
-                // $temp will hold what we have so far.
+				$tokens[$i] = "";
+			}
+			else
+			{
+				// incomplete sql statement. keep adding tokens until we have a complete one.
+				// $temp will hold what we have so far.
 
-                $temp = $tokens[$i] . $delimiter;
+				$temp = $tokens[$i] . $delimiter;
 
-                // save memory..
+				// save memory..
 
-                $tokens[$i] = "";
+				$tokens[$i] = "";
 
-                // Do we have a complete statement yet?
+				// Do we have a complete statement yet?
 
-                $complete_stmt = false;
-                for ($j = $i+1;(!$complete_stmt && ($j < $token_count));$j++)
-                {
-                    // This is the total number of single quotes in the token.
+				$complete_stmt = false;
+				for ($j = $i+1;(!$complete_stmt && ($j < $token_count));$j++)
+				{
+					// This is the total number of single quotes in the token.
 
-                    $total_quotes = preg_match_all("/'/", $tokens[$j], $matches);
+					$total_quotes = preg_match_all("/'/", $tokens[$j], $matches);
 
-                    // Counts single quotes that are preceded by an odd number of backslashes,
-                    // which means they're escaped quotes.
+					// Counts single quotes that are preceded by an odd number of backslashes,
+					// which means they're escaped quotes.
 
-                    $escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$j], $matches);
-                    $unescaped_quotes = $total_quotes-$escaped_quotes;
+					$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$j], $matches);
+					$unescaped_quotes = $total_quotes-$escaped_quotes;
 
-                    if(($unescaped_quotes%2) == 1)
-                    {
-                        // odd number of unescaped quotes. In combination with the previous incomplete
-                        // statement(s), we now have a complete statement. (2 odds always make an even)
+					if(($unescaped_quotes%2) == 1)
+					{
+						// odd number of unescaped quotes. In combination with the previous incomplete
+						// statement(s), we now have a complete statement. (2 odds always make an even)
 
-                        $output[] = $temp . $tokens[$j];
+						$output[] = $temp . $tokens[$j];
 
-                        // save memory.
+						// save memory.
 
-                        $tokens[$j] = "";
-                        $temp = "";
+						$tokens[$j] = "";
+						$temp = "";
 
-                        // exit the loop.
+						// exit the loop.
 
-                        $complete_stmt = true;
+						$complete_stmt = true;
 
-                        // make sure the outer loop continues at the right point.
+						// make sure the outer loop continues at the right point.
 
-                        $i = $j;
-                    }
-                    else
-                    {
-                        // even number of unescaped quotes. We still don't have a complete statement.
-                        // (1 odd and 1 even always make an odd)
+						$i = $j;
+					}
+					else
+					{
+						// even number of unescaped quotes. We still don't have a complete statement.
+						// (1 odd and 1 even always make an odd)
 
-                        $temp.= $tokens[$j] . $delimiter;
+						$temp.= $tokens[$j] . $delimiter;
 
-                        // save memory.
+						// save memory.
 
-                        $tokens[$j] = "";
-                    }
-                }
+						$tokens[$j] = "";
+					}
+				}
 
-                // for..
-            }
+				// for..
+			}
 
-            // else
-        }
-    }
+			// else
+		}
+	}
 
-    return $output;
+	return $output;
 }
 
 /**
@@ -329,176 +329,176 @@ function split_sql_file($sql, $delimiter)
 
 if(!empty($_POST['servername']))
 {
-    $servername = $_POST['servername'];
+	$servername = $_POST['servername'];
 }
 else
 {
-    if(!empty($_SERVER['SERVER_NAME']))
-    {
-        if(validate_ip($_SERVER['SERVER_NAME'], true) == false)
-        {
-            $servername = $_SERVER['SERVER_NAME'];
-        }
-        else
-        {
-            $servername = '';
-        }
-    }
-    else
-    {
-        $servername = '';
-    }
+	if(!empty($_SERVER['SERVER_NAME']))
+	{
+		if(validate_ip($_SERVER['SERVER_NAME'], true) == false)
+		{
+			$servername = $_SERVER['SERVER_NAME'];
+		}
+		else
+		{
+			$servername = '';
+		}
+	}
+	else
+	{
+		$servername = '';
+	}
 }
 
 //guess serverip
 
 if(!empty($_POST['serverip']))
 {
-    $serverip = $_POST['serverip'];
+	$serverip = $_POST['serverip'];
 }
 else
 {
-    if(!empty($_SERVER['SERVER_ADDR']))
-    {
-        $serverip = $_SERVER['SERVER_ADDR'];
-    }
-    else
-    {
-        $serverip = '';
-    }
+	if(!empty($_SERVER['SERVER_ADDR']))
+	{
+		$serverip = $_SERVER['SERVER_ADDR'];
+	}
+	else
+	{
+		$serverip = '';
+	}
 }
 
 if(!empty($_POST['mysql_host']))
 {
-    $mysql_host = $_POST['mysql_host'];
+	$mysql_host = $_POST['mysql_host'];
 }
 else
 {
-    $mysql_host = '127.0.0.1';
+	$mysql_host = '127.0.0.1';
 }
 
 if(!empty($_POST['mysql_database']))
 {
-    $mysql_database = $_POST['mysql_database'];
+	$mysql_database = $_POST['mysql_database'];
 }
 else
 {
-    $mysql_database = 'syscp';
+	$mysql_database = 'syscp';
 }
 
 if(!empty($_POST['mysql_unpriv_user']))
 {
-    $mysql_unpriv_user = $_POST['mysql_unpriv_user'];
+	$mysql_unpriv_user = $_POST['mysql_unpriv_user'];
 }
 else
 {
-    $mysql_unpriv_user = 'syscp';
+	$mysql_unpriv_user = 'syscp';
 }
 
 if(!empty($_POST['mysql_unpriv_pass']))
 {
-    $mysql_unpriv_pass = $_POST['mysql_unpriv_pass'];
+	$mysql_unpriv_pass = $_POST['mysql_unpriv_pass'];
 }
 else
 {
-    $mysql_unpriv_pass = '';
+	$mysql_unpriv_pass = '';
 }
 
 if(!empty($_POST['mysql_root_user']))
 {
-    $mysql_root_user = $_POST['mysql_root_user'];
+	$mysql_root_user = $_POST['mysql_root_user'];
 }
 else
 {
-    $mysql_root_user = 'root';
+	$mysql_root_user = 'root';
 }
 
 if(!empty($_POST['mysql_root_pass']))
 {
-    $mysql_root_pass = $_POST['mysql_root_pass'];
+	$mysql_root_pass = $_POST['mysql_root_pass'];
 }
 else
 {
-    $mysql_root_pass = '';
+	$mysql_root_pass = '';
 }
 
 if(!empty($_POST['admin_user']))
 {
-    $admin_user = $_POST['admin_user'];
+	$admin_user = $_POST['admin_user'];
 }
 else
 {
-    $admin_user = 'admin';
+	$admin_user = 'admin';
 }
 
 if(!empty($_POST['admin_pass1']))
 {
-    $admin_pass1 = $_POST['admin_pass1'];
+	$admin_pass1 = $_POST['admin_pass1'];
 }
 else
 {
-    $admin_pass1 = '';
+	$admin_pass1 = '';
 }
 
 if(!empty($_POST['admin_pass2']))
 {
-    $admin_pass2 = $_POST['admin_pass2'];
+	$admin_pass2 = $_POST['admin_pass2'];
 }
 else
 {
-    $admin_pass2 = '';
+	$admin_pass2 = '';
 }
 
 if($mysql_host == 'localhost'
    || $mysql_host == '127.0.0.1')
 {
-    $mysql_access_host = $mysql_host;
+	$mysql_access_host = $mysql_host;
 }
 else
 {
-    $mysql_access_host = $serverip;
+	$mysql_access_host = $serverip;
 }
 
 // gues http software
 
 if(!empty($_POST['apacheversion']))
 {
-    $apacheversion = $_POST['apacheversion'];
+	$apacheversion = $_POST['apacheversion'];
 }
 else
 {
-    if(strtoupper(@php_sapi_name()) == "APACHE2HANDLER"
-       || stristr($_SERVER[SERVER_SOFTWARE], "apache/2"))
-    {
-        $apacheversion = 'apache2';
-    }
-    elseif(substr(strtoupper(@php_sapi_name()), 0, 8) == "LIGHTTPD"
-           || stristr($_SERVER[SERVER_SOFTWARE], "lighttpd"))
-    {
-        $apacheversion = 'lighttpd';
-    }
-    else
-    {
-        $apacheversion = 'apache1';
-    }
+	if(strtoupper(@php_sapi_name()) == "APACHE2HANDLER"
+	   || stristr($_SERVER[SERVER_SOFTWARE], "apache/2"))
+	{
+		$apacheversion = 'apache2';
+	}
+	elseif(substr(strtoupper(@php_sapi_name()), 0, 8) == "LIGHTTPD"
+	       || stristr($_SERVER[SERVER_SOFTWARE], "lighttpd"))
+	{
+		$apacheversion = 'lighttpd';
+	}
+	else
+	{
+		$apacheversion = 'apache1';
+	}
 }
 
 if(!empty($_POST['httpuser']))
 {
-    $httpuser = $_POST['httpuser'];
+	$httpuser = $_POST['httpuser'];
 }
 else
 {
-    $httpuser = '';
+	$httpuser = '';
 }
 
 if(!empty($_POST['httpgroup']))
 {
-    $httpgroup = $_POST['httpgroup'];
+	$httpgroup = $_POST['httpgroup'];
 }
 else
 {
-    $httpgroup = '';
+	$httpgroup = '';
 }
 
 /**
@@ -522,7 +522,7 @@ if(isset($_POST['installstep'])
    && $httpgroup != ''
    && $mysql_unpriv_user != $mysql_root_user)
 {
-    page_header();
+	page_header();
 
 ?>
 	<table cellpadding="5" cellspacing="4" border="0" align="center" class="maintable">
@@ -530,228 +530,228 @@ if(isset($_POST['installstep'])
 			<td class="maintitle"><b><img src="../images/title.gif" alt="" />&nbsp;SysCP Installation</b></td>
 		</tr>
 <?php
-    $_die = false;
-    status_message('begin', $lng['install']['phpmysql']);
+	$_die = false;
+	status_message('begin', $lng['install']['phpmysql']);
 
-    if(!extension_loaded('mysql'))
-    {
-        status_message('red', $lng['install']['notinstalled']);
-        $_die = true;
-    }
-    else
-    {
-        status_message('green', 'OK');
-    }
+	if(!extension_loaded('mysql'))
+	{
+		status_message('red', $lng['install']['notinstalled']);
+		$_die = true;
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
 
-    status_message('begin', $lng['install']['phpfilter']);
+	status_message('begin', $lng['install']['phpfilter']);
 
-    if(!extension_loaded('filter'))
-    {
-        status_message('red', $lng['install']['notinstalled']);
-        $_die = true;
-    }
-    else
-    {
-        status_message('green', 'OK');
-    }
+	if(!extension_loaded('filter'))
+	{
+		status_message('red', $lng['install']['notinstalled']);
+		$_die = true;
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
 
-    status_message('begin', $lng['install']['phpbcmath']);
+	status_message('begin', $lng['install']['phpbcmath']);
 
-    if(!extension_loaded('bcmath'))
-    {
-        status_message('orange', $lng['install']['notinstalled'] . '<br />' . $lng['install']['bcmathdescription']);
-        $_die = false;
-    }
-    else
-    {
-        status_message('green', 'OK');
-    }
+	if(!extension_loaded('bcmath'))
+	{
+		status_message('orange', $lng['install']['notinstalled'] . '<br />' . $lng['install']['bcmathdescription']);
+		$_die = false;
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
 
-    status_message('begin', $lng['install']['openbasedir']);
-    $php_ob = @ini_get("open_basedir");
+	status_message('begin', $lng['install']['openbasedir']);
+	$php_ob = @ini_get("open_basedir");
 
-    if(!empty($php_ob)
-       && $php_ob != '')
-    {
-        status_message('orange', $lng['install']['openbasedirenabled']);
-        $_die = false;
-    }
-    else
-    {
-        status_message('green', 'OK');
-    }
+	if(!empty($php_ob)
+	   && $php_ob != '')
+	{
+		status_message('orange', $lng['install']['openbasedirenabled']);
+		$_die = false;
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
 
-    if($_die)
-    {
-        status_message('begin', $lng['install']['diedbecauseofextensions']);
-        die();
-    }
+	if($_die)
+	{
+		status_message('begin', $lng['install']['diedbecauseofextensions']);
+		die();
+	}
 
-    //first test if we can access the database server with the given root user and password
+	//first test if we can access the database server with the given root user and password
 
-    status_message('begin', $lng['install']['testing_mysql']);
-    $db_root = new db($mysql_host, $mysql_root_user, $mysql_root_pass, '');
+	status_message('begin', $lng['install']['testing_mysql']);
+	$db_root = new db($mysql_host, $mysql_root_user, $mysql_root_pass, '');
 
-    //ok, if we are here, the database class is build up (otherwise it would have already die'd this script)
+	//ok, if we are here, the database class is build up (otherwise it would have already die'd this script)
 
-    status_message('green', 'OK');
+	status_message('green', 'OK');
 
-    //first we make a backup of the old DB if it exists
+	//first we make a backup of the old DB if it exists
 
-    status_message('begin', $lng['install']['backup_old_db']);
-    $result = mysql_list_tables($mysql_database);
+	status_message('begin', $lng['install']['backup_old_db']);
+	$result = mysql_list_tables($mysql_database);
 
-    if($result)
-    {
-        $filename = "/tmp/syscp_backup_" . date(YmdHi) . ".sql";
+	if($result)
+	{
+		$filename = "/tmp/syscp_backup_" . date(YmdHi) . ".sql";
 
-        if(is_file("/usr/bin/mysqldump"))
-        {
-            $command = "/usr/bin/mysqldump " . $mysql_database . " -u " . $mysql_root_user . " --password='" . $mysql_root_pass . "' --result-file=" . $filename;
-            $output = exec($command);
+		if(is_file("/usr/bin/mysqldump"))
+		{
+			$command = "/usr/bin/mysqldump " . $mysql_database . " -u " . $mysql_root_user . " --password='" . $mysql_root_pass . "' --result-file=" . $filename;
+			$output = exec($command);
 
-            if(stristr($output, "error"))
-            {
-                status_message('red', $lng['install']['backing_up_failed']);
-            }
-            else
-            {
-                status_message('green', 'OK');
-            }
-        }
-        else
-        {
-            status_message('red', $lng['install']['backing_up_binary_missing']);
-        }
-    }
+			if(stristr($output, "error"))
+			{
+				status_message('red', $lng['install']['backing_up_failed']);
+			}
+			else
+			{
+				status_message('green', 'OK');
+			}
+		}
+		else
+		{
+			status_message('red', $lng['install']['backing_up_binary_missing']);
+		}
+	}
 
-    //so first we have to delete the database and the user given for the unpriv-user if they exit
+	//so first we have to delete the database and the user given for the unpriv-user if they exit
 
-    status_message('begin', $lng['install']['erasing_old_db']);
-    $db_root->query("DELETE FROM `mysql`.`user` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
-    $db_root->query("DELETE FROM `mysql`.`db` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
-    $db_root->query("DELETE FROM `mysql`.`tables_priv` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
-    $db_root->query("DELETE FROM `mysql`.`columns_priv` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
-    $db_root->query("DROP DATABASE IF EXISTS `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "` ;");
-    $db_root->query("FLUSH PRIVILEGES;");
-    status_message('green', 'OK');
+	status_message('begin', $lng['install']['erasing_old_db']);
+	$db_root->query("DELETE FROM `mysql`.`user` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
+	$db_root->query("DELETE FROM `mysql`.`db` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
+	$db_root->query("DELETE FROM `mysql`.`tables_priv` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
+	$db_root->query("DELETE FROM `mysql`.`columns_priv` WHERE `User` = '" . $db_root->escape($mysql_unpriv_user) . "' AND `Host` = '" . $db_root->escape($mysql_access_host) . "'");
+	$db_root->query("DROP DATABASE IF EXISTS `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "` ;");
+	$db_root->query("FLUSH PRIVILEGES;");
+	status_message('green', 'OK');
 
-    //then we have to create a new user and database for the syscp unprivileged mysql access
+	//then we have to create a new user and database for the syscp unprivileged mysql access
 
-    status_message('begin', $lng['install']['create_mysqluser_and_db']);
-    $db_root->query("CREATE DATABASE `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`");
-    $mysql_access_host_array = array_map('trim', explode(',', $mysql_access_host));
+	status_message('begin', $lng['install']['create_mysqluser_and_db']);
+	$db_root->query("CREATE DATABASE `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`");
+	$mysql_access_host_array = array_map('trim', explode(',', $mysql_access_host));
 
-    if(in_array('127.0.0.1', $mysql_access_host_array)
-       && !in_array('localhost', $mysql_access_host_array))
-    {
-        $mysql_access_host_array[] = 'localhost';
-    }
+	if(in_array('127.0.0.1', $mysql_access_host_array)
+	   && !in_array('localhost', $mysql_access_host_array))
+	{
+		$mysql_access_host_array[] = 'localhost';
+	}
 
-    if(!in_array('127.0.0.1', $mysql_access_host_array)
-       && in_array('localhost', $mysql_access_host_array))
-    {
-        $mysql_access_host_array[] = '127.0.0.1';
-    }
+	if(!in_array('127.0.0.1', $mysql_access_host_array)
+	   && in_array('localhost', $mysql_access_host_array))
+	{
+		$mysql_access_host_array[] = '127.0.0.1';
+	}
 
-    $mysql_access_host_array[] = $serverip;
-    foreach($mysql_access_host_array as $mysql_access_host)
-    {
-        $db_root->query("GRANT ALL PRIVILEGES ON `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`.* TO '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' IDENTIFIED BY 'password'");
-        $db_root->query("SET PASSWORD FOR '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' = PASSWORD('" . $db_root->escape($mysql_unpriv_pass) . "')");
-    }
+	$mysql_access_host_array[] = $serverip;
+	foreach($mysql_access_host_array as $mysql_access_host)
+	{
+		$db_root->query("GRANT ALL PRIVILEGES ON `" . $db_root->escape(str_replace('`', '', $mysql_database)) . "`.* TO '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' IDENTIFIED BY 'password'");
+		$db_root->query("SET PASSWORD FOR '" . $db_root->escape($mysql_unpriv_user) . "'@'" . $db_root->escape($mysql_access_host) . "' = PASSWORD('" . $db_root->escape($mysql_unpriv_pass) . "')");
+	}
 
-    $db_root->query("FLUSH PRIVILEGES;");
-    $mysql_access_host = implode(',', $mysql_access_host_array);
-    status_message('green', 'OK');
+	$db_root->query("FLUSH PRIVILEGES;");
+	$mysql_access_host = implode(',', $mysql_access_host_array);
+	status_message('green', 'OK');
 
-    //now a new database and the new syscp-unprivileged-mysql-account have been created and we can fill it now with the data.
+	//now a new database and the new syscp-unprivileged-mysql-account have been created and we can fill it now with the data.
 
-    status_message('begin', $lng['install']['testing_new_db']);
-    $db = new db($mysql_host, $mysql_unpriv_user, $mysql_unpriv_pass, $mysql_database);
-    status_message('green', 'OK');
-    status_message('begin', $lng['install']['importing_data']);
-    $db_schema = './syscp.sql';
-    $sql_query = @file_get_contents($db_schema, 'r');
-    $sql_query = remove_remarks($sql_query);
-    $sql_query = split_sql_file($sql_query, ';');
-    for ($i = 0;$i < sizeof($sql_query);$i++)
-    {
-        if(trim($sql_query[$i]) != '')
-        {
-            $result = $db->query($sql_query[$i]);
-        }
-    }
+	status_message('begin', $lng['install']['testing_new_db']);
+	$db = new db($mysql_host, $mysql_unpriv_user, $mysql_unpriv_pass, $mysql_database);
+	status_message('green', 'OK');
+	status_message('begin', $lng['install']['importing_data']);
+	$db_schema = './syscp.sql';
+	$sql_query = @file_get_contents($db_schema, 'r');
+	$sql_query = remove_remarks($sql_query);
+	$sql_query = split_sql_file($sql_query, ';');
+	for ($i = 0;$i < sizeof($sql_query);$i++)
+	{
+		if(trim($sql_query[$i]) != '')
+		{
+			$result = $db->query($sql_query[$i]);
+		}
+	}
 
-    status_message('green', 'OK');
-    status_message('begin', 'System Servername...');
+	status_message('green', 'OK');
+	status_message('begin', 'System Servername...');
 
-    if(validate_ip($_SERVER['SERVER_NAME'], true) !== false)
-    {
-        status_message('red', $lng['install']['servername_should_be_fqdn']);
-    }
-    else
-    {
-        status_message('green', 'OK');
-    }
+	if(validate_ip($_SERVER['SERVER_NAME'], true) !== false)
+	{
+		status_message('red', $lng['install']['servername_should_be_fqdn']);
+	}
+	else
+	{
+		status_message('green', 'OK');
+	}
 
-    //now let's change the settings in our settings-table
+	//now let's change the settings in our settings-table
 
-    status_message('begin', $lng['install']['changing_data']);
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = 'admin@" . $db->escape($servername) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'adminmail'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($serverip) . "' WHERE `settinggroup` = 'system' AND `varname` = 'ipaddress'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($servername) . "' WHERE `settinggroup` = 'system' AND `varname` = 'hostname'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($version) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($languages[$language]) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($mysql_access_host) . "' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'webserver'");
+	status_message('begin', $lng['install']['changing_data']);
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = 'admin@" . $db->escape($servername) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'adminmail'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($serverip) . "' WHERE `settinggroup` = 'system' AND `varname` = 'ipaddress'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($servername) . "' WHERE `settinggroup` = 'system' AND `varname` = 'hostname'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($version) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($languages[$language]) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($mysql_access_host) . "' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'webserver'");
 
-    //FIXME
+	//FIXME
 
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpuser) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpuser'");
-    $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpgroup) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpgroup'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpuser) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpuser'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpgroup) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpgroup'");
 
-    if($apacheversion == "apache2")
-    {
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/sites-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/sites-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/syscp-htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/apache2 reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
-    }
-    elseif($apacheversion == "lighttpd")
-    {
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/conf-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-diroptions/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
-        $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/lighttpd.pem' WHERE `settinggroup` = 'system' AND `varname` = 'ssl_cert_file'");
-    }
+	if($apacheversion == "apache2")
+	{
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/sites-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/sites-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/syscp-htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/apache2 reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
+	}
+	elseif($apacheversion == "lighttpd")
+	{
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/conf-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-diroptions/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/lighttpd reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/lighttpd.pem' WHERE `settinggroup` = 'system' AND `varname` = 'ssl_cert_file'");
+	}
 
-    // insert the lastcronrun to be the installation date
+	// insert the lastcronrun to be the installation date
 
-    $query = 'UPDATE `%s` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'  AND `varname` = \'lastcronrun\'';
-    $query = sprintf($query, TABLE_PANEL_SETTINGS);
-    $db->query($query);
+	$query = 'UPDATE `%s` SET `value` = UNIX_TIMESTAMP() WHERE `settinggroup` = \'system\'  AND `varname` = \'lastcronrun\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
 
-    // and lets insert the default ip and port
+	// and lets insert the default ip and port
 
-    $query = 'INSERT INTO `%s`  SET `ip`   = \'%s\',  `port` = \'80\' ';
-    $query = sprintf($query, TABLE_PANEL_IPSANDPORTS, $db->escape($serverip));
-    $db->query($query);
-    $defaultip = $db->insert_id();
+	$query = 'INSERT INTO `%s`  SET `ip`   = \'%s\',  `port` = \'80\' ';
+	$query = sprintf($query, TABLE_PANEL_IPSANDPORTS, $db->escape($serverip));
+	$db->query($query);
+	$defaultip = $db->insert_id();
 
-    // insert the defaultip
+	// insert the defaultip
 
-    $query = 'UPDATE `%s` SET `value` = \'%s\' WHERE `settinggroup` = \'system\'  AND `varname` = \'defaultip\'';
-    $query = sprintf($query, TABLE_PANEL_SETTINGS, $db->escape($defaultip));
-    $db->query($query);
-    status_message('green', 'OK');
+	$query = 'UPDATE `%s` SET `value` = \'%s\' WHERE `settinggroup` = \'system\'  AND `varname` = \'defaultip\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS, $db->escape($defaultip));
+	$db->query($query);
+	status_message('green', 'OK');
 
-    //last but not least create the main admin
+	//last but not least create the main admin
 
-    status_message('begin', $lng['install']['adding_admin_user']);
-    $db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` SET
+	status_message('begin', $lng['install']['adding_admin_user']);
+	$db->query("INSERT INTO `" . TABLE_PANEL_ADMINS . "` SET
 		`loginname` = '" . $db->escape($admin_user) . "',
 		`password` = '" . md5($admin_pass1) . "',
 		`name` = 'Siteadmin',
@@ -786,42 +786,42 @@ if(isset($_POST['installstep'])
 		`traffic` = -1048576,
 		`traffic_used` = 0,
 		`deactivated` = 0");
-    status_message('green', 'OK');
+	status_message('green', 'OK');
 
-    //now we create the userdata.inc.php with the mysql-accounts
+	//now we create the userdata.inc.php with the mysql-accounts
 
-    status_message('begin', $lng['install']['creating_configfile']);
-    $userdata = "<?php\n";
-    $userdata.= "//automatically generated userdata.inc.php for SysCP\n";
-    $userdata.= "\$sql['host']='" . addcslashes($mysql_host, "'\\") . "';\n";
-    $userdata.= "\$sql['user']='" . addcslashes($mysql_unpriv_user, "'\\") . "';\n";
-    $userdata.= "\$sql['password']='" . addcslashes($mysql_unpriv_pass, "'\\") . "';\n";
-    $userdata.= "\$sql['db']='" . addcslashes($mysql_database, "'\\") . "';\n";
-    $userdata.= "\$sql['root_user']='" . addcslashes($mysql_root_user, "'\\") . "';\n";
-    $userdata.= "\$sql['root_password']='" . addcslashes($mysql_root_pass, "'\\") . "';\n";
-    $userdata.= "?>";
+	status_message('begin', $lng['install']['creating_configfile']);
+	$userdata = "<?php\n";
+	$userdata.= "//automatically generated userdata.inc.php for SysCP\n";
+	$userdata.= "\$sql['host']='" . addcslashes($mysql_host, "'\\") . "';\n";
+	$userdata.= "\$sql['user']='" . addcslashes($mysql_unpriv_user, "'\\") . "';\n";
+	$userdata.= "\$sql['password']='" . addcslashes($mysql_unpriv_pass, "'\\") . "';\n";
+	$userdata.= "\$sql['db']='" . addcslashes($mysql_database, "'\\") . "';\n";
+	$userdata.= "\$sql['root_user']='" . addcslashes($mysql_root_user, "'\\") . "';\n";
+	$userdata.= "\$sql['root_password']='" . addcslashes($mysql_root_pass, "'\\") . "';\n";
+	$userdata.= "?>";
 
-    //we test now if we can store the userdata.inc.php in ../lib
+	//we test now if we can store the userdata.inc.php in ../lib
 
-    if($fp = @fopen('../lib/userdata.inc.php', 'w'))
-    {
-        $result = @fputs($fp, $userdata, strlen($userdata));
-        @fclose($fp);
-        status_message('green', $lng['install']['creating_configfile_succ']);
-        chmod('../lib/userdata.inc.php', 0440);
-    }
-    elseif($fp = @fopen('/tmp/userdata.inc.php', 'w'))
-    {
-        $result = @fputs($fp, $userdata, strlen($userdata));
-        @fclose($fp);
-        status_message('orange', $lng['install']['creating_configfile_temp']);
-        chmod('/tmp/userdata.inc.php', 0440);
-    }
-    else
-    {
-        status_message('red', $lng['install']['creating_configfile_failed']);
-        echo "\t\t<tr>\n\t\t\t<td class=\"main_field_name\"><p>" . nl2br(htmlspecialchars($userdata)) . "</p></td>\n\t\t</tr>\n";
-    }
+	if($fp = @fopen('../lib/userdata.inc.php', 'w'))
+	{
+		$result = @fputs($fp, $userdata, strlen($userdata));
+		@fclose($fp);
+		status_message('green', $lng['install']['creating_configfile_succ']);
+		chmod('../lib/userdata.inc.php', 0440);
+	}
+	elseif($fp = @fopen('/tmp/userdata.inc.php', 'w'))
+	{
+		$result = @fputs($fp, $userdata, strlen($userdata));
+		@fclose($fp);
+		status_message('orange', $lng['install']['creating_configfile_temp']);
+		chmod('/tmp/userdata.inc.php', 0440);
+	}
+	else
+	{
+		status_message('red', $lng['install']['creating_configfile_failed']);
+		echo "\t\t<tr>\n\t\t\t<td class=\"main_field_name\"><p>" . nl2br(htmlspecialchars($userdata)) . "</p></td>\n\t\t</tr>\n";
+	}
 
 ?>
 		<tr>
@@ -834,11 +834,11 @@ if(isset($_POST['installstep'])
 	<br />
 	<br />
 <?php
-    page_footer();
+	page_footer();
 }
 else
 {
-    page_header();
+	page_header();
 
 ?>
 	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
@@ -853,14 +853,14 @@ else
 				<td class="main_field_name"><?php echo $lng['install']['language']; ?>: </td>
 				<td class="main_field_display" nowrap="nowrap">
 					<select name="language" class="dropdown_noborder"><?php
-    $language_options = '';
+	$language_options = '';
 
-    while(list($language_file, $language_name) = each($languages))
-    {
-        $language_options.= "\n\t\t\t\t\t\t" . makeoption($language_name, $language_file, $language, true, true);
-    }
+	while(list($language_file, $language_name) = each($languages))
+	{
+		$language_options.= "\n\t\t\t\t\t\t" . makeoption($language_name, $language_file, $language, true, true);
+	}
 
-    echo $language_options;
+	echo $language_options;
 
 ?>
 
@@ -950,7 +950,7 @@ else
 	<br />
 	<br />
 <?php
-    page_footer();
+	page_footer();
 }
 
 /**
