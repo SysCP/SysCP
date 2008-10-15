@@ -55,8 +55,8 @@ if($page == 'overview')
 				SUM(`subdomains_used`) AS `subdomains_used`,
 				SUM(`traffic_used`) AS `traffic_used`
 				FROM `" . TABLE_PANEL_CUSTOMERS . "`" . ($userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '" . (int)$userinfo['adminid'] . "' "));
-	$overview['traffic_used'] = round($overview['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
-	$overview['diskspace_used'] = round($overview['diskspace_used']/1024, $settings['panel']['decimal_places']);
+	$overview['traffic_used'] = round($overview['traffic_used'] / (1024 * 1024), $settings['panel']['decimal_places']);
+	$overview['diskspace_used'] = round($overview['diskspace_used'] / 1024, $settings['panel']['decimal_places']);
 	$number_domains = $db->query_first("SELECT COUNT(*) AS `number_domains` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `parentdomainid`='0'" . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' "));
 	$overview['number_domains'] = $number_domains['number_domains'];
 	$phpversion = phpversion();
@@ -103,10 +103,10 @@ if($page == 'overview')
 		$lookfornewversion_addinfo = '';
 	}
 
-	$userinfo['diskspace'] = round($userinfo['diskspace']/1024, $settings['panel']['decimal_places']);
-	$userinfo['diskspace_used'] = round($userinfo['diskspace_used']/1024, $settings['panel']['decimal_places']);
-	$userinfo['traffic'] = round($userinfo['traffic']/(1024*1024), $settings['panel']['decimal_places']);
-	$userinfo['traffic_used'] = round($userinfo['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
+	$userinfo['diskspace'] = round($userinfo['diskspace'] / 1024, $settings['panel']['decimal_places']);
+	$userinfo['diskspace_used'] = round($userinfo['diskspace_used'] / 1024, $settings['panel']['decimal_places']);
+	$userinfo['traffic'] = round($userinfo['traffic'] / (1024 * 1024), $settings['panel']['decimal_places']);
+	$userinfo['traffic_used'] = round($userinfo['traffic_used'] / (1024 * 1024), $settings['panel']['decimal_places']);
 	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota ftps tickets subdomains');
 
 	if($settings['system']['last_tasks_run'] == 0)
@@ -181,11 +181,11 @@ if($page == 'overview')
 	{
 		$times = posix_times();
 		$now = $times['ticks'];
-		$days = intval($now/(60*60*24*100));
-		$remainder = $now%(60*60*24*100);
-		$hours = intval($remainder/(60*60*100));
-		$remainder = $remainder%(60*60*100);
-		$minutes = intval($remainder/(60*100));
+		$days = intval($now / (60 * 60 * 24 * 100));
+		$remainder = $now % (60 * 60 * 24 * 100);
+		$hours = intval($remainder / (60 * 60 * 100));
+		$remainder = $remainder % (60 * 60 * 100);
+		$minutes = intval($remainder / (60 * 100));
 		$years = 0;
 
 		while($days > 365)

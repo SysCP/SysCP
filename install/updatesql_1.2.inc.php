@@ -368,14 +368,14 @@ if($settings['panel']['version'] == '1.2.6-cvs1')
 		while($row = $db->fetch_array($result))
 		{
 			$i++;
-			$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($i*10) . '\' WHERE `id`=\'' . (int)$row['id'] . '\'');
+			$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($i * 10) . '\' WHERE `id`=\'' . (int)$row['id'] . '\'');
 			$subResult = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape($area) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ORDER BY `order`, `id` ASC');
 			$j = 0;
 
 			while($subRow = $db->fetch_array($subResult))
 			{
 				$j++;
-				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($j*10) . '\' WHERE `id`=\'' . (int)$subRow['id'] . '\'');
+				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($j * 10) . '\' WHERE `id`=\'' . (int)$subRow['id'] . '\'');
 			}
 		}
 	}

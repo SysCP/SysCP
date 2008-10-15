@@ -385,7 +385,7 @@ class ApsInstaller extends ApsParser
 
 		//if application is directly installed on domain remove / at the end
 
-		if($this->DomainPath == '')$this->RealPath = substr($this->RealPath, 0, strlen($this->RealPath)-1);
+		if($this->DomainPath == '')$this->RealPath = substr($this->RealPath, 0, strlen($this->RealPath) - 1);
 
 		//url environment variables
 
@@ -465,7 +465,7 @@ class ApsInstaller extends ApsParser
 
 		//fix slash notation for correct paths
 
-		if(substr($Directory, -1, 1) == '/')$Directory = substr($Directory, 0, strlen($Directory)-1);
+		if(substr($Directory, -1, 1) == '/')$Directory = substr($Directory, 0, strlen($Directory) - 1);
 
 		if(substr($Destination, -1, 1) != '/')$Destination.= '/';
 		$ZipHandle = zip_open($Filename);

@@ -157,7 +157,7 @@ if($page == 'log'
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			$yesterday = time()-(60*10);
+			$yesterday = time() - (60 * 10);
 
 			/* (60*60*24); */
 

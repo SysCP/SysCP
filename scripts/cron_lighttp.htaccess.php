@@ -92,7 +92,7 @@ function read_directory($dir1 = null, $min_depth = 25, $htaccessfh = null)
 		   && ($file != ".."))
 		{
 			$file = $dir . "/" . $file;
-			for ($i = 0;$i <= ($current_depth-$min_depth);$i++)
+			for ($i = 0;$i <= ($current_depth - $min_depth);$i++)
 
 			// $file is sub-directory
 

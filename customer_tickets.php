@@ -149,7 +149,7 @@ elseif($page == 'tickets')
                                          AND `answerto` = "0"
                                          AND (`status` = "0" OR `status` = "1" OR `status` = "2")');
 
-		if($settings['ticket']['concurrently_open'] != -1
+		if($settings['ticket']['concurrently_open'] != - 1
 		   && $settings['ticket']['concurrently_open'] != '')
 		{
 			$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
@@ -250,7 +250,7 @@ elseif($page == 'tickets')
                                            AND `answerto` = "0"
                                            AND (`status` = "0" OR `status` = "1" OR `status` = "2")');
 
-				if($settings['ticket']['concurrently_open'] != -1
+				if($settings['ticket']['concurrently_open'] != - 1
 				   && $settings['ticket']['concurrently_open'] != '')
 				{
 					$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
@@ -378,7 +378,7 @@ elseif($page == 'tickets')
 			$priorities.= makeoption($lng['ticket']['normal'], '2', $mainticket->Get('priority'), true, true);
 			$priorities.= makeoption($lng['ticket']['low'], '3', $mainticket->Get('priority'), true, true);
 			$subject = $mainticket->Get('subject');
-			$ticket_replies_count = $db->num_rows($andere)+1;
+			$ticket_replies_count = $db->num_rows($andere) + 1;
 
 			// don't forget the main-ticket!
 
@@ -424,7 +424,7 @@ elseif($page == 'tickets')
 		$ticketsopen = (int)$opentickets['count'];
 
 		if($ticketsopen > $settings['ticket']['concurrently_open']
-		   && $settings['ticket']['concurrently_open'] != -1
+		   && $settings['ticket']['concurrently_open'] != - 1
 		   && $settings['ticket']['concurrently_open'] != '')
 		{
 			standard_error('notmorethanxopentickets', $settings['ticket']['concurrently_open']);

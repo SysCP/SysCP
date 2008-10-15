@@ -29,7 +29,7 @@ include (dirname(__FILE__) . '/../lib/cron_init.php');
  */
 
 fwrite($debugHandler, 'Trafficreport run started...' . "\n");
-$yesterday = time()-(60*60*24);
+$yesterday = time() - (60 * 60 * 24);
 
 // Warn the customers at 90% traffic-usage
 
@@ -48,7 +48,7 @@ while($row = $db->fetch_array($result))
 	if(isset($row['traffic'])
 	   && $row['traffic'] > 0
 	   && $row['traffic_used'] != NULL
-	   && (($row['traffic_used']*100)/$row['traffic']) >= 90)
+	   && (($row['traffic_used'] * 100) / $row['traffic']) >= 90)
 	{
 		$replace_arr = array(
 			'NAME' => $row['name'],
@@ -116,7 +116,7 @@ while($row = $db->fetch_array($result))
 {
 	if(isset($row['traffic'])
 	   && $row['traffic'] > 0
-	   && (($row['traffic_used_total']*100)/$row['traffic']) >= 90)
+	   && (($row['traffic_used_total'] * 100) / $row['traffic']) >= 90)
 	{
 		$replace_arr = array(
 			'NAME' => $row['name'],
@@ -187,11 +187,11 @@ while($row = $db->fetch_array($result))
 
 		while($customer = $db->fetch_array($customers))
 		{
-			$mail_body.= sprintf('%-15s', $customer['loginname']) . ' ' . sprintf('%-12d', $customer['traffic_used_total']) . ' (' . sprintf('%00.3f%%', (($customer['traffic_used_total']*100)/$customer['traffic'])) . ')   ' . $customer['traffic'] . "\n";
+			$mail_body.= sprintf('%-15s', $customer['loginname']) . ' ' . sprintf('%-12d', $customer['traffic_used_total']) . ' (' . sprintf('%00.3f%%', (($customer['traffic_used_total'] * 100) / $customer['traffic'])) . ')   ' . $customer['traffic'] . "\n";
 		}
 
 		$mail_body.= '---------------------------------------------' . "\n";
-		$mail_body.= sprintf('%-15s', $row['loginname']) . ' ' . sprintf('%-12d', $row['traffic_used_total']) . ' (' . sprintf('%00.3f%%', (($row['traffic_used_total']*100)/$row['traffic'])) . ')   ' . $row['traffic'] . "\n";
+		$mail_body.= sprintf('%-15s', $row['loginname']) . ' ' . sprintf('%-12d', $row['traffic_used_total']) . ' (' . sprintf('%00.3f%%', (($row['traffic_used_total'] * 100) / $row['traffic'])) . ')   ' . $row['traffic'] . "\n";
 		$mail->From = $row['email'];
 		$mail->FromName = $row['name'];
 		$mail->Subject = $mail_subject;

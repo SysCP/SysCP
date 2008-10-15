@@ -101,10 +101,10 @@ if($page == 'customers'
 			{
 				$domains = $db->query_first("SELECT COUNT(`id`) AS `domains` " . "FROM `" . TABLE_PANEL_DOMAINS . "` " . "WHERE `customerid`='" . (int)$row['customerid'] . "' AND `parentdomainid`='0' AND `id`<> '" . (int)$row['standardsubdomain'] . "'");
 				$row['domains'] = intval($domains['domains']);
-				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
-				$row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
-				$row['diskspace_used'] = round($row['diskspace_used']/1024, $settings['panel']['decimal_places']);
-				$row['diskspace'] = round($row['diskspace']/1024, $settings['panel']['decimal_places']);
+				$row['traffic_used'] = round($row['traffic_used'] / (1024 * 1024), $settings['panel']['decimal_places']);
+				$row['traffic'] = round($row['traffic'] / (1024 * 1024), $settings['panel']['decimal_places']);
+				$row['diskspace_used'] = round($row['diskspace_used'] / 1024, $settings['panel']['decimal_places']);
+				$row['diskspace'] = round($row['diskspace'] / 1024, $settings['panel']['decimal_places']);
 				$row = str_replace_array('-1', 'UL', $row, 'diskspace traffic mysqls emails email_accounts email_forwarders ftps tickets subdomains');
 				$enable_billing_data_edit = ($row['servicestart_date'] == '0000-00-00' || ($row['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $row['lastinvoiced_date']) >= 0));
 				$highlight_row = ($row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1');
@@ -191,7 +191,7 @@ if($page == 'customers'
 				$db->query("DELETE FROM `" . TABLE_FTP_USERS . "` WHERE `customerid`='" . (int)$id . "'");
 				$db->query("DELETE FROM `" . TABLE_MAIL_AUTORESPONDER . "` WHERE `customerid`='" . (int)$id . "'");
 				$admin_update_query = "UPDATE `" . TABLE_PANEL_ADMINS . "` SET `customers_used` = `customers_used` - 1 ";
-				$admin_update_query.= ", `domains_used` = `domains_used` - 0" . (int)($domains_deleted-$result['subdomains_used']);
+				$admin_update_query.= ", `domains_used` = `domains_used` - 0" . (int)($domains_deleted - $result['subdomains_used']);
 
 				if($result['mysqls'] != '-1')
 				{
@@ -233,7 +233,7 @@ if($page == 'customers'
 					$admin_update_query.= ", `tickets_used` = `tickets_used` - 0" . (int)$result['tickets'];
 				}
 
-				if(($result['diskspace']/1024) != '-1')
+				if(($result['diskspace'] / 1024) != '-1')
 				{
 					$admin_update_query.= ", `diskspace_used` = `diskspace_used` - 0" . (int)$result['diskspace'];
 				}
@@ -294,42 +294,42 @@ if($page == 'customers'
 
 				if(isset($_POST['diskspace_ul']))
 				{
-					$diskspace = -1;
+					$diskspace = - 1;
 				}
 
 				$traffic = doubleval_ressource($_POST['traffic']);
 
 				if(isset($_POST['traffic_ul']))
 				{
-					$traffic = -1;
+					$traffic = - 1;
 				}
 
 				$subdomains = intval_ressource($_POST['subdomains']);
 
 				if(isset($_POST['subdomains_ul']))
 				{
-					$subdomains = -1;
+					$subdomains = - 1;
 				}
 
 				$emails = intval_ressource($_POST['emails']);
 
 				if(isset($_POST['emails_ul']))
 				{
-					$emails = -1;
+					$emails = - 1;
 				}
 
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_accounts = -1;
+					$email_accounts = - 1;
 				}
 
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 				if(isset($_POST['email_forwarders_ul']))
 				{
-					$email_forwarders = -1;
+					$email_forwarders = - 1;
 				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
@@ -338,7 +338,7 @@ if($page == 'customers'
 
 					if(isset($_POST['email_quota_ul']))
 					{
-						$email_quota = -1;
+						$email_quota = - 1;
 					}
 				}
 				else
@@ -352,7 +352,7 @@ if($page == 'customers'
 
 				if(isset($_POST['ftps_ul']))
 				{
-					$ftps = -1;
+					$ftps = - 1;
 				}
 
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
@@ -360,22 +360,22 @@ if($page == 'customers'
 				if(isset($_POST['tickets_ul'])
 				   && $settings['ticket']['enabled'] == '1')
 				{
-					$tickets = -1;
+					$tickets = - 1;
 				}
 
 				$mysqls = intval_ressource($_POST['mysqls']);
 
 				if(isset($_POST['mysqls_ul']))
 				{
-					$mysqls = -1;
+					$mysqls = - 1;
 				}
 
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$password = validate($_POST['customer_password'], 'password');
 				$sendpassword = intval($_POST['sendpassword']);
 				$phpenabled = intval($_POST['phpenabled']);
-				$diskspace = $diskspace*1024;
-				$traffic = $traffic*1024*1024;
+				$diskspace = $diskspace * 1024;
+				$traffic = $traffic * 1024 * 1024;
 
 				if($userinfo['edit_billingdata'] == '1'
 				   && $settings['billing']['activate_billing'] == '1')
@@ -385,9 +385,9 @@ if($page == 'customers'
 					$included_domains_qty = intval($_POST['included_domains_qty']);
 					$included_domains_tld = $idna_convert->encode(validate($_POST['included_domains_tld'], html_entity_decode($lng['customer']['included_domains'])));
 					$additional_traffic_fee = doubleval(str_replace(',', '.', $_POST['additional_traffic_fee']));
-					$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit'])*1024*1024;
+					$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit']) * 1024 * 1024;
 					$additional_diskspace_fee = doubleval(str_replace(',', '.', $_POST['additional_diskspace_fee']));
-					$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit'])*1024;
+					$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit']) * 1024;
 					$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 					$interval_length = intval($_POST['interval_length']);
 					$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'm');
@@ -458,16 +458,16 @@ if($page == 'customers'
 					$servicestart_date = 0;
 				}
 
-				if(((($userinfo['diskspace_used']+$diskspace) > $userinfo['diskspace']) && ($userinfo['diskspace']/1024) != '-1')
-				   || ((($userinfo['mysqls_used']+$mysqls) > $userinfo['mysqls']) && $userinfo['mysqls'] != '-1')
-				   || ((($userinfo['emails_used']+$emails) > $userinfo['emails']) && $userinfo['emails'] != '-1')
-				   || ((($userinfo['email_accounts_used']+$email_accounts) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
-				   || ((($userinfo['email_forwarders_used']+$email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
-				   || ((($userinfo['email_quota_used']+$email_quota) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
-				   || ((($userinfo['ftps_used']+$ftps) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
-				   || ((($userinfo['tickets_used']+$tickets) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
-				   || ((($userinfo['subdomains_used']+$subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
-				   || (($diskspace/1024) == '-1' && ($userinfo['diskspace']/1024) != '-1')
+				if(((($userinfo['diskspace_used'] + $diskspace) > $userinfo['diskspace']) && ($userinfo['diskspace'] / 1024) != '-1')
+				   || ((($userinfo['mysqls_used'] + $mysqls) > $userinfo['mysqls']) && $userinfo['mysqls'] != '-1')
+				   || ((($userinfo['emails_used'] + $emails) > $userinfo['emails']) && $userinfo['emails'] != '-1')
+				   || ((($userinfo['email_accounts_used'] + $email_accounts) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
+				   || ((($userinfo['email_forwarders_used'] + $email_forwarders) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
+				   || ((($userinfo['email_quota_used'] + $email_quota) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
+				   || ((($userinfo['ftps_used'] + $ftps) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
+				   || ((($userinfo['tickets_used'] + $tickets) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
+				   || ((($userinfo['subdomains_used'] + $subdomains) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
+				   || (($diskspace / 1024) == '-1' && ($userinfo['diskspace'] / 1024) != '-1')
 				   || ($mysqls == '-1' && $userinfo['mysqls'] != '-1')
 				   || ($emails == '-1' && $userinfo['emails'] != '-1')
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
@@ -527,7 +527,7 @@ if($page == 'customers'
 					}
 					else
 					{
-						$accountnumber = intval($settings['system']['lastaccountnumber'])+1;
+						$accountnumber = intval($settings['system']['lastaccountnumber']) + 1;
 						$loginname = $settings['customer']['accountprefix'] . $accountnumber;
 					}
 
@@ -541,12 +541,12 @@ if($page == 'customers'
 					{
 						standard_error('loginnameexists', $loginname);
 					}
-					elseif(!validateUsername($loginname, $settings['panel']['unix_names'], 14-strlen($settings['customer']['mysqlprefix'])))
+					elseif(!validateUsername($loginname, $settings['panel']['unix_names'], 14 - strlen($settings['customer']['mysqlprefix'])))
 					{
 						standard_error('loginnameiswrong', $loginname);
 					}
 
-					$guid = intval($settings['system']['lastguid'])+1;
+					$guid = intval($settings['system']['lastguid']) + 1;
 					$documentroot = makeCorrectDir($settings['system']['documentroot_prefix'] . '/' . $loginname);
 
 					if($service_active == 1)
@@ -645,7 +645,7 @@ if($page == 'customers'
 						$admin_update_query.= ", `tickets_used` = `tickets_used` + 0" . (int)$tickets;
 					}
 
-					if(($diskspace/1024) != '-1')
+					if(($diskspace / 1024) != '-1')
 					{
 						$admin_update_query.= ", `diskspace_used` = `diskspace_used` + 0" . (int)$diskspace;
 					}
@@ -829,42 +829,42 @@ if($page == 'customers'
 
 				if(isset($_POST['diskspace_ul']))
 				{
-					$diskspace = -1;
+					$diskspace = - 1;
 				}
 
 				$traffic = doubleval_ressource($_POST['traffic']);
 
 				if(isset($_POST['traffic_ul']))
 				{
-					$traffic = -1;
+					$traffic = - 1;
 				}
 
 				$subdomains = intval_ressource($_POST['subdomains']);
 
 				if(isset($_POST['subdomains_ul']))
 				{
-					$subdomains = -1;
+					$subdomains = - 1;
 				}
 
 				$emails = intval_ressource($_POST['emails']);
 
 				if(isset($_POST['emails_ul']))
 				{
-					$emails = -1;
+					$emails = - 1;
 				}
 
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_accounts = -1;
+					$email_accounts = - 1;
 				}
 
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_forwarders = -1;
+					$email_forwarders = - 1;
 				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
@@ -873,7 +873,7 @@ if($page == 'customers'
 
 					if(isset($_POST['email_quota_ul']))
 					{
-						$email_quota = -1;
+						$email_quota = - 1;
 					}
 
 					$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
@@ -890,7 +890,7 @@ if($page == 'customers'
 
 				if(isset($_POST['ftps_ul']))
 				{
-					$ftps = -1;
+					$ftps = - 1;
 				}
 
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
@@ -898,21 +898,21 @@ if($page == 'customers'
 				if(isset($_POST['tickets_ul'])
 				   && $settings['ticket']['enabled'] == '1')
 				{
-					$tickets = -1;
+					$tickets = - 1;
 				}
 
 				$mysqls = intval_ressource($_POST['mysqls']);
 
 				if(isset($_POST['mysqls_ul']))
 				{
-					$mysqls = -1;
+					$mysqls = - 1;
 				}
 
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
 				$deactivated = intval($_POST['deactivated']);
 				$phpenabled = intval($_POST['phpenabled']);
-				$diskspace = $diskspace*1024;
-				$traffic = $traffic*1024*1024;
+				$diskspace = $diskspace * 1024;
+				$traffic = $traffic * 1024 * 1024;
 
 				if($userinfo['edit_billingdata'] == '1'
 				   && $settings['billing']['activate_billing'] == '1')
@@ -956,9 +956,9 @@ if($page == 'customers'
 					$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
 					$payment_every = intval($_POST['payment_every']);
 					$additional_traffic_fee = doubleval(str_replace(',', '.', $_POST['additional_traffic_fee']));
-					$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit'])*1024*1024;
+					$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit']) * 1024 * 1024;
 					$additional_diskspace_fee = doubleval(str_replace(',', '.', $_POST['additional_diskspace_fee']));
-					$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit'])*1024;
+					$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit']) * 1024;
 					$included_domains_qty = intval($_POST['included_domains_qty']);
 					$included_domains_tld = $idna_convert->encode(validate($_POST['included_domains_tld'], html_entity_decode($lng['customer']['included_domains'])));
 
@@ -1011,16 +1011,16 @@ if($page == 'customers'
 					$serviceend_date = $result['serviceend_date'];
 				}
 
-				if(((($userinfo['diskspace_used']+$diskspace-$result['diskspace']) > $userinfo['diskspace']) && ($userinfo['diskspace']/1024) != '-1')
-				   || ((($userinfo['mysqls_used']+$mysqls-$result['mysqls']) > $userinfo['mysqls']) && $userinfo['mysqls'] != '-1')
-				   || ((($userinfo['emails_used']+$emails-$result['emails']) > $userinfo['emails']) && $userinfo['emails'] != '-1')
-				   || ((($userinfo['email_accounts_used']+$email_accounts-$result['email_accounts']) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
-				   || ((($userinfo['email_forwarders_used']+$email_forwarders-$result['email_forwarders']) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
-				   || ((($userinfo['email_quota_used']+$email_quota-$result['email_quota']) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
-				   || ((($userinfo['ftps_used']+$ftps-$result['ftps']) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
-				   || ((($userinfo['tickets_used']+$tickets-$result['tickets']) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
-				   || ((($userinfo['subdomains_used']+$subdomains-$result['subdomains']) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
-				   || (($diskspace/1024) == '-1' && ($userinfo['diskspace']/1024) != '-1')
+				if(((($userinfo['diskspace_used'] + $diskspace - $result['diskspace']) > $userinfo['diskspace']) && ($userinfo['diskspace'] / 1024) != '-1')
+				   || ((($userinfo['mysqls_used'] + $mysqls - $result['mysqls']) > $userinfo['mysqls']) && $userinfo['mysqls'] != '-1')
+				   || ((($userinfo['emails_used'] + $emails - $result['emails']) > $userinfo['emails']) && $userinfo['emails'] != '-1')
+				   || ((($userinfo['email_accounts_used'] + $email_accounts - $result['email_accounts']) > $userinfo['email_accounts']) && $userinfo['email_accounts'] != '-1')
+				   || ((($userinfo['email_forwarders_used'] + $email_forwarders - $result['email_forwarders']) > $userinfo['email_forwarders']) && $userinfo['email_forwarders'] != '-1')
+				   || ((($userinfo['email_quota_used'] + $email_quota - $result['email_quota']) > $userinfo['email_quota']) && $userinfo['email_quota'] != '-1' && $settings['system']['mail_quota_enabled'] == '1')
+				   || ((($userinfo['ftps_used'] + $ftps - $result['ftps']) > $userinfo['ftps']) && $userinfo['ftps'] != '-1')
+				   || ((($userinfo['tickets_used'] + $tickets - $result['tickets']) > $userinfo['tickets']) && $userinfo['tickets'] != '-1')
+				   || ((($userinfo['subdomains_used'] + $subdomains - $result['subdomains']) > $userinfo['subdomains']) && $userinfo['subdomains'] != '-1')
+				   || (($diskspace / 1024) == '-1' && ($userinfo['diskspace'] / 1024) != '-1')
 				   || ($mysqls == '-1' && $userinfo['mysqls'] != '-1')
 				   || ($emails == '-1' && $userinfo['emails'] != '-1')
 				   || ($email_accounts == '-1' && $userinfo['email_accounts'] != '-1')
@@ -1322,17 +1322,17 @@ if($page == 'customers'
 						}
 					}
 
-					if(($diskspace/1024) != '-1'
-					   || ($result['diskspace']/1024) != '-1')
+					if(($diskspace / 1024) != '-1'
+					   || ($result['diskspace'] / 1024) != '-1')
 					{
 						$admin_update_query.= ", `diskspace_used` = `diskspace_used` ";
 
-						if(($diskspace/1024) != '-1')
+						if(($diskspace / 1024) != '-1')
 						{
 							$admin_update_query.= " + 0" . (int)$diskspace . " ";
 						}
 
-						if(($result['diskspace']/1024) != '-1')
+						if(($result['diskspace'] / 1024) != '-1')
 						{
 							$admin_update_query.= " - 0" . (int)$result['diskspace'] . " ";
 						}
@@ -1365,8 +1365,8 @@ if($page == 'customers'
 					$language_options.= makeoption($language_name, $language_file, $result['def_language'], true);
 				}
 
-				$result['traffic'] = round($result['traffic']/(1024*1024), $settings['panel']['decimal_places']);
-				$result['diskspace'] = round($result['diskspace']/1024, $settings['panel']['decimal_places']);
+				$result['traffic'] = round($result['traffic'] / (1024 * 1024), $settings['panel']['decimal_places']);
+				$result['diskspace'] = round($result['diskspace'] / 1024, $settings['panel']['decimal_places']);
 				$result['email'] = $idna_convert->decode($result['email']);
 				$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, $result['diskspace'], true, true);
 
@@ -1449,8 +1449,8 @@ if($page == 'customers'
 				$deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
 				$email_imap = makeyesno('email_imap', '1', '0', $result['imap']);
 				$email_pop3 = makeyesno('email_pop3', '1', '0', $result['pop3']);
-				$result['additional_traffic_unit'] = round($result['additional_traffic_unit']/(1024*1024), 4);
-				$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit']/(1024), 4);
+				$result['additional_traffic_unit'] = round($result['additional_traffic_unit'] / (1024 * 1024), 4);
+				$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit'] / (1024), 4);
 				$result['included_domains_tld'] = $idna_convert->decode($result['included_domains_tld']);
 				$interval_type = getIntervalTypes('option', $result['interval_type']);
 				$service_active = ($result['service_active'] == '0' ? $lng['panel']['no'] : '') . ($result['service_active'] == '1' ? $lng['panel']['yes'] : '');

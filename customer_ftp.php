@@ -186,7 +186,7 @@ elseif($page == 'accounts')
 					}
 					else
 					{
-						$username = $userinfo['loginname'] . $settings['customer']['ftpprefix'] . (intval($userinfo['ftp_lastaccountnumber'])+1);
+						$username = $userinfo['loginname'] . $settings['customer']['ftpprefix'] . (intval($userinfo['ftp_lastaccountnumber']) + 1);
 					}
 
 					$db->query("INSERT INTO `" . TABLE_FTP_USERS . "` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($username) . "', ENCRYPT('" . $db->escape($password) . "'), '" . $db->escape($path) . "', 'y', '" . (int)$userinfo['guid'] . "', '" . (int)$userinfo['guid'] . "')");

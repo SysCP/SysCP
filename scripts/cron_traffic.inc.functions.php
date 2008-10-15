@@ -143,7 +143,7 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
 				}
 				elseif($httptrafficlast[$year][$month] < $httptraffic[$year][$month])
 				{
-					$returnval+= ($httptraffic[$year][$month]-$httptrafficlast[$year][$month]);
+					$returnval+= ($httptraffic[$year][$month] - $httptrafficlast[$year][$month]);
 				}
 			}
 		}

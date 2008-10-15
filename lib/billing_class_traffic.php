@@ -199,18 +199,18 @@ class traffic extends serviceCategory
 			}
 		}
 
-		$service_description['traffic_included'] = round(($service_detail['traffic']/(1024*1024)), 2);
-		$service_description['traffic_total'] = round(($traffic_total/(1024*1024)), 2);
+		$service_description['traffic_included'] = round(($service_detail['traffic'] / (1024 * 1024)), 2);
+		$service_description['traffic_total'] = round(($traffic_total / (1024 * 1024)), 2);
 
 		if($service_detail['traffic'] < $traffic_total
 		   && $service_description['traffic_included'] != '-1'
 		   && (int)$service_detail['additional_traffic_unit'] != 0)
 		{
-			$traffic_exceeded = $traffic_total-$service_detail['traffic'];
+			$traffic_exceeded = $traffic_total - $service_detail['traffic'];
 
 			// Wir casten auf int um die Dezimalstellen zu entfernen. Danach wird 1 addiert ("je angefangenes gb traffic")
 
-			$service_detail['interval_fee'] = (int)((int)($traffic_exceeded/$service_detail['additional_traffic_unit'])+1)*$service_detail['additional_traffic_fee'];
+			$service_detail['interval_fee'] = (int)((int)($traffic_exceeded / $service_detail['additional_traffic_unit']) + 1) * $service_detail['additional_traffic_fee'];
 		}
 		else
 		{

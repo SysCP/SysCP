@@ -357,7 +357,7 @@ if($page == 'tickets'
 			$priorities.= makeoption($lng['ticket']['normal'], '2', $mainticket->Get('priority'), true, true);
 			$priorities.= makeoption($lng['ticket']['low'], '3', $mainticket->Get('priority'), true, true);
 			$subject = $mainticket->Get('subject');
-			$ticket_replies_count = $db->num_rows($andere)+1;
+			$ticket_replies_count = $db->num_rows($andere) + 1;
 
 			// don't forget the main-ticket!
 
@@ -499,7 +499,7 @@ elseif($page == 'categories'
 			if($paging->checkDisplay($i))
 			{
 				$row = htmlentities_array($row);
-				$closedtickets_count = ($row['ticketcount']-$row['ticketcountnotclosed']);
+				$closedtickets_count = ($row['ticketcount'] - $row['ticketcountnotclosed']);
 				eval("\$ticketcategories.=\"" . getTemplate("ticket/tickets_categories") . "\";");
 				$count++;
 			}
@@ -833,7 +833,7 @@ elseif($page == 'archive'
 		$priorities.= makeoption($lng['ticket']['normal'], '2', $mainticket->Get('priority'), true, true);
 		$priorities.= makeoption($lng['ticket']['low'], '3', $mainticket->Get('priority'), true, true);
 		$subject = $mainticket->Get('subject');
-		$ticket_replies_count = $db->num_rows($andere)+1;
+		$ticket_replies_count = $db->num_rows($andere) + 1;
 
 		// don't forget the main-ticket!
 

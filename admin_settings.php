@@ -181,7 +181,7 @@ if(($page == 'settings' || $page == 'overview')
 
 					$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_mysql.php\'';
 					$max = $db->query_first($query);
-					$new = floor($max['max']/10)+10;
+					$new = floor($max['max'] / 10) + 10;
 					$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;mysql;phpmyadmin",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "mysqls_used",  `parent_url` = "customer_mysql.php"';
 				}
 
@@ -227,7 +227,7 @@ if(($page == 'settings' || $page == 'overview')
 
 					$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_email.php\'';
 					$max = $db->query_first($query);
-					$new = floor($max['max']/10)+10;
+					$new = floor($max['max'] / 10) + 10;
 					$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;email;webmail",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "emails_used",  `parent_url` = "customer_email.php"';
 				}
 
@@ -273,7 +273,7 @@ if(($page == 'settings' || $page == 'overview')
 
 					$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_ftp.php\'';
 					$max = $db->query_first($query);
-					$new = floor($max['max']/10)+10;
+					$new = floor($max['max'] / 10) + 10;
 					$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;ftp;webftp",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `parent_url` = "customer_ftp.php"';
 				}
 
@@ -339,7 +339,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = $_POST['customer_accountprefix'];
 
-				if(validateUsername($value, $settings['panel']['unix_names'], 14-strlen($settings['customer']['mysqlprefix'])))
+				if(validateUsername($value, $settings['panel']['unix_names'], 14 - strlen($settings['customer']['mysqlprefix'])))
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='accountprefix'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_accountprefix from '" . $settings['customer']['accountprefix'] . "' to '" . $value . "'");
@@ -356,7 +356,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = $_POST['customer_mysqlprefix'];
 
-				if(validateUsername($value, $settings['panel']['unix_names'], 14-strlen($_POST['customer_mysqlprefix'])))
+				if(validateUsername($value, $settings['panel']['unix_names'], 14 - strlen($_POST['customer_mysqlprefix'])))
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='customer' AND `varname`='mysqlprefix'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed customer_mysqlprefix from '" . $settings['customer']['mysqlprefix'] . "' to '" . $value . "'");
@@ -425,7 +425,7 @@ if(($page == 'settings' || $page == 'overview')
 			if(isset($_POST['system_ipaddress'])
 			   && substr($_POST['system_ipaddress'], 0, 1) == '[')
 			{
-				$_POST['system_ipaddress'] = substr($_POST['system_ipaddress'], 1, strlen($_POST['system_ipaddress'])-2);
+				$_POST['system_ipaddress'] = substr($_POST['system_ipaddress'], 1, strlen($_POST['system_ipaddress']) - 2);
 			}
 
 			if($_POST['system_ipaddress'] != $settings['system']['ipaddress']
@@ -1447,7 +1447,7 @@ if(($page == 'settings' || $page == 'overview')
 
 		while($quota > 1024)
 		{
-			$quota = $quota/1024;
+			$quota = $quota / 1024;
 			$i++;
 		}
 

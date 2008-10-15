@@ -188,13 +188,13 @@ class taxController
 
 					// Now we walk through the interval, stepping is the interval length.
 
-					while($days_diff >= $number_days+$this->getDaysForInterval($invoice_row['interval_length'], $invoice_row['interval_type'], $service_date_begin_array))
+					while($days_diff >= $number_days + $this->getDaysForInterval($invoice_row['interval_length'], $invoice_row['interval_type'], $service_date_begin_array))
 					{
 						// Whenever we happen to meet a tax change, remaining will reduced by the number of days to that tax change.
 
 						$remaining = $interval_days = $this->getDaysForInterval($invoice_row['interval_length'], $invoice_row['interval_type'], $service_date_begin_array);
 						$interval_begin = manipulateDate($invoice_row['service_date_begin'], '+', $number_days, 'd');
-						$interval_end = manipulateDate($invoice_row['service_date_begin'], '+', $number_days+$interval_days, 'd');
+						$interval_end = manipulateDate($invoice_row['service_date_begin'], '+', $number_days + $interval_days, 'd');
 
 						// Now get tax changes in the current interval.
 
@@ -226,7 +226,7 @@ class taxController
 
 							// total_fee is a fraction of the interval fee
 
-							$pricing['total_fee']+= $invoice_row['interval_fee']*($tax_days/$interval_days);
+							$pricing['total_fee']+= $invoice_row['interval_fee'] * ($tax_days / $interval_days);
 
 							// Set ending day of row to day when tax changed
 
@@ -253,7 +253,7 @@ class taxController
 
 						// Finally add the remaining fraction to total_fee
 
-						$pricing['total_fee']+= $invoice_row['interval_fee']*($remaining/$interval_days);
+						$pricing['total_fee']+= $invoice_row['interval_fee'] * ($remaining / $interval_days);
 					}
 
 					// Last element, so use our real service_date_end
@@ -266,7 +266,7 @@ class taxController
 					{
 						// ... calculate last total_fee...
 
-						$pricing['total_fee']+= $invoice_row['interval_fee']*(($days_diff-$number_days)/$this->getDaysForInterval($invoice_row['interval_length'], $invoice_row['interval_type'], $service_date_begin_array));
+						$pricing['total_fee']+= $invoice_row['interval_fee'] * (($days_diff - $number_days) / $this->getDaysForInterval($invoice_row['interval_length'], $invoice_row['interval_type'], $service_date_begin_array));
 					}
 
 					// ... and finally add last line.
@@ -304,14 +304,14 @@ class taxController
 		case 'y':
 			for ($i = 1;$i <= $interval_length;$i++)
 			{
-				$returnval+= getDaysForYear((int)$service_date_begin_array['m'], (int)$service_date_begin_array['y']+($i-1));
+				$returnval+= getDaysForYear((int)$service_date_begin_array['m'], (int)$service_date_begin_array['y'] + ($i - 1));
 			}
 
 			break;
 		case 'm':
 			for ($i = 1;$i <= $interval_length;$i++)
 			{
-				$returnval+= getDaysForMonth((int)$service_date_begin_array['m']+($i-1), (int)$service_date_begin_array['y']);
+				$returnval+= getDaysForMonth((int)$service_date_begin_array['m'] + ($i - 1), (int)$service_date_begin_array['y']);
 			}
 
 			break;

@@ -175,7 +175,7 @@ function remove_remarks($sql)
 	$output = "";
 	for ($i = 0;$i < $linecount;$i++)
 	{
-		if(($i != ($linecount-1))
+		if(($i != ($linecount - 1))
 		   || (strlen($lines[$i]) > 0))
 		{
 			if(substr($lines[$i], 0, 1) != "#")
@@ -223,7 +223,7 @@ function split_sql_file($sql, $delimiter)
 	{
 		// Don't wanna add an empty string as the last thing in the array.
 
-		if(($i != ($token_count-1))
+		if(($i != ($token_count - 1))
 		   || (strlen($tokens[$i] > 0)))
 		{
 			// This is the total number of single quotes in the token.
@@ -234,11 +234,11 @@ function split_sql_file($sql, $delimiter)
 			// which means they're escaped quotes.
 
 			$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$i], $matches);
-			$unescaped_quotes = $total_quotes-$escaped_quotes;
+			$unescaped_quotes = $total_quotes - $escaped_quotes;
 
 			// If the number of unescaped quotes is even, then the delimiter did NOT occur inside a string literal.
 
-			if(($unescaped_quotes%2) == 0)
+			if(($unescaped_quotes % 2) == 0)
 			{
 				// It's a complete sql statement.
 
@@ -262,7 +262,7 @@ function split_sql_file($sql, $delimiter)
 				// Do we have a complete statement yet?
 
 				$complete_stmt = false;
-				for ($j = $i+1;(!$complete_stmt && ($j < $token_count));$j++)
+				for ($j = $i + 1;(!$complete_stmt && ($j < $token_count));$j++)
 				{
 					// This is the total number of single quotes in the token.
 
@@ -272,9 +272,9 @@ function split_sql_file($sql, $delimiter)
 					// which means they're escaped quotes.
 
 					$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$j], $matches);
-					$unescaped_quotes = $total_quotes-$escaped_quotes;
+					$unescaped_quotes = $total_quotes - $escaped_quotes;
 
-					if(($unescaped_quotes%2) == 1)
+					if(($unescaped_quotes % 2) == 1)
 					{
 						// odd number of unescaped quotes. In combination with the previous incomplete
 						// statement(s), we now have a complete statement. (2 odds always make an even)

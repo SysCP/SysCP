@@ -49,7 +49,7 @@ class ticket
 	 * @var tid
 	 */
 
-	private $tid = -1;
+	private $tid = - 1;
 
 	/**
 	 * Ticket Data Array
@@ -74,7 +74,7 @@ class ticket
 	 * @param int ticket id
 	 */
 
-	private function __construct($userinfo, $db, $settings, $tid = -1)
+	private function __construct($userinfo, $db, $settings, $tid = - 1)
 	{
 		$this->userinfo = $userinfo;
 		$this->db = $db;
@@ -135,7 +135,7 @@ class ticket
 	private function readData()
 	{
 		if(isset($this->tid)
-		   && $this->tid != -1)
+		   && $this->tid != - 1)
 		{
 			$_ticket = $this->db->query_first('SELECT * FROM `' . TABLE_PANEL_TICKETS . '` WHERE `id` = "' . $this->tid . '"');
 			$this->Set('customer', $_ticket['customerid'], true, false);
@@ -246,13 +246,13 @@ class ticket
 	 * Mail notifications
 	 */
 
-	public function sendMail($customerid = -1, $template_subject = null, $default_subject = null, $template_body = null, $default_body = null)
+	public function sendMail($customerid = - 1, $template_subject = null, $default_subject = null, $template_body = null, $default_body = null)
 	{
 		global $mail;
 
 		// Some checks are to be made here in the future
 
-		if($customerid != -1)
+		if($customerid != - 1)
 		{
 			// Get e-mail message for customer
 
@@ -285,7 +285,7 @@ class ticket
                                 AND `varname`=\'' . $template_body . '\'');
 		$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $default_body), $replace_arr));
 
-		if($customerid != -1)
+		if($customerid != - 1)
 		{
 			$mail->From = $this->settings['ticket']['noreply_email'];
 			$mail->FromName = $this->settings['ticket']['noreply_name'];
@@ -450,7 +450,7 @@ class ticket
 	 * Returns a sql-statement to search the archive
 	 */
 
-	static public function getArchiveSearchStatement($subject = NULL, $priority = NULL, $fromdate = NULL, $todate = NULL, $message = NULL, $customer = -1, $admin = 1, $categories = NULL)
+	static public function getArchiveSearchStatement($subject = NULL, $priority = NULL, $fromdate = NULL, $todate = NULL, $message = NULL, $customer = - 1, $admin = 1, $categories = NULL)
 	{
 		$query = 'SELECT `main`.*, 
                 (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub` 
@@ -537,7 +537,7 @@ class ticket
 			$query.= 'AND `main`.`message` LIKE "%' . $message . '%" ';
 		}
 
-		if($customer != -1)
+		if($customer != - 1)
 		{
 			$query.= 'AND `main`.`customerid` = "' . $customer . '" ';
 		}
@@ -560,7 +560,7 @@ class ticket
 
 			if($categories[0] != '')
 			{
-				$query = substr($query, 0, strlen($query)-3);
+				$query = substr($query, 0, strlen($query) - 3);
 				$query.= ') ';
 			}
 		}

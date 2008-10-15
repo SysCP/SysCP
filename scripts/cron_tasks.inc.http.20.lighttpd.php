@@ -133,7 +133,7 @@ class lighttpd
 				}
 
 				$needed_htpasswds[] = $row_htpasswds['path'];
-				$htaccess_path = substr($row_htpasswds[path], strlen($domain[documentroot])-1);
+				$htaccess_path = substr($row_htpasswds[path], strlen($domain[documentroot]) - 1);
 				$htaccess_text.= '    "' . makeSecurePath($htaccess_path) . '" =>' . "\n";
 				$htaccess_text.= '    (' . "\n";
 				$htaccess_text.= '       "method"  => "basic",' . "\n";
@@ -409,7 +409,7 @@ class lighttpd
 				{
 					$servernames_text = '(' . $data . '|';
 				}
-				elseif(sizeof($server_string)-1 == $i)
+				elseif(sizeof($server_string) - 1 == $i)
 				{
 					$servernames_text.= $data . ')';
 				}

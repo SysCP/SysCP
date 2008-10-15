@@ -571,9 +571,9 @@ class invoice
 
 					$invoice_row['single_fee'] = $invoice_row['total_fee'];
 					$invoice_row['total_fee']*= $invoice_row['quantity'];
-					$invoice_row['tax'] = sprintf("%01.2f", round(($invoice_row['total_fee']*$invoice_row['taxrate']), 2));
-					$invoice_row['total_fee_taxed'] = sprintf("%01.2f", round(($invoice_row['total_fee']+$invoice_row['tax']), 2));
-					$invoice_row['taxrate_percent'] = $invoice_row['taxrate']*100;
+					$invoice_row['tax'] = sprintf("%01.2f", round(($invoice_row['total_fee'] * $invoice_row['taxrate']), 2));
+					$invoice_row['total_fee_taxed'] = sprintf("%01.2f", round(($invoice_row['total_fee'] + $invoice_row['tax']), 2));
+					$invoice_row['taxrate_percent'] = $invoice_row['taxrate'] * 100;
 					$invoice_row['total_fee'] = sprintf("%01.2f", $invoice_row['total_fee']);
 					$returnval[$invoice_row['service_type']]['rows'][] = $invoice_row;
 				}
@@ -671,11 +671,11 @@ class invoice
 		$address->addChild('country', utf8_encode(htmlspecialchars($this->user['country'])));
 		$billing = $invoiceXml->addChild('billing');
 		$billing->addChild('contract_number', utf8_encode(htmlspecialchars($this->user['contract_number'])));
-		$billing->addChild('contract_details', utf8_encode(htmlspecialchars(sprintf(html_entity_decode($lng['invoice']['contract_details_template']), makeNicePresentableDate($this->user['contract_date'], $lng['panel']['dateformat_function']), ((int)$this->user['diskspace']/1024 == '-1' ? html_entity_decode($lng['customer']['unlimited']) : (string)(round((int)$this->user['diskspace']/1024, 2))), $this->user['additional_diskspace_fee'], (string)(round((int)$this->user['additional_diskspace_unit']/1024, 4)), ((int)$this->user['traffic']/(1024*1024) == '-1' ? html_entity_decode($lng['customer']['unlimited']) : (string)(round((int)$this->user['traffic']/(1024*1024), 4))), $this->user['additional_traffic_fee'], (string)(round((int)$this->user['additional_traffic_unit']/(1024*1024), 4)), $this->user['included_domains_qty'], $this->user['interval_fee'],
+		$billing->addChild('contract_details', utf8_encode(htmlspecialchars(sprintf(html_entity_decode($lng['invoice']['contract_details_template']), makeNicePresentableDate($this->user['contract_date'], $lng['panel']['dateformat_function']), ((int)$this->user['diskspace'] / 1024 == '-1' ? html_entity_decode($lng['customer']['unlimited']) : (string)(round((int)$this->user['diskspace'] / 1024, 2))), $this->user['additional_diskspace_fee'], (string)(round((int)$this->user['additional_diskspace_unit'] / 1024, 4)), ((int)$this->user['traffic'] / (1024 * 1024) == '-1' ? html_entity_decode($lng['customer']['unlimited']) : (string)(round((int)$this->user['traffic'] / (1024 * 1024), 4))), $this->user['additional_traffic_fee'], (string)(round((int)$this->user['additional_traffic_unit'] / (1024 * 1024), 4)), $this->user['included_domains_qty'], $this->user['interval_fee'],
 
 		// The following two lines just make nice plural/singlar forms out of our interval_length (eg "1 Month" instead of "1 Months")
 
-		str_replace('1 ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']], $lng['panel']['intervalfee_type_one'][$this->user['interval_type']], $this->user['interval_length'] . ' ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']]), str_replace('1 ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']], '1 ' . $lng['panel']['intervalfee_type_one'][$this->user['interval_type']], (string)((int)$this->user['interval_length']*(int)$this->user['payment_every']) . ' ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']])))));
+		str_replace('1 ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']], $lng['panel']['intervalfee_type_one'][$this->user['interval_type']], $this->user['interval_length'] . ' ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']]), str_replace('1 ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']], '1 ' . $lng['panel']['intervalfee_type_one'][$this->user['interval_type']], (string)((int)$this->user['interval_length'] * (int)$this->user['payment_every']) . ' ' . $lng['panel']['intervalfee_type'][$this->user['interval_type']])))));
 		$billing->addChild('payment_method', utf8_encode(htmlspecialchars($this->user['payment_method'])));
 		$billing->addChild('term_of_payment', utf8_encode(htmlspecialchars($this->user['term_of_payment'])));
 		$billing->addChild('bankaccount_holder', utf8_encode(htmlspecialchars($this->user['bankaccount_holder'])));

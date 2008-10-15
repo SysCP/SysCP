@@ -314,7 +314,7 @@ class serviceCategory
 				   && in_array($service_detail['interval_type'], getIntervalTypes('array')))
 				{
 					$original_date = $service_detail['lastinvoiced_date'];
-					$service_detail['nextinvoiced_date'] = manipulateDate($service_detail['lastinvoiced_date'], '+', ((int)$service_detail['interval_length']*(int)$service_detail['payment_every']), $service_detail['interval_type'], $original_date);
+					$service_detail['nextinvoiced_date'] = manipulateDate($service_detail['lastinvoiced_date'], '+', ((int)$service_detail['interval_length'] * (int)$service_detail['payment_every']), $service_detail['interval_type'], $original_date);
 
 					while(($service_detail['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference($service_detail['lastinvoiced_date'], time()) >= 0 && !($service_detail['service_active'] == '0' && calculateDayDifference($service_detail['lastinvoiced_date'], $service_detail['serviceend_date']) <= 0))
 					      || ($service_detail['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_POSTPAID && (calculateDayDifference($service_detail['nextinvoiced_date'], time()) >= 0 || ($this->endServiceImmediately === true && $service_detail['service_active'] == '0' && calculateDayDifference($service_detail['lastinvoiced_date'], $service_detail['serviceend_date']) > 0 && calculateDayDifference($service_detail['serviceend_date'], $service_detail['nextinvoiced_date']) >= 0 && calculateDayDifference($service_detail['lastinvoiced_date'], time()) >= 0 && calculateDayDifference($service_detail['serviceend_date'], time()) >= 0))))
@@ -364,7 +364,7 @@ class serviceCategory
 
 						// ... and recalculate nextinvoiced_date.
 
-						$service_detail['nextinvoiced_date'] = manipulateDate($service_detail['lastinvoiced_date'], '+', ((int)$service_detail['interval_length']*(int)$service_detail['payment_every']), $service_detail['interval_type'], $original_date);
+						$service_detail['nextinvoiced_date'] = manipulateDate($service_detail['lastinvoiced_date'], '+', ((int)$service_detail['interval_length'] * (int)$service_detail['payment_every']), $service_detail['interval_type'], $original_date);
 					}
 				}
 

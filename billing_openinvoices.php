@@ -133,7 +133,7 @@ if($userinfo['customers_see_all'] == '1')
 				if($begin < $number_users
 				   && $count != 0)
 				{
-					echo $begin . '/' . $number_users . ' (' . round(($begin/$number_users)*100) . '%)';
+					echo $begin . '/' . $number_users . ' (' . round(($begin / $number_users) * 100) . '%)';
 					$users = cacheInvoiceFees($mode, $begin, $count);
 					echo '|';
 					foreach($users as $userid => $user)
@@ -230,14 +230,14 @@ if($userinfo['customers_see_all'] == '1')
 					if(isset($row['history'])
 					   && is_array($row['history']))
 					{
-						$rowspan = count($row['history'])+1;
+						$rowspan = count($row['history']) + 1;
 						eval("\$group_items.=\"" . getTemplate("billing/openinvoices_invoice_history") . "\";");
 						foreach($row['history'] as $timestamp => $history_row)
 						{
-							$history_row['taxrate_percent'] = $history_row['taxrate']*100;
+							$history_row['taxrate_percent'] = $history_row['taxrate'] * 100;
 							$history_row['total_fee'] = sprintf("%01.2f", $history_row['total_fee']);
-							$history_row['tax'] = sprintf("%01.2f", round(($history_row['total_fee']*$history_row['taxrate']), 2));
-							$history_row['total_fee_taxed'] = sprintf("%01.2f", round(($history_row['total_fee']+$history_row['tax']), 2));
+							$history_row['tax'] = sprintf("%01.2f", round(($history_row['total_fee'] * $history_row['taxrate']), 2));
+							$history_row['total_fee_taxed'] = sprintf("%01.2f", round(($history_row['total_fee'] + $history_row['tax']), 2));
 
 							if(!isset($history_row['action'])
 							   || $history_row['action'] == '0'
@@ -325,7 +325,7 @@ if($userinfo['customers_see_all'] == '1')
 			}
 			elseif(isset($_POST['taxrate_percent']))
 			{
-				$taxrate = doubleval(str_replace(',', '.', $_POST['taxrate_percent']))/100;
+				$taxrate = doubleval(str_replace(',', '.', $_POST['taxrate_percent'])) / 100;
 			}
 			else
 			{
@@ -407,7 +407,7 @@ if($userinfo['customers_see_all'] == '1')
 		if($action == 'fixinvoice')
 		{
 			$invoice_number_preset = strtr($lng['invoice']['invoicenumbertemplate'], array(
-				'{number}' => ((int)$settings['billing']['invoicenumber_count']+1),
+				'{number}' => ((int)$settings['billing']['invoicenumber_count'] + 1),
 				'{year}' => date('Y'),
 				'{month}' => date('m'),
 				'{day}' => date('d')

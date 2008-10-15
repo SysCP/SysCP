@@ -140,7 +140,7 @@ elseif($page == 'emails')
 
 						while($quota > 1024)
 						{
-							$quota = $quota/1024;
+							$quota = $quota / 1024;
 							$j++;
 						}
 
@@ -384,7 +384,7 @@ elseif($page == 'emails')
 		{
 			$quota = intval_ressource($_POST['email_quota_size']);
 			$quota = getQuotaInBytes($quota, $_POST['email_quota_type']);
-			$new_used_quota = $result['email_quota_used']-$result['quota']+$quota;
+			$new_used_quota = $result['email_quota_used'] - $result['quota'] + $quota;
 			$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota` = '" . $quota . "' WHERE `mail_users`.`id` = " . $result['mail_user_id'] . " AND `customerid`='" . $userinfo['customerid'] . "'");
 			$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_quota_used` = " . $new_used_quota . " WHERE `customerid` = '" . $userinfo['customerid'] . "'");
 		}
@@ -706,9 +706,9 @@ elseif($page == 'forwarders')
 
 			$result['destination_array'] = explode(' ', $result['destination']);
 
-			if(isset($result['destination_array'][$forwarderid-1]))
+			if(isset($result['destination_array'][$forwarderid - 1]))
 			{
-				$forwarder = $result['destination_array'][$forwarderid-1];
+				$forwarder = $result['destination_array'][$forwarderid - 1];
 
 				if($forwarder == $result['email'])
 				{

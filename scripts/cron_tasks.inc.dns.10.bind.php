@@ -173,7 +173,7 @@ class bind
 		}
 
 		$date = date('Ymd');
-		$bindserial = (preg_match('/^' . $date . '/', $domain['bindserial']) ? $domain['bindserial']+1 : $date . '00');
+		$bindserial = (preg_match('/^' . $date . '/', $domain['bindserial']) ? $domain['bindserial'] + 1 : $date . '00');
 		$this->db->query('UPDATE `' . TABLE_PANEL_DOMAINS . '` SET `bindserial`=\'' . $bindserial . '\' WHERE `id`=\'' . $domain['id'] . '\'');
 		$zonefile = '$TTL 1W' . "\n";
 
@@ -284,7 +284,7 @@ class bind
 				   || $domain['dkim_pubkey'] == '')
 				{
 					$max_dkim_id = $this->db->query_first("SELECT MAX(`dkim_id`) as `max_dkim_id` FROM `" . TABLE_PANEL_DOMAINS . "`");
-					$domain['dkim_id'] = (int)$max_dkim_id['max_dkim_id']+1;
+					$domain['dkim_id'] = (int)$max_dkim_id['max_dkim_id'] + 1;
 					$privkey_filename = makeCorrectFile($this->settings['dkim']['dkim_prefix'] . '/dkim_' . $domain['dkim_id'] . '.private');
 					safe_exec('openssl genrsa -out ' . escapeshellcmd($privkey_filename) . ' 1024');
 					$domain['dkim_privkey'] = file_get_contents($privkey_filename);

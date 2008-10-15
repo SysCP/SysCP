@@ -203,13 +203,13 @@ while($row = $db->fetch_array($result))
 	fwrite($debugHandler, 'total traffic for ' . $row['loginname'] . ' started' . "\n");
 	$current_traffic = array();
 	$current_traffic['http'] = floatval($httptraffic);
-	$current_traffic['ftp_up'] = floatval(($ftptraffic['up_bytes_sum']/1024));
-	$current_traffic['ftp_down'] = floatval(($ftptraffic['down_bytes_sum']/1024));
+	$current_traffic['ftp_up'] = floatval(($ftptraffic['up_bytes_sum'] / 1024));
+	$current_traffic['ftp_down'] = floatval(($ftptraffic['down_bytes_sum'] / 1024));
 	$current_traffic['mail'] = floatval($mailtraffic);
-	$current_traffic['all'] = $current_traffic['http']+$current_traffic['ftp_up']+$current_traffic['ftp_down']+$current_traffic['mail'];
+	$current_traffic['all'] = $current_traffic['http'] + $current_traffic['ftp_up'] + $current_traffic['ftp_down'] + $current_traffic['mail'];
 	$db->query("INSERT INTO `" . TABLE_PANEL_TRAFFIC . "` (`customerid`, `year`, `month`, `day`, `stamp`, `http`, `ftp_up`, `ftp_down`, `mail`) VALUES('" . (int)$row['customerid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$current_traffic['http'] . "', '" . (float)$current_traffic['ftp_up'] . "', '" . (float)$current_traffic['ftp_down'] . "', '" . (float)$current_traffic['mail'] . "')");
 	$sum_month_traffic = $db->query_first("SELECT SUM(`http`) AS `http`, SUM(`ftp_up`) AS `ftp_up`, SUM(`ftp_down`) AS `ftp_down`, SUM(`mail`) AS `mail` FROM `" . TABLE_PANEL_TRAFFIC . "` WHERE `year`='" . date('Y') . "' AND `month`='" . date('m') . "' AND `customerid`='" . (int)$row['customerid'] . "'");
-	$sum_month_traffic['all'] = $sum_month_traffic['http']+$sum_month_traffic['ftp_up']+$sum_month_traffic['ftp_down']+$sum_month_traffic['mail'];
+	$sum_month_traffic['all'] = $sum_month_traffic['http'] + $sum_month_traffic['ftp_up'] + $sum_month_traffic['ftp_down'] + $sum_month_traffic['mail'];
 
 	if(!isset($admin_traffic[$row['adminid']])
 	   || !is_array($admin_traffic[$row['adminid']]))
@@ -283,7 +283,7 @@ while($row = $db->fetch_array($result))
 
 			while($mysql_usage_row = $db_root->fetch_array($mysql_usage_result))
 			{
-				$mysqlusage+= floatval($mysql_usage_row['Data_length']+$mysql_usage_row['Index_length']);
+				$mysqlusage+= floatval($mysql_usage_row['Data_length'] + $mysql_usage_row['Index_length']);
 			}
 		}
 		else
@@ -292,12 +292,12 @@ while($row = $db->fetch_array($result))
 		}
 	}
 
-	$mysqlusage = floatval($mysqlusage/1024);
+	$mysqlusage = floatval($mysqlusage / 1024);
 	$current_diskspace = array();
 	$current_diskspace['webspace'] = floatval($webspaceusage);
 	$current_diskspace['mail'] = floatval($emailusage);
 	$current_diskspace['mysql'] = floatval($mysqlusage);
-	$current_diskspace['all'] = $current_diskspace['webspace']+$current_diskspace['mail']+$current_diskspace['mysql'];
+	$current_diskspace['all'] = $current_diskspace['webspace'] + $current_diskspace['mail'] + $current_diskspace['mysql'];
 	$db->query("INSERT INTO `" . TABLE_PANEL_DISKSPACE . "` (`customerid`, `year`, `month`, `day`, `stamp`, `webspace`, `mail`, `mysql`) VALUES('" . (int)$row['customerid'] . "', '" . date('Y') . "', '" . date('m') . "', '" . date('d') . "', '" . time() . "', '" . (float)$current_diskspace['webspace'] . "', '" . (float)$current_diskspace['mail'] . "', '" . (float)$current_diskspace['mysql'] . "')");
 
 	if(!isset($admin_diskspace[$row['adminid']])
@@ -319,7 +319,7 @@ while($row = $db->fetch_array($result))
 	 * Total Usage
 	 */
 
-	$diskusage = floatval($webspaceusage+$emailusage+$mysqlusage);
+	$diskusage = floatval($webspaceusage + $emailusage + $mysqlusage);
 	$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `diskspace_used`='" . (float)$current_diskspace['all'] . "', `traffic_used`='" . (float)$sum_month_traffic['all'] . "' WHERE `customerid`='" . (int)$row['customerid'] . "'");
 }
 
