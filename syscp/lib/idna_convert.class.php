@@ -118,7 +118,7 @@ class idna_convert
 
 	function idna_convert($options = false)
 	{
-		$this->slast = $this->_sbase+$this->_lcount*$this->_vcount*$this->_tcount;
+		$this->slast = $this->_sbase + $this->_lcount * $this->_vcount * $this->_tcount;
 
 		if(function_exists('file_get_contents'))
 		{
@@ -399,7 +399,7 @@ class idna_convert
 					if($k)
 					{
 						$encoded = '';
-						$encoded = $this->_encode(array_slice($decoded, $last_begin, (($k)-$last_begin)));
+						$encoded = $this->_encode(array_slice($decoded, $last_begin, (($k) - $last_begin)));
 
 						if($encoded)
 						{
@@ -407,13 +407,13 @@ class idna_convert
 						}
 						else
 						{
-							$output.= $this->_ucs4_to_utf8(array_slice($decoded, $last_begin, (($k)-$last_begin)));
+							$output.= $this->_ucs4_to_utf8(array_slice($decoded, $last_begin, (($k) - $last_begin)));
 						}
 
 						$output.= chr($decoded[$k]);
 					}
 
-					$last_begin = $k+1;
+					$last_begin = $k + 1;
 				}
 			}
 		}
@@ -424,7 +424,7 @@ class idna_convert
 		{
 			$inp_len = sizeof($decoded);
 			$encoded = '';
-			$encoded = $this->_encode(array_slice($decoded, $last_begin, (($inp_len)-$last_begin)));
+			$encoded = $this->_encode(array_slice($decoded, $last_begin, (($inp_len) - $last_begin)));
 
 			if($encoded)
 			{
@@ -432,7 +432,7 @@ class idna_convert
 			}
 			else
 			{
-				$output.= $this->_ucs4_to_utf8(array_slice($decoded, $last_begin, (($inp_len)-$last_begin)));
+				$output.= $this->_ucs4_to_utf8(array_slice($decoded, $last_begin, (($inp_len) - $last_begin)));
 			}
 
 			return $output;
@@ -495,895 +495,887 @@ class idna_convert
 		{
 			for ($k = strlen($this->_punycode_prefix);$k < $delim_pos;++$k)
 			{
-				$decoded[] = ord($encoded
+				$decoded[] = ord($encoded{$k});
+			}
+		}
+		else
+		{
+			$decoded = array();
+		}
+
+		$deco_len = count($decoded);
+		$enco_len = strlen($encoded);
+
+		// Wandering through the strings; init
+
+		$is_first = true;
+		$bias = $this->_initial_bias;
+		$idx = 0;
+		$char = $this->_initial_n;
+		for ($enco_idx = ($delim_pos) ? ($delim_pos + 1) : 0;$enco_idx < $enco_len;++$deco_len)
+		{
+			for ($old_idx = $idx, $w = 1, $k = $this->_base;1;$k+= $this->_base)
+			{
+				$digit = $this->_decode_digit($encoded{$enco_idx++});
+				$idx+= $digit * $w;
+				$t = ($k <= $bias) ? $this->_tmin : (($k >= $bias + $this->_tmax) ? $this->_tmax : ($k - $bias));
+
+				if($digit < $t)break;
+				$w = (int)($w * ($this->_base - $t));
+			}
+
+			$bias = $this->_adapt($idx - $old_idx, $deco_len + 1, $is_first);
+			$is_first = false;
+			$char+= (int)($idx / ($deco_len + 1));
+			$idx%= ($deco_len + 1);
+
+			if($deco_len > 0)
+			{
+				// Make room for the decoded char
+
+				for ($i = $deco_len;$i > $idx;$i--)
 				{
-					$k});
+					$decoded[$i] = $decoded[($i - 1)];
+				}
+			}
+
+			$decoded[$idx++] = $char;
+		}
+
+		return $this->_ucs4_to_utf8($decoded);
+	}
+
+	/**
+	 * The actual encoding algorithm
+	 * @access   private
+	 */
+
+	function _encode($decoded)
+	{
+		// We cannot encode a domain name containing the Punycode prefix
+
+		$extract = strlen($this->_punycode_prefix);
+		$check_pref = $this->_utf8_to_ucs4($this->_punycode_prefix);
+		$check_deco = array_slice($decoded, 0, $extract);
+
+		if($check_pref == $check_deco)
+		{
+			$this->_error('This is already a punycode string');
+			return false;
+		}
+
+		// We will not try to encode strings consisting of basic code points only
+
+		$encodable = false;
+		foreach($decoded as $k => $v)
+		{
+			if($v > 0x7a)
+			{
+				$encodable = true;
+				break;
+			}
+		}
+
+		if(!$encodable)
+		{
+			$this->_error('The given string does not contain encodable chars');
+			return false;
+		}
+
+		// Do NAMEPREP
+
+		$decoded = $this->_nameprep($decoded);
+
+		if(!$decoded
+		   || !is_array($decoded))return false;
+
+		// NAMEPREP failed
+
+		$deco_len = count($decoded);
+
+		if(!$deco_len)return false;
+
+		// Empty array
+
+		$codecount = 0;
+
+		// How many chars have been consumed
+
+		$encoded = '';
+
+		// Copy all basic code points to output
+
+		for ($i = 0;$i < $deco_len;++$i)
+		{
+			$test = $decoded[$i];
+
+			// Will match [-0-9a-zA-Z]
+
+			if((0x2F < $test && $test < 0x40)
+			   || (0x40 < $test && $test < 0x5B)
+			   || (0x60 < $test && $test <= 0x7B)
+			   || (0x2D == $test))
+			{
+				$encoded.= chr($decoded[$i]);
+				$codecount++;
+			}
+		}
+
+		if($codecount == $deco_len)return $encoded;
+
+		// All codepoints were basic ones
+		// Start with the prefix; copy it to output
+
+		$encoded = $this->_punycode_prefix . $encoded;
+
+		// If we have basic code points in output, add an hyphen to the end
+
+		if($codecount)$encoded.= '-';
+
+		// Now find and encode all non-basic code points
+
+		$is_first = true;
+		$cur_code = $this->_initial_n;
+		$bias = $this->_initial_bias;
+		$delta = 0;
+
+		while($codecount < $deco_len)
+		{
+			// Find the smallest code point >= the current code point and
+			// remember the last ouccrence of it in the input
+
+			for ($i = 0, $next_code = $this->_max_ucs;$i < $deco_len;$i++)
+			{
+				if($decoded[$i] >= $cur_code
+				   && $decoded[$i] <= $next_code)
+				{
+					$next_code = $decoded[$i];
+				}
+			}
+
+			$delta+= ($next_code - $cur_code) * ($codecount + 1);
+			$cur_code = $next_code;
+
+			// Scan input again and encode all characters whose code point is $cur_code
+
+			for ($i = 0;$i < $deco_len;$i++)
+			{
+				if($decoded[$i] < $cur_code)
+				{
+					$delta++;
+				}
+				elseif($decoded[$i] == $cur_code)
+				{
+					for ($q = $delta, $k = $this->_base;1;$k+= $this->_base)
+					{
+						$t = ($k <= $bias) ? $this->_tmin : (($k >= $bias + $this->_tmax) ? $this->_tmax : $k - $bias);
+
+						if($q < $t)break;
+						$encoded.= $this->_encode_digit(ceil($t + (($q - $t) % ($this->_base - $t))));
+						$q = (int)(($q - $t) / ($this->_base - $t));
+					}
+
+					$encoded.= $this->_encode_digit($q);
+					$bias = $this->_adapt($delta, $codecount + 1, $is_first);
+					$codecount++;
+					$delta = 0;
+					$is_first = false;
+				}
+			}
+
+			$delta++;
+			$cur_code++;
+		}
+
+		return $encoded;
+	}
+
+	/**
+	 * Adapt the bias according to the current code point and position
+	 * @access   private
+	 */
+
+	function _adapt($delta, $npoints, $is_first)
+	{
+		$delta = (int)($is_first ? ($delta / $this->_damp) : ($delta / 2));
+		$delta+= (int)($delta / $npoints);
+		for ($k = 0;$delta > (($this->_base - $this->_tmin) * $this->_tmax) / 2;$k+= $this->_base)
+		{
+			$delta = (int)($delta / ($this->_base - $this->_tmin));
+		}
+
+		return (int)($k + ($this->_base - $this->_tmin + 1) * $delta / ($delta + $this->_skew));
+	}
+
+	/**
+	 * Encoding a certain digit
+	 * @access   private
+	 */
+
+	function _encode_digit($d)
+	{
+		return chr($d + 22 + 75 * ($d < 26));
+	}
+
+	/**
+	 * Decode a certain digit
+	 * @access   private
+	 */
+
+	function _decode_digit($cp)
+	{
+		$cp = ord($cp);
+		return ($cp - 48 < 10) ? $cp - 22 : (($cp - 65 < 26) ? $cp - 65 : (($cp - 97 < 26) ? $cp - 97 : $this->_base));
+	}
+
+	/**
+	 * Internal error handling method
+	 * @access   private
+	 */
+
+	function _error($error = '')
+	{
+		$this->_error = $error;
+	}
+
+	/**
+	 * Do Nameprep according to RFC3491 and RFC3454
+	 * @param    array    Unicode Characters
+	 * @return   string   Unicode Characters, Nameprep'd
+	 * @access   private
+	 */
+
+	function _nameprep($input)
+	{
+		$output = array();
+		$error = false;
+
+		//
+		// Mapping
+		// Walking through the input array, performing the required steps on each of
+		// the input chars and putting the result into the output array
+		// While mapping required chars we apply the cannonical ordering
+		// $this->_show_hex($input);
+
+		foreach($input as $v)
+		{
+			// Map to nothing == skip that code point
+
+			if(in_array($v, $this->_np_['map_nothing']))continue;
+
+			// Try to find prohibited input
+
+			if(in_array($v, $this->_np_['prohibit'])
+			   || in_array($v, $this->_np_['general_prohibited']))
+			{
+				$this->_error('NAMEPREP: Prohibited input U+' . sprintf('%08X', $v));
+				return false;
+			}
+
+			foreach($this->_np_['prohibit_ranges'] as $range)
+			{
+				if($range[0] <= $v
+				   && $v <= $range[1])
+				{
+					$this->_error('NAMEPREP: Prohibited input U+' . sprintf('%08X', $v));
+					return false;
+				}
+			}
+
+			//
+			// Hangul syllable decomposition
+
+			if(0xAC00 <= $v
+			   && $v <= 0xD7AF)
+			{
+				foreach($this->_hangul_decompose($v) as $out)
+				{
+					$output[] = $out;
+				}
+
+				// There's a decomposition mapping for that code point
+			}
+			elseif(isset($this->_np_['replacemaps'][$v]))
+			{
+				foreach($this->_apply_cannonical_ordering($this->_np_['replacemaps'][$v]) as $out)
+				{
+					$output[] = $out;
 				}
 			}
 			else
 			{
-				$decoded = array();
+				$output[] = $v;
+			}
+		}
+
+		// Before applying any Combining, try to rearrange any Hangul syllables
+
+		$output = $this->_hangul_compose($output);
+
+		//
+		// Combine code points
+		//
+
+		$last_class = 0;
+		$last_starter = 0;
+		$out_len = count($output);
+		for ($i = 0;$i < $out_len;++$i)
+		{
+			$class = $this->_get_combining_class($output[$i]);
+
+			if((!$last_class || $last_class > $class)
+			   && $class)
+			{
+				// Try to match
+
+				$seq_len = $i - $last_starter;
+				$out = $this->_combine(array_slice($output, $last_starter, $seq_len));
+
+				// On match: Replace the last starter with the composed character and remove
+				// the now redundant non-starter(s)
+
+				if($out)
+				{
+					$output[$last_starter] = $out;
+
+					if(count($out) != $seq_len)
+					{
+						for ($j = $i + 1;$j < $out_len;++$j)
+						{
+							$output[$j - 1] = $output[$j];
+						}
+
+						unset($output[$out_len]);
+					}
+
+					// Rewind the for loop by one, since there can be more possible compositions
+
+					$i--;
+					$out_len--;
+					$last_class = ($i == $last_starter) ? 0 : $this->_get_combining_class($output[$i - 1]);
+					continue;
+				}
 			}
 
-			$deco_len = count($decoded);
-			$enco_len = strlen($encoded);
-
-			// Wandering through the strings; init
-
-			$is_first = true;
-			$bias = $this->_initial_bias;
-			$idx = 0;
-			$char = $this->_initial_n;
-			for ($enco_idx = ($delim_pos) ? ($delim_pos+1) : 0;$enco_idx < $enco_len;++$deco_len)
+			if(!$class)
 			{
-				for ($old_idx = $idx, $w = 1, $k = $this->_base;1;$k+= $this->_base)
+				// The current class is 0
+
+				$last_starter = $i;
+			}
+
+			$last_class = $class;
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Decomposes a Hangul syllable
+	 * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
+	 * @param    integer  32bit UCS4 code point
+	 * @return   array    Either Hangul Syllable decomposed or original 32bit value as one value array
+	 * @access   private
+	 */
+
+	function _hangul_decompose($char)
+	{
+		$sindex = $char - $this->_sbase;
+
+		if($sindex < 0
+		   || $sindex >= $this->_scount)
+		{
+			return array(
+				$char
+			);
+		}
+
+		$result = array();
+		$T = $this->_tbase + ($sindex % $this->_tcount);
+		$result[] = (int)($this->_lbase + $sindex / $this->_ncount);
+		$result[] = (int)$this->_vbase + (($sindex % $this->_ncount) / $this->_tcount);
+
+		if($T != $this->_tbase)$result[] = $T;
+		return $result;
+	}
+
+	/**
+	 * Ccomposes a Hangul syllable
+	 * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
+	 * @param    array    Decomposed UCS4 sequence
+	 * @return   array    UCS4 sequence with syllables composed
+	 * @access   private
+	 */
+
+	function _hangul_compose($input)
+	{
+		$inp_len = count($input);
+
+		if(!$inp_len)return array();
+		$result = array();
+		$last = $input[0];
+		$result[] = $last;
+
+		// copy first char from input to output
+
+		for ($i = 1;$i < $inp_len;++$i)
+		{
+			$char = $input[$i];
+
+			// Find out, wether two current characters from L and V
+
+			$lindex = $last - $this->_lbase;
+
+			if(0 <= $lindex
+			   && $lindex < $this->_lcount)
+			{
+				$vindex = $char - $this->_vbase;
+
+				if(0 <= $vindex
+				   && $vindex < $this->_vcount)
 				{
-					$digit = $this->_decode_digit($encoded
-					{
-						$enco_idx++});
-						$idx+= $digit*$w;
-						$t = ($k <= $bias) ? $this->_tmin : (($k >= $bias+$this->_tmax) ? $this->_tmax : ($k-$bias));
+					// create syllable of form LV
 
-						if($digit < $t)break;
-						$w = (int)($w*($this->_base-$t));
+					$last = ($this->_sbase + ($lindex * $this->_vcount + $vindex) * $this->_tcount);
+					$out_off = count($result) - 1;
+					$result[$out_off] = $last;
+
+					// reset last
+
+					continue;
+
+					// discard char
+				}
+			}
+
+			// Find out, wether two current characters are LV and T
+
+			$sindex = $last - $this->_sbase;
+
+			if(0 <= $sindex
+			   && $sindex < $this->_scount
+			   && ($sindex % $this->_tcount) == 0)
+			{
+				$tindex = $char - $this->_tbase;
+
+				if(0 <= $tindex
+				   && $tindex <= $this->_tcount)
+				{
+					// create syllable of form LVT
+
+					$last+= $tindex;
+					$out_off = count($result) - 1;
+					$result[$out_off] = $last;
+
+					// reset last
+
+					continue;
+
+					// discard char
+				}
+			}
+
+			// if neither case was true, just add the character
+
+			$last = $char;
+			$result[] = $char;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Returns the combining class of a certain wide char
+	 * @param    integer    Wide char to check (32bit integer)
+	 * @return   integer    Combining class if found, else 0
+	 * @access   private
+	 */
+
+	function _get_combining_class($char)
+	{
+		return isset($this->_np_['norm_combcls'][$char]) ? $this->_np_['norm_combcls'][$char] : 0;
+	}
+
+	/**
+	 * Apllies the cannonical ordering of a decomposed UCS4 sequence
+	 * @param    array      Decomposed UCS4 sequence
+	 * @return   array      Ordered USC4 sequence
+	 * @access   private
+	 */
+
+	function _apply_cannonical_ordering($input)
+	{
+		$swap = true;
+		$size = count($input);
+
+		while($swap)
+		{
+			$swap = false;
+			$last = $this->_get_combining_class($input[0]);
+			for ($i = 0;$i < $size - 1;++$i)
+			{
+				$next = $this->_get_combining_class($input[$i + 1]);
+
+				if($next != 0
+				   && $last > $next)
+				{
+					// Move item leftward until it fits
+
+					for ($j = $i + 1;$j > 0;--$j)
+					{
+						if($this->_get_combining_class($input[$j - 1]) <= $next)break;
+						$t = $input[$j];
+						$input[$j] = $input[$j - 1];
+						$input[$j - 1] = $t;
+						$swap = 1;
 					}
 
-					$bias = $this->_adapt($idx-$old_idx, $deco_len+1, $is_first);
-					$is_first = false;
-					$char+= (int)($idx/($deco_len+1));
-					$idx%= ($deco_len+1);
+					// Reentering the loop looking at the old character again
 
-					if($deco_len > 0)
-					{
-						// Make room for the decoded char
-
-						for ($i = $deco_len;$i > $idx;$i--)
-						{
-							$decoded[$i] = $decoded[($i-1)];
-						}
-					}
-
-					$decoded[$idx++] = $char;
+					$next = $last;
 				}
 
-				return $this->_ucs4_to_utf8($decoded);
+				$last = $next;
+			}
+		}
+
+		return $input;
+	}
+
+	/**
+	 * Do composition of a sequence of starter and non-starter
+	 * @param    array      UCS4 Decomposed sequence
+	 * @return   array      Ordered USC4 sequence
+	 * @access   private
+	 */
+
+	function _combine($input)
+	{
+		$inp_len = count($input);
+		foreach($this->_np_['replacemaps'] as $np_src => $np_target)
+		{
+			if($np_target[0] != $input[0])continue;
+
+			if(count($np_target) != $inp_len)continue;
+			$hit = false;
+			foreach($input as $k2 => $v2)
+			{
+				if($v2 == $np_target[$k2])
+				{
+					$hit = true;
+				}
+				else
+				{
+					$hit = false;
+					break;
+				}
 			}
 
-			/**
-			 * The actual encoding algorithm
-			 * @access   private
-			 */
+			if($hit)return $np_src;
+		}
 
-			function _encode($decoded)
+		return false;
+	}
+
+	/**
+	 * This converts an UTF-8 encoded string to its UCS-4 representation
+	 * By talking about UCS-4 "strings" we mean arrays of 32bit integers representing
+	 * each of the "chars". This is due to PHP not being able to handle strings with
+	 * bit depth different from 8. This apllies to the reverse method _ucs4_to_utf8(), too.
+	 * The following UTF-8 encodings are supported:
+	 * bytes bits  representation
+	 * 1        7  0xxxxxxx
+	 * 2       11  110xxxxx 10xxxxxx
+	 * 3       16  1110xxxx 10xxxxxx 10xxxxxx
+	 * 4       21  11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+	 * 5       26  111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+	 * 6       31  1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+	 * Each x represents a bit that can be used to store character data.
+	 * The five and six byte sequences are part of Annex D of ISO/IEC 10646-1:2000
+	 * @access   private
+	 */
+
+	function _utf8_to_ucs4($input)
+	{
+		$output = array();
+		$out_len = 0;
+		$inp_len = strlen($input);
+		$mode = 'next';
+		$test = 'none';
+		for ($k = 0;$k < $inp_len;++$k)
+		{
+			$v = ord($input{$k});
+
+			// Extract byte from input string
+
+			if($v < 128)
 			{
-				// We cannot encode a domain name containing the Punycode prefix
+				// We found an ASCII char - put into stirng as is
 
-				$extract = strlen($this->_punycode_prefix);
-				$check_pref = $this->_utf8_to_ucs4($this->_punycode_prefix);
-				$check_deco = array_slice($decoded, 0, $extract);
+				$output[$out_len] = $v;
+				++$out_len;
 
-				if($check_pref == $check_deco)
+				if('add' == $mode)
 				{
-					$this->_error('This is already a punycode string');
+					$this->_error('Conversion from UTF-8 to UCS-4 failed: malformed input at byte ' . $k);
 					return false;
 				}
 
-				// We will not try to encode strings consisting of basic code points only
+				continue;
+			}
 
-				$encodable = false;
-				foreach($decoded as $k => $v)
+			if('next' == $mode)
+			{
+				// Try to find the next start byte; determine the width of the Unicode char
+
+				$start_byte = $v;
+				$mode = 'add';
+				$test = 'range';
+
+				if($v >> 5 == 6)
 				{
-					if($v > 0x7a)
-					{
-						$encodable = true;
-						break;
-					}
+					// &110xxxxx 10xxxxx
+
+					$next_byte = 0;
+
+					// Tells, how many times subsequent bitmasks must rotate 6bits to the left
+
+					$v = ($v - 192) << 6;
 				}
-
-				if(!$encodable)
+				elseif($v >> 4 == 14)
 				{
-					$this->_error('The given string does not contain encodable chars');
+					// &1110xxxx 10xxxxxx 10xxxxxx
+
+					$next_byte = 1;
+					$v = ($v - 224) << 12;
+				}
+				elseif($v >> 3 == 30)
+				{
+					// &11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+
+					$next_byte = 2;
+					$v = ($v - 240) << 18;
+				}
+				elseif($v >> 2 == 62)
+				{
+					// &111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+
+					$next_byte = 3;
+					$v = ($v - 248) << 24;
+				}
+				elseif($v >> 1 == 126)
+				{
+					// &1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+
+					$next_byte = 4;
+					$v = ($v - 252) << 30;
+				}
+				else
+				{
+					$this->_error('This might be UTF-8, but I don\'t understand it at byte ' . $k);
 					return false;
 				}
 
-				// Do NAMEPREP
-
-				$decoded = $this->_nameprep($decoded);
-
-				if(!$decoded
-				   || !is_array($decoded))return false;
-
-				// NAMEPREP failed
-
-				$deco_len = count($decoded);
-
-				if(!$deco_len)return false;
-
-				// Empty array
-
-				$codecount = 0;
-
-				// How many chars have been consumed
-
-				$encoded = '';
-
-				// Copy all basic code points to output
-
-				for ($i = 0;$i < $deco_len;++$i)
+				if('add' == $mode)
 				{
-					$test = $decoded[$i];
-
-					// Will match [-0-9a-zA-Z]
-
-					if((0x2F < $test && $test < 0x40)
-					   || (0x40 < $test && $test < 0x5B)
-					   || (0x60 < $test && $test <= 0x7B)
-					   || (0x2D == $test))
-					{
-						$encoded.= chr($decoded[$i]);
-						$codecount++;
-					}
+					$output[$out_len] = (int)$v;
+					++$out_len;
+					continue;
 				}
+			}
 
-				if($codecount == $deco_len)return $encoded;
-
-				// All codepoints were basic ones
-				// Start with the prefix; copy it to output
-
-				$encoded = $this->_punycode_prefix . $encoded;
-
-				// If we have basic code points in output, add an hyphen to the end
-
-				if($codecount)$encoded.= '-';
-
-				// Now find and encode all non-basic code points
-
-				$is_first = true;
-				$cur_code = $this->_initial_n;
-				$bias = $this->_initial_bias;
-				$delta = 0;
-
-				while($codecount < $deco_len)
+			if('add' == $mode)
+			{
+				if(!$this->_allow_overlong
+				   && $test == 'range')
 				{
-					// Find the smallest code point >= the current code point and
-					// remember the last ouccrence of it in the input
+					$test = 'none';
 
-					for ($i = 0, $next_code = $this->_max_ucs;$i < $deco_len;$i++)
+					if(($v < 0xA0 && $start_byte == 0xE0)
+					   || ($v < 0x90 && $start_byte == 0xF0)
+					   || ($v > 0x8F && $start_byte == 0xF4))
 					{
-						if($decoded[$i] >= $cur_code
-						   && $decoded[$i] <= $next_code)
-						{
-							$next_code = $decoded[$i];
-						}
-					}
-
-					$delta+= ($next_code-$cur_code)*($codecount+1);
-					$cur_code = $next_code;
-
-					// Scan input again and encode all characters whose code point is $cur_code
-
-					for ($i = 0;$i < $deco_len;$i++)
-					{
-						if($decoded[$i] < $cur_code)
-						{
-							$delta++;
-						}
-						elseif($decoded[$i] == $cur_code)
-						{
-							for ($q = $delta, $k = $this->_base;1;$k+= $this->_base)
-							{
-								$t = ($k <= $bias) ? $this->_tmin : (($k >= $bias+$this->_tmax) ? $this->_tmax : $k-$bias);
-
-								if($q < $t)break;
-								$encoded.= $this->_encode_digit(ceil($t+(($q-$t)%($this->_base-$t))));
-								$q = (int)(($q-$t)/($this->_base-$t));
-							}
-
-							$encoded.= $this->_encode_digit($q);
-							$bias = $this->_adapt($delta, $codecount+1, $is_first);
-							$codecount++;
-							$delta = 0;
-							$is_first = false;
-						}
-					}
-
-					$delta++;
-					$cur_code++;
-				}
-
-				return $encoded;
-			}
-
-			/**
-			 * Adapt the bias according to the current code point and position
-			 * @access   private
-			 */
-
-			function _adapt($delta, $npoints, $is_first)
-			{
-				$delta = (int)($is_first ? ($delta/$this->_damp) : ($delta/2));
-				$delta+= (int)($delta/$npoints);
-				for ($k = 0;$delta > (($this->_base-$this->_tmin)*$this->_tmax)/2;$k+= $this->_base)
-				{
-					$delta = (int)($delta/($this->_base-$this->_tmin));
-				}
-
-				return (int)($k+($this->_base-$this->_tmin+1)*$delta/($delta+$this->_skew));
-			}
-
-			/**
-			 * Encoding a certain digit
-			 * @access   private
-			 */
-
-			function _encode_digit($d)
-			{
-				return chr($d+22+75*($d < 26));
-			}
-
-			/**
-			 * Decode a certain digit
-			 * @access   private
-			 */
-
-			function _decode_digit($cp)
-			{
-				$cp = ord($cp);
-				return ($cp-48 < 10) ? $cp-22 : (($cp-65 < 26) ? $cp-65 : (($cp-97 < 26) ? $cp-97 : $this->_base));
-			}
-
-			/**
-			 * Internal error handling method
-			 * @access   private
-			 */
-
-			function _error($error = '')
-			{
-				$this->_error = $error;
-			}
-
-			/**
-			 * Do Nameprep according to RFC3491 and RFC3454
-			 * @param    array    Unicode Characters
-			 * @return   string   Unicode Characters, Nameprep'd
-			 * @access   private
-			 */
-
-			function _nameprep($input)
-			{
-				$output = array();
-				$error = false;
-
-				//
-				// Mapping
-				// Walking through the input array, performing the required steps on each of
-				// the input chars and putting the result into the output array
-				// While mapping required chars we apply the cannonical ordering
-				// $this->_show_hex($input);
-
-				foreach($input as $v)
-				{
-					// Map to nothing == skip that code point
-
-					if(in_array($v, $this->_np_['map_nothing']))continue;
-
-					// Try to find prohibited input
-
-					if(in_array($v, $this->_np_['prohibit'])
-					   || in_array($v, $this->_np_['general_prohibited']))
-					{
-						$this->_error('NAMEPREP: Prohibited input U+' . sprintf('%08X', $v));
+						$this->_error('Bogus UTF-8 character detected (out of legal range) at byte ' . $k);
 						return false;
 					}
-
-					foreach($this->_np_['prohibit_ranges'] as $range)
-					{
-						if($range[0] <= $v
-						   && $v <= $range[1])
-						{
-							$this->_error('NAMEPREP: Prohibited input U+' . sprintf('%08X', $v));
-							return false;
-						}
-					}
-
-					//
-					// Hangul syllable decomposition
-
-					if(0xAC00 <= $v
-					   && $v <= 0xD7AF)
-					{
-						foreach($this->_hangul_decompose($v) as $out)
-						{
-							$output[] = $out;
-						}
-
-						// There's a decomposition mapping for that code point
-					}
-					elseif(isset($this->_np_['replacemaps'][$v]))
-					{
-						foreach($this->_apply_cannonical_ordering($this->_np_['replacemaps'][$v]) as $out)
-						{
-							$output[] = $out;
-						}
-					}
-					else
-					{
-						$output[] = $v;
-					}
 				}
 
-				// Before applying any Combining, try to rearrange any Hangul syllables
-
-				$output = $this->_hangul_compose($output);
-
-				//
-				// Combine code points
-				//
-
-				$last_class = 0;
-				$last_starter = 0;
-				$out_len = count($output);
-				for ($i = 0;$i < $out_len;++$i)
+				if($v >> 6 == 2)
 				{
-					$class = $this->_get_combining_class($output[$i]);
+					// Bit mask must be 10xxxxxx
 
-					if((!$last_class || $last_class > $class)
-					   && $class)
-					{
-						// Try to match
-
-						$seq_len = $i-$last_starter;
-						$out = $this->_combine(array_slice($output, $last_starter, $seq_len));
-
-						// On match: Replace the last starter with the composed character and remove
-						// the now redundant non-starter(s)
-
-						if($out)
-						{
-							$output[$last_starter] = $out;
-
-							if(count($out) != $seq_len)
-							{
-								for ($j = $i+1;$j < $out_len;++$j)
-								{
-									$output[$j-1] = $output[$j];
-								}
-
-								unset($output[$out_len]);
-							}
-
-							// Rewind the for loop by one, since there can be more possible compositions
-
-							$i--;
-							$out_len--;
-							$last_class = ($i == $last_starter) ? 0 : $this->_get_combining_class($output[$i-1]);
-							continue;
-						}
-					}
-
-					if(!$class)
-					{
-						// The current class is 0
-
-						$last_starter = $i;
-					}
-
-					$last_class = $class;
+					$v = ($v - 128) << ($next_byte * 6);
+					$output[($out_len - 1)]+= $v;
+					--$next_byte;
 				}
-
-				return $output;
-			}
-
-			/**
-			 * Decomposes a Hangul syllable
-			 * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
-			 * @param    integer  32bit UCS4 code point
-			 * @return   array    Either Hangul Syllable decomposed or original 32bit value as one value array
-			 * @access   private
-			 */
-
-			function _hangul_decompose($char)
-			{
-				$sindex = $char-$this->_sbase;
-
-				if($sindex < 0
-				   || $sindex >= $this->_scount)
+				else
 				{
-					return array(
-						$char
-					);
+					$this->_error('Conversion from UTF-8 to UCS-4 failed: malformed input at byte ' . $k);
+					return false;
 				}
 
-				$result = array();
-				$T = $this->_tbase+($sindex%$this->_tcount);
-				$result[] = (int)($this->_lbase+$sindex/$this->_ncount);
-				$result[] = (int)$this->_vbase+(($sindex%$this->_ncount)/$this->_tcount);
-
-				if($T != $this->_tbase)$result[] = $T;
-				return $result;
-			}
-
-			/**
-			 * Ccomposes a Hangul syllable
-			 * (see http://www.unicode.org/unicode/reports/tr15/#Hangul
-			 * @param    array    Decomposed UCS4 sequence
-			 * @return   array    UCS4 sequence with syllables composed
-			 * @access   private
-			 */
-
-			function _hangul_compose($input)
-			{
-				$inp_len = count($input);
-
-				if(!$inp_len)return array();
-				$result = array();
-				$last = $input[0];
-				$result[] = $last;
-
-				// copy first char from input to output
-
-				for ($i = 1;$i < $inp_len;++$i)
+				if($next_byte < 0)
 				{
-					$char = $input[$i];
-
-					// Find out, wether two current characters from L and V
-
-					$lindex = $last-$this->_lbase;
-
-					if(0 <= $lindex
-					   && $lindex < $this->_lcount)
-					{
-						$vindex = $char-$this->_vbase;
-
-						if(0 <= $vindex
-						   && $vindex < $this->_vcount)
-						{
-							// create syllable of form LV
-
-							$last = ($this->_sbase+($lindex*$this->_vcount+$vindex)*$this->_tcount);
-							$out_off = count($result)-1;
-							$result[$out_off] = $last;
-
-							// reset last
-
-							continue;
-
-							// discard char
-						}
-					}
-
-					// Find out, wether two current characters are LV and T
-
-					$sindex = $last-$this->_sbase;
-
-					if(0 <= $sindex
-					   && $sindex < $this->_scount
-					   && ($sindex%$this->_tcount) == 0)
-					{
-						$tindex = $char-$this->_tbase;
-
-						if(0 <= $tindex
-						   && $tindex <= $this->_tcount)
-						{
-							// create syllable of form LVT
-
-							$last+= $tindex;
-							$out_off = count($result)-1;
-							$result[$out_off] = $last;
-
-							// reset last
-
-							continue;
-
-							// discard char
-						}
-					}
-
-					// if neither case was true, just add the character
-
-					$last = $char;
-					$result[] = $char;
+					$mode = 'next';
 				}
-
-				return $result;
 			}
+		}
 
-			/**
-			 * Returns the combining class of a certain wide char
-			 * @param    integer    Wide char to check (32bit integer)
-			 * @return   integer    Combining class if found, else 0
-			 * @access   private
-			 */
+		// for
 
-			function _get_combining_class($char)
+		return $output;
+	}
+
+	/**
+	 * Convert UCS-4 string into UTF-8 string
+	 * See _utf8_to_ucs4() for details
+	 * @access   private
+	 */
+
+	function _ucs4_to_utf8($input)
+	{
+		$output = '';
+		$k = 0;
+		foreach($input as $v)
+		{
+			++$k;
+
+			// $v = ord($v);
+
+			if($v < 128)
 			{
-				return isset($this->_np_['norm_combcls'][$char]) ? $this->_np_['norm_combcls'][$char] : 0;
+				// 7bit are transferred literally
+
+				$output.= chr($v);
 			}
-
-			/**
-			 * Apllies the cannonical ordering of a decomposed UCS4 sequence
-			 * @param    array      Decomposed UCS4 sequence
-			 * @return   array      Ordered USC4 sequence
-			 * @access   private
-			 */
-
-			function _apply_cannonical_ordering($input)
+			elseif($v < (1 << 11))
 			{
-				$swap = true;
-				$size = count($input);
+				// 2 bytes
 
-				while($swap)
-				{
-					$swap = false;
-					$last = $this->_get_combining_class($input[0]);
-					for ($i = 0;$i < $size-1;++$i)
-					{
-						$next = $this->_get_combining_class($input[$i+1]);
-
-						if($next != 0
-						   && $last > $next)
-						{
-							// Move item leftward until it fits
-
-							for ($j = $i+1;$j > 0;--$j)
-							{
-								if($this->_get_combining_class($input[$j-1]) <= $next)break;
-								$t = $input[$j];
-								$input[$j] = $input[$j-1];
-								$input[$j-1] = $t;
-								$swap = 1;
-							}
-
-							// Reentering the loop looking at the old character again
-
-							$next = $last;
-						}
-
-						$last = $next;
-					}
-				}
-
-				return $input;
+				$output.= chr(192 + ($v >> 6)) . chr(128 + ($v & 63));
 			}
-
-			/**
-			 * Do composition of a sequence of starter and non-starter
-			 * @param    array      UCS4 Decomposed sequence
-			 * @return   array      Ordered USC4 sequence
-			 * @access   private
-			 */
-
-			function _combine($input)
+			elseif($v < (1 << 16))
 			{
-				$inp_len = count($input);
-				foreach($this->_np_['replacemaps'] as $np_src => $np_target)
-				{
-					if($np_target[0] != $input[0])continue;
+				// 3 bytes
 
-					if(count($np_target) != $inp_len)continue;
-					$hit = false;
-					foreach($input as $k2 => $v2)
-					{
-						if($v2 == $np_target[$k2])
-						{
-							$hit = true;
-						}
-						else
-						{
-							$hit = false;
-							break;
-						}
-					}
+				$output.= chr(224 + ($v >> 12)) . chr(128 + (($v >> 6) & 63)) . chr(128 + ($v & 63));
+			}
+			elseif($v < (1 << 21))
+			{
+				// 4 bytes
 
-					if($hit)return $np_src;
-				}
+				$output.= chr(240 + ($v >> 18)) . chr(128 + (($v >> 12) & 63)) . chr(128 + (($v >> 6) & 63)) . chr(128 + ($v & 63));
+			}
+			elseif($v < (1 << 26))
+			{
+				// 5 bytes
 
+				$output.= chr(248 + ($v >> 24)) . chr(128 + (($v >> 18) & 63)) . chr(128 + (($v >> 12) & 63)) . chr(128 + (($v >> 6) & 63)) . chr(128 + ($v & 63));
+			}
+			elseif($v < (1 << 31))
+			{
+				// 6 bytes
+
+				$output.= chr(252 + ($v >> 30)) . chr(128 + (($v >> 24) & 63)) . chr(128 + (($v >> 18) & 63)) . chr(128 + (($v >> 12) & 63)) . chr(128 + (($v >> 6) & 63)) . chr(128 + ($v & 63));
+			}
+			else
+			{
+				$this->_error('Conversion from UCS-4 to UTF-8 failed: malformed input at byte ' . $k);
 				return false;
 			}
+		}
 
-			/**
-			 * This converts an UTF-8 encoded string to its UCS-4 representation
-			 * By talking about UCS-4 "strings" we mean arrays of 32bit integers representing
-			 * each of the "chars". This is due to PHP not being able to handle strings with
-			 * bit depth different from 8. This apllies to the reverse method _ucs4_to_utf8(), too.
-			 * The following UTF-8 encodings are supported:
-			 * bytes bits  representation
-			 * 1        7  0xxxxxxx
-			 * 2       11  110xxxxx 10xxxxxx
-			 * 3       16  1110xxxx 10xxxxxx 10xxxxxx
-			 * 4       21  11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-			 * 5       26  111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-			 * 6       31  1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-			 * Each x represents a bit that can be used to store character data.
-			 * The five and six byte sequences are part of Annex D of ISO/IEC 10646-1:2000
-			 * @access   private
-			 */
+		return $output;
+	}
 
-			function _utf8_to_ucs4($input)
+	/**
+	 * Convert UCS-4 array into UCS-4 string
+	 *
+	 * @access   private
+	 */
+
+	function _ucs4_to_ucs4_string($input)
+	{
+		$output = '';
+
+		// Take array values and split output to 4 bytes per value
+		// The bit mask is 255, which reads &11111111
+
+		foreach($input as $v)
+		{
+			$output.= chr(($v >> 24) & 255) . chr(($v >> 16) & 255) . chr(($v >> 8) & 255) . chr($v & 255);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Convert UCS-4 strin into UCS-4 garray
+	 *
+	 * @access   private
+	 */
+
+	function _ucs4_string_to_ucs4($input)
+	{
+		$output = array();
+		$inp_len = strlen($input);
+
+		// Input length must be dividable by 4
+
+		if($inp_len % 4)
+		{
+			$this->_error('Input UCS4 string is broken');
+			return false;
+		}
+
+		// Empty input - return empty output
+
+		if(!$inp_len)return $output;
+		for ($i = 0, $out_len = - 1;$i < $inp_len;++$i)
+		{
+			// Increment output position every 4 input bytes
+
+			if(!($i % 4))
 			{
-				$output = array();
-				$out_len = 0;
-				$inp_len = strlen($input);
-				$mode = 'next';
-				$test = 'none';
-				for ($k = 0;$k < $inp_len;++$k)
-				{
-					$v = ord($input
-					{
-						$k});
+				$out_len++;
+				$output[$out_len] = 0;
+			}
 
-						// Extract byte from input string
+			$output[$out_len]+= ord($input{$i}) << (8 * (3 - ($i % 4)));
+		}
 
-						if($v < 128)
-						{
-							// We found an ASCII char - put into stirng as is
+		return $output;
+	}
+}
 
-							$output[$out_len] = $v;
-							++$out_len;
+/**
+ * Adapter class for aligning the API of idna_convert with that of Net_IDNA
+ * @author  Matthias Sommerfeld <mso@phlylabs.de>
+ */
 
-							if('add' == $mode)
-							{
-								$this->_error('Conversion from UTF-8 to UCS-4 failed: malformed input at byte ' . $k);
-								return false;
-							}
+class Net_IDNA_php4 extends idna_convert
+{
+	/**
+	 * Sets a new option value. Available options and values:
+	 * [encoding - Use either UTF-8, UCS4 as array or UCS4 as string as input ('utf8' for UTF-8,
+	 *         'ucs4_string' and 'ucs4_array' respectively for UCS4); The output is always UTF-8]
+	 * [overlong - Unicode does not allow unnecessarily long encodings of chars,
+	 *             to allow this, set this parameter to true, else to false;
+	 *             default is false.]
+	 * [strict - true: strict mode, good for registration purposes - Causes errors
+	 *           on failures; false: loose mode, ideal for "wildlife" applications
+	 *           by silently ignoring errors and returning the original input instead
+	 *
+	 * @param    mixed     Parameter to set (string: single parameter; array of Parameter => Value pairs)
+	 * @param    string    Value to use (if parameter 1 is a string)
+	 * @return   boolean   true on success, false otherwise
+	 * @access   public
+	 */
 
-							continue;
-						}
-
-						if('next' == $mode)
-						{
-							// Try to find the next start byte; determine the width of the Unicode char
-
-							$start_byte = $v;
-							$mode = 'add';
-							$test = 'range';
-
-							if($v>>5 == 6)
-							{
-								// &110xxxxx 10xxxxx
-
-								$next_byte = 0;
-
-								// Tells, how many times subsequent bitmasks must rotate 6bits to the left
-
-								$v = ($v-192)<<6;
-							}
-							elseif($v>>4 == 14)
-							{
-								// &1110xxxx 10xxxxxx 10xxxxxx
-
-								$next_byte = 1;
-								$v = ($v-224)<<12;
-							}
-							elseif($v>>3 == 30)
-							{
-								// &11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-
-								$next_byte = 2;
-								$v = ($v-240)<<18;
-							}
-							elseif($v>>2 == 62)
-							{
-								// &111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-
-								$next_byte = 3;
-								$v = ($v-248)<<24;
-							}
-							elseif($v>>1 == 126)
-							{
-								// &1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-
-								$next_byte = 4;
-								$v = ($v-252)<<30;
-							}
-							else
-							{
-								$this->_error('This might be UTF-8, but I don\'t understand it at byte ' . $k);
-								return false;
-							}
-
-							if('add' == $mode)
-							{
-								$output[$out_len] = (int)$v;
-								++$out_len;
-								continue;
-							}
-						}
-
-						if('add' == $mode)
-						{
-							if(!$this->_allow_overlong
-							   && $test == 'range')
-							{
-								$test = 'none';
-
-								if(($v < 0xA0 && $start_byte == 0xE0)
-								   || ($v < 0x90 && $start_byte == 0xF0)
-								   || ($v > 0x8F && $start_byte == 0xF4))
-								{
-									$this->_error('Bogus UTF-8 character detected (out of legal range) at byte ' . $k);
-									return false;
-								}
-							}
-
-							if($v>>6 == 2)
-							{
-								// Bit mask must be 10xxxxxx
-
-								$v = ($v-128)<<($next_byte*6);
-								$output[($out_len-1)]+= $v;
-								--$next_byte;
-							}
-							else
-							{
-								$this->_error('Conversion from UTF-8 to UCS-4 failed: malformed input at byte ' . $k);
-								return false;
-							}
-
-							if($next_byte < 0)
-							{
-								$mode = 'next';
-							}
-						}
-					}
-
-					// for
-
-					return $output;
-				}
-
-				/**
-				 * Convert UCS-4 string into UTF-8 string
-				 * See _utf8_to_ucs4() for details
-				 * @access   private
-				 */
-
-				function _ucs4_to_utf8($input)
-				{
-					$output = '';
-					$k = 0;
-					foreach($input as $v)
-					{
-						++$k;
-
-						// $v = ord($v);
-
-						if($v < 128)
-						{
-							// 7bit are transferred literally
-
-							$output.= chr($v);
-						}
-						elseif($v < (1<<11))
-						{
-							// 2 bytes
-
-							$output.= chr(192+($v>>6)) . chr(128+($v&63));
-						}
-						elseif($v < (1<<16))
-						{
-							// 3 bytes
-
-							$output.= chr(224+($v>>12)) . chr(128+(($v>>6)&63)) . chr(128+($v&63));
-						}
-						elseif($v < (1<<21))
-						{
-							// 4 bytes
-
-							$output.= chr(240+($v>>18)) . chr(128+(($v>>12)&63)) . chr(128+(($v>>6)&63)) . chr(128+($v&63));
-						}
-						elseif($v < (1<<26))
-						{
-							// 5 bytes
-
-							$output.= chr(248+($v>>24)) . chr(128+(($v>>18)&63)) . chr(128+(($v>>12)&63)) . chr(128+(($v>>6)&63)) . chr(128+($v&63));
-						}
-						elseif($v < (1<<31))
-						{
-							// 6 bytes
-
-							$output.= chr(252+($v>>30)) . chr(128+(($v>>24)&63)) . chr(128+(($v>>18)&63)) . chr(128+(($v>>12)&63)) . chr(128+(($v>>6)&63)) . chr(128+($v&63));
-						}
-						else
-						{
-							$this->_error('Conversion from UCS-4 to UTF-8 failed: malformed input at byte ' . $k);
-							return false;
-						}
-					}
-
-					return $output;
-				}
-
-				/**
-				 * Convert UCS-4 array into UCS-4 string
-				 *
-				 * @access   private
-				 */
-
-				function _ucs4_to_ucs4_string($input)
-				{
-					$output = '';
-
-					// Take array values and split output to 4 bytes per value
-					// The bit mask is 255, which reads &11111111
-
-					foreach($input as $v)
-					{
-						$output.= chr(($v>>24)&255) . chr(($v>>16)&255) . chr(($v>>8)&255) . chr($v&255);
-					}
-
-					return $output;
-				}
-
-				/**
-				 * Convert UCS-4 strin into UCS-4 garray
-				 *
-				 * @access   private
-				 */
-
-				function _ucs4_string_to_ucs4($input)
-				{
-					$output = array();
-					$inp_len = strlen($input);
-
-					// Input length must be dividable by 4
-
-					if($inp_len%4)
-					{
-						$this->_error('Input UCS4 string is broken');
-						return false;
-					}
-
-					// Empty input - return empty output
-
-					if(!$inp_len)return $output;
-					for ($i = 0, $out_len = -1;$i < $inp_len;++$i)
-					{
-						// Increment output position every 4 input bytes
-
-						if(!($i%4))
-						{
-							$out_len++;
-							$output[$out_len] = 0;
-						}
-
-						$output[$out_len]+= ord($input
-						{
-							$i})<<(8*(3-($i%4)));
-						}
-
-						return $output;
-					}
-				}
-
-				/**
-				 * Adapter class for aligning the API of idna_convert with that of Net_IDNA
-				 * @author  Matthias Sommerfeld <mso@phlylabs.de>
-				 */
-
-				class Net_IDNA_php4 extends idna_convert
-				{
-					/**
-					 * Sets a new option value. Available options and values:
-					 * [encoding - Use either UTF-8, UCS4 as array or UCS4 as string as input ('utf8' for UTF-8,
-					 *         'ucs4_string' and 'ucs4_array' respectively for UCS4); The output is always UTF-8]
-					 * [overlong - Unicode does not allow unnecessarily long encodings of chars,
-					 *             to allow this, set this parameter to true, else to false;
-					 *             default is false.]
-					 * [strict - true: strict mode, good for registration purposes - Causes errors
-					 *           on failures; false: loose mode, ideal for "wildlife" applications
-					 *           by silently ignoring errors and returning the original input instead
-					 *
-					 * @param    mixed     Parameter to set (string: single parameter; array of Parameter => Value pairs)
-					 * @param    string    Value to use (if parameter 1 is a string)
-					 * @return   boolean   true on success, false otherwise
-					 * @access   public
-					 */
-
-					function setParams($option, $param = false)
-					{
-						return $this->IC->set_parameters($option, $param);
-					}
-				}
+	function setParams($option, $param = false)
+	{
+		return $this->IC->set_parameters($option, $param);
+	}
+}
 
 ?>

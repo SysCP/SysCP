@@ -65,7 +65,7 @@ if($action == 'login')
 		$userinfo = $db->query_first("SELECT * FROM $table WHERE `loginname`='" . $db->escape($loginname) . "'");
 
 		if($userinfo['loginfail_count'] >= $settings['login']['maxloginattempts']
-		   && $userinfo['lastlogin_fail'] > (time()-$settings['login']['deactivatetime']))
+		   && $userinfo['lastlogin_fail'] > (time() - $settings['login']['deactivatetime']))
 		{
 			redirectTo('index.php', Array(
 				'showmessage' => '3'

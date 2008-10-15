@@ -38,11 +38,11 @@ if((int)$settings['autoresponder']['last_autoresponder_run'] == 0)
 }
 else
 {
-	$cycle = time()-(int)$settings['autoresponder']['last_autoresponder_run'];
+	$cycle = time() - (int)$settings['autoresponder']['last_autoresponder_run'];
 
 	//prevent mailbombs when cycle is bigger than two days
 
-	if($cycle > (2*60*60*24))$cycle = (60*60*24);
+	if($cycle > (2 * 60 * 60 * 24))$cycle = (60 * 60 * 24);
 }
 
 $db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . (int)time() . "' WHERE `settinggroup` = 'autoresponder' AND `varname` = 'last_autoresponder_run'");
@@ -71,7 +71,7 @@ if($db->num_rows($result) > 0)
 			if($entry == '.'
 			   || $entry == '..')continue;
 
-			if(time()-filemtime($path . $entry)-$cycle <= 0)
+			if(time() - filemtime($path . $entry) - $cycle <= 0)
 			{
 				$content = file($path . $entry);
 

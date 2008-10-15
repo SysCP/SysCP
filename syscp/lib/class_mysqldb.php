@@ -207,9 +207,9 @@ class db
 	 * @return array The row
 	 */
 
-	function fetch_array($query_id = -1, $datatype = 'assoc')
+	function fetch_array($query_id = - 1, $datatype = 'assoc')
 	{
-		if($query_id != -1)
+		if($query_id != - 1)
 		{
 			$this->query_id = $query_id;
 		}
@@ -248,9 +248,9 @@ class db
 	 * @return int Number of rows
 	 */
 
-	function num_rows($query_id = -1)
+	function num_rows($query_id = - 1)
 	{
-		if($query_id != -1)
+		if($query_id != - 1)
 		{
 			$this->query_id = $query_id;
 		}

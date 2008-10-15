@@ -60,7 +60,7 @@ if($userinfo['customers_see_all'] == '1')
 		{
 			if($paging->checkDisplay($i))
 			{
-				$row['taxrate_percent'] = $row['taxrate']*100;
+				$row['taxrate_percent'] = $row['taxrate'] * 100;
 				$row = htmlentities_array($row);
 				eval("\$taxrates.=\"" . getTemplate("billing/taxrates_row") . "\";");
 			}
@@ -93,7 +93,7 @@ if($userinfo['customers_see_all'] == '1')
 			}
 			elseif(isset($_POST['taxrate_percent']))
 			{
-				$taxrate = doubleval(str_replace(',', '.', $_POST['taxrate_percent']))/100;
+				$taxrate = doubleval(str_replace(',', '.', $_POST['taxrate_percent'])) / 100;
 			}
 			else
 			{
@@ -165,7 +165,7 @@ if($userinfo['customers_see_all'] == '1')
 				}
 				elseif(isset($_POST['taxrate_percent']))
 				{
-					$taxrate = doubleval(str_replace(',', '.', $_POST['taxrate_percent']))/100;
+					$taxrate = doubleval(str_replace(',', '.', $_POST['taxrate_percent'])) / 100;
 				}
 				else
 				{
@@ -186,7 +186,7 @@ if($userinfo['customers_see_all'] == '1')
 					$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
 				}
 
-				$result['taxrate_percent'] = $result['taxrate']*100;
+				$result['taxrate_percent'] = $result['taxrate'] * 100;
 				eval("echo \"" . getTemplate("billing/taxrates_edit") . "\";");
 			}
 		}

@@ -199,19 +199,19 @@ class diskspace extends serviceCategory
 			}
 		}
 
-		$diskspace_total = $diskspace_total/calculateDayDifference($service_detail['service_date_begin'], $service_detail['service_date_end']);
-		$service_description['diskspace_included'] = round(($service_detail['diskspace']/(1024)), 2);
-		$service_description['diskspace_total'] = round(($diskspace_total/(1024)), 2);
+		$diskspace_total = $diskspace_total / calculateDayDifference($service_detail['service_date_begin'], $service_detail['service_date_end']);
+		$service_description['diskspace_included'] = round(($service_detail['diskspace'] / (1024)), 2);
+		$service_description['diskspace_total'] = round(($diskspace_total / (1024)), 2);
 
 		if($service_detail['diskspace'] < $diskspace_total
 		   && $service_description['diskspace_included'] != '-1'
 		   && (int)$service_detail['additional_diskspace_unit'] != 0)
 		{
-			$diskspace_exceeded = $diskspace_total-$service_detail['diskspace'];
+			$diskspace_exceeded = $diskspace_total - $service_detail['diskspace'];
 
 			// Wir casten auf int um die Dezimalstellen zu entfernen. Danach wird 1 addiert ("je angefangenes gb diskspace")
 
-			$service_detail['interval_fee'] = (int)((int)($diskspace_exceeded/$service_detail['additional_diskspace_unit'])+1)*$service_detail['additional_diskspace_fee'];
+			$service_detail['interval_fee'] = (int)((int)($diskspace_exceeded / $service_detail['additional_diskspace_unit']) + 1) * $service_detail['additional_diskspace_fee'];
 		}
 		else
 		{

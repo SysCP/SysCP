@@ -461,11 +461,11 @@ class SMTP
 
 				if(!$pos)
 				{
-					$pos = $max_line_length-1;
+					$pos = $max_line_length - 1;
 				}
 
 				$lines_out[] = substr($line, 0, $pos);
-				$line = substr($line, $pos+1);
+				$line = substr($line, $pos + 1);
 
 				/* if we are processing headers we need to
          * add a LWSP-char to the front of the new line

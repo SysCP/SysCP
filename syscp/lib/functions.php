@@ -596,7 +596,7 @@ function validateUsername($username, $unix_names = 1, $mysql_max = '')
 	{
 		if(strpos($username, '--') === false)
 		{
-			return preg_match('/^[a-z][a-z0-9\-_]{1,' . (int)($mysql_max-1) . '}[a-z0-9]{1}$/Di', $username);
+			return preg_match('/^[a-z][a-z0-9\-_]{1,' . (int)($mysql_max - 1) . '}[a-z0-9]{1}$/Di', $username);
 		}
 		else
 		{
@@ -875,7 +875,7 @@ function makeCorrectDestination($destination)
 
 	if(substr($destination, -1, 1) == ' ')
 	{
-		$destination = substr($destination, 0, strlen($destination)-1);
+		$destination = substr($destination, 0, strlen($destination) - 1);
 	}
 
 	return $destination;
@@ -920,7 +920,7 @@ function updateCounters($returndebuginfo = false)
 			$admin_resources[$customer['adminid']]['diskspace_used'] = 0;
 		}
 
-		if(($customer['diskspace']/1024) != '-1')
+		if(($customer['diskspace'] / 1024) != '-1')
 		{
 			$admin_resources[$customer['adminid']]['diskspace_used']+= intval_ressource($customer['diskspace']);
 		}
@@ -1028,7 +1028,7 @@ function updateCounters($returndebuginfo = false)
 		$customer['email_accounts_used_new'] = $customer_email_accounts;
 		$customer['email_forwarders_used_new'] = $customer_email_forwarders;
 		$customer_ftps = $db->query_first('SELECT COUNT(*) AS `number_ftps` FROM `' . TABLE_FTP_USERS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
-		$customer['ftps_used_new'] = ($customer_ftps['number_ftps']-1);
+		$customer['ftps_used_new'] = ($customer_ftps['number_ftps'] - 1);
 		$customer_tickets = $db->query_first('SELECT COUNT(*) AS `number_tickets` FROM `' . TABLE_PANEL_TICKETS . '` WHERE `answerto` = "0" AND `customerid` = "' . (int)$customer['customerid'] . '"');
 		$customer['tickets_used_new'] = $customer_tickets['number_tickets'];
 		$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '" AND `parentdomainid` <> "0"');
@@ -1383,7 +1383,7 @@ function intval_ressource($the_value)
 	if($the_value < 0
 	   && $the_value != '-1')
 	{
-		$the_value*= -1;
+		$the_value*= - 1;
 	}
 
 	return $the_value;
@@ -1405,7 +1405,7 @@ function doubleval_ressource($the_value)
 	if($the_value < 0
 	   && $the_value != '-1')
 	{
-		$the_value*= -1;
+		$the_value*= - 1;
 	}
 
 	return $the_value;
@@ -1940,19 +1940,19 @@ function getQuotaInBytes($quota, $inputtype = 'mb')
 		$quota = $quota;
 		break;
 	case 'kb':
-		$quota = $quota*1024;
+		$quota = $quota * 1024;
 		break;
 	case 'mb':
-		$quota = $quota*1024*1024;
+		$quota = $quota * 1024 * 1024;
 		break;
 	case 'gb':
-		$quota = $quota*1024*1024*1024;
+		$quota = $quota * 1024 * 1024 * 1024;
 		break;
 	case 'tb':
-		$quota = $quota*1024*1024*1024*1024;
+		$quota = $quota * 1024 * 1024 * 1024 * 1024;
 		break;
 	case 'pb':
-		$quota = $quota*1024*1024*1024*1024*1024;
+		$quota = $quota * 1024 * 1024 * 1024 * 1024 * 1024;
 		break;
 	}
 
@@ -1971,7 +1971,7 @@ function getQuota($quota)
 {
 	while($quota > 1024)
 	{
-		$quota = $quota/1024;
+		$quota = $quota / 1024;
 	}
 
 	return $quota;
@@ -2000,7 +2000,7 @@ function getQuotaType($quota)
 
 	while($quota > 1024)
 	{
-		$quota = $quota/1024;
+		$quota = $quota / 1024;
 		$i++;
 	}
 
@@ -2236,8 +2236,8 @@ function getDaysForMonth($month, $year)
 {
 	if((int)$month > 12)
 	{
-		$year+= (int)($month/12);
-		$month = $month%12;
+		$year+= (int)($month / 12);
+		$month = $month % 12;
 	}
 
 	if((int)($month) == 0)
@@ -2280,7 +2280,7 @@ function getDaysForMonth($month, $year)
 function getDaysForYear($month, $year)
 {
 	if($month >= 3)$year++;
-	return ((($year%4) == 0 && ($year%100) != 0) ? 366 : 365);
+	return ((($year % 4) == 0 && ($year % 100) != 0) ? 366 : 365);
 }
 
 /**
@@ -2314,14 +2314,14 @@ function calculateDayDifference($begin, $end)
 	if(checkDateArray($begin) === true
 	   && checkDateArray($end) === true)
 	{
-		$yeardiff = (int)$end['y']-(int)$begin['y'];
-		$monthdiff = ((int)$end['m']+12*$yeardiff)-(int)$begin['m'];
+		$yeardiff = (int)$end['y'] - (int)$begin['y'];
+		$monthdiff = ((int)$end['m'] + 12 * $yeardiff) - (int)$begin['m'];
 		for ($i = 0;$i < abs($monthdiff);$i++)
 		{
-			$daycount+= getDaysForMonth($begin['m']+$i, $begin['y']);
+			$daycount+= getDaysForMonth($begin['m'] + $i, $begin['y']);
 		}
 
-		$daycount+= $end['d']-$begin['d'];
+		$daycount+= $end['d'] - $begin['d'];
 		$daycount*= $direction;
 	}
 
@@ -2425,7 +2425,7 @@ function manipulateDate($date, $operation, $count, $type, $original_date = null)
 		{
 			if($original_date['d'] > getDaysForMonth($date['m'], $date['y']))
 			{
-				$date['d'] = getDaysForMonth($date['m'], $date['y'])-(getDaysForMonth($original_date['m'], $original_date['y'])-$original_date['d']);
+				$date['d'] = getDaysForMonth($date['m'], $date['y']) - (getDaysForMonth($original_date['m'], $original_date['y']) - $original_date['d']);
 			}
 			else
 			{

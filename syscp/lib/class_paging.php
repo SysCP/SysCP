@@ -253,7 +253,7 @@ class paging
 	{
 		$this->entries = $entries;
 
-		if(($this->pageno-1)*$this->entriesperpage > $this->entries)
+		if(($this->pageno - 1) * $this->entriesperpage > $this->entries)
 		{
 			$this->pageno = 1;
 		}
@@ -270,8 +270,8 @@ class paging
 
 	function checkDisplay($count)
 	{
-		$begin = (intval($this->pageno)-1)*intval($this->entriesperpage);
-		$end = (intval($this->pageno)*intval($this->entriesperpage));
+		$begin = (intval($this->pageno) - 1) * intval($this->entriesperpage);
+		$end = (intval($this->pageno) * intval($this->entriesperpage));
 		return (($count >= $begin && $count < $end) || $this->entriesperpage == 0);
 	}
 
@@ -303,223 +303,219 @@ class paging
 					$field.= '`';
 				}
 
-				if($field
+				if($field{0} != '`')
 				{
-					0} != '`')
-					{
-						$field = '`' . $field;
-					}
-
-					$searchfield[$id] = $field;
+					$field = '`' . $field;
 				}
 
-				$searchfield = implode('.', $searchfield);
-				$searchtext = str_replace('*', '%', $this->searchtext);
-				$condition.= $searchfield . ' LIKE "' . $this->db->escape($searchtext) . '" ';
-			}
-			else
-			{
-				$condition = '';
+				$searchfield[$id] = $field;
 			}
 
-			return $condition;
+			$searchfield = implode('.', $searchfield);
+			$searchtext = str_replace('*', '%', $this->searchtext);
+			$condition.= $searchfield . ' LIKE "' . $this->db->escape($searchtext) . '" ';
+		}
+		else
+		{
+			$condition = '';
 		}
 
+		return $condition;
+	}
+
+	/**
+	 * Returns "order by"-code for sql query
+	 *
+	 * @param bool Switch natsorting on/off (local, affects just this call)
+	 * @return string the "order by"-code
+	 */
+
+	function getSqlOrderBy($natSorting = null)
+	{
+		$sortfield = explode('.', $this->sortfield);
+		foreach($sortfield as $id => $field)
+		{
+			if(substr($field, -1, 1) != '`')
+			{
+				$field.= '`';
+			}
+
+			if($field{0} != '`')
+			{
+				$field = '`' . $field;
+			}
+
+			$sortfield[$id] = $field;
+		}
+
+		$sortfield = implode('.', $sortfield);
+		$sortorder = strtoupper($this->sortorder);
+
+		if($natSorting == true
+		   || ($natSorting === null && $this->natSorting == true))
+		{
+			// Acts similar to php's natsort(), found in one comment at http://my.opera.com/cpr/blog/show.dml/160556
+
+			$sortcode = 'ORDER BY CONCAT( IF( ASCII( LEFT( ' . $sortfield . ', 1 ) ) > 57, LEFT( ' . $sortfield . ', 1 ), \'0\' ), IF( ASCII( RIGHT( ' . $sortfield . ', 1 ) ) > 57, LPAD( ' . $sortfield . ', 255, \'0\' ), LPAD( CONCAT( ' . $sortfield . ', \'-\' ), 255, \'0\' ) ) ) ' . $sortorder;
+		}
+		else
+		{
+			$sortcode = 'ORDER BY ' . $sortfield . ' ' . $sortorder;
+		}
+
+		return $sortcode;
+	}
+
+	/**
+	 * Currently not used
+	 *
+	 * @return string always empty
+	 */
+
+	function getSqlLimit()
+	{
 		/**
-		 * Returns "order by"-code for sql query
-		 *
-		 * @param bool Switch natsorting on/off (local, affects just this call)
-		 * @return string the "order by"-code
+		 * currently not in use
 		 */
 
-		function getSqlOrderBy($natSorting = null)
+		return '';
+	}
+
+	/**
+	 * Returns html code for sorting field
+	 *
+	 * @param array Language array
+	 * @return string the html sortcode
+	 */
+
+	function getHtmlSortCode($lng, $break = false)
+	{
+		$sortcode = '<select class="dropdown_noborder" name="sortfield">';
+		foreach($this->fields as $fieldname => $fieldcaption)
 		{
-			$sortfield = explode('.', $this->sortfield);
-			foreach($sortfield as $id => $field)
+			$sortcode.= makeoption($fieldcaption, $fieldname, $this->sortfield, true, true);
+		}
+
+		$sortcode.= '</select>' . ($break ? '<br />' : '&nbsp;') . '<select class="dropdown_noborder" name="sortorder">';
+		foreach(array(
+			'asc' => $lng['panel']['ascending'],
+			'desc' => $lng['panel']['decending']
+		) as $sortordertype => $sortorderdescription)
+		{
+			$sortcode.= makeoption($sortorderdescription, $sortordertype, $this->sortorder, true, true);
+		}
+
+		$sortcode.= '</select>&nbsp;<input type="submit" name="Go" value="Go" />';
+		return $sortcode;
+	}
+
+	/**
+	 * Returns html code for sorting arrows
+	 *
+	 * @param string URL to use as base for links
+	 * @param string If set, only this field will be returned
+	 * @return mixed An array or a string (if field is set) of html code of arrows
+	 */
+
+	function getHtmlArrowCode($baseurl, $field = '')
+	{
+		if($field != ''
+		   && isset($this->fields[$field]))
+		{
+			$arrowcode = '<a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($field) . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($field) . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
+		}
+		else
+		{
+			$arrowcode = array();
+			foreach($this->fields as $fieldname => $fieldcaption)
 			{
-				if(substr($field, -1, 1) != '`')
-				{
-					$field.= '`';
-				}
-
-				if($field
-				{
-					0} != '`')
-					{
-						$field = '`' . $field;
-					}
-
-					$sortfield[$id] = $field;
-				}
-
-				$sortfield = implode('.', $sortfield);
-				$sortorder = strtoupper($this->sortorder);
-
-				if($natSorting == true
-				   || ($natSorting === null && $this->natSorting == true))
-				{
-					// Acts similar to php's natsort(), found in one comment at http://my.opera.com/cpr/blog/show.dml/160556
-
-					$sortcode = 'ORDER BY CONCAT( IF( ASCII( LEFT( ' . $sortfield . ', 1 ) ) > 57, LEFT( ' . $sortfield . ', 1 ), \'0\' ), IF( ASCII( RIGHT( ' . $sortfield . ', 1 ) ) > 57, LPAD( ' . $sortfield . ', 255, \'0\' ), LPAD( CONCAT( ' . $sortfield . ', \'-\' ), 255, \'0\' ) ) ) ' . $sortorder;
-				}
-				else
-				{
-					$sortcode = 'ORDER BY ' . $sortfield . ' ' . $sortorder;
-				}
-
-				return $sortcode;
-			}
-
-			/**
-			 * Currently not used
-			 *
-			 * @return string always empty
-			 */
-
-			function getSqlLimit()
-			{
-				/**
-				 * currently not in use
-				 */
-
-				return '';
-			}
-
-			/**
-			 * Returns html code for sorting field
-			 *
-			 * @param array Language array
-			 * @return string the html sortcode
-			 */
-
-			function getHtmlSortCode($lng, $break = false)
-			{
-				$sortcode = '<select class="dropdown_noborder" name="sortfield">';
-				foreach($this->fields as $fieldname => $fieldcaption)
-				{
-					$sortcode.= makeoption($fieldcaption, $fieldname, $this->sortfield, true, true);
-				}
-
-				$sortcode.= '</select>' . ($break ? '<br />' : '&nbsp;') . '<select class="dropdown_noborder" name="sortorder">';
-				foreach(array(
-					'asc' => $lng['panel']['ascending'],
-					'desc' => $lng['panel']['decending']
-				) as $sortordertype => $sortorderdescription)
-				{
-					$sortcode.= makeoption($sortorderdescription, $sortordertype, $this->sortorder, true, true);
-				}
-
-				$sortcode.= '</select>&nbsp;<input type="submit" name="Go" value="Go" />';
-				return $sortcode;
-			}
-
-			/**
-			 * Returns html code for sorting arrows
-			 *
-			 * @param string URL to use as base for links
-			 * @param string If set, only this field will be returned
-			 * @return mixed An array or a string (if field is set) of html code of arrows
-			 */
-
-			function getHtmlArrowCode($baseurl, $field = '')
-			{
-				if($field != ''
-				   && isset($this->fields[$field]))
-				{
-					$arrowcode = '<a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($field) . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($field) . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
-				}
-				else
-				{
-					$arrowcode = array();
-					foreach($this->fields as $fieldname => $fieldcaption)
-					{
-						$arrowcode[$fieldname] = '<a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($fieldname) . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($fieldname) . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
-					}
-				}
-
-				return $arrowcode;
-			}
-
-			/**
-			 * Returns html code for searching field
-			 *
-			 * @param array Language array
-			 * @return string the html searchcode
-			 */
-
-			function getHtmlSearchCode($lng)
-			{
-				$sortcode = $lng['panel']['search'] . ': <select class="dropdown_noborder" name="searchfield">';
-				foreach($this->fields as $fieldname => $fieldcaption)
-				{
-					$sortcode.= makeoption($fieldcaption, $fieldname, $this->searchfield, true, true);
-				}
-
-				$sortcode.= '</select>&nbsp;<input type="text" name="searchtext" value="' . htmlspecialchars($this->searchtext) . '" />&nbsp;<input type="submit" name="Go" value="Go" />';
-				return $sortcode;
-			}
-
-			/**
-			 * Returns html code for paging
-			 *
-			 * @param string URL to use as base for links
-			 * @return string the html pagingcode
-			 */
-
-			function getHtmlPagingCode($baseurl)
-			{
-				if($this->entriesperpage == 0)
-				{
-					return '';
-				}
-				else
-				{
-					$pages = intval($this->entries/$this->entriesperpage);
-				}
-
-				if($this->entries%$this->entriesperpage != 0)
-				{
-					$pages++;
-				}
-
-				if($pages > 1)
-				{
-					$start = $this->pageno-4;
-
-					if($start < 1)
-					{
-						$start = 1;
-					}
-
-					$stop = $this->pageno+4;
-
-					if($stop > $pages)
-					{
-						$stop = $pages;
-					}
-
-					$pagingcode = '<a href="' . htmlspecialchars($baseurl) . '&amp;pageno=1">&laquo;</a> <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . ((intval($this->pageno)-1) == 0 ? '1' : intval($this->pageno)-1) . '">&lt;</a> ';
-					for ($i = $start;$i <= $stop;$i++)
-					{
-						if($i != $this->pageno)
-						{
-							$pagingcode.= ' <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . $i . '">' . $i . '</a> ';
-						}
-						else
-						{
-							$pagingcode.= ' <b>' . $i . '</b> ';
-						}
-					}
-
-					$pagingcode.= ' <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . ((intval($this->pageno)+1) > $pages ? $pages : intval($this->pageno)+1) . '">&gt;</a> <a href="' . $baseurl . '&amp;pageno=' . $pages . '">&raquo;</a>';
-				}
-				else
-				{
-					$pagingcode = '';
-				}
-
-				return $pagingcode;
+				$arrowcode[$fieldname] = '<a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($fieldname) . '&amp;sortorder=desc"><img src="images/order_desc.gif" border="0" alt="" /></a><a href="' . htmlspecialchars($baseurl) . '&amp;sortfield=' . htmlspecialchars($fieldname) . '&amp;sortorder=asc"><img src="images/order_asc.gif" border="0" alt="" /></a>';
 			}
 		}
+
+		return $arrowcode;
+	}
+
+	/**
+	 * Returns html code for searching field
+	 *
+	 * @param array Language array
+	 * @return string the html searchcode
+	 */
+
+	function getHtmlSearchCode($lng)
+	{
+		$sortcode = $lng['panel']['search'] . ': <select class="dropdown_noborder" name="searchfield">';
+		foreach($this->fields as $fieldname => $fieldcaption)
+		{
+			$sortcode.= makeoption($fieldcaption, $fieldname, $this->searchfield, true, true);
+		}
+
+		$sortcode.= '</select>&nbsp;<input type="text" name="searchtext" value="' . htmlspecialchars($this->searchtext) . '" />&nbsp;<input type="submit" name="Go" value="Go" />';
+		return $sortcode;
+	}
+
+	/**
+	 * Returns html code for paging
+	 *
+	 * @param string URL to use as base for links
+	 * @return string the html pagingcode
+	 */
+
+	function getHtmlPagingCode($baseurl)
+	{
+		if($this->entriesperpage == 0)
+		{
+			return '';
+		}
+		else
+		{
+			$pages = intval($this->entries / $this->entriesperpage);
+		}
+
+		if($this->entries % $this->entriesperpage != 0)
+		{
+			$pages++;
+		}
+
+		if($pages > 1)
+		{
+			$start = $this->pageno - 4;
+
+			if($start < 1)
+			{
+				$start = 1;
+			}
+
+			$stop = $this->pageno + 4;
+
+			if($stop > $pages)
+			{
+				$stop = $pages;
+			}
+
+			$pagingcode = '<a href="' . htmlspecialchars($baseurl) . '&amp;pageno=1">&laquo;</a> <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . ((intval($this->pageno) - 1) == 0 ? '1' : intval($this->pageno) - 1) . '">&lt;</a> ';
+			for ($i = $start;$i <= $stop;$i++)
+			{
+				if($i != $this->pageno)
+				{
+					$pagingcode.= ' <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . $i . '">' . $i . '</a> ';
+				}
+				else
+				{
+					$pagingcode.= ' <b>' . $i . '</b> ';
+				}
+			}
+
+			$pagingcode.= ' <a href="' . htmlspecialchars($baseurl) . '&amp;pageno=' . ((intval($this->pageno) + 1) > $pages ? $pages : intval($this->pageno) + 1) . '">&gt;</a> <a href="' . $baseurl . '&amp;pageno=' . $pages . '">&raquo;</a>';
+		}
+		else
+		{
+			$pagingcode = '';
+		}
+
+		return $pagingcode;
+	}
+}
 
 ?>

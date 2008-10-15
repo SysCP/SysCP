@@ -179,7 +179,7 @@ class pdfInvoice
 		foreach($this->invoiceXml->service_category as $service_details)
 		{
 			$this->pdf->SetFont('', '', 9);
-			$this->pdf->Cell($invoice_items_table_column_width[0]+$invoice_items_table_column_width[1], 5, utf8_decode((string)$service_details->caption), 0, 0, 'L', 0);
+			$this->pdf->Cell($invoice_items_table_column_width[0] + $invoice_items_table_column_width[1], 5, utf8_decode((string)$service_details->caption), 0, 0, 'L', 0);
 			$this->pdf->SetFont('', '', 7);
 			$this->pdf->Cell($invoice_items_table_column_width[2], 5, utf8_decode((string)$service_details->interval), 0, 0, $invoice_items_table_column_align[2], 0);
 			$this->pdf->Ln();
@@ -190,7 +190,7 @@ class pdfInvoice
 				$this->pdf->Cell($invoice_items_table_column_width[2], $lineheight, utf8_decode((string)$invoice_row->interval[0]), 0, 0, $invoice_items_table_column_align[2]);
 				$this->pdf->Cell($invoice_items_table_column_width[3], $lineheight, utf8_decode((string)$invoice_row->total_fee[0]), 0, 0, $invoice_items_table_column_align[3]);
 				$this->pdf->Cell($invoice_items_table_column_width[4], $lineheight, utf8_decode((string)$invoice_row->tax[0]), 0, 0, $invoice_items_table_column_align[4]);
-				$this->pdf->Cell($invoice_items_table_column_width[5], $lineheight, sprintf("%01.2f", 100*(float)utf8_decode((string)$invoice_row->taxrate[0])), 0, 0, $invoice_items_table_column_align[5]);
+				$this->pdf->Cell($invoice_items_table_column_width[5], $lineheight, sprintf("%01.2f", 100 * (float)utf8_decode((string)$invoice_row->taxrate[0])), 0, 0, $invoice_items_table_column_align[5]);
 				$this->pdf->Cell($invoice_items_table_column_width[6], $lineheight, utf8_decode((string)$invoice_row->total_fee_taxed[0]), 0, 0, $invoice_items_table_column_align[6]);
 				$this->pdf->Ln();
 				$i++;
@@ -201,29 +201,29 @@ class pdfInvoice
 		$this->pdf->Cell(array_sum($invoice_items_table_column_width), 0, '', 'T');
 		$this->pdf->Ln();
 		$this->pdf->Ln(1);
-		$this->pdf->Cell($invoice_items_table_column_width[0]+$invoice_items_table_column_width[1]+$invoice_items_table_column_width[2], $lineheight);
-		$this->pdf->Cell($invoice_items_table_column_width[3]+$invoice_items_table_column_width[4]+$invoice_items_table_column_width[5], $lineheight, html_entity_decode($lng['invoice']['subtotal']), 0, 0, 'R');
+		$this->pdf->Cell($invoice_items_table_column_width[0] + $invoice_items_table_column_width[1] + $invoice_items_table_column_width[2], $lineheight);
+		$this->pdf->Cell($invoice_items_table_column_width[3] + $invoice_items_table_column_width[4] + $invoice_items_table_column_width[5], $lineheight, html_entity_decode($lng['invoice']['subtotal']), 0, 0, 'R');
 		$this->pdf->Cell($invoice_items_table_column_width[6], $lineheight, utf8_decode((string)$this->invoiceXml->total_fee[0]), 0, 0, 'R');
 		$this->pdf->Ln();
 		foreach($this->invoiceXml->tax as $tax)
 		{
-			$this->pdf->Cell($invoice_items_table_column_width[0]+$invoice_items_table_column_width[1]+$invoice_items_table_column_width[2]+$invoice_items_table_column_width[3]+$invoice_items_table_column_width[4]+$invoice_items_table_column_width[5], $lineheight, sprintf(html_entity_decode($lng['invoice']['tax']), (string)((double)utf8_decode((string)$tax['taxrate'])*100)), 0, 0, 'R');
+			$this->pdf->Cell($invoice_items_table_column_width[0] + $invoice_items_table_column_width[1] + $invoice_items_table_column_width[2] + $invoice_items_table_column_width[3] + $invoice_items_table_column_width[4] + $invoice_items_table_column_width[5], $lineheight, sprintf(html_entity_decode($lng['invoice']['tax']), (string)((double)utf8_decode((string)$tax['taxrate']) * 100)), 0, 0, 'R');
 			$this->pdf->Cell($invoice_items_table_column_width[6], $lineheight, utf8_decode((string)$tax), 0, 0, $invoice_items_table_column_align[6]);
 			$this->pdf->Ln();
 		}
 
 		if((double)((string)$this->invoiceXml->credit_note[0]) != 0)
 		{
-			$this->pdf->Cell($invoice_items_table_column_width[0]+$invoice_items_table_column_width[1]+$invoice_items_table_column_width[2], $lineheight);
-			$this->pdf->Cell($invoice_items_table_column_width[3]+$invoice_items_table_column_width[4]+$invoice_items_table_column_width[5], $lineheight, html_entity_decode($lng['invoice']['credit_note']), 0, 0, 'R');
+			$this->pdf->Cell($invoice_items_table_column_width[0] + $invoice_items_table_column_width[1] + $invoice_items_table_column_width[2], $lineheight);
+			$this->pdf->Cell($invoice_items_table_column_width[3] + $invoice_items_table_column_width[4] + $invoice_items_table_column_width[5], $lineheight, html_entity_decode($lng['invoice']['credit_note']), 0, 0, 'R');
 			$this->pdf->Cell($invoice_items_table_column_width[6], $lineheight, '- ' . utf8_decode((string)$this->invoiceXml->credit_note[0]), 0, 0, 'R');
 			$this->pdf->Ln();
 		}
 
 		$this->pdf->SetLineWidth(.5);
 		$this->pdf->SetFont('', 'B', 9);
-		$this->pdf->Cell($invoice_items_table_column_width[0]+$invoice_items_table_column_width[1]+$invoice_items_table_column_width[2], $lineheight);
-		$this->pdf->Cell($invoice_items_table_column_width[3]+$invoice_items_table_column_width[4]+$invoice_items_table_column_width[5], $lineheight, html_entity_decode($lng['invoice']['total']), 'B', 0, 'R');
+		$this->pdf->Cell($invoice_items_table_column_width[0] + $invoice_items_table_column_width[1] + $invoice_items_table_column_width[2], $lineheight);
+		$this->pdf->Cell($invoice_items_table_column_width[3] + $invoice_items_table_column_width[4] + $invoice_items_table_column_width[5], $lineheight, html_entity_decode($lng['invoice']['total']), 'B', 0, 'R');
 		$this->pdf->Cell($invoice_items_table_column_width[6], $lineheight, utf8_decode((string)$this->invoiceXml->total_fee_taxed[0]), 'B', 0, 'R');
 		$this->pdf->Ln();
 		$this->pdf->Ln(8);

@@ -111,10 +111,10 @@ if($page == 'admins'
 			if($paging->checkDisplay($i))
 			{
 				$highlight_row = ($row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1');
-				$row['traffic_used'] = round($row['traffic_used']/(1024*1024), $settings['panel']['decimal_places']);
-				$row['traffic'] = round($row['traffic']/(1024*1024), $settings['panel']['decimal_places']);
-				$row['diskspace_used'] = round($row['diskspace_used']/1024, $settings['panel']['decimal_places']);
-				$row['diskspace'] = round($row['diskspace']/1024, $settings['panel']['decimal_places']);
+				$row['traffic_used'] = round($row['traffic_used'] / (1024 * 1024), $settings['panel']['decimal_places']);
+				$row['traffic'] = round($row['traffic'] / (1024 * 1024), $settings['panel']['decimal_places']);
+				$row['diskspace_used'] = round($row['diskspace_used'] / 1024, $settings['panel']['decimal_places']);
+				$row['diskspace'] = round($row['diskspace'] / 1024, $settings['panel']['decimal_places']);
 				$row = str_replace_array('-1', 'UL', $row, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota ftps subdomains tickets');
 				$row = htmlentities_array($row);
 				eval("\$admins.=\"" . getTemplate("admins/admins_admin") . "\";");
@@ -220,42 +220,42 @@ if($page == 'admins'
 
 			if(isset($_POST['customers_ul']))
 			{
-				$customers = -1;
+				$customers = - 1;
 			}
 
 			$domains = intval_ressource($_POST['domains']);
 
 			if(isset($_POST['domains_ul']))
 			{
-				$domains = -1;
+				$domains = - 1;
 			}
 
 			$subdomains = intval_ressource($_POST['subdomains']);
 
 			if(isset($_POST['subdomains_ul']))
 			{
-				$subdomains = -1;
+				$subdomains = - 1;
 			}
 
 			$emails = intval_ressource($_POST['emails']);
 
 			if(isset($_POST['emails_ul']))
 			{
-				$emails = -1;
+				$emails = - 1;
 			}
 
 			$email_accounts = intval_ressource($_POST['email_accounts']);
 
 			if(isset($_POST['email_accounts_ul']))
 			{
-				$email_accounts = -1;
+				$email_accounts = - 1;
 			}
 
 			$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 			if(isset($_POST['email_forwarders_ul']))
 			{
-				$email_forwarders = -1;
+				$email_forwarders = - 1;
 			}
 
 			if($settings['system']['mail_quota_enabled'] == '1')
@@ -265,7 +265,7 @@ if($page == 'admins'
 
 				if(isset($_POST['email_quota_ul']))
 				{
-					$email_quota = -1;
+					$email_quota = - 1;
 				}
 			}
 			else
@@ -277,7 +277,7 @@ if($page == 'admins'
 
 			if(isset($_POST['ftps_ul']))
 			{
-				$ftps = -1;
+				$ftps = - 1;
 			}
 
 			$tickets = intval_ressource($_POST['tickets']);
@@ -285,14 +285,14 @@ if($page == 'admins'
 			if(isset($_POST['tickets_ul'])
 			   && $settings['ticket']['enabled'] == '1')
 			{
-				$tickets = -1;
+				$tickets = - 1;
 			}
 
 			$mysqls = intval_ressource($_POST['mysqls']);
 
 			if(isset($_POST['mysqls_ul']))
 			{
-				$mysqls = -1;
+				$mysqls = - 1;
 			}
 
 			$customers_see_all = intval($_POST['customers_see_all']);
@@ -313,18 +313,18 @@ if($page == 'admins'
 
 			if(isset($_POST['diskspace_ul']))
 			{
-				$diskspace = -1;
+				$diskspace = - 1;
 			}
 
 			$traffic = doubleval_ressource($_POST['traffic']);
 
 			if(isset($_POST['traffic_ul']))
 			{
-				$traffic = -1;
+				$traffic = - 1;
 			}
 
-			$diskspace = $diskspace*1024;
-			$traffic = $traffic*1024*1024;
+			$diskspace = $diskspace * 1024;
+			$traffic = $traffic * 1024 * 1024;
 			$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 			$ipaddress = intval_ressource($_POST['ipaddress']);
 
@@ -335,9 +335,9 @@ if($page == 'admins'
 				$included_domains_qty = intval($_POST['included_domains_qty']);
 				$included_domains_tld = $idna_convert->encode(validate($_POST['included_domains_tld'], html_entity_decode($lng['customer']['included_domains'])));
 				$additional_traffic_fee = doubleval(str_replace(',', '.', $_POST['additional_traffic_fee']));
-				$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit'])*1024*1024;
+				$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit']) * 1024 * 1024;
 				$additional_diskspace_fee = doubleval(str_replace(',', '.', $_POST['additional_diskspace_fee']));
-				$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit'])*1024;
+				$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit']) * 1024;
 				$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 				$interval_length = intval($_POST['interval_length']);
 				$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'm');
@@ -688,49 +688,49 @@ if($page == 'admins'
 
 					if(isset($_POST['customers_ul']))
 					{
-						$customers = -1;
+						$customers = - 1;
 					}
 
 					$domains = intval_ressource($_POST['domains']);
 
 					if(isset($_POST['domains_ul']))
 					{
-						$domains = -1;
+						$domains = - 1;
 					}
 
 					$subdomains = intval_ressource($_POST['subdomains']);
 
 					if(isset($_POST['subdomains_ul']))
 					{
-						$subdomains = -1;
+						$subdomains = - 1;
 					}
 
 					$emails = intval_ressource($_POST['emails']);
 
 					if(isset($_POST['emails_ul']))
 					{
-						$email = -1;
+						$email = - 1;
 					}
 
 					$email_accounts = intval_ressource($_POST['email_accounts']);
 
 					if(isset($_POST['email_accounts_ul']))
 					{
-						$email_accounts = -1;
+						$email_accounts = - 1;
 					}
 
 					$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 					if(isset($_POST['email_forwarders_ul']))
 					{
-						$email_forwarders = -1;
+						$email_forwarders = - 1;
 					}
 
 					if($settings['system']['mail_quota_enabled'] == '1')
 					{
 						if(isset($_POST['email_quota_ul']))
 						{
-							$email_quota = -1;
+							$email_quota = - 1;
 						}
 						else
 						{
@@ -741,28 +741,28 @@ if($page == 'admins'
 					}
 					else
 					{
-						$email_quota = -1;
+						$email_quota = - 1;
 					}
 
 					$ftps = intval_ressource($_POST['ftps']);
 
 					if(isset($_POST['ftps_ul']))
 					{
-						$ftps = -1;
+						$ftps = - 1;
 					}
 
 					$tickets = intval_ressource($_POST['tickets']);
 
 					if(isset($_POST['tickets_ul']))
 					{
-						$tickets = -1;
+						$tickets = - 1;
 					}
 
 					$mysqls = intval_ressource($_POST['mysqls']);
 
 					if(isset($_POST['mysqls_ul']))
 					{
-						$mysqls = -1;
+						$mysqls = - 1;
 					}
 
 					$customers_see_all = intval($_POST['customers_see_all']);
@@ -783,18 +783,18 @@ if($page == 'admins'
 
 					if(isset($_POST['diskspace_ul']))
 					{
-						$diskspace = -1;
+						$diskspace = - 1;
 					}
 
 					$traffic = doubleval_ressource($_POST['traffic']);
 
 					if(isset($_POST['traffic_ul']))
 					{
-						$traffic = -1;
+						$traffic = - 1;
 					}
 
-					$diskspace = $diskspace*1024;
-					$traffic = $traffic*1024*1024;
+					$diskspace = $diskspace * 1024;
+					$traffic = $traffic * 1024 * 1024;
 					$ipaddress = intval_ressource($_POST['ipaddress']);
 				}
 
@@ -877,9 +877,9 @@ if($page == 'admins'
 					$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
 					$payment_every = intval($_POST['payment_every']);
 					$additional_traffic_fee = doubleval(str_replace(',', '.', $_POST['additional_traffic_fee']));
-					$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit'])*1024*1024;
+					$additional_traffic_unit = doubleval_ressource($_POST['additional_traffic_unit']) * 1024 * 1024;
 					$additional_diskspace_fee = doubleval(str_replace(',', '.', $_POST['additional_diskspace_fee']));
-					$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit'])*1024;
+					$additional_diskspace_unit = doubleval_ressource($_POST['additional_diskspace_unit']) * 1024;
 
 					if(isset($_POST['taxclass'])
 					   && intval($_POST['taxclass']) != 0
@@ -1068,8 +1068,8 @@ if($page == 'admins'
 			}
 			else
 			{
-				$result['traffic'] = round($result['traffic']/(1024*1024), $settings['panel']['decimal_places']);
-				$result['diskspace'] = round($result['diskspace']/1024, $settings['panel']['decimal_places']);
+				$result['traffic'] = round($result['traffic'] / (1024 * 1024), $settings['panel']['decimal_places']);
+				$result['diskspace'] = round($result['diskspace'] / 1024, $settings['panel']['decimal_places']);
 				$result['email'] = $idna_convert->decode($result['email']);
 				$customers_ul = makecheckbox('customers_ul', $lng['customer']['unlimited'], '-1', false, $result['customers'], true, true);
 
@@ -1195,8 +1195,8 @@ if($page == 'admins'
 				$domains_see_all = makeyesno('domains_see_all', '1', '0', $result['domains_see_all']);
 				$caneditphpsettings = makeyesno('caneditphpsettings', '1', '0', $result['caneditphpsettings']);
 				$deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
-				$result['additional_traffic_unit'] = round($result['additional_traffic_unit']/(1024*1024), 4);
-				$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit']/(1024), 4);
+				$result['additional_traffic_unit'] = round($result['additional_traffic_unit'] / (1024 * 1024), 4);
+				$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit'] / (1024), 4);
 				$interval_type = getIntervalTypes('option', $result['interval_type']);
 				$service_active = makeyesno('service_active', '1', '0', $result['service_active']);
 				$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);

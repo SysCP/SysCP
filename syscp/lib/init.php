@@ -168,10 +168,7 @@ require ('./lib/class.phpmailer.php');
 
 if(get_magic_quotes_gpc())
 {
-	$in = array(
-		&$_GET,
-		&$_POST,
-		&$_COOKIE
+	$in = array(&$_GET, &$_POST, &$_COOKIE
 	);
 
 	while(list($k, $v) = each($in))
@@ -184,7 +181,7 @@ if(get_magic_quotes_gpc())
 				continue;
 			}
 
-			$in[] = &$in[$k][$key];
+			$in[] = & $in[$k][$key];
 		}
 	}
 
@@ -249,7 +246,7 @@ else
 	$nosession = 1;
 }
 
-$timediff = time()-$settings['session']['sessiontimeout'];
+$timediff = time() - $settings['session']['sessiontimeout'];
 $db->query('DELETE FROM `' . TABLE_PANEL_SESSIONS . '` WHERE `lastactivity` < "' . (int)$timediff . '"');
 $userinfo = Array();
 

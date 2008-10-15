@@ -425,7 +425,7 @@ class PHPMailer
 		$body = '';
 		$result = true;
 
-		if((count($this->to)+count($this->cc)+count($this->bcc)) < 1)
+		if((count($this->to) + count($this->cc) + count($this->bcc)) < 1)
 		{
 			$this->SetError($this->Lang('provide_address'));
 			return false;
@@ -501,7 +501,7 @@ class PHPMailer
 
 		fputs($mail, $header);
 		fputs($mail, $body);
-		$result = pclose($mail)>>8&0xFF;
+		$result = pclose($mail) >> 8 & 0xFF;
 
 		if($result != 0)
 		{
@@ -874,7 +874,7 @@ class PHPMailer
 				if($qp_mode
 				   and (strlen($word) > $length))
 				{
-					$space_left = $length-strlen($buf)-1;
+					$space_left = $length - strlen($buf) - 1;
 
 					if($e != 0)
 					{
@@ -882,11 +882,11 @@ class PHPMailer
 						{
 							$len = $space_left;
 
-							if(substr($word, $len-1, 1) == '=')
+							if(substr($word, $len - 1, 1) == '=')
 							{
 								$len--;
 							}
-							elseif(substr($word, $len-2, 1) == '=')
+							elseif(substr($word, $len - 2, 1) == '=')
 							{
 								$len-= 2;
 							}
@@ -908,11 +908,11 @@ class PHPMailer
 					{
 						$len = $length;
 
-						if(substr($word, $len-1, 1) == '=')
+						if(substr($word, $len - 1, 1) == '=')
 						{
 							$len--;
 						}
-						elseif(substr($word, $len-2, 1) == '=')
+						elseif(substr($word, $len - 2, 1) == '=')
 						{
 							$len-= 2;
 						}
@@ -1496,15 +1496,15 @@ class PHPMailer
 			return ($str);
 		}
 
-		$maxlen = 75-7-strlen($this->CharSet);
+		$maxlen = 75 - 7 - strlen($this->CharSet);
 
 		/* Try to select the encoding which should produce the shortest output */
 
-		if(strlen($str)/3 < $x)
+		if(strlen($str) / 3 < $x)
 		{
 			$encoding = 'B';
 			$encoded = base64_encode($str);
-			$maxlen-= $maxlen%4;
+			$maxlen-= $maxlen % 4;
 			$encoded = trim(chunk_split($encoded, $maxlen, "\n"));
 		}
 		else
@@ -1784,7 +1784,7 @@ class PHPMailer
 		$tz = date('Z');
 		$tzs = ($tz < 0) ? '-' : '+';
 		$tz = abs($tz);
-		$tz = (int)($tz/3600)*100+($tz%3600)/60;
+		$tz = (int)($tz / 3600) * 100 + ($tz % 3600) / 60;
 		$result = sprintf("%s %s%04d", date('D, j M Y H:i:s'), $tzs, $tz);
 		return $result;
 	}

@@ -147,7 +147,7 @@ elseif($page == 'mysqls')
 				}
 				else
 				{
-					$username = $userinfo['loginname'] . $settings['customer']['mysqlprefix'] . (intval($userinfo['mysql_lastaccountnumber'])+1);
+					$username = $userinfo['loginname'] . $settings['customer']['mysqlprefix'] . (intval($userinfo['mysql_lastaccountnumber']) + 1);
 
 					// Begin root-session
 

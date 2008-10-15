@@ -55,7 +55,7 @@ while($row_ticket = $db->fetch_array($result_tickets))
 {
 	$lastchange = $row_ticket['lastchange'];
 	$now = time();
-	$days = (int)(($now-$lastchange)/86400);
+	$days = (int)(($now - $lastchange) / 86400);
 
 	if($days >= $settings['ticket']['archiving_days'])
 	{

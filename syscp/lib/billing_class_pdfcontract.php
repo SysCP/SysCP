@@ -122,11 +122,11 @@ class pdfContract
 		$this->pdf->Ln(6);
 		$this->pdf->SetX(26);
 		$this->pdf->Cell(80, 4, utf8_decode('Webspace'), 0, 0, 'L');
-		$this->pdf->Cell(20, 4, utf8_decode((($contract['diskspace']/1024) == '-1' ? html_entity_decode($lng['customer']['unlimited']) : ($contract['diskspace']/1024)) . ' MB'), 0, 0, 'R');
+		$this->pdf->Cell(20, 4, utf8_decode((($contract['diskspace'] / 1024) == '-1' ? html_entity_decode($lng['customer']['unlimited']) : ($contract['diskspace'] / 1024)) . ' MB'), 0, 0, 'R');
 		$this->pdf->Ln(6);
 		$this->pdf->SetX(26);
 		$this->pdf->Cell(80, 4, utf8_decode('Frei-Traffic'), 0, 0, 'L');
-		$this->pdf->Cell(20, 4, utf8_decode((($contract['traffic']/(1024*1024)) == '-1' ? html_entity_decode($lng['customer']['unlimited']) : ($contract['traffic']/(1024*1024))) . ' GB / Monat'), 0, 0, 'R');
+		$this->pdf->Cell(20, 4, utf8_decode((($contract['traffic'] / (1024 * 1024)) == '-1' ? html_entity_decode($lng['customer']['unlimited']) : ($contract['traffic'] / (1024 * 1024))) . ' GB / Monat'), 0, 0, 'R');
 		$this->pdf->Ln(6);
 		$this->pdf->SetX(26);
 		$this->pdf->Cell(80, 4, utf8_decode('FTP-Benutzer (Mehrfach Login möglich)'), 0, 0, 'L');
@@ -156,10 +156,10 @@ class pdfContract
 		$this->pdf->MultiCell(0, 4, utf8_decode('Die Setup-Gebühr beträgt ' . $contract['setup_fee'] . ' ' . chr(128) . '.'), 0, 'L');
 		$this->pdf->Ln(3);
 		$this->pdf->Cell(8, 4, utf8_decode('(3)'), 0, 0, 'L');
-		$this->pdf->MultiCell(0, 4, utf8_decode('Bei Überschreitung des Frei-Traffics koste' . (($contract['additional_traffic_unit']/(1024*1024)) == '1' ? 't jedes' : 'n ' . ($contract['additional_traffic_unit']/(1024*1024))) . ' weitere angefangene Gigabyte ' . $contract['additional_traffic_fee'] . ' ' . chr(128) . '.'), 0, 'L');
+		$this->pdf->MultiCell(0, 4, utf8_decode('Bei Überschreitung des Frei-Traffics koste' . (($contract['additional_traffic_unit'] / (1024 * 1024)) == '1' ? 't jedes' : 'n ' . ($contract['additional_traffic_unit'] / (1024 * 1024))) . ' weitere angefangene Gigabyte ' . $contract['additional_traffic_fee'] . ' ' . chr(128) . '.'), 0, 'L');
 		$this->pdf->Ln(3);
 		$this->pdf->Cell(8, 4, utf8_decode('(4)'), 0, 0, 'L');
-		$this->pdf->MultiCell(0, 4, utf8_decode('Bei Überschreitung des Webspace koste' . (($contract['additional_diskspace_unit']/1024) == '1' ? 't jedes' : 'n ' . ($contract['additional_diskspace_unit']/1024)) . ' weitere angefangene Megabyte ' . $contract['additional_diskspace_fee'] . ' ' . chr(128) . '.'), 0, 'L');
+		$this->pdf->MultiCell(0, 4, utf8_decode('Bei Überschreitung des Webspace koste' . (($contract['additional_diskspace_unit'] / 1024) == '1' ? 't jedes' : 'n ' . ($contract['additional_diskspace_unit'] / 1024)) . ' weitere angefangene Megabyte ' . $contract['additional_diskspace_fee'] . ' ' . chr(128) . '.'), 0, 'L');
 		$this->pdf->Ln(3);
 		$this->pdf->Cell(8, 4, utf8_decode('(5)'), 0, 0, 'L');
 		$this->pdf->MultiCell(0, 4, utf8_decode('Alle Preise rein netto in Euro zuzüglich der gültigen gesetzlichen Umsatzsteuer.'), 0, 'L');

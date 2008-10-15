@@ -57,7 +57,7 @@ while($fName = readdir($lockDirHandle))
 		// Check if last run jailed out with an exception
 
 		$croncontent = file($lockdir . $fName);
-		$lastline = $croncontent[(count($croncontent)-1)];
+		$lastline = $croncontent[(count($croncontent) - 1)];
 
 		if($lastline == '=== Keep lockfile because of exception ===')
 		{
