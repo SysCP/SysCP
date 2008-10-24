@@ -48,6 +48,8 @@ class bind
 			$nameservers = explode(',', $this->settings['system']['nameservers']);
 			foreach($nameservers as $nameserver)
 			{
+				$nameserver_ip = gethostbyname(trim($nameserver));
+
 				if(substr($nameserver, -1, 1) != '.')
 				{
 					$nameserver.= '.';
@@ -55,7 +57,7 @@ class bind
 
 				$this->nameservers[] = array(
 					'hostname' => trim($nameserver),
-					'ip' => gethostbyname(trim($nameserver))
+					'ip' => trim($nameserver_ip)
 				);
 			}
 		}
