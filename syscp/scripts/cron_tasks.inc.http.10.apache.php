@@ -98,8 +98,8 @@ class apache
 
 				if($row_ipsandports['ssl'] == '1')
 				{
-					$this->virtualhosts_data[$vhosts_filename].= 'SSLEngine On' . "\n";
-					$this->virtualhosts_data[$vhosts_filename].= 'SSLCertificateFile ' . $row_ipsandports['ssl_cert'] . "\n";
+					$this->virtualhosts_data[$vhosts_filename].= ' SSLEngine On' . "\n";
+					$this->virtualhosts_data[$vhosts_filename].= ' SSLCertificateFile ' . $row_ipsandports['ssl_cert'] . "\n";
 				}
 
 				$this->virtualhosts_data[$vhosts_filename].= '</VirtualHost>' . "\n";
@@ -421,6 +421,11 @@ class apache
 		if($domain['specialsettings'] != '')
 		{
 			$vhost_content.= $domain['specialsettings'] . "\n";
+		}
+
+		if($this->settings['system']['default_vhostconf'] != '')
+		{
+			$vhost_content.= $this->settings['system']['default_vhostconf'] . "\n";
 		}
 
 		$vhost_content.= '</VirtualHost>' . "\n";

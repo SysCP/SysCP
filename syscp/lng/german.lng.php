@@ -797,6 +797,7 @@ $lng['admin']['sslsettings'] = 'SSL Einstellungen';
 $lng['cronjobs']['notyetrun'] = 'Bisher nicht gestartet';
 $lng['install']['servername_should_be_fqdn'] = 'Der Servername sollte eine FQDN sein und keine IP Adresse';
 $lng['serversettings']['default_vhostconf']['title'] = 'Standard Vhost-Einstellungen';
+$lng['serversettings']['default_vhostconf']['description'] = 'Der Inhalt dieses Feldes wird direkt in jeden Domain-vHost-Container &uuml;bernommen. Achtung: Der Code wird nicht auf Fehler gepr&uuml;ft. Etwaige Fehler werden also auch &uuml;bernommen. Apache k&ouml;nnte nicht mehr starten!';
 $lng['emails']['quota'] = 'Kontingent';
 $lng['emails']['noquota'] = 'Kein Kontingent';
 $lng['emails']['updatequota'] = 'Update';
