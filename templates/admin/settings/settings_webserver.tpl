@@ -44,7 +44,7 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_deactivateddocroot" value="{$settings['system']['deactivateddocroot']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name" valign="top"><b>{$lng['serversettings']['default_vhostconf']['title']}:</b></td>
+				<td class="main_field_name" valign="top"><b>{$lng['serversettings']['default_vhostconf']['title']}:</b><br />{$lng['serversettings']['default_vhostconf']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="40" name="system_default_vhostconf">{$settings['system']['default_vhostconf']}</textarea></td>
 			</tr>
 			<tr>

@@ -793,6 +793,7 @@ $lng['admin']['sslsettings'] = 'SSL settings';
 $lng['cronjobs']['notyetrun'] = 'Not yet run';
 $lng['install']['servername_should_be_fqdn'] = 'The servername should be a FQDN and not an IP address';
 $lng['serversettings']['default_vhostconf']['title'] = 'Default vhost-settings';
+$lng['serversettings']['default_vhostconf']['description'] = 'The content of this field will be included into every domain vhost container directly. Attention: The code won\'t be checked for any errors. If it contains errors, apache might ot start again!';
 $lng['emails']['quota'] = 'Quota';
 $lng['emails']['noquota'] = 'No quota';
 $lng['emails']['updatequota'] = 'Update';
