@@ -664,15 +664,6 @@ if($page == 'customers'
 
 					// Add htpasswd for the webalizer stats
 
-					if($settings['system']['webalizer_enabled'] == '1')
-					{
-						$path = $documentroot . '/webalizer/';
-					}
-					elseif($settings['system']['awstats_enabled'] == '1')
-					{
-						$path = $documentroot . '/awstats/';
-					}
-
 					if(CRYPT_STD_DES == 1)
 					{
 						$saltfordescrypt = substr(md5(uniqid(microtime(), 1)), 4, 2);
@@ -683,9 +674,16 @@ if($page == 'customers'
 						$htpasswdPassword = crypt($password);
 					}
 
-					$db->query("INSERT INTO `" . TABLE_PANEL_HTPASSWDS . "` " . "(`customerid`, `username`, `password`, `path`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', '" . $db->escape($htpasswdPassword) . "', '" . $db->escape($path) . "')");
-					$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added htpasswd for user '" . $loginname . "'");
+					$db->query("INSERT INTO `" . TABLE_PANEL_HTPASSWDS . "` " . "(`customerid`, `username`, `password`, `path`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', '" . $db->escape($htpasswdPassword) . "', '" . $db->escape(makeCorrectDir($documentroot . '/webalizer/')) . "')");
+					$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added webalizer htpasswd for user '" . $loginname . "'");
+
+					if($settings['system']['awstats_enabled'] == '1')
+					{
+						$db->query("INSERT INTO `" . TABLE_PANEL_HTPASSWDS . "` " . "(`customerid`, `username`, `password`, `path`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', '" . $db->escape($htpasswdPassword) . "', '" . $db->escape(makeCorrectDir($documentroot . '/awstats/')) . "')");
+						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added awstats htpasswd for user '" . $loginname . "'");
+					}
 					inserttask('3');
+
 					$result = $db->query("INSERT INTO `" . TABLE_FTP_USERS . "` " . "(`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', ENCRYPT('" . $db->escape($password) . "'), '" . $db->escape($documentroot) . "/', 'y', '" . (int)$guid . "', '" . (int)$guid . "')");
 					$result = $db->query("INSERT INTO `" . TABLE_FTP_GROUPS . "` " . "(`customerid`, `groupname`, `gid`, `members`) " . "VALUES ('" . (int)$customerid . "', '" . $db->escape($loginname) . "', '" . $db->escape($guid) . "', '" . $db->escape($loginname) . "')");
 					$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added ftp-account for user '" . $loginname . "'");

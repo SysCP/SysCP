@@ -677,65 +677,28 @@ if(($page == 'settings' || $page == 'overview')
 		   || $settings_all
 		   || $only_enabledisable)
 		{
-			if($_POST['system_webalizer_enabled'] != $settings['system']['webalizer_enabled']
-			   && isset($_POST['system_webalizer_enabled']))
-			{
-				$value_w = ($_POST['system_webalizer_enabled'] == '1' ? '1' : '0');
-			}
-			else
-			{
-				$value_w = $settings['system']['webalizer_enabled'];
-			}
-
 			if($_POST['system_awstats_enabled'] != $settings['system']['awstats_enabled']
 			   && isset($_POST['system_awstats_enabled']))
 			{
-				$value_a = ($_POST['system_awstats_enabled'] == '1' ? '1' : '0');
-			}
-			else
-			{
-				$value_a = $settings['system']['awstats_enabled'];
-			}
-
-			// webalizer and awstats should not be used simultaneously
-
-			if($value_w == '1'
-			   && $value_a == '1')
-			{
-				standard_error('cannotuseawstatsandwebalizeratonetime');
-			}
-			else
-			{
-				if($value_w != $settings['system']['webalizer_enabled'])
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value_w . "' WHERE `settinggroup`='system' AND `varname`='webalizer_enabled'");
-					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_enabled from '" . $settings['system']['webalizer_enabled'] . "' to '" . $value_w . "'");
-				}
-
-				if($value_a != $settings['system']['awstats_enabled'])
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value_a . "' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
-					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_enabled from '" . $settings['system']['awstats_enabled'] . "' to '" . $value_a . "'");
-				}
+				$value = ($_POST['system_awstats_enabled'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='awstats_enabled'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_awstats_enabled from '" . $settings['system']['awstats_enabled'] . "' to '" . $value . "'");
 			}
 
 			if(!$only_enabledisable)
 			{
-				if($settings['system']['webalizer_enabled'] == '1')
+				if($_POST['system_webalizer_quiet'] != $settings['system']['webalizer_quiet']
+				   && isset($_POST['system_webalizer_quiet']))
 				{
-					if($_POST['system_webalizer_quiet'] != $settings['system']['webalizer_quiet']
-					   && isset($_POST['system_webalizer_quiet']))
-					{
-						$value = in_array($_POST['system_webalizer_quiet'], array(
-							'0',
-							'1',
-							'2'
-						)) ? $_POST['system_webalizer_quiet'] : '2';
-						$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_quiet'");
-						$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_quiet from '" . $settings['system']['webalizer_quiet'] . "' to '" . $value . "'");
-					}
+					$value = in_array($_POST['system_webalizer_quiet'], array(
+						'0',
+						'1',
+						'2'
+					)) ? $_POST['system_webalizer_quiet'] : '2';
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_quiet'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_quiet from '" . $settings['system']['webalizer_quiet'] . "' to '" . $value . "'");
 				}
-				elseif($settings['system']['awstats_enabled'] == '1')
+				if($settings['system']['awstats_enabled'] == '1')
 				{
 					if($_POST['system_awstats_domain_file'] != $settings['system']['awstats_domain_file']
 					   && isset($_POST['system_awstats_domain_file']))
@@ -1472,7 +1435,6 @@ if(($page == 'settings' || $page == 'overview')
 		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['system']['use_ssl']);
 		$webserver_selected = makeyesno('webserver', '1', '0', $settings['system']['webserver']);
 		$dkimenabled = makeyesno('use_dkim', '1', '0', $settings['dkim']['use_dkim']);
-		$system_webalizer_enabled = makeyesno('system_webalizer_enabled', '1', '0', $settings['system']['webalizer_enabled']);
 		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled']);
 		$unix_names = makeyesno('panel_unix_names', '1', '0', $settings['panel']['unix_names']);
 		$allow_preset = makeyesno('panel_allow_preset', '1', '0', $settings['panel']['allow_preset']);

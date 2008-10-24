@@ -7,6 +7,10 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_quiet']['title']}:</b><br />{$lng['serversettings']['webalizer_quiet']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_webalizer_quiet">$webalizer_quiet</select></td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_enabled']}:</b></td>
 				<td class="main_field_display" nowrap="nowrap">$system_awstats_enabled</td>
 			</tr>
@@ -26,19 +30,6 @@
 			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['awstats_updateall_command']['title']}:</b><br />{$lng['serversettings']['awstats_updateall_command']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_awstats_updateall_command" value="{$settings['system']['awstats_updateall_command']}" /></td>
-			</tr>
-			</if>
-			<tr>
-				<td class="main_field_name" colspan="2"><b>{$lng['admin']['or']}</b></td>
-			</tr>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_enabled']}:</b></td>
-				<td class="main_field_display" nowrap="nowrap">$system_webalizer_enabled</td>
-			</tr>
-			<if $settings['system']['webalizer_enabled'] == '1'>
-			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['webalizer_quiet']['title']}:</b><br />{$lng['serversettings']['webalizer_quiet']['description']}</td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="system_webalizer_quiet">$webalizer_quiet</select></td>
 			</tr>
 			</if>
 			<tr>
