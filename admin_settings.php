@@ -698,6 +698,7 @@ if(($page == 'settings' || $page == 'overview')
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_quiet'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_quiet from '" . $settings['system']['webalizer_quiet'] . "' to '" . $value . "'");
 				}
+
 				if($settings['system']['awstats_enabled'] == '1')
 				{
 					if($_POST['system_awstats_domain_file'] != $settings['system']['awstats_domain_file']
