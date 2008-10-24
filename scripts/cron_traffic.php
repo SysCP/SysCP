@@ -124,10 +124,7 @@ while($row = $db->fetch_array($result))
 					unset($domainlist[$row['customerid']][$domainid]);
 				}
 
-				if($settings['system']['webalizer_enabled'] == '1')
-				{
-					$httptraffic+= floatval(callWebalizerGetTraffic($row['loginname'] . '-' . $domain, $row['documentroot'] . '/webalizer/' . $domain . '/', $domain, $domainlist[$row['customerid']]));
-				}
+				$httptraffic+= floatval(callWebalizerGetTraffic($row['loginname'] . '-' . $domain, $row['documentroot'] . '/webalizer/' . $domain . '/', $domain, $domainlist[$row['customerid']]));
 			}
 		}
 
@@ -138,10 +135,7 @@ while($row = $db->fetch_array($result))
 			safeSQLLogfile($domainlist[$row['customerid']], $row['loginname']);
 		}
 
-		if($settings['system']['webalizer_enabled'] == '1')
-		{
-			$httptraffic+= floatval(callWebalizerGetTraffic($row['loginname'], $row['documentroot'] . '/webalizer/', $caption, $domainlist[$row['customerid']]));
-		}
+		$httptraffic+= floatval(callWebalizerGetTraffic($row['loginname'], $row['documentroot'] . '/webalizer/', $caption, $domainlist[$row['customerid']]));
 	}
 
 	/**
