@@ -35,17 +35,27 @@ elseif(isset($_GET['id']))
 if($page == 'domains'
    || $page == 'overview')
 {
-	$taxclasses = array(
-		'0' => $lng['panel']['default']
-	);
-	$taxclasses_option = makeoption($lng['panel']['default'], 0, 0, true);
-	$taxclasses_result = $db->query('SELECT `classid`, `classname` FROM `' . TABLE_BILLING_TAXCLASSES . '` ');
+	// Load taxclasses if billing is activated
 
-	while($taxclasses_row = $db->fetch_array($taxclasses_result))
+	if($settings['billing']['activate_billing'] == '1')
 	{
-		$taxclasses[$taxclasses_row['classid']] = $taxclasses_row['classname'];
-		$taxclasses_option.= makeoption($taxclasses_row['classname'], $taxclasses_row['classid']);
+		$taxclasses = array(
+			'0' => $lng['panel']['default']
+		);
+		$taxclasses_option = makeoption($lng['panel']['default'], 0, 0, true);
+		$taxclasses_result = $db->query('SELECT `classid`, `classname` FROM `' . TABLE_BILLING_TAXCLASSES . '` ');
+
+		while($taxclasses_row = $db->fetch_array($taxclasses_result))
+		{
+			$taxclasses[$taxclasses_row['classid']] = $taxclasses_row['classname'];
+			$taxclasses_option.= makeoption($taxclasses_row['classname'], $taxclasses_row['classid']);
+		}
 	}
+
+	// Let's see how many customers we have
+
+	$countcustomers = $db->query_first("SELECT COUNT(`customerid`) as `countcustomers` FROM `" . TABLE_PANEL_CUSTOMERS . "`");
+	$countcustomers = (int)$countcustomers['countcustomers'];
 
 	if($action == '')
 	{
@@ -114,12 +124,6 @@ if($page == 'domains'
 
 			$i++;
 		}
-
-		// Let's see how many customers we have
-
-		$customers = $db->query("SELECT `customerid` FROM " . TABLE_PANEL_CUSTOMERS);
-		$countcustomers = $db->num_rows($customers);
-		unset($customers);
 
 		// Display the list
 
