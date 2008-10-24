@@ -58,7 +58,8 @@ require ('./lib/userdata.inc.php');
 if(!isset($sql)
    || !is_array($sql))
 {
-	die('You have to <a href="./install/install.php">configure</a> SysCP first!');
+	$config_hint = file_get_contents('./templates/misc/configurehint.tpl');
+	die($config_hint);
 }
 
 /**
