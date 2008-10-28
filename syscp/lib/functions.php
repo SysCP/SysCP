@@ -1129,20 +1129,21 @@ function updateCounters($returndebuginfo = false)
 	return $returnval;
 }
 
-/******************************************************
-* Wrapper around the exec command.
-*
-* @author Martin Burchert <eremit@adm1n.de>
-* @version 1.2
-* @param string exec_string String to be executed
-* @return string The result of the exec()
-*
-* History:
-******************************************************
-* 1.0 : Initial Version
-* 1.1 : Added |,&,>,<,`,*,$,~,? as security breaks.
-* 1.2 : Removed * as security break
-******************************************************/function safe_exec($exec_string)
+/**
+ * Wrapper around the exec command.
+ *
+ * @author Martin Burchert <eremit@adm1n.de>
+ * @version 1.2
+ * @param string exec_string String to be executed
+ * @return string The result of the exec()
+ *
+ * History:
+ * 1.0 : Initial Version
+ * 1.1 : Added |,&,>,<,`,*,$,~,? as security breaks.
+ * 1.2 : Removed * as security break
+ */
+
+function safe_exec($exec_string)
 {
 	global $settings;
 
@@ -1216,20 +1217,21 @@ function updateCounters($returndebuginfo = false)
 	return $return;
 }
 
-/******************************************************
-* Navigation generator
-*
-* @author Martin Burchert <eremit@adm1n.de>
-* @version 1.0
-* @param string s The session-id of the user
-* @param array userinfo the userinfo of the user
-* @return string the content of the navigation bar
-*
-* History:
-******************************************************
-* 1.0 : Initial Version
-* 1.1 : Added new_window and required_resources (flo)
-******************************************************/function getNavigation($s, $userinfo)
+/**
+ * Navigation generator
+ *
+ * @author Martin Burchert <eremit@adm1n.de>
+ * @version 1.0
+ * @param string s The session-id of the user
+ * @param array userinfo the userinfo of the user
+ * @return string the content of the navigation bar
+ *
+ * History:
+ * 1.0 : Initial Version
+ * 1.1 : Added new_window and required_resources (flo)
+ */
+
+function getNavigation($s, $userinfo)
 {
 	global $db, $lng;
 	$return = '';
@@ -1248,8 +1250,7 @@ function updateCounters($returndebuginfo = false)
 	while($row = $db->fetch_array($result))
 	{
 		if($row['required_resources'] == ''
-		   || $userinfo[$row['required_resources']] > 0
-		   || $userinfo[$row['required_resources']] == '-1')
+		   || (isset($userinfo[$row['required_resources']]) && ((int)$userinfo[$row['required_resources']] > 0 || $userinfo[$row['required_resources']] == '-1')))
 		{
 			$row['parent_url'] = $row['url'];
 			$row['isparent'] = 1;
@@ -2036,12 +2037,12 @@ function makeQuotaOption($selected = 'mb')
 	}
 
 	$quota_type_option = '';
-	$quota_type_option.= makeoption($lng['panel']['size_type']['byte'], 'b', $selected);
-	$quota_type_option.= makeoption($lng['panel']['size_type']['kilobyte'], 'kb', $selected);
-	$quota_type_option.= makeoption($lng['panel']['size_type']['megabyte'], 'mb', $selected);
-	$quota_type_option.= makeoption($lng['panel']['size_type']['gigabyte'], 'gb', $selected);
-	$quota_type_option.= makeoption($lng['panel']['size_type']['terabyte'], 'tb', $selected);
-	$quota_type_option.= makeoption($lng['panel']['size_type']['petabyte'], 'pb', $selected);
+	$quota_type_option.= makeoption($lng['emails']['quota_type']['byte'], 'b', $selected);
+	$quota_type_option.= makeoption($lng['emails']['quota_type']['kilobyte'], 'kb', $selected);
+	$quota_type_option.= makeoption($lng['emails']['quota_type']['megabyte'], 'mb', $selected);
+	$quota_type_option.= makeoption($lng['emails']['quota_type']['gigabyte'], 'gb', $selected);
+	$quota_type_option.= makeoption($lng['emails']['quota_type']['terabyte'], 'tb', $selected);
+	$quota_type_option.= makeoption($lng['emails']['quota_type']['petabyte'], 'pb', $selected);
 	return $quota_type_option;
 }
 

@@ -1452,28 +1452,32 @@ if($page == 'customers'
 				$deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
 				$email_imap = makeyesno('email_imap', '1', '0', $result['imap']);
 				$email_pop3 = makeyesno('email_pop3', '1', '0', $result['pop3']);
-				$result['additional_traffic_unit'] = round($result['additional_traffic_unit'] / (1024 * 1024), 4);
-				$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit'] / (1024), 4);
-				$result['included_domains_tld'] = $idna_convert->decode($result['included_domains_tld']);
-				$interval_type = getIntervalTypes('option', $result['interval_type']);
-				$service_active = ($result['service_active'] == '0' ? $lng['panel']['no'] : '') . ($result['service_active'] == '1' ? $lng['panel']['yes'] : '');
-				$service_active_options = makeyesno('service_active', '1', '0', $result['service_active']);
-				$interval_payment = ($result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '') . ($result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '');
-				$interval_payment_options = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
-				$payment_method = '';
-				foreach($lng['customer']['payment_methods'] as $payment_method_id => $payment_method_name)
+
+				if($settings['billing']['activate_billing'] == '1')
 				{
-					$payment_method.= makeoption($payment_method_name, $payment_method_id, (int)$result['payment_method'], true);
+					$result['additional_traffic_unit'] = round($result['additional_traffic_unit'] / (1024 * 1024), 4);
+					$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit'] / (1024), 4);
+					$result['included_domains_tld'] = $idna_convert->decode($result['included_domains_tld']);
+					$interval_type = getIntervalTypes('option', $result['interval_type']);
+					$service_active = ($result['service_active'] == '0' ? $lng['panel']['no'] : '') . ($result['service_active'] == '1' ? $lng['panel']['yes'] : '');
+					$service_active_options = makeyesno('service_active', '1', '0', $result['service_active']);
+					$interval_payment = ($result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '') . ($result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '');
+					$interval_payment_options = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
+					$calc_tax = ($result['calc_tax'] == '0' ? $lng['panel']['no'] : '') . ($result['calc_tax'] == '1' ? $lng['panel']['yes'] : '');
+					$calc_tax_options = makeyesno('calc_tax', '1', '0', $result['calc_tax']);
+					$payment_method = '';
+					$taxclasses_option = '';
+					foreach($lng['customer']['payment_methods'] as $payment_method_id => $payment_method_name)
+					{
+						$payment_method.= makeoption($payment_method_name, $payment_method_id, (int)$result['payment_method'], true);
+					}
+
+					foreach($taxclasses as $classid => $classname)
+					{
+						$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
+					}
 				}
 
-				$taxclasses_option = '';
-				foreach($taxclasses as $classid => $classname)
-				{
-					$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
-				}
-
-				$calc_tax = ($result['calc_tax'] == '0' ? $lng['panel']['no'] : '') . ($result['calc_tax'] == '1' ? $lng['panel']['yes'] : '');
-				$calc_tax_options = makeyesno('calc_tax', '1', '0', $result['calc_tax']);
 				$result = htmlentities_array($result);
 				eval("echo \"" . getTemplate("customers/customers_edit") . "\";");
 			}

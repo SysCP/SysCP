@@ -35,8 +35,8 @@ elseif(isset($_GET['id']))
 if($page == 'admins'
    && $userinfo['change_serversettings'] == '1')
 {
-	if($action == 'add'
-	   || $action == 'edit')
+	if($settings['billing']['activate_billing'] == '1'
+	   && ($action == 'add' || $action == 'edit'))
 	{
 		$taxclasses = array(
 			'0' => $lng['panel']['default']
@@ -1190,35 +1190,39 @@ if($page == 'admins'
 				}
 
 				$change_serversettings = makeyesno('change_serversettings', '1', '0', $result['change_serversettings']);
-				$edit_billingdata = makeyesno('edit_billingdata', '1', '0', $result['edit_billingdata']);
 				$customers_see_all = makeyesno('customers_see_all', '1', '0', $result['customers_see_all']);
 				$domains_see_all = makeyesno('domains_see_all', '1', '0', $result['domains_see_all']);
 				$caneditphpsettings = makeyesno('caneditphpsettings', '1', '0', $result['caneditphpsettings']);
 				$deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
-				$result['additional_traffic_unit'] = round($result['additional_traffic_unit'] / (1024 * 1024), 4);
-				$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit'] / (1024), 4);
-				$interval_type = getIntervalTypes('option', $result['interval_type']);
-				$service_active = makeyesno('service_active', '1', '0', $result['service_active']);
-				$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
-				$payment_method = '';
-				foreach($lng['customer']['payment_methods'] as $payment_method_id => $payment_method_name)
-				{
-					$payment_method.= makeoption($payment_method_name, $payment_method_id, (int)$result['payment_method'], true);
-				}
 
-				$taxclasses_option = '';
-				foreach($taxclasses as $classid => $classname)
+				if($settings['billing']['activate_billing'] == '1')
 				{
-					$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
-				}
+					$edit_billingdata = makeyesno('edit_billingdata', '1', '0', $result['edit_billingdata']);
+					$result['additional_traffic_unit'] = round($result['additional_traffic_unit'] / (1024 * 1024), 4);
+					$result['additional_diskspace_unit'] = round($result['additional_diskspace_unit'] / (1024), 4);
+					$interval_type = getIntervalTypes('option', $result['interval_type']);
+					$service_active = makeyesno('service_active', '1', '0', $result['service_active']);
+					$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
+					$payment_method = '';
+					foreach($lng['customer']['payment_methods'] as $payment_method_id => $payment_method_name)
+					{
+						$payment_method.= makeoption($payment_method_name, $payment_method_id, (int)$result['payment_method'], true);
+					}
 
-				$calc_tax = makeyesno('calc_tax', '1', '0', $result['calc_tax']);
-				$service_categories_option_once = '';
-				$service_categories_option_period = '';
-				foreach($service_categories as $service_category_id => $service_category_caption)
-				{
-					$service_categories_option_once.= makeoption($service_category_caption, $service_category_id, explode('-', $result['customer_categories_once']));
-					$service_categories_option_period.= makeoption($service_category_caption, $service_category_id, explode('-', $result['customer_categories_period']));
+					$taxclasses_option = '';
+					foreach($taxclasses as $classid => $classname)
+					{
+						$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
+					}
+
+					$calc_tax = makeyesno('calc_tax', '1', '0', $result['calc_tax']);
+					$service_categories_option_once = '';
+					$service_categories_option_period = '';
+					foreach($service_categories as $service_category_id => $service_category_caption)
+					{
+						$service_categories_option_once.= makeoption($service_category_caption, $service_category_id, explode('-', $result['customer_categories_once']));
+						$service_categories_option_period.= makeoption($service_category_caption, $service_category_id, explode('-', $result['customer_categories_period']));
+					}
 				}
 
 				$result = htmlentities_array($result);
