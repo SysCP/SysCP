@@ -685,9 +685,14 @@ if($page == 'domains'
 				$safemode = makeyesno('safemode', '1', '0', '1');
 				$speciallogfile = makeyesno('speciallogfile', '1', '0', '0');
 				$add_date = date('Y-m-d');
-				$interval_type = getIntervalTypes('option', 'y');
-				$service_active = makeyesno('service_active', '1', '0', '0');
-				$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', '0', true) . makeoption($lng['service']['interval_payment_postpaid'], '1', '0', true);
+
+				if($settings['billing']['activate_billing'] == '1')
+				{
+					$interval_type = getIntervalTypes('option', 'y');
+					$service_active = makeyesno('service_active', '1', '0', '0');
+					$interval_payment = makeoption($lng['service']['interval_payment_prepaid'], '0', '0', true) . makeoption($lng['service']['interval_payment_postpaid'], '1', '0', true);
+				}
+
 				eval("echo \"" . getTemplate("domains/domains_add") . "\";");
 			}
 		}
@@ -1164,16 +1169,20 @@ if($page == 'domains'
 				$openbasedir = makeyesno('openbasedir', '1', '0', $result['openbasedir']);
 				$safemode = makeyesno('safemode', '1', '0', $result['safemode']);
 				$speciallogfile = ($result['speciallogfile'] == 1 ? $lng['panel']['yes'] : $lng['panel']['no']);
-				$interval_type = getIntervalTypes('option', $result['interval_type']);
-				$service_active = ($result['service_active'] == '0' ? $lng['panel']['no'] : '') . ($result['service_active'] == '1' ? $lng['panel']['yes'] : '');
-				$service_active_options = makeyesno('service_active', '1', '0', $result['service_active']);
-				$interval_payment = ($result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '') . ($result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '');
-				$interval_payment_options = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
 				$result['add_date'] = date('Y-m-d', $result['add_date']);
-				$taxclasses_option = '';
-				foreach($taxclasses as $classid => $classname)
+
+				if($settings['billing']['activate_billing'] == '1')
 				{
-					$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
+					$interval_type = getIntervalTypes('option', $result['interval_type']);
+					$service_active = ($result['service_active'] == '0' ? $lng['panel']['no'] : '') . ($result['service_active'] == '1' ? $lng['panel']['yes'] : '');
+					$service_active_options = makeyesno('service_active', '1', '0', $result['service_active']);
+					$interval_payment = ($result['interval_payment'] == '0' ? $lng['service']['interval_payment_prepaid'] : '') . ($result['interval_payment'] == '1' ? $lng['service']['interval_payment_postpaid'] : '');
+					$interval_payment_options = makeoption($lng['service']['interval_payment_prepaid'], '0', $result['interval_payment'], true) . makeoption($lng['service']['interval_payment_postpaid'], '1', $result['interval_payment'], true);
+					$taxclasses_option = '';
+					foreach($taxclasses as $classid => $classname)
+					{
+						$taxclasses_option.= makeoption($classname, $classid, $result['taxclass']);
+					}
 				}
 
 				$phpconfigs = '';

@@ -769,14 +769,6 @@ if(($page == 'settings' || $page == 'overview')
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_vmail_homedir from '" . $settings['system']['vmail_homedir'] . "' to '" . $value . "'");
 			}
 
-			if($_POST['system_mailpwcleartext'] != $settings['system']['mailpwcleartext']
-			   && isset($_POST['system_mailpwcleartext']))
-			{
-				$value = ($_POST['system_mailpwcleartext'] == '1' ? '1' : '0');
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mailpwcleartext from '" . $settings['system']['mailpwcleartext'] . "' to '" . $value . "'");
-			}
-
 			if($_POST['panel_sendalternativemail'] != $settings['panel']['sendalternativemail']
 			   && isset($_POST['panel_sendalternativemail']))
 			{
@@ -1236,6 +1228,23 @@ if(($page == 'settings' || $page == 'overview')
 		   || $settings_all
 		   || $only_enabledisable)
 		{
+			if($_POST['panel_unix_names'] != $settings['panel']['unix_names']
+			   && isset($_POST['panel_unix_names']))
+			{
+				$value = ($_POST['panel_unix_names'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='unix_names'");
+				$settings['panel']['unix_names'] = $value;
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_unix_names from '" . $settings['panel']['unix_names'] . "' to '" . $value . "'");
+			}
+
+			if($_POST['system_mailpwcleartext'] != $settings['system']['mailpwcleartext']
+			   && isset($_POST['system_mailpwcleartext']))
+			{
+				$value = ($_POST['system_mailpwcleartext'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mailpwcleartext from '" . $settings['system']['mailpwcleartext'] . "' to '" . $value . "'");
+			}
+
 			if($_POST['system_mod_fcgid_tmpdir'] != $settings['system']['mod_fcgid_tmpdir']
 			   && isset($_POST['system_mod_fcgid_tmpdir']))
 			{
@@ -1296,15 +1305,6 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_peardir'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_peardir from '" . $settings['system']['mod_fcgid_peardir'] . "' to '" . $value . "'");
 				inserttask('1');
-			}
-
-			if($_POST['panel_unix_names'] != $settings['panel']['unix_names']
-			   && isset($_POST['panel_unix_names']))
-			{
-				$value = ($_POST['panel_unix_names'] == '1' ? '1' : '0');
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='unix_names'");
-				$settings['panel']['unix_names'] = $value;
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_unix_names from '" . $settings['panel']['unix_names'] . "' to '" . $value . "'");
 			}
 
 			if($_POST['system_modfcgid'] != $settings['system']['mod_fcgid']
