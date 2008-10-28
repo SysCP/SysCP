@@ -287,7 +287,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = ($_POST['frontend_syscp_version_login'] == '1' ? '1' : '0');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='admin' AND `varname`='show_version_login'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed admin_show_version_login from '" . $settings['system']['show_version_login'] . "' to '" . $value . "'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed admin_show_version_login from '" . $settings['admin']['show_version_login'] . "' to '" . $value . "'");
 			}
 
 			if($_POST['frontend_syscp_version_footer'] != $settings['admin']['show_version_footer']
@@ -295,7 +295,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = ($_POST['frontend_syscp_version_footer'] == '1' ? '1' : '0');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='admin' AND `varname`='show_version_footer'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed admin_show_version_footer from '" . $settings['system']['show_version_footer'] . "' to '" . $value . "'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed admin_show_version_footer from '" . $settings['admin']['show_version_footer'] . "' to '" . $value . "'");
 			}
 
 			if($_POST['frontend_syscp_graphic'] != $settings['admin']['syscp_graphic']
