@@ -22,13 +22,13 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['extras']['errordocument403path']}:</b><br />{$lng['panel']['emptyfordefault']}
-				<if $settings[system][webserver] == lighttpd><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
+				<if $settings['system']['webserver'] == 'lighttpd'><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
 				</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="error403path" value="{$result['error403path']}" size="30" maxlength="255" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"><b>{$lng['extras']['errordocument500path']}:</b><br />{$lng['panel']['emptyfordefault']}
-				<if $settings[system][webserver] == lighttpd><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
+				<if $settings['system']['webserver'] == 'lighttpd'><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
 				</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="error500path" value="{$result['error500path']}" size="30" maxlength="255" /></td>
 			</tr>
