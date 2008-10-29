@@ -100,10 +100,12 @@ $header
 				<td class="field_display">$kernel</td>
 			</tr>
 		</if>
+		<if $uptime != ''>
 		<tr>
 			<td class="field_name_nobordersmall">Uptime:</td>
 			<td class="field_display_nobordersmall">$uptime</td>
 		</tr>
+		</if>
 		<tr>
 			<td colspan="2" class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['admin']['syscpdetails']}</b></td>
 		</tr>
