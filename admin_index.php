@@ -177,34 +177,40 @@ if($page == 'overview')
 		$kernel = '';
 	}
 
-	if(function_exists('posix_times'))
+	// Try to get the uptime
+	// First: With exec (let's hope it's enabled for the SysCP - vHost)
+	$uptime_array = explode(" ", @exec("cat /proc/uptime 2> /dev/null"));
+	if(is_array($uptime_array) && isset($uptime_array[0]) && is_numeric($uptime_array[0]))
 	{
+		// Some calculatioon to get a nicly formatted display
+		$seconds = round($uptime_array[0], 0);
+		$minutes = $seconds / 60;
+		$hours = $minutes / 60;
+		$days = floor($hours / 24);
+		$hours = floor($hours - ($days * 24));
+		$minutes = floor($minutes - ($days * 24 * 60) - ($hours * 60));
+		$seconds = floor($seconds - ($days * 24 * 60 * 60) - ($hours * 60 * 60) - ($minutes * 60));
+		$uptime = "{$days}d, {$hours}h, {$minutes}m, {$seconds}s";
+		// Just cleanup
+		unset($uptime_array, $seconds, $minutes, $hours, $days);
+	}
+	elseif(function_exists('posix_times'))
+	{
+		// Seems exec didn't work, let's try the very inaccurate and not really working posix - time
 		$times = posix_times();
 		$now = $times['ticks'];
-		$days = intval($now / (60 * 60 * 24 * 100));
-		$remainder = $now % (60 * 60 * 24 * 100);
-		$hours = intval($remainder / (60 * 60 * 100));
-		$remainder = $remainder % (60 * 60 * 100);
-		$minutes = intval($remainder / (60 * 100));
-		$years = 0;
-
-		while($days > 365)
-		{
-			$years++;
-			$days-= 365;
-		}
-
-		if($years > 0)
-		{
-			$uptime = $years . 'y, ' . $days . 'd, ' . $hours . 'h, ' . $minutes . 'm';
-		}
-		else
-		{
-			$uptime = $days . 'd, ' . $hours . 'h, ' . $minutes . 'm';
-		}
+		$days = intval($now / (60*60*24*100));
+		$remainder = $now % (60*60*24*100);
+		$hours = intval($remainder / (60*60*100));
+		$remainder = $remainder % (60*60*100);
+		$minutes = intval($remainder / (60*100));
+		$uptime = "{$days}d, {$hours}h, {$minutes}m";
+		// Just cleanup
+		unset($times, $now, $days, $remainder, $hours, $minutes);
 	}
 	else
 	{
+		// Nothing of the above worked, show an error :/
 		$uptime = $lng['admin']['nouptimeavailable'];
 	}
 
