@@ -179,10 +179,15 @@ if($page == 'overview')
 
 	// Try to get the uptime
 	// First: With exec (let's hope it's enabled for the SysCP - vHost)
+
 	$uptime_array = explode(" ", @file_get_contents("/proc/uptime"));
-	if(is_array($uptime_array) && isset($uptime_array[0]) && is_numeric($uptime_array[0]))
+
+	if(is_array($uptime_array)
+	   && isset($uptime_array[0])
+	   && is_numeric($uptime_array[0]))
 	{
 		// Some calculatioon to get a nicly formatted display
+
 		$seconds = round($uptime_array[0], 0);
 		$minutes = $seconds / 60;
 		$hours = $minutes / 60;
@@ -191,12 +196,15 @@ if($page == 'overview')
 		$minutes = floor($minutes - ($days * 24 * 60) - ($hours * 60));
 		$seconds = floor($seconds - ($days * 24 * 60 * 60) - ($hours * 60 * 60) - ($minutes * 60));
 		$uptime = "{$days}d, {$hours}h, {$minutes}m, {$seconds}s";
+
 		// Just cleanup
+
 		unset($uptime_array, $seconds, $minutes, $hours, $days);
 	}
 	else
 	{
 		// Nothing of the above worked, show an error :/
+
 		$uptime = '';
 	}
 
