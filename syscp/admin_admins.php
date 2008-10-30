@@ -709,7 +709,7 @@ if($page == 'admins'
 
 					if(isset($_POST['emails_ul']))
 					{
-						$email = - 1;
+						$emails = - 1;
 					}
 
 					$email_accounts = intval_ressource($_POST['email_accounts']);
