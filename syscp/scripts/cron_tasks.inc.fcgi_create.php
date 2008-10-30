@@ -89,7 +89,7 @@ function createFcgiConfig($domain, $settings)
 
 	// set number of processes for one domain
 
-	if((int)$domain['starter'] == - 1)
+	if((int)$domain['mod_fcgid_starter'] == -1)
 	{
 		$starter_file.= "PHP_FCGI_CHILDREN=" . (int)$settings['system']['mod_fcgid_starter'] . "\n";
 	}
