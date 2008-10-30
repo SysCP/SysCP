@@ -562,8 +562,8 @@ if(($page == 'settings' || $page == 'overview')
 			if($_POST['panel_webserver_selected'] != $settings['system']['webserver']
 			   && isset($_POST['panel_webserver_selected']))
 			{
-				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($_POST[panel_webserver_selected]) . "' WHERE `settinggroup`='system' AND `varname`='webserver'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webserver from '" . $settings['system']['apacheconf_vhost'] . "' to '" . $_POST[panel_webserver_selected] . "'");
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($_POST['panel_webserver_selected']) . "' WHERE `settinggroup`='system' AND `varname`='webserver'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webserver from '" . $settings['system']['apacheconf_vhost'] . "' to '" . $_POST['panel_webserver_selected'] . "'");
 				inserttask('1');
 				inserttask('3');
 			}
