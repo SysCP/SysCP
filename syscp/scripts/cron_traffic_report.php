@@ -162,7 +162,7 @@ while($row = $db->fetch_array($result))
                                 AND `varname`='trafficninetypercent_mailbody'");
 		$mail_body = html_entity_decode(replace_variables((($result2['value'] != '') ? $result2['value'] : $lng['mails']['trafficninetypercent']['mailbody']), $replace_arr));
 		$mail->From = $row['email'];
-		$mail->FromName = $row['name'];
+		$mail->FromName = $row['firstname'] . " " . $row['name'];
 		$mail->Subject = $mail_subject;
 		$mail->Body = $mail_body;
 		$mail->AddAddress($row['email'], $row['name']);
