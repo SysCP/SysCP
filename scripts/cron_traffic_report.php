@@ -34,10 +34,10 @@ $yesterday = time() - (60 * 60 * 24);
 /**
  * Initialize the mailingsystem
  */
+
 require (dirname(__FILE__) . '/../lib/class.phpmailer.php');
 $mail = new PHPMailer();
 $mail->From = $settings['panel']['adminmail'];
-
 
 // Warn the customers at 90% traffic-usage
 
