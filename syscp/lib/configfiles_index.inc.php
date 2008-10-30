@@ -587,8 +587,6 @@ $configfiles = Array(
 			)
 		)
 	),
-    
-    
 	'gentoo' => Array(
 		'label' => 'Gentoo',
 		'services' => Array(
