@@ -79,6 +79,8 @@ define('TASK_INSTALL', 1);
 define('TASK_REMOVE', 2);
 define('TASK_RECONFIGURE', 3);
 define('TASK_UPGRADE', 4);
+define('TASK_SYSTEM_UPDATE', 5);
+define('TASK_SYSTEM_DOWNLOAD', 6);
 define('INSTANCE_INSTALL', 1);
 define('INSTANCE_TASK_ACTIVE', 2);
 define('INSTANCE_SUCCESS', 3);
@@ -86,6 +88,6 @@ define('INSTANCE_ERROR', 4);
 define('INSTANCE_UNINSTALL', 5);
 define('PACKAGE_LOCKED', 1);
 define('PACKAGE_ENABLED', 2);
-$version = '1.2.19-svn35';
+$version = '1.2.19-svn36';
 
 ?>

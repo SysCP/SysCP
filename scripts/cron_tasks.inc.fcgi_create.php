@@ -86,7 +86,18 @@ function createFcgiConfig($domain, $settings)
 	$starter_file.= "#\n\n";
 	$starter_file.= "PHPRC=" . escapeshellarg($configdir) . "\n";
 	$starter_file.= "export PHPRC\n";
-	$starter_file.= "PHP_FCGI_CHILDREN=" . (int)$settings['system']['mod_fcgid_starter'] . "\n";
+
+	// set number of processes for one domain
+
+	if((int)$domain['starter'] == - 1)
+	{
+		$starter_file.= "PHP_FCGI_CHILDREN=" . (int)$settings['system']['mod_fcgid_starter'] . "\n";
+	}
+	else
+	{
+		$starter_file.= "PHP_FCGI_CHILDREN=" . (int)$domain['mod_fcgid_starter'] . "\n";
+	}
+
 	$starter_file.= "export PHP_FCGI_CHILDREN\n";
 	$starter_file.= "exec /usr/bin/php-cgi -c " . escapeshellarg($configdir) . "\n";
 

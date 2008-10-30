@@ -1,3 +1,3 @@
 <tr>
-	<td class="title" colspan="5"><strong>{$Row['Name']}</strong></td>
+	<td class="title" colspan="6"><strong>{$Row['Name']}</strong></td>
 </tr>

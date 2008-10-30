@@ -299,14 +299,14 @@ if($page == 'customers'
 
 				if(isset($_POST['diskspace_ul']))
 				{
-					$diskspace = - 1;
+					$diskspace = -1;
 				}
 
 				$traffic = doubleval_ressource($_POST['traffic']);
 
 				if(isset($_POST['traffic_ul']))
 				{
-					$traffic = - 1;
+					$traffic = -1;
 				}
 
 				$subdomains = intval_ressource($_POST['subdomains']);
@@ -320,21 +320,21 @@ if($page == 'customers'
 
 				if(isset($_POST['emails_ul']))
 				{
-					$emails = - 1;
+					$emails = -1;
 				}
 
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_accounts = - 1;
+					$email_accounts = -1;
 				}
 
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 				if(isset($_POST['email_forwarders_ul']))
 				{
-					$email_forwarders = - 1;
+					$email_forwarders = -1;
 				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
@@ -343,7 +343,7 @@ if($page == 'customers'
 
 					if(isset($_POST['email_quota_ul']))
 					{
-						$email_quota = - 1;
+						$email_quota = -1;
 					}
 				}
 				else
@@ -357,7 +357,7 @@ if($page == 'customers'
 
 				if(isset($_POST['ftps_ul']))
 				{
-					$ftps = - 1;
+					$ftps = -1;
 				}
 
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
@@ -372,7 +372,7 @@ if($page == 'customers'
 
 				if(isset($_POST['mysqls_ul']))
 				{
-					$mysqls = - 1;
+					$mysqls = -1;
 				}
 
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
@@ -832,42 +832,42 @@ if($page == 'customers'
 
 				if(isset($_POST['diskspace_ul']))
 				{
-					$diskspace = - 1;
+					$diskspace = -1;
 				}
 
 				$traffic = doubleval_ressource($_POST['traffic']);
 
 				if(isset($_POST['traffic_ul']))
 				{
-					$traffic = - 1;
+					$traffic = -1;
 				}
 
 				$subdomains = intval_ressource($_POST['subdomains']);
 
 				if(isset($_POST['subdomains_ul']))
 				{
-					$subdomains = - 1;
+					$subdomains = -1;
 				}
 
 				$emails = intval_ressource($_POST['emails']);
 
 				if(isset($_POST['emails_ul']))
 				{
-					$emails = - 1;
+					$emails = -1;
 				}
 
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_accounts = - 1;
+					$email_accounts = -1;
 				}
 
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_forwarders = - 1;
+					$email_forwarders = -1;
 				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
@@ -876,7 +876,7 @@ if($page == 'customers'
 
 					if(isset($_POST['email_quota_ul']))
 					{
-						$email_quota = - 1;
+						$email_quota = -1;
 					}
 
 					$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
@@ -893,7 +893,7 @@ if($page == 'customers'
 
 				if(isset($_POST['ftps_ul']))
 				{
-					$ftps = - 1;
+					$ftps = -1;
 				}
 
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
@@ -901,14 +901,14 @@ if($page == 'customers'
 				if(isset($_POST['tickets_ul'])
 				   && $settings['ticket']['enabled'] == '1')
 				{
-					$tickets = - 1;
+					$tickets = -1;
 				}
 
 				$mysqls = intval_ressource($_POST['mysqls']);
 
 				if(isset($_POST['mysqls_ul']))
 				{
-					$mysqls = - 1;
+					$mysqls = -1;
 				}
 
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);

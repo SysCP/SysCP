@@ -108,6 +108,10 @@ $header
 				<td class="main_field_name">{$lng['admin']['phpsettings']['title']}</td>
 				<td class="main_field_display" nowrap="nowrap"><select name="phpconfig">$phpconfigs</select></td>
 			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['mod_fcgid_starter']['title']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input size="60" name="mod_fcgid_starter" value="$mod_fcgid_starter"/></td>
+			</tr>
 			</if>
 			<if $userinfo['change_serversettings'] == '1'>
 			<tr>

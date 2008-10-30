@@ -164,6 +164,12 @@ $header
 				<td class="main_field_name">{$lng['customer']['mysqls']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="mysqls" value="0" maxlength="9" />&nbsp;{$mysqls_ul}</td>
 			</tr>
+			<if $settings['aps']['aps_active'] == '1'>
+			<tr>
+				<td class="main_field_name">{$lng['aps']['canmanagepackages']}:</td>
+				<td class="main_field_display" nowrap="nowrap">$ManageApsPackages</td>
+			</tr>
+			</if>
 			<if $settings['billing']['activate_billing'] == '1'>
 			<tr>
 				<td class="maintitle_apply_left">
