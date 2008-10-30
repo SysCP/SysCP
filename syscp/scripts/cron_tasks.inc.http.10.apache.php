@@ -408,9 +408,14 @@ class apache
 			{
 				$vhost_content.= $this->composePhpOptions($domain);
 			}
+			elseif($this->settings['system']['mod_fcgid'] != 1)
+			{
+				$vhost_content.= '  # PHP is disabled for this vHost' . "\n";
+				$vhost_content.= '  php_flag engine off' . "\n";
+			}
 			else
 			{
-				$vhost_content.= '  php_flag engine off' . "\n";
+				$vhost_content.= '  # PHP is disabled for this vHost' . "\n";
 			}
 
 			mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
