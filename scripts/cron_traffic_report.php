@@ -31,6 +31,14 @@ include (dirname(__FILE__) . '/../lib/cron_init.php');
 fwrite($debugHandler, 'Trafficreport run started...' . "\n");
 $yesterday = time() - (60 * 60 * 24);
 
+/**
+ * Initialize the mailingsystem
+ */
+require (dirname(__FILE__) . '/../lib/class.phpmailer.php');
+$mail = new PHPMailer();
+$mail->From = $settings['panel']['adminmail'];
+
+
 // Warn the customers at 90% traffic-usage
 
 $result = $db->query("SELECT `c`.`customerid`, `c`.`adminid`, `c`.`name`, `c`.`firstname`, `c`.`traffic`,
