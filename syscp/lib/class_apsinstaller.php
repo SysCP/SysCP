@@ -15,10 +15,7 @@
  * @license		GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package		Cron
  * @version		$Id$
- * @todo		errorlogging
- *				check if directory is within customer directory
- *				permissions ok!?
- *				set right file owner
+ * @todo		logging
  *				run with user uid/gid
  *				folder truncation/package remove/tar all files
  */
@@ -35,11 +32,10 @@ class ApsInstaller extends ApsParser
 	private $Hosts = '';
 
 	/**
-	 input:
-	 settings		array with the global settings from syscp
-	 db				instance of the database class from syscp
-	 return:
-	 none
+	 * constructor of class. setup some basic variables
+	 *
+	 * @param	settings	array with the global settings from syscp
+	 * @param	db			instance of the database class from syscp
 	 */
 
 	public function __construct($settings, $db, $db_root)
@@ -52,16 +48,13 @@ class ApsInstaller extends ApsParser
 	}
 
 	/**
-	 input:
-	 none
-	 return:
-	 none
+	 * main function of class which handles all
 	 */
 
 	public function InstallHandler()
 	{
 		chdir($this->RootDir);
-		$result = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` AS `t` INNER JOIN `' . TABLE_APS_INSTANCES . '` AS `i` ON `t`.`InstanceID` = `i`.`ID` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID`');
+		$result = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` AS `t` INNER JOIN `' . TABLE_APS_INSTANCES . '` AS `i` ON `t`.`InstanceID` = `i`.`ID` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `TASK` NOT IN (' . TASK_SYSTEM_UPDATE . ', ' . TASK_SYSTEM_DOWNLOAD . ')');
 
 		while($Row = $this->db->fetch_array($result))
 		{
@@ -91,17 +84,32 @@ class ApsInstaller extends ApsParser
 			$this->Domain = '';
 			$this->RealPath = '';
 
-			//lock instance so install cannot be canceled from the panel
+			//lock instance so installation cannot be canceled from the panel
 
 			$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_TASK_ACTIVE . ' WHERE `ID` = ' . $this->db->escape($Row['InstanceID']));
+
+			//setup environment with data for domain/installation location
+
 			self::PrepareBasics($Row);
+
+			//create database if necessary and setup environment variables
+
 			self::PrepareDatabase($Xml, $Row, $Task);
+
+			//unpack installation scripts and package files if necessary
 
 			if(self::PrepareFiles($Xml, $Row, $Task))
 			{
+				//setup environment variables fetched from installation wizard
+
 				self::PrepareWizardData($Xml, $Row, $Task);
+
+				//run installation scripts from packages
+
 				self::RunInstaller($Xml, $Row, $Task);
 			}
+
+			//remove installation scripts
 
 			self::CleanupData($Xml, $Row, $Task);
 			unset($Xml);
@@ -109,13 +117,12 @@ class ApsInstaller extends ApsParser
 	}
 
 	/**
-	 input:
-	 xml			instance of a valid xml object with a parsed APP-META.xml file
-	 row			current entry from the database for app to handle
-	 task		numeric code to specify what to do
-	 return:
-	 success		true
-	 error		false
+	 * run the installation script and log errors if there are some
+	 *
+	 * @param	xml			instance of a valid xml object with a parsed APP-META.xml file
+	 * @param	row			current entry from the database for app to handle
+	 * @param	task		numeric code to specify what to do
+	 * @return	success true/error false
 	 */
 
 	private function RunInstaller($Xml, $Row, $Task)
@@ -124,6 +131,8 @@ class ApsInstaller extends ApsParser
 
 		if($Task == TASK_INSTALL)
 		{
+			//setup right path and run installation script
+
 			chdir($this->RealPath . $this->DomainPath . '/install_scripts/');
 			$Return = array();
 			$ReturnStatus = 0;
@@ -140,7 +149,7 @@ class ApsInstaller extends ApsParser
 					$Count+= 1;
 					$Buffer.= $Line;
 
-					if($Count != count($Return))$Buffer.= '<br/>';
+					if($Count != count($Return))$Buffer.= "\n";
 				}
 
 				//FIXME error logging
@@ -151,6 +160,13 @@ class ApsInstaller extends ApsParser
 			}
 			else
 			{
+				//installation succeeded
+				//chown all files if installtion script has created some new files. otherwise customers cannot edit the files via ftp
+
+				exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
+
+				//update database
+
 				$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_SUCCESS . ' WHERE `ID` = ' . $this->db->escape($Row['InstanceID']));
 				return true;
 			}
@@ -158,12 +174,11 @@ class ApsInstaller extends ApsParser
 	}
 
 	/**
-	 input:
-	 xml			instance of a valid xml object with a parsed APP-META.xml file
-	 row			current entry from the database for app to handle
-	 task		numeric code to specify what to do
-	 return:
-	 none
+	 * remove installation scripts from filesystem and remove tasks and update the database
+	 *
+	 * @param	xml			instance of a valid xml object with a parsed APP-META.xml file
+	 * @param	row			current entry from the database for app to handle
+	 * @param	task		numeric code to specify what to do
 	 */
 
 	private function CleanupData($Xml, $Row, $Task)
@@ -174,18 +189,16 @@ class ApsInstaller extends ApsParser
 		{
 			//cleanup installation
 
-			system('rm -rf ' . escapeshellarg($this->RealPath . $this->DomainPath . '/install_scripts/'));
+			exec('rm -rf ' . escapeshellarg($this->RealPath . $this->DomainPath . '/install_scripts/'));
 
 			//remove task
 
 			$this->db->query('DELETE FROM `' . TABLE_APS_TASKS . '` WHERE `Task` = ' . TASK_INSTALL . ' AND `InstanceID` = ' . $this->db->escape($Row['InstanceID']));
 		}
-		else
-
-		if($Task == TASK_REMOVE)
+		elseif($Task == TASK_REMOVE)
 		{
 			//FIXME cleanup installation
-			//system('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
+			//exec('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
 			//remove permissions
 			//drop database
 
@@ -216,12 +229,11 @@ class ApsInstaller extends ApsParser
 	}
 
 	/**
-	 input:
-	 xml			instance of a valid xml object with a parsed APP-META.xml file
-	 row			current entry from the database for app to handle
-	 task		numeric code to specify what to do
-	 return:
-	 none
+	 * setup all environment variables from the wizard, they're all needed by the installation script
+	 *
+	 * @param	xml			instance of a valid xml object with a parsed APP-META.xml file
+	 * @param	row			current entry from the database for app to handle
+	 * @param	task		numeric code to specify what to do
 	 */
 
 	private function PrepareWizardData($Xml, $Row, $Task)
@@ -244,13 +256,12 @@ class ApsInstaller extends ApsParser
 	}
 
 	/**
-	 input:
-	 xml			instance of a valid xml object with a parsed APP-META.xml file
-	 row			current entry from the database for app to handle
-	 task		numeric code to specify what to do
-	 return:
-	 success		true
-	 error		false
+	 * extract all needed files from the aps packages
+	 *
+	 * @param	xml			instance of a valid xml object with a parsed APP-META.xml file
+	 * @param	row			current entry from the database for app to handle
+	 * @param	task		numeric code to specify what to do
+	 * @return	success true/error false
 	 */
 
 	private function PrepareFiles($Xml, $Row, $Task)
@@ -258,9 +269,11 @@ class ApsInstaller extends ApsParser
 		if($Task == TASK_INSTALL)
 		{
 			//FIXME truncate customer directory
-			//system('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/*'));
+			//exec('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/*'));
 
 			if(!file_exists($this->RealPath . $this->DomainPath . '/'))mkdir($this->RealPath . $this->DomainPath . '/', 0777, true);
+
+			//extract all files and chown them to the customer guid
 
 			if(self::ExtractZip($this->RootDir . 'packages/' . $Row['Path'] . '/' . $Row['Path'], $Xml->mapping['path'], $this->RealPath . $this->DomainPath . '/') == false
 			   || self::ExtractZip($this->RootDir . 'packages/' . $Row['Path'] . '/' . $Row['Path'], 'scripts', $this->RealPath . $this->DomainPath . '/install_scripts/') == false)
@@ -268,10 +281,12 @@ class ApsInstaller extends ApsParser
 				$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_ERROR . ' WHERE `ID` = ' . $this->db->escape($Row['InstanceID']));
 
 				//FIXME clean up already installed data
-				//system('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/*'));
+				//exec('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/*'));
 
 				return false;
 			}
+
+			exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
 		}
 		else
 		{
@@ -281,9 +296,13 @@ class ApsInstaller extends ApsParser
 
 				//clean up already installed data
 
-				system('rm -rf ' . escapeshellarg($this->RealPath . $this->DomainPath . '/install_scripts/'));
+				exec('rm -rf ' . escapeshellarg($this->RealPath . $this->DomainPath . '/install_scripts/'));
 				return false;
 			}
+
+			//set right file owner
+
+			exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
 		}
 
 		//recursive mappings
@@ -293,12 +312,11 @@ class ApsInstaller extends ApsParser
 	}
 
 	/**
-	 input:
-	 parentmapping	instance of parsed xml file, current mapping position
-	 url				relative path for application specifying the current path within the mapping tree
-	 path			absolute path for application specifying the current path within the mapping tree
-	 return:
-	 none
+	 * setup path environment variables for the installation script
+	 *
+	 * @param	parentmapping	instance of parsed xml file, current mapping position
+	 * @param	url				relative path for application specifying the current path within the mapping tree
+	 * @param	path			absolute path for application specifying the current path within the mapping tree
 	 */
 
 	private function PrepareMappings($ParentMapping, $Url, $Path)
@@ -360,10 +378,9 @@ class ApsInstaller extends ApsParser
 	}
 
 	/**
-	 input:
-	 xml			instance of a valid xml object with a parsed APP-META.xml file
-	 return:
-	 always		true
+	 * setup domain environment variables for the installation script
+	 *
+	 * @param	xml			instance of a valid xml object with a parsed APP-META.xml file
 	 */
 
 	private function PrepareBasics($Row)
@@ -392,16 +409,14 @@ class ApsInstaller extends ApsParser
 		putenv('BASE_URL_HOST=' . $this->Domain);
 		putenv('BASE_URL_PATH=' . $this->DomainPath . '/');
 		putenv('BASE_URL_SCHEME=http');
-		return true;
 	}
 
 	/**
-	 input:
-	 xml			instance of a valid xml object with a parsed APP-META.xml file
-	 row			current entry from the database for app to handle
-	 task		numeric code to specify what to do
-	 return:
-	 always true
+	 * create a database if necessary and setup environment variables
+	 *
+	 * @param	xml			instance of a valid xml object with a parsed APP-META.xml file
+	 * @param	row			current entry from the database for app to handle
+	 * @param	task		numeric code to specify what to do
 	 */
 
 	private function PrepareDatabase($Xml, $Row, $Task)
@@ -445,18 +460,15 @@ class ApsInstaller extends ApsParser
 			putenv('DB_' . $XmlDb->db->id . '_PORT=3306');
 			putenv('DB_' . $XmlDb->db->id . '_VERSION=' . mysql_get_server_info());
 		}
-
-		return true;
 	}
 
 	/**
-	 input:
-	 filename		path to zipfile to extract
-	 directory		which directory in zipfile to extract
-	 destination		destination directory for files to extract
-	 return:
-	 success			true
-	 error			false
+	 * extract complete directories from a zipfile
+	 *
+	 * @param	filename		path to zipfile to extract
+	 * @param	directory		which directory in zipfile to extract
+	 * @param	destination		destination directory for files to extract
+	 * @return	success true/error false
 	 */
 
 	private function ExtractZip($Filename, $Directory, $Destination)
@@ -468,9 +480,12 @@ class ApsInstaller extends ApsParser
 		if(substr($Directory, -1, 1) == '/')$Directory = substr($Directory, 0, strlen($Directory) - 1);
 
 		if(substr($Destination, -1, 1) != '/')$Destination.= '/';
-		$ZipHandle = zip_open($Filename);
 
-		if($ZipHandle)
+		//open zipfile to read its contents
+
+		$ZipHandle = zip_open(realpath($Filename));
+
+		if(is_resource($ZipHandle))
 		{
 			while($ZipEntry = zip_read($ZipHandle))
 			{
@@ -485,7 +500,7 @@ class ApsInstaller extends ApsParser
 
 					if(substr($NewPath, -1, 1) == '/')
 					{
-						if(!file_exists($Destination . $NewPath))mkdir($Destination . $NewPath);
+						if(!file_exists($Destination . $NewPath))mkdir($Destination . $NewPath, 0777, true);
 					}
 					else
 					{

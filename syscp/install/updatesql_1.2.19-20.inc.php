@@ -955,6 +955,23 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn35';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn35')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn35 to 1.2.19-svn36");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `mod_fcgid_starter` INT( 4 ) NULL DEFAULT '-1'");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `can_manage_aps_packages` TINYINT( 1 ) NOT NULL DEFAULT '1'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'can_manage_aps_packages' WHERE `url` = 'admin_aps.php?action=scan'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'can_manage_aps_packages' WHERE `url` = 'admin_aps.php?action=upload'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'can_manage_aps_packages' WHERE `url` = 'admin_aps.php?action=managepackages'");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn36\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn36';
+	}
 }
 
 // php filter-extension check

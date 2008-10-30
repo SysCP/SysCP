@@ -209,6 +209,7 @@ CREATE TABLE `panel_admins` (
   `invoice_fee_traffic` decimal( 10,2 ) NOT NULL default '0',
   `invoice_fee_diskspace` decimal( 10,2 ) NOT NULL default '0',
   `invoice_fee_other` decimal( 10,2 ) NOT NULL default '0',
+  `can_manage_aps_packages` tinyint(1) NOT NULL default '1',
    PRIMARY KEY  (`adminid`),
    UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
@@ -388,6 +389,7 @@ CREATE TABLE `panel_domains` (
   `serviceend_date` date NOT NULL,
   `lastinvoiced_date` date NOT NULL,
   `phpsettingid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '1',
+  `mod_fcgid_starter` int(4) default '-1',
   PRIMARY KEY  (`id`),
   KEY `customerid` (`customerid`),
   KEY `parentdomain` (`parentdomainid`),
@@ -855,9 +857,9 @@ INSERT INTO `panel_navigation` VALUES (53, 'admin', 'billing.nourl', 'billing;ta
 INSERT INTO `panel_navigation` VALUES (54, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'edit_billingdata', '0');
 INSERT INTO `panel_navigation` VALUES (55, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'edit_billingdata', '0');
 INSERT INTO `panel_navigation` VALUES (56, 'admin', '', 'admin;aps', 'admin_aps.nourl', 45, 'aps_enabled', 0);
-INSERT INTO `panel_navigation` VALUES (57, 'admin', 'admin_aps.nourl', 'aps;scan', 'admin_aps.php?action=scan', 20, '', 0);
-INSERT INTO `panel_navigation` VALUES (58, 'admin', 'admin_aps.nourl', 'aps;upload', 'admin_aps.php?action=upload', 10, '', 0);
-INSERT INTO `panel_navigation` VALUES (59, 'admin', 'admin_aps.nourl', 'aps;managepackages', 'admin_aps.php?action=managepackages', 30, '', 0);
+INSERT INTO `panel_navigation` VALUES (57, 'admin', 'admin_aps.nourl', 'aps;scan', 'admin_aps.php?action=scan', 20, 'can_manage_aps_packages', 0);
+INSERT INTO `panel_navigation` VALUES (58, 'admin', 'admin_aps.nourl', 'aps;upload', 'admin_aps.php?action=upload', 10, 'can_manage_aps_packages', 0);
+INSERT INTO `panel_navigation` VALUES (59, 'admin', 'admin_aps.nourl', 'aps;managepackages', 'admin_aps.php?action=managepackages', 30, 'can_manage_aps_packages', 0);
 INSERT INTO `panel_navigation` VALUES (60, 'admin', 'admin_aps.nourl', 'aps;manageinstances', 'admin_aps.php?action=manageinstances', 35, '', 0);
 INSERT INTO `panel_navigation` VALUES (61, 'customer', '', 'customer;aps', 'customer_aps.nourl', 50, 'aps_enabled', 0);
 INSERT INTO `panel_navigation` VALUES (62, 'customer', 'customer_aps.nourl', 'aps;overview', 'customer_aps.php?action=overview', 10, '', 0);

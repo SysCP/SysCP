@@ -17,17 +17,16 @@
  * @version		$Id$
  * @todo		implement charset validation
  *				reconfigure
- *				module settings
- *				patch und versionmanagement
- *				permissioncontrol admin/customer
- *				automated updates/package search/package installation
- *				directory truncation!?
+ *				patch- and versionmanagement
+ *				use settings/userinfo array instead a copy of this vars
+ *				!!! how many packages for a customer
+ *				remove locked packages
+ *				replace all html code
  *				add https support
  *				multi language support (package localization)
- *				package clearing through admin
  *				zip stuff in own class
- *				admin/customer id as a class variable
- *				enable newest packages
+ *				logging
+ *				button for remove of all failed installations
  */
 
 class ApsParser
@@ -37,12 +36,11 @@ class ApsParser
 	private $db = false;
 
 	/**
-	 input:
-	 userinfo		global array with the current userinfos
-	 settings		global array with the current system settings
-	 db				valid instance of the database class
-	 return:
-	 none
+	 * Constructor of class, setup basic variables needed by the class
+	 *
+	 * @param	userinfo		global array with the current userinfos
+	 * @param	settings		global array with the current system settings
+	 * @param	db				valid instance of the database class
 	 */
 
 	public function __construct($userinfo, $settings, $db)
@@ -53,139 +51,327 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 none
-	 return:
-	 none
+	 * function provides instance management for admins
 	 */
 
 	private function ManageInstances()
 	{
 		global $lng, $filename, $s, $page, $action;
+		$Question = false;
 
-		//INSTALL
-
-		$InstancesInstall = '';
-		$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_INSTALL . ' GROUP BY `Version`, `Release`');
-
-		while($Row = $this->db->fetch_array($Result))
+		if(isset($_POST['save']))
 		{
-			eval("\$InstancesInstall.=\"" . getTemplate("aps/manage_instances_package") . "\";");
+			$Ids = '';
+			$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '`');
 
-			//get instances
-
-			$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_INSTALL . ' AND `PackageID` = ' . $Row['PackageID']);
-
-			while($Row2 = $this->db->fetch_array($Result2))
+			while($Row = $this->db->fetch_array($Result))
 			{
-				//get customer name
+				//has admin clicked "yes" for question
 
-				$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
-				$Row3 = $this->db->fetch_array($Result3);
-				eval("\$InstancesInstall.=\"" . getTemplate("aps/manage_instances_install") . "\";");
+				if(isset($_POST['answer'])
+				   && $_POST['answer'] == $lng['panel']['yes'])
+				{
+					//instance installation stop
+
+					if(isset($_POST['stop' . $Row['ID']])
+					   && $_POST['stop' . $Row['ID']] == '1')
+					{
+						//remove task
+
+						$this->db->query('DELETE FROM `' . TABLE_APS_TASKS . '` WHERE `InstanceID` = ' . (int)$Row['ID']);
+
+						//remove settings
+
+						$this->db->query('DELETE FROM `' . TABLE_APS_SETTINGS . '` WHERE `InstanceID` = ' . (int)$Row['ID']);
+
+						//remove instance
+
+						$this->db->query('DELETE FROM `' . TABLE_APS_INSTANCES . '` WHERE `ID` = ' . (int)$Row['ID']);
+					}
+
+					//instance uninstallation
+
+					if(isset($_POST['remove' . $Row['ID']])
+					   && $_POST['remove' . $Row['ID']] == '1')
+					{
+						//remove installation task if it still exists
+
+						$this->db->query('DELETE FROM `' . TABLE_APS_TASKS . '` WHERE `InstanceID` = ' . (int)$Row['ID'] . ' AND `Task` = ' . TASK_INSTALL);
+
+						//insert task for uninstallation if it doesnt exists already
+
+						$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` WHERE `InstanceID` = ' . (int)$Row['ID'] . ' AND `Task` = ' . TASK_REMOVE);
+
+						if($this->db->num_rows($Result2) == 0)
+						{
+							$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`InstanceID`, `Task`) VALUES (' . (int)$Row['ID'] . ', ' . TASK_REMOVE . ')');
+							$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_UNINSTALL . ' WHERE `ID` = ' . (int)$Row['ID']);
+						}
+					}
+				}
+				else
+				{
+					//backup all selected ids for yes/no question
+
+					if(isset($_POST['stop' . $Row['ID']])
+					   && $_POST['stop' . $Row['ID']] == '1')
+					{
+						$Ids.= '<input type="hidden" name="stop' . $Row['ID'] . '" value="1"/>';
+					}
+
+					if(isset($_POST['remove' . $Row['ID']])
+					   && $_POST['remove' . $Row['ID']] == '1')
+					{
+						$Ids.= '<input type="hidden" name="remove' . $Row['ID'] . '" value="1"/>';
+					}
+				}
+			}
+
+			//if there are some ids, show yes/no question
+
+			if($Ids != ''
+			   && !isset($_POST['answer']))
+			{
+				//show yes/no question
+
+				$Message = $lng['question']['reallydoaction'];
+				eval("echo \"" . getTemplate("aps/askyesno") . "\";");
+				$Question = true;
 			}
 		}
 
-		//TASK ACTIVE
+		//create table with contents based on instance status
 
-		$InstancesTaskActive = '';
-		$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_TASK_ACTIVE . ' GROUP BY `Version`, `Release`');
-
-		while($Row = $this->db->fetch_array($Result))
+		if($Question != true)
 		{
-			eval("\$InstancesTaskActive.=\"" . getTemplate("aps/manage_instances_package") . "\";");
+			//INSTALL
 
-			//get instances
+			$InstancesInstall = '';
 
-			$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_TASK_ACTIVE . ' AND `PackageID` = ' . $Row['PackageID']);
-
-			while($Row2 = $this->db->fetch_array($Result2))
+			if((int)$this->userinfo['customers_see_all'] == 1)
 			{
-				//get customer name
-
-				$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
-				$Row3 = $this->db->fetch_array($Result3);
-				eval("\$InstancesTaskActive.=\"" . getTemplate("aps/manage_instances_taskactive") . "\";");
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_INSTALL . ' GROUP BY `Version`, `Release`');
 			}
-		}
-
-		//SUCCESS
-
-		$InstancesSuccess = '';
-		$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_SUCCESS . ' GROUP BY `Version`, `Release`');
-
-		while($Row = $this->db->fetch_array($Result))
-		{
-			eval("\$InstancesSuccess.=\"" . getTemplate("aps/manage_instances_package") . "\";");
-
-			//get instances
-
-			$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_SUCCESS . ' AND `PackageID` = ' . $Row['PackageID']);
-
-			while($Row2 = $this->db->fetch_array($Result2))
+			else
 			{
-				//get customer name
-
-				$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
-				$Row3 = $this->db->fetch_array($Result3);
-				eval("\$InstancesSuccess.=\"" . getTemplate("aps/manage_instances_success") . "\";");
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_INSTALL . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' GROUP BY `Version`, `Release`');
 			}
-		}
 
-		//ERROR
-
-		$InstancesError = '';
-		$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_ERROR . ' GROUP BY `Version`, `Release`');
-
-		while($Row = $this->db->fetch_array($Result))
-		{
-			eval("\$InstancesError.=\"" . getTemplate("aps/manage_instances_package") . "\";");
-
-			//get instances
-
-			$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_ERROR . ' AND `PackageID` = ' . $Row['PackageID']);
-
-			while($Row2 = $this->db->fetch_array($Result2))
+			while($Row = $this->db->fetch_array($Result))
 			{
-				//get customer name
+				eval("\$InstancesInstall.=\"" . getTemplate("aps/manage_instances_package") . "\";");
 
-				$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
-				$Row3 = $this->db->fetch_array($Result3);
-				eval("\$InstancesError.=\"" . getTemplate("aps/manage_instances_error") . "\";");
+				//get instances
+
+				if((int)$this->userinfo['customers_see_all'] == 1)
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_INSTALL . ' AND `PackageID` = ' . $Row['PackageID']);
+				}
+				else
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_INSTALL . ' AND `i`.`PackageID` = ' . $Row['PackageID'] . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+				}
+
+				while($Row2 = $this->db->fetch_array($Result2))
+				{
+					//get customer name
+
+					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
+					$Row3 = $this->db->fetch_array($Result3);
+					$Stop = makecheckbox('stop' . $Row2['ID'], '', '1');
+					eval("\$InstancesInstall.=\"" . getTemplate("aps/manage_instances_install") . "\";");
+				}
 			}
-		}
 
-		//UNINSTALL
+			//TASK ACTIVE
 
-		$InstancesUninstall = '';
-		$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_UNINSTALL . ' GROUP BY `Version`, `Release`');
+			$InstancesTaskActive = '';
 
-		while($Row = $this->db->fetch_array($Result))
-		{
-			eval("\$InstancesUninstall.=\"" . getTemplate("aps/manage_instances_package") . "\";");
-
-			//get instances
-
-			$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_UNINSTALL . ' AND `PackageID` = ' . $Row['PackageID']);
-
-			while($Row2 = $this->db->fetch_array($Result2))
+			if((int)$this->userinfo['customers_see_all'] == 1)
 			{
-				//get customer name
-
-				$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
-				$Row3 = $this->db->fetch_array($Result3);
-				eval("\$InstancesUninstall.=\"" . getTemplate("aps/manage_instances_uninstall") . "\";");
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_TASK_ACTIVE . ' GROUP BY `Version`, `Release`');
 			}
-		}
+			else
+			{
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_TASK_ACTIVE . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' GROUP BY `Version`, `Release`');
+			}
 
-		eval("echo \"" . getTemplate("aps/manage_instances") . "\";");
+			while($Row = $this->db->fetch_array($Result))
+			{
+				eval("\$InstancesTaskActive.=\"" . getTemplate("aps/manage_instances_package") . "\";");
+
+				//get instances
+
+				if((int)$this->userinfo['customers_see_all'] == 1)
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_TASK_ACTIVE . ' AND `PackageID` = ' . $Row['PackageID']);
+				}
+				else
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_TASK_ACTIVE . ' AND `i`.`PackageID` = ' . $Row['PackageID'] . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+				}
+
+				while($Row2 = $this->db->fetch_array($Result2))
+				{
+					//get customer name
+
+					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
+					$Row3 = $this->db->fetch_array($Result3);
+					eval("\$InstancesTaskActive.=\"" . getTemplate("aps/manage_instances_taskactive") . "\";");
+				}
+			}
+
+			//SUCCESS
+
+			$InstancesSuccess = '';
+
+			if((int)$this->userinfo['customers_see_all'] == 1)
+			{
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_SUCCESS . ' GROUP BY `Version`, `Release`');
+			}
+			else
+			{
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_SUCCESS . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' GROUP BY `Version`, `Release`');
+			}
+
+			while($Row = $this->db->fetch_array($Result))
+			{
+				eval("\$InstancesSuccess.=\"" . getTemplate("aps/manage_instances_package") . "\";");
+
+				//get instances
+
+				if((int)$this->userinfo['customers_see_all'] == 1)
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_SUCCESS . ' AND `PackageID` = ' . $Row['PackageID']);
+				}
+				else
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_SUCCESS . ' AND `i`.`PackageID` = ' . $Row['PackageID'] . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+				}
+
+				while($Row2 = $this->db->fetch_array($Result2))
+				{
+					//get customer name
+
+					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
+					$Row3 = $this->db->fetch_array($Result3);
+					$Remove = makecheckbox('remove' . $Row2['ID'], '', '1');
+					eval("\$InstancesSuccess.=\"" . getTemplate("aps/manage_instances_success") . "\";");
+				}
+			}
+
+			//ERROR
+
+			$InstancesError = '';
+
+			if((int)$this->userinfo['customers_see_all'] == 1)
+			{
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_ERROR . ' GROUP BY `Version`, `Release`');
+			}
+			else
+			{
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_ERROR . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' GROUP BY `Version`, `Release`');
+			}
+
+			while($Row = $this->db->fetch_array($Result))
+			{
+				eval("\$InstancesError.=\"" . getTemplate("aps/manage_instances_package") . "\";");
+
+				//get instances
+
+				if((int)$this->userinfo['customers_see_all'] == 1)
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_ERROR . ' AND `PackageID` = ' . $Row['PackageID']);
+				}
+				else
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_ERROR . ' AND `i`.`PackageID` = ' . $Row['PackageID'] . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+				}
+
+				while($Row2 = $this->db->fetch_array($Result2))
+				{
+					//get customer name
+
+					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
+					$Row3 = $this->db->fetch_array($Result3);
+					$Remove = makecheckbox('remove' . $Row2['ID'], '', '1');
+					eval("\$InstancesError.=\"" . getTemplate("aps/manage_instances_error") . "\";");
+				}
+			}
+
+			//UNINSTALL
+
+			$InstancesUninstall = '';
+
+			if((int)$this->userinfo['customers_see_all'] == 1)
+			{
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` WHERE `i`.`Status` = ' . INSTANCE_UNINSTALL . ' GROUP BY `Version`, `Release`');
+			}
+			else
+			{
+				$Result = $this->db->query('SELECT `p`.`Name`, `p`.`Version`, `p`.`Release`, `i`.`PackageID` FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_UNINSTALL . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' GROUP BY `Version`, `Release`');
+			}
+
+			while($Row = $this->db->fetch_array($Result))
+			{
+				eval("\$InstancesUninstall.=\"" . getTemplate("aps/manage_instances_package") . "\";");
+
+				//get instances
+
+				if((int)$this->userinfo['customers_see_all'] == 1)
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_UNINSTALL . ' AND `PackageID` = ' . $Row['PackageID']);
+				}
+				else
+				{
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `i`.`Status` = ' . INSTANCE_UNINSTALL . ' AND `i`.`PackageID` = ' . $Row['PackageID'] . ' AND `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+				}
+
+				while($Row2 = $this->db->fetch_array($Result2))
+				{
+					//get customer name
+
+					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `customerid` = ' . $Row2['CustomerID']);
+					$Row3 = $this->db->fetch_array($Result3);
+					eval("\$InstancesUninstall.=\"" . getTemplate("aps/manage_instances_uninstall") . "\";");
+				}
+			}
+
+			//create some statistics
+
+			$Statistics = '';
+
+			if((int)$this->userinfo['customers_see_all'] == 1)
+			{
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '`');
+				$Statistics.= sprintf($lng['aps']['numerofinstances'], $this->db->num_rows($Result));
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_SUCCESS);
+				$Statistics.= sprintf($lng['aps']['numerofinstancessuccess'], $this->db->num_rows($Result));
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` = ' . INSTANCE_ERROR);
+				$Statistics.= sprintf($lng['aps']['numerofinstanceserror'], $this->db->num_rows($Result));
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `Status` IN (' . INSTANCE_INSTALL . ', ' . INSTANCE_TASK_ACTIVE . ', ' . INSTANCE_UNINSTALL . ')');
+				$Statistics.= sprintf($lng['aps']['numerofinstancesaction'], $this->db->num_rows($Result));
+			}
+			else
+			{
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+				$Statistics.= sprintf($lng['aps']['numerofinstances'], $this->db->num_rows($Result));
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' AND `Status` = ' . INSTANCE_SUCCESS);
+				$Statistics.= sprintf($lng['aps']['numerofinstancessuccess'], $this->db->num_rows($Result));
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' AND `Status` = ' . INSTANCE_ERROR);
+				$Statistics.= sprintf($lng['aps']['numerofinstanceserror'], $this->db->num_rows($Result));
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `c`.`adminid` = ' . (int)$this->userinfo['adminid'] . ' AND `Status` IN (' . INSTANCE_INSTALL . ', ' . INSTANCE_TASK_ACTIVE . ', ' . INSTANCE_UNINSTALL . ')');
+				$Statistics.= sprintf($lng['aps']['numerofinstancesaction'], $this->db->num_rows($Result));
+			}
+
+			eval("echo \"" . getTemplate("aps/manage_instances") . "\";");
+		}
 	}
 
 	/**
-	 input:
-	 dir			directory to delete recursive
-	 return:
-	 none
+	 * unlink files recursively
+	 *
+	 * @param	dir			directory to delete recursive
 	 */
 
 	private function UnlinkRecursive($Dir)
@@ -208,10 +394,7 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 none
-	 return:
-	 none
+	 * function provides package management for admins
 	 */
 
 	private function ManagePackages()
@@ -224,51 +407,161 @@ class ApsParser
 			if(isset($_POST['all'])
 			   && $_POST['all'] == 'lock')
 			{
+				//lock alle packages
+
 				$this->db->query('UPDATE `' . TABLE_APS_PACKAGES . '` SET `Status` = ' . PACKAGE_LOCKED . ' WHERE 1');
 			}
-			else
-
-			if(isset($_POST['all'])
-			   && $_POST['all'] == 'unlock')
+			elseif(isset($_POST['all'])
+			       && $_POST['all'] == 'unlock')
 			{
+				//enable all packages
+
 				$this->db->query('UPDATE `' . TABLE_APS_PACKAGES . '` SET `Status` = ' . PACKAGE_ENABLED . ' WHERE 1');
 			}
-			else
-
-			if(isset($_POST['all'])
-			   && $_POST['all'] == 'remove')
+			elseif(isset($_POST['downloadallpackages']))
 			{
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` WHERE `Task` = ' . TASK_SYSTEM_DOWNLOAD);
+
+				if($this->db->num_rows($Result) > 0)
+				{
+					self::InfoBox($lng['aps']['downloadtaskexists']);
+				}
+				else
+				{
+					$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`Task`, `InstanceID`) VALUES (' . TASK_SYSTEM_DOWNLOAD . ', 0)');
+					self::InfoBox($lng['aps']['downloadtaskinserted']);
+				}
+			}
+			elseif(isset($_POST['updateallpackages']))
+			{
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` WHERE `Task` = ' . TASK_SYSTEM_UPDATE);
+
+				if($this->db->num_rows($Result) > 0)
+				{
+					self::InfoBox($lng['aps']['updatetaskexists']);
+				}
+				else
+				{
+					$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`Task`, `InstanceID`) VALUES (' . TASK_SYSTEM_UPDATE . ', 0)');
+					self::InfoBox($lng['aps']['updatetaskinserted']);
+				}
+			}
+			elseif(isset($_POST['enablenewest']))
+			{
+				//lock alle packages, then find newerst package and enable it
+
+				$this->db->query('UPDATE `' . TABLE_APS_PACKAGES . '` SET `Status` = ' . PACKAGE_LOCKED);
+
+				//get all packages
+
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` GROUP BY `Name`');
+
+				while($Row = $this->db->fetch_array($Result))
+				{
+					//get newest version of package
+
+					$NewestVersion = '';
+					$NewestId = '';
+					$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Name` = "' . $this->db->escape($Row['Name']) . '"');
+
+					while($Row2 = $this->db->fetch_array($Result2))
+					{
+						if(version_compare($Row2['Version'] . '-' . $Row2['Release'], $NewestVersion) == 1)
+						{
+							$NewestVersion = $Row2['Version'] . '-' . $Row2['Release'];
+							$NewestId = $Row2['ID'];
+						}
+					}
+
+					//enable newest version
+
+					$this->db->query('UPDATE `' . TABLE_APS_PACKAGES . '` SET `Status` = ' . PACKAGE_ENABLED . ' WHERE `ID` = ' . $NewestId);
+				}
+			}
+			elseif(isset($_POST['removeunused']))
+			{
+				//remove all packages which have no dependencies (count of package instances = 0)
+
 				if(isset($_POST['answer'])
 				   && $_POST['answer'] == $lng['panel']['yes'])
 				{
+					//get all packages
+
 					$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '`');
 
 					while($Row = $this->db->fetch_array($Result))
 					{
-						self::UnlinkRecursive('./packages/' . $Row['Path']);
-					}
+						//query how often package has been installed
 
-					$this->db->query('DELETE FROM `' . TABLE_APS_PACKAGES . '` WHERE 1');
+						$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `PackageID` = ' . $Row['ID']);
+
+						if($this->db->num_rows($Result2) == 0)
+						{
+							//remove package if number of package instances is 0
+
+							self::UnlinkRecursive('./packages/' . $Row['Path']);
+							$this->db->query('DELETE FROM `' . TABLE_APS_PACKAGES . '` WHERE `ID` = ' . $Row['ID']);
+						}
+					}
 				}
 				else
 				{
 					//show yes/no question
 
-					$Output = $lng['question']['reallyremovepackages'];
-					$Output.= '<form name="continue" action="' . $filename . '" method="post"><input type="submit" name="answer" value="' . $lng['panel']['yes'] . '" /><input type="hidden" name="save" value="1"/><input type="hidden" name="s" value="' . $s . '"/><input type="hidden" name="action" value="' . $action . '"/><input type="hidden" name="all" value="remove"/>';
-					$Output.= '</form><br/><form name="back" action="' . $filename . '" method="post"><input type="submit" name="submit" value="' . $lng['panel']['no'] . '" /><input type="hidden" name="action" value="' . $action . '"/><input type="hidden" name="s" value="' . $s . '"/></form><br/>';
-					self::InfoBox($Output);
+					$Message = $lng['question']['reallyremovepackages'];
+					$Ids = '<input type="hidden" name="removeunused" value="1"/>';
+					eval("echo \"" . getTemplate("aps/askyesno") . "\";");
+					$Question = true;
+				}
+			}
+			elseif(isset($_POST['all'])
+			       && $_POST['all'] == 'remove')
+			{
+				//remove all packages from system
+
+				if(isset($_POST['answer'])
+				   && $_POST['answer'] == $lng['panel']['yes'])
+				{
+					$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '`');
+
+					//check for dependencies
+
+					while($Row = $this->db->fetch_array($Result))
+					{
+						//query how often package has been installed
+
+						$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `PackageID` = ' . $Row['ID']);
+
+						if($this->db->num_rows($Result2) == 0)
+						{
+							//remove package if number of package instances is 0
+
+							self::UnlinkRecursive('./packages/' . $Row['Path']);
+							$this->db->query('DELETE FROM `' . TABLE_APS_PACKAGES . '` WHERE `ID` = ' . $Row['ID']);
+						}
+					}
+				}
+				else
+				{
+					//show yes/no question
+
+					$Message = $lng['question']['reallyremovepackages'];
+					$Ids = '<input type="hidden" name="all" value="remove"/>';
+					eval("echo \"" . getTemplate("aps/askyesno") . "\";");
 					$Question = true;
 				}
 			}
 			else
 			{
+				//no special button or "all" function has been clicked
+				//continue to parse "single" options
+
 				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '`');
-				$RemoveIds = '';
+				$Ids = '';
 
 				while($Row = $this->db->fetch_array($Result))
 				{
-					//set new status of package
+					//set new status of package (locked)
 
 					if($Row['Status'] == PACKAGE_ENABLED
 					   && isset($_POST['lock' . $Row['ID']]))
@@ -276,7 +569,7 @@ class ApsParser
 						$this->db->query('UPDATE `' . TABLE_APS_PACKAGES . '` SET `Status` = ' . PACKAGE_LOCKED . ' WHERE `ID` = ' . $this->db->escape($Row['ID']));
 					}
 
-					//set new status of package
+					//set new status of package (enabled)
 
 					if($Row['Status'] == PACKAGE_LOCKED
 					   && isset($_POST['unlock' . $Row['ID']]))
@@ -284,11 +577,11 @@ class ApsParser
 						$this->db->query('UPDATE `' . TABLE_APS_PACKAGES . '` SET `Status` = ' . PACKAGE_ENABLED . ' WHERE `ID` = ' . $this->db->escape($Row['ID']));
 					}
 
-					//save id of package to remove
+					//save id of package to remove for yes/no question
 
 					if(isset($_POST['remove' . $Row['ID']]))
 					{
-						$RemoveIds.= '<input type="hidden" name="remove' . $Row['ID'] . '" value="1"/>';
+						$Ids.= '<input type="hidden" name="remove' . $Row['ID'] . '" value="1"/>';
 
 						//remove package if answer is yes
 
@@ -296,23 +589,20 @@ class ApsParser
 						   && $_POST['answer'] == $lng['panel']['yes'])
 						{
 							self::UnlinkRecursive('./packages/' . $Row['Path']);
-							$this->db->query('DELETE FROM `' . TABLE_APS_PACKAGES . '` WHERE `ID` = ' . $this->db->escape($Row['ID']));
+							$this->db->query('DELETE FROM `' . TABLE_APS_PACKAGES . '` WHERE `ID` = ' . $Row['ID']);
 						}
 					}
 				}
 
 				//if there are some ids to remove, show yes/no box
 
-				if($RemoveIds != ''
+				if($Ids != ''
 				   && !isset($_POST['answer']))
 				{
 					//show yes/no question
 
-					$Output = $lng['question']['reallyremovepackages'];
-					$Output.= '<form name="continue" action="' . $filename . '" method="post"><input type="submit" name="answer" value="' . $lng['panel']['yes'] . '" /><input type="hidden" name="save" value="1"/><input type="hidden" name="s" value="' . $s . '"/><input type="hidden" name="action" value="' . $action . '"/>';
-					$Output.= $RemoveIds;
-					$Output.= '</form><br/><form name="back" action="' . $filename . '" method="post"><input type="submit" name="submit" value="' . $lng['panel']['no'] . '" /><input type="hidden" name="action" value="' . $action . '"/><input type="hidden" name="s" value="' . $s . '"/></form><br/>';
-					self::InfoBox($Output);
+					$Message = $lng['question']['reallyremovepackages'];
+					eval("echo \"" . getTemplate("aps/askyesno") . "\";");
 					$Question = true;
 				}
 			}
@@ -323,51 +613,81 @@ class ApsParser
 		if(!isset($_POST['save'])
 		   || $Question == false)
 		{
+			//query all packages grouped by package name
+
 			$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` GROUP BY `Name` ORDER BY `Name` ASC');
 			$Packages = '';
 
 			while($Row = $this->db->fetch_array($Result))
 			{
 				eval("\$Packages.=\"" . getTemplate("aps/manage_packages_row") . "\";");
+
+				//get all package versions of current package
+
 				$Result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Name` = "' . $this->db->escape($Row['Name']) . '" ORDER BY `Version` DESC, `Release` DESC');
 
 				while($Row2 = $this->db->fetch_array($Result2))
 				{
+					//show package with options
+
 					$Lock = '';
+					$Unlock = '';
 
 					if($Row2['Status'] == PACKAGE_ENABLED)
 					{
 						$Lock = makecheckbox('lock' . $Row2['ID'], '', '1');
 					}
 
-					$Unlock = '';
-
 					if($Row2['Status'] == PACKAGE_LOCKED)
 					{
 						$Unlock = makecheckbox('unlock' . $Row2['ID'], '', '1');
 					}
 
-					$Remove = makecheckbox('remove' . $Row2['ID'], '', '1');
+					//query how often package has been installed
+
+					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `PackageID` = ' . $Row2['ID']);
+					$Installations = $this->db->num_rows($Result3);
+
+					if($Installations == 0)$Remove = makecheckbox('remove' . $Row2['ID'], '', '1');
 					eval("\$Packages.=\"" . getTemplate("aps/manage_packages_detail") . "\";");
 				}
 			}
 
 			if($this->db->num_rows($Result) == 0)
 			{
+				//no packages have been installed in system
+
 				self::InfoBox($lng['aps']['nopackagesinsystem']);
 			}
 			else
 			{
+				//generate some statistics
+
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '`');
+				$Temp = $this->db->num_rows($Result);
+				$Statistics = sprintf($lng['aps']['numerofpackagesinstalled'], $this->db->num_rows($Result));
+				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED);
+				$Statistics.= sprintf($lng['aps']['numerofpackagesenabled'], $this->db->num_rows($Result));
+				$Statistics.= sprintf($lng['aps']['numerofpackageslocked'], $Temp - $this->db->num_rows($Result));
+
+				if((int)$this->userinfo['customers_see_all'] == 1)
+				{
+					$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '`');
+					$Statistics.= sprintf($lng['aps']['numerofinstances'], $this->db->num_rows($Result));
+				}
+				else
+				{
+					$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+					$Statistics.= sprintf($lng['aps']['numerofinstances'], $this->db->num_rows($Result));
+				}
+
 				eval("echo \"" . getTemplate("aps/manage_packages") . "\";");
 			}
 		}
 	}
 
 	/**
-	 input:
-	 none
-	 return:
-	 none
+	 * function provides a upload site for new packages
 	 */
 
 	private function UploadNewPackages()
@@ -395,7 +715,7 @@ class ApsParser
 
 		if($FilesSet == true)
 		{
-			//any file has been uploaded, now check for errors ans parse the files
+			//any file has been uploaded, now check for errors and parse the input
 
 			foreach($Files as $File)
 			{
@@ -404,6 +724,7 @@ class ApsParser
 					$Errors = array();
 
 					//check uploaded files against some things
+					//check for filetype
 
 					if(substr($_FILES[$File]['name'], -3) != 'zip'
 					   && $_FILES[$File]['error'] == 0)
@@ -411,16 +732,22 @@ class ApsParser
 						$Errors[] = $lng['aps']['notazipfile'];
 					}
 
+					//check for filesize
+
 					if(($_FILES[$File]['size'] > self::PhpMemorySizeToBytes(ini_get('upload_max_filesize')) && $_FILES[$File]['error'] == 0)
 					   || $_FILES[$File]['error'] == 1)
 					{
 						$Errors[] = $lng['aps']['filetoobig'];
 					}
 
+					//check is file isnt complete
+
 					if($_FILES[$File]['error'] == 3)
 					{
 						$Errors[] = $lng['aps']['filenotcomplete'];
 					}
+
+					//check for other php internal errors
 
 					if($_FILES[$File]['error'] >= 6)
 					{
@@ -432,6 +759,8 @@ class ApsParser
 					if(count($Errors) == 0
 					   && $_FILES[$File]['error'] == 0)
 					{
+						//install package in system
+
 						if(move_uploaded_file($_FILES[$File]['tmp_name'], './temp/' . basename($_FILES[$File]['name'])) == true)
 						{
 							self::InstallNewPackage('./temp/' . basename($_FILES[$File]['name']));
@@ -444,6 +773,8 @@ class ApsParser
 
 					if(count($Errors) > 0)
 					{
+						//throw errors
+
 						$ErrorMessage = '';
 						foreach($Errors as $Error)
 						{
@@ -456,6 +787,8 @@ class ApsParser
 			}
 		}
 
+		//generate upload fields
+
 		$Output = '';
 		foreach($Files as $File)
 		{
@@ -466,10 +799,7 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 none
-	 return:
-	 none
+	 * function provides a frontend for customers to search packages
 	 */
 
 	private function SearchPackages()
@@ -480,7 +810,7 @@ class ApsParser
 		$ShowAll = 0;
 
 		if(isset($_GET['keyword'])
-		   && preg_match('/^[- _0-9a-z\.,הצü:;]+$/i', $_GET['keyword']) != false)
+		   && preg_match('/^[- _0-9a-z\.,:;]+$/i', $_GET['keyword']) != false)
 		{
 			//split all keywords
 
@@ -489,7 +819,7 @@ class ApsParser
 			if(count($Elements) == 1
 			   && strlen($Elements[0]) == 0)
 			{
-				//no keyword given - show all packages
+				//no keyword given -> show all packages
 
 				$ShowAll = 1;
 			}
@@ -497,7 +827,7 @@ class ApsParser
 			{
 				foreach($Elements as $Key)
 				{
-					//skip empty values - prevents that whitespaces lead to the result that all packages will be found
+					//skip empty values -> prevents that whitespaces lead to the result that all packages will be found
 
 					if($Key == '')continue;
 					$result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' AND (`Name` LIKE "%' . $this->db->escape($Key) . '%" OR `Path` LIKE "%' . $this->db->escape($Key) . '%" OR `Version` LIKE "%' . $this->db->escape($Key) . '%") ');
@@ -523,19 +853,15 @@ class ApsParser
 				}
 			}
 		}
-		else
-
-		if(isset($_GET['keyword'])
-		   && strlen($_GET['keyword']) != 0)
+		elseif(isset($_GET['keyword'])
+		       && strlen($_GET['keyword']) != 0)
 		{
 			//input contains illegal characters
 
 			$Error = 1;
 		}
-		else
-
-		if(isset($_GET['keyword'])
-		   && strlen($_GET['keyword']) == 0)
+		elseif(isset($_GET['keyword'])
+		       && strlen($_GET['keyword']) == 0)
 		{
 			//nothing has been entered - show all packages
 
@@ -548,12 +874,12 @@ class ApsParser
 		{
 			self::InfoBox($lng['aps']['nospecialchars']);
 		}
-		else
-
-		if($Error == 2)
+		elseif($Error == 2)
 		{
 			self::InfoBox($lng['aps']['noitemsfound']);
 		}
+
+		//show keyword only if format is ok
 
 		$Keyword = '';
 
@@ -577,6 +903,8 @@ class ApsParser
 				$result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED);
 			}
 
+			//show package infos
+
 			if($this->db->num_rows($result) > 0)
 			{
 				if($this->db->num_rows($result) == 1)
@@ -597,10 +925,9 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 customerid	id of customer from database
-	 return:
-	 none
+	 * function provides a frontend for customers to show the status of installed packages
+	 *
+	 * @param	customerid	id of customer from database
 	 */
 
 	private function CustomerStatus($CustomerId)
@@ -611,6 +938,8 @@ class ApsParser
 		$Fieldvalue = '';
 		$Groupname = '';
 		$result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `CustomerID` = ' . $this->db->escape($CustomerId));
+
+		//customer hasnt installed any package yet
 
 		if($this->db->num_rows($result) == 0)
 		{
@@ -625,10 +954,12 @@ class ApsParser
 			$Row2 = $this->db->fetch_array($result2);
 			$Xml = self::GetXmlFromFile('./packages/' . $Row2['Path'] . '/APP-META.xml');
 
-			//skip if parsing of xml has failed
+			//skip if parse of xml has failed
 
 			if($Xml == false)continue;
 			$Icon = './images/default.png';
+
+			//show data and status of package
 
 			if($Xml->icon['path'])
 			{
@@ -666,7 +997,7 @@ class ApsParser
 			$Fieldname = $lng['aps']['currentstatus'];
 			$Fieldvalue = $Temp;
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
-			$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` WHERE InstanceID = ' . $this->db->escape($Row['ID']));
+			$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` WHERE `InstanceID` = ' . $this->db->escape($Row['ID']));
 			$Temp = '';
 
 			if($this->db->num_rows($result2) > 0)
@@ -686,6 +1017,7 @@ class ApsParser
 						break;
 					case TASK_UPGRADE:
 						$Temp.= $lng['aps']['task_upgrade'] . '<br/>';
+						break;
 					default:
 						$Temp.= $lng['aps']['unknown_status'] . '<br/>';
 						break;
@@ -701,7 +1033,7 @@ class ApsParser
 			$Fieldvalue = $Temp;
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 
-			//show entrypoints
+			//show entrypoints for application (important URLs within the application)
 
 			if($Row['Status'] == INSTANCE_SUCCESS)
 			{
@@ -760,12 +1092,11 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid	id of package from database
-	 customerid	id of customer from database
-	 return:
-	 error		false
-	 success		none
+	 * function creates a new instance of a package based on the installer data
+	 *
+	 * @param	packageid	id of package from database
+	 * @param	customerid	id of customer from database
+	 * @return	success true/error false
 	 */
 
 	private function CreatePackageInstance($PackageId, $CustomerId)
@@ -790,6 +1121,8 @@ class ApsParser
 		$Row = $this->db->fetch_array($result);
 		$Xml = self::GetXmlFromFile('./packages/' . $Row['Path'] . '/APP-META.xml');
 
+		//return if parse of xml file has failed
+
 		if($Xml == false)return false;
 
 		//add new instance
@@ -798,7 +1131,7 @@ class ApsParser
 		$result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `CustomerID` = ' . $this->db->escape($CustomerId) . ' AND `PackageID` = ' . $this->db->escape($PackageId) . ' AND `Status` = ' . INSTANCE_INSTALL . ' ORDER BY ID DESC');
 		$Row = $this->db->fetch_array($result);
 
-		//copy & delete temp data
+		//copy & delete temporary data
 
 		$this->db->query('INSERT INTO `' . TABLE_APS_SETTINGS . '` (`InstanceID`, `Name`, `Value`) SELECT ' . $this->db->escape($Row['ID']) . ' AS `InstanceID`, `Name`, `Value` FROM `' . TABLE_APS_TEMP_SETTINGS . '` WHERE `CustomerID` = ' . $this->db->escape($CustomerId) . ' AND `PackageID` = ' . $this->db->escape($PackageId));
 		$this->db->query('DELETE FROM `' . TABLE_APS_TEMP_SETTINGS . '` WHERE `CustomerID` = ' . $this->db->escape($CustomerId) . ' AND `PackageID` = ' . $this->db->escape($PackageId));
@@ -811,15 +1144,15 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 value		ini_get() formated memory size
-	 return:
-	 always		memory size in bytes
+	 * convert human readable memory sizes into bytes
+	 *
+	 * @param	value		ini_get() formated memory size
+	 * @return	memory size in bytes
 	 */
 
 	private function PhpMemorySizeToBytes($Value)
 	{
-		//based on code from php.net
+		//convert memory formats from php.ini to a integer value in bytes
 
 		$Value = trim($Value);
 		$Last = strtolower($Value{strlen($Value) - 1});
@@ -838,14 +1171,16 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 value		value to read from php.ini (format: safe_mode or safe-mode)
-	 return:
-	 always		(true|false) as string
+	 * convert php.ini formated strings into true and false as a string
+	 *
+	 * @param	value		value to read from php.ini (format: safe_mode or safe-mode)
+	 * @return	(true|false) as string
 	 */
 
 	private function TrueFalseIniGet($Value)
 	{
+		//convert php.ini values to true and false as string
+
 		$Value = ini_get(str_replace(array(
 			'-'
 		), array(
@@ -865,17 +1200,19 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 category		category as string to check
-	 item			item within category to check
-	 return:
-	 success			true (value has exception)
-	 error			false (value has no exception)
+	 * packages can fail during the validation process. this function allows to check for exceptions
+	 *
+	 * @param	category		category as string to check
+	 * @param	item			item within category to check
+	 * @return	success true (value has exception) / error false (value has no exception)
 	 */
 
 	private function CheckException($Category, $Item, $Value)
 	{
 		global $settings;
+
+		//search for element within system settings
+
 		$Elements = explode(',', $settings['aps'][$Category . '-' . $Item]);
 		foreach($Elements as $Element)
 		{
@@ -886,11 +1223,11 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 parentmapping	instance of parsed xml file, current mapping position
-	 url				relative path for application specifying the current path within the mapping tree
-	 return:
-	 always			array with errors found, optional empty when no errors were found
+	 * packages must be validated within the submappings of a filesystem structure
+	 *
+	 * @param	parentmapping	instance of parsed xml file, current mapping position
+	 * @param	url				relative path for application specifying the current path within the mapping tree
+	 * @return	array with errors found, optional empty when no errors were found
 	 */
 
 	private function CheckSubmappings($ParentMapping, $Url)
@@ -949,7 +1286,7 @@ class ApsParser
 				$Return = self::CheckSubmappings($Mapping, $Url . '/' . $Mapping['url']);
 			}
 
-			//if recursive checks found errors attach them
+			//if recursive checks found errors, attach them
 
 			if(count($Return) != 0)
 			{
@@ -964,10 +1301,9 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 filename		path to zipfile to install
-	 return:
-	 none
+	 * function validates a package against a lot of options and installs it if all conditions have succeeded
+	 *
+	 * @param	filename		path to zipfile to install
 	 */
 
 	private function InstallNewPackage($Filename)
@@ -1205,16 +1541,22 @@ class ApsParser
 			{
 				while($Row = $this->db->fetch_array($result))
 				{
+					//package is newer, install package as a update
+
 					if(version_compare($Row['Version'] . '-' . $Row['Release'], $Xml->version . '-' . $Xml->release) == - 1)
 					{
 						$Newer = 1;
 					}
+
+					//package is installed already with same version, cancel installation
 
 					if(version_compare($Row['Version'] . '-' . $Row['Release'], $Xml->version . '-' . $Xml->release) == 0)
 					{
 						$Error[] = $lng['aps']['misc_version_already_installed'];
 						break;
 					}
+
+					//package is older than the one which is installed already, cancel installation
 
 					if(version_compare($Row['Version'] . '-' . $Row['Release'], $Xml->version . '-' . $Xml->release) == 1)
 					{
@@ -1226,6 +1568,8 @@ class ApsParser
 
 			if(count($Error) > 0)
 			{
+				//show errors
+
 				$Output = '';
 				foreach($Error as $Entry)
 				{
@@ -1238,6 +1582,8 @@ class ApsParser
 			}
 			else
 			{
+				//install package in system, all checks succeeded
+
 				$Destination = './packages/' . basename($Filename) . '/';
 
 				//create package directory
@@ -1282,6 +1628,8 @@ class ApsParser
 				copy($Filename, $Destination . basename($Filename));
 				unlink($Filename);
 
+				//show some feedback messages to admin
+
 				if($Newer == 1)
 				{
 					self::InfoBox(sprintf($lng['aps']['successpackageupdate'], $Xml->name));
@@ -1297,6 +1645,8 @@ class ApsParser
 		}
 		else
 		{
+			//file cannot be unzipped or parse of xml data has failed
+
 			self::InfoBox(sprintf($lng['aps']['invalidzipfile'], basename($Filename)));
 			unlink($Filename);
 			return false;
@@ -1304,10 +1654,7 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 none
-	 return:
-	 none
+	 * main function of the class, provides all of the aps installer frontend
 	 */
 
 	public function MainHandler($Action)
@@ -1332,7 +1679,17 @@ class ApsParser
 
 		if($Error != '')
 		{
-			self::InfoBox(sprintf($lng['aps']['initerror'], $Error));
+			//show different error to customer and admin
+
+			if(!isset($this->userinfo['customerid']))
+			{
+				self::InfoBox(sprintf($lng['aps']['initerror'], $Error));
+			}
+			else
+			{
+				self::InfoBox($lng['aps']['initerror_customer']);
+			}
+
 			return;
 		}
 
@@ -1340,13 +1697,21 @@ class ApsParser
 		$AdminId = $this->userinfo['adminid'];
 		$PackagesPerSite = $this->settings['aps']['items_per_page'];
 
+		//run different functions based on action
+
 		if($Action == 'install')
 		{
+			//check for valid package id
+
 			if(self::IsValidPackageId($Id, true))
 			{
+				//installation data is given
+
 				if(isset($_POST['withinput']))
 				{
 					$Errors = self::ValidatePackageData($Id, $CustomerId);
+
+					//if there are no input errors, create a new instance
 
 					if(count($Errors) == 0)
 					{
@@ -1359,7 +1724,7 @@ class ApsParser
 				}
 				else
 				{
-					//empty array -> no errors
+					//empty array -> no errors will be shown to customer
 
 					$Errors = array();
 					self::ShowPackageInstaller($Id, $Errors, $CustomerId);
@@ -1370,14 +1735,16 @@ class ApsParser
 				self::InfoBox($lng['aps']['iderror']);
 			}
 		}
-		else
-
-		if($Action == 'remove')
+		elseif($Action == 'remove')
 		{
+			//check for valid instance id
+
 			if(self::IsValidInstanceId($Id, $CustomerId))
 			{
-				if(isset($_GET['answer'])
-				   && $_GET['answer'] == $lng['panel']['yes'])
+				//customer has clicked yes to uninstall a package
+
+				if(isset($_POST['answer'])
+				   && $_POST['answer'] == $lng['panel']['yes'])
 				{
 					//check if there is already an task
 
@@ -1389,17 +1756,21 @@ class ApsParser
 					}
 					else
 					{
-						$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`InstanceID`, `Task`) VALUES (' . $this->db->escape($Id) . ', ' . TASK_REMOVE . ')');
-						$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_UNINSTALL . ' WHERE `ID` = ' . $this->db->escape($Id));
+						//remove package, no task existing
+
+						$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`InstanceID`, `Task`) VALUES (' . (int)$Id . ', ' . TASK_REMOVE . ')');
+						$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_UNINSTALL . ' WHERE `ID` = ' . (int)$Id);
 						self::InfoBox($lng['aps']['packagewillberemoved']);
 					}
 				}
 				else
 				{
-					$Output = $lng['question']['reallywanttoremove'];
-					$Output.= '<form name="continue" action="' . $filename . '" method="get"><input type="submit" name="answer" value="' . $lng['panel']['yes'] . '" /><input type="hidden" name="id" value="' . htmlspecialchars($Id) . '"/><input type="hidden" name="s" value="' . $s . '"/><input type="hidden" name="action" value="remove"/></form><br/>';
-					$Output.= '<form name="back" action="' . $filename . '" method="get"><input type="submit" name="submit" value="' . $lng['panel']['no'] . '" /><input type="hidden" name="action" value="customerstatus"/><input type="hidden" name="s" value="' . $s . '"/></form>';
-					self::InfoBox($Output);
+					//show yes/no question
+
+					$Message = $lng['question']['reallywanttoremove'];
+					$action_alt = 'customerstatus';
+					$Ids = '<input type="hidden" name="id" value="' . (int)$Id . '"/>';
+					eval("echo \"" . getTemplate("aps/askyesno") . "\";");
 				}
 			}
 			else
@@ -1407,12 +1778,14 @@ class ApsParser
 				self::InfoBox($lng['aps']['iderror']);
 			}
 		}
-		else
-
-		if($Action == 'stopinstall')
+		elseif($Action == 'stopinstall')
 		{
+			//check for valid instance id
+
 			if(self::IsValidInstanceId($Id, $CustomerId))
 			{
+				//check if application installation runs already
+
 				$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `ID` = ' . $this->db->escape($Id));
 				$Row = $this->db->fetch_array($Result);
 
@@ -1422,8 +1795,8 @@ class ApsParser
 				}
 				else
 				{
-					if(isset($_GET['answer'])
-					   && $_GET['answer'] == $lng['panel']['yes'])
+					if(isset($_POST['answer'])
+					   && $_POST['answer'] == $lng['panel']['yes'])
 					{
 						//remove task
 
@@ -1440,10 +1813,12 @@ class ApsParser
 					}
 					else
 					{
-						$Output = $lng['question']['reallywanttostop'];
-						$Output.= '<form name="continue" action="' . $filename . '" method="get"><input type="submit" name="answer" value="' . $lng['panel']['yes'] . '" /><input type="hidden" name="id" value="' . htmlspecialchars($Id) . '"/><input type="hidden" name="s" value="' . $s . '"/><input type="hidden" name="action" value="stopinstall"/></form><br/>';
-						$Output.= '<form name="back" action="' . $filename . '" method="get"><input type="submit" name="submit" value="' . $lng['panel']['no'] . '" /><input type="hidden" name="action" value="customerstatus"/><input type="hidden" name="s" value="' . $s . '"/></form>';
-						self::InfoBox($Output);
+						//show yes/no question
+
+						$Message = $lng['question']['reallywanttostop'];
+						$action_alt = 'customerstatus';
+						$Ids = '<input type="hidden" name="id" value="' . (int)$Id . '"/>';
+						eval("echo \"" . getTemplate("aps/askyesno") . "\";");
 					}
 				}
 			}
@@ -1452,23 +1827,23 @@ class ApsParser
 				self::InfoBox($lng['aps']['iderror']);
 			}
 		}
-		else
-
-		if($Action == 'reconfigure')
+		elseif($Action == 'reconfigure')
 		{
+			//check for valid instance id
+
 			if(self::IsValidInstanceId($Id, $CustomerId))
 			{
-				self::InfoBox('FIXME reconfigure');
+				self::InfoBox('Reconfigure function not implemented in current version!');
 			}
 			else
 			{
 				self::InfoBox($lng['aps']['iderror']);
 			}
 		}
-		else
-
-		if($Action == 'details')
+		elseif($Action == 'details')
 		{
+			//show advanced package infos if package id is valid
+
 			if(self::IsValidPackageId($Id, true))
 			{
 				self::ShowPackageInfo($Id, true);
@@ -1478,64 +1853,68 @@ class ApsParser
 				self::InfoBox($lng['aps']['iderror']);
 			}
 		}
-		else
-
-		if($Action == 'scan')
+		elseif($Action == 'scan'
+		       && !isset($this->userinfo['customerid']))
 		{
+			//find all files in temp directory
+
 			$Files = scandir('./temp/');
 			$Counter = 0;
 			foreach($Files as $File)
 			{
+				//skip invalid "files"
+
 				if($File == '.'
 				   || $File == '..'
 				   || $File == '.svn')continue;
+
+				//install new package in system
+
 				self::InstallNewPackage('./temp/' . $File);
 				$Counter+= 1;
 			}
 
 			if($Counter == 0)
 			{
+				//throw error if no file was found
+
 				self::InfoBox($lng['aps']['nopacketsforinstallation']);
 			}
 		}
-		else
-
-		if($Action == 'manageinstances')
+		elseif($Action == 'manageinstances'
+		       && !isset($this->userinfo['customerid']))
 		{
 			self::ManageInstances();
 		}
-		else
-
-		if($Action == 'managepackages')
+		elseif($Action == 'managepackages'
+		       && !isset($this->userinfo['customerid']))
 		{
 			self::ManagePackages();
 		}
-		else
-
-		if($Action == 'upload')
+		elseif($Action == 'upload'
+		       && !isset($this->userinfo['customerid']))
 		{
 			self::UploadNewPackages();
 		}
-		else
-
-		if($Action == 'customerstatus')
+		elseif($Action == 'customerstatus')
 		{
 			self::CustomerStatus($CustomerId);
 		}
-		else
-
-		if($Action == 'search')
+		elseif($Action == 'search')
 		{
 			self::SearchPackages();
 		}
-		else
-
-		if($Action == 'overview')
+		elseif($Action == 'overview')
 		{
+			// show packages with paging
+
 			if(isset($_GET['page'])
 			   && preg_match('/^[0-9]+$/', $_GET['page']) != - 1)
 			{
-				$result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED);
+				//check if page parameter is valid
+				//get all packages to find out how many pages are needed
+
+				$result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' ORDER BY `Name` ASC');
 				$Pages = intval($this->db->num_rows($result) / $PackagesPerSite);
 
 				if(($this->db->num_rows($result) / $PackagesPerSite) > $Pages)$Pages+= 1;
@@ -1543,12 +1922,18 @@ class ApsParser
 				if($_GET['page'] >= 1
 				   && $_GET['page'] <= $Pages)
 				{
-					$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' LIMIT ' . $this->db->escape((intval($_GET['page']) - 1) * $PackagesPerSite) . ', ' . $this->db->escape($PackagesPerSite));
+					//page parameter is within available pages, now show packages for that given page
+
+					$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' ORDER BY `Name` ASC LIMIT ' . $this->db->escape((intval($_GET['page']) - 1) * $PackagesPerSite) . ', ' . $this->db->escape($PackagesPerSite));
+
+					//show packages
 
 					while($Row3 = $this->db->fetch_array($result2))
 					{
 						self::ShowPackageInfo($Row3['ID']);
 					}
+
+					//show URLs for other pages
 
 					if($Pages > 1)
 					{
@@ -1570,17 +1955,25 @@ class ApsParser
 				}
 				else
 				{
-					$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' LIMIT 0, ' . $this->db->escape($PackagesPerSite));
+					//page parameter isnt within available pages, show packages from first page
+
+					$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' ORDER BY `Name` ASC LIMIT 0, ' . $this->db->escape($PackagesPerSite));
+
+					//show packages
 
 					while($Row3 = $this->db->fetch_array($result2))
 					{
 						self::ShowPackageInfo($Row3['ID']);
 					}
 
-					$result3 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED);
+					//fetch number of packages to calculate the number of pages
+
+					$result3 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' ORDER BY `Name` ASC');
 					$Pages = intval($this->db->num_rows($result3) / $PackagesPerSite);
 
 					if(($this->db->num_rows($result3) / $PackagesPerSite) > $Pages)$Pages+= 1;
+
+					//show URLs for other pages
 
 					if($Pages > 1)
 					{
@@ -1596,7 +1989,9 @@ class ApsParser
 			}
 			else
 			{
-				$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' LIMIT 0, ' . $this->db->escape($PackagesPerSite));
+				//page parameter isnt valid, show packages from first page
+
+				$result2 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' ORDER BY `Name` ASC LIMIT 0, ' . $this->db->escape($PackagesPerSite));
 
 				if($this->db->num_rows($result2) == 0)
 				{
@@ -1604,15 +1999,21 @@ class ApsParser
 					return;
 				}
 
+				//show packages
+
 				while($Row3 = $this->db->fetch_array($result2))
 				{
 					self::ShowPackageInfo($Row3['ID']);
 				}
 
-				$result3 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED);
+				//fetch number of packages to calculate number of pages
+
+				$result3 = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' ORDER BY `Name` ASC');
 				$Pages = intval($this->db->num_rows($result3) / $PackagesPerSite);
 
 				if(($this->db->num_rows($result3) / $PackagesPerSite) > $Pages)$Pages+= 1;
+
+				//show URLs for other pages
 
 				if($Pages > 1)
 				{
@@ -1636,23 +2037,29 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 filename		zipfile to read data from
-	 file			file within zip archive to read
-	 destination		optional parameter where to save file from within the zip file
-	 return:
-	 success			content of file from zip archive
-	 error			false
+	 * function extracts resources from a zipfile to return or save them on disk
+	 *
+	 * @param	filename		zipfile to read data from
+	 * @param	file			file within zip archive to read
+	 * @param	destination		optional parameter where to save file from within the zip file
+	 * @return	success content of file from zip archive / error false
 	 */
 
 	private function GetContentFromZip($Filename, $File, $Destination = '')
 	{
 		if(!file_exists($Filename))return false;
-		$ZipHandle = zip_open($Filename);
+
+		//fixing bug for some ugly php versions
+
+		$ZipHandle = zip_open(realpath($Filename));
 		$Content = '';
 
-		if($ZipHandle)
+		//unable to open zipfile
+
+		if(is_resource($ZipHandle))
 		{
+			//go through the filetree, find the file and read its contents
+
 			while($ZipEntry = zip_read($ZipHandle))
 			{
 				if(zip_entry_name($ZipEntry) == $File)
@@ -1676,6 +2083,8 @@ class ApsParser
 			return false;
 		}
 
+		//return content of file from within the zipfile or save to disk
+
 		if($Content == '')
 		{
 			return false;
@@ -1688,6 +2097,8 @@ class ApsParser
 			}
 			else
 			{
+				//open file and save content
+
 				$File = fopen($Destination, "wb");
 
 				if($File)
@@ -1704,19 +2115,22 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 filename		zipfile containing the xml meta data
-	 return:
-	 success			parsed xml content of zipfile
-	 error			false
+	 * fetches the xml metafile from a zipfile and returns the parsed data
+	 *
+	 * @param	filename		zipfile containing the xml meta data
+	 * @return	success parsed xml content of zipfile / error false
 	 */
 
 	private function GetXmlFromZip($Filename)
 	{
 		if(!file_exists($Filename))return false;
 
+		//get content for xml meta data file from within the zipfile
+
 		if($XmlContent = self::GetContentFromZip($Filename, 'APP-META.xml'))
 		{
+			//parse xml content
+
 			$Xml = new SimpleXMLElement($XmlContent);
 			return $Xml;
 		}
@@ -1727,15 +2141,16 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 filename		xmlfile to parse
-	 return:
-	 success			parsed xml content of file
-	 error			false
+	 * reads the content of a xml metafile from disk and returns the parsed data
+	 *
+	 * @param	filename		xmlfile to parse
+	 * @return	success parsed xml content of file / error false
 	 */
 
 	private function GetXmlFromFile($Filename)
 	{
+		//read xml file from disk and return parsed data
+
 		if(!file_exists($Filename))return false;
 		$XmlContent = file_get_contents($Filename);
 		$Xml = new SimpleXMLElement($XmlContent);
@@ -1743,12 +2158,11 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid		id of package from database to check vor validity
-	 customer		check if package can be used by customer and/or admin [true|false]
-	 return:
-	 success			valid package id (id > 0 based on database layout)
-	 error			false
+	 * check whether a given package id is valid
+	 *
+	 * @param	packageid		id of package from database to check vor validity
+	 * @param	customer		check if package can be used by customer and/or admin [true|false]
+	 * @return	success valid package id (id > 0 based on database layout) / error false
 	 */
 
 	private function IsValidPackageId($PackageId, $Customer)
@@ -1757,6 +2171,8 @@ class ApsParser
 
 		if($Customer == true)
 		{
+			//customers can only see packages which are enabled
+
 			$result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `Status` = ' . PACKAGE_ENABLED . ' AND `ID` = ' . $this->db->escape($PackageId));
 
 			if($this->db->num_rows($result) > 0)
@@ -1770,6 +2186,8 @@ class ApsParser
 		}
 		else
 		{
+			//admins can see all packages
+
 			$result = $this->db->query('SELECT * FROM `' . TABLE_APS_PACKAGES . '` WHERE `ID` = ' . $this->db->escape($PackageId));
 
 			if($this->db->num_rows($result) > 0)
@@ -1784,11 +2202,10 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid		id of instance from database to check vor validity
-	 return:
-	 success			valid instance id (id > 0 based on database layout)
-	 error			false
+	 * check whether a given instance id is valid
+	 *
+	 * @param	packageid		id of instance from database to check vor validity
+	 * @return	success valid instance id (id > 0 based on database layout) / error false
 	 */
 
 	private function IsValidInstanceId($InstanceId, $CustomerId)
@@ -1807,13 +2224,12 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid		id of package from database
-	 customerid		id of customer for who the values should be saved
-	 name			name of field to save
-	 value			value to save for previously given name
-	 return:
-	 none
+	 * save installation values fetched from the installation wizard
+	 *
+	 * @param	packageid		id of package from database
+	 * @param	customerid		id of customer for who the values should be saved
+	 * @param	name			name of field to save
+	 * @param	value			value to save for previously given name
 	 */
 
 	private function SetInstallationValue($PackageId, $CustomerId, $Name, $Value)
@@ -1832,13 +2248,12 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid		id of package from database
-	 customerid		id of customer for who the values should be read
-	 name			name of field to read
-	 return:
-	 success			value of field from database
-	 error			false
+	 * return previously saved installation values
+	 *
+	 * @param	packageid		id of package from database
+	 * @param	customerid		id of customer for who the values should be read
+	 * @param	name			name of field to read
+	 * @return	success value of field from database / error false
 	 */
 
 	private function GetInstallationValue($PackageId, $CustomerId, $Name)
@@ -1857,10 +2272,10 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 path		path which could be compromised
-	 return:
-	 always		corrected path
+	 * fix a path given by the customer
+	 *
+	 * @param	path		path which could be compromised
+	 * @return	corrected path
 	 */
 
 	private function MakeSecurePath($path)
@@ -1892,11 +2307,11 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid		id of package from database
-	 customerid		id of customer from database
-	 return:
-	 success/error	array of errors found containing fields that were wrong
+	 * validate the input of a customer against the xml meta descriptions
+	 *
+	 * @param	packageid		id of package from database
+	 * @param	customerid		id of customer from database
+	 * @return	success/error array of errors found containing fields that were wrong
 	 */
 
 	private function ValidatePackageData($PackageId, $CustomerId)
@@ -1906,7 +2321,12 @@ class ApsParser
 		$Row = $this->db->fetch_array($result);
 		$Xml = self::GetXmlFromFile('./packages/' . $Row['Path'] . '/APP-META.xml');
 
+		//return if parse of xml file has failed
+
 		if($Xml == false)return false;
+
+		//check all data fields of xml file against inut of customer
+
 		$Error = array();
 		foreach($Xml->settings->group as $Group)
 		{
@@ -1938,7 +2358,7 @@ class ApsParser
 						}
 
 						/*
-						else if(isset($Setting['charset']))
+						elseif(isset($Setting['charset']))
 						{
 							//CHARSET VALIDATION FOR LATER VERSIONS
 						}
@@ -1969,9 +2389,7 @@ class ApsParser
 						if(!in_array($FieldId, $Error))$Error[] = $FieldId;
 					}
 				}
-				else
-
-				if($Setting['type'] == 'domain-name')
+				elseif($Setting['type'] == 'domain-name')
 				{
 					if(isset($_POST[$FieldId]))
 					{
@@ -1987,9 +2405,7 @@ class ApsParser
 						if(!in_array($FieldId, $Error))$Error[] = $FieldId;
 					}
 				}
-				else
-
-				if($Setting['type'] == 'integer')
+				elseif($Setting['type'] == 'integer')
 				{
 					if(isset($_POST[$FieldId]))
 					{
@@ -2024,9 +2440,7 @@ class ApsParser
 						if(!in_array($FieldId, $Error))$Error[] = $FieldId;
 					}
 				}
-				else
-
-				if($Setting['type'] == 'float')
+				elseif($Setting['type'] == 'float')
 				{
 					if(isset($_POST[$FieldId]))
 					{
@@ -2054,9 +2468,7 @@ class ApsParser
 						if(!in_array($FieldId, $Error))$Error[] = $FieldId;
 					}
 				}
-				else
-
-				if($Setting['type'] == 'boolean')
+				elseif($Setting['type'] == 'boolean')
 				{
 					if(isset($_POST[$FieldId])
 					   && $_POST[$FieldId] == 'true')
@@ -2068,9 +2480,7 @@ class ApsParser
 						self::SetInstallationValue($PackageId, $CustomerId, $FieldId, 'false');
 					}
 				}
-				else
-
-				if($Setting['type'] == 'enum')
+				elseif($Setting['type'] == 'enum')
 				{
 					if(isset($_POST[$FieldId]))
 					{
@@ -2163,6 +2573,7 @@ class ApsParser
 				$result4 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `CustomerID` = ' . $this->db->escape($CustomerId));
 
 				//get all instances from current customer
+				//thats needed because there cannot be installed two apps within the same directory
 
 				while($Row3 = $this->db->fetch_array($result4))
 				{
@@ -2238,12 +2649,11 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid		id of package from database
-	 wrongdata		array of fields that were wrong in previous validation check
-	 return:
-	 error			false
-	 success			none
+	 * functions provides the frontend of the installation wizard for the customer
+	 *
+	 * @param	packageid		id of package from database
+	 * @param	wrongdata		array of fields that were wrong in previous validation check
+	 * @return	error false / success none
 	 */
 
 	private function ShowPackageInstaller($PackageId, $WrongData, $CustomerId)
@@ -2292,7 +2702,7 @@ class ApsParser
 		$result2 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `customerid` = ' . $this->db->escape($CustomerId));
 
 		//if customer has no domains, app cannot be installed
-		//FIXME
+		//FIXME function for html code
 
 		if($this->db->num_rows($result2) > 0)
 		{
@@ -2400,9 +2810,7 @@ class ApsParser
 					{
 						$Temp.= '<input type="text" name="' . $Setting['id'] . '" value="' . $Value . '"/>';
 					}
-					else
-
-					if($Setting['default-value'])
+					elseif($Setting['default-value'])
 					{
 						$Temp.= '<input type="text" name="' . $Setting['id'] . '" value="' . $Setting['default-value'] . '"/>';
 					}
@@ -2423,36 +2831,26 @@ class ApsParser
 							{
 								$Temp.= self::FieldError($lng['aps']['error_text']);
 							}
-							else
-
-							if($Setting['type'] == 'email')
+							elseif($Setting['type'] == 'email')
 							{
 								$Temp.= self::FieldError($lng['aps']['error_email']);
 							}
-							else
-
-							if($Setting['type'] == 'domain-name')
+							elseif($Setting['type'] == 'domain-name')
 							{
 								$Temp.= self::FieldError($lng['aps']['domain']);
 							}
-							else
-
-							if($Setting['type'] == 'integer')
+							elseif($Setting['type'] == 'integer')
 							{
 								$Temp.= self::FieldError($lng['aps']['error_integer']);
 							}
-							else
-
-							if($Setting['type'] == 'float')
+							elseif($Setting['type'] == 'float')
 							{
 								$Temp.= self::FieldError($lng['aps']['error_float']);
 							}
 						}
 					}
 				}
-				else
-
-				if($Setting['type'] == 'password')
+				elseif($Setting['type'] == 'password')
 				{
 					if(!$GroupPrinted)
 					{
@@ -2478,9 +2876,7 @@ class ApsParser
 						}
 					}
 				}
-				else
-
-				if($Setting['type'] == 'boolean')
+				elseif($Setting['type'] == 'boolean')
 				{
 					if(!$GroupPrinted)
 					{
@@ -2505,9 +2901,7 @@ class ApsParser
 							$Temp.= '<input name="' . $Setting['id'] . '" type="checkbox" value="true" />';
 						}
 					}
-					else
-
-					if($Setting['default-value'] == 'true')
+					elseif($Setting['default-value'] == 'true')
 					{
 						$Temp.= '<input checked="checked" name="' . $Setting['id'] . '" type="checkbox" value="true" />';
 					}
@@ -2516,9 +2910,7 @@ class ApsParser
 						$Temp.= '<input name="' . $Setting['id'] . '" type="checkbox" value="true" />';
 					}
 				}
-				else
-
-				if($Setting['type'] == 'enum')
+				elseif($Setting['type'] == 'enum')
 				{
 					if(!$GroupPrinted)
 					{
@@ -2545,9 +2937,7 @@ class ApsParser
 								$Temp.= '<option value="' . $Choice['id'] . '">' . $Choice->name . '</option>';
 							}
 						}
-						else
-
-						if(strval($Choice['id']) == strval($Setting['default-value']))
+						elseif(strval($Choice['id']) == strval($Setting['default-value']))
 						{
 							$Temp.= '<option selected="selected" value="' . $Choice['id'] . '">' . $Choice->name . '</option>';
 						}
@@ -2596,7 +2986,7 @@ class ApsParser
 				}
 				else
 				{
-					$Temp.= '<a target="_blank" href="' . htmlspecialchars($Xml->license->text->url) . '">Link to License</a>';
+					$Temp.= '<a target="_blank" href="' . htmlspecialchars($Xml->license->text->url) . '">' . $lng['aps']['error_license'] . '</a>';
 					$Groupname = $lng['aps']['license'];
 					$Fieldname = $lng['aps']['license'];
 					$Fieldvalue = $Temp;
@@ -2622,12 +3012,11 @@ class ApsParser
 	}
 
 	/**
-	 input:
-	 packageid		id of package from database
-	 mode			verbosity of data to view (basic|advanced)
-	 return:
-	 error			false
-	 success			none
+	 * show informations for a package in basic or detailed view
+	 *
+	 * @param	packageid		id of package from database
+	 * @param	mode			verbosity of data to view (basic|advanced)
+	 * @return	error false / success none
 	 */
 
 	private function ShowPackageInfo($PackageId, $All = false)
@@ -2648,6 +3037,8 @@ class ApsParser
 		if($Xml == false)return false;
 		$Icon = './images/default.png';
 
+		//show icon and basic data
+
 		if($Xml->icon['path'])
 		{
 			$Icon = './packages/' . $Row['Path'] . '/' . basename($Xml->icon['path']);
@@ -2658,6 +3049,8 @@ class ApsParser
 		$Fieldvalue = $Xml->version . ' (Release ' . $Xml->release . ')';
 		eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 
+		//show website
+
 		if($Xml->homepage)
 		{
 			$Fieldname = $lng['aps']['homepage'];
@@ -2665,12 +3058,16 @@ class ApsParser
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 		}
 
+		//show size after installation
+
 		if($Xml->{'installed-size'})
 		{
 			$Fieldname = $lng['aps']['installed_size'];
 			$Fieldvalue = 'ca. ' . number_format(intval($Xml->{'installed-size'}) / (1024 * 1024), 2) . ' MB';
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 		}
+
+		//show categories
 
 		if($Xml->categories)
 		{
@@ -2685,6 +3082,8 @@ class ApsParser
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 		}
 
+		//show available languages
+
 		if($Xml->languages)
 		{
 			$Temp = '';
@@ -2698,11 +3097,15 @@ class ApsParser
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 		}
 
+		//show more information
+
 		if($All == true)
 		{
 			$Fieldname = $lng['aps']['long_description'];
 			$Fieldvalue = htmlspecialchars($Xml->description);
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
+
+			//show config script language
 
 			if($Xml->{'configuration-script-language'})
 			{
@@ -2710,6 +3113,8 @@ class ApsParser
 				$Fieldvalue = $Xml->{'configuration-script-language'};
 				eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 			}
+
+			//show changelog
 
 			$Temp = '<ul>';
 			foreach($Xml->changelog->version as $Versions)
@@ -2728,6 +3133,8 @@ class ApsParser
 			$Fieldname = $lng['aps']['changelog'];
 			$Fieldvalue = $Temp;
 			eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
+
+			//show license
 
 			if($Xml->license)
 			{
@@ -2752,6 +3159,8 @@ class ApsParser
 				}
 			}
 
+			//show screenshots
+
 			if($Xml->screenshot)
 			{
 				$Count = 0;
@@ -2774,11 +3183,26 @@ class ApsParser
 		unset($Xml);
 	}
 
+	/**
+	 * show a nice looking infobox
+	 *
+	 * @param	message		message to display in beautifull layout
+	 */
+
 	private function InfoBox($Message)
 	{
 		global $lng, $filename, $s, $page, $action;
+
+		//shows a box with informations
+
 		eval("echo \"" . getTemplate("aps/infobox") . "\";");
 	}
+
+	/**
+	 * returns html code for nice looking boxes to show customers wrong input
+	 *
+	 * @param	error		error to display in beautifull layout
+	 */
 
 	private function FieldError($Error)
 	{

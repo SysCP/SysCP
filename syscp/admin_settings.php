@@ -1221,6 +1221,110 @@ if(($page == 'settings' || $page == 'overview')
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='aps' AND `varname`='items_per_page'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed items_per_page from '" . $settings['aps']['items_per_page'] . "' to '" . $value . "'");
 				}
+
+				//write exceptions to database
+				//php configuration
+
+				$Webserver = '';
+				$Config = '';
+				$Extensions = '';
+				$Functions = '';
+				$WebserverHtaccess = '';
+				$ConfigParams = array(
+					'short_open_tag',
+					'file_uploads',
+					'magic_quotes_gpc',
+					'register_globals',
+					'allow_url_fopen',
+					'safe_mode',
+					'post_max_size',
+					'memory_limit',
+					'max_execution_time'
+				);
+				foreach($ConfigParams as $Param)
+				{
+					if(isset($_POST[$Param])
+					   && $_POST[$Param] == '1')
+					{
+						$Config.= ',' . $Param;
+					}
+				}
+
+				//php extensions
+
+				$ExtensionParams = array(
+					'gd',
+					'pcre',
+					'ioncube',
+					'curl',
+					'mcrypt',
+					'imap'
+				);
+				foreach($ExtensionParams as $Param)
+				{
+					if(isset($_POST[$Param])
+					   && $_POST[$Param] == '1')
+					{
+						if($Param == 'ioncube')
+						{
+							$Extensions.= ',ioncube loader,ioncube';
+						}
+						else
+						{
+							$Extensions.= ',' . $Param;
+						}
+
+						//if module is enabled, this two functions are available
+
+						if($Param == 'mcrypt')
+						{
+							$Functions.= ',mcrypt_encrypt,mcrypt_decrypt';
+						}
+					}
+				}
+
+				//webserver modules
+
+				$WebserverParams = array(
+					'mod_perl',
+					'mod_rewrite',
+					'mod_access'
+				);
+				foreach($WebserverParams as $Param)
+				{
+					if(isset($_POST[$Param])
+					   && $_POST[$Param] == '1')
+					{
+						if($Param == 'mod_rewrite')
+						{
+							$Webserver.= ',mod_rewrite.c,mod_rewrite';
+						}
+						else
+						{
+							$Webserver.= ',' . $Param;
+						}
+					}
+				}
+
+				//other webserver exceptions
+
+				if(isset($_POST['fastcgi'])
+				   && $_POST['fastcgi'] == '1')
+				{
+					$Webserver.= ',fcgid-any';
+				}
+
+				if(isset($_POST['htaccess'])
+				   && $_POST['htaccess'] == '1')
+				{
+					$WebserverHtaccess.= 'htaccess';
+				}
+
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape(substr($Extensions, 1)) . "' WHERE `settinggroup`='aps' AND `varname`='php-extension'");
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape(substr($Webserver, 1)) . "' WHERE `settinggroup`='aps' AND `varname`='webserver-module'");
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape(substr($Functions, 1)) . "' WHERE `settinggroup`='aps' AND `varname`='php-function'");
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape(substr($Config, 1)) . "' WHERE `settinggroup`='aps' AND `varname`='php-configuration'");
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($WebserverHtaccess) . "' WHERE `settinggroup`='aps' AND `varname`='webserver-htaccess'");
 			}
 		}
 
@@ -1547,16 +1651,16 @@ if(($page == 'settings' || $page == 'overview')
 				eval("\$settings_page .= \"" . getTemplate("settings/settings_billing") . "\";");
 			}
 
-			if($_part == 'security'
-			   || $_part == 'all')
-			{
-				eval("\$settings_page .= \"" . getTemplate("settings/settings_security") . "\";");
-			}
-
 			if($_part == 'aps'
 			   || $_part == 'all')
 			{
 				eval("\$settings_page .= \"" . getTemplate("settings/settings_aps") . "\";");
+			}
+
+			if($_part == 'security'
+			   || $_part == 'all')
+			{
+				eval("\$settings_page .= \"" . getTemplate("settings/settings_security") . "\";");
 			}
 		}
 
