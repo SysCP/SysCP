@@ -344,7 +344,7 @@ if($page == 'admins'
 				$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'm');
 				$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
 				$calc_tax = intval($_POST['calc_tax']);
-				$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
+				$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/', '', array(0, ''));
 				$payment_every = intval($_POST['payment_every']);
 				$payment_method = intval($_POST['payment_method']);
 				$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
@@ -799,7 +799,7 @@ if($page == 'admins'
 					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
 					$calc_tax = intval($_POST['calc_tax']);
-					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
+					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/', '', array(0, ''));
 					$payment_method = intval($_POST['payment_method']);
 					$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
 					$bankaccount_number = validate($_POST['bankaccount_number'], html_entity_decode($lng['customer']['bankaccount_number']));
