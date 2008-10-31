@@ -16,13 +16,19 @@ $header
 				</td>
 			</tr>
 			<tr>
-				<td class="main_field_name">{$lng['admin']['customer']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><if $result['name'] != '' && $result['firstname'] != ''>{$result['name']}, {$result['firstname']}</if><if $result['name'] != '' && $result['firstname'] != '' && $result['company'] != ''> | </if><if $result['company'] != ''>{$result['company']}</if> ({$result['loginname']})</td>
-			</tr>
-			<tr>
 				<td class="main_field_name">Domain:</td>
 				<td class="main_field_display" nowrap="nowrap">{$result['domain']}</td>
 			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['customer']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="customerid">$customers</select></td>
+			</tr>
+			<if $userinfo['customers_see_all'] == '1'>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['admin']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="adminid">$admins</select></td>
+			</tr>
+			</if>
 			<if $alias_check == '0'>
 			<tr>
 				<td class="main_field_name">{$lng['domains']['aliasdomain']}:</td>

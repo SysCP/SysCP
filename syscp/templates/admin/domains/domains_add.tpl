@@ -17,6 +17,12 @@ $header
 				<td class="main_field_name">{$lng['admin']['customer']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="customerid">$customers</select></td>
 			</tr>
+			<if $userinfo['customers_see_all'] == '1'>
+			<tr>
+				<td class="main_field_name">{$lng['admin']['admin']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="adminid">$admins</select></td>
+			</tr>
+			</if>
 			<tr>
 				<td class="main_field_name">Domain:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="domain" value="" size="60" /></td>

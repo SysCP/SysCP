@@ -1342,4 +1342,7 @@ $lng['aps']['updatetaskexists'] = 'There is already an task for the update of al
 $lng['aps']['updatetaskinserted'] = 'A task for the update of all packages has been created. This can take up to several minutes.';
 $lng['aps']['canmanagepackages'] = 'Can manage APS packages';
 
+$lng['error']['customerdoesntexist'] = 'The customer you have chosen doesn\'t exist.';
+$lng['error']['admindoesntexist'] = 'The admin you have chosen doesn\'t exist.';
+
 ?>

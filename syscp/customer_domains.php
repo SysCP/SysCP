@@ -238,20 +238,15 @@ elseif($page == 'domains')
 				   && validateUrl($idna_convert->encode($_POST['url'])))
 				{
 					$path = $_POST['url'];
-					$path = $userinfo['documentroot'] . $_POST['path'];
 				}
 				else
 				{
-					$path = $userinfo['documentroot'] . $_POST['path'];
+					$path = validate($_POST['path'], 'path');
 				}
 
-				if(!preg_match('/^https?\:\/\//', $path))
+				if(!preg_match('/^https?\:\/\//', $path) || !validateUrl($idna_convert->encode($_POST['url'])))
 				{
-					if(empty($_POST['path']))
-					{
-						$path = $userinfo['documentroot'] . $path;
-					}
-
+					$path = $userinfo['documentroot'] . $path;
 					$path = makeCorrectDir($path);
 				}
 
@@ -358,13 +353,13 @@ elseif($page == 'domains')
 					$path = validate($_POST['path'], 'path');
 				}
 
-				$aliasdomain = intval($_POST['alias']);
-
-				if(!preg_match('/^https?\:\/\//', $path))
+				if(!preg_match('/^https?\:\/\//', $path) || !validateUrl($idna_convert->encode($_POST['url'])))
 				{
 					$path = $userinfo['documentroot'] . $path;
 					$path = makeCorrectDir($path);
 				}
+
+				$aliasdomain = intval($_POST['alias']);
 
 				if(isset($_POST['iswildcarddomain'])
 				   && $_POST['iswildcarddomain'] == '1'
@@ -465,6 +460,7 @@ elseif($page == 'domains')
 				}
 
 				if(preg_match('/^https?\:\/\//', $result['documentroot'])
+				   && validateUrl($idna_convert->encode($result['documentroot']))
 				   && $settings['panel']['pathedit'] == 'Dropdown')
 				{
 					$urlvalue = $result['documentroot'];
@@ -475,8 +471,6 @@ elseif($page == 'domains')
 					$urlvalue = '';
 					$pathSelect = makePathfield($userinfo['documentroot'], $userinfo['guid'], $userinfo['guid'], $settings['panel']['pathedit'], $result['documentroot']);
 				}
-
-				//					$result['documentroot']=str_replace($userinfo['documentroot'],'',$result['documentroot']);
 
 				$ssl_redirect = makeyesno('ssl_redirect', '1', '0', $result['ssl_redirect']);
 				$iswildcarddomain = makeyesno('iswildcarddomain', '1', '0', $result['iswildcarddomain']);
