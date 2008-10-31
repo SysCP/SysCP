@@ -331,7 +331,7 @@ if($page == 'admins'
 
 			if($settings['billing']['activate_billing'] == '1')
 			{
-				$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+				$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 				$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
 				$included_domains_qty = intval($_POST['included_domains_qty']);
 				$included_domains_tld = $idna_convert->encode(validate($_POST['included_domains_tld'], html_entity_decode($lng['customer']['included_domains'])));
@@ -368,15 +368,7 @@ if($page == 'admins'
 				if($service_active == 1
 				   && isset($_POST['servicestart_date']))
 				{
-					if($_POST['servicestart_date'] == '0'
-					   || $_POST['servicestart_date'] == '')
-					{
-						$servicestart_date = '0';
-					}
-					else
-					{
-						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-					}
+					$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 				}
 
 				$customer_categories_once_array = array();
@@ -509,7 +501,7 @@ if($page == 'admins'
 					$service_active = '1';
 
 					if(!isset($servicestart_date)
-					   || $servicestart_date == '0')
+					   || $servicestart_date == '0000-00-00')
 					{
 						$servicestart_date = date('Y-m-d');
 					}
@@ -517,7 +509,7 @@ if($page == 'admins'
 				else
 				{
 					$service_active = '0';
-					$servicestart_date = '0';
+					$servicestart_date = '0000-00-00';
 				}
 
 				if($calc_tax != '1')
@@ -804,7 +796,7 @@ if($page == 'admins'
 
 				if($settings['billing']['activate_billing'] == '1')
 				{
-					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
 					$calc_tax = intval($_POST['calc_tax']);
 					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
@@ -903,15 +895,7 @@ if($page == 'admins'
 					}
 					else
 					{
-						if($_POST['servicestart_date'] == '0'
-						   || $_POST['servicestart_date'] == '')
-						{
-							$servicestart_date = '0';
-						}
-						else
-						{
-							$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-						}
+						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					}
 
 					$serviceend_date = $result['serviceend_date'];
@@ -979,7 +963,7 @@ if($page == 'admins'
 						$service_active = '1';
 
 						if(($result['servicestart_date'] == '0000-00-00')
-						   && ($servicestart_date == '0' || $servicestart_date == ''))
+						   && ($servicestart_date == '0000-00-00' || $servicestart_date == '0' || $servicestart_date == ''))
 						{
 							// We are starting the service now.
 
@@ -992,7 +976,7 @@ if($page == 'admins'
 						{
 							// We are continuing the service.
 
-							$serviceend_date = '0';
+							$serviceend_date = '0000-00-00';
 						}
 					}
 					else

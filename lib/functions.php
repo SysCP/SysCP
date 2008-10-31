@@ -721,9 +721,24 @@ function validateUrl($url)
  *
  */
 
-function validate($str, $fieldname, $pattern = '', $lng = 'stringformaterror')
+function validate($str, $fieldname, $pattern = '', $lng = '', $emptydefault = array())
 {
 	global $log;
+
+	if(!is_array($emptydefault))
+	{
+		$emptydefault_array = array($emptydefault);
+		unset($emptydefault);
+		$emptydefault = $emptydefault_array;
+		unset($emptydefault_array);
+	}
+
+	// Check if the $str is one of the values which represent the default for an 'empty' value
+
+	if(is_array($emptydefault) && !empty($emptydefault) && in_array($str, $emptydefault) && isset($emptydefault[0]))
+	{
+		return $emptydefault[0];
+	}
 
 	if($pattern == '')
 	{
@@ -743,6 +758,11 @@ function validate($str, $fieldname, $pattern = '', $lng = 'stringformaterror')
 	if(preg_match($pattern, $str))
 	{
 		return $str;
+	}
+
+	if($lng == '')
+	{
+		$lng = 'stringformaterror';
 	}
 
 	standard_error($lng, $fieldname);

@@ -76,16 +76,7 @@ if($userinfo['customers_see_all'] == '1')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			if(isset($_POST['valid_from'])
-			   && $_POST['valid_from'] != '0'
-			   && $_POST['valid_from'] != '')
-			{
-				$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-			}
-			else
-			{
-				$valid_from = '0';
-			}
+			$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 			if(isset($_POST['taxrate']))
 			{
@@ -148,16 +139,7 @@ if($userinfo['customers_see_all'] == '1')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				if(isset($_POST['valid_from'])
-				   && $_POST['valid_from'] != '0'
-				   && $_POST['valid_from'] != '')
-				{
-					$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-				}
-				else
-				{
-					$valid_from = '0';
-				}
+				$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 				if(isset($_POST['taxrate']))
 				{
