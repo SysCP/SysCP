@@ -221,15 +221,7 @@ if($page == 'domains'
 				$aliasdomain = intval($_POST['alias']);
 				$customer = $db->query_first("SELECT `documentroot` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "'");
 				$documentroot = $customer['documentroot'];
-
-				if(intval($_POST['registration_date']) != 0)
-				{
-					$registration_date = validate($_POST['registration_date'], 'registration_date', '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-				}
-				else
-				{
-					$registration_date = 0;
-				}
+				$registration_date = validate($_POST['registration_date'], 'registration_date', '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 				if($userinfo['edit_billingdata'] == '1'
 				   && $settings['billing']['activate_billing'] == '1')
@@ -265,15 +257,7 @@ if($page == 'domains'
 				if($service_active == 1
 				   && isset($_POST['servicestart_date']))
 				{
-					if($_POST['servicestart_date'] == '0'
-					   || $_POST['servicestart_date'] == '')
-					{
-						$servicestart_date = '0';
-					}
-					else
-					{
-						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-					}
+					$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 				}
 
 				if($userinfo['change_serversettings'] == '1')
@@ -429,7 +413,7 @@ if($page == 'domains'
 					$service_active = '1';
 
 					if(!isset($servicestart_date)
-					   || $servicestart_date == '0')
+					   || $servicestart_date == '0000-00-00')
 					{
 						$servicestart_date = date('Y-m-d');
 					}
@@ -437,7 +421,7 @@ if($page == 'domains'
 				else
 				{
 					$service_active = '0';
-					$servicestart_date = '0';
+					$servicestart_date = '0000-00-00';
 				}
 
 				if($interval_payment != '1')
@@ -725,15 +709,7 @@ if($page == 'domains'
 				$subcanemaildomain = intval($_POST['subcanemaildomain']);
 				$caneditdomain = intval($_POST['caneditdomain']);
 				$wwwserveralias = intval($_POST['wwwserveralias']);
-
-				if(intval($_POST['registration_date']) != 0)
-				{
-					$registration_date = validate($_POST['registration_date'], 'registration_date', '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-				}
-				else
-				{
-					$registration_date = 0;
-				}
+				$registration_date = validate($_POST['registration_date'], 'registration_date', '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 				if($userinfo['edit_billingdata'] == '1'
 				   && $settings['billing']['activate_billing'] == '1')
@@ -774,15 +750,7 @@ if($page == 'domains'
 					}
 					else
 					{
-						if($_POST['servicestart_date'] == '0'
-						   || $_POST['servicestart_date'] == '')
-						{
-							$servicestart_date = '0';
-						}
-						else
-						{
-							$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-						}
+						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					}
 
 					$serviceend_date = $result['serviceend_date'];
@@ -990,7 +958,7 @@ if($page == 'domains'
 					$service_active = '1';
 
 					if(($result['servicestart_date'] == '0000-00-00')
-					   && ($servicestart_date == '0' || $servicestart_date == ''))
+					   && ($servicestart_date == '0000-00-00' || $servicestart_date == '0' || $servicestart_date == ''))
 					{
 						// We are starting the service now.
 
@@ -1003,7 +971,7 @@ if($page == 'domains'
 					{
 						// We are continuing the service.
 
-						$serviceend_date = '0';
+						$serviceend_date = '0000-00-00';
 					}
 				}
 				else

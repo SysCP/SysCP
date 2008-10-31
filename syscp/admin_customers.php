@@ -283,16 +283,7 @@ if($page == 'customers'
 				$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+\(\)\/]*$/');
 				$email = $idna_convert->encode(validate($_POST['email'], 'email'));
 				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
-
-				if(isset($_POST['taxid'])
-				   && $_POST['taxid'] != '')
-				{
-					$taxid = validate($_POST['taxid'], html_entity_decode($lng['customer']['taxid']), '/^[A-Z]{2,3}[\s ]*[a-zA-Z0-9\-]+$/i');
-				}
-				else
-				{
-					$taxid = '';
-				}
+				$taxid = validate($_POST['taxid'], html_entity_decode($lng['customer']['taxid']), '/^[A-Z]{2,3}[\s ]*[a-zA-Z0-9\-]+$/i', 'stringformaterror', '');
 
 				$def_language = validate($_POST['def_language'], 'default language');
 				$diskspace = intval_ressource($_POST['diskspace']);
@@ -385,7 +376,7 @@ if($page == 'customers'
 				if($userinfo['edit_billingdata'] == '1'
 				   && $settings['billing']['activate_billing'] == '1')
 				{
-					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
 					$included_domains_qty = intval($_POST['included_domains_qty']);
 					$included_domains_tld = $idna_convert->encode(validate($_POST['included_domains_tld'], html_entity_decode($lng['customer']['included_domains'])));
@@ -398,7 +389,7 @@ if($page == 'customers'
 					$interval_type = (in_array($_POST['interval_type'], getIntervalTypes('array')) ? $_POST['interval_type'] : 'm');
 					$setup_fee = doubleval(str_replace(',', '.', $_POST['setup_fee']));
 					$calc_tax = intval($_POST['calc_tax']);
-					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
+					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/', '', array(0, ''));
 					$payment_every = intval($_POST['payment_every']);
 					$payment_method = intval($_POST['payment_method']);
 					$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
@@ -423,15 +414,7 @@ if($page == 'customers'
 					if($service_active == 1
 					   && isset($_POST['servicestart_date']))
 					{
-						if($_POST['servicestart_date'] == '0'
-						   || $_POST['servicestart_date'] == '')
-						{
-							$servicestart_date = '0';
-						}
-						else
-						{
-							$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-						}
+						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					}
 				}
 				else
@@ -559,7 +542,7 @@ if($page == 'customers'
 						$service_active = '1';
 
 						if(!isset($servicestart_date)
-						   || $servicestart_date == '0')
+						   || $servicestart_date == '0000-00-00')
 						{
 							$servicestart_date = date('Y-m-d');
 						}
@@ -567,7 +550,7 @@ if($page == 'customers'
 					else
 					{
 						$service_active = '0';
-						$servicestart_date = '0';
+						$servicestart_date = '0000-00-00';
 					}
 
 					if($calc_tax != '1')
@@ -814,16 +797,7 @@ if($page == 'customers'
 				$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+\(\)\/]*$/');
 				$email = $idna_convert->encode(validate($_POST['email'], 'email'));
 				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
-
-				if(isset($_POST['taxid'])
-				   && $_POST['taxid'] != '')
-				{
-					$taxid = validate($_POST['taxid'], html_entity_decode($lng['customer']['taxid']), '/^[A-Z]{2,3}[\s ]*[a-zA-Z0-9\-]+$/i');
-				}
-				else
-				{
-					$taxid = '';
-				}
+				$taxid = validate($_POST['taxid'], html_entity_decode($lng['customer']['taxid']), '/^[A-Z]{2,3}[\s ]*[a-zA-Z0-9\-]+$/i', 'stringformaterror', '');
 
 				$def_language = validate($_POST['def_language'], 'default language');
 				$password = validate($_POST['customer_password'], 'new password');
@@ -920,10 +894,10 @@ if($page == 'customers'
 				if($userinfo['edit_billingdata'] == '1'
 				   && $settings['billing']['activate_billing'] == '1')
 				{
-					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
+					$contract_date = validate($_POST['contract_date'], html_entity_decode($lng['customer']['contract_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					$contract_number = validate($_POST['contract_number'], html_entity_decode($lng['customer']['contract_number']));
 					$calc_tax = intval($_POST['calc_tax']);
-					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/');
+					$term_of_payment = validate($_POST['term_of_payment'], html_entity_decode($lng['customer']['term_of_payment']), '/^[0-9]+$/', '', array(0, ''));
 					$payment_method = intval($_POST['payment_method']);
 					$bankaccount_holder = validate($_POST['bankaccount_holder'], html_entity_decode($lng['customer']['bankaccount_holder']), '/^[^\0]*$/');
 					$bankaccount_number = validate($_POST['bankaccount_number'], html_entity_decode($lng['customer']['bankaccount_number']));
@@ -983,15 +957,7 @@ if($page == 'customers'
 					}
 					else
 					{
-						if($_POST['servicestart_date'] == '0'
-						   || $_POST['servicestart_date'] == '')
-						{
-							$servicestart_date = '0';
-						}
-						else
-						{
-							$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-						}
+						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					}
 
 					$serviceend_date = $result['serviceend_date'];
@@ -1084,7 +1050,7 @@ if($page == 'customers'
 						$service_active = '1';
 
 						if(($result['servicestart_date'] == '0000-00-00')
-						   && ($servicestart_date == '0' || $servicestart_date == ''))
+						   && ($servicestart_date == '0000-00-00' || $servicestart_date == '0' || $servicestart_date == ''))
 						{
 							// We are starting the service now.
 
@@ -1097,7 +1063,7 @@ if($page == 'customers'
 						{
 							// We are continuing the service.
 
-							$serviceend_date = '0';
+							$serviceend_date = '0000-00-00';
 						}
 					}
 					else

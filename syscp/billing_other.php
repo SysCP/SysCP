@@ -157,15 +157,7 @@ if($userinfo['customers_see_all'] == '1')
 			if($service_active == 1
 			   && isset($_POST['servicestart_date']))
 			{
-				if($_POST['servicestart_date'] == '0'
-				   || $_POST['servicestart_date'] == '')
-				{
-					$servicestart_date = '0';
-				}
-				else
-				{
-					$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-				}
+				$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 			}
 
 			if($service_active == 1)
@@ -173,7 +165,7 @@ if($userinfo['customers_see_all'] == '1')
 				$service_active = '1';
 
 				if(!isset($servicestart_date)
-				   || $servicestart_date == '0')
+				   || $servicestart_date == '0000-00-00')
 				{
 					$servicestart_date = date('Y-m-d');
 				}
@@ -181,7 +173,7 @@ if($userinfo['customers_see_all'] == '1')
 			else
 			{
 				$service_active = '0';
-				$servicestart_date = '0';
+				$servicestart_date = '0000-00-00';
 			}
 
 			if($interval_payment != '1')
@@ -280,15 +272,7 @@ if($userinfo['customers_see_all'] == '1')
 					}
 					else
 					{
-						if($_POST['servicestart_date'] == '0'
-						   || $_POST['servicestart_date'] == '')
-						{
-							$servicestart_date = '0';
-						}
-						else
-						{
-							$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-						}
+						$servicestart_date = validate($_POST['servicestart_date'], html_entity_decode($lng['service']['start_date']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 					}
 
 					$serviceend_date = $result['serviceend_date'];
@@ -323,7 +307,7 @@ if($userinfo['customers_see_all'] == '1')
 					$service_active = '1';
 
 					if(($result['servicestart_date'] == '0000-00-00')
-					   && ($servicestart_date == '0' || $servicestart_date == ''))
+					   && ($servicestart_date == '0000-00-00' || $servicestart_date == '0' || $servicestart_date == ''))
 					{
 						// We are starting the service now.
 
@@ -336,7 +320,7 @@ if($userinfo['customers_see_all'] == '1')
 					{
 						// We are continuing the service.
 
-						$serviceend_date = '0';
+						$serviceend_date = '0000-00-00';
 					}
 				}
 				else

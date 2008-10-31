@@ -94,23 +94,8 @@ if($userinfo['customers_see_all'] == '1')
 				$caption_interval = $caption_setup;
 			}
 
-			if($_POST['valid_from'] != '0')
-			{
-				$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-			}
-			else
-			{
-				$valid_from = '0';
-			}
-
-			if($_POST['valid_to'] != '0')
-			{
-				$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-			}
-			else
-			{
-				$valid_to = '0';
-			}
+			$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+			$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 			if(isset($_POST['taxclass'])
 			   && intval($_POST['taxclass']) != 0
@@ -184,23 +169,8 @@ if($userinfo['customers_see_all'] == '1')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				if($_POST['valid_from'] != '0')
-				{
-					$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-				}
-				else
-				{
-					$valid_from = '0';
-				}
-
-				if($_POST['valid_to'] != '0')
-				{
-					$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/');
-				}
-				else
-				{
-					$valid_to = '0';
-				}
+				$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+				$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 				if(isset($_POST['taxclass'])
 				   && intval($_POST['taxclass']) != 0
