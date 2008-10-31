@@ -1345,4 +1345,7 @@ $lng['aps']['updatetaskexists'] = 'Es gibt bereits einen Task zur Aktualisierung
 $lng['aps']['updatetaskinserted'] = 'Es wurde ein Task zur Aktualisierung aller Pakete erstellt. Dieser Vorgang kann einige Minuten in Anspruch nehmen.';
 $lng['aps']['canmanagepackages'] = 'Darf APS Pakete verwalten';
 
+$lng['error']['customerdoesntexist'] = 'Der ausgew&auml;hlte Kunde existiert nicht.';
+$lng['error']['admindoesntexist'] = 'Der ausgew&auml;hlte Admin existiert nicht.';
+
 ?>

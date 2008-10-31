@@ -24,11 +24,12 @@ $header
 				<td class="field_display_border_left" colspan="5" style=" text-align: center; ">{$pagingcode}</td>
 			</tr>
 			</if>
-			<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 0 < $countcustomers >
+			<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && $countcustomers !=0 >
 			<tr>
 				<td class="field_display_border_left" colspan="5"><a href="$filename?page=$page&amp;action=add&amp;s=$s">{$lng['admin']['domain_add']}</a></td>
 			</tr>
-			<else>
+			</if>
+			<if $countcustomers == 0 >
 			<tr>
 				<td class="field_display_border_left" colspan="5"><a href="admin_customers.php?s=$s&amp;page=customers&amp;action=add">{$lng['admin']['domain_nocustomeraddingavailable']}</a></td>
 			</tr>
