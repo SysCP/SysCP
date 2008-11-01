@@ -136,7 +136,7 @@ class ApsInstaller extends ApsParser
 			chdir($this->RealPath . $this->DomainPath . '/install_scripts/');
 			$Return = array();
 			$ReturnStatus = 0;
-			exec('php5 ' . escapeshellcmd($this->RealPath . $this->DomainPath . '/install_scripts/configure install'), $Return, $ReturnStatus);
+			exec('php ' . escapeshellcmd($this->RealPath . $this->DomainPath . '/install_scripts/configure install'), $Return, $ReturnStatus);
 
 			if($ReturnStatus != 0)
 			{
@@ -530,6 +530,30 @@ class ApsInstaller extends ApsParser
 
 			zip_close($ZipHandle);
 			return true;
+		}
+		else
+		{
+			$ReturnLines = array();
+			$ReturnVal = -1;
+
+			//on 64 bit systems the zip functions can fail -> use exec to extract the files
+			exec('unzip -o -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($Directory . '/*') . ' -d ' . escapeshellarg(sys_get_temp_dir()), $ReturnLines, $ReturnVal);
+
+			if($ReturnVal == 0)
+			{
+				//fix absolute structure of extracted data
+
+				if(!file_exists($Destination))mkdir($Destination, 0777, true);
+
+				exec('cp -Rf '. sys_get_temp_dir() . '/' . $Directory . '/*' . ' ' . escapeshellarg($Destination));
+				exec('rm -rf ' . sys_get_temp_dir() . '/' . escapeshellarg($Directory) . '/');
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		return false;

@@ -16,7 +16,8 @@
  * @license		GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package		System
  * @version		$Id$
- * @todo		- skip mail parsing after x bytes for large mails
+ * @todo		skip mail parsing after x bytes for large mails
+ *				implement start and end date for autoresponder mails
  */
 
 $needrootdb = false;
@@ -79,7 +80,7 @@ if($db->num_rows($result) > 0)
 
 				if(count($content) == 0)
 				{
-					$log->logAction(LOG_ERROR, LOG_WARNING, "Unable to read mail from maildir: " . $entry);
+					$cronlog->logAction(LOG_ERROR, LOG_WARNING, "Unable to read mail from maildir: " . $entry);
 					continue;
 				}
 
@@ -90,19 +91,34 @@ if($db->num_rows($result) > 0)
 				$spam = false;
 				foreach($content as $line)
 				{
-					if(preg_match("/^From:(.+)<(.*)>$/", $line, $match))
+					//fetching from field
+					if(!strlen($from) && preg_match("/^From:(.+)<(.*)>$/", $line, $match))
+ 					{
+ 						$from = $match[2];
+					}
+					elseif(!strlen($from) && preg_match("/^From:\s+(.*@.*)$/", $line, $match))
 					{
-						$from = $match[2];
+						$from = $match[1];
+ 					}
+
+					//fetching to field
+					if(!strlen($to) && preg_match("/^To:(.+)<(.*)>$/", $line, $match))
+ 					{
+ 						$to = $match[2];
+ 					}
+					elseif(!strlen($to) && preg_match("/To:\s+(.*@.*)$/", $line, $match))
+					{
+						$to = $match[1];
 					}
 
-					if(preg_match("/^To:(.+)<(.*)>$/", $line, $match))
+ 					//fetching sender field
+ 					if(!strlen($to) && preg_match("/^Sender:(.+)<(.*)>$/", $line, $match))
+ 					{
+ 						$sender = $match[2];
+ 					}
+					elseif(!strlen($to) && preg_match("/Sender:\s+(.*@.*)$/", $line, $match))
 					{
-						$to = $match[2];
-					}
-
-					if(preg_match("/^Sender:(.+)<(.*)>$/", $line, $match))
-					{
-						$sender = $match[2];
+						$sender = $match[1];
 					}
 
 					//check for amavis/spamassassin spam headers
@@ -122,7 +138,7 @@ if($db->num_rows($result) > 0)
 				if($to == ''
 				   || $from == '')
 				{
-					$log->logAction(LOG_ERROR, LOG_WARNING, "No valid headers found in mail to parse: " . $entry);
+					$cronlog->logAction(LOG_ERROR, LOG_WARNING, "No valid headers found in mail to parse: " . $entry);
 					continue;
 				}
 
@@ -164,7 +180,7 @@ if($db->num_rows($result) > 0)
 						$mailerr_msg = $from;
 					}
 
-					$log->logAction(LOG_ERROR, LOG_WARNING, "Error sending autoresponder mail: " . $mailerr_msg);
+					$cronlog->logAction(LOG_ERROR, LOG_WARNING, "Error sending autoresponder mail: " . $mailerr_msg);
 				}
 
 				$mail->ClearAddresses();
