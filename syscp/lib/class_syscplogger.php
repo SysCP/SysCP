@@ -122,6 +122,11 @@ class SysCPLogger
 			return;
 		}
 
+		if($this->settings['logger']['log_cron'] == '0' && $action == CRON_ACTION)
+		{
+			return;
+		}
+
 		foreach(self::$logtypes as $logger)
 		{
 			switch($logger)
@@ -176,6 +181,22 @@ class SysCPLogger
 				}
 			}
 		}
+	}
+
+	public function setCronLog($_cronlog = 0)
+	{
+		$_cronlog = (int)$_cronlog;
+
+		if($_cronlog != 0 && $_cronlog != 1)
+		{
+			$_cronlog = 0;
+		}
+
+		$this->db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` 
+				  SET `value`='" . $this->db->escape($_cronlog) . "' 
+				  WHERE `settinggroup`='logger' 
+				  AND `varname`='log_cron'");
+		return true;
 	}
 }
 

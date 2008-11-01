@@ -919,7 +919,7 @@ if(($page == 'settings' || $page == 'overview')
 				   && isset($_POST['logger_log_cron']))
 				{
 					$value = validate($_POST['logger_log_cron'], 'logger_log_cron');
-					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='log_cron'");
+					$log->setCronLog($value);
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_log_cron from '" . $settings['logger']['log_cron'] . "' to '" . $value . "'");
 				}
 			}
