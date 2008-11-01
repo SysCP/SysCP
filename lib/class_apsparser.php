@@ -27,6 +27,9 @@
  *				zip stuff in own class
  *				logging
  *				button for remove of all failed installations
+ *				!!! logic error for apsupdater tasks
+ *				move failed installations into subfolder instead of unlink
+ *				!!! check languagefiles
  */
 
 class ApsParser
@@ -331,7 +334,7 @@ class ApsParser
 				{
 					//get customer name
 
-					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` WHERE `customerid` = ' . $Row2['CustomerID']);
+					$Result3 = $this->db->query('SELECT * FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `customerid` = ' . $Row2['CustomerID']);
 					$Row3 = $this->db->fetch_array($Result3);
 					eval("\$InstancesUninstall.=\"" . getTemplate("aps/manage_instances_uninstall") . "\";");
 				}
@@ -385,7 +388,7 @@ class ApsParser
 
 			if(!@unlink($Dir . '/' . $Object))
 			{
-				UnlinkRecursive($Dir . '/' . $Object);
+				self::UnlinkRecursive($Dir . '/' . $Object);
 			}
 		}
 
@@ -658,6 +661,8 @@ class ApsParser
 				//no packages have been installed in system
 
 				self::InfoBox($lng['aps']['nopackagesinsystem']);
+
+				eval("echo \"" . getTemplate("aps/manage_packages_download") . "\";");
 			}
 			else
 			{
@@ -1240,7 +1245,7 @@ class ApsParser
 		$XmlPhpMapping = $ParentMapping->children('http://apstandard.com/ns/1/php');
 		foreach($XmlPhpMapping->handler as $Handler)
 		{
-			if($Handler->extension != 'php')
+			if(isset($Handler->extension[0]) && strval($Handler->extension[0]) != 'php')
 			{
 				$Error[] = $lng['aps']['php_misc_handler'];
 			}
@@ -2048,43 +2053,50 @@ class ApsParser
 	private function GetContentFromZip($Filename, $File, $Destination = '')
 	{
 		if(!file_exists($Filename))return false;
-
-		//fixing bug for some ugly php versions
-
-		$ZipHandle = zip_open(realpath($Filename));
 		$Content = '';
 
-		//unable to open zipfile
+		//now using the new ZipArchive class from php 5.2
 
-		if(is_resource($ZipHandle))
+		$Zip = new ZipArchive;
+		$Resource = $Zip->open(realpath($Filename));
+
+		if($Resource === true)
 		{
-			//go through the filetree, find the file and read its contents
+			$FileHandle = $Zip->getStream($File);
 
-			while($ZipEntry = zip_read($ZipHandle))
+			if(!$FileHandle)return false;
+
+			while (!feof($FileHandle))
 			{
-				if(zip_entry_name($ZipEntry) == $File)
-				{
-					if(zip_entry_open($ZipHandle, $ZipEntry))
-					{
-						while($Line = zip_entry_read($ZipEntry))
-						{
-							$Content.= $Line;
-						}
-					}
-
-					break;
-				}
+				$Content .= fread($FileHandle, 8192);
 			}
 
-			zip_close($ZipHandle);
+			fclose($FileHandle);
+			$Zip->close();
 		}
 		else
 		{
-			return false;
+			//on 64 bit systems the zip functions can fail -> use exec to extract the files
+
+			$ReturnLines = array();
+			$ReturnVal = -1;
+
+			exec('unzip -o -j -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($File) . ' -d ' . escapeshellarg(sys_get_temp_dir() . '/'), $ReturnLines, $ReturnVal);
+
+			if($ReturnVal == 0)
+			{
+				$Content = file_get_contents(sys_get_temp_dir() . '/' . basename($File));
+				unlink(sys_get_temp_dir() . '/' . basename($File));
+
+				if($Content == false)return false;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		//return content of file from within the zipfile or save to disk
-
 		if($Content == '')
 		{
 			return false;
@@ -2098,7 +2110,6 @@ class ApsParser
 			else
 			{
 				//open file and save content
-
 				$File = fopen($Destination, "wb");
 
 				if($File)

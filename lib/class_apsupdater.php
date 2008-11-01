@@ -17,6 +17,7 @@
  * @version		$Id: class_apsupdater.php 2248 2008-10-07 17:41:22Z radiation $
  * @todo		logging
  *				install specific packages by name
+ *				other solution than using url_fopen
  */
 
 class ApsUpdater extends ApsParser
@@ -187,6 +188,10 @@ class ApsUpdater extends ApsParser
 
 				fwrite($FileHandle, $Content);
 				fclose($FileHandle);
+
+				//set right permissions
+				chmod($this->RootDir . 'temp/' . $Application . '-' . $Version . '.app.zip', 0664);
+
 				return true;
 			}
 			else

@@ -2717,4 +2717,49 @@ function cacheInvoiceFees($mode = 0, $begin = null, $count = null, $userid = nul
 	return $returnval;
 }
 
+/**
+ * function will return the temporary directory where we can write data
+ * function exists as a fallback for php versions lower than 5.2.1
+ * source copied from php.net
+ *
+ * @author	Sven Skrabal <info@nexpa.de>
+ */
+
+if(!function_exists('sys_get_temp_dir') )
+{
+	function sys_get_temp_dir()
+	{
+		// Try to get from environment variable
+		if ( !empty($_ENV['TMP']) )
+		{
+			return realpath( $_ENV['TMP'] );
+		}
+		elseif ( !empty($_ENV['TMPDIR']) )
+		{
+			return realpath( $_ENV['TMPDIR'] );
+		}
+		elseif ( !empty($_ENV['TEMP']) )
+		{
+			return realpath( $_ENV['TEMP'] );
+		}
+		else
+		{
+			// Detect by creating a temporary file
+			// Try to use system's temporary directory
+			// as random name shouldn't exist
+			$temp_file = tempnam( md5(uniqid(rand(), true)), '' );
+			if ( $temp_file )
+			{
+				$temp_dir = realpath( dirname($temp_file) );
+				unlink( $temp_file );
+				return $temp_dir;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+}
+
 ?>
