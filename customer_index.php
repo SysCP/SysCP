@@ -26,7 +26,16 @@ require ("./lib/init.php");
 if($action == 'logout')
 {
 	$log->logAction(USR_ACTION, LOG_NOTICE, "logged out");
-	$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['customerid'] . "' AND `adminsession` = '0'");
+
+	if($settings['session']['allow_multiple_login'] == '1')
+	{
+		$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['customerid'] . "' AND `adminsession` = '0' AND `hash` = '" . $s . "'");
+	}
+	else
+	{
+		$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['customerid'] . "' AND `adminsession` = '0'");
+	}
+
 	redirectTo('index.php');
 	exit;
 }

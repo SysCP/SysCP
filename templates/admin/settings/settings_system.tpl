@@ -27,6 +27,10 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mysql_access_host" value="{$settings['system']['mysql_access_host']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['system_realtime_port']['title']}:</b><br />{$lng['serversettings']['system_realtime_port']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_realtime_port" value="{$settings['system']['realtime_port']}" /></td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['index_file_extension']['title']}:</b><br />{$lng['serversettings']['index_file_extension']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="index_file_extension" value="{$settings['system']['index_file_extension']}" /></td>
 			</tr>

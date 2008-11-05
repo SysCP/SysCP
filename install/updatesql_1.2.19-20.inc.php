@@ -972,6 +972,22 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn36';
 	}
+	
+	if($settings['panel']['version'] == '1.2.19-svn36')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn36 to 1.2.19-svn37");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'realtime_port', '0')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('session', 'allow_multiple_login', '0')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('panel', 'allow_domain_change_admin', '0')");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('panel', 'allow_domain_change_customer', '0')");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn37\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn37';
+	}
 }
 
 // php filter-extension check

@@ -1345,4 +1345,17 @@ $lng['aps']['canmanagepackages'] = 'Can manage APS packages';
 $lng['error']['customerdoesntexist'] = 'The customer you have chosen doesn\'t exist.';
 $lng['error']['admindoesntexist'] = 'The admin you have chosen doesn\'t exist.';
 
+// ADDED IN 1.2.19-svn37
+
+$lng['serversettings']['system_realtime_port']['title'] = 'Port for realtime SysCP';
+$lng['serversettings']['system_realtime_port']['description'] = 'SysCP connects to this port at localhost everytime a new cron task is scheduled. If value is 0 (zero), this feature ist deactivated.<br />See also: <a href="https://wiki.syscp.org/contrib/realtime">Make SysCP work in realtime (SysCP Wiki)</a>';
+$lng['serversettings']['session_allow_multiple_login']['title'] = 'Allow multiple login';
+$lng['serversettings']['session_allow_multiple_login']['description'] = 'If activated a user could login multiple times.';
+$lng['serversettings']['panel_allow_domain_change_admin']['title'] = 'Allow moving domains between admins';
+$lng['serversettings']['panel_allow_domain_change_admin']['description'] = 'If activated you can change the admin of a domain at domainsettings.<br /><b>Attention:</b> If a customer isn\'t assigned to the same admin as the domain, the admin can see every other domain of that customer!';
+$lng['serversettings']['panel_allow_domain_change_customer']['title'] = 'Allow moving domains between customers';
+$lng['serversettings']['panel_allow_domain_change_customer']['description'] = 'If activated you can change the customer of a domain at domainsettings.<br /><b>Attention:</b> SysCP won\'t change any paths. This could render a domain unusable!';
+$lng['domains']['associated_with_domain'] = 'Associated';
+$lng['domains']['aliasdomains'] = 'Aliasdomains';
+
 ?>

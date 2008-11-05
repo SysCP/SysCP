@@ -21,12 +21,12 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['customer']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="customerid">$customers</select></td>
+				<td class="main_field_display" nowrap="nowrap"><if $settings['panel']['allow_domain_change_customer'] == '1'><select class="dropdown_noborder" name="customerid">$customers</select><else>{$result['customername']}</if></td>
 			</tr>
 			<if $userinfo['customers_see_all'] == '1'>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['admin']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="adminid">$admins</select></td>
+				<td class="main_field_display" nowrap="nowrap"><if $settings['panel']['allow_domain_change_admin'] == '1'><select class="dropdown_noborder" name="adminid">$admins</select><else>{$result['adminname']}</if></td>
 			</tr>
 			</if>
 			<if $alias_check == '0'>
@@ -35,6 +35,10 @@ $header
 				<td class="main_field_display" nowrap="nowrap"><select class="dropdown_noborder" name="alias">$domains</select></td>
 			</tr>
 			</if>
+			<tr>
+				<td class="main_field_name">{$lng['domains']['associated_with_domain']}:</td>
+				<td class="main_field_display" nowrap="nowrap">{$subdomains} {$lng['customer']['subdomains']}, {$alias_check} {$lng['domains']['aliasdomains']}, {$emails} {$lng['customer']['emails']}, {$email_accounts} {$lng['customer']['accounts']}, {$email_forwarders} {$lng['customer']['forwarders']}</td>
+			</tr>
 			<if $userinfo['change_serversettings'] == '1'>
 			<tr>
 				<td class="main_field_name">DocumentRoot:<br />({$lng['panel']['emptyfordefault']})</td>
