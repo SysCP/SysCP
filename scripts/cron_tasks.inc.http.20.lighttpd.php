@@ -151,6 +151,10 @@ class lighttpd
 	{
 	}
 
+	function createFileDirOptions()
+	{
+	}
+
 	protected function createLighttpdHosts($ip, $port, $ssl, $vhost_filename)
 	{
 		$query = "SELECT * FROM " . TABLE_PANEL_IPSANDPORTS . " WHERE `ip`='" . $ip . "' AND `port`='" . $port . "'";

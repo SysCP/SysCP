@@ -565,7 +565,6 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($_POST['panel_webserver_selected']) . "' WHERE `settinggroup`='system' AND `varname`='webserver'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webserver from '" . $settings['system']['apacheconf_vhost'] . "' to '" . $_POST['panel_webserver_selected'] . "'");
 				inserttask('1');
-				inserttask('3');
 			}
 
 			if($_POST['system_apacheconf_vhost'] != $settings['system']['apacheconf_vhost']
@@ -585,7 +584,7 @@ if(($page == 'settings' || $page == 'overview')
 				$value = makeSecurePath($value);
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_diroptions'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_apacheconf_diroptions from '" . $settings['system']['apacheconf_diroptions'] . "' to '" . $value . "'");
-				inserttask('3');
+				inserttask('1');
 			}
 
 			if($_POST['system_apacheconf_htpasswddir'] != $settings['system']['apacheconf_htpasswddir']
@@ -595,7 +594,7 @@ if(($page == 'settings' || $page == 'overview')
 				$value = makeCorrectDir($value);
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='apacheconf_htpasswddir'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_apacheconf_htpasswddir from '" . $settings['system']['apacheconf_htpasswddir'] . "' to '" . $value . "'");
-				inserttask('3');
+				inserttask('1');
 			}
 
 			if($_POST['system_apachereload_command'] != $settings['system']['apachereload_command']
@@ -1677,7 +1676,6 @@ elseif($page == 'rebuildconfigs'
 	{
 		$log->logAction(ADM_ACTION, LOG_INFO, "rebuild configfiles");
 		inserttask('1');
-		inserttask('3');
 		inserttask('4');
 		inserttask('5');
 		redirectTo('admin_index.php', array(
