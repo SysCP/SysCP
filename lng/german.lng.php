@@ -1361,4 +1361,6 @@ $lng['serversettings']['panel_allow_domain_change_customer']['description'] = 'W
 $lng['domains']['associated_with_domain'] = 'Verbunden mit';
 $lng['domains']['aliasdomains'] = 'Aliasdomains';
 
+$lng['error']['ipportdoesntexist'] = 'Die gew&auml;hlte IP/Port-Kombination existiert nicht.';
+
 ?>

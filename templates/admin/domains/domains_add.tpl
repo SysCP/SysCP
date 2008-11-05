@@ -50,7 +50,7 @@ $header
 			</tr>
 			</if>
 			<if $settings['system']['use_ssl'] == '1'>
-				<if $show_ssl_ipsandports == 1>
+				<if $ssl_ipsandports != ''>
 				<tr>
 					<td class="main_field_name">SSL:</td>
 					<td class="main_field_display" nowrap="nowrap">$ssl</td>

@@ -571,13 +571,22 @@ if($page == 'admins'
 				$language_options.= makeoption($language_name, $language_file, $userinfo['language'], true);
 			}
 
-			$ipaddress = '';
 			$ipaddress = makeoption($lng['admin']['allips'], "-1");
-			$result = $db->query('SELECT `id`, `ip` FROM `' . TABLE_PANEL_IPSANDPORTS . '` ORDER BY `ip` ASC');
+			$ips = array();
+			$ipsandports = $db->query('SELECT `id`, `ip` FROM `' . TABLE_PANEL_IPSANDPORTS . '` ORDER BY `ip`, `port` ASC');
 
-			while($row = $db->fetch_array($result))
+			while($row = $db->fetch_array($ipsandports))
 			{
-				$ipaddress.= makeoption($row['ip'], $row['id']);
+				if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+				{
+					$row['ip'] = '[' . $row['ip'] . ']';
+				}
+
+				if(!in_array($row['ip'], $ips))
+				{
+					$ipaddress.= makeoption($row['ip'], $row['id']);
+					$ips[] = $row['ip'];
+				}
 			}
 
 			$customers_ul = makecheckbox('customers_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
@@ -1156,24 +1165,21 @@ if($page == 'admins'
 					$language_options.= makeoption($language_name, $language_file, $result['def_language'], true);
 				}
 
-				$ipaddress = '';
-				$ipaddress = makeoption($lng['admin']['allips'], "-1");
-				$result2 = $db->query('SELECT `id`, `ip` FROM `' . TABLE_PANEL_IPSANDPORTS . '` ORDER BY `ip` ASC');
+				$ipaddress = makeoption($lng['admin']['allips'], "-1", $result['ip']);
+				$ips = array();
+				$ipsandports = $db->query('SELECT `id`, `ip` FROM `' . TABLE_PANEL_IPSANDPORTS . '` ORDER BY `ip`, `port` ASC');
 
-				while($row = $db->fetch_array($result2))
+				while($row = $db->fetch_array($ipsandports))
 				{
-					if($row['ip'] == "")
+					if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
 					{
-						continue;
+						$row['ip'] = '[' . $row['ip'] . ']';
 					}
 
-					if($row['id'] == $result['ip'])
+					if(!in_array($row['ip'], $ips))
 					{
 						$ipaddress.= makeoption($row['ip'], $row['id'], $result['ip']);
-					}
-					else
-					{
-						$ipaddress.= makeoption($row['ip'], $row['id']);
+						$ips[] = $row['ip'];
 					}
 				}
 
