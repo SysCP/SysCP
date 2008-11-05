@@ -29,8 +29,12 @@ class apache
 	private $logger = false;
 	private $debugHandler = false;
 	private $settings = array();
-	protected $known_filenames = array();
+	protected $known_vhostfilenames = array();
+	protected $known_diroptionsfilenames = array();
+	protected $known_htpasswdsfilenames = array();
 	protected $virtualhosts_data = array();
+	protected $diroptions_data = array();
+	protected $htpasswds_data = array();
 
 	function __construct($db, $logger, $debugHandler, $settings)
 	{
@@ -477,53 +481,235 @@ class apache
 	}
 
 	/*
+	*	We compose the diroption entries for the paths
+	*/
+
+	public function createFileDirOptions()
+	{
+		$result = $this->db->query('SELECT `htac`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_PANEL_HTACCESS . '` `htac` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ORDER BY `htac`.`path`');
+		$diroptions = array();
+
+		while($row_diroptions = $this->db->fetch_array($result))
+		{
+			if($row_diroptions['customerid'] != 0
+			   && isset($row_diroptions['customerroot'])
+			   && $row_diroptions['customerroot'] != '')
+			{
+				$diroptions[$row_diroptions['path']] = $row_diroptions;
+				$diroptions[$row_diroptions['path']]['htpasswds'] = array();
+			}
+		}
+
+		$result = $this->db->query('SELECT `htpw`.*, `c`.`guid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_PANEL_HTPASSWDS . '` `htpw` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ORDER BY `htpw`.`path`, `htpw`.`username`');
+
+		while($row_htpasswds = $this->db->fetch_array($result))
+		{
+			if($row_htpasswds['customerid'] != 0
+			   && isset($row_htpasswds['customerroot'])
+			   && $row_htpasswds['customerroot'] != '')
+			{
+				if(!is_array($diroptions[$row_htpasswds['path']]))
+				{
+					$diroptions[$row_htpasswds['path']] = array();
+				}
+
+				$diroptions[$row_htpasswds['path']]['path'] = $row_htpasswds['path'];
+				$diroptions[$row_htpasswds['path']]['guid'] = $row_htpasswds['guid'];
+				$diroptions[$row_htpasswds['path']]['customerroot'] = $row_htpasswds['customerroot'];
+				$diroptions[$row_htpasswds['path']]['customerid'] = $row_htpasswds['customerid'];
+				$diroptions[$row_htpasswds['path']]['htpasswds'][] = $row_htpasswds;
+			}
+		}
+
+		foreach($diroptions as $row_diroptions)
+		{
+			$row_diroptions['path'] = makeCorrectDir($row_diroptions['path']);
+			mkDirWithCorrectOwnership($row_diroptions['customerroot'], $row_diroptions['path'], $row_diroptions['guid'], $row_diroptions['guid']);
+			$diroptions_filename = makeCorrectFile($this->settings['system']['apacheconf_diroptions'] . '/40_syscp_diroption_' . md5($row_diroptions['path']) . '.conf');
+
+			if(!isset($this->diroptions_data[$diroptions_filename]))
+			{
+				$this->diroptions_data[$diroptions_filename] = '';
+			}
+
+			if(is_dir($row_diroptions['path']))
+			{
+				$this->diroptions_data[$diroptions_filename].= '<Directory "' . $row_diroptions['path'] . '">' . "\n";
+
+				if(isset($row_diroptions['options_indexes'])
+				   && $row_diroptions['options_indexes'] == '1')
+				{
+					$this->diroptions_data[$diroptions_filename].= '  Options +Indexes' . "\n";
+					fwrite($this->debugHandler, '  cron_tasks: Task3 - Setting Options +Indexes' . "\n");
+				}
+
+				if(isset($row_diroptions['options_indexes'])
+				   && $row_diroptions['options_indexes'] == '0')
+				{
+					$this->diroptions_data[$diroptions_filename].= '  Options -Indexes' . "\n";
+					fwrite($this->debugHandler, '  cron_tasks: Task3 - Setting Options -Indexes' . "\n");
+				}
+
+				if(isset($row_diroptions['error404path'])
+				   && $row_diroptions['error404path'] != '')
+				{
+					$this->diroptions_data[$diroptions_filename].= '  ErrorDocument 404 ' . $row_diroptions['error404path'] . "\n";
+				}
+
+				if(isset($row_diroptions['error403path'])
+				   && $row_diroptions['error403path'] != '')
+				{
+					$this->diroptions_data[$diroptions_filename].= '  ErrorDocument 403 ' . $row_diroptions['error403path'] . "\n";
+				}
+
+				if(isset($row_diroptions['error500path'])
+				   && $row_diroptions['error500path'] != '')
+				{
+					$this->diroptions_data[$diroptions_filename].= '  ErrorDocument 500 ' . $row_diroptions['error500path'] . "\n";
+				}
+
+				if(count($row_diroptions['htpasswds']) > 0)
+				{
+					$htpasswd_filename = makeCorrectFile($this->settings['system']['apacheconf_htpasswddir'] . '/' . $row_diroptions['customerid'] . '-' . md5($row_diroptions['path']) . '.htpasswd');
+
+					if(!isset($this->htpasswds_data[$htpasswd_filename]))
+					{
+						$this->htpasswds_data[$htpasswd_filename] = '';
+					}
+
+					foreach($row_diroptions['htpasswds'] as $row_htpasswd)
+					{
+						$this->htpasswds_data[$htpasswd_filename].= $row_htpasswd['username'] . ':' . $row_htpasswd['password'] . "\n";
+					}
+
+					$this->diroptions_data[$diroptions_filename].= '  AuthType Basic' . "\n";
+					$this->diroptions_data[$diroptions_filename].= '  AuthName "Restricted Area"' . "\n";
+					$this->diroptions_data[$diroptions_filename].= '  AuthUserFile ' . $htpasswd_filename . "\n";
+					$this->diroptions_data[$diroptions_filename].= '  require valid-user' . "\n";
+				}
+
+				$this->diroptions_data[$diroptions_filename].= '</Directory>' . "\n";
+			}
+		}
+	}
+
+	/*
 	*	We write the configs
 	*/
 
 	public function writeConfigs()
 	{
+		// Write diroptions
+
+		fwrite($this->debugHandler, '  apache::writeConfigs: rebuilding ' . $this->settings['system']['apacheconf_diroptions'] . "\n");
+		$this->logger->logAction(CRON_ACTION, LOG_INFO, "rebuilding " . $this->settings['system']['apacheconf_diroptions']);
+
+		if(count($this->diroptions_data) > 0)
+		{
+			if(!isConfigDir($this->settings['system']['apacheconf_diroptions']))
+			{
+				// Save one big file
+
+				foreach($this->diroptions_data as $diroptions_filename => $diroptions_content)
+				{
+					$diroptions_file.= $diroptions_content . "\n\n";
+				}
+
+				$diroptions_filename = $this->settings['system']['apacheconf_diroptions'];
+
+				// Apply header
+
+				$diroptions_file = '# ' . basename($diroptions_filename) . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $diroptions_file;
+				$diroptions_file_handler = fopen($diroptions_filename, 'w');
+				fwrite($diroptions_file_handler, $diroptions_file);
+				fclose($diroptions_file_handler);
+			}
+			else
+			{
+				if(!file_exists($this->settings['system']['apacheconf_diroptions']))
+				{
+					fwrite($this->debugHandler, '  apache::writeConfigs: mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_diroptions'])) . "\n");
+					$this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_diroptions'])));
+					safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_diroptions'])));
+				}
+
+				// Write a single file for every diroption
+
+				foreach($this->diroptions_data as $diroptions_filename => $diroptions_file)
+				{
+					$this->known_diroptionsfilenames[] = basename($diroptions_filename);
+
+					// Apply header
+
+					$diroptions_file = '# ' . basename($diroptions_filename) . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $diroptions_file;
+					$diroptions_file_handler = fopen($diroptions_filename, 'w');
+					fwrite($diroptions_file_handler, $diroptions_file);
+					fclose($diroptions_file_handler);
+				}
+
+				$this->wipeOutOldDiroptionConfigs();
+			}
+		}
+
+		// Write htpasswds
+
+		fwrite($this->debugHandler, '  apache::writeConfigs: rebuilding ' . $this->settings['system']['apacheconf_htpasswddir'] . "\n");
+		$this->logger->logAction(CRON_ACTION, LOG_INFO, "rebuilding " . $this->settings['system']['apacheconf_htpasswddir']);
+
+		if(count($this->htpasswds_data) > 0)
+		{
+			if(!file_exists($this->settings['system']['apacheconf_htpasswddir']))
+			{
+				$umask = umask();
+				umask(0000);
+				mkdir($this->settings['system']['apacheconf_htpasswddir'], 0751);
+				umask($umask);
+			}
+			elseif(!is_dir($this->settings['system']['apacheconf_htpasswddir']))
+			{
+				fwrite($this->debugHandler, '  cron_tasks: WARNING!!! ' . $this->settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!' . "\n");
+				echo 'WARNING!!! ' . $this->settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!';
+				$this->logger->logAction(CRON_ACTION, LOG_WARNING, 'WARNING!!! ' . $this->settings['system']['apacheconf_htpasswddir'] . ' is not a directory. htpasswd directory protection is disabled!!!');
+			}
+
+			if(is_dir($this->settings['system']['apacheconf_htpasswddir']))
+			{
+				foreach($this->htpasswds_data as $htpasswd_filename => $htpasswd_file)
+				{
+					$this->known_htpasswdsfilenames[] = basename($htpasswd_filename);
+					$htpasswd_file_handler = fopen($htpasswd_filename, 'w');
+					fwrite($htpasswd_file_handler, $htpasswd_file);
+					fclose($htpasswd_file_handler);
+				}
+
+				$this->wipeOutOldHtpasswdConfigs();
+			}
+		}
+
+		// Write virtualhosts
+
 		fwrite($this->debugHandler, '  apache::writeConfigs: rebuilding ' . $this->settings['system']['apacheconf_vhost'] . "\n");
 		$this->logger->logAction(CRON_ACTION, LOG_INFO, "rebuilding " . $this->settings['system']['apacheconf_vhost']);
 
-		if(!isConfigDir($this->settings['system']['apacheconf_vhost']))
+		if(count($this->virtualhosts_data) > 0)
 		{
-			// Save one big file
-
-			foreach($this->virtualhosts_data as $vhosts_filename => $vhost_content)
+			if(!isConfigDir($this->settings['system']['apacheconf_vhost']))
 			{
-				$vhosts_file.= $vhost_content . "\n\n";
-			}
+				// Save one big file
 
-			// Include diroptions file in case it exists
+				foreach($this->virtualhosts_data as $vhosts_filename => $vhost_content)
+				{
+					$vhosts_file.= $vhost_content . "\n\n";
+				}
 
-			if(file_exists($this->settings['system']['apacheconf_diroptions']))
-			{
-				$vhosts_file.= "\n" . 'Include ' . $this->settings['system']['apacheconf_diroptions'] . "\n\n";
-			}
+				// Include diroptions file in case it exists
 
-			$vhosts_filename = $this->settings['system']['apacheconf_vhost'];
+				if(file_exists($this->settings['system']['apacheconf_diroptions']))
+				{
+					$vhosts_file.= "\n" . 'Include ' . $this->settings['system']['apacheconf_diroptions'] . "\n\n";
+				}
 
-			// Apply header
-
-			$vhosts_file = '# ' . basename($vhosts_filename) . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
-			$vhosts_file_handler = fopen($vhosts_filename, 'w');
-			fwrite($vhosts_file_handler, $vhosts_file);
-			fclose($vhosts_file_handler);
-		}
-		else
-		{
-			if(!file_exists($this->settings['system']['apacheconf_vhost']))
-			{
-				fwrite($this->debugHandler, '  apache::writeConfigs: mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])) . "\n");
-				$this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])));
-				safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])));
-			}
-
-			// Write a single file for every vhost
-
-			foreach($this->virtualhosts_data as $vhosts_filename => $vhosts_file)
-			{
-				$this->known_filenames[] = basename($vhosts_filename);
+				$vhosts_filename = $this->settings['system']['apacheconf_vhost'];
 
 				// Apply header
 
@@ -532,18 +718,41 @@ class apache
 				fwrite($vhosts_file_handler, $vhosts_file);
 				fclose($vhosts_file_handler);
 			}
+			else
+			{
+				if(!file_exists($this->settings['system']['apacheconf_vhost']))
+				{
+					fwrite($this->debugHandler, '  apache::writeConfigs: mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])) . "\n");
+					$this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])));
+					safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])));
+				}
 
-			$this->wipeOutOldConfigs();
+				// Write a single file for every vhost
+
+				foreach($this->virtualhosts_data as $vhosts_filename => $vhosts_file)
+				{
+					$this->known_vhostfilenames[] = basename($vhosts_filename);
+
+					// Apply header
+
+					$vhosts_file = '# ' . basename($vhosts_filename) . "\n" . '# Created ' . date('d.m.Y H:i') . "\n" . '# Do NOT manually edit this file, all changes will be deleted after the next domain change at the panel.' . "\n" . "\n" . $vhosts_file;
+					$vhosts_file_handler = fopen($vhosts_filename, 'w');
+					fwrite($vhosts_file_handler, $vhosts_file);
+					fclose($vhosts_file_handler);
+				}
+
+				$this->wipeOutOldVhostConfigs();
+			}
 		}
 	}
 
 	/*
-	*	We remove old config files
+	*	We remove old vhost config files
 	*/
 
-	private function wipeOutOldConfigs()
+	private function wipeOutOldVhostConfigs()
 	{
-		fwrite($this->debugHandler, '  apache::wipeOutOldConfigs: cleaning ' . $this->settings['system']['apacheconf_vhost'] . "\n");
+		fwrite($this->debugHandler, '  apache::wipeOutOldVhostConfigs: cleaning ' . $this->settings['system']['apacheconf_vhost'] . "\n");
 		$this->logger->logAction(CRON_ACTION, LOG_INFO, "cleaning " . $this->settings['system']['apacheconf_vhost']);
 
 		if(isConfigDir($this->settings['system']['apacheconf_vhost'])
@@ -556,13 +765,74 @@ class apache
 			{
 				if($vhost_filename != '.'
 				   && $vhost_filename != '..'
-				   && !in_array($vhost_filename, $this->known_filenames)
+				   && !in_array($vhost_filename, $this->known_vhostfilenames)
 				   && preg_match('/^(10|20|30)_syscp_(ipandport|normal_vhost|wildcard_vhost|ssl_vhost)_(.+)\.conf$/', $vhost_filename)
 				   && file_exists(makeCorrectFile($this->settings['system']['apacheconf_vhost'] . '/' . $vhost_filename)))
 				{
-					fwrite($this->debugHandler, '  apache::wipeOutOldConfigs: unlinking ' . $vhost_filename . "\n");
+					fwrite($this->debugHandler, '  apache::wipeOutOldVhostConfigs: unlinking ' . $vhost_filename . "\n");
 					$this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'unlinking ' . $vhost_filename);
 					unlink(makeCorrectFile($this->settings['system']['apacheconf_vhost'] . '/' . $vhost_filename));
+				}
+			}
+		}
+	}
+
+	/*
+	*	We remove old diroptions config files
+	*/
+
+	private function wipeOutOldDiroptionConfigs()
+	{
+		fwrite($this->debugHandler, '  apache::wipeOutOldDiroptionConfigs: cleaning ' . $this->settings['system']['apacheconf_diroptions'] . "\n");
+		$this->logger->logAction(CRON_ACTION, LOG_INFO, "cleaning " . $this->settings['system']['apacheconf_diroptions']);
+
+		if(isConfigDir($this->settings['system']['apacheconf_diroptions'])
+		   && file_exists($this->settings['system']['apacheconf_diroptions'])
+		   && is_dir($this->settings['system']['apacheconf_diroptions']))
+		{
+			$diroptions_file_dirhandle = opendir($this->settings['system']['apacheconf_diroptions']);
+
+			while(false !== ($diroptions_filename = readdir($diroptions_file_dirhandle)))
+			{
+				if($diroptions_filename != '.'
+				   && $diroptions_filename != '..'
+				   && !in_array($diroptions_filename, $this->known_diroptionsfilenames)
+				   && preg_match('/^40_syscp_diroption_(.+)\.conf$/', $diroptions_filename)
+				   && file_exists(makeCorrectFile($this->settings['system']['apacheconf_diroptions'] . '/' . $diroptions_filename)))
+				{
+					fwrite($this->debugHandler, '  apache::wipeOutOldDiroptionConfigs: unlinking ' . $diroptions_filename . "\n");
+					$this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'unlinking ' . $diroptions_filename);
+					unlink(makeCorrectFile($this->settings['system']['apacheconf_diroptions'] . '/' . $diroptions_filename));
+				}
+			}
+		}
+	}
+
+	/*
+	*	We remove old htpasswd config files
+	*/
+
+	private function wipeOutOldHtpasswdConfigs()
+	{
+		fwrite($this->debugHandler, '  apache::wipeOutOldHtpasswdConfigs: cleaning ' . $this->settings['system']['apacheconf_htpasswddir'] . "\n");
+		$this->logger->logAction(CRON_ACTION, LOG_INFO, "cleaning " . $this->settings['system']['apacheconf_htpasswddir']);
+
+		if(isConfigDir($this->settings['system']['apacheconf_htpasswddir'])
+		   && file_exists($this->settings['system']['apacheconf_htpasswddir'])
+		   && is_dir($this->settings['system']['apacheconf_htpasswddir']))
+		{
+			$htpasswds_file_dirhandle = opendir($this->settings['system']['apacheconf_htpasswddir']);
+
+			while(false !== ($htpasswd_filename = readdir($htpasswds_file_dirhandle)))
+			{
+				if($htpasswd_filename != '.'
+				   && $htpasswd_filename != '..'
+				   && !in_array($htpasswd_filename, $this->known_htpasswdsfilenames)
+				   && file_exists(makeCorrectFile($this->settings['system']['apacheconf_htpasswddir'] . '/' . $htpasswd_filename)))
+				{
+					fwrite($this->debugHandler, '  apache::wipeOutOldHtpasswdConfigs: unlinking ' . $htpasswd_filename . "\n");
+					$this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'unlinking ' . $htpasswd_filename);
+					unlink(makeCorrectFile($this->settings['system']['apacheconf_htpasswddir'] . '/' . $htpasswd_filename));
 				}
 			}
 		}

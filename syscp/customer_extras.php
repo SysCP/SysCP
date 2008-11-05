@@ -89,7 +89,7 @@ elseif($page == 'htpasswds')
 			{
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='$id'");
 				$log->logAction(USR_ACTION, LOG_INFO, "deleted htpasswd for '" . $result['username'] . " (" . $result['path'] . ")'");
-				inserttask('3');
+				inserttask('1');
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -164,7 +164,7 @@ elseif($page == 'htpasswds')
 			{
 				$db->query("INSERT INTO `" . TABLE_PANEL_HTPASSWDS . "` (`customerid`, `username`, `password`, `path`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($username) . "', '" . $db->escape($password) . "', '" . $db->escape($path) . "')");
 				$log->logAction(USR_ACTION, LOG_INFO, "added htpasswd for '" . $username . " (" . $path . ")'");
-				inserttask('3');
+				inserttask('1');
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -211,7 +211,7 @@ elseif($page == 'htpasswds')
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_HTPASSWDS . "` SET `password`='" . $db->escape($password) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 					$log->logAction(USR_ACTION, LOG_INFO, "edited htpasswd for '" . $result['username'] . " (" . $result['path'] . ")'");
-					inserttask('3');
+					inserttask('1');
 					redirectTo($filename, Array(
 						'page' => $page,
 						's' => $s
@@ -289,7 +289,7 @@ elseif($page == 'htaccess')
 			{
 				$db->query("DELETE FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 				$log->logAction(USR_ACTION, LOG_INFO, "deleted htaccess for '" . str_replace($userinfo['documentroot'], '', $result['path']) . "'");
-				inserttask('3');
+				inserttask('1');
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -362,7 +362,7 @@ elseif($page == 'htaccess')
 			{
 				$db->query('INSERT INTO `' . TABLE_PANEL_HTACCESS . '`  (`customerid`,  `path`,  `options_indexes`,  `error404path`,  `error403path`,  `error500path`  ) VALUES ("' . (int)$userinfo['customerid'] . '",  "' . $db->escape($path) . '",  "' . $db->escape($_POST['options_indexes'] == '1' ? '1' : '0') . '",  "' . $db->escape($error404path) . '",  "' . $db->escape($error403path) . '",  "' . $db->escape($error500path) . '"  )');
 				$log->logAction(USR_ACTION, LOG_INFO, "added htaccess for '" . $path . "'");
-				inserttask('3');
+				inserttask('1');
 				redirectTo($filename, Array(
 					'page' => $page,
 					's' => $s
@@ -430,7 +430,7 @@ elseif($page == 'htaccess')
 				   || ($error403path != $result['error403path'])
 				   || ($error500path != $result['error500path']))
 				{
-					inserttask('3');
+					inserttask('1');
 					$db->query('UPDATE `' . TABLE_PANEL_HTACCESS . '` SET `options_indexes` = "' . $db->escape($option_indexes) . '", `error404path`    = "' . $db->escape($error404path) . '",  `error403path`    = "' . $db->escape($error403path) . '",  `error500path`    = "' . $db->escape($error500path) . '" WHERE `customerid` = "' . (int)$userinfo['customerid'] . '"  AND `id` = "' . (int)$id . '"');
 					$log->logAction(USR_ACTION, LOG_INFO, "edited htaccess for '" . str_replace($userinfo['documentroot'], '', $result['path']) . "'");
 				}

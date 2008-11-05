@@ -69,6 +69,7 @@ while($row = $db->fetch_array($result_tasks))
 		{
 			$webserver->createIpPort();
 			$webserver->createVirtualHosts();
+			$webserver->createFileDirOptions();
 			$webserver->writeConfigs();
 			$webserver->reload();
 		}
@@ -128,24 +129,10 @@ while($row = $db->fetch_array($result_tasks))
 	}
 
 	/**
-	 * TYPE=3 MEANS TO CREATE/CHANGE/DELETE A HTACCESS AND/OR HTPASSWD
+	 * TYPE=3 MEANS TO DO NOTHING
 	 */
 	elseif ($row['type'] == '3')
 	{
-		if(!isset($diroptions))
-		{
-			if($settings['system']['webserver'] == "apache2")
-			{
-				$diroptions = new diroptionsApache($db, $cronlog, $debugHandler, $settings);
-			}
-			elseif($settings['system']['webserver'] == "lighttpd")
-			{
-				$diroptions = new diroptionsLighttpd($db, $cronlog, $debugHandler, $settings);
-			}
-		}
-
-		#		$diroptions->createFileDirOptions();
-		#		$diroptions->reload();
 	}
 
 	/**

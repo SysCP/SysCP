@@ -313,7 +313,7 @@ if($settings['panel']['version'] == '1.2.5-cvs2')
 if($settings['panel']['version'] == '1.2.5-cvs3')
 {
 	$db->query('UPDATE `' . TABLE_PANEL_HTACCESS . '` SET `error404path` = "",  `error403path` = "",  `error401path` = "",  `error500path` = "" ');
-	inserttask('3');
+	inserttask('1');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.5-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.5-cvs4';
 }
@@ -416,7 +416,6 @@ if($settings['panel']['version'] == '1.2.6-cvs4')
 if($settings['panel']['version'] == '1.2.7')
 {
 	inserttask('1');
-	inserttask('3');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.7-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.7-cvs1';
 }
