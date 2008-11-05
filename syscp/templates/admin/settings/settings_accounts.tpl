@@ -11,6 +11,10 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="session_sessiontimeout" value="{$settings['session']['sessiontimeout']}" /></td>
 			</tr>
 			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['session_allow_multiple_login']['title']}:</b><br />{$lng['serversettings']['session_allow_multiple_login']['description']}</td>
+				<td class="main_field_display" nowrap="nowrap">{$session_allow_multiple_login}</td>
+			</tr>
+			<tr>
 				<td class="main_field_name"><b>{$lng['serversettings']['maxloginattempts']['title']}:</b><br />{$lng['serversettings']['maxloginattempts']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="login_maxloginattempts" value="{$settings['login']['maxloginattempts']}" /></td>
 			</tr>

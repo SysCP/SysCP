@@ -781,7 +781,7 @@ function validate($str, $fieldname, $pattern = '', $lng = '', $emptydefault = ar
 
 function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 {
-	global $db;
+	global $db, $settings;
 
 	if($type == '1'
 	   || $type == '3'
@@ -790,6 +790,7 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 	{
 		$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE `type`="' . $type . '"');
 		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`) VALUES ("' . $type . '")');
+		$doupdate = true;
 	}
 	elseif($type == '2'
 	       && $param1 != ''
@@ -802,6 +803,32 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 		$data['gid'] = $param3;
 		$data = serialize($data);
 		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("2", "' . $db->escape($data) . '")');
+		$doupdate = true;
+	}
+
+	// Taken from https://wiki.syscp.org/contrib/realtime
+
+	if($doupdate === true && (int)$settings['system']['realtime_port'] !== 0)
+	{
+		$timeout = 15;
+		$socket = @socket_create (AF_INET, SOCK_STREAM, SOL_UDP);
+		if($socket !== false) {
+			$time = time();
+			while (!@socket_connect($socket, '127.0.0.1', (int)$settings['system']['realtime_port']))
+			{
+				$err = socket_last_error($socket);
+				if ($err == 115 || $err == 114)
+				{
+					if ((time() - $time) >= $timeout)
+					{
+						break;
+					}
+					sleep(1);
+					continue;
+				}
+			}
+			@socket_close ($socket);
+		}
 	}
 }
 

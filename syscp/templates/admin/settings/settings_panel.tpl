@@ -47,22 +47,24 @@
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="panel_webftp_url" value="{$settings['panel']['webftp_url']}" /></td>
 			</tr>
 			<tr>
-				<td class="main_field_name">
-					<b>{$lng['admin']['show_version_login']['title']}:</b><br />{$lng['admin']['show_version_login']['description']}<br />
-				</td>
+				<td class="main_field_name"><b>{$lng['admin']['show_version_login']['title']}:</b><br />{$lng['admin']['show_version_login']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap">{$frontend_syscp_version_login}</td>
 			</tr>
 			<tr>
-				<td class="main_field_name">
-					<b>{$lng['admin']['show_version_footer']['title']}:</b><br />{$lng['admin']['show_version_footer']['description']}<br />
-				</td>
+				<td class="main_field_name"><b>{$lng['admin']['show_version_footer']['title']}:</b><br />{$lng['admin']['show_version_footer']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap">{$frontend_syscp_version_footer}</td>
 			</tr>
 			<tr>
-				<td class="main_field_name">
-					<b>{$lng['admin']['syscp_graphic']['title']}:</b><br />{$lng['admin']['syscp_graphic']['description']}<br />
-				</td>
+				<td class="main_field_name"><b>{$lng['admin']['syscp_graphic']['title']}:</b><br />{$lng['admin']['syscp_graphic']['description']}</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="frontend_syscp_graphic" value="{$settings['admin']['syscp_graphic']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['panel_allow_domain_change_admin']['title']}:</b><br />{$lng['serversettings']['panel_allow_domain_change_admin']['description']}<br /><div style="color:red">{$lng['admin']['know_what_youre_doing']}</div></td>
+				<td class="main_field_display" nowrap="nowrap">{$panel_allow_domain_change_admin}</td>
+			</tr>
+			<tr>
+				<td class="main_field_name"><b>{$lng['serversettings']['panel_allow_domain_change_customer']['title']}:</b><br />{$lng['serversettings']['panel_allow_domain_change_customer']['description']}<br /><div style="color:red">{$lng['admin']['know_what_youre_doing']}</div></td>
+				<td class="main_field_display" nowrap="nowrap">{$panel_allow_domain_change_customer}</td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">

@@ -774,8 +774,7 @@ if($page == 'domains'
 			   && $_POST['send'] == 'send')
 			{
 				$customer = $customer_old = $db->query_first("SELECT * FROM " . TABLE_PANEL_CUSTOMERS . " WHERE `customerid`='" . (int)$result['customerid'] . "'");
-				$customerid = intval($_POST['customerid']);
-				if($customerid != $result['customerid'])
+				if(isset($_POST['customerid']) && ($customerid = intval($_POST['customerid'])) != $result['customerid'] && $settings['panel']['allow_domain_change_customer'] == '1')
 				{
 					$customer = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "' AND (`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' ) AND (`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' ) AND (`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders` OR `email_forwarders` = '-1' ) AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts` OR `email_accounts` = '-1' ) " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ");
 					if(empty($customer) || $customer['customerid'] != $customerid)
@@ -783,18 +782,25 @@ if($page == 'domains'
 						standard_error('customerdoesntexist');
 					}
 				}
+				else
+				{
+					$customerid = $result['customerid'];
+				}
 
 				$admin = $admin_old = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$result['adminid'] . "' ");
 				if($userinfo['customers_see_all'] == '1')
 				{
-					$adminid = intval($_POST['adminid']);
-					if($adminid != $result['adminid'])
+					if(isset($_POST['adminid']) && ($adminid = intval($_POST['adminid'])) != $result['adminid'] && $settings['panel']['allow_domain_change_admin'] == '1')
 					{
 						$admin = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$adminid . "' AND ( `domains_used` < `domains` OR `domains` = '-1' )");
 						if(empty($admin) || $admin['adminid'] != $adminid)
 						{
 							standard_error('admindoesntexist');
 						}
+					}
+					else
+					{
+						$adminid = $result['adminid'];
 					}
 				}
 				else
@@ -1137,7 +1143,7 @@ if($page == 'domains'
 					$isemaildomain = "1";
 				}
 
-				if($customerid != $result['customerid'])
+				if($customerid != $result['customerid'] && $settings['panel']['allow_domain_change_customer'] == '1')
 				{
 					$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id']. "' ");
 					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id']. "' ");
@@ -1145,7 +1151,7 @@ if($page == 'domains'
 					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` - '" . (int)$subdomains . "', `emails_used` = `emails_used` - '" . (int)$emails . "', `email_forwarders_used` = `email_forwarders_used` - '" . (int)$email_forwarders . "', `email_accounts_used` = `email_accounts_used` - '" . (int)$email_accounts . "' WHERE `customerid` = '" . (int)$result['customerid'] . "' ");
 				}
 
-				if($adminid != $result['adminid'])
+				if($adminid != $result['adminid'] && $settings['panel']['allow_domain_change_admin'] == '1')
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$adminid . "' ");
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '" . (int)$result['adminid'] . "' ");
@@ -1200,51 +1206,96 @@ if($page == 'domains'
 			}
 			else
 			{
-				$customers = '';
-				$result_customers = $db->query("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE ( (`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' ) AND (`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' ) AND (`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders` OR `email_forwarders` = '-1' ) AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts` OR `email_accounts` = '-1' ) " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . ") OR `customerid` = '" . (int)$result['customerid'] . "' ORDER BY `name` ASC");
-
-				while($row_customer = $db->fetch_array($result_customers))
+				if($settings['panel']['allow_domain_change_customer'] == '1')
 				{
-					if($row_customer['company'] == '')
+					$customers = '';
+					$result_customers = $db->query("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE ( (`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' ) AND (`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' ) AND (`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders` OR `email_forwarders` = '-1' ) AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts` OR `email_accounts` = '-1' ) " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . ") OR `customerid` = '" . (int)$result['customerid'] . "' ORDER BY `name` ASC");
+
+					while($row_customer = $db->fetch_array($result_customers))
 					{
-						$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
-					}
-					else
-					{
-						if($row_customer['name'] != ''
-						   && $row_customer['firstname'] != '')
+						if($row_customer['company'] == '')
 						{
-							$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' | ' . $row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
+							$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
 						}
 						else
 						{
-							$customers.= makeoption($row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
+							if($row_customer['name'] != ''
+							   && $row_customer['firstname'] != '')
+							{
+								$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' | ' . $row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
+							}
+							else
+							{
+								$customers.= makeoption($row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
+							}
+						}
+					}
+				}
+				else
+				{
+					$customer = $db->query_first("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid` = '" . (int)$result['customerid'] . "'");
+					if($customer['company'] == '')
+					{
+						$result['customername'] = $customer['name'] . ', ' . $customer['firstname'] . ' (' . $customer['loginname'] . ')';
+					}
+					else
+					{
+						if($customer['name'] != ''
+						   && $customer['firstname'] != '')
+						{
+							$result['customername'] = $customer['name'] . ', ' . $customer['firstname'] . ' | ' . $customer['company'] . ' (' . $customer['loginname'] . ')';
+						}
+						else
+						{
+							$result['customername'] = $customer['company'] . ' (' . $customer['loginname'] . ')';
 						}
 					}
 				}
 
-				$admins = '';
-
 				if($userinfo['customers_see_all'] == '1')
 				{
-					$result_admins = $db->query("SELECT `adminid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_ADMINS . "` WHERE (`domains_used` < `domains` OR `domains` = '-1') OR `adminid` = '" . (int)$result['adminid'] . "' ORDER BY `name` ASC");
-
-					while($row_admin = $db->fetch_array($result_admins))
+					if($settings['panel']['allow_domain_change_admin'] == '1')
 					{
-						if($row_admin['company'] == '')
+						$admins = '';
+						$result_admins = $db->query("SELECT `adminid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_ADMINS . "` WHERE (`domains_used` < `domains` OR `domains` = '-1') OR `adminid` = '" . (int)$result['adminid'] . "' ORDER BY `name` ASC");
+
+						while($row_admin = $db->fetch_array($result_admins))
 						{
-							$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
-						}
-						else
-						{
-							if($row_admin['name'] != ''
-							   && $row_admin['firstname'] != '')
+							if($row_admin['company'] == '')
 							{
-								$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' | ' . $row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
+								$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
 							}
 							else
 							{
-								$admins.= makeoption($row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
+								if($row_admin['name'] != ''
+								   && $row_admin['firstname'] != '')
+								{
+									$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' | ' . $row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
+								}
+								else
+								{
+									$admins.= makeoption($row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
+								}
+							}
+						}
+					}
+					else
+					{
+						$admin = $db->query_first("SELECT `adminid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid` = '" . (int)$result['adminid'] . "'");
+						if($admin['company'] == '')
+						{
+							$result['adminname'] = $admin['name'] . ', ' . $admin['firstname'] . ' (' . $admin['loginname'] . ')';
+						}
+						else
+						{
+							if($admin['name'] != ''
+							   && $admin['firstname'] != '')
+							{
+								$result['adminname'] = $admin['name'] . ', ' . $admin['firstname'] . ' | ' . $admin['company'] . ' (' . $admin['loginname'] . ')';
+							}
+							else
+							{
+								$result['adminname'] = $admin['company'] . ' (' . $admin['loginname'] . ')';
 							}
 						}
 					}

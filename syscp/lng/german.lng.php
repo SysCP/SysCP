@@ -1348,4 +1348,17 @@ $lng['aps']['canmanagepackages'] = 'Darf APS Pakete verwalten';
 $lng['error']['customerdoesntexist'] = 'Der ausgew&auml;hlte Kunde existiert nicht.';
 $lng['error']['admindoesntexist'] = 'Der ausgew&auml;hlte Admin existiert nicht.';
 
+// ADDED IN 1.2.19-svn37
+
+$lng['serversettings']['system_realtime_port']['title'] = 'Port f&uuml;r Realtime SysCP';
+$lng['serversettings']['system_realtime_port']['description'] = 'Dieser Port auf localhost wird bei jedem neuen Cron-Task kontaktiert. Wenn der Wert 0 (Null) ist, dann ist dieses Feature deaktiviert.<br />Siehe dazu auch: <a href="https://wiki.syscp.org/contrib/realtime">Make SysCP work in realtime (SysCP Wiki)</a>';
+$lng['serversettings']['session_allow_multiple_login']['title'] = 'Erlaube gleichzeitigen Login';
+$lng['serversettings']['session_allow_multiple_login']['description'] = 'Wenn diese Option aktiviert ist, k&ouml;nnen sich Nutzer mehrmals gleichzeitig anmelden.';
+$lng['serversettings']['panel_allow_domain_change_admin']['title'] = 'Erlaube Verschieben von Domains unter Admins';
+$lng['serversettings']['panel_allow_domain_change_admin']['description'] = 'Wenn diese Option aktiviert ist, kann unter Domaineinstellungen die Domain einem anderen Admin zugewiesen werden.<br /><b>Achtung:</b> Wenn eine wenn der Kunde einer Domain nicht dem gleichen Admin zugeordnet ist wie die Domain selbst, kann dieser Admin alle anderen Domains des Kunden sehen!';
+$lng['serversettings']['panel_allow_domain_change_customer']['title'] = 'Erlaube Verschieben von Domains unter Kunden';
+$lng['serversettings']['panel_allow_domain_change_customer']['description'] = 'Wenn diese Option aktiviert ist, kann unter Domaineinstellungen die Domain einem anderen Kunden zugewiesen werden.<br /><b>Achtung:</b> Es werden keine Pfade bei dieser Aktion angepasst. Das kann dazu f&uuml;hren, dass die Domain nach dem Verschieben nicht mehr richtig funktioniert!';
+$lng['domains']['associated_with_domain'] = 'Verbunden mit';
+$lng['domains']['aliasdomains'] = 'Aliasdomains';
+
 ?>

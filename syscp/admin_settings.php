@@ -305,6 +305,22 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='admin' AND `varname`='syscp_graphic'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed syscp_graphic from '" . $settings['system']['syscp_graphic'] . "' to '" . $value . "'");
 			}
+
+			if($_POST['panel_allow_domain_change_admin'] != $settings['panel']['allow_domain_change_admin']
+			   && isset($_POST['panel_allow_domain_change_admin']))
+			{
+				$value = ($_POST['panel_allow_domain_change_admin'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='allow_domain_change_admin'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_allow_domain_change_admin from '" . $settings['panel']['allow_domain_change_admin'] . "' to '" . $value . "'");
+			}
+
+			if($_POST['panel_allow_domain_change_customer'] != $settings['panel']['allow_domain_change_customer']
+			   && isset($_POST['panel_allow_domain_change_customer']))
+			{
+				$value = ($_POST['panel_allow_domain_change_customer'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='allow_domain_change_customer'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_allow_domain_change_customer from '" . $settings['panel']['allow_domain_change_customer'] . "' to '" . $value . "'");
+			}
 		}
 
 		if(($settings_part && $_part == 'accounts')
@@ -316,6 +332,14 @@ if(($page == 'settings' || $page == 'overview')
 				$value = validate($_POST['session_sessiontimeout'], 'session timeout', '/^[0-9]+$/', 'sessiontimeoutiswrong');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='session' AND `varname`='sessiontimeout'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed session_sessiontimeout from '" . $settings['session']['sessiontimeout'] . "' to '" . $value . "'");
+			}
+
+			if($_POST['session_allow_multiple_login'] != $settings['session']['allow_multiple_login']
+			   && isset($_POST['session_allow_multiple_login']))
+			{
+				$value = ($_POST['session_allow_multiple_login'] == '1' ? '1' : '0');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='session' AND `varname`='allow_multiple_login'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed session_allow_multiple_login from '" . $settings['session']['allow_multiple_login'] . "' to '" . $value . "'");
 			}
 
 			if($_POST['login_maxloginattempts'] != $settings['login']['maxloginattempts']
@@ -544,6 +568,14 @@ if(($page == 'settings' || $page == 'overview')
 				correctMysqlUsers($db, $db_root, $mysql_access_host_array);
 				$db_root->close();
 				unset($db_root);
+			}
+
+			if($_POST['system_realtime_port'] != $settings['system']['realtime_port']
+			   && isset($_POST['system_realtime_port']))
+			{
+				$value = validate($_POST['system_realtime_port'], 'realtime port', '/^[0-9]+$/');
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='realtime_port'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_realtime_port from '" . $settings['system']['realtime_port'] . "' to '" . $value . "'");
 			}
 
 			if($_POST['index_file_extension'] != $settings['system']['index_file_extension']
@@ -1524,6 +1556,9 @@ if(($page == 'settings' || $page == 'overview')
 		$quota_type_option.= makeoption($lng['emails']['quota_type']['megabyte'], 'mb', $quota_type[$i]);
 		$quota_type_option.= makeoption($lng['emails']['quota_type']['gigabyte'], 'gb', $quota_type[$i]);
 		unset($i, $quota_type);
+		$session_allow_multiple_login = makeyesno('session_allow_multiple_login', '1', '0', $settings['session']['allow_multiple_login']);
+		$panel_allow_domain_change_admin = makeyesno('panel_allow_domain_change_admin', '1', '0', $settings['panel']['allow_domain_change_admin']);
+		$panel_allow_domain_change_customer = makeyesno('panel_allow_domain_change_customer', '1', '0', $settings['panel']['allow_domain_change_customer']);
 		$natsorting = makeyesno('panel_natsorting', '1', '0', $settings['panel']['natsorting']);
 		$mailpwcleartext = makeyesno('system_mailpwcleartext', '1', '0', $settings['system']['mailpwcleartext']);
 		$panel_sendalternativemail = makeyesno('panel_sendalternativemail', '1', '0', $settings['panel']['sendalternativemail']);
