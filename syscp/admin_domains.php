@@ -300,14 +300,6 @@ if($page == 'domains'
 					$safemode = intval($_POST['safemode']);
 					$speciallogfile = intval($_POST['speciallogfile']);
 					$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
-					$ipandport = intval($_POST['ipandport']);
-					$ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . (int)$ipandport . "'");
-
-					if(!isset($ipandport_check['id'])
-					   || $ipandport_check['id'] == '0')
-					{
-						$ipandport = $settings['system']['defaultip'];
-					}
 
 					validate($_POST['documentroot'], 'documentroot');
 
@@ -325,31 +317,64 @@ if($page == 'domains'
 						}
 					}
 				}
-				elseif($userinfo['caneditphpsettings'] == '1')
-				{
-					$isbinddomain = '1';
-					$caneditdomain = '1';
-					$zonefile = '';
-					$dkim = '1';
-					$openbasedir = intval($_POST['openbasedir']);
-					$safemode = intval($_POST['safemode']);
-					$speciallogfile = '1';
-					$specialsettings = '';
-					$wwwserveralias = '1';
-					$ipandport = $settings['system']['defaultip'];
-				}
 				else
 				{
 					$isbinddomain = '1';
 					$caneditdomain = '1';
 					$zonefile = '';
 					$dkim = '1';
-					$openbasedir = '1';
-					$safemode = '1';
+					if($userinfo['caneditphpsettings'] == '1')
+					{
+						$openbasedir = intval($_POST['openbasedir']);
+						$safemode = intval($_POST['safemode']);
+					}
+					else
+					{
+						$openbasedir = '1';
+						$safemode = '1';
+					}
 					$speciallogfile = '1';
 					$specialsettings = '';
 					$wwwserveralias = '1';
-					$ipandport = $settings['system']['defaultip'];
+				}
+
+				if($userinfo['ip'] != "-1")
+				{
+					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
+					$additional_ip_condition = ' AND `ip` = \'' . $admin_ip['ip'] . '\' ';
+				}
+				else
+				{
+					$additional_ip_condition = '';
+				}
+
+				$ipandport = intval($_POST['ipandport']);
+				$ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ipandport) . "' AND `ssl` = '0'" . $additional_ip_condition);
+
+				if(!isset($ipandport_check['id'])
+				   || $ipandport_check['id'] == '0'
+				   || $ipandport_check['id'] != $ipandport)
+				{
+					standard_error('ipportdoesntexist');
+				}
+
+				if($settings['system']['use_ssl'] == "1"
+				   && isset($_POST['ssl_ipandport']))
+				{
+					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
+					$ssl_ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ssl_ipandport) . "' AND `ssl` = '1'" . $additional_ip_condition);
+					if(!isset($ssl_ipandport_check['id'])
+					   || $ssl_ipandport_check['id'] == '0'
+					   || $ssl_ipandport_check['id'] != $ssl_ipandport)
+					{
+						standard_error('ipportdoesntexist');
+					}
+				}
+				else
+				{
+					$ssl = 0;
+					$ssl_redirect = 0;
+					$ssl_ipandport = 0;
 				}
 
 				if(!preg_match('/^https?\:\/\//', $documentroot))
@@ -412,20 +437,6 @@ if($page == 'domains'
 				if($caneditdomain != '1')
 				{
 					$caneditdomain = '0';
-				}
-
-				if($settings['system']['use_ssl'] == "1"
-				   && isset($_POST['ssl_ipandport']))
-				{
-					$ssl = ($_POST['ssl'] == '1' ? '1' : '0');
-					$ssl_redirect = ($_POST['ssl_redirect'] == '1' ? '1' : '0');
-					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
-				}
-				else
-				{
-					$ssl = 0;
-					$ssl_redirect = 0;
-					$ssl_ipandport = 0;
 				}
 
 				if($service_active == 1)
@@ -636,13 +647,14 @@ if($page == 'domains'
 
 				if($userinfo['ip'] == "-1")
 				{
-					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip` ASC");
-					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip` ASC");
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip`, `port` ASC");
+					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip`, `port` ASC");
 				}
 				else
 				{
-					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
-					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
+					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
+					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
 				}
 
 				$ipsandports = '';
@@ -667,15 +679,6 @@ if($page == 'domains'
 					}
 
 					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $settings['system']['defaultip']);
-				}
-
-				if($ssl_ipsandports == '')
-				{
-					$show_ssl_ipsandports = 0;
-				}
-				else
-				{
-					$show_ssl_ipsandports = 1;
 				}
 
 				$ssl = makeyesno('ssl', '1', '0', $result['ssl']);
@@ -887,15 +890,6 @@ if($page == 'domains'
 					$openbasedir = intval($_POST['openbasedir']);
 					$safemode = intval($_POST['safemode']);
 					$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
-					$ipandport = intval($_POST['ipandport']);
-					$ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ipandport) . "' AND `ssl`='0'");
-
-					if(!isset($ipandport_check['id'])
-					   || $ipandport_check['id'] == '0')
-					{
-						$ipandport = $settings['system']['defaultip'];
-					}
-
 					$documentroot = validate($_POST['documentroot'], 'documentroot');
 
 					if($documentroot == '')
@@ -903,27 +897,64 @@ if($page == 'domains'
 						$documentroot = $customer['documentroot'];
 					}
 				}
-				elseif($userinfo['caneditphpsettings'] == '1')
-				{
-					$isbinddomain = $result['isbinddomain'];
-					$zonefile = $result['zonefile'];
-					$dkim = $result['dkim'];
-					$openbasedir = intval($_POST['openbasedir']);
-					$safemode = intval($_POST['safemode']);
-					$specialsettings = $result['specialsettings'];
-					$ipandport = $result['ipandport'];
-					$documentroot = $result['documentroot'];
-				}
 				else
 				{
 					$isbinddomain = $result['isbinddomain'];
 					$zonefile = $result['zonefile'];
 					$dkim = $result['dkim'];
-					$openbasedir = $result['openbasedir'];
-					$safemode = $result['safemode'];
+
+					if($userinfo['caneditphpsettings'] == '1')
+					{
+						$openbasedir = intval($_POST['openbasedir']);
+						$safemode = intval($_POST['safemode']);
+					}
+					else
+					{
+						$openbasedir = $result['openbasedir'];
+						$safemode = $result['safemode'];
+					}
+
 					$specialsettings = $result['specialsettings'];
-					$ipandport = $result['ipandport'];
 					$documentroot = $result['documentroot'];
+				}
+
+				if($userinfo['ip'] != "-1")
+				{
+					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
+					$additional_ip_condition = ' AND `ip` = \'' . $admin_ip['ip'] . '\' ';
+				}
+				else
+				{
+					$additional_ip_condition = '';
+				}
+
+				$ipandport = intval($_POST['ipandport']);
+				$ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ipandport) . "' AND `ssl` = '0'" . $additional_ip_condition);
+
+				if(!isset($ipandport_check['id'])
+				   || $ipandport_check['id'] == '0'
+				   || $ipandport_check['id'] != $ipandport)
+				{
+					standard_error('ipportdoesntexist');
+				}
+
+				if($settings['system']['use_ssl'] == "1"
+				   && isset($_POST['ssl_ipandport']))
+				{
+					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
+					$ssl_ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ssl_ipandport) . "' AND `ssl` = '1'" . $additional_ip_condition);
+					if(!isset($ssl_ipandport_check['id'])
+					   || $ssl_ipandport_check['id'] == '0'
+					   || $ssl_ipandport_check['id'] != $ssl_ipandport)
+					{
+						standard_error('ipportdoesntexist');
+					}
+				}
+				else
+				{
+					$ssl = 0;
+					$ssl_redirect = 0;
+					$ssl_ipandport = 0;
 				}
 
 				if(!preg_match('/^https?\:\/\//', $documentroot))
@@ -985,20 +1016,6 @@ if($page == 'domains'
 				if($aliasdomain_check['id'] != $aliasdomain)
 				{
 					standard_error('domainisaliasorothercustomer');
-				}
-
-				if($settings['system']['use_ssl'] == "1"
-				   && isset($_POST['ssl_ipandport']))
-				{
-					$ssl = ($_POST['ssl'] == '1' ? '1' : '0');
-					$ssl_redirect = ($_POST['ssl_redirect'] == '1' ? '1' : '0');
-					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
-				}
-				else
-				{
-					$ssl = 0;
-					$ssl_redirect = 0;
-					$ssl_ipandport = 0;
 				}
 
 				$params = array(
@@ -1312,13 +1329,14 @@ if($page == 'domains'
 
 				if($userinfo['ip'] == "-1")
 				{
-					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip` ASC");
-					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip` ASC");
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip`, `port` ASC");
+					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip`, `port` ASC");
 				}
 				else
 				{
-					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
-					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `id`='" . $userinfo['ip'] . "' ORDER BY `ip` ASC");
+					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
+					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
+					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
 				}
 
 				$ipsandports = '';
@@ -1343,15 +1361,6 @@ if($page == 'domains'
 					}
 
 					$ssl_ipsandports.= makeoption($row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], $result['ssl_ipandport']);
-				}
-
-				if($ssl_ipsandports == '')
-				{
-					$show_ssl_ipsandports = 0;
-				}
-				else
-				{
-					$show_ssl_ipsandports = 1;
 				}
 
 				$result['specialsettings'] = $result['specialsettings'];
