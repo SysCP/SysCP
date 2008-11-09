@@ -14,7 +14,7 @@
  * @author		Sven Skrabal <info@nexpa.de>
  * @license		GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package		Cron
- * @version		$Id: cron_apsinstaller.php 2242 2008-10-06 08:19:39Z EleRas $
+ * @version		$Id$
  * @todo
  */
 
