@@ -14,7 +14,7 @@
  * @author		Sven Skrabal <info@nexpa.de>
  * @license		GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package		Cron
- * @version		$Id: class_apsupdater.php 2248 2008-10-07 17:41:22Z radiation $
+ * @version		$Id$
  * @todo		logging
  *				install specific packages by name
  *				other solution than using url_fopen
