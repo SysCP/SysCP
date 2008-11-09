@@ -18,6 +18,7 @@
  * @todo		logging
  *				install specific packages by name
  *				other solution than using url_fopen
+ *				move url for distributionserver into panel
  */
 
 class ApsUpdater extends ApsParser
@@ -31,13 +32,11 @@ class ApsUpdater extends ApsParser
 	/**
 	 * constructor of class. setup some basic variables needed by class
 	 *
-	 * @param	settings	array with the global settings from syscp
 	 * @param	db			instance of the database class from syscp
 	 */
 
-	public function __construct($settings, $db)
+	public function __construct($db)
 	{
-		$this->settings = $settings;
 		$this->db = $db;
 		$this->RequestDomain = 'apscatalog.com';
 		$this->RootUrl = '/1/';
@@ -51,9 +50,18 @@ class ApsUpdater extends ApsParser
 	public function UpdateHandler()
 	{
 		chdir($this->RootDir);
-		$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` WHERE `Task` IN (' . TASK_SYSTEM_UPDATE . ', ' . TASK_SYSTEM_DOWNLOAD . ')');
+
+		//return if allow_url_fopen is disabled
+
+		if(ini_get('allow_url_fopen') == '0')
+		{
+			echo("The APS updater cronjob requires that allow_url_fopen is enabled for the PHP CLI binary!\n");
+			return;
+		}
 
 		//return if no task exists
+
+		$Result = $this->db->query('SELECT * FROM `' . TABLE_APS_TASKS . '` WHERE `Task` IN (' . TASK_SYSTEM_UPDATE . ', ' . TASK_SYSTEM_DOWNLOAD . ')');
 
 		if($this->db->num_rows($Result) == 0)
 		{

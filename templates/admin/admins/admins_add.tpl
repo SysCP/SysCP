@@ -156,10 +156,12 @@ $header
 				<td class="main_field_name">{$lng['customer']['ftps']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="ftps" value="0" maxlength="9" />&nbsp;{$ftps_ul}</td>
 			</tr>
+			<if $settings['ticket']['enabled'] == 1 >
 			<tr>
 				<td class="main_field_name">{$lng['customer']['tickets']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="tickets" value="0" maxlength="9" />&nbsp;{$tickets_ul}</td>
 			</tr>
+			</if>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['mysqls']}: *</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="mysqls" value="0" maxlength="9" />&nbsp;{$mysqls_ul}</td>
@@ -167,7 +169,11 @@ $header
 			<if $settings['aps']['aps_active'] == '1'>
 			<tr>
 				<td class="main_field_name">{$lng['aps']['canmanagepackages']}:</td>
-				<td class="main_field_display" nowrap="nowrap">$ManageApsPackages</td>
+				<td class="main_field_display" nowrap="nowrap">$can_manage_aps_packages</td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['aps']['numberofapspackages']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="number_of_aps_packages" value="0" maxlength="9" />&nbsp;{$number_of_aps_packages_ul}</td>
 			</tr>
 			</if>
 			<if $settings['billing']['activate_billing'] == '1'>

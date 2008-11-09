@@ -210,6 +210,8 @@ CREATE TABLE `panel_admins` (
   `invoice_fee_diskspace` decimal( 10,2 ) NOT NULL default '0',
   `invoice_fee_other` decimal( 10,2 ) NOT NULL default '0',
   `can_manage_aps_packages` tinyint(1) NOT NULL default '1',
+  `aps_packages` int(5) NOT NULL default '0',
+  `aps_packages_used` int(5) NOT NULL default '0',
    PRIMARY KEY  (`adminid`),
    UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;
@@ -310,6 +312,8 @@ CREATE TABLE `panel_customers` (
   `invoice_fee_traffic` decimal( 10,2 ) NOT NULL default '0',
   `invoice_fee_diskspace` decimal( 10,2 ) NOT NULL default '0',
   `invoice_fee_other` decimal( 10,2 ) NOT NULL default '0',
+  `aps_packages` int(5) NOT NULL default '0',
+  `aps_packages_used` int(5) NOT NULL default '0',
    PRIMARY KEY  (`customerid`),
    UNIQUE KEY `loginname` (`loginname`)
 ) TYPE=MyISAM ;

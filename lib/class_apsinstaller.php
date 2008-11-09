@@ -17,12 +17,11 @@
  * @version		$Id$
  * @todo		logging
  *				run with user uid/gid
- *				folder truncation/package remove/tar all files
+ *				folder truncation/tar all files
  */
 
 class ApsInstaller extends ApsParser
 {
-	private $settings = array();
 	private $db = false;
 	private $db_root = false;
 	private $DomainPath = '';
@@ -36,15 +35,15 @@ class ApsInstaller extends ApsParser
 	 *
 	 * @param	settings	array with the global settings from syscp
 	 * @param	db			instance of the database class from syscp
+	 * @param	db_root		instance of the database class from syscp with root permissions
 	 */
 
 	public function __construct($settings, $db, $db_root)
 	{
-		$this->settings = $settings;
 		$this->db = $db;
 		$this->db_root = $db_root;
 		$this->RootDir = dirname(dirname(__FILE__)) . '/';
-		$this->Hosts = $this->settings['system']['mysql_access_host'];
+		$this->Hosts = $settings['system']['mysql_access_host'];
 	}
 
 	/**
@@ -136,7 +135,7 @@ class ApsInstaller extends ApsParser
 			chdir($this->RealPath . $this->DomainPath . '/install_scripts/');
 			$Return = array();
 			$ReturnStatus = 0;
-			exec('php ' . escapeshellcmd($this->RealPath . $this->DomainPath . '/install_scripts/configure install'), $Return, $ReturnStatus);
+			$Return = safe_exec('php ' . escapeshellcmd($this->RealPath . $this->DomainPath . '/install_scripts/configure install'), $ReturnStatus);
 
 			if($ReturnStatus != 0)
 			{
@@ -163,7 +162,7 @@ class ApsInstaller extends ApsParser
 				//installation succeeded
 				//chown all files if installtion script has created some new files. otherwise customers cannot edit the files via ftp
 
-				exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
+				safe_exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
 
 				//update database
 
@@ -189,7 +188,7 @@ class ApsInstaller extends ApsParser
 		{
 			//cleanup installation
 
-			exec('rm -rf ' . escapeshellarg($this->RealPath . $this->DomainPath . '/install_scripts/'));
+			self::UnlinkRecursive($this->RealPath . $this->DomainPath . '/install_scripts/');
 
 			//remove task
 
@@ -198,7 +197,7 @@ class ApsInstaller extends ApsParser
 		elseif($Task == TASK_REMOVE)
 		{
 			//FIXME cleanup installation
-			//exec('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
+			//remove files from: $this->RealPath . $this->DomainPath . '/'
 			//remove permissions
 			//drop database
 
@@ -269,7 +268,7 @@ class ApsInstaller extends ApsParser
 		if($Task == TASK_INSTALL)
 		{
 			//FIXME truncate customer directory
-			//exec('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/*'));
+			//remove files from: $this->RealPath . $this->DomainPath . '/*'
 
 			if(!file_exists($this->RealPath . $this->DomainPath . '/'))mkdir($this->RealPath . $this->DomainPath . '/', 0777, true);
 
@@ -281,12 +280,12 @@ class ApsInstaller extends ApsParser
 				$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_ERROR . ' WHERE `ID` = ' . $this->db->escape($Row['InstanceID']));
 
 				//FIXME clean up already installed data
-				//exec('rm -rfI ' . escapeshellarg($this->RealPath . $this->DomainPath . '/*'));
+				//remove files from: $this->RealPath . $this->DomainPath . '/*'
 
 				return false;
 			}
 
-			exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
+			safe_exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
 		}
 		else
 		{
@@ -296,13 +295,13 @@ class ApsInstaller extends ApsParser
 
 				//clean up already installed data
 
-				exec('rm -rf ' . escapeshellarg($this->RealPath . $this->DomainPath . '/install_scripts/'));
+				self::UnlinkRecursive($this->RealPath . $this->DomainPath . '/install_scripts/');
 				return false;
 			}
 
 			//set right file owner
 
-			exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
+			safe_exec('chown ' . (int)$Row['guid'] . ':' . (int)$Row['guid'] . ' -R ' . escapeshellarg($this->RealPath . $this->DomainPath . '/'));
 		}
 
 		//recursive mappings
@@ -537,7 +536,7 @@ class ApsInstaller extends ApsParser
 			$ReturnVal = -1;
 
 			//on 64 bit systems the zip functions can fail -> use exec to extract the files
-			exec('unzip -o -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($Directory . '/*') . ' -d ' . escapeshellarg(sys_get_temp_dir()), $ReturnLines, $ReturnVal);
+			$ReturnLines = safe_exec('unzip -o -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($Directory . '/*') . ' -d ' . escapeshellarg(sys_get_temp_dir()), $ReturnVal);
 
 			if($ReturnVal == 0)
 			{
@@ -545,8 +544,8 @@ class ApsInstaller extends ApsParser
 
 				if(!file_exists($Destination))mkdir($Destination, 0777, true);
 
-				exec('cp -Rf '. sys_get_temp_dir() . '/' . $Directory . '/*' . ' ' . escapeshellarg($Destination));
-				exec('rm -rf ' . sys_get_temp_dir() . '/' . escapeshellarg($Directory) . '/');
+				safe_exec('cp -Rf '. sys_get_temp_dir() . '/' . $Directory . '/*' . ' ' . escapeshellarg($Destination));
+				self::UnlinkRecursive(sys_get_temp_dir() . '/' . $Directory . '/');
 
 				return true;
 			}

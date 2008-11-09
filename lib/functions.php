@@ -1190,7 +1190,7 @@ function updateCounters($returndebuginfo = false)
  * 1.2 : Removed * as security break
  */
 
-function safe_exec($exec_string)
+function safe_exec($exec_string, &$return_value = false)
 {
 	global $settings;
 
@@ -1211,7 +1211,9 @@ function safe_exec($exec_string)
 		$settings['system']['bindreload_command'],
 		$settings['dkim']['dkimrestart_command'],
 		$settings['system']['awstats_updateall_command'],
-		'openssl'
+		'openssl',
+		'unzip',
+		'php'
 	);
 
 	//
@@ -1260,7 +1262,15 @@ function safe_exec($exec_string)
 
 	// -------------------------------------------------------------------------------
 
-	exec($exec_string, $return);
+	if($return_value == false)
+	{
+		exec($exec_string, $return);
+	}
+	else
+	{
+		exec($exec_string, $return, $return_value);
+	}
+
 	return $return;
 }
 
