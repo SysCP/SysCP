@@ -315,7 +315,7 @@ $lng['admin']['templates']['mailbody'] = 'Mailtext';
 $lng['admin']['templates']['createcustomer'] = 'Willkommensmail f&uuml;r neue Kunden';
 $lng['admin']['templates']['pop_success'] = 'Willkommensmail f&uuml;r neue E-Mail Konten';
 $lng['admin']['wwwserveralias'] = 'www. ServerAlias hinzuf&uuml;gen';
-$lng['admin']['templates']['template_replace_vars'] = 'Variablen die in den Vorlagen ersetzt werden:';
+$lng['admin']['templates']['template_replace_vars'] = 'Variablen, die in den Vorlagen ersetzt werden:';
 $lng['admin']['templates']['FIRSTNAME'] = 'Wird mit dem Vornamen des Kunden ersetzt.';
 $lng['admin']['templates']['NAME'] = 'Wird mit dem Namen des Kunden ersetzt.';
 $lng['admin']['templates']['USERNAME'] = 'Wird mit dem Benutzernamen des neuen Kundenaccounts ersetzt.';
@@ -1142,7 +1142,7 @@ $lng['admin']['phpsettings']['addnew'] = 'Neue Konfiguration erstellen';
 $lng['error']['phpsettingidwrong'] = 'Eine PHP Konfiguration mit dieser Id existiert nicht';
 $lng['error']['descriptioninvalid'] = 'Der Beschreibungstext ist zu kurz, zu lang oder enth&auml;lt ung&uuml;ltige Zeichen';
 $lng['error']['info'] = 'Info';
-$lng['admin']['phpconfig']['template_replace_vars'] = 'Variablen die in den Konfigurationen ersetzt werden';
+$lng['admin']['phpconfig']['template_replace_vars'] = 'Variablen, die in den Konfigurationen ersetzt werden';
 $lng['admin']['phpconfig']['safe_mode'] = 'Wird mit der safe_mode Einstellung der Domain ersetzt.';
 $lng['admin']['phpconfig']['pear_dir'] = 'Wird mit dem globalen Wert f&uuml;r das Include Verzeichnis ersetzt.';
 $lng['admin']['phpconfig']['open_basedir'] = 'Wird mit der open_basedir Einstellung der Domain ersetzt.';
@@ -1362,5 +1362,15 @@ $lng['domains']['associated_with_domain'] = 'Verbunden mit';
 $lng['domains']['aliasdomains'] = 'Aliasdomains';
 
 $lng['error']['ipportdoesntexist'] = 'Die gew&auml;hlte IP/Port-Kombination existiert nicht.';
+
+// ADDED IN 1.2.19-svn38
+
+$lng['admin']['phpserversettings'] = 'PHP Einstellungen';
+$lng['admin']['phpsettings']['binary'] = 'PHP Binary';
+$lng['admin']['phpsettings']['file_extensions'] = 'Dateiendungen';
+$lng['admin']['phpsettings']['file_extensions_note'] = '(ohne Punkt, durch Leerzeichen getrennt)';
+$lng['admin']['mod_fcgid_maxrequests']['title'] = 'Maxmale PHP Requests f&uuml;r diese Domain (leer f&uuml;r Standardwert)';
+$lng['serversettings']['mod_fcgid']['maxrequests'] = 'Maximale Requests pro Domain';
+$lng['serversettings']['mod_fcgid']['maxrequests_desc'] = 'Wieviele PHP Requests pro Domain sollen erlaubt werden?';
 
 ?>

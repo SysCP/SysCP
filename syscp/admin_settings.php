@@ -1412,9 +1412,18 @@ if(($page == 'settings' || $page == 'overview')
 			if(isset($_POST['system_mod_fcgid_starter'])
 			   && $_POST['system_mod_fcgid_starter'] != $settings['system']['mod_fcgid_starter'])
 			{
-				$value = validate($_POST['system_mod_fcgid_starter'], 'fcgid starter', '/^[0-9]{1,999}$/');
+				$value = validate($_POST['system_mod_fcgid_starter'], 'fcgid starter', '/^[0-9]*$/', '', array('-1', ''));
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_starter'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_starter from '" . $settings['system']['mod_fcgid_starter'] . "' to '" . $value . "'");
+				inserttask('1');
+			}
+
+			if(isset($_POST['system_mod_fcgid_maxrequests'])
+			   && $_POST['system_mod_fcgid_maxrequests'] != $settings['system']['mod_fcgid_maxrequests'])
+			{
+				$value = validate($_POST['system_mod_fcgid_maxrequests'], 'fcgid max requests', '/^[0-9]*$/', '', array('-1', ''));
+				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid_maxrequests'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed mod_fcgid_maxrequests from '" . $settings['system']['mod_fcgid_maxrequests'] . "' to '" . $value . "'");
 				inserttask('1');
 			}
 

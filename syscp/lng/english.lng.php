@@ -1360,4 +1360,14 @@ $lng['domains']['aliasdomains'] = 'Aliasdomains';
 
 $lng['error']['ipportdoesntexist'] = 'The ip/port combination you have chosen doesn\'t exist.';
 
+// ADDED IN 1.2.19-svn38
+
+$lng['admin']['phpserversettings'] = 'PHP Settings';
+$lng['admin']['phpsettings']['binary'] = 'PHP Binary';
+$lng['admin']['phpsettings']['file_extensions'] = 'File extensions';
+$lng['admin']['phpsettings']['file_extensions_note'] = '(without dot, separated by spaces)';
+$lng['admin']['mod_fcgid_maxrequests']['title'] = 'Maximum php requests for this domain (empty for default value)';
+$lng['serversettings']['mod_fcgid']['maxrequests'] = 'Maximum Requests per Domain';
+$lng['serversettings']['mod_fcgid']['maxrequests_desc'] = 'How many requests should be allowed per domain?';
+
 ?>
