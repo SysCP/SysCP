@@ -57,7 +57,14 @@ while($row = $db->fetch_array($result_tasks))
 		{
 			if($settings['system']['webserver'] == "apache2")
 			{
-				$webserver = new apache($db, $cronlog, $debugHandler, $settings);
+				if($settings['system']['mod_fcgid'] == 1)
+				{
+					$webserver = new apache_fcgid($db, $cronlog, $debugHandler, $settings);
+				}
+				else
+				{
+					$webserver = new apache($db, $cronlog, $debugHandler, $settings);
+				}
 			}
 			elseif($settings['system']['webserver'] == "lighttpd")
 			{

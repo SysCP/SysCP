@@ -63,7 +63,12 @@
 		</td>
 		<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mod_fcgid_starter" value="{$settings['system']['mod_fcgid_starter']}" /></td>
 	</tr>
-
+	<tr>
+		<td class="main_field_name">
+			<b>{$lng['serversettings']['mod_fcgid']['maxrequests']}:</b><br />{$lng['serversettings']['mod_fcgid']['maxrequests_desc']}
+		</td>
+		<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_mod_fcgid_maxrequests" value="{$settings['system']['mod_fcgid_maxrequests']}" /></td>
+	</tr>
 	<tr>
 		<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">
 			<if $_part == 'security'>

@@ -988,6 +988,23 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn37';
 	}
+	
+	if($settings['panel']['version'] == '1.2.19-svn37')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn37 to 1.2.19-svn38");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_PHPCONFIGS . "` ADD `binary` VARCHAR( 255 ) NOT NULL, ADD `file_extensions` VARCHAR( 255 ) NOT NULL, ADD `mod_fcgid_starter` int(4) NOT NULL DEFAULT '-1', ADD `mod_fcgid_maxrequests` int(4) NOT NULL DEFAULT '-1'");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `mod_fcgid_maxrequests` INT( 4 ) NULL DEFAULT '-1'");
+		$db->query("UPDATE `" . TABLE_PANEL_PHPCONFIGS . "` SET `binary` = '/usr/bin/php-cgi', `file_extensions` = 'php'");
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `url` = 'admin_phpsettings.php?page=overview'");
+		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_maxrequests', '250')");
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn38\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn38';
+	}
 }
 
 // php filter-extension check

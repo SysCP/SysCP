@@ -25,10 +25,10 @@ if(@php_sapi_name() != 'cli'
 
 class apache
 {
-	private $db = false;
-	private $logger = false;
-	private $debugHandler = false;
-	private $settings = array();
+	protected $db = false;
+	protected $logger = false;
+	protected $debugHandler = false;
+	protected $settings = array();
 	protected $known_vhostfilenames = array();
 	protected $known_diroptionsfilenames = array();
 	protected $known_htpasswdsfilenames = array();
@@ -36,7 +36,7 @@ class apache
 	protected $diroptions_data = array();
 	protected $htpasswds_data = array();
 
-	function __construct($db, $logger, $debugHandler, $settings)
+	public function __construct($db, $logger, $debugHandler, $settings)
 	{
 		$this->db = $db;
 		$this->logger = $logger;
@@ -122,39 +122,9 @@ class apache
 	{
 		$php_options_text = '';
 
-		// This vHost has PHP enabled...
-
-		if($this->settings['system']['mod_fcgid'] == 1)
+		if($domain['phpenabled'] == '1')
 		{
-			// ...and we are using mod_fcgid
-			// TODO: Put this in the join on line 212
-
-			$sql = "SELECT * FROM `ftp_users` WHERE `customerid` = " . $domain['customerid'];
-			$result_ftp = $this->db->query($sql);
-
-			if($this->db->num_rows($result_ftp) > 0)
-			{
-				if((int)$this->settings['system']['mod_fcgid_wrapper'] == 0)
-				{
-					$php_options_text.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
-					$php_options_text.= '  ScriptAlias /php/ ' . $this->settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/' . "\n";
-				}
-				else
-				{
-					$php_options_text.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
-					$php_options_text.= '  <Directory "' . $domain['documentroot'] . '">' . "\n";
-					$php_options_text.= '    AddHandler fcgid-script .php' . "\n";
-					$php_options_text.= '    FCGIWrapper ' . $this->settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/php-fcgi-starter .php' . "\n";
-					$php_options_text.= '    Options +ExecCGI' . "\n";
-					$php_options_text.= '  </Directory>' . "\n";
-				}
-
-				createFcgiConfig($domain, $this->settings);
-			}
-		}
-		else
-		{
-			// ...and we are using the regular mod_php
+			// This vHost has PHP enabled and we are using the regular mod_php
 
 			if($domain['openbasedir'] == '1')
 			{
@@ -185,6 +155,11 @@ class apache
 			{
 				$php_options_text.= '  php_admin_flag safe_mode On ' . "\n";
 			}
+		}
+		else
+		{
+			$php_options_text.= '  # PHP is disabled for this vHost' . "\n";
+			$php_options_text.= '  php_flag engine off' . "\n";
 		}
 
 		return $php_options_text;
@@ -406,23 +381,9 @@ class apache
 				$vhost_content.= '  SSLCertificateFile ' . $domain['ssl_cert'] . "\n";
 			}
 
-			$vhost_content.= $this->getWebroot($domain);
-
-			if($domain['phpenabled'] == '1')
-			{
-				$vhost_content.= $this->composePhpOptions($domain);
-			}
-			elseif($this->settings['system']['mod_fcgid'] != 1)
-			{
-				$vhost_content.= '  # PHP is disabled for this vHost' . "\n";
-				$vhost_content.= '  php_flag engine off' . "\n";
-			}
-			else
-			{
-				$vhost_content.= '  # PHP is disabled for this vHost' . "\n";
-			}
-
 			mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
+			$vhost_content.= $this->getWebroot($domain);
+			$vhost_content.= $this->composePhpOptions($domain);
 			$vhost_content.= $this->getStats($domain);
 			$vhost_content.= $this->getLogfiles($domain);
 		}
@@ -447,7 +408,7 @@ class apache
 
 	public function createVirtualHosts()
 	{
-		$result_domains = $this->db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`ssl`, " . "`d`.`parentdomainid`, `d`.`ipandport`, `d`.`ssl_ipandport`, `d`.`ssl_redirect`, " . "`d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`openbasedir_path`, " . "`d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `d`.`phpsettingid`, `c`.`adminid`, " . "`c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled`, `d`.`mod_fcgid_starter` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) " . "WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
+		$result_domains = $this->db->query("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`ssl`, " . "`d`.`parentdomainid`, `d`.`ipandport`, `d`.`ssl_ipandport`, `d`.`ssl_redirect`, " . "`d`.`isemaildomain`, `d`.`iswildcarddomain`, `d`.`wwwserveralias`, `d`.`openbasedir`, `d`.`openbasedir_path`, " . "`d`.`safemode`, `d`.`speciallogfile`, `d`.`specialsettings`, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `d`.`phpsettingid`, `c`.`adminid`, " . "`c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled`, `d`.`mod_fcgid_starter`, `d`.`mod_fcgid_maxrequests` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) " . "WHERE `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC");
 
 		while($domain = $this->db->fetch_array($result_domains))
 		{
@@ -750,7 +711,7 @@ class apache
 	*	We remove old vhost config files
 	*/
 
-	private function wipeOutOldVhostConfigs()
+	protected function wipeOutOldVhostConfigs()
 	{
 		fwrite($this->debugHandler, '  apache::wipeOutOldVhostConfigs: cleaning ' . $this->settings['system']['apacheconf_vhost'] . "\n");
 		$this->logger->logAction(CRON_ACTION, LOG_INFO, "cleaning " . $this->settings['system']['apacheconf_vhost']);
@@ -781,7 +742,7 @@ class apache
 	*	We remove old diroptions config files
 	*/
 
-	private function wipeOutOldDiroptionConfigs()
+	protected function wipeOutOldDiroptionConfigs()
 	{
 		fwrite($this->debugHandler, '  apache::wipeOutOldDiroptionConfigs: cleaning ' . $this->settings['system']['apacheconf_diroptions'] . "\n");
 		$this->logger->logAction(CRON_ACTION, LOG_INFO, "cleaning " . $this->settings['system']['apacheconf_diroptions']);
@@ -812,7 +773,7 @@ class apache
 	*	We remove old htpasswd config files
 	*/
 
-	private function wipeOutOldHtpasswdConfigs()
+	protected function wipeOutOldHtpasswdConfigs()
 	{
 		fwrite($this->debugHandler, '  apache::wipeOutOldHtpasswdConfigs: cleaning ' . $this->settings['system']['apacheconf_htpasswddir'] . "\n");
 		$this->logger->logAction(CRON_ACTION, LOG_INFO, "cleaning " . $this->settings['system']['apacheconf_htpasswddir']);
