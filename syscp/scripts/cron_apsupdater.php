@@ -22,7 +22,7 @@ $needrootdb = false;
 require (dirname(__FILE__) . '/../lib/cron_init.php');
 require (dirname(__FILE__) . '/../lib/class_apsparser.php');
 require (dirname(__FILE__) . '/../lib/class_apsupdater.php');
-$Aps = new ApsUpdater($settings, $db);
+$Aps = new ApsUpdater($db);
 $Aps->UpdateHandler();
 require (dirname(__FILE__) . '/../lib/cron_shutdown.php');
 

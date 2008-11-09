@@ -43,6 +43,12 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['email_quota']}:</td>
 			<td class="field_display">{$overview['email_quota_used']} ({$userinfo['email_quota_used']}/{$userinfo['email_quota']})</td>
 		</tr>
+		<if (int)$settings['aps']['aps_active'] == 1>
+		<tr>
+			<td class="field_name_border_left">{$lng['aps']['numberofapspackages']}:</td>
+			<td class="field_display">{$overview['aps_packages_used']} ({$userinfo['aps_packages_used']}/{$userinfo['aps_packages']})</td>
+		</tr>
+		</if>
 		<if $settings['ticket']['enabled'] == 1>
 		<tr>
 			<td class="field_name_border_left">{$lng['customer']['ftps']}:</td>

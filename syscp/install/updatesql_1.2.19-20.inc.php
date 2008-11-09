@@ -1005,10 +1005,40 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn38';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn38')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn38 to 1.2.19-svn39");
+
+		$Result = $db->query("SELECT * FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `lang` = 'customer;aps' AND `url` = 'customer_aps.nourl'");
+		$Row = $db->fetch_array($Result);
+
+		if($Row['required_resources'] != 'aps_enabled')
+		{
+			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'phpenabled' WHERE `lang` = 'customer;aps' AND `url` = 'customer_aps.nourl'");
+		}
+
+		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `aps_packages` INT( 5 ) NOT NULL DEFAULT '0', ADD `aps_packages_used` INT( 5 ) NOT NULL DEFAULT '0'");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `aps_packages` INT( 5 ) NOT NULL DEFAULT '0', ADD `aps_packages_used` INT( 5 ) NOT NULL DEFAULT '0'");
+
+		//give admins which can see all customers and domains plus change serversettings the ability to have unlimited aps instances
+
+		$admins = $db->query("SELECT `adminid` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `customers_see_all` = 1 AND `domains_see_all` = 1 AND `change_serversettings` = 1");
+
+		while($admin = $db->fetch_array($admins))
+		{
+			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `aps_packages` = -1 WHERE `adminid` = '" . $admin['adminid'] . "'");
+		}
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn39\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn39';
+	}
 }
 
 // php filter-extension check
-
-
 
 ?>

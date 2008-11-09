@@ -785,7 +785,8 @@ if(isset($_POST['installstep'])
 		`subdomains_used` = 0,
 		`traffic` = -1048576,
 		`traffic_used` = 0,
-		`deactivated` = 0");
+		`deactivated` = 0,
+		`aps_packages` = -1");
 	status_message('green', 'OK');
 
 	//now we create the userdata.inc.php with the mysql-accounts

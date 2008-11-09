@@ -91,6 +91,12 @@ if($db->num_rows($result) > 0)
 				$spam = false;
 				foreach($content as $line)
 				{
+					// header ends on first empty line, skip rest of mail
+					if(strlen(rtrim($line)) == 0)
+					{
+						break;
+					}
+
 					//fetching from field
 					if(!strlen($from) && preg_match("/^From:(.+)<(.*)>$/", $line, $match))
  					{

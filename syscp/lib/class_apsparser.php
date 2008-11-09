@@ -19,7 +19,6 @@
  *				reconfigure
  *				patch- and versionmanagement
  *				use settings/userinfo array instead a copy of this vars
- *				!!! how many packages for a customer
  *				remove locked packages
  *				replace all html code
  *				add https support
@@ -27,9 +26,7 @@
  *				zip stuff in own class
  *				logging
  *				button for remove of all failed installations
- *				!!! logic error for apsupdater tasks
- *				move failed installations into subfolder instead of unlink
- *				!!! check languagefiles
+ *				increse database counter for customer
  */
 
 class ApsParser
@@ -62,6 +59,22 @@ class ApsParser
 		global $lng, $filename, $s, $page, $action;
 		$Question = false;
 
+		//dont do anything if there is no instance
+		if((int)$this->userinfo['customers_see_all'] == 1)
+		{
+			$Instances = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID`');
+		}
+		else
+		{
+			$Instances = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID` INNER JOIN `' . TABLE_PANEL_CUSTOMERS . '` AS `c` ON `i`.`CustomerID` = `c`.`customerid` WHERE `c`.`adminid` = ' . (int)$this->userinfo['adminid']);
+		}
+
+		if($this->db->num_rows($Instances) == 0)
+		{
+			self::InfoBox($lng['aps']['noinstancesexisting']);
+			return;
+		}
+
 		if(isset($_POST['save']))
 		{
 			$Ids = '';
@@ -90,6 +103,10 @@ class ApsParser
 						//remove instance
 
 						$this->db->query('DELETE FROM `' . TABLE_APS_INSTANCES . '` WHERE `ID` = ' . (int)$Row['ID']);
+
+						//decrease used flag
+
+						$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` - 1 WHERE `customerid` = ' . (int)$Row['	CustomerID']);
 					}
 
 					//instance uninstallation
@@ -109,6 +126,7 @@ class ApsParser
 						{
 							$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`InstanceID`, `Task`) VALUES (' . (int)$Row['ID'] . ', ' . TASK_REMOVE . ')');
 							$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_UNINSTALL . ' WHERE `ID` = ' . (int)$Row['ID']);
+							$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` - 1 WHERE `customerid` = ' . (int)$Row['	CustomerID']);
 						}
 					}
 				}
@@ -377,7 +395,7 @@ class ApsParser
 	 * @param	dir			directory to delete recursive
 	 */
 
-	private function UnlinkRecursive($Dir)
+	protected function UnlinkRecursive($Dir)
 	{
 		if(!$DirHandle = @opendir($Dir))return;
 
@@ -1144,6 +1162,9 @@ class ApsParser
 		//add task for installation
 
 		$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`InstanceID`, `Task`) VALUES(' . $this->db->escape($Row['ID']) . ', ' . TASK_INSTALL . ')');
+
+		//update used counter for packages
+		$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` + 1 WHERE `customerid` = ' . (int)$CustomerId);
 		self::InfoBox(sprintf($lng['aps']['successonnewinstance'], $Xml->name));
 		unset($Xml);
 	}
@@ -1582,7 +1603,6 @@ class ApsParser
 				}
 
 				self::InfoBox(sprintf($lng['aps']['erroronscan'], $Xml->name, $Output));
-				unlink($Filename);
 				return false;
 			}
 			else
@@ -1653,7 +1673,6 @@ class ApsParser
 			//file cannot be unzipped or parse of xml data has failed
 
 			self::InfoBox(sprintf($lng['aps']['invalidzipfile'], basename($Filename)));
-			unlink($Filename);
 			return false;
 		}
 	}
@@ -1765,6 +1784,7 @@ class ApsParser
 
 						$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`InstanceID`, `Task`) VALUES (' . (int)$Id . ', ' . TASK_REMOVE . ')');
 						$this->db->query('UPDATE `' . TABLE_APS_INSTANCES . '` SET `Status` = ' . INSTANCE_UNINSTALL . ' WHERE `ID` = ' . (int)$Id);
+						$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` - 1 WHERE `customerid` = ' . (int)$CustomerId);
 						self::InfoBox($lng['aps']['packagewillberemoved']);
 					}
 				}
@@ -1814,6 +1834,10 @@ class ApsParser
 						//remove instance
 
 						$this->db->query('DELETE FROM `' . TABLE_APS_INSTANCES . '` WHERE `ID` = ' . $this->db->escape($Id));
+
+						//update used counter
+						$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` - 1 WHERE `customerid` = ' . (int)$CustomerId);
+
 						self::InfoBox($lng['aps']['installstopped']);
 					}
 					else
@@ -2076,12 +2100,12 @@ class ApsParser
 		}
 		else
 		{
-			//on 64 bit systems the zip functions can fail -> use exec to extract the files
+			//on 64 bit systems the zip functions can fail -> use safe_exec to extract the files
 
 			$ReturnLines = array();
 			$ReturnVal = -1;
 
-			exec('unzip -o -j -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($File) . ' -d ' . escapeshellarg(sys_get_temp_dir() . '/'), $ReturnLines, $ReturnVal);
+			$ReturnLines = safe_exec('unzip -o -j -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($File) . ' -d ' . escapeshellarg(sys_get_temp_dir() . '/'), $ReturnVal);
 
 			if($ReturnVal == 0)
 			{
@@ -2683,6 +2707,15 @@ class ApsParser
 		//return if parse of xml file has failed
 
 		if($Xml == false)return false;
+
+		//show notifcation if customer has reached his installation limit
+		if($this->userinfo['aps_packages'] != '-1' && (int)$this->userinfo['aps_packages_used'] >= (int)$this->userinfo['aps_packages'])
+		{
+			self::InfoBox($lng['aps']['allpackagesused']);
+			return false;
+		}
+
+		//icon for package
 		$Icon = './images/default.png';
 
 		if($Xml->icon['path'])
@@ -3032,7 +3065,7 @@ class ApsParser
 
 	private function ShowPackageInfo($PackageId, $All = false)
 	{
-		global $lng, $filename, $s, $page, $action;
+		global $lng, $filename, $s, $page, $action, $userinfo;
 		$Data = '';
 		$Fieldname = '';
 		$Fieldvalue = '';
@@ -3165,7 +3198,7 @@ class ApsParser
 				else
 				{
 					$Fieldname = $lng['aps']['license'];
-					$Fieldvalue = '<a target="_blank" href="' . htmlspecialchars($Xml->license->text->url) . '">' . $lng['aps']['license_link'] . '</a>';
+					$Fieldvalue = '<a target="_blank" href="' . htmlspecialchars($Xml->license->text->url) . '">' . $lng['aps']['linktolicense'] . '</a>';
 					eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 				}
 			}

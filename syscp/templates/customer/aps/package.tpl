@@ -29,7 +29,7 @@
 				<input class="bottom" type="submit" value="{$lng['aps']['back']}" />
 			</form>
 		</if>
-		<if $action != 'customerstatus'>
+		<if $action != 'customerstatus' && ( $userinfo['aps_packages'] != $userinfo['aps_packages_used'] )>
 			<form method="get" action="$filename" style="float:left; padding-left: 5px;">
 				<input type="hidden" name="s" value="$s" />
 				<input type="hidden" name="page" value="$page" />

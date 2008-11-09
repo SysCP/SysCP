@@ -160,6 +160,12 @@ $header
 				<td class="main_field_name">{$lng['admin']['phpenabled']}?</td>
 				<td class="main_field_display" nowrap="nowrap">$phpenabled</td>
 			</tr>
+			<if $settings['aps']['aps_active'] == '1'>
+			<tr>
+				<td class="main_field_name">{$lng['aps']['numberofapspackages']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="number_of_aps_packages" value="0" maxlength="9" />&nbsp;{$number_of_aps_packages_ul}</td>
+			</tr>
+			</if>
 			<if $userinfo['edit_billingdata'] == '1' && $settings['billing']['activate_billing'] == '1'>
 			<tr>
 				<td class="maintitle_apply_left">

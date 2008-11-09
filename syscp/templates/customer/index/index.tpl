@@ -70,6 +70,12 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['ftps']}:</td>
 			<td class="field_display">{$userinfo['ftps_used']} ({$userinfo['ftps']})</td>
 		</tr>
+		<if (int)$settings['aps']['aps_active'] == 1>
+		<tr>
+			<td class="field_name_border_left">{$lng['aps']['numberofapspackages']}:</td>
+			<td class="field_display">{$userinfo['aps_packages_used']} ({$userinfo['aps_packages']})</td>
+		</tr>
+		</if>
 		<if $settings['ticket']['enabled'] == 1 >
 		<tr>
 			<td class="field_name_border_left">{$lng['customer']['tickets']}:</td>
