@@ -227,6 +227,13 @@ class apache_fcgid extends apache
 	{
 		$php_config_id = intval($php_config_id);
 
+		// If domain has no config, we will use the default one.
+
+		if($php_config_id == 0)
+		{
+			$php_config_id = 1;
+		}
+
 		if(!isset($this->php_configs_cache[$php_config_id]))
 		{
 			$this->php_configs_cache[$php_config_id] = $this->db->query_first("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$php_config_id);

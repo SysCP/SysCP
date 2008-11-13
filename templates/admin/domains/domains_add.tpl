@@ -118,7 +118,7 @@ $header
 			<if (int)$settings['system']['mod_fcgid'] == 1>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['phpsettings']['title']}</td>
-				<td class="main_field_display" nowrap="nowrap"><select name="phpconfig">$phpconfigs</select></td>
+				<td class="main_field_display" nowrap="nowrap"><select name="phpsettingid">$phpconfigs</select></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['mod_fcgid_starter']['title']}</td>
