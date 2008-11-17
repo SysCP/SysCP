@@ -2,6 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+	<if $settings['panel']['no_robots'] == '0'>
+	<meta name="robots" content="noindex, nofollow, noarchive" />
+	<meta name="GOOGLEBOT" content="nosnippet" />
+	</if>
 	<link rel="stylesheet" href="templates/main.css" type="text/css" />
 	<title><if isset($userinfo['loginname']) && $userinfo['loginname'] != ''>{$userinfo['loginname']} - </if>SysCP</title>
 </head>
