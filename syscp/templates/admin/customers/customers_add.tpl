@@ -54,7 +54,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['title']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="title" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="title" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['company']}: **</td>
@@ -74,7 +74,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['country']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="country" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="country" value="" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['phone']}:</td>
@@ -94,7 +94,7 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['taxid']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" name="taxid" value="" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="taxid" value="" /></td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_left">
