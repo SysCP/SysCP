@@ -15,6 +15,31 @@
  * @version    $Id$
  */
 
+$configcommand = array();
+if(isConfigDir($settings['system']['apacheconf_vhost']))
+{
+	$configcommand['vhost'] = 'mkdir -p ' . $settings['system']['apacheconf_vhost'];
+	$configcommand['include'] = 'echo -e "\\nInclude ' . makeCorrectDir($settings['system']['apacheconf_vhost']) . '*.conf" >> ' . makeCorrectFile(makeCorrectDir($settings['system']['apacheconf_vhost']) . '/httpd.conf');
+	$configcommand['v_inclighty'] = 'echo -e \'\\ninclude_shell "find '.makeCorrectDir($settings['system']['apacheconf_vhost']).' -maxdepth 1 -name \'*.conf\' -exec cat {} \;"\'';
+}
+else
+{
+	$configcommand['vhost'] = 'touch ' . $settings['system']['apacheconf_vhost'];
+	$configcommand['include'] = 'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf');
+	$configcommand['v_inclighty'] = 'echo -e \'\\ninclude "' . $settings['system']['apacheconf_vhost'] . '"\' >> /etc/lighttpd/lighttpd.conf';
+}
+
+if(isConfigDir($settings['system']['apacheconf_diroptions']))
+{
+	$configcommand['diroptions'] = 'mkdir -p ' . $settings['system']['apacheconf_diroptions'];
+	$configcommand['d_inclighty'] = 'echo -e \'\\ninclude_shell "find '.makeCorrectDir($settings['system']['apacheconf_diroptions']).' -maxdepth 1 -name \'*.conf\' -exec cat {} \;"\'';
+}
+else
+{
+	$configcommand['diroptions'] = 'touch ' . $settings['system']['apacheconf_diroptions'];
+	$configcommand['d_inclighty'] = 'echo -e \'\\ninclude "' . $settings['system']['apacheconf_diroptions'] . '"\' >> /etc/lighttpd/lighttpd.conf';
+}
+
 $configfiles = Array(
 	'debian_sarge' => Array(
 		'label' => 'Debian 3.1 (Sarge)',
@@ -25,11 +50,11 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache' . ($settings['system']['apacheversion'] == 'apache2' ? '2' : ''),
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_vhost'],
-							'touch ' . $settings['system']['apacheconf_diroptions'],
+							$configcommand['vhost'],
+							$configcommand['diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf'),
+							$configcommand['include'],
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -159,7 +184,8 @@ $configfiles = Array(
 					'awstats' => Array(
 						'label' => 'Awstats',
 						'files' => Array(
-							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_awstats_awstats.model_log_sql.conf.syscp' : 'etc_awstats.model.conf.syscp') => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_cron.d_awstats_log_sql' : 'etc_cron.d_awstats') => '/etc/cron.d/awstats',
 							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
 						),
 						'commands' => Array(
@@ -182,11 +208,11 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_vhost'],
-							'touch ' . $settings['system']['apacheconf_diroptions'],
+							$configcommand['vhost'],
+							$configcommand['diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf'),
+							$configcommand['include'],
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -366,7 +392,8 @@ $configfiles = Array(
 					'awstats' => Array(
 						'label' => 'Awstats',
 						'files' => Array(
-							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_awstats_awstats.model_log_sql.conf.syscp' : 'etc_awstats.model.conf.syscp') => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_cron.d_awstats_log_sql' : 'etc_cron.d_awstats') => '/etc/cron.d/awstats',
 							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
 						),
 						'commands' => Array(
@@ -389,11 +416,11 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_vhost'],
-							'touch ' . $settings['system']['apacheconf_diroptions'],
+							$configcommand['vhost'],
+							$configcommand['diroptions'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf'),
+							$configcommand['include'],
 							'apache-modconf apache disable mod_userdir'
 						),
 						'restart' => Array(
@@ -573,7 +600,8 @@ $configfiles = Array(
 					'awstats' => Array(
 						'label' => 'Awstats',
 						'files' => Array(
-							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_awstats_awstats.model_log_sql.conf.syscp' : 'etc_awstats.model.conf.syscp') => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_cron.d_awstats_log_sql' : 'etc_cron.d_awstats') => '/etc/cron.d/awstats',
 							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
 						),
 						'commands' => Array(
@@ -596,13 +624,9 @@ $configfiles = Array(
 					'apache' => Array(
 						'label' => 'Apache2 Webserver',
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_vhost'],
-							'chown root:0 ' . $settings['system']['apacheconf_vhost'],
-							'chmod 0600 ' . $settings['system']['apacheconf_vhost'],
-							'touch ' . $settings['system']['apacheconf_diroptions'],
-							'chown root:0 ' . $settings['system']['apacheconf_diroptions'],
-							'chmod 0600 ' . $settings['system']['apacheconf_diroptions'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . 'httpd.conf',
+							$configcommand['vhost'],
+							$configcommand['diroptions'],
+							$configcommand['include'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory']
 						),
@@ -618,16 +642,10 @@ $configfiles = Array(
 							'etc_mimetypes.conf' => '/etc/lighttpd/mimetypes.conf'
 						),
 						'commands' => Array(
-							'touch ' . $settings['system']['apacheconf_vhost'],
-							'chown root:0 ' . $settings['system']['apacheconf_vhost'],
-							'chmod 0600 ' . $settings['system']['apacheconf_vhost'],
-							'touch ' . $settings['system']['apacheconf_diroptions'],
-							'chown root:0 ' . $settings['system']['apacheconf_diroptions'],
-							'chmod 0600 ' . $settings['system']['apacheconf_diroptions'],
-							'echo -e "# Lighttpd - SysCP vhosts\\n > "' . $settings['system']['apacheconf_vhost'],
-							'echo -e "# Lighttpd - SysCP diroptions\\n > "' . $settings['system']['apacheconf_diroptions'],
-							'echo -e \'\\ninclude "' . $settings['system']['apacheconf_vhost'] . '"\' >> /etc/lighttpd/lighttpd.conf',
-							'echo -e \'\\ninclude "' . $settings['system']['apacheconf_diroptions'] . '"\' >> /etc/lighttpd/lighttpd.conf',
+							$configcommand['vhost'],
+							$configcommand['diroptions'],
+							$configcommand['v_inclighty'],
+							$configcommand['d_inclighty'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory']
 						),
@@ -817,7 +835,8 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 					'awstats' => Array(
 						'label' => 'Awstats',
 						'files' => Array(
-							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_awstats_awstats.model_log_sql.conf.syscp' : 'etc_awstats.model.conf.syscp') => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_cron.d_awstats_log_sql' : 'etc_cron.d_awstats') => '/etc/cron.d/awstats',
 							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
 						),
 						'commands' => Array(
@@ -855,9 +874,9 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 					'apache' => Array(
 						'label' => 'Apache',
 						'commands' => Array(
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . makeCorrectFile(dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf'),
-							'touch ' . $settings['system']['apacheconf_vhost'],
-							'touch ' . $settings['system']['apacheconf_diroptions'],
+							$configcommand['vhost'],
+							$configcommand['diroptions'],
+							$configcommand['include'],
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory']
 						),
@@ -965,7 +984,8 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 					'awstats' => Array(
 						'label' => 'Awstats',
 						'files' => Array(
-							'etc_awstats_awstats.model.conf.syscp' => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_awstats_awstats.model_log_sql.conf.syscp' : 'etc_awstats.model.conf.syscp') => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_cron.d_awstats_log_sql' : 'etc_cron.d_awstats') => '/etc/cron.d/awstats',
 							($settings['system']['apacheversion'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['apacheversion'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
 						),
 						'commands' => Array(

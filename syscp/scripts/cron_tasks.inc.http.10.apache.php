@@ -250,26 +250,37 @@ class apache
 	{
 		$stats_text = '';
 
-		if($domain['speciallogfile'] == '1')
+		if($domain['speciallogfile'] == '1' && $this->settings['system']['mod_log_sql'] != '1')
 		{
 			if($domain['parentdomainid'] == '0')
 			{
-				$speciallogfile = '-' . $domain['domain'];
 				$stats_text.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
+
+				if($this->settings['system']['awstats_enabled'] == '1')
+				{
+					$stats_text.= createAWStatsVhost($domain['domain']);
+				}
 			}
 			else
 			{
-				$speciallogfile = '-' . $domain['parentdomain'];
 				$stats_text.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
+
+				if($this->settings['system']['awstats_enabled'] == '1')
+				{
+					$stats_text.= createAWStatsVhost($domain['parentdomain']);
+				}
 			}
 		}
 		else
 		{
-			$speciallogfile = '';
-
 			if($domain['customerroot'] != $domain['documentroot'])
 			{
 				$stats_text.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
+			}
+
+			if($this->settings['system']['awstats_enabled'] == '1')
+			{
+				$stats_text.= createAWStatsVhost($domain['domain']);
 			}
 		}
 
@@ -284,7 +295,23 @@ class apache
 	{
 		$logfiles_text = '';
 
-		if($this->settings['system']['mod_log_sql'] == 1)
+		if($domain['speciallogfile'] == '1' && $this->settings['system']['mod_log_sql'] != '1')
+		{
+			if($domain['parentdomainid'] == '0')
+			{
+				$speciallogfile = '-' . $domain['domain'];
+			}
+			else
+			{
+				$speciallogfile = '-' . $domain['parentdomain'];
+			}
+		}
+		else
+		{
+			$speciallogfile = '';
+		}
+
+		if($this->settings['system']['mod_log_sql'] == '1')
 		{
 			// We are using mod_log_sql (http://www.outoforder.cc/projects/apache/mod_log_sql/)
 			// TODO: See how we are able emulate the error_log
@@ -297,6 +324,55 @@ class apache
 
 			$logfiles_text.= '  ErrorLog "' . $this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-error.log' . "\"\n";
 			$logfiles_text.= '  CustomLog "' . $this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log" combined' . "\n";
+		}
+
+		if($this->settings['system']['awstats_enabled'] == '1')
+		{
+			// prepare the aliases for stats config files
+
+			$server_alias = '';
+			$alias_domains = $this->db->query('SELECT `domain`, `iswildcarddomain`, `wwwserveralias` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . $domain['id'] . '\'');
+
+			while(($alias_domain = $this->db->fetch_array($alias_domains)) !== false)
+			{
+				$server_alias.= ' ' . $alias_domain['domain'] . ' ';
+
+				if($alias_domain['iswildcarddomain'] == '1')
+				{
+					$server_alias.= '*.' . $domain['domain'];
+				}
+				else
+				{
+					if($alias_domain['wwwserveralias'] == '1')
+					{
+						$server_alias.= 'www.' . $alias_domain['domain'];
+					}
+					else
+					{
+						$server_alias.= '';
+					}
+				}
+			}
+
+			if($domain['iswildcarddomain'] == '1')
+			{
+				$alias = '*.' . $domain['domain'];
+			}
+			else
+			{
+				if($domain['wwwserveralias'] == '1')
+				{
+					$alias = 'www.' . $domain['domain'];
+				}
+				else
+				{
+					$alias = '';
+				}
+			}
+
+			// After inserting the AWStats information, be sure to build the awstats conf file as well
+
+			createAWStatsConf($this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log', $domain['domain'], $alias . $server_alias);
 		}
 
 		return $logfiles_text;

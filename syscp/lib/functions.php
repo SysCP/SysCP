@@ -2192,12 +2192,23 @@ function createAWStatsConf($logFile, $siteDomain, $hostAliases)
  * @author Berend Dekens
  */
 
-function createAWStatsVhost($siteDomain)
+function createAWStatsVhost($siteDomain, $settings = null)
 {
-	$vhosts_file = '  # AWStats statistics' . "\n";
-	$vhosts_file.= '  RewriteEngine On' . "\n";
-	$vhosts_file.= '  RewriteRule /stats(/.*)? /awstats/awstats.pl?config=' . $siteDomain . ' [L,PT]' . "\n";
-	$vhosts_file.= '  RewriteRule /awstats.pl(.*)* /awstats/awstats.pl$1 [QSA,L,PT]' . "\n";
+	if($settings['system']['mod_fcgid'] != '1')
+	{
+		$vhosts_file = '  # AWStats statistics' . "\n";
+		$vhosts_file.= '  RewriteEngine On' . "\n";
+		$vhosts_file.= '  RewriteRule /stats(/.*)? /awstats/awstats.pl?config=' . $siteDomain . ' [L,PT]' . "\n";
+		$vhosts_file.= '  RewriteRule /awstats.pl(.*)* /awstats/awstats.pl$1 [QSA,L,PT]' . "\n";
+	}
+	else
+	{
+		$vhosts_file = '  <IfModule mod_proxy.c>' . "\n";
+		$vhosts_file.= '    RewriteEngine On' . "\n";
+		$vhosts_file.= '    RewriteRule awstats.pl(.*)$	http://' . $settings['system']['hostname'] . '/cgi-bin/awstats.pl$1 [R,P]' . "\n";
+		$vhosts_file.= '    RewriteRule awstats$	http://' . $settings['system']['hostname'] . '/cgi-bin/awstats.pl?config=' . $siteDomain . ' [R,P]' . "\n";
+		$vhosts_file.= '  </IfModule>' . "\n";
+	}
 	return $vhosts_file;
 }
 
