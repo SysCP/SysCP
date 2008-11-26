@@ -261,7 +261,6 @@ if($page == 'admins'
 			if($settings['system']['mail_quota_enabled'] == '1')
 			{
 				$email_quota = intval_ressource($_POST['email_quota']);
-				$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
 
 				if(isset($_POST['email_quota_ul']))
 				{
@@ -342,7 +341,6 @@ if($page == 'admins'
 
 			$diskspace = $diskspace * 1024;
 			$traffic = $traffic * 1024 * 1024;
-			$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 			$ipaddress = intval_ressource($_POST['ipaddress']);
 
 			if($settings['billing']['activate_billing'] == '1')
@@ -624,7 +622,6 @@ if($page == 'admins'
 			$caneditphpsettings = makeyesno('caneditphpsettings', '1', '0', '0');
 			$can_manage_aps_packages = makeyesno('can_manage_aps_packages', '1', '0', '0');
 			$number_of_aps_packages_ul = makecheckbox('number_of_aps_packages_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
-			$quota_type_option = makeQuotaOption();
 			$contract_date = date('Y-m-d');
 			$interval_type = getIntervalTypes('option', 'm');
 			$service_active = makeyesno('service_active', '1', '0', '0');
@@ -686,7 +683,6 @@ if($page == 'admins'
 					$email_accounts = $result['email_accounts'];
 					$email_forwarders = $result['email_forwarders'];
 					$email_quota = $result['email_quota'];
-					$email_quota_type = getQuotaType($result['email_quota']);
 					$ftps = $result['ftps'];
 					$tickets = $result['tickets'];
 					$mysqls = $result['mysqls'];
@@ -756,10 +752,9 @@ if($page == 'admins'
 						}
 						else
 						{
-							$email_quota = intval_ressource($_POST['email_quota']);
+							$email_quota = validate($_POST['email_quota'], 'email_quota_size', '/^\d+$/', 'vmailquotawrong');
 						}
 
-						$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
 					}
 					else
 					{
@@ -1070,7 +1065,6 @@ if($page == 'admins'
 						$change_serversettings = '0';
 					}
 
-					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `name`='" . $db->escape($name) . "', `firstname`='" . $db->escape($firstname) . "', `title`='" . $db->escape($title) . "', `company`='" . $db->escape($company) . "', `street`='" . $db->escape($street) . "', `zipcode`='" . $db->escape($zipcode) . "', `city`='" . $db->escape($city) . "', `country`='" . $db->escape($country) . "', `phone`='" . $db->escape($phone) . "', `fax`='" . $db->escape($fax) . "', `email`='" . $db->escape($email) . "', `def_language`='" . $db->escape($def_language) . "', `change_serversettings` = '" . $db->escape($change_serversettings) . "', `edit_billingdata` = '" . $db->escape($edit_billingdata) . "', `customers` = '" . $db->escape($customers) . "', `customers_see_all` = '" . $db->escape($customers_see_all) . "', `domains` = '" . $db->escape($domains) . "', `domains_see_all` = '" . $db->escape($domains_see_all) . "', `caneditphpsettings` = '" . (int)$caneditphpsettings . "', `password` = '" . $password . "', `diskspace`='" . $db->escape($diskspace) . "', `traffic`='" . $db->escape($traffic) . "', `subdomains`='" . $db->escape($subdomains) . "', `emails`='" . $db->escape($emails) . "', `email_accounts` = '" . $db->escape($email_accounts) . "', `email_forwarders`='" . $db->escape($email_forwarders) . "', `email_quota`='" . $db->escape($email_quota) . "', `ftps`='" . $db->escape($ftps) . "', `tickets`='" . $db->escape($tickets) . "', `mysqls`='" . $db->escape($mysqls) . "', `ip`='" . (int)$ipaddress . "', `contract_date`='" . $db->escape($contract_date) . "', `contract_number`='" . $db->escape($contract_number) . "', `taxid`='" . $db->escape($taxid) . "', `additional_traffic_fee`='" . $db->escape($additional_traffic_fee) . "', `additional_traffic_unit`='" . $db->escape($additional_traffic_unit) . "', `additional_diskspace_fee`='" . $db->escape($additional_diskspace_fee) . "', `additional_diskspace_unit`='" . $db->escape($additional_diskspace_unit) . "', `interval_fee`='" . $db->escape($interval_fee) . "', `interval_length`='" . $db->escape($interval_length) . "', `interval_type`='" . $db->escape($interval_type) . "', `interval_payment`='" . $db->escape($interval_payment) . "', `setup_fee`='" . $db->escape($setup_fee) . "', `taxclass`='" . $db->escape($taxclass) . "', `service_active`='" . $db->escape($service_active) . "', `servicestart_date`='" . $db->escape($servicestart_date) . "', `serviceend_date`='" . $db->escape($serviceend_date) . "', `term_of_payment`='" . $db->escape($term_of_payment) . "', `calc_tax`='" . $db->escape($calc_tax) . "', `payment_every`='" . $db->escape($payment_every) . "', `payment_method`='" . $db->escape($payment_method) . "', `bankaccount_holder`='" . $db->escape($bankaccount_holder) . "', `bankaccount_number`='" . $db->escape($bankaccount_number) . "', `bankaccount_blz`='" . $db->escape($bankaccount_blz) . "', `bankaccount_bank`='" . $db->escape($bankaccount_bank) . "', `customer_categories_once`='" . $db->escape($customer_categories_once) . "', `customer_categories_period`='" . $db->escape($customer_categories_period) . "', `deactivated`='" . $db->escape($deactivated) . "', `can_manage_aps_packages`=" . (int)$can_manage_aps_packages . ", `aps_packages`=" . (int)$number_of_aps_packages . " WHERE `adminid`='" . $db->escape($id) . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "edited admin '#" . $id . "'");
 					$redirect_props = Array(
@@ -1153,13 +1147,7 @@ if($page == 'admins'
 
 				if($result['email_quota'] == '-1')
 				{
-					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
 					$result['email_quota'] = '';
-				}
-				else
-				{
-					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
-					$result['email_quota'] = getQuota($result['email_quota']);
 				}
 
 				$ftps_ul = makecheckbox('ftps_ul', $lng['customer']['unlimited'], '-1', false, $result['ftps'], true, true);
