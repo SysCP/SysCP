@@ -62,6 +62,12 @@ $header
 			<td class="field_name_border_left">{$lng['customer']['forwarders']}:</td>
 			<td class="field_display">{$userinfo['email_forwarders_used']} ({$userinfo['email_forwarders']})</td>
 		</tr>
+		<if $settings['system']['mail_quota_enabled'] == 1>
+		<tr>
+			<td class="field_name_border_left">{$lng['customer']['email_quota']} ({$lng['panel']['megabyte']}):</td>
+			<td class="field_display">{$userinfo['email_quota_used']} ({$userinfo['email_quota']})</td>
+		</tr>
+		</if>
 		<tr>
 			<td class="field_name_border_left">{$lng['customer']['mysqls']}:</td>
 			<td class="field_display">{$userinfo['mysqls_used']} ({$userinfo['mysqls']})</td>

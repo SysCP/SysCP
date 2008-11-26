@@ -823,13 +823,13 @@ if(($page == 'settings' || $page == 'overview')
 
 			if(isset($_POST['system_mail_quota']))
 			{
-				$value = validate($_POST['system_mail_quota'], 'system_mail_quota', '/^[0-9]{1,3}$/D', 'vmailquotawrong');
-				$value = getQuotaInBytes($value, $_POST['system_mail_quota_type']);
+				$value = validate($_POST['system_mail_quota'], 'system_mail_quota', '/^\d+$/', 'vmailquotawrong');
+				$value = intval_ressource($value);
 
 				if($value != $settings['system']['mail_quota'])
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='mail_quota'");
-					$log->logAction(ADM_ACTION, LOG_INFO, "changed mail_quota from '" . $settings['system']['mail_quota'] . "' to '" . $value . "'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed mail_quota from '" . $settings['system']['mail_quota'] . "' MB to '" . $value . "' MB");
 				}
 			}
 
@@ -1550,26 +1550,7 @@ if(($page == 'settings' || $page == 'overview')
 		}
 
 		$quota_enabled = makeyesno('system_mail_quota_enabled', '1', '0', $settings['system']['mail_quota_enabled']);
-		$quota_type = array(
-			'b',
-			'kb',
-			'mb',
-			'gb'
-		);
-		$i = 0;
 		$quota = $settings['system']['mail_quota'];
-
-		while($quota > 1024)
-		{
-			$quota = $quota / 1024;
-			$i++;
-		}
-
-		$quota_type_option = makeoption($lng['emails']['quota_type']['byte'], 'b', $quota_type[$i]);
-		$quota_type_option.= makeoption($lng['emails']['quota_type']['kilobyte'], 'kb', $quota_type[$i]);
-		$quota_type_option.= makeoption($lng['emails']['quota_type']['megabyte'], 'mb', $quota_type[$i]);
-		$quota_type_option.= makeoption($lng['emails']['quota_type']['gigabyte'], 'gb', $quota_type[$i]);
-		unset($i, $quota_type);
 		$session_allow_multiple_login = makeyesno('session_allow_multiple_login', '1', '0', $settings['session']['allow_multiple_login']);
 		$panel_allow_domain_change_admin = makeyesno('panel_allow_domain_change_admin', '1', '0', $settings['panel']['allow_domain_change_admin']);
 		$panel_allow_domain_change_customer = makeyesno('panel_allow_domain_change_customer', '1', '0', $settings['panel']['allow_domain_change_customer']);
@@ -1794,7 +1775,9 @@ elseif($page == 'wipequotas'
 	   && $_POST['send'] == 'send')
 	{
 		$log->logAction(ADM_ACTION, LOG_WARNING, "wiped all mailquotas");
+		// Set the quota to 0 which means unlimited
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='0' ");
+		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS ." SET `email_quota_used` = 0");
 		redirectTo('admin_settings.php', array(
 			's' => $s
 		));
@@ -1802,6 +1785,35 @@ elseif($page == 'wipequotas'
 	else
 	{
 		ask_yesno('admin_quotas_reallywipe', $filename, array(
+			'page' => $page
+		));
+	}
+}
+elseif($page == 'enforcequotas'
+       && $userinfo['change_serversettings'] == '1')
+{
+	if(isset($_POST['send'])
+	   && $_POST['send'] == 'send')
+	{
+		// Fetch all accounts
+		$result = $db->query("SELECT `quota`, `customerid` FROM " . TABLE_MAIL_USERS);
+		while ($array = $db->fetch_array($result)) {
+			$difference = $settings['system']['mail_quota'] - $array['quota'];
+			$db->query("UPDATE " .TABLE_PANEL_CUSTOMERS . " SET `email_quota_used` = `email_quota_used` + " . (int)$difference . " WHERE `customerid` = '" . $array['customerid'] ."'");
+		}
+		// Set the new quota
+		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='". $settings['system']['mail_quota'] ."'");
+		// Update the Customer, if the used quota is bigger than the allowed quota
+		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS ." SET `email_quota` = `email_quota_used` WHERE `email_quota` < `email_quota_used`");
+		
+		$log->logAction(ADM_ACTION, LOG_WARNING, 'enforcing mailquota to all customers: '.$settings['system']['mail_quota']. ' MB');
+		redirectTo('admin_settings.php', array(
+			's' => $s
+		));
+	}
+	else
+	{
+		ask_yesno('admin_quotas_reallyenforce', $filename, array(
 			'page' => $page
 		));
 	}

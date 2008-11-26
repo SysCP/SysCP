@@ -27,9 +27,9 @@
 				<td class="main_field_display" nowrap="nowrap">{$quota_enabled}</td>
 			</tr>
 			<tr>
-				<td class="main_field_name"><b>{$lng['serversettings']['mail_quota']['title']}:</b><br />{$lng['serversettings']['mail_quota']['description']}</td>
+				<td class="main_field_name"><b>{$lng['serversettings']['mail_quota']['title']}:</b><br />{$lng['serversettings']['mail_quota']['description']}<br /><a href="$filename?page=enforcequotas&amp;s=$s">{$lng['serversettings']['mail_quota_enabled']['enforcelink']}</a></td>
 				<td class="main_field_display" nowrap="nowrap">
-					<input type="text" name="system_mail_quota" value="{$quota}" size="6" />&nbsp;<select class="dropdown_noborder" name="system_mail_quota_type">$quota_type_option</select>
+					<input type="text" name="system_mail_quota" value="{$quota}" />&nbsp;{$lng['panel']['megabyte']}
 				</td>
 			</tr>
 			<tr>

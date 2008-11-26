@@ -18,9 +18,9 @@ $header
             </tr>
 			<if $settings['system']['mail_quota_enabled'] == 1>
 			<tr>
-				<td class="main_field_name">{$lng['emails']['quota']}:</td>
+				<td class="main_field_name">{$lng['emails']['quota']} ({$lng['panel']['megabyte']}):</td>
 				<td class="main_field_display" nowrap="nowrap">
-					<input type="text" name="email_quota_size" value="{$quota}" maxlength="3" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>
+					<input type="text" name="email_quota_size" value="{$quota}" />
 				</td>
 			</tr>
 			</if>

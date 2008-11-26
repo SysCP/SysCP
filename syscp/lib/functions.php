@@ -1981,129 +1981,6 @@ function validate_ip($ip, $return_bool = false, $lng = 'invalidip')
 }
 
 /**
- * Returns a given quota in bytes
- *
- * @param  int    The quota
- * @param  string The Type of the quota (b, kb, mb, gb, tb, pb)
- * @return int    Quota in bytes
- *
- * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
- */
-
-function getQuotaInBytes($quota, $inputtype = 'mb')
-{
-	switch($inputtype)
-	{
-	case 'b':
-		$quota = $quota;
-		break;
-	case 'kb':
-		$quota = $quota * 1024;
-		break;
-	case 'mb':
-		$quota = $quota * 1024 * 1024;
-		break;
-	case 'gb':
-		$quota = $quota * 1024 * 1024 * 1024;
-		break;
-	case 'tb':
-		$quota = $quota * 1024 * 1024 * 1024 * 1024;
-		break;
-	case 'pb':
-		$quota = $quota * 1024 * 1024 * 1024 * 1024 * 1024;
-		break;
-	}
-
-	return $quota;
-}
-
-/**
- *
- * @param  int	Quota in bytes
- * @return int	Quota in recalculated format
- *
- * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
- */
-
-function getQuota($quota)
-{
-	while($quota > 1024)
-	{
-		$quota = $quota / 1024;
-	}
-
-	return $quota;
-}
-
-/**
- * Returns type of a given Quota
- *
- * @param int Quota in bytes
- * @return string Type of Quota (b, kb, mb, gb, tb, pb)
- *
- * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
- */
-
-function getQuotaType($quota)
-{
-	$quota_type_array = array(
-		'b',
-		'kb',
-		'mb',
-		'gb',
-		'tb',
-		'pb'
-	);
-	$i = 0;
-
-	while($quota > 1024)
-	{
-		$quota = $quota / 1024;
-		$i++;
-	}
-
-	return $quota_type_array[$i];
-}
-
-/**
- * Returns Dropdown for Quota
- * @param  string Defaultype of Quota (b, kb, mb, gb, tb, pb)
- * @return string Dropdownlist for different quotas
- *
- * @author Benjamin Börngen-Schmidt <benjamin.boerngen-schmidt@syscp.org>
- *
- */
-
-function makeQuotaOption($selected = 'mb')
-{
-	global $lng;
-	$quota_types = array(
-		'b',
-		'kb',
-		'mb',
-		'gb',
-		'tb',
-		'pb'
-	);
-
-	// Fallback if $selected mismatch $quota_types
-
-	if(!in_array($selected, $quota_types))
-	{
-		$selected = 'mb';
-	}
-
-	$quota_type_option = '';
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['byte'], 'b', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['kilobyte'], 'kb', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['megabyte'], 'mb', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['gigabyte'], 'gb', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['terabyte'], 'tb', $selected);
-	$quota_type_option.= makeoption($lng['emails']['quota_type']['petabyte'], 'pb', $selected);
-	return $quota_type_option;
-}
-
-/**
  * Create or modify the AWStats configuration file for the given domain.
  * Modified by Berend Dekens to allow custom configurations.
  *
@@ -2731,7 +2608,7 @@ function cacheInvoiceFees($mode = 0, $begin = null, $count = null, $userid = nul
 			$user['customer_categories_period'] = '';
 		}
 
-		$myInvoice = new invoice(&$db, $mode, explode('-', $user['customer_categories_once']), explode('-', $user['customer_categories_period']));
+		$myInvoice = new invoice($db, $mode, explode('-', $user['customer_categories_once']), explode('-', $user['customer_categories_period']));
 
 		if($myInvoice->collect($user[getModeDetails($mode, 'TABLE_PANEL_USERS', 'key')]) === true)
 		{
