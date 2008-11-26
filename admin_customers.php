@@ -874,9 +874,6 @@ if($page == 'customers'
 					{
 						$email_quota = -1;
 					}
-
-					$email_quota_type = validate($_POST['email_quota_type'], 'quota type');
-					$email_quota = getQuotaInBytes($email_quota, $email_quota_type);
 				}
 				else
 				{
@@ -1430,13 +1427,7 @@ if($page == 'customers'
 
 				if($result['email_quota'] == '-1')
 				{
-					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
 					$result['email_quota'] = '';
-				}
-				else
-				{
-					$quota_type_option = makeQuotaOption(getQuotaType($result['email_quota']));
-					$result['email_quota'] = getQuota($result['email_quota']);
 				}
 
 				$ftps_ul = makecheckbox('ftps_ul', $lng['customer']['unlimited'], '-1', false, $result['ftps'], true, true);

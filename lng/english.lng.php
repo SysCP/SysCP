@@ -522,7 +522,7 @@ $lng['admin']['configfiles']['service'] = 'Service';
 $lng['admin']['configfiles']['daemon'] = 'Daemon';
 $lng['admin']['configfiles']['http'] = 'Webserver (HTTP)';
 $lng['admin']['configfiles']['dns'] = 'Nameserver (DNS)';
-$lng['admin']['configfiles']['mail'] = 'Mailserver (POP3/IMAP)';
+$lng['admin']['configfiles']['mail'] = 'Mailserver (IMAP/POP3)';
 $lng['admin']['configfiles']['smtp'] = 'Mailserver (SMTP)';
 $lng['admin']['configfiles']['ftp'] = 'FTP-Server';
 $lng['admin']['configfiles']['etc'] = 'Others (System)';
@@ -794,20 +794,6 @@ $lng['cronjobs']['notyetrun'] = 'Not yet run';
 $lng['install']['servername_should_be_fqdn'] = 'The servername should be a FQDN and not an IP address';
 $lng['serversettings']['default_vhostconf']['title'] = 'Default vhost-settings';
 $lng['serversettings']['default_vhostconf']['description'] = 'The content of this field will be included into every domain vhost container directly. Attention: The code won\'t be checked for any errors. If it contains errors, apache might ot start again!';
-$lng['emails']['quota'] = 'Quota';
-$lng['emails']['noquota'] = 'No quota';
-$lng['emails']['updatequota'] = 'Update';
-$lng['serversettings']['mail_quota']['title'] = 'Mailbox-quota';
-$lng['serversettings']['mail_quota']['description'] = 'The default quota for a new created mailboxes.';
-$lng['serversettings']['mail_quota_enabled']['title'] = 'Use mailbox-quota for customers';
-$lng['serversettings']['mail_quota_enabled']['description'] = 'Activate to use quotas on mailboxes. Default is <b>No</b> since this requires a special setup.';
-$lng['serversettings']['mail_quota_enabled']['removelink'] = 'Click here to wipe all quotas for mail accounts.';
-$lng['question']['admin_quotas_reallywipe'] = 'Do you really want to wipe all quotas on table mail_users? This cannot be reverted!';
-$lng['error']['vmailquotawrong'] = 'The quotasize must be between 1 and 999';
-$lng['customer']['email_quota'] = 'E-mail quota';
-$lng['customer']['email_imap'] = 'E-mail IMAP';
-$lng['customer']['email_pop3'] = 'E-mail POP3';
-$lng['customer']['mail_quota'] = 'Mailquota';
 $lng['error']['invalidip'] = 'Invalid IP address: %s';
 $lng['serversettings']['decimal_places'] = 'Number of decimal places in traffic/webspace output';
 
@@ -1083,14 +1069,26 @@ $lng['serversettings']['billing']['invoicenumber_count']['title'] = 'Current inv
 $lng['serversettings']['billing']['invoicenumber_count']['description'] = 'This is the number of fixed invoices. Changes could result in an argue with your accountant.';
 
 // ADDED IN 1.2.19-svn25
-
-$lng['emails']['quota_type']['byte'] = 'B';
-$lng['emails']['quota_type']['kilobyte'] = 'KB';
-$lng['emails']['quota_type']['megabyte'] = 'MB';
-$lng['emails']['quota_type']['gigabyte'] = 'GB';
-$lng['emails']['quota_type']['terabyte'] = 'TB';
-$lng['emails']['quota_type']['petabyte'] = 'PB';
+$lng['emails']['quota'] = 'Quota';
+$lng['emails']['noquota'] = 'No quota';
+$lng['emails']['updatequota'] = 'Update Quota';
+$lng['serversettings']['mail_quota']['title'] = 'Mailbox-quota';
+$lng['serversettings']['mail_quota']['description'] = 'The default quota for a new created mailboxes.';
+$lng['serversettings']['mail_quota_enabled']['title'] = 'Use mailbox-quota for customers';
+$lng['serversettings']['mail_quota_enabled']['description'] = 'Activate to use quotas on mailboxes. Default is <b>No</b> since this requires a special setup.';
+$lng['serversettings']['mail_quota_enabled']['removelink'] = 'Click here to wipe all quotas for mail accounts.';
+$lng['serversettings']['mail_quota_enabled']['enforcelink'] = 'Click here to enforce default quota to all User mail accounts.';
+$lng['question']['admin_quotas_reallywipe'] = 'Do you really want to wipe all quotas on table mail_users? This cannot be reverted!';
+$lng['question']['admin_quotas_reallyenforce'] = 'Do you really want to enforce the default quota to all Users? This cannot be reverted!';
+$lng['error']['vmailquotawrong'] = 'The quotasize must be positiv number.';
+$lng['customer']['email_quota'] = 'E-mail quota';
+$lng['customer']['email_imap'] = 'E-mail IMAP';
+$lng['customer']['email_pop3'] = 'E-mail POP3';
+$lng['customer']['mail_quota'] = 'Mailquota';
+$lng['panel']['megabyte'] = 'MegaByte';
 $lng['panel']['not_supported'] = 'Not supported in: ';
+$lng['emails']['quota_edit'] = 'Change E-Mail Quota';
+$lng['error']['allocatetoomuchquota'] = 'You try to allocate %s MB ' . $lng['emails']['quota'] .', but you have not enough left.';
 
 // Autoresponder module
 

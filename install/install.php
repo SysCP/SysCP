@@ -479,7 +479,8 @@ else
 	}
 	else
 	{
-		$apacheversion = 'apache1';
+		// we don't need to bail out, since unknown does not affect any critical installation routines
+		$apacheversion = 'unknown';
 	}
 }
 
@@ -933,7 +934,7 @@ else
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $apacheversion == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['apacheversion']; ?>:</td>
-				<td class="main_field_display"><input type="radio" name="apacheversion" value="apache1" <?php echo $apacheversion == "apache1" ? 'checked="checked"' : "" ?>/>Apache1&nbsp;<br /><input type="radio" name="apacheversion" value="apache2" <?php echo $apacheversion == "apache2" ? 'checked="checked"' : "" ?>/>Apache2&nbsp;<br /><input type="radio" name="apacheversion" value="lighttpd" <?php echo $apacheversion == "lighttpd" ? 'checked="checked"' : "" ?>/>Lighttpd</td>
+				<td class="main_field_display"><input type="radio" name="apacheversion" value="apache2" <?php echo $apacheversion == "apache2" ? 'checked="checked"' : "" ?>/>Apache2&nbsp;<br /><input type="radio" name="apacheversion" value="lighttpd" <?php echo $apacheversion == "lighttpd" ? 'checked="checked"' : "" ?>/>Lighttpd</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['httpuser']; ?>:</td>

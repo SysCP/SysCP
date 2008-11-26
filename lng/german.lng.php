@@ -521,7 +521,7 @@ $lng['admin']['configfiles']['service'] = 'Service';
 $lng['admin']['configfiles']['daemon'] = 'Daemon';
 $lng['admin']['configfiles']['http'] = 'Webserver (HTTP)';
 $lng['admin']['configfiles']['dns'] = 'Nameserver (DNS)';
-$lng['admin']['configfiles']['mail'] = 'Mailserver (POP3/IMAP)';
+$lng['admin']['configfiles']['mail'] = 'Mailserver (IMAP/POP3)';
 $lng['admin']['configfiles']['smtp'] = 'Mailserver (SMTP)';
 $lng['admin']['configfiles']['ftp'] = 'FTP-Server';
 $lng['admin']['configfiles']['etc'] = 'Sonstige (System)';
@@ -798,20 +798,6 @@ $lng['cronjobs']['notyetrun'] = 'Bisher nicht gestartet';
 $lng['install']['servername_should_be_fqdn'] = 'Der Servername sollte eine FQDN sein und keine IP Adresse';
 $lng['serversettings']['default_vhostconf']['title'] = 'Standard Vhost-Einstellungen';
 $lng['serversettings']['default_vhostconf']['description'] = 'Der Inhalt dieses Feldes wird direkt in jeden Domain-vHost-Container &uuml;bernommen. Achtung: Der Code wird nicht auf Fehler gepr&uuml;ft. Etwaige Fehler werden also auch &uuml;bernommen. Apache k&ouml;nnte nicht mehr starten!';
-$lng['emails']['quota'] = 'Kontingent';
-$lng['emails']['noquota'] = 'Kein Kontingent';
-$lng['emails']['updatequota'] = 'Update';
-$lng['serversettings']['mail_quota']['title'] = 'Mailbox-Kontingent';
-$lng['serversettings']['mail_quota']['description'] = 'Standard-Kontingent f&uuml;r neuerstellte E-Mail Benutzerkonten';
-$lng['serversettings']['mail_quota_enabled']['title'] = 'Nutze E-Mail Kontingent f&uuml;r Kunden';
-$lng['serversettings']['mail_quota_enabled']['description'] = 'Aktiviere Kontingent f&uuml;r E-Mailkonten. Standard ist <b>Nein</b> da dies eine spezielle Konfiguration voraussetzt.';
-$lng['serversettings']['mail_quota_enabled']['removelink'] = 'Hier klicken, um alle E-Mail Kontingente zu entfernen';
-$lng['question']['admin_quotas_reallywipe'] = 'Sind Sie sicher, dass alle E-Mail Kontingente aus der Tabelle mail_users entfernt werden sollen? Dieser Schritt kann nicht r&uuml;ckg&auml;ngig gemacht werden!';
-$lng['error']['vmailquotawrong'] = 'Die Kontingent-Gr&ouml;&szlig;e muss zwischen 1 und 999 liegen';
-$lng['customer']['email_quota'] = 'E-Mail Kontingent';
-$lng['customer']['email_imap'] = 'E-Mail IMAP';
-$lng['customer']['email_pop3'] = 'E-Mail POP3';
-$lng['customer']['mail_quota'] = 'E-Mail Kontingent';
 $lng['error']['invalidip'] = 'Ung&uuml;ltige IP Adresse: %s';
 $lng['serversettings']['decimal_places'] = 'Nachkommastellen bei der Ausgabe von Traffic/Webspace';
 
@@ -1087,13 +1073,27 @@ $lng['serversettings']['billing']['invoicenumber_count']['title'] = 'Aktuelle Re
 $lng['serversettings']['billing']['invoicenumber_count']['description'] = 'Diese Nummer entspricht der Anzahl der bisher generierten Rechnungen. &Auml;nderungen k&ouml;nnen &Auml;rger in der Buchhaltung machen!';
 
 // ADDED IN 1.2.19-svn25
-
-$lng['emails']['quota_type']['byte'] = 'B';
-$lng['emails']['quota_type']['kilobyte'] = 'KB';
-$lng['emails']['quota_type']['megabyte'] = 'MB';
-$lng['emails']['quota_type']['gigabyte'] = 'GB';
-$lng['emails']['quota_type']['terabyte'] = 'TB';
-$lng['emails']['quota_type']['petabyte'] = 'PB';
+// Mailquota
+$lng['emails']['quota'] = 'Kontingent';
+$lng['emails']['noquota'] = 'Kein Kontingent';
+$lng['emails']['updatequota'] = 'Update Kontingent';
+$lng['serversettings']['mail_quota']['title'] = 'Mailbox-Kontingent';
+$lng['serversettings']['mail_quota']['description'] = 'Standard-Kontingent f&uuml;r neuerstellte E-Mail Benutzerkonten';
+$lng['serversettings']['mail_quota_enabled']['title'] = 'Nutze E-Mail Kontingent f&uuml;r Kunden';
+$lng['serversettings']['mail_quota_enabled']['description'] = 'Aktiviere Kontingent f&uuml;r E-Mailkonten. Standard ist <b>Nein</b> da dies eine spezielle Konfiguration voraussetzt.';
+$lng['serversettings']['mail_quota_enabled']['removelink'] = 'Hier klicken, um alle E-Mail Kontingente zu entfernen';
+$lng['serversettings']['mail_quota_enabled']['enforcelink'] = 'Hier klicken, um allen Benutzern das Standart Kontingent zu zuweisen';
+$lng['question']['admin_quotas_reallywipe'] = 'Sind Sie sicher, dass alle E-Mail Kontingente aus der Tabelle mail_users entfernt werden sollen? Dieser Schritt kann nicht r&uuml;ckg&auml;ngig gemacht werden!';
+$lng['question']['admin_quotas_reallyenforce'] = 'Sind Sie sicher, dass sie allen Benutzern das default Quota zuweisen wollen? Dies kann nicht r&uuml;ckg&auml;ngig gemacht werden!';
+$lng['error']['vmailquotawrong'] = 'Die Kontingent-Gr&ouml;&szlig;e muss positiv sein.';
+$lng['customer']['email_quota'] = 'E-Mail Kontingent';
+$lng['customer']['email_imap'] = 'E-Mail IMAP';
+$lng['customer']['email_pop3'] = 'E-Mail POP3';
+$lng['customer']['mail_quota'] = 'E-Mail Kontingent';
+$lng['panel']['megabyte'] = 'MegaByte';
+$lng['emails']['quota_edit'] = 'E-Mail Kontingent &auml;ndern';
+$lng['panel']['not_supported'] = 'Nicht &uuml;nterst&uuml;zt in: ';
+$lng['error']['allocatetoomuchquota'] = 'Sie versuchen %s MB '. $lng['emails']['quota'].' zu zuweisen, haben aber nicht genug &uuml;brig.';
 
 // Autoresponder module
 
