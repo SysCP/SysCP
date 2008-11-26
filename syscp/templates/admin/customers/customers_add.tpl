@@ -131,7 +131,7 @@ $header
 			<if $settings['system']['mail_quota_enabled'] == 1>
 			<tr>
 				<td class="main_field_name">{$lng['customer']['email_quota']}: *</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="email_quota" value="" maxlength="9" />&nbsp;<select class="dropdown_noborder" name="email_quota_type">$quota_type_option</select>&nbsp;{$diskspace_ul}</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="textul" name="email_quota" value="" maxlength="9" />&nbsp;{$diskspace_ul}</td>
 			</tr>
 			</if>
 			<tr>
