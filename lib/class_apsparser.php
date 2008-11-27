@@ -1893,9 +1893,7 @@ class ApsParser
 			{
 				//skip invalid "files"
 
-				if($File == '.'
-				   || $File == '..'
-				   || $File == '.svn')continue;
+				if(substr($File, -4) != '.zip')continue;
 
 				//install new package in system
 
