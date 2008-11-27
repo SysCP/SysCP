@@ -60,4 +60,8 @@ $lng['install']['click_here_to_login'] = 'Cliquez ici pour vous rendre à l\'invi
 $lng['install']['httpuser'] = 'Nom du utilisateur du HTTP';
 $lng['install']['httpgroup'] = 'Nom du la group du HTTP';
 
+/**
+ * Renamed in 1.2.19-svn40
+ */
+$lng['install']['webserver'] = 'Version du serveur Apache';
 ?>

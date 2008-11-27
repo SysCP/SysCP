@@ -32,7 +32,7 @@ include (dirname(__FILE__) . '/../lib/cron_init.php');
  * LOOK INTO EVERY CUSTOMER DIR TO SEE IF THERE ARE ANY .HTACCESS FILE TO "TRANSLATE"
  */
 
-if($settings['system']['apacheversion'] == 'lighttpd')
+if($settings['system']['webserver'] == 'lighttpd')
 {
 	fwrite($debugHandler, '  cron_lighttp.htaccess: Searching for .htaccess files to translate' . "\n");
 	$lpath = makeCorrectDir(strrchr($settings['system']['apacheconf_vhost'], '/'));

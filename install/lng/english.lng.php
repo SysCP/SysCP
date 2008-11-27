@@ -70,4 +70,8 @@ $lng['install']['bcmathdescription'] = 'Traffic-calculation related functions wi
 $lng['install']['openbasedir'] = 'Testing if open_basedir is enabled...';
 $lng['install']['openbasedirenabled'] = 'enabled. SysCP will not work properly with open_basedir enabled. Please disable open_basedir for syscp';
 
+/**
+ * Renamed in 1.2.19-svn40
+ */
+$lng['install']['webserver'] = 'Apacheversion';
 ?>

@@ -1037,6 +1037,24 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn39';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn39')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn39 to 1.2.19-svn40");
+
+		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = \'system\' AND `varname` = \'apacheversion\'");
+		if($db->num_rows() > 0)
+		{
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `varname` = 'webserver' WHERE `settinggroup` = \'system\' AND `varname` = \'apacheversion\'");
+		}
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn40\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn40';
+	}
 }
 
 // php filter-extension check
