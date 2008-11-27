@@ -70,5 +70,5 @@ $lng['install']['httpgroup'] = 'HTTP Gruppenname';
 /**
  * Renamed in 1.2.19-svn40
  */
-$lng['install']['webserver'] = 'Apacheversion';
+$lng['install']['webserver'] = 'Webserver';
 ?>
