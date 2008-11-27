@@ -461,26 +461,26 @@ else
 
 // gues http software
 
-if(!empty($_POST['apacheversion']))
+if(!empty($_POST['webserver']))
 {
-	$apacheversion = $_POST['apacheversion'];
+	$webserver = $_POST['webserver'];
 }
 else
 {
 	if(strtoupper(@php_sapi_name()) == "APACHE2HANDLER"
 	   || stristr($_SERVER[SERVER_SOFTWARE], "apache/2"))
 	{
-		$apacheversion = 'apache2';
+		$webserver = 'apache2';
 	}
 	elseif(substr(strtoupper(@php_sapi_name()), 0, 8) == "LIGHTTPD"
 	       || stristr($_SERVER[SERVER_SOFTWARE], "lighttpd"))
 	{
-		$apacheversion = 'lighttpd';
+		$webserver = 'lighttpd';
 	}
 	else
 	{
 		// we don't need to bail out, since unknown does not affect any critical installation routines
-		$apacheversion = 'unknown';
+		$webserver = 'unknown';
 	}
 }
 
@@ -705,22 +705,22 @@ if(isset($_POST['installstep'])
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($version) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'version'");
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($languages[$language]) . "' WHERE `settinggroup` = 'panel' AND `varname` = 'standardlanguage'");
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($mysql_access_host) . "' WHERE `settinggroup` = 'system' AND `varname` = 'mysql_access_host'");
-	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
-	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($apacheversion) . "' WHERE `settinggroup` = 'system' AND `varname` = 'webserver'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($webserver) . "' WHERE `settinggroup` = 'system' AND `varname` = 'webserver'");
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($webserver) . "' WHERE `settinggroup` = 'system' AND `varname` = 'webserver'");
 
 	//FIXME
 
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpuser) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpuser'");
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '" . $db->escape($httpgroup) . "' WHERE `settinggroup` = 'system' AND `varname` = 'httpgroup'");
 
-	if($apacheversion == "apache2")
+	if($webserver == "apache2")
 	{
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/sites-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/sites-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/apache2/syscp-htpasswd/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_htpasswddir'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/init.d/apache2 reload' WHERE `settinggroup` = 'system' AND `varname` = 'apachereload_command'");
 	}
-	elseif($apacheversion == "lighttpd")
+	elseif($webserver == "lighttpd")
 	{
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/conf-enabled/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_vhost'");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/etc/lighttpd/syscp-diroptions/' WHERE `settinggroup` = 'system' AND `varname` = 'apacheconf_diroptions'");
@@ -933,8 +933,8 @@ else
 				<td class="main_field_display"><input type="text" name="serverip" value="<?php echo htmlspecialchars($serverip); ?>"/></td>
 			</tr>
 			<tr>
-				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $apacheversion == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['apacheversion']; ?>:</td>
-				<td class="main_field_display"><input type="radio" name="apacheversion" value="apache2" <?php echo $apacheversion == "apache2" ? 'checked="checked"' : "" ?>/>Apache2&nbsp;<br /><input type="radio" name="apacheversion" value="lighttpd" <?php echo $apacheversion == "lighttpd" ? 'checked="checked"' : "" ?>/>Lighttpd</td>
+				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $webserver == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['webserver']; ?>:</td>
+				<td class="main_field_display"><input type="radio" name="webserver" value="apache2" <?php echo $webserver == "apache2" ? 'checked="checked"' : "" ?>/>Apache2&nbsp;<br /><input type="radio" name="webserver" value="lighttpd" <?php echo $webserver == "lighttpd" ? 'checked="checked"' : "" ?>/>Lighttpd</td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['httpuser']; ?>:</td>

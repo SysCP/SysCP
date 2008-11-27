@@ -67,4 +67,8 @@ $lng['install']['openbasedirenabled'] = 'aktiviert. SysCP wird mit aktiviertem o
 $lng['install']['httpuser'] = 'HTTP Username';
 $lng['install']['httpgroup'] = 'HTTP Gruppenname';
 
+/**
+ * Renamed in 1.2.19-svn40
+ */
+$lng['install']['webserver'] = 'Apacheversion';
 ?>
