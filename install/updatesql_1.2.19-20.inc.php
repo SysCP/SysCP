@@ -1042,10 +1042,10 @@ else
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn39 to 1.2.19-svn40");
 
-		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = \'system\' AND `varname` = \'apacheversion\'");
+		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
 		if($db->num_rows() > 0)
 		{
-			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `varname` = 'webserver' WHERE `settinggroup` = \'system\' AND `varname` = \'apacheversion\'");
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `varname` = 'webserver' WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
 		}
 
 		// set new version
