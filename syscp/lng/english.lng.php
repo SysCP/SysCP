@@ -1342,6 +1342,8 @@ $lng['aps']['canmanagepackages'] = 'Can manage APS packages';
 $lng['aps']['numberofapspackages'] = 'Amount of APS installations';
 $lng['aps']['allpackagesused'] = '<strong>Error</strong><br/><br/>You have already reached the number of installable APS applications.';
 $lng['aps']['noinstancesexisting'] = 'There are currently no instances which could be managed. There must be installed at least one application by a customer.';
+$lng['aps']['lightywarning'] = 'Warning';
+$lng['aps']['lightywarningdescription'] = 'You are using the lighttpd webserver together with SysCP. The APS module was mainly written for Apache, so it can be possible that some features do not work with lighttpd. Please remember this when using the APS module. If you have found or experienced any problems in connection with lighttpd and the APS module please report them to the developers that they can be fixed within the next release if SysCP.';
 
 $lng['error']['customerdoesntexist'] = 'The customer you have chosen doesn\'t exist.';
 $lng['error']['admindoesntexist'] = 'The admin you have chosen doesn\'t exist.';

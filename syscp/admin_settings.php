@@ -156,36 +156,11 @@ if(($page == 'settings' || $page == 'overview')
 					exit;
 				}
 
-				if($settings['panel']['phpmyadmin_url'] != '')
-				{
-					// delete or update menu
+				// update menu
 
-					if($value == '')
-					{
-						//delete
+				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;mysql;phpmyadmin"');
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_phpmyadmin_url in navigation to '" . $value . "'");
 
-						$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin"';
-						$log->logAction(ADM_ACTION, LOG_NOTICE, "removed panel_phpmyadmin_url from navigation table");
-					}
-					else
-					{
-						//update
-
-						$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;mysql;phpmyadmin"';
-						$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_phpmyadmin_url in navigation to '" . $value . "'");
-					}
-				}
-				else
-				{
-					// insert into menu
-
-					$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_mysql.php\'';
-					$max = $db->query_first($query);
-					$new = floor($max['max'] / 10) + 10;
-					$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;mysql;phpmyadmin",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "mysqls_used",  `parent_url` = "customer_mysql.php"';
-				}
-
-				$db->query($query);
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='phpmyadmin_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_phpmyadmin_url from '" . $settings['panel']['phpmyadmin_url'] . "' to '" . $value . "'");
 			}
@@ -202,36 +177,11 @@ if(($page == 'settings' || $page == 'overview')
 					exit;
 				}
 
-				if($settings['panel']['webmail_url'] != '')
-				{
-					// delete or update menu
+				// update menu
+				
+				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;email;webmail"');
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webmail_url in navigation to '" . $value . "'");
 
-					if($value == '')
-					{
-						//delete
-
-						$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;email;webmail"';
-						$log->logAction(ADM_ACTION, LOG_NOTICE, "removed panel_webmail_url from navigation table");
-					}
-					else
-					{
-						//update
-
-						$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;email;webmail"';
-						$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webmail_url in navigation to '" . $value . "'");
-					}
-				}
-				else
-				{
-					// insert into menu
-
-					$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_email.php\'';
-					$max = $db->query_first($query);
-					$new = floor($max['max'] / 10) + 10;
-					$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;email;webmail",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "emails_used",  `parent_url` = "customer_email.php"';
-				}
-
-				$db->query($query);
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webmail_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webmail_url from '" . $settings['panel']['webmail_url'] . "' to '" . $value . "'");
 			}
@@ -248,36 +198,11 @@ if(($page == 'settings' || $page == 'overview')
 					exit;
 				}
 
-				if($settings['panel']['webftp_url'] != '')
-				{
-					// delete or update menu
+				// update menu
+				
+				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;ftp;webftp"');
+				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webftp_url in navigation to '" . $value . "'");
 
-					if($value == '')
-					{
-						//delete
-
-						$query = 'DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ftp;webftp"';
-						$log->logAction(ADM_ACTION, LOG_NOTICE, "removed panel_webftp_url from navigation table");
-					}
-					else
-					{
-						//update
-
-						$query = 'UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;ftp;webftp"';
-						$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webftp_url in navigation to '" . $value . "'");
-					}
-				}
-				else
-				{
-					// insert into menu
-
-					$query = 'SELECT MAX(`order`) AS `max` FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'customer\' AND `parent_url`=\'customer_ftp.php\'';
-					$max = $db->query_first($query);
-					$new = floor($max['max'] / 10) + 10;
-					$query = 'INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;ftp;webftp",  `url`        = "' . $db->escape($value) . '",  `order`      = "' . (int)$new . '",  `area`       = "customer",  `new_window` = "1",  `parent_url` = "customer_ftp.php"';
-				}
-
-				$db->query($query);
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webftp_url from '" . $settings['panel']['webftp_url'] . "' to '" . $value . "'");
 			}
@@ -841,11 +766,11 @@ if(($page == 'settings' || $page == 'overview')
 
 				if((int)$value == 1)
 				{
-					$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`,  `new_window`) VALUES ('customer', 'customer_email.php', 'menue;email;autoresponder', 'customer_autoresponder.php', 40, 'emails', 0)");
+					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'emails' WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");					
 				}
 				else
 				{
-					$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");
+					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'autoresponder.autoresponder_active' WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");
 				}
 			}
 		}
@@ -899,11 +824,11 @@ if(($page == 'settings' || $page == 'overview')
 
 				if((int)$value == 1)
 				{
-					$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_misc.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', 10, 'change_serversettings', 0)");
+					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `area`='admin' AND `parent_url`='admin_misc.nourl' AND `lang`='menue;logger;logger' AND `url`='admin_logger.php?page=log'");
 				}
 				else
 				{
-					$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `area`='admin' AND `parent_url`='admin_misc.nourl' AND `lang`='menue;logger;logger' AND `url`='admin_logger.php?page=log'");
+					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'logger.enabled' WHERE `area`='admin' AND `parent_url`='admin_misc.nourl' AND `lang`='menue;logger;logger' AND `url`='admin_logger.php?page=log'");
 				}
 
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_enabled from '" . $settings['logger']['enabled'] . "' to '" . $value . "'");
@@ -1018,28 +943,6 @@ if(($page == 'settings' || $page == 'overview')
 			   && isset($_POST['ticketsystemenabled']))
 			{
 				$value = (int)$_POST['ticketsystemenabled'] == 1 ? 1 : 0;
-
-				if($value == 1)
-				{
-					$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)
-						VALUES
-						 ('customer', '', 'menue;ticket;ticket', 'customer_tickets.php', '20', '', 0),
-						 ('customer', 'customer_tickets.php', 'menue;ticket;ticket', 'customer_tickets.php?page=tickets', 10, '', 0),
-						 ('admin', '', 'admin;ticketsystem', 'admin_ticketsystem.nourl', '40', '', 0),
-						 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0),
-						 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0),
-						 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);");
-					$log->logAction(ADM_ACTION, LOG_NOTICE, "added ticketsystem to navigation");
-				}
-				else
-				{
-					$value = 0;
-					$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;ticket"');
-					$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "admin;ticketsystem"');
-					$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;archive"');
-					$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ticket;categories"');
-					$log->logAction(ADM_ACTION, LOG_NOTICE, "removed ticketsystem from navigation");
-				}
 
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='enabled'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_enabled from '" . $settings['ticket']['enabled'] . "' to '" . $value . "'");
@@ -1232,13 +1135,11 @@ if(($page == 'settings' || $page == 'overview')
 
 				if((int)$value == 1)
 				{
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "" WHERE `url` = "admin_aps.nourl"');
 					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "phpenabled" WHERE `url` = "customer_aps.nourl"');
 				}
 				else
 				{
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps_enabled" WHERE `url` = "admin_aps.nourl"');
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps_enabled" WHERE `url` = "customer_aps.nourl"');
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps.aps_active" WHERE `url` = "customer_aps.nourl"');
 				}
 			}
 
@@ -1461,15 +1362,6 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = ($_POST['system_modfcgid'] == '1' ? '1' : '0');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid'");
-
-				if($value == '1')
-				{
-					$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, '', 0)");
-				}
-				else
-				{
-					$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `area`='admin' AND `parent_url`='admin_server.nourl' AND `lang`='menue;phpsettings;maintitle' AND `url`='admin_phpsettings.php?page=overview' AND `order`=80");
-				}
 
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mod_fcgid from '" . $settings['system']['mod_fcgid'] . "' to '" . $value . "'");
 				inserttask('1');
