@@ -6,6 +6,11 @@
 		<td class="maintitle_apply_right" nowrap="nowrap"><a href="$filename?page=settings&amp;s=$s">{$lng['panel']['backtooverview']}</a>
 		</td>
 	</tr>
+	<if $settings['system']['webserver'] == 'lighttpd'>
+	<tr>
+		<td class="maintitle_apply_left" colspan="2"><b style="color:red;">{$lng['aps']['lightywarning']}:</b><br />{$lng['aps']['lightywarningdescription']}</td>
+	</tr>
+	</if>
 	<tr>
 		<td class="main_field_name"><b>{$lng['aps']['activate_aps']['title']}:</b><br />{$lng['aps']['activate_aps']['description']}</td>
 		<td class="main_field_display" nowrap="nowrap">$aps_activate_aps</td>
@@ -18,7 +23,7 @@
 		<td class="main_field_name"><b>{$lng['aps']['upload_fields']['title']}:</b><br />{$lng['aps']['upload_fields']['description']}</td>
 		<td class="main_field_display" nowrap="nowrap"><input type="text" name="upload_fields" size="60" value="{$settings['aps']['upload_fields']}"/></td>
 	</tr>
-		<tr>
+	<tr>
 		<td class="maintitle_apply_left" colspan="2"><b>{$lng['aps']['exceptions']['title']}:</b><br />{$lng['aps']['exceptions']['description']}</td>
 	</tr>
 	<tr>

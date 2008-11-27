@@ -1290,7 +1290,7 @@ function safe_exec($exec_string, &$return_value = false)
 
 function getNavigation($s, $userinfo)
 {
-	global $db, $lng;
+	global $db, $lng, $settings;
 	$return = '';
 
 	//
@@ -1306,9 +1306,22 @@ function getNavigation($s, $userinfo)
 
 	while($row = $db->fetch_array($result))
 	{
-		if($row['required_resources'] == ''
-		   || (isset($userinfo[$row['required_resources']]) && ((int)$userinfo[$row['required_resources']] > 0 || $userinfo[$row['required_resources']] == '-1')))
+		if($row['required_resources'] != ''
+		   && strpos($row['required_resources'], '.') !== false) 
 		{
+			$_tmp = explode('.', $row['required_resources']);
+			$_required_res = isset($settings[$_tmp[0]][$_tmp[1]]) ? (int)$settings[$_tmp[0]][$_tmp[1]] : 0;
+		}
+
+		if($_required_res == 1
+		   || ($row['required_resources'] == ''
+		       || (isset($userinfo[$row['required_resources']]) 
+                           && ((int)$userinfo[$row['required_resources']] > 0 
+				|| $userinfo[$row['required_resources']] == '-1')
+			  )
+                      )
+		  )
+		{	
 			$row['parent_url'] = $row['url'];
 			$row['isparent'] = 1;
 			$nav[$row['parent_url']][] = _createNavigationEntry($s, $row);
@@ -1317,12 +1330,28 @@ function getNavigation($s, $userinfo)
 
 			while($subRow = $db->fetch_array($subResult))
 			{
-				if($subRow['required_resources'] == ''
-				   || $userinfo[$subRow['required_resources']] > 0
-				   || $userinfo[$subRow['required_resources']] == '-1')
+				if($subRow['required_resources'] != ''
+				&& strpos($subRow['required_resources'], '.') !== false) 
 				{
-					$subRow['isparent'] = 0;
-					$nav[$row['parent_url']][] = _createNavigationEntry($s, $subRow);
+					$_tmp = explode('.', $subRow['required_resources']);
+					$_required_res = isset($settings[$_tmp[0]][$_tmp[1]]) ? (int)$settings[$_tmp[0]][$_tmp[1]] : 0;
+				}
+		
+				if($_required_res == 1
+				   || ($subRow['required_resources'] == ''
+					|| (isset($userinfo[$subRow['required_resources']]) 
+					   && ((int)$userinfo[$subRow['required_resources']] > 0 
+						|| $userinfo[$subRow['required_resources']] == '-1')
+					   )
+				      )
+				  )
+				{
+					// respect three special cases: phpmyadmin_uri, webmail_uri and webftp_uri
+					if($subRow['url'] != '')
+					{
+						$subRow['isparent'] = 0;
+						$nav[$row['parent_url']][] = _createNavigationEntry($s, $subRow);
+					}
 				}
 			}
 		}
