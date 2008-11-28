@@ -1211,6 +1211,23 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn41';
 	}
+	
+	if($settings['panel']['version'] == '1.2.19-svn41')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn41 to 1.2.19-svn42");
+		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = 'system' AND `varname` = 'mail_quota' AND `value` = '104857600'");
+		if($db->num_rows() > 0)
+		{
+			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '100' WHERE `settinggroup` = 'system' AND `varname` = 'mail_quota'");
+		}
+		
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn42\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn42';
+	}
 }
 
 // php filter-extension check
