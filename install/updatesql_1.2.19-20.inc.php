@@ -1041,12 +1041,7 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn39')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn39 to 1.2.19-svn40");
-
-		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
-		if($db->num_rows() > 0)
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `varname` = 'webserver' WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
-		}
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `varname` = 'webserver' WHERE `settinggroup` = 'system' AND `varname` = 'apacheversion'");
 
 		// set new version
 
@@ -1215,12 +1210,8 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn41')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn41 to 1.2.19-svn42");
-		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_SETTINGS . "` WHERE `settinggroup` = 'system' AND `varname` = 'mail_quota' AND `value` = '104857600'");
-		if($db->num_rows() > 0)
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '100' WHERE `settinggroup` = 'system' AND `varname` = 'mail_quota'");
-		}
-		
+		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '100' WHERE `settinggroup` = 'system' AND `varname` = 'mail_quota' AND `value` = '104857600'");
+
 		// set new version
 
 		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn42\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
