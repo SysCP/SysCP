@@ -853,7 +853,7 @@ INSERT INTO `panel_navigation` VALUES (40, 'admin', 'admin_ticketsystem.nourl', 
 INSERT INTO `panel_navigation` VALUES (41, 'admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);
 INSERT INTO `panel_navigation` VALUES (42, 'customer', '', 'menue;traffic;traffic', 'customer_traffic.php', 80, '', 0);
 INSERT INTO `panel_navigation` VALUES (43, 'customer', 'customer_traffic.php', 'menue;traffic;current', 'customer_traffic.php?page=current', 10, '', 0);
-INSERT INTO `panel_navigation` VALUES (44, 'admin', 'admin_misc.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', '10', 'logger.enabled', 0);
+INSERT INTO `panel_navigation` VALUES (44, 'admin', 'admin_misc.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', '10', 'change_serversettings', 0);
 INSERT INTO `panel_navigation` VALUES (45, 'admin', 'admin_misc.nourl', 'admin;message', 'admin_message.php?page=message', 10, '', 0);
 INSERT INTO `panel_navigation` VALUES (46, 'customer', 'customer_email.php', 'emails;emails_add', 'customer_email.php?page=emails&action=add', '20', 'emails', 0);
 INSERT INTO `panel_navigation` VALUES (47, 'admin', '', 'billing;billing', 'billing.nourl', '100', 'billing.activate_billing', '0');
@@ -865,7 +865,7 @@ INSERT INTO `panel_navigation` VALUES (52, 'admin', 'billing.nourl', 'billing;ot
 INSERT INTO `panel_navigation` VALUES (53, 'admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', '140', 'edit_billingdata', '0');
 INSERT INTO `panel_navigation` VALUES (54, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'edit_billingdata', '0');
 INSERT INTO `panel_navigation` VALUES (55, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'edit_billingdata', '0');
-INSERT INTO `panel_navigation` VALUES (56, 'admin', '', 'admin;aps', 'admin_aps.nourl', 45, 'aps.aps_active', 0);
+INSERT INTO `panel_navigation` VALUES (56, 'admin', '', 'admin;aps', 'admin_aps.nourl', 45, 'phpenabled', 0);
 INSERT INTO `panel_navigation` VALUES (57, 'admin', 'admin_aps.nourl', 'aps;scan', 'admin_aps.php?action=scan', 20, 'can_manage_aps_packages', 0);
 INSERT INTO `panel_navigation` VALUES (58, 'admin', 'admin_aps.nourl', 'aps;upload', 'admin_aps.php?action=upload', 10, 'can_manage_aps_packages', 0);
 INSERT INTO `panel_navigation` VALUES (59, 'admin', 'admin_aps.nourl', 'aps;managepackages', 'admin_aps.php?action=managepackages', 30, 'can_manage_aps_packages', 0);
