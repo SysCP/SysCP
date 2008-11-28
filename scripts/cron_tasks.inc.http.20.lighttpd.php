@@ -260,8 +260,6 @@ class lighttpd
 				fclose($ourFileHandle);
 			}
 
-			$logfiles_text.= '  server.errorlog	= "' . $filename . '"' . "\n";
-			$logfiles_text.= '  LogType = "clf"' . "\n";
 			chown($filename, $this->settings[system][httpuser]);
 			chgrp($filename, $this->settings[system][httpgroup]);
 
@@ -475,13 +473,6 @@ class lighttpd
 				$vhosts_file.= $vhost_content . "\n\n";
 			}
 
-			// Include diroptions file in case it exists
-
-			if(file_exists($this->settings['system']['apacheconf_diroptions']))
-			{
-				$vhosts_file.= "\n" . 'Include ' . $this->settings['system']['apacheconf_diroptions'] . "\n\n";
-			}
-
 			$vhosts_filename = $this->settings['system']['apacheconf_vhost'];
 
 			// Apply header
@@ -495,7 +486,7 @@ class lighttpd
 		{
 			if(!file_exists($this->settings['system']['apacheconf_vhost']))
 			{
-				fwrite($this->debugHandler, '  apache::writeConfigs: mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])) . "\n");
+				fwrite($this->debugHandler, '  lighttpd::writeConfigs: mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])) . "\n");
 				$this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])));
 				safe_exec('mkdir ' . escapeshellarg(makeCorrectDir($this->settings['system']['apacheconf_vhost'])));
 			}
