@@ -217,13 +217,13 @@ return Array(
 					),
 					'libnss' => Array(
 						'label' => 'libnss (system login with mysql)',
-						'files' => Array(
-							'etc_libnss-mysql.cfg' => '/etc/libnss-mysql.cfg',
-							'etc_libnss-mysql-root.cfg' => '/etc/libnss-mysql-root.cfg',
-							'etc_nsswitch.conf' => '/etc/nsswitch.conf',
-						),
 						'commands' => Array(
 							'apt-get install libnss-mysql nscd'
+						),
+						'files' => Array(
+							'etc_nss-mysql.conf' => '/etc/nss-mysql.conf',
+							'etc_nss-mysql-root.conf' => '/etc/nss-mysql-root.conf',
+							'etc_nsswitch.conf' => '/etc/nsswitch.conf',
 						),
 						'restart' => Array(
 							'/etc/init.d/nscd restart'
