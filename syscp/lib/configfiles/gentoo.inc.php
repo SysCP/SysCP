@@ -29,8 +29,7 @@ return Array(
 					'lighttpd' => Array(
 						'label' => 'Lighttpd Webserver',
 						'files' => Array(
-							'etc_lighttpd.conf' => '/etc/lighttpd/lighttpd.conf',
-							'etc_mimetypes.conf' => '/etc/lighttpd/mimetypes.conf'
+							'etc_lighttpd.conf' => '/etc/lighttpd/lighttpd.conf'
 						),
 						'commands' => Array(
 							$configcommand['vhost'],
