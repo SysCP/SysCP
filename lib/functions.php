@@ -1306,6 +1306,8 @@ function getNavigation($s, $userinfo)
 
 	while($row = $db->fetch_array($result))
 	{
+		$_required_res = 0;
+
 		if($row['required_resources'] != ''
 		   && strpos($row['required_resources'], '.') !== false) 
 		{
