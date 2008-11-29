@@ -283,19 +283,22 @@ class lighttpd
 
 	protected function create_pathOptions($domain)
 	{
-		$query = "SELECT * FROM " . TABLE_PANEL_HTACCESS . " WHERE `customerid`='" . $domain[customerid] . "'";
+		$query = "SELECT * FROM " . TABLE_PANEL_HTACCESS . " WHERE `path` LIKE '" . $domain['documentroot'] . "%'";
 		$result = $this->db->query($query);
 
 		while($row = $this->db->fetch_array($result))
 		{
-			if(!empty($row[error404path]))
+			if(!empty($row['error404path']))
 			{
-				$error_string.= '  server.error-handler-404 = "' . $row[path] . '/' . $row[error404path] . '"' . "\n";;
+				$error_string.= '  server.error-handler-404 = "' . $row['path'] . '/' . $row['error404path'] . '"' . "\n";;
 			}
 
-			if($row[options_indexes] != '0')
+			if($row['options_indexes'] != '0')
 			{
-				$error_string.= '$HTTP["url"] =~ "^/' . $row[path] . '($|/)" { dir-listing.activate = "enable" }' . "\n";
+				$path = substr($row['path'], strlen($domain['documentroot']) - 1);
+				$error_string.= '$HTTP["url"] =~ "^/' . makeSecurePath($path) . '($|/)" {' . "\n";
+				$error_string.= "\t" . 'dir-listing.activate = "enable"' . "\n";
+				$error_string.= '}' . "\n";
 			}
 		}
 
