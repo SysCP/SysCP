@@ -76,8 +76,8 @@ alias_maps = $alias_database
 #smtp_use_tls = yes
 #smtp_tls_note_starttls_offer = yes
 ## TLS for email client
-#smtpd_tls_cert_file = /etc/ssl/postfix/server.crt
-#smtpd_tls_key_file = /etc/ssl/postfix/server.key
+#smtpd_tls_cert_file = /etc/ssl/server/<SERVERNAME>.crt
+#smtpd_tls_key_file = /etc/ssl/server/<SERVERNAME>.key
 #smtpd_tls_CAfile = /etc/ssl/cacert.class3.crt  # Just an example for CACert.org
 #smtpd_tls_auth_only = no
 #smtpd_tls_loglevel = 1
