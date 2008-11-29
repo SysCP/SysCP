@@ -296,7 +296,7 @@ class lighttpd
 			if($row['options_indexes'] != '0')
 			{
 				$path = substr($row['path'], strlen($domain['documentroot']) - 1);
-				$error_string.= '$HTTP["url"] =~ "^/' . makeSecurePath($path) . '($|/)" {' . "\n";
+				$error_string.= '$HTTP["url"] =~ "^' . makeSecurePath($path) . '($|/)" {' . "\n";
 				$error_string.= "\t" . 'dir-listing.activate = "enable"' . "\n";
 				$error_string.= '}' . "\n";
 			}
