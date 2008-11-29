@@ -1233,11 +1233,11 @@ else
 			$db->query("UPDATE `" . TABLE_PANEL_HTACCESS . "` SET `path` = '" . $db->escape($row['path']) . "' WHERE `id` = '" . $row['id'] . "';");
 		}
 
-		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_HTPASSWD . "` WHERE `path` LIKE '%//%';");
+		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `path` LIKE '%//%';");
 		while($row = $db->fetch_array($result))
 		{
 			$row['path'] = makeSecurePath($row['path']);
-			$db->query("UPDATE `" . TABLE_PANEL_HTPASSWD . "` SET `path` = '" . $db->escape($row['path']) . "' WHERE `id` = '" . $row['id'] . "';");
+			$db->query("UPDATE `" . TABLE_PANEL_HTPASSWDS . "` SET `path` = '" . $db->escape($row['path']) . "' WHERE `id` = '" . $row['id'] . "';");
 		}
 
 		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `documentroot` LIKE '%//%';");
