@@ -66,13 +66,13 @@ class lighttpd
 		{
 			if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 			{
-				$ip = $row_ipsandports[ip];
-				$port = $row_ipsandports[port];
+				$ip = $row_ipsandports['ip'];
+				$port = $row_ipsandports['port'];
 			}
 			else
 			{
-				$ip = '[' . $row_ipsandports[ip] . ']';
-				$port = $row_ipsandports[port];
+				$ip = '[' . $row_ipsandports['ip'] . ']';
+				$port = $row_ipsandports['port'];
 			}
 
 			fwrite($this->debugHandler, '  lighttpd::createIpPort: creating ip/port settings for  ' . $ip . ":" . $port . "\n");
@@ -93,7 +93,7 @@ class lighttpd
 			}
 
 			$this->createLighttpdHosts($row_ipsandports['ip'], $row_ipsandports['port'], $row_ipsandports['ssl'], $vhost_filename);
-			$this->lighttpd_data[$vhost_filename].= $this->needed_htpasswds[$row_ipsandports[id]] . "\n";
+			$this->lighttpd_data[$vhost_filename].= $this->needed_htpasswds[$row_ipsandports['id']] . "\n";
 			$this->lighttpd_data[$vhost_filename].= '}' . "\n";
 		}
 	}
@@ -106,13 +106,13 @@ class lighttpd
 
 		while($row_htpasswds = $this->db->fetch_array($result_htpasswds))
 		{
-			$filename = $row_htpasswds[customerid] . '-' . md5($row_htpasswds[path]) . '.htpasswd';
+			$filename = $row_htpasswds['customerid'] . '-' . md5($row_htpasswds['path']) . '.htpasswd';
 
-			if(!in_array($row_htpasswds[path], $needed_htpasswds))
+			if(!in_array($row_htpasswds['path'], $needed_htpasswds))
 			{
 				if(empty($needed_htpasswds))
 				{
-					$auth_backend_loaded[$domain[ipandport]] = 'yes';
+					$auth_backend_loaded[$domain['ipandport']] = 'yes';
 
 					if(!$this->auth_backend_loaded)
 					{
@@ -127,13 +127,13 @@ class lighttpd
 					$htaccess_text.= '  ,' . "\n";
 				}
 
-				if(!strstr($this->needed_htpasswds[$filename], $row_htpasswds[username] . ':' . $row_htpasswds[password]))
+				if(!strstr($this->needed_htpasswds[$filename], $row_htpasswds['username'] . ':' . $row_htpasswds['password']))
 				{
-					$this->needed_htpasswds[$filename].= $row_htpasswds[username] . ':' . $row_htpasswds[password] . "\n";
+					$this->needed_htpasswds[$filename].= $row_htpasswds['username'] . ':' . $row_htpasswds['password'] . "\n";
 				}
 
 				$needed_htpasswds[] = $row_htpasswds['path'];
-				$htaccess_path = substr($row_htpasswds[path], strlen($domain[documentroot]) - 1);
+				$htaccess_path = substr($row_htpasswds['path'], strlen($domain['documentroot']) - 1);
 				$htaccess_text.= '    "' . makeSecurePath($htaccess_path) . '" =>' . "\n";
 				$htaccess_text.= '    (' . "\n";
 				$htaccess_text.= '       "method"  => "basic",' . "\n";
@@ -260,8 +260,8 @@ class lighttpd
 				fclose($ourFileHandle);
 			}
 
-			chown($filename, $this->settings[system][httpuser]);
-			chgrp($filename, $this->settings[system][httpgroup]);
+			chown($filename, $this->settings[system]['httpuser']);
+			chgrp($filename, $this->settings[system]['httpgroup']);
 
 			//access log
 
@@ -274,8 +274,8 @@ class lighttpd
 			}
 
 			$logfiles_text.= '  accesslog.filename	= "' . $filename . '"' . "\n";
-			chown($filename, $this->settings[system][httpuser]);
-			chgrp($filename, $this->settings[system][httpgroup]);
+			chown($filename, $this->settings[system]['httpuser']);
+			chgrp($filename, $this->settings[system]['httpgroup']);
 		}
 
 		return $logfiles_text;
@@ -316,26 +316,26 @@ class lighttpd
 
 		while($row_htpasswds = $this->db->fetch_array($result))
 		{
-			if($auth_backend_loaded[$domain[ipandport]] != 'yes'
-			   && $auth_backend_loaded[$domain[ssl_ipandport]] != 'yes')
+			if($auth_backend_loaded[$domain['ipandport']] != 'yes'
+			   && $auth_backend_loaded[$domain['ssl_ipandport']] != 'yes')
 			{
-				$filename = $domain[customerid] . '.htpasswd';
+				$filename = $domain['customerid'] . '.htpasswd';
 
-				if($this->auth_backend_loaded[$domain[ipandport]] != 'yes')
+				if($this->auth_backend_loaded[$domain['ipandport']] != 'yes')
 				{
-					$auth_backend_loaded[$domain[ipandport]] = 'yes';
+					$auth_backend_loaded[$domain['ipandport']] = 'yes';
 					$diroption_text.= 'auth.backend = "htpasswd"' . "\n";
 					$diroption_text.= 'auth.backend.htpasswd.userfile = "' . $this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename . '"' . "\n";
-					$this->needed_htpasswds[$filename] = $row_htpasswds[username] . ':' . $row_htpasswds[password] . "\n";
+					$this->needed_htpasswds[$filename] = $row_htpasswds['username'] . ':' . $row_htpasswds['password'] . "\n";
 					$diroption_text.= 'auth.require = ( ' . "\n";
 					$previous_domain_id = '1';
 				}
-				elseif($this->auth_backend_loaded[$domain[ssl_ipandport]] != 'yes')
+				elseif($this->auth_backend_loaded[$domain['ssl_ipandport']] != 'yes')
 				{
-					$auth_backend_loaded[$domain[ssl_ipandport]] = 'yes';
+					$auth_backend_loaded[$domain['ssl_ipandport']] = 'yes';
 					$diroption_text.= 'auth.backend= "htpasswd"' . "\n";
 					$diroption_text.= 'auth.backend.htpasswd.userfile = "' . $this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename . '"' . "\n";
-					$this->needed_htpasswds[$filename] = $row_htpasswds[username] . ':' . $row_htpasswds[password] . "\n";
+					$this->needed_htpasswds[$filename] = $row_htpasswds['username'] . ':' . $row_htpasswds['password'] . "\n";
 					$diroption_text.= 'auth.require = ( ' . "\n";
 					$previous_domain_id = '1';
 				}
@@ -345,20 +345,20 @@ class lighttpd
 			$diroption_text.= '(' . "\n";
 			$diroption_text.= '   "method"  => "basic",' . "\n";
 			$diroption_text.= '   "realm"   => "Restricted Area",' . "\n";
-			$diroption_text.= '   "require" => "user=' . $row_htpasswds[username] . '"' . "\n";
+			$diroption_text.= '   "require" => "user=' . $row_htpasswds['username'] . '"' . "\n";
 
 			#			$diroption_text .= ')'."\n";
 
 			$diroption_text.= ')' . "\n";
 
-			if($this->auth_backend_loaded[$domain[ssl_ipandport]] == 'yes')
+			if($this->auth_backend_loaded[$domain['ssl_ipandport']] == 'yes')
 			{
-				$this->needed_htpasswds[$domain[ssl_ipandport]].= $diroption_text;
+				$this->needed_htpasswds[$domain['ssl_ipandport']].= $diroption_text;
 			}
 
-			if($this->auth_backend_loaded[$domain[ipandport]] != 'yes')
+			if($this->auth_backend_loaded[$domain['ipandport']] != 'yes')
 			{
-				$this->needed_htpasswds[$domain[ipandport]].= $diroption_text;
+				$this->needed_htpasswds[$domain['ipandport']].= $diroption_text;
 			}
 		}
 
@@ -368,7 +368,7 @@ class lighttpd
 	protected function getServerNames($domain)
 	{
 		$server_string = array();
-		$domain_name = ereg_replace('\.', '\.', $domain[domain]);
+		$domain_name = ereg_replace('\.', '\.', $domain['domain']);
 
 		if($domain['iswildcarddomain'] == '1')
 		{
@@ -389,7 +389,7 @@ class lighttpd
 
 		while(($alias_domain = $this->db->fetch_array($alias_domains)) !== false)
 		{
-			$alias_domain_name = ereg_replace('\.', '\.', $alias_domain[domain]);
+			$alias_domain_name = ereg_replace('\.', '\.', $alias_domain['domain']);
 
 			if($alias_domain['iswildcarddomain'] == '1')
 			{
