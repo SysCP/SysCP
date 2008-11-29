@@ -49,6 +49,7 @@ return Array(
 					'bind' => Array(
 						'label' => 'Bind9',
 						'commands' => Array(
+							'apt-get install bind9',
 							'echo "include \"' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf\";" >> /etc/bind/named.conf',
 							'touch ' . $settings['system']['bindconf_directory'] . 'syscp_bind.conf'
 						),
@@ -73,15 +74,8 @@ return Array(
 				'daemons' => Array(
 					'postfix' => Array(
 						'label' => 'Postfix',
-						'files' => Array(
-							'etc_postfix_main.cf' => '/etc/postfix/main.cf',
-							'etc_postfix_master.cf' => '/etc/postfix/master.cf',
-							'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
-							'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
-							'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf'
-						),
 						'commands' => Array(
+							'apt-get install postfix postfix-mysql libsasl2 libsasl2-modules libsasl2-modules-sql',
 							'mkdir -p /etc/postfix/sasl',
 							'mkdir -p /var/spool/postfix/etc/pam.d',
 							'mkdir -p /var/spool/postfix/var/run/mysqld',
@@ -101,6 +95,14 @@ return Array(
 							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'chgrp postfix /etc/postfix/mysql-virtual_mailbox_maps.cf',
 							'chgrp postfix /etc/postfix/sasl/smtpd.conf',
+						),
+						'files' => Array(
+							'etc_postfix_main.cf' => '/etc/postfix/main.cf',
+							'etc_postfix_master.cf' => '/etc/postfix/master.cf',
+							'etc_postfix_mysql-virtual_alias_maps.cf' => '/etc/postfix/mysql-virtual_alias_maps.cf',
+							'etc_postfix_mysql-virtual_mailbox_domains.cf' => '/etc/postfix/mysql-virtual_mailbox_domains.cf',
+							'etc_postfix_mysql-virtual_mailbox_maps.cf' => '/etc/postfix/mysql-virtual_mailbox_maps.cf',
+							'etc_postfix_sasl_smtpd.conf' => '/etc/postfix/sasl/smtpd.conf'
 						),
 						'restart' => Array(
 							'/etc/init.d/postfix restart',
@@ -135,6 +137,9 @@ return Array(
 				'daemons' => Array(
 					'courier' => Array(
 						'label' => 'Courier',
+						'commands' => Array(
+							'apt-get install courier-pop courier-imap courier-authlib-mysql'
+						),
 						'files' => Array(
 							'etc_courier_authdaemonrc' => '/etc/courier/authdaemonrc',
 							'etc_courier_authmysqlrc' => '/etc/courier/authmysqlrc'
@@ -146,6 +151,9 @@ return Array(
 					),
 					'dovecot' => Array(
 						'label' => 'Dovecot',
+						'commands' => Array(
+							'apt-get install dovecot-imapd dovecot-pop3d'
+						),
 						'files' => Array(
 							'etc_dovecot_dovecot.conf' => '/etc/dovecot/dovecot.conf',
 							'etc_dovecot_dovecot-sql.conf' => '/etc/dovecot/dovecot-sql.conf'
@@ -171,6 +179,9 @@ return Array(
 					),
 					'pure-ftpd' => Array(
 						'label' => 'Pure FTPd',
+						'commands' => Array(
+							'apt-get install proftpd proftpd-mysql'
+						),
 						'files' => Array(
 							'etc_pure-ftpd_conf_MinUID' => '/etc/pure-ftpd/conf/MinUID',
 							'etc_pure-ftpd_conf_MySQLConfigFile' => '/etc/pure-ftpd/MySQLConfigFile',
