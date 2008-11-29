@@ -1219,6 +1219,41 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn42';
 	}
+
+	if($settings['panel']['version'] == '1.2.19-svn42')
+	{
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn42 to 1.2.19-svn43");
+
+		// Going to fix double slashes in the database
+
+		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `path` LIKE '%//%';");
+		while($row = $db->fetch_array($result))
+		{
+			$row['path'] = makeSecurePath($row['path']);
+			$db->query("UPDATE `" . TABLE_PANEL_HTACCESS . "` SET `path` = '" . $db->escape($row['path']) . "' WHERE `id` = '" . $row['id'] . "';");
+		}
+
+		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_HTPASSWD . "` WHERE `path` LIKE '%//%';");
+		while($row = $db->fetch_array($result))
+		{
+			$row['path'] = makeSecurePath($row['path']);
+			$db->query("UPDATE `" . TABLE_PANEL_HTPASSWD . "` SET `path` = '" . $db->escape($row['path']) . "' WHERE `id` = '" . $row['id'] . "';");
+		}
+
+		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `documentroot` LIKE '%//%';");
+		while($row = $db->fetch_array($result))
+		{
+			$row['documentroot'] = makeSecurePath($row['documentroot']);
+			$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot` = '" . $db->escape($row['documentroot']) . "' WHERE `id` = '" . $row['id'] . "';");
+		}
+
+		// set new version
+
+		$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn43\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+		$query = sprintf($query, TABLE_PANEL_SETTINGS);
+		$db->query($query);
+		$settings['panel']['version'] = '1.2.19-svn43';
+	}
 }
 
 // php filter-extension check

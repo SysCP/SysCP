@@ -119,7 +119,7 @@ class lighttpd
 						$htaccess_text.= '  auth.backend = "htpasswd"' . "\n";
 					}
 
-					$htaccess_text.= '  auth.backend.htpasswd.userfile = "' . $this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename . '"' . "\n";
+					$htaccess_text.= '  auth.backend.htpasswd.userfile = "' . makeSecurePath($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
 					$htaccess_text.= '  auth.require = ( ' . "\n";
 				}
 				else
@@ -290,13 +290,17 @@ class lighttpd
 		{
 			if(!empty($row['error404path']))
 			{
-				$error_string.= '  server.error-handler-404 = "' . $row['path'] . '/' . $row['error404path'] . '"' . "\n";;
+				$error_string.= '  server.error-handler-404 = "' . makeSecurePath($row['documentroot'] . '/' . $row['error404path']) . '"' . "\n";
 			}
 
 			if($row['options_indexes'] != '0')
 			{
-				$path = substr($row['path'], strlen($domain['documentroot']) - 1);
-				$error_string.= '$HTTP["url"] =~ "^' . makeSecurePath($path) . '($|/)" {' . "\n";
+				$path = makeSecurePath(substr($row['path'], strlen($domain['documentroot']) - 1));
+
+				// We need to remove the last slash, otherwise the regex wouldn't work
+
+				$path = substr($path, 0, -1);
+				$error_string.= '$HTTP["url"] =~ "^' . $path . '($|/)" {' . "\n";
 				$error_string.= "\t" . 'dir-listing.activate = "enable"' . "\n";
 				$error_string.= '}' . "\n";
 			}
