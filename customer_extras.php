@@ -312,7 +312,7 @@ elseif($page == 'htaccess')
 		{
 			$path = makeCorrectDir(validate($_POST['path'], 'path'));
 			$userpath = $path;
-			$path = str_replace('//', '/', $userinfo['documentroot'] . $path);
+			$path = makeSecurePath($userinfo['documentroot'] . $path);
 			$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `path`='" . $db->escape($path) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "'");
 
 			if(!$_POST['path'])
