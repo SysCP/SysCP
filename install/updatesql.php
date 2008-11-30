@@ -102,7 +102,7 @@ if(substr($settings['panel']['version'], 0, 3) == '1.2')
  * 4th case: We are updating from 1.2.19 to 1.2.20 (prolly the last from the 1.2.x series)
  */
 
-if($settings['panel']['version'] >= '1.2.19')
+if(substr($settings['panel']['version'], 0, 6) == '1.2.19')
 {
 	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.2.19-20.inc.php");
 	include_once ('./updatesql_1.2.19-20.inc.php');
@@ -112,7 +112,7 @@ if($settings['panel']['version'] >= '1.2.19')
  * 5th case: We are updating from a version >= 1.4
  */
 
-if($settings['panel']['version'] >= '1.4')
+if(substr($settings['panel']['version'], 0, 3) == '1.4')
 {
 	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.4.inc.php");
 	include_once ('./updatesql_1.4.inc.php');
