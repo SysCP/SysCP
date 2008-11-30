@@ -18,6 +18,7 @@ return Array(
 						'restart' => Array(
 							'/etc/init.d/apache2 restart'
 						),
+					),
 					'lighttpd' => Array(
 						'label' => 'Lighttpd Webserver',
 						'commands_1' => Array(
@@ -39,7 +40,6 @@ return Array(
 						'restart' => Array(
 							'/etc/init.d/lighttpd restart'
 						)
-					)
 					)
 				)
 			),
