@@ -40,4 +40,16 @@ if($settings['panel']['version'] == '1.4')
 	$settings['panel']['version'] = '1.4-svn1';
 }
 
+if($settings['panel']['version'] == '1.4-svn1')
+{
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.4-svn1 to 1.4.1");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'1.4.1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = '1.4.1';
+}
+
 ?>
