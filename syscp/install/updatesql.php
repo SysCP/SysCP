@@ -108,6 +108,16 @@ if($settings['panel']['version'] >= '1.2.19')
 	include_once ('./updatesql_1.2.19-20.inc.php');
 }
 
+/**
+ * 5th case: We are updating from a version >= 1.4
+ */
+
+if($settings['panel']['version'] >= '1.4')
+{
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Running updatesql_1.4.inc.php");
+	include_once ('./updatesql_1.4.inc.php');
+}
+
 updateCounters();
 inserttask('1');
 @chmod('../lib/userdata.inc.php', 0440);

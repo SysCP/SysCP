@@ -119,7 +119,7 @@ class lighttpd
 						$htaccess_text.= '  auth.backend = "htpasswd"' . "\n";
 					}
 
-					$htaccess_text.= '  auth.backend.htpasswd.userfile = "' . makeSecurePath($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
+					$htaccess_text.= '  auth.backend.htpasswd.userfile = "' . makeCorrectDir($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
 					$htaccess_text.= '  auth.require = ( ' . "\n";
 				}
 				else
@@ -134,7 +134,7 @@ class lighttpd
 
 				$needed_htpasswds[] = $row_htpasswds['path'];
 				$htaccess_path = substr($row_htpasswds['path'], strlen($domain['documentroot']) - 1);
-				$htaccess_text.= '    "' . makeSecurePath($htaccess_path) . '" =>' . "\n";
+				$htaccess_text.= '    "' . makeCorrectDir($htaccess_path) . '" =>' . "\n";
 				$htaccess_text.= '    (' . "\n";
 				$htaccess_text.= '       "method"  => "basic",' . "\n";
 				$htaccess_text.= '       "realm"   => "Restricted Area",' . "\n";
@@ -143,7 +143,10 @@ class lighttpd
 			}
 		}
 
-		$htaccess_text.= '  )' . "\n";
+		if(strlen(trim($htaccess_text)) > 0)
+		{
+			$htaccess_text.= '  )' . "\n";
+		}
 		return $htaccess_text;
 	}
 
@@ -231,9 +234,6 @@ class lighttpd
 		$vhost_content.= $this->getWebroot($domain, $ssl_vhost);
 		$vhost_content.= $this->create_htaccess($domain);
 		$vhost_content.= $this->create_pathOptions($domain);
-
-		#		$vhost_content .= $this->getDirOptions($domain);
-
 		$vhost_content.= $this->getLogFiles($domain);
 		$vhost_content.= '}' . "\n";
 		return $vhost_content;
@@ -290,12 +290,12 @@ class lighttpd
 		{
 			if(!empty($row['error404path']))
 			{
-				$error_string.= '  server.error-handler-404 = "' . makeSecurePath($row['documentroot'] . '/' . $row['error404path']) . '"' . "\n";
+				$error_string.= '  server.error-handler-404 = "' . makeCorrectDir($row['documentroot'] . '/' . $row['error404path']) . '"' . "\n";
 			}
 
 			if($row['options_indexes'] != '0')
 			{
-				$path = makeSecurePath(substr($row['path'], strlen($domain['documentroot']) - 1));
+				$path = makeCorrectDir(substr($row['path'], strlen($domain['documentroot']) - 1));
 
 				// We need to remove the last slash, otherwise the regex wouldn't work
 
@@ -346,9 +346,6 @@ class lighttpd
 			$diroption_text.= '   "method"  => "basic",' . "\n";
 			$diroption_text.= '   "realm"   => "Restricted Area",' . "\n";
 			$diroption_text.= '   "require" => "user=' . $row_htpasswds['username'] . '"' . "\n";
-
-			#			$diroption_text .= ')'."\n";
-
 			$diroption_text.= ')' . "\n";
 
 			if($this->auth_backend_loaded[$domain['ssl_ipandport']] == 'yes')
@@ -441,8 +438,6 @@ class lighttpd
 	protected function getWebroot($domain, $ssl)
 	{
 		$webroot_text = '';
-		$domain['customerroot'] = makeCorrectDir($domain['customerroot']);
-		$domain['documentroot'] = makeCorrectDir($domain['documentroot']);
 
 		if($domain['deactivated'] == '1'
 		   && $this->settings['system']['deactivateddocroot'] != '')
@@ -455,11 +450,15 @@ class lighttpd
 			if($ssl === false
 			   && $domain['ssl_redirect'] == '1')
 			{
-				$webroot_text.= 'url.redirect = ( "^/(.*)" => "https://' . $domain['domain'] . '/$1" ),' . "\n";
+				$webroot_text.= '  url.redirect = ( "^/(.*)" => "https://' . $domain['domain'] . '/$1" )' . "\n";
+			}
+			elseif(preg_match("#^https?://#i", $domain['documentroot']))
+			{
+				$webroot_text.= '  url.redirect = ( "^/(.*)" => "' . $domain['documentroot'] . '/$1" )' . "\n";
 			}
 			else
 			{
-				$webroot_text.= '  server.document-root = "' . $domain['documentroot'] . "\"\n";
+				$webroot_text.= '  server.document-root = "' . makeCorrectDir($domain['documentroot']) . "\"\n";
 			}
 		}
 

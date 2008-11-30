@@ -1249,7 +1249,7 @@ else
 
 		while($row = $db->fetch_array($result))
 		{
-			$row['path'] = makeSecurePath($row['path']);
+			$row['path'] = makeCorrectDir($row['path']);
 			$db->query("UPDATE `" . TABLE_PANEL_HTACCESS . "` SET `path` = '" . $db->escape($row['path']) . "' WHERE `id` = '" . $row['id'] . "';");
 		}
 
@@ -1257,7 +1257,7 @@ else
 
 		while($row = $db->fetch_array($result))
 		{
-			$row['path'] = makeSecurePath($row['path']);
+			$row['path'] = makeCorrectDir($row['path']);
 			$db->query("UPDATE `" . TABLE_PANEL_HTPASSWDS . "` SET `path` = '" . $db->escape($row['path']) . "' WHERE `id` = '" . $row['id'] . "';");
 		}
 
@@ -1265,8 +1265,11 @@ else
 
 		while($row = $db->fetch_array($result))
 		{
-			$row['documentroot'] = makeSecurePath($row['documentroot']);
-			$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot` = '" . $db->escape($row['documentroot']) . "' WHERE `id` = '" . $row['id'] . "';");
+			if(!preg_match("#^https?://#i", $row['documentroot']))
+			{
+				$row['documentroot'] = makeCorrectDir($row['documentroot']);
+				$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot` = '" . $db->escape($row['documentroot']) . "' WHERE `id` = '" . $row['id'] . "';");
+			}
 		}
 
 		// set new version
