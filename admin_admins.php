@@ -260,7 +260,7 @@ if($page == 'admins'
 
 			if($settings['system']['mail_quota_enabled'] == '1')
 			{
-				$email_quota = intval_ressource($_POST['email_quota']);
+				$email_quota = validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong', array('0', ''));
 
 				if(isset($_POST['email_quota_ul']))
 				{
@@ -269,7 +269,7 @@ if($page == 'admins'
 			}
 			else
 			{
-				$email_quota = '-1';
+				$email_quota = -1;
 			}
 
 			$ftps = intval_ressource($_POST['ftps']);
@@ -746,15 +746,12 @@ if($page == 'admins'
 
 					if($settings['system']['mail_quota_enabled'] == '1')
 					{
+						$email_quota = validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong', array('0', ''));
+
 						if(isset($_POST['email_quota_ul']))
 						{
 							$email_quota = -1;
 						}
-						else
-						{
-							$email_quota = validate($_POST['email_quota'], 'email_quota_size', '/^\d+$/', 'vmailquotawrong');
-						}
-
 					}
 					else
 					{

@@ -330,7 +330,7 @@ if($page == 'customers'
 
 				if($settings['system']['mail_quota_enabled'] == '1')
 				{
-					$email_quota = validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong');
+					$email_quota = validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong', array('0', ''));
 
 					if(isset($_POST['email_quota_ul']))
 					{
@@ -339,7 +339,7 @@ if($page == 'customers'
 				}
 				else
 				{
-					$email_quota = '-1';
+					$email_quota = -1;
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);
@@ -867,7 +867,7 @@ if($page == 'customers'
 
 				if($settings['system']['mail_quota_enabled'] == '1')
 				{
-					$email_quota = validate($_POST['email_quota'], 'email_quota_size', '/^\d+$/', 'vmailquotawrong');
+					$email_quota = validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong', array('0', ''));
 
 					if(isset($_POST['email_quota_ul']))
 					{
@@ -876,7 +876,7 @@ if($page == 'customers'
 				}
 				else
 				{
-					$email_quota = '-1';
+					$email_quota = -1;
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);

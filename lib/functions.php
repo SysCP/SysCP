@@ -1039,6 +1039,11 @@ function updateCounters($returndebuginfo = false)
 			$admin_resources[$customer['adminid']]['email_forwarders_used']+= intval_ressource($customer['email_forwarders']);
 		}
 
+		if($customer['email_quota'] != '-1')
+		{
+			$admin_resources[$customer['adminid']]['email_quota']+= intval_ressource($customer['email_quota']);
+		}
+
 		if(!isset($admin_resources[$customer['adminid']]['subdomains_used']))
 		{
 			$admin_resources[$customer['adminid']]['subdomains_used'] = 0;
@@ -1080,7 +1085,9 @@ function updateCounters($returndebuginfo = false)
 		$customer['tickets_used_new'] = $customer_tickets['number_tickets'];
 		$customer_subdomains = $db->query_first('SELECT COUNT(*) AS `number_subdomains` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '" AND `parentdomainid` <> "0"');
 		$customer['subdomains_used_new'] = $customer_subdomains['number_subdomains'];
-		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '",  `emails_used` = "' . (int)$customer['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$customer['ftps_used_new'] . '",   `tickets_used` = "' . (int)$customer['tickets_used_new'] . '",  `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer_email_quota = $db->query_first('SELECT SUM(`quota`) AS `email_quota` FROM `' . TABLE_MAIL_USERS . '` WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
+		$customer['email_quota_used_new'] = $customer_email_quota['email_quota'];
+		$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used` = "' . (int)$customer['mysqls_used_new'] . '",  `emails_used` = "' . (int)$customer['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$customer['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$customer['email_forwarders_used_new'] . '",  `email_quota_used` = "' . (int)$customer['email_quota_used_new'] . '",  `ftps_used` = "' . (int)$customer['ftps_used_new'] . '",   `tickets_used` = "' . (int)$customer['tickets_used_new'] . '",  `subdomains_used` = "' . (int)$customer['subdomains_used_new'] . '" WHERE `customerid` = "' . (int)$customer['customerid'] . '"');
 
 		if($returndebuginfo === true)
 		{
@@ -1159,13 +1166,20 @@ function updateCounters($returndebuginfo = false)
 
 		$admin['email_forwarders_used_new'] = $admin_resources[$admin['adminid']]['email_forwarders_used'];
 
+		if(!isset($admin_resources[$admin['adminid']]['email_quota_used_new']))
+		{
+			$admin_resources[$admin['adminid']]['email_quota_used_new'] = 0;
+		}
+
+		$admin['email_quota_used_new'] = $admin_resources[$admin['adminid']]['email_quota_used'];
+
 		if(!isset($admin_resources[$admin['adminid']]['subdomains_used']))
 		{
 			$admin_resources[$admin['adminid']]['subdomains_used'] = 0;
 		}
 
 		$admin['subdomains_used_new'] = $admin_resources[$admin['adminid']]['subdomains_used'];
-		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `customers_used` = "' . (int)$admin['customers_used_new'] . '",  `domains_used` = "' . (int)$admin['domains_used_new'] . '",  `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '",  `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '",  `emails_used` = "' . (int)$admin['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '",  `ftps_used` = "' . (int)$admin['ftps_used_new'] . '",  `tickets_used` = "' . (int)$admin['tickets_used_new'] . '",  `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '",  `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
+		$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `customers_used` = "' . (int)$admin['customers_used_new'] . '",  `domains_used` = "' . (int)$admin['domains_used_new'] . '",  `diskspace_used` = "' . (int)$admin['diskspace_used_new'] . '",  `mysqls_used` = "' . (int)$admin['mysqls_used_new'] . '",  `emails_used` = "' . (int)$admin['emails_used_new'] . '",  `email_accounts_used` = "' . (int)$admin['email_accounts_used_new'] . '",  `email_forwarders_used` = "' . (int)$admin['email_forwarders_used_new'] . '",  `email_quota_used` = "' . (int)$admin['email_quota_used_new'] . '",  `ftps_used` = "' . (int)$admin['ftps_used_new'] . '",  `tickets_used` = "' . (int)$admin['tickets_used_new'] . '",  `subdomains_used` = "' . (int)$admin['subdomains_used_new'] . '",  `traffic_used` = "' . (int)$admin['traffic_used_new'] . '" WHERE `adminid` = "' . (int)$admin['adminid'] . '"');
 
 		if($returndebuginfo === true)
 		{

@@ -289,7 +289,7 @@ elseif($page == 'emails')
 	elseif($action == 'edit'
 	       && $id != 0)
 	{
-		$result = $db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `" . TABLE_MAIL_VIRTUAL . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+		$result = $db->query_first("SELECT `v`.`id`, `v`.`email`, `v`.`email_full`, `v`.`iscatchall`, `v`.`destination`, `v`.`customerid`, `v`.`popaccountid`, `u`.`quota` FROM `" . TABLE_MAIL_VIRTUAL . "` `v` LEFT JOIN `" . TABLE_MAIL_USERS . "` `u` ON(`v`.`popaccountid` = `u`.`id`)WHERE `v`.`customerid`='" . (int)$userinfo['customerid'] . "' AND `v`.`id`='" . (int)$id . "'");
 
 		if(isset($result['email'])
 		   && $result['email'] != '')
@@ -314,13 +314,6 @@ elseif($page == 'emails')
 				}
 
 				$result['destination'][$dest_id] = $destination;
-			}
-			
-			if ($settings['system']['mail_quota_enabled'] == 1) {
-				
-				$quota_result = $db->query_first("SELECT `quota` FROM `" . TABLE_MAIL_USERS . "` WHERE `id`='".$result['popaccountid']."'");
-				$quota = $quota_result['quota'];
-				unset($quota_result);
 			}
 
 			$destinations_count = count($result['destination']);
@@ -366,36 +359,6 @@ elseif($page == 'emails')
 			));
 		}
 	}
-	elseif($action == 'updatequota'
-	       && $id != 0)
-	{
-		$quota = validate($_POST['email_quota_size'], 'email_quota_size', '/^\d+$/', 'vmailquotawrong');
-		if (($userinfo['email_quota'] == '-1')
-			|| ($userinfo['email_quota_used'] < $userinfo['email_quota'])) 
-		{
-			$result = $db->query_first("SELECT `v`.`id`, `v`.`email`, `u`.`quota`, `c`.`email_quota_used`, `u`.`id` AS mail_user_id FROM `" . TABLE_MAIL_VIRTUAL . "` `v` LEFT JOIN `" . TABLE_MAIL_USERS . "` `u` ON (`v`.`popaccountid` = `u`.`id`) LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` ON(`v`.`customerid` = `c`.`customerid`) WHERE `v`.`customerid`='" . (int)$userinfo['customerid'] . "' AND `v`.`id`='" . (int)$id . "'");
-
-			if(isset($result['email'])
-			   && $result['email'] != '')
-			{
-				$new_used_quota = $result['email_quota_used'] + ($quota - $result['quota']);
-				$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota` = '" . $quota . "' WHERE `mail_users`.`id` = " . $result['id'] . " AND `customerid`='" . $userinfo['customerid'] . "'");
-				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_quota_used` = " . $new_used_quota . " WHERE `customerid` = '" . $userinfo['customerid'] . "'");
-				$log->logAction(USR_ACTION, LOG_NOTICE, "updated quota for email address '" . $result['email'] . "' to ". $quota . " MB");
-			}
-	
-			redirectTo($filename, Array(
-				'page' => $page,
-				'action' => 'edit',
-				'id' => $id,
-				's' => $s
-			));
-		}
-		else 
-		{
-			standard_error('allocatetoomuchquota', $quota);
-		}
-	}
 }
 elseif($page == 'accounts')
 {
@@ -403,13 +366,12 @@ elseif($page == 'accounts')
 	   && $id != 0)
 	{
 		// ensure the int is a positive one
-		if (isset($_POST['email_quota_size']))
+		if (isset($_POST['email_quota']))
 		{
-			$quota = validate($_POST['email_quota_size'], 'email_quota_size', '/^\d+$/', 'vmailquotawrong');
+			$quota = validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong');
 		}
 		
-		if(($userinfo['email_quota'] == '-1' || ($userinfo['email_quota_used'] < $userinfo['email_quota']))
-			&& ($userinfo['email_accounts'] == '-1'  || ($userinfo['email_accounts_used'] < $userinfo['email_accounts'])))
+		if($userinfo['email_accounts'] == '-1' || ($userinfo['email_accounts_used'] < $userinfo['email_accounts']))
 		{
 			$result = $db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid`, `domainid` FROM `" . TABLE_MAIL_VIRTUAL . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 
@@ -433,7 +395,7 @@ elseif($page == 'accounts')
 		
 					if($settings['system']['mail_quota_enabled'] == 1)
 					{
-						if (($quota + $userinfo['email_quota_used']) > $userinfo['email_quota']) {
+						if ($userinfo['email_quota'] != '-1' && ($quota + $userinfo['email_quota_used']) > $userinfo['email_quota']) {
 							standard_error('allocatetoomuchquota', $quota);
 						}
 					}
@@ -600,10 +562,11 @@ elseif($page == 'accounts')
 			}
 		}
 	}
-	elseif($action == 'delete'
+	elseif($action == 'changequota'
+	       && $settings['system']['mail_quota_enabled'] == '1'
 	       && $id != 0)
 	{
-		$result = $db->query_first("SELECT `id`, `email`, `email_full`, `iscatchall`, `destination`, `customerid`, `popaccountid` FROM `" . TABLE_MAIL_VIRTUAL . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+		$result = $db->query_first("SELECT `v`.`id`, `v`.`email`, `v`.`email_full`, `v`.`iscatchall`, `v`.`destination`, `v`.`customerid`, `v`.`popaccountid`, `u`.`quota` FROM `" . TABLE_MAIL_VIRTUAL . "` `v` LEFT JOIN `" . TABLE_MAIL_USERS . "` `u` ON(`v`.`popaccountid` = `u`.`id`)WHERE `v`.`customerid`='" . (int)$userinfo['customerid'] . "' AND `v`.`id`='" . (int)$id . "'");
 
 		if(isset($result['popaccountid'])
 		   && $result['popaccountid'] != '')
@@ -611,17 +574,63 @@ elseif($page == 'accounts')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				if ($settings['system']['mail_quota_enabled'] == 1) {
-					$result_quota = $db->query_first("SELECT `quota` FROM " . TABLE_MAIL_USERS . " WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$result['popaccountid'] . "'");
-					$quota = $result_quota['quota'];
-					unset($result_quota);
-				} else {
-					$quota = 0;
+				$quota = (int)validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong');
+
+				if ($userinfo['email_quota'] != '-1' && ($quota + $userinfo['email_quota_used'] - $result['quota']) > $userinfo['email_quota'])
+				{
+					standard_error('allocatetoomuchquota', $quota);
 				}
-				
+				else
+				{
+					$log->logAction(USR_ACTION, LOG_NOTICE, "updated quota for email address '" . $result['email'] . "' to ". $quota . " MB");
+					$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota` = '" . (int)$quota . "' WHERE `id` = " . $result['popaccountid'] . " AND `customerid`='" . $userinfo['customerid'] . "'");
+
+					if($userinfo['email_quota'] != '-1')
+					{
+						$new_used_quota = $userinfo['email_quota_used'] + ($quota - $result['quota']);
+						$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_quota_used` = " . $new_used_quota . " WHERE `customerid` = '" . $userinfo['customerid'] . "'");
+					}
+
+					redirectTo($filename, Array(
+						'page' => 'emails',
+						'action' => 'edit',
+						'id' => $id,
+						's' => $s
+					));
+				}
+			}
+			else
+			{
+				$result['email_full'] = $idna_convert->decode($result['email_full']);
+				$result = htmlentities_array($result);
+				eval("echo \"" . getTemplate("email/account_changequota") . "\";");
+			}
+		}
+	}
+	elseif($action == 'delete'
+	       && $id != 0)
+	{
+		$result = $db->query_first("SELECT `v`.`id`, `v`.`email`, `v`.`email_full`, `v`.`iscatchall`, `v`.`destination`, `v`.`customerid`, `v`.`popaccountid`, `u`.`quota` FROM `" . TABLE_MAIL_VIRTUAL . "` `v` LEFT JOIN `" . TABLE_MAIL_USERS . "` `u` ON(`v`.`popaccountid` = `u`.`id`)WHERE `v`.`customerid`='" . (int)$userinfo['customerid'] . "' AND `v`.`id`='" . (int)$id . "'");
+
+		if(isset($result['popaccountid'])
+		   && $result['popaccountid'] != '')
+		{
+			if(isset($_POST['send'])
+			   && $_POST['send'] == 'send')
+			{
 				$db->query("DELETE FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$result['popaccountid'] . "'");
 				$result['destination'] = str_replace($result['email_full'], '', $result['destination']);
 				$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "', `popaccountid` = '0' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+
+				if($settings['system']['mail_quota_enabled'] == '1' && $userinfo['email_quota'] != '-1')
+				{
+					$quota = (int)$result['quota'];
+				}
+				else
+				{
+					$quota = 0;
+				}
+
 				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_accounts_used` = `email_accounts_used` - 1, `email_quota_used` = `email_quota_used` - ".(int)$quota." WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
 				$log->logAction(USR_ACTION, LOG_INFO, "deleted email account for '" . $result['email_full'] . "'");
 				redirectTo($filename, Array(
