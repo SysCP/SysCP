@@ -92,37 +92,47 @@ if($db->num_rows($result) > 0)
 				foreach($content as $line)
 				{
 					// header ends on first empty line, skip rest of mail
+
 					if(strlen(rtrim($line)) == 0)
 					{
 						break;
 					}
 
 					//fetching from field
-					if(!strlen($from) && preg_match("/^From:(.+)<(.*)>$/", $line, $match))
- 					{
- 						$from = $match[2];
+
+					if(!strlen($from)
+					   && preg_match("/^From:(.+)<(.*)>$/", $line, $match))
+					{
+						$from = $match[2];
 					}
-					elseif(!strlen($from) && preg_match("/^From:\s+(.*@.*)$/", $line, $match))
+					elseif(!strlen($from)
+					       && preg_match("/^From:\s+(.*@.*)$/", $line, $match))
 					{
 						$from = $match[1];
- 					}
+					}
 
 					//fetching to field
-					if(!strlen($to) && preg_match("/^To:(.+)<(.*)>$/", $line, $match))
- 					{
- 						$to = $match[2];
- 					}
-					elseif(!strlen($to) && preg_match("/To:\s+(.*@.*)$/", $line, $match))
+
+					if(!strlen($to)
+					   && preg_match("/^To:(.+)<(.*)>$/", $line, $match))
+					{
+						$to = $match[2];
+					}
+					elseif(!strlen($to)
+					       && preg_match("/To:\s+(.*@.*)$/", $line, $match))
 					{
 						$to = $match[1];
 					}
 
- 					//fetching sender field
- 					if(!strlen($to) && preg_match("/^Sender:(.+)<(.*)>$/", $line, $match))
- 					{
- 						$sender = $match[2];
- 					}
-					elseif(!strlen($to) && preg_match("/Sender:\s+(.*@.*)$/", $line, $match))
+					//fetching sender field
+
+					if(!strlen($to)
+					   && preg_match("/^Sender:(.+)<(.*)>$/", $line, $match))
+					{
+						$sender = $match[2];
+					}
+					elseif(!strlen($to)
+					       && preg_match("/Sender:\s+(.*@.*)$/", $line, $match))
 					{
 						$sender = $match[1];
 					}

@@ -138,15 +138,11 @@ if($page == 'admins'
 			$s = md5(uniqid(microtime(), 1));
 			$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . $db->escape($s) . "', '" . (int)$id . "', '" . $db->escape($result['ipaddress']) . "', '" . $db->escape($result['useragent']) . "', '" . time() . "', '" . $db->escape($result['language']) . "', '1')");
 			$log->logAction(ADM_ACTION, LOG_INFO, "switched adminuser and is now '" . $destination_admin . "'");
-			redirectTo('admin_index.php', Array(
-				's' => $s
-			));
+			redirectTo('admin_index.php', Array('s' => $s));
 		}
 		else
 		{
-			redirectTo('index.php', Array(
-				'action' => 'login'
-			));
+			redirectTo('index.php', Array('action' => 'login'));
 		}
 	}
 	elseif($action == 'delete'
@@ -171,18 +167,11 @@ if($page == 'admins'
 				$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `adminid` = '" . (int)$userinfo['userid'] . "' WHERE `adminid` = '" . (int)$id . "'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted admin '" . $result['loginname'] . "'");
 				updateCounters();
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
 			{
-				ask_yesno('admin_admin_reallydelete', $filename, array(
-					'id' => $id,
-					'page' => $page,
-					'action' => $action
-				), $result['loginname']);
+				ask_yesno('admin_admin_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $result['loginname']);
 			}
 		}
 	}
@@ -220,14 +209,14 @@ if($page == 'admins'
 
 			if(isset($_POST['customers_ul']))
 			{
-				$customers = -1;
+				$customers = - 1;
 			}
 
 			$domains = intval_ressource($_POST['domains']);
 
 			if(isset($_POST['domains_ul']))
 			{
-				$domains = -1;
+				$domains = - 1;
 			}
 
 			$subdomains = intval_ressource($_POST['subdomains']);
@@ -241,14 +230,14 @@ if($page == 'admins'
 
 			if(isset($_POST['emails_ul']))
 			{
-				$emails = -1;
+				$emails = - 1;
 			}
 
 			$email_accounts = intval_ressource($_POST['email_accounts']);
 
 			if(isset($_POST['email_accounts_ul']))
 			{
-				$email_accounts = -1;
+				$email_accounts = - 1;
 			}
 
 			$email_forwarders = intval_ressource($_POST['email_forwarders']);
@@ -264,19 +253,19 @@ if($page == 'admins'
 
 				if(isset($_POST['email_quota_ul']))
 				{
-					$email_quota = -1;
+					$email_quota = - 1;
 				}
 			}
 			else
 			{
-				$email_quota = -1;
+				$email_quota = - 1;
 			}
 
 			$ftps = intval_ressource($_POST['ftps']);
 
 			if(isset($_POST['ftps_ul']))
 			{
-				$ftps = -1;
+				$ftps = - 1;
 			}
 
 			$tickets = intval_ressource($_POST['tickets']);
@@ -284,14 +273,14 @@ if($page == 'admins'
 			if(isset($_POST['tickets_ul'])
 			   && $settings['ticket']['enabled'] == '1')
 			{
-				$tickets = -1;
+				$tickets = - 1;
 			}
 
 			$mysqls = intval_ressource($_POST['mysqls']);
 
 			if(isset($_POST['mysqls_ul']))
 			{
-				$mysqls = -1;
+				$mysqls = - 1;
 			}
 
 			if($settings['aps']['aps_active'] == '1')
@@ -300,7 +289,7 @@ if($page == 'admins'
 
 				if(isset($_POST['number_of_aps_packages_ul']))
 				{
-					$number_of_aps_packages = -1;
+					$number_of_aps_packages = - 1;
 				}
 
 				$can_manage_aps_packages = intval($_POST['can_manage_aps_packages']);
@@ -329,14 +318,14 @@ if($page == 'admins'
 
 			if(isset($_POST['diskspace_ul']))
 			{
-				$diskspace = -1;
+				$diskspace = - 1;
 			}
 
 			$traffic = doubleval_ressource($_POST['traffic']);
 
 			if(isset($_POST['traffic_ul']))
 			{
-				$traffic = -1;
+				$traffic = - 1;
 			}
 
 			$diskspace = $diskspace * 1024;
@@ -462,10 +451,7 @@ if($page == 'admins'
 
 			if($loginname == '')
 			{
-				standard_error(array(
-					'stringisempty',
-					'myloginname'
-				));
+				standard_error(array('stringisempty', 'myloginname'));
 			}
 			elseif(strtolower($loginname_check['loginname']) == strtolower($loginname)
 			       || strtolower($loginname_check_admin['loginname']) == strtolower($loginname))
@@ -485,24 +471,15 @@ if($page == 'admins'
 			}
 			elseif($name == '')
 			{
-				standard_error(array(
-					'stringisempty',
-					'myname'
-				));
+				standard_error(array('stringisempty', 'myname'));
 			}
 			elseif($email == '')
 			{
-				standard_error(array(
-					'stringisempty',
-					'emailadd'
-				));
+				standard_error(array('stringisempty', 'emailadd'));
 			}
 			elseif($password == '')
 			{
-				standard_error(array(
-					'stringisempty',
-					'mypassword'
-				));
+				standard_error(array('stringisempty', 'mypassword'));
 			}
 			elseif(!validateEmail($email))
 			{
@@ -570,10 +547,7 @@ if($page == 'admins'
 					                   VALUES ('" . $db->escape($loginname) . "', '" . md5($password) . "', '" . $db->escape($name) . "', '" . $db->escape($firstname) . "', '" . $db->escape($title) . "', '" . $db->escape($company) . "', '" . $db->escape($street) . "', '" . $db->escape($zipcode) . "', '" . $db->escape($city) . "', '" . $db->escape($country) . "', '" . $db->escape($phone) . "', '" . $db->escape($fax) . "', '" . $db->escape($email) . "','" . $db->escape($def_language) . "', '" . $db->escape($change_serversettings) . "', '" . $db->escape($edit_billingdata) . "', '" . $db->escape($customers) . "', '" . $db->escape($customers_see_all) . "', '" . $db->escape($domains) . "', '" . $db->escape($domains_see_all) . "', '" . (int)$caneditphpsettings . "', '" . $db->escape($diskspace) . "', '" . $db->escape($traffic) . "', '" . $db->escape($subdomains) . "', '" . $db->escape($emails) . "', '" . $db->escape($email_accounts) . "', '" . $db->escape($email_forwarders) . "', '" . $db->escape($email_quota) . "', '" . $db->escape($ftps) . "', '" . $db->escape($tickets) . "', '" . $db->escape($mysqls) . "', '" . (int)$ipaddress . "', '" . $db->escape($contract_date) . "', '" . $db->escape($contract_number) . "', '" . $db->escape($taxid) . "', '" . $db->escape($additional_traffic_fee) . "', '" . $db->escape($additional_traffic_unit) . "','" . $db->escape($additional_diskspace_fee) . "', '" . $db->escape($additional_diskspace_unit) . "','" . $db->escape($interval_fee) . "', '" . $db->escape($interval_length) . "', '" . $db->escape($interval_type) . "', '" . $db->escape($interval_payment) . "', '" . $db->escape($setup_fee) . "', '" . $db->escape($taxclass) . "', '" . $db->escape($service_active) . "', '" . $db->escape($servicestart_date) . "', '" . $db->escape($term_of_payment) . "', '" . $db->escape($calc_tax) . "', '" . $db->escape($payment_every) . "', '" . $db->escape($payment_method) . "', '" . $db->escape($bankaccount_holder) . "', '" . $db->escape($bankaccount_number) . "', '" . $db->escape($bankaccount_blz) . "', '" . $db->escape($bankaccount_bank) . "', '" . $db->escape($customer_categories_once) . "', '" . $db->escape($customer_categories_period) . "', " . (int)$can_manage_aps_packages . ", " . (int)$number_of_aps_packages . ")");
 				$adminid = $db->insert_id();
 				$log->logAction(ADM_ACTION, LOG_INFO, "added admin '" . $loginname . "'");
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 		}
 		else
@@ -706,35 +680,35 @@ if($page == 'admins'
 
 					if(isset($_POST['customers_ul']))
 					{
-						$customers = -1;
+						$customers = - 1;
 					}
 
 					$domains = intval_ressource($_POST['domains']);
 
 					if(isset($_POST['domains_ul']))
 					{
-						$domains = -1;
+						$domains = - 1;
 					}
 
 					$subdomains = intval_ressource($_POST['subdomains']);
 
 					if(isset($_POST['subdomains_ul']))
 					{
-						$subdomains = -1;
+						$subdomains = - 1;
 					}
 
 					$emails = intval_ressource($_POST['emails']);
 
 					if(isset($_POST['emails_ul']))
 					{
-						$emails = -1;
+						$emails = - 1;
 					}
 
 					$email_accounts = intval_ressource($_POST['email_accounts']);
 
 					if(isset($_POST['email_accounts_ul']))
 					{
-						$email_accounts = -1;
+						$email_accounts = - 1;
 					}
 
 					$email_forwarders = intval_ressource($_POST['email_forwarders']);
@@ -750,40 +724,40 @@ if($page == 'admins'
 
 						if(isset($_POST['email_quota_ul']))
 						{
-							$email_quota = -1;
+							$email_quota = - 1;
 						}
 					}
 					else
 					{
-						$email_quota = -1;
+						$email_quota = - 1;
 					}
 
 					$ftps = intval_ressource($_POST['ftps']);
 
 					if(isset($_POST['ftps_ul']))
 					{
-						$ftps = -1;
+						$ftps = - 1;
 					}
 
 					$tickets = intval_ressource($_POST['tickets']);
 
 					if(isset($_POST['tickets_ul']))
 					{
-						$tickets = -1;
+						$tickets = - 1;
 					}
 
 					$mysqls = intval_ressource($_POST['mysqls']);
 
 					if(isset($_POST['mysqls_ul']))
 					{
-						$mysqls = -1;
+						$mysqls = - 1;
 					}
 
 					$number_of_aps_packages = intval_ressource($_POST['number_of_aps_packages']);
 
 					if(isset($_POST['number_of_aps_packages_ul']))
 					{
-						$number_of_aps_packages = -1;
+						$number_of_aps_packages = - 1;
 					}
 
 					$customers_see_all = intval($_POST['customers_see_all']);
@@ -805,14 +779,14 @@ if($page == 'admins'
 
 					if(isset($_POST['diskspace_ul']))
 					{
-						$diskspace = -1;
+						$diskspace = - 1;
 					}
 
 					$traffic = doubleval_ressource($_POST['traffic']);
 
 					if(isset($_POST['traffic_ul']))
 					{
-						$traffic = -1;
+						$traffic = - 1;
 					}
 
 					$diskspace = $diskspace * 1024;
@@ -947,25 +921,16 @@ if($page == 'admins'
 				if($name == ''
 				   && $company == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'myname'
-					));
+					standard_error(array('stringisempty', 'myname'));
 				}
 				elseif($firstname == ''
 				       && $company == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'myfirstname'
-					));
+					standard_error(array('stringisempty', 'myfirstname'));
 				}
 				elseif($email == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'emailadd'
-					));
+					standard_error(array('stringisempty', 'emailadd'));
 				}
 				elseif(!validateEmail($email))
 				{

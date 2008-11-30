@@ -1069,6 +1069,7 @@ $lng['serversettings']['billing']['invoicenumber_count']['title'] = 'Current inv
 $lng['serversettings']['billing']['invoicenumber_count']['description'] = 'This is the number of fixed invoices. Changes could result in an argue with your accountant.';
 
 // ADDED IN 1.2.19-svn25
+
 $lng['emails']['quota'] = 'Quota';
 $lng['emails']['noquota'] = 'No quota';
 $lng['emails']['updatequota'] = 'Update Quota';
@@ -1088,7 +1089,7 @@ $lng['customer']['mail_quota'] = 'Mailquota';
 $lng['panel']['megabyte'] = 'MegaByte';
 $lng['panel']['not_supported'] = 'Not supported in: ';
 $lng['emails']['quota_edit'] = 'Change E-Mail Quota';
-$lng['error']['allocatetoomuchquota'] = 'You try to allocate %s MB ' . $lng['emails']['quota'] .', but you have not enough left.';
+$lng['error']['allocatetoomuchquota'] = 'You try to allocate %s MB ' . $lng['emails']['quota'] . ', but you have not enough left.';
 
 // Autoresponder module
 
@@ -1344,7 +1345,6 @@ $lng['aps']['allpackagesused'] = '<strong>Error</strong><br/><br/>You have alrea
 $lng['aps']['noinstancesexisting'] = 'There are currently no instances which could be managed. There must be installed at least one application by a customer.';
 $lng['aps']['lightywarning'] = 'Warning';
 $lng['aps']['lightywarningdescription'] = 'You are using the lighttpd webserver together with SysCP. The APS module was mainly written for Apache, so it can be possible that some features do not work with lighttpd. Please remember this when using the APS module. If you have found or experienced any problems in connection with lighttpd and the APS module please report them to the developers that they can be fixed within the next release if SysCP.';
-
 $lng['error']['customerdoesntexist'] = 'The customer you have chosen doesn\'t exist.';
 $lng['error']['admindoesntexist'] = 'The admin you have chosen doesn\'t exist.';
 
@@ -1360,7 +1360,6 @@ $lng['serversettings']['panel_allow_domain_change_customer']['title'] = 'Allow m
 $lng['serversettings']['panel_allow_domain_change_customer']['description'] = 'If activated you can change the customer of a domain at domainsettings.<br /><b>Attention:</b> SysCP won\'t change any paths. This could render a domain unusable!';
 $lng['domains']['associated_with_domain'] = 'Associated';
 $lng['domains']['aliasdomains'] = 'Aliasdomains';
-
 $lng['error']['ipportdoesntexist'] = 'The ip/port combination you have chosen doesn\'t exist.';
 
 // ADDED IN 1.2.19-svn38

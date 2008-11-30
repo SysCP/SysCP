@@ -30,7 +30,7 @@ class apache_fcgid extends apache
 {
 	private $php_configs_cache = array();
 	private $admin_cache = array();
-	
+
 	/*
 	*	We put together the needed php options in the virtualhost entries
 	*/
@@ -42,7 +42,6 @@ class apache_fcgid extends apache
 		if($domain['phpenabled'] == '1')
 		{
 			// This vHost has PHP enabled and we are using mod_fcgid
-
 			//create basic variables for config
 
 			$configdir = makeCorrectDir($this->settings['system']['mod_fcgid_configdir'] . '/' . $domain['loginname'] . '/' . $domain['domain'] . '/');
@@ -81,11 +80,12 @@ class apache_fcgid extends apache
 				$php_options_text.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
 				$php_options_text.= '  <Directory "' . $domain['documentroot'] . '">' . "\n";
 				$file_extensions = explode(' ', $phpconfig['file_extensions']);
-				$php_options_text.= '    AddHandler fcgid-script .' . implode( ' .', $file_extensions) . "\n";
+				$php_options_text.= '    AddHandler fcgid-script .' . implode(' .', $file_extensions) . "\n";
 				foreach($file_extensions as $file_extension)
 				{
 					$php_options_text.= '    FCGIWrapper ' . $starter_filename . ' .' . $file_extension . "\n";
 				}
+
 				$php_options_text.= '    Options +ExecCGI' . "\n";
 				$php_options_text.= '  </Directory>' . "\n";
 			}
@@ -102,13 +102,13 @@ class apache_fcgid extends apache
 
 			// set number of processes for one domain
 
-			if((int)$domain['mod_fcgid_starter'] != -1)
+			if((int)$domain['mod_fcgid_starter'] != - 1)
 			{
 				$starter_file.= "PHP_FCGI_CHILDREN=" . (int)$domain['mod_fcgid_starter'] . "\n";
 			}
 			else
 			{
-				if((int)$phpconfig['mod_fcgid_starter'] != -1)
+				if((int)$phpconfig['mod_fcgid_starter'] != - 1)
 				{
 					$starter_file.= "PHP_FCGI_CHILDREN=" . (int)$phpconfig['mod_fcgid_starter'] . "\n";
 				}
@@ -122,13 +122,13 @@ class apache_fcgid extends apache
 
 			// set number of maximum requests for one domain
 
-			if((int)$domain['mod_fcgid_maxrequests'] != -1)
+			if((int)$domain['mod_fcgid_maxrequests'] != - 1)
 			{
 				$starter_file.= "PHP_FCGI_MAX_REQUESTS=" . (int)$domain['mod_fcgid_maxrequests'] . "\n";
 			}
 			else
 			{
-				if((int)$phpconfig['mod_fcgid_maxrequests'] != -1)
+				if((int)$phpconfig['mod_fcgid_maxrequests'] != - 1)
 				{
 					$starter_file.= "PHP_FCGI_MAX_REQUESTS=" . (int)$phpconfig['mod_fcgid_maxrequests'] . "\n";
 				}
@@ -222,7 +222,7 @@ class apache_fcgid extends apache
 
 		return $php_options_text;
 	}
-	
+
 	private function getPhpConfig($php_config_id)
 	{
 		$php_config_id = intval($php_config_id);
@@ -254,4 +254,5 @@ class apache_fcgid extends apache
 		return $this->admin_cache[$adminid];
 	}
 }
+
 ?>

@@ -301,24 +301,24 @@ class taxController
 
 		switch($interval_type)
 		{
-		case 'y':
-			for ($i = 1;$i <= $interval_length;$i++)
-			{
-				$returnval+= getDaysForYear((int)$service_date_begin_array['m'], (int)$service_date_begin_array['y'] + ($i - 1));
-			}
+			case 'y':
+				for ($i = 1;$i <= $interval_length;$i++)
+				{
+					$returnval+= getDaysForYear((int)$service_date_begin_array['m'], (int)$service_date_begin_array['y'] + ($i - 1));
+				}
 
-			break;
-		case 'm':
-			for ($i = 1;$i <= $interval_length;$i++)
-			{
-				$returnval+= getDaysForMonth((int)$service_date_begin_array['m'] + ($i - 1), (int)$service_date_begin_array['y']);
-			}
+				break;
+			case 'm':
+				for ($i = 1;$i <= $interval_length;$i++)
+				{
+					$returnval+= getDaysForMonth((int)$service_date_begin_array['m'] + ($i - 1), (int)$service_date_begin_array['y']);
+				}
 
-			break;
-		case 'd':
-		default:
-			$returnval = $interval_length;
-			break;
+				break;
+			case 'd':
+			default:
+				$returnval = $interval_length;
+				break;
 		}
 
 		return $returnval;

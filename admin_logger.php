@@ -90,24 +90,24 @@ if($page == 'log'
 					{
 						switch($action)
 						{
-						case USR_ACTION:
-							$_action = $lng['admin']['customer'];
-							break;
-						case RES_ACTION:
-							$_action = 'Reseller';
-							break;
-						case ADM_ACTION:
-							$_action = 'Administrator';
-							break;
-						case CRON_ACTION:
-							$_action = 'Cronjob';
-							break;
-						case LOG_ERROR:
-							$_action = 'Internal';
-							break;
-						default:
-							$_action = 'Unknown';
-							break;
+							case USR_ACTION:
+								$_action = $lng['admin']['customer'];
+								break;
+							case RES_ACTION:
+								$_action = 'Reseller';
+								break;
+							case ADM_ACTION:
+								$_action = 'Administrator';
+								break;
+							case CRON_ACTION:
+								$_action = 'Cronjob';
+								break;
+							case LOG_ERROR:
+								$_action = 'Internal';
+								break;
+							default:
+								$_action = 'Unknown';
+								break;
 						}
 
 						$row['action'] = $_action;
@@ -120,24 +120,24 @@ if($page == 'log'
 
 					switch($type)
 					{
-					case LOG_INFO:
-						$_type = 'Information';
-						break;
-					case LOG_NOTICE:
-						$_type = 'Notice';
-						break;
-					case LOG_WARNING:
-						$_type = 'Warning';
-						break;
-					case LOG_ERR:
-						$_type = 'Error';
-						break;
-					case LOG_CRIT:
-						$_type = 'Critical';
-						break;
-					default:
-						$_type = 'Unknown';
-						break;
+						case LOG_INFO:
+							$_type = 'Information';
+							break;
+						case LOG_NOTICE:
+							$_type = 'Notice';
+							break;
+						case LOG_WARNING:
+							$_type = 'Warning';
+							break;
+						case LOG_ERR:
+							$_type = 'Error';
+							break;
+						case LOG_CRIT:
+							$_type = 'Critical';
+							break;
+						default:
+							$_type = 'Unknown';
+							break;
 					}
 
 					$row['type'] = $_type;
@@ -163,17 +163,11 @@ if($page == 'log'
 
 			$db->query("DELETE FROM `" . TABLE_PANEL_LOG . "` WHERE `date` < '" . $yesterday . "'");
 			$log->logAction(ADM_ACTION, LOG_WARNING, "truncated the system-log (mysql)");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
-			ask_yesno('logger_reallytruncate', $filename, array(
-				'page' => $page,
-				'action' => $action
-			), TABLE_PANEL_LOG);
+			ask_yesno('logger_reallytruncate', $filename, array('page' => $page, 'action' => $action), TABLE_PANEL_LOG);
 		}
 	}
 }

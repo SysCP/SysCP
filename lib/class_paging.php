@@ -397,10 +397,7 @@ class paging
 		}
 
 		$sortcode.= '</select>' . ($break ? '<br />' : '&nbsp;') . '<select class="dropdown_noborder" name="sortorder">';
-		foreach(array(
-			'asc' => $lng['panel']['ascending'],
-			'desc' => $lng['panel']['decending']
-		) as $sortordertype => $sortorderdescription)
+		foreach(array('asc' => $lng['panel']['ascending'], 'desc' => $lng['panel']['decending']) as $sortordertype => $sortorderdescription)
 		{
 			$sortcode.= makeoption($sortorderdescription, $sortordertype, $this->sortorder, true, true);
 		}

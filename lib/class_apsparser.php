@@ -60,6 +60,7 @@ class ApsParser
 		$Question = false;
 
 		//dont do anything if there is no instance
+
 		if((int)$this->userinfo['customers_see_all'] == 1)
 		{
 			$Instances = $this->db->query('SELECT * FROM `' . TABLE_APS_INSTANCES . '` AS `i` INNER JOIN `' . TABLE_APS_PACKAGES . '` AS `p` ON `i`.`PackageID` = `p`.`ID`');
@@ -679,7 +680,6 @@ class ApsParser
 				//no packages have been installed in system
 
 				self::InfoBox($lng['aps']['nopackagesinsystem']);
-
 				eval("echo \"" . getTemplate("aps/manage_packages_download") . "\";");
 			}
 			else
@@ -997,24 +997,24 @@ class ApsParser
 
 			switch($Row['Status'])
 			{
-			case INSTANCE_INSTALL:
-				$Temp.= $lng['aps']['instance_install'];
-				break;
-			case INSTANCE_TASK_ACTIVE:
-				$Temp.= $lng['aps']['instance_task_active'];
-				break;
-			case INSTANCE_SUCCESS:
-				$Temp.= $lng['aps']['instance_success'];
-				break;
-			case INSTANCE_ERROR:
-				$Temp.= $lng['aps']['instance_error'];
-				break;
-			case INSTANCE_UNINSTALL:
-				$Temp.= $lng['aps']['instance_uninstall'];
-				break;
-			default:
-				$Temp.= $lng['aps']['unknown_status'];
-				break;
+				case INSTANCE_INSTALL:
+					$Temp.= $lng['aps']['instance_install'];
+					break;
+				case INSTANCE_TASK_ACTIVE:
+					$Temp.= $lng['aps']['instance_task_active'];
+					break;
+				case INSTANCE_SUCCESS:
+					$Temp.= $lng['aps']['instance_success'];
+					break;
+				case INSTANCE_ERROR:
+					$Temp.= $lng['aps']['instance_error'];
+					break;
+				case INSTANCE_UNINSTALL:
+					$Temp.= $lng['aps']['instance_uninstall'];
+					break;
+				default:
+					$Temp.= $lng['aps']['unknown_status'];
+					break;
 			}
 
 			$Fieldname = $lng['aps']['currentstatus'];
@@ -1029,21 +1029,21 @@ class ApsParser
 				{
 					switch($Row2['Task'])
 					{
-					case TASK_INSTALL:
-						$Temp.= $lng['aps']['task_install'] . '<br/>';
-						break;
-					case TASK_REMOVE:
-						$Temp.= $lng['aps']['task_remove'] . '<br/>';
-						break;
-					case TASK_RECONFIGURE:
-						$Temp.= $lng['aps']['task_reconfigure'] . '<br/>';
-						break;
-					case TASK_UPGRADE:
-						$Temp.= $lng['aps']['task_upgrade'] . '<br/>';
-						break;
-					default:
-						$Temp.= $lng['aps']['unknown_status'] . '<br/>';
-						break;
+						case TASK_INSTALL:
+							$Temp.= $lng['aps']['task_install'] . '<br/>';
+							break;
+						case TASK_REMOVE:
+							$Temp.= $lng['aps']['task_remove'] . '<br/>';
+							break;
+						case TASK_RECONFIGURE:
+							$Temp.= $lng['aps']['task_reconfigure'] . '<br/>';
+							break;
+						case TASK_UPGRADE:
+							$Temp.= $lng['aps']['task_upgrade'] . '<br/>';
+							break;
+						default:
+							$Temp.= $lng['aps']['unknown_status'] . '<br/>';
+							break;
 					}
 				}
 			}
@@ -1164,6 +1164,7 @@ class ApsParser
 		$this->db->query('INSERT INTO `' . TABLE_APS_TASKS . '` (`InstanceID`, `Task`) VALUES(' . $this->db->escape($Row['ID']) . ', ' . TASK_INSTALL . ')');
 
 		//update used counter for packages
+
 		$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` + 1 WHERE `customerid` = ' . (int)$CustomerId);
 		self::InfoBox(sprintf($lng['aps']['successonnewinstance'], $Xml->name));
 		unset($Xml);
@@ -1185,12 +1186,12 @@ class ApsParser
 
 		switch($Last)
 		{
-		case 'g':
-			$Value*= 1024;
-		case 'm':
-			$Value*= 1024;
-		case 'k':
-			$Value*= 1024;
+			case 'g':
+				$Value*= 1024;
+			case 'm':
+				$Value*= 1024;
+			case 'k':
+				$Value*= 1024;
 		}
 
 		return $Value;
@@ -1207,11 +1208,7 @@ class ApsParser
 	{
 		//convert php.ini values to true and false as string
 
-		$Value = ini_get(str_replace(array(
-			'-'
-		), array(
-			'_'
-		), $Value));
+		$Value = ini_get(str_replace(array('-'), array('_'), $Value));
 
 		if($Value == 0
 		   || $Value == false
@@ -1266,7 +1263,8 @@ class ApsParser
 		$XmlPhpMapping = $ParentMapping->children('http://apstandard.com/ns/1/php');
 		foreach($XmlPhpMapping->handler as $Handler)
 		{
-			if(isset($Handler->extension[0]) && strval($Handler->extension[0]) != 'php')
+			if(isset($Handler->extension[0])
+			   && strval($Handler->extension[0]) != 'php')
 			{
 				$Error[] = $lng['aps']['php_misc_handler'];
 			}
@@ -1388,17 +1386,9 @@ class ApsParser
 				if($XmlPhp->{$Value})
 				{
 					if(self::TrueFalseIniGet($Value) != $XmlPhp->{$Value}
-					   && !self::CheckException('php', 'configuration', str_replace(array(
-						'-'
-					), array(
-						'_'
-					), $Value)))
+					   && !self::CheckException('php', 'configuration', str_replace(array('-'), array('_'), $Value)))
 					{
-						$Error[] = sprintf($lng['aps']['php_configuration'], str_replace(array(
-							'-'
-						), array(
-							'_'
-						), $Value));
+						$Error[] = sprintf($lng['aps']['php_configuration'], str_replace(array('-'), array('_'), $Value));
 					}
 				}
 			}
@@ -1836,8 +1826,8 @@ class ApsParser
 						$this->db->query('DELETE FROM `' . TABLE_APS_INSTANCES . '` WHERE `ID` = ' . $this->db->escape($Id));
 
 						//update used counter
-						$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` - 1 WHERE `customerid` = ' . (int)$CustomerId);
 
+						$this->db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `aps_packages_used` = `aps_packages_used` - 1 WHERE `customerid` = ' . (int)$CustomerId);
 						self::InfoBox($lng['aps']['installstopped']);
 					}
 					else
@@ -2088,9 +2078,9 @@ class ApsParser
 
 			if(!$FileHandle)return false;
 
-			while (!feof($FileHandle))
+			while(!feof($FileHandle))
 			{
-				$Content .= fread($FileHandle, 8192);
+				$Content.= fread($FileHandle, 8192);
 			}
 
 			fclose($FileHandle);
@@ -2101,8 +2091,7 @@ class ApsParser
 			//on 64 bit systems the zip functions can fail -> use safe_exec to extract the files
 
 			$ReturnLines = array();
-			$ReturnVal = -1;
-
+			$ReturnVal = - 1;
 			$ReturnLines = safe_exec('unzip -o -j -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($File) . ' -d ' . escapeshellarg(sys_get_temp_dir() . '/'), $ReturnVal);
 
 			if($ReturnVal == 0)
@@ -2119,6 +2108,7 @@ class ApsParser
 		}
 
 		//return content of file from within the zipfile or save to disk
+
 		if($Content == '')
 		{
 			return false;
@@ -2132,6 +2122,7 @@ class ApsParser
 			else
 			{
 				//open file and save content
+
 				$File = fopen($Destination, "wb");
 
 				if($File)
@@ -2707,13 +2698,16 @@ class ApsParser
 		if($Xml == false)return false;
 
 		//show notifcation if customer has reached his installation limit
-		if($this->userinfo['aps_packages'] != '-1' && (int)$this->userinfo['aps_packages_used'] >= (int)$this->userinfo['aps_packages'])
+
+		if($this->userinfo['aps_packages'] != '-1'
+		   && (int)$this->userinfo['aps_packages_used'] >= (int)$this->userinfo['aps_packages'])
 		{
 			self::InfoBox($lng['aps']['allpackagesused']);
 			return false;
 		}
 
 		//icon for package
+
 		$Icon = './images/default.png';
 
 		if($Xml->icon['path'])

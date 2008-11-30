@@ -77,9 +77,7 @@ if($page == 'overview')
 
 	if($opentickets > 0)
 	{
-		$awaitingtickets_text = strtr($lng['ticket']['awaitingticketreply'], array(
-			'%s' => '<a href="customer_tickets.php?page=tickets&amp;s=' . $s . '">' . $opentickets['count'] . '</a>'
-		));
+		$awaitingtickets_text = strtr($lng['ticket']['awaitingticketreply'], array('%s' => '<a href="customer_tickets.php?page=tickets&amp;s=' . $s . '">' . $opentickets['count'] . '</a>'));
 	}
 
 	eval("echo \"" . getTemplate("index/index") . "\";");
@@ -102,24 +100,15 @@ elseif($page == 'change_password')
 
 		if($old_password == '')
 		{
-			standard_error(array(
-				'stringisempty',
-				'oldpassword'
-			));
+			standard_error(array('stringisempty', 'oldpassword'));
 		}
 		elseif($new_password == '')
 		{
-			standard_error(array(
-				'stringisempty',
-				'newpassword'
-			));
+			standard_error(array('stringisempty', 'newpassword'));
 		}
 		elseif($new_password_confirm == '')
 		{
-			standard_error(array(
-				'stringisempty',
-				'newpasswordconfirm'
-			));
+			standard_error(array('stringisempty', 'newpasswordconfirm'));
 		}
 		elseif($new_password != $new_password_confirm)
 		{
@@ -153,9 +142,7 @@ elseif($page == 'change_password')
 				$db->query("UPDATE `" . TABLE_PANEL_HTPASSWDS . "` SET `password`='" . $db->escape($new_webalizer_password) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `username`='" . $db->escape($userinfo['loginname']) . "'");
 			}
 
-			redirectTo($filename, Array(
-				's' => $s
-			));
+			redirectTo($filename, Array('s' => $s));
 		}
 	}
 	else
@@ -177,9 +164,7 @@ elseif($page == 'change_language')
 			$log->logAction(USR_ACTION, LOG_NOTICE, "changed default language to '" . $def_language . "'");
 		}
 
-		redirectTo($filename, Array(
-			's' => $s
-		));
+		redirectTo($filename, Array('s' => $s));
 	}
 	else
 	{

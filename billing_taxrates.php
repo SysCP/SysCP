@@ -93,9 +93,7 @@ if($userinfo['customers_see_all'] == '1')
 
 			$taxclass = (isset($taxclasses[$_POST['taxclass']]) ? $_POST['taxclass'] : '1');
 			$db->query('INSERT INTO `' . TABLE_BILLING_TAXRATES . '` (`taxclass`, `taxrate`, `valid_from`) VALUES( \'' . $db->escape($taxclass) . '\', \'' . $db->escape($taxrate) . '\', \'' . $db->escape($valid_from) . '\' ) ');
-			redirectTo($filename, Array(
-				's' => $s
-			));
+			redirectTo($filename, Array('s' => $s));
 		}
 		else
 		{
@@ -115,16 +113,11 @@ if($userinfo['customers_see_all'] == '1')
 			   && $_POST['send'] == 'send')
 			{
 				$db->query('DELETE FROM `' . TABLE_BILLING_TAXRATES . '` WHERE `taxid` = \'' . $id . '\' ');
-				redirectTo($filename, Array(
-					's' => $s
-				));
+				redirectTo($filename, Array('s' => $s));
 			}
 			else
 			{
-				ask_yesno('billing_taxrate_reallydelete', $filename, array(
-					'id' => $id,
-					'action' => $action
-				), $taxclasses[$result['taxclass']] . ' - ' . $result['taxrate']);
+				ask_yesno('billing_taxrate_reallydelete', $filename, array('id' => $id, 'action' => $action), $taxclasses[$result['taxclass']] . ' - ' . $result['taxrate']);
 			}
 		}
 	}
@@ -156,9 +149,7 @@ if($userinfo['customers_see_all'] == '1')
 
 				$taxclass = ((isset($_POST['taxclass']) && isset($taxclasses[$_POST['taxclass']])) ? $_POST['taxclass'] : '1');
 				$db->query('UPDATE `' . TABLE_BILLING_TAXRATES . '` SET `taxclass` = \'' . $db->escape($taxclass) . '\', `taxrate` = \'' . $db->escape($taxrate) . '\', `valid_from` = \'' . $db->escape($valid_from) . '\' WHERE `taxid` = \'' . $id . '\' ');
-				redirectTo($filename, Array(
-					's' => $s
-				));
+				redirectTo($filename, Array('s' => $s));
 			}
 			else
 			{

@@ -55,9 +55,7 @@ if($action == 'login')
 			}
 			else
 			{
-				redirectTo('index.php', Array(
-					'showmessage' => '2'
-				), true);
+				redirectTo('index.php', Array('showmessage' => '2'), true);
 				exit;
 			}
 		}
@@ -67,9 +65,7 @@ if($action == 'login')
 		if($userinfo['loginfail_count'] >= $settings['login']['maxloginattempts']
 		   && $userinfo['lastlogin_fail'] > (time() - $settings['login']['deactivatetime']))
 		{
-			redirectTo('index.php', Array(
-				'showmessage' => '3'
-			), true);
+			redirectTo('index.php', Array('showmessage' => '3'), true);
 			exit;
 		}
 		elseif($userinfo['password'] == md5($password))
@@ -87,9 +83,7 @@ if($action == 'login')
 
 			$db->query("UPDATE $table SET `lastlogin_fail`='" . time() . "', `loginfail_count`=`loginfail_count`+1 WHERE `$uid`='" . (int)$userinfo[$uid] . "'");
 			unset($userinfo);
-			redirectTo('index.php', Array(
-				'showmessage' => '2'
-			), true);
+			redirectTo('index.php', Array('showmessage' => '2'), true);
 			exit;
 		}
 
@@ -125,24 +119,18 @@ if($action == 'login')
 
 			if($userinfo['adminsession'] == '1')
 			{
-				redirectTo('admin_index.php', Array(
-					's' => $s
-				), true);
+				redirectTo('admin_index.php', Array('s' => $s), true);
 				exit;
 			}
 			else
 			{
-				redirectTo('customer_index.php', Array(
-					's' => $s
-				), true);
+				redirectTo('customer_index.php', Array('s' => $s), true);
 				exit;
 			}
 		}
 		else
 		{
-			redirectTo('index.php', Array(
-				'showmessage' => '2'
-			), true);
+			redirectTo('index.php', Array('showmessage' => '2'), true);
 			exit;
 		}
 	}
@@ -161,18 +149,18 @@ if($action == 'login')
 
 		switch($smessage)
 		{
-		case 1:
-			$message = $lng['pwdreminder']['success'];
-			break;
-		case 2:
-			$message = $lng['error']['login'];
-			break;
-		case 3:
-			$message = $lng['error']['login_blocked'];
-			break;
-		case 4:
-			$message = $lng['error']['errorsendingmail'];
-			break;
+			case 1:
+				$message = $lng['pwdreminder']['success'];
+				break;
+			case 2:
+				$message = $lng['error']['login'];
+				break;
+			case 3:
+				$message = $lng['error']['login_blocked'];
+				break;
+			case 4:
+				$message = $lng['error']['errorsendingmail'];
+				break;
 		}
 
 		eval("echo \"" . getTemplate("login") . "\";");
@@ -223,14 +211,9 @@ if($action == 'forgotpwd')
 							AND `email`='" . $user['email'] . "'");
 				}
 
-				$rstlog = SysCPLogger::getInstanceOf(array(
-					'loginname' => 'password_reset'
-				), $db, $settings);
+				$rstlog = SysCPLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
 				$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user['loginname'] . "' has been reset!");
-				$body = strtr($lng['pwdreminder']['body'], array(
-					'%s' => $user['firstname'] . ' ' . $user['name'],
-					'%p' => $password
-				));
+				$body = strtr($lng['pwdreminder']['body'], array('%s' => $user['firstname'] . ' ' . $user['name'], '%p' => $password));
 				$mail->From = $settings['panel']['adminmail'];
 				$mail->FromName = 'SysCP';
 				$mail->Subject = $lng['pwdreminder']['subject'];
@@ -248,27 +231,19 @@ if($action == 'forgotpwd')
 						$mailerr_msg = $email;
 					}
 
-					$rstlog = SysCPLogger::getInstanceOf(array(
-						'loginname' => 'password_reset'
-					), $db, $settings);
+					$rstlog = SysCPLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
 					$rstlog->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
-					redirectTo('index.php', Array(
-						'showmessage' => '4'
-					), true);
+					redirectTo('index.php', Array('showmessage' => '4'), true);
 					exit;
 				}
 
 				$mail->ClearAddresses();
-				redirectTo('index.php', Array(
-					'showmessage' => '1'
-				), true);
+				redirectTo('index.php', Array('showmessage' => '1'), true);
 				exit;
 			}
 			else
 			{
-				$rstlog = SysCPLogger::getInstanceOf(array(
-					'loginname' => 'password_reset'
-				), $db, $settings);
+				$rstlog = SysCPLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
 				$rstlog->logAction(USR_ACTION, LOG_WARNING, "User '" . $loginname . "' tried to reset pwd but wasn't found in database!");
 				$message = $lng['login']['usernotfound'];
 			}

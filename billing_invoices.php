@@ -134,10 +134,7 @@ if($userinfo['customers_see_all'] == '1')
 					$db->query('UPDATE `' . getModeDetails($mode, 'TABLE_BILLING_INVOICES', 'table') . '` SET `xml` = \'' . $db->escape($invoiceXml->asXML()) . '\' WHERE `id` = \'' . $id . '\' ');
 				}
 
-				redirectTo($filename, Array(
-					's' => $s,
-					'mode' => $mode
-				));
+				redirectTo($filename, Array('s' => $s, 'mode' => $mode));
 			}
 			else
 			{

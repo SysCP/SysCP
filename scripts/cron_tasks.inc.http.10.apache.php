@@ -250,7 +250,8 @@ class apache
 	{
 		$stats_text = '';
 
-		if($domain['speciallogfile'] == '1' && $this->settings['system']['mod_log_sql'] != '1')
+		if($domain['speciallogfile'] == '1'
+		   && $this->settings['system']['mod_log_sql'] != '1')
 		{
 			if($domain['parentdomainid'] == '0')
 			{
@@ -295,7 +296,8 @@ class apache
 	{
 		$logfiles_text = '';
 
-		if($domain['speciallogfile'] == '1' && $this->settings['system']['mod_log_sql'] != '1')
+		if($domain['speciallogfile'] == '1'
+		   && $this->settings['system']['mod_log_sql'] != '1')
 		{
 			if($domain['parentdomainid'] == '0')
 			{

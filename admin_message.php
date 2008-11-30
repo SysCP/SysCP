@@ -99,12 +99,7 @@ if($page == 'message')
 					$mail->ClearAddresses();
 				}
 
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s,
-					'action' => 'showsuccess',
-					'sentitems' => $mailcounter
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s, 'action' => 'showsuccess', 'sentitems' => $mailcounter));
 			}
 			else
 			{

@@ -182,9 +182,7 @@ if($userinfo['customers_see_all'] == '1')
 			}
 
 			$db->query('INSERT INTO `' . TABLE_BILLING_SERVICE_OTHER . '` (`customerid`, `templateid`, `caption_setup`, `caption_interval`, `taxclass`, `quantity`, `interval_fee`, `interval_length`, `interval_type`, `interval_payment`, `setup_fee`, `service_active`, `servicestart_date`) VALUES(\'' . $db->escape($customerid) . '\', \'' . $db->escape($templateid) . '\', \'' . $db->escape($caption_setup) . '\', \'' . $db->escape($caption_interval) . '\', \'' . $db->escape($taxclass) . '\', \'' . $db->escape($quantity) . '\', \'' . $db->escape($interval_fee) . '\', \'' . $db->escape($interval_length) . '\', \'' . $db->escape($interval_type) . '\', \'' . $db->escape($interval_payment) . '\', \'' . $db->escape($setup_fee) . '\', \'' . $db->escape($service_active) . '\', \'' . $db->escape($servicestart_date) . '\') ');
-			redirectTo($filename, Array(
-				's' => $s
-			));
+			redirectTo($filename, Array('s' => $s));
 		}
 		else
 		{
@@ -206,18 +204,13 @@ if($userinfo['customers_see_all'] == '1')
 			   && $_POST['send'] == 'send')
 			{
 				$db->query('DELETE FROM `' . TABLE_BILLING_SERVICE_OTHER . '` WHERE `id` = \'' . $id . '\' ');
-				redirectTo($filename, Array(
-					's' => $s
-				));
+				redirectTo($filename, Array('s' => $s));
 			}
 			else
 			{
 				$result = $db->query_first('SELECT * FROM `' . TABLE_BILLING_SERVICE_OTHER . '` WHERE `id` = \'' . $id . '\' ');
 				$result['valid_from'] = date('Y-m-d', $result['valid_from']);
-				ask_yesno('billing_other_service_reallydelete', $filename, array(
-					'id' => $id,
-					'action' => $action
-				));
+				ask_yesno('billing_other_service_reallydelete', $filename, array('id' => $id, 'action' => $action));
 			}
 		}
 	}

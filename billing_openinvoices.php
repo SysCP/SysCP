@@ -288,22 +288,11 @@ if($userinfo['customers_see_all'] == '1')
 			{
 				$db->query('INSERT INTO `' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'table') . '` (`' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'key') . '`, `userid`, `timestamp`, `key`, `action`) VALUES(\'' . $db->escape($id) . '\', \'' . $db->escape($userinfo['userid']) . '\', \'' . $db->escape(time()) . '\', \'' . $db->escape($key) . '\', \'1\')');
 				cacheInvoiceFees($mode, $id);
-				redirectTo($filename, Array(
-					's' => $s,
-					'id' => $id,
-					'mode' => $mode,
-					'page' => $page
-				));
+				redirectTo($filename, Array('s' => $s, 'id' => $id, 'mode' => $mode, 'page' => $page));
 			}
 			else
 			{
-				ask_yesno('billing_invoice_row_reallydelete', $filename, array(
-					'id' => $id,
-					'mode' => $mode,
-					'key' => $key,
-					'page' => $page,
-					'action' => $action
-				));
+				ask_yesno('billing_invoice_row_reallydelete', $filename, array('id' => $id, 'mode' => $mode, 'key' => $key, 'page' => $page, 'action' => $action));
 			}
 		}
 
@@ -335,12 +324,7 @@ if($userinfo['customers_see_all'] == '1')
 			$total_fee = doubleval(str_replace(',', '.', $_POST['total_fee']));
 			$db->query('INSERT INTO `' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'table') . '` (`' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'key') . '`, `userid`, `timestamp`, `key`, `action`, `caption`, `interval`, `taxrate`, `quantity`, `total_fee`) VALUES(\'' . $db->escape($id) . '\', \'' . $db->escape($userinfo['userid']) . '\', \'' . $db->escape(time()) . '\', \'' . $db->escape($key) . '\', \'2\', \'' . $db->escape($caption) . '\', \'' . $db->escape($interval) . '\', \'' . $db->escape($taxrate) . '\', \'' . $db->escape($quantity) . '\', \'' . $db->escape($total_fee) . '\')');
 			cacheInvoiceFees($mode, $id);
-			redirectTo($filename, Array(
-				's' => $s,
-				'id' => $id,
-				'mode' => $mode,
-				'page' => $page
-			));
+			redirectTo($filename, Array('s' => $s, 'id' => $id, 'mode' => $mode, 'page' => $page));
 		}
 
 		if($action == 'reset')
@@ -372,46 +356,25 @@ if($userinfo['customers_see_all'] == '1')
 				}
 
 				cacheInvoiceFees($mode, $id);
-				redirectTo($filename, Array(
-					's' => $s,
-					'id' => $id,
-					'mode' => $mode,
-					'page' => $page
-				));
+				redirectTo($filename, Array('s' => $s, 'id' => $id, 'mode' => $mode, 'page' => $page));
 			}
 			else
 			{
 				if(isset($key)
 				   && $key != '')
 				{
-					ask_yesno('billing_invoice_row_reallyreset_key', $filename, array(
-						'id' => $id,
-						'mode' => $mode,
-						'page' => $page,
-						'action' => $action,
-						'key' => $key
-					));
+					ask_yesno('billing_invoice_row_reallyreset_key', $filename, array('id' => $id, 'mode' => $mode, 'page' => $page, 'action' => $action, 'key' => $key));
 				}
 				else
 				{
-					ask_yesno('billing_invoice_row_reallyreset', $filename, array(
-						'id' => $id,
-						'mode' => $mode,
-						'page' => $page,
-						'action' => $action
-					));
+					ask_yesno('billing_invoice_row_reallyreset', $filename, array('id' => $id, 'mode' => $mode, 'page' => $page, 'action' => $action));
 				}
 			}
 		}
 
 		if($action == 'fixinvoice')
 		{
-			$invoice_number_preset = strtr($lng['invoice']['invoicenumbertemplate'], array(
-				'{number}' => ((int)$settings['billing']['invoicenumber_count'] + 1),
-				'{year}' => date('Y'),
-				'{month}' => date('m'),
-				'{day}' => date('d')
-			));
+			$invoice_number_preset = strtr($lng['invoice']['invoicenumbertemplate'], array('{number}' => ((int)$settings['billing']['invoicenumber_count'] + 1), '{year}' => date('Y'), '{month}' => date('m'), '{day}' => date('d')));
 
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
@@ -431,24 +394,14 @@ if($userinfo['customers_see_all'] == '1')
 					$invoiceXml = new SimpleXMLElement($invoiceXmlString);
 					$db->query('INSERT INTO `' . getModeDetails($mode, 'TABLE_BILLING_INVOICES', 'table') . '` (`' . getModeDetails($mode, 'TABLE_BILLING_INVOICES', 'key') . '`, `xml`, `invoice_date`, `invoice_number`, `state`, `state_change`, `total_fee`, `total_fee_taxed`) VALUES(\'' . $db->escape($id) . '\', \'' . $db->escape($invoiceXmlString) . '\', \'' . $db->escape(date('Y-m-d')) . '\', \'' . $db->escape($invoice_number) . '\', \'' . $db->escape($state) . '\', \'' . time() . '\', \'' . $db->escape((string)$invoiceXml->total_fee[0]) . '\', \'' . $db->escape((string)$invoiceXml->total_fee_taxed[0]) . '\' ) ');
 
-					if(preg_match('/^' . strtr($lng['invoice']['invoicenumbertemplate'], array(
-						'/' => '\/',
-						'{number}' => '(\d+)',
-						'{year}' => date('Y'),
-						'{month}' => date('m'),
-						'{day}' => date('d')
-					)) . '$/', $invoice_number, $invoicenumber_count))
+					if(preg_match('/^' . strtr($lng['invoice']['invoicenumbertemplate'], array('/' => '\/', '{number}' => '(\d+)', '{year}' => date('Y'), '{month}' => date('m'), '{day}' => date('d'))) . '$/', $invoice_number, $invoicenumber_count))
 					{
 						$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'' . ((int)$invoicenumber_count[1]) . '\' WHERE `settinggroup` = \'billing\' AND `varname` = \'invoicenumber_count\'');
 					}
 				}
 
 				cacheInvoiceFees($mode, $id);
-				redirectTo($filename, Array(
-					's' => $s,
-					'mode' => $mode,
-					'page' => 'overview'
-				));
+				redirectTo($filename, Array('s' => $s, 'mode' => $mode, 'page' => 'overview'));
 			}
 			else
 			{

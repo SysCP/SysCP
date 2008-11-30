@@ -1074,6 +1074,7 @@ $lng['serversettings']['billing']['invoicenumber_count']['description'] = 'Diese
 
 // ADDED IN 1.2.19-svn25
 // Mailquota
+
 $lng['emails']['quota'] = 'Kontingent';
 $lng['emails']['noquota'] = 'Kein Kontingent';
 $lng['emails']['updatequota'] = 'Update Kontingent';
@@ -1093,7 +1094,7 @@ $lng['customer']['mail_quota'] = 'E-Mail Kontingent';
 $lng['panel']['megabyte'] = 'MegaByte';
 $lng['emails']['quota_edit'] = 'E-Mail Kontingent &auml;ndern';
 $lng['panel']['not_supported'] = 'Nicht &uuml;nterst&uuml;zt in: ';
-$lng['error']['allocatetoomuchquota'] = 'Sie versuchen %s MB '. $lng['emails']['quota'].' zu zuweisen, haben aber nicht genug &uuml;brig.';
+$lng['error']['allocatetoomuchquota'] = 'Sie versuchen %s MB ' . $lng['emails']['quota'] . ' zu zuweisen, haben aber nicht genug &uuml;brig.';
 
 // Autoresponder module
 
@@ -1348,7 +1349,6 @@ $lng['aps']['allpackagesused'] = '<strong>Fehler</strong><br/><br/>Sie haben ber
 $lng['aps']['noinstancesexisting'] = 'Es gibt momentan noch keine Instanzen, die verwaltet werden k&ouml;nnten. Es muss mindestens eine Anwendung von einem Kunden installiert worden sein.';
 $lng['aps']['lightywarning'] = 'Warnung';
 $lng['aps']['lightywarningdescription'] = 'Sie verwenden den lighttpd Webserver zusammen mit SysCP. Da das APS Modul haupts&auml;chlich f&uuml;r den Apache Webserver geschrieben wurde, kann es unter Umst&auml;nden vorkommen, dass gewisse Features mit lighttpd nicht funktionieren. Bitte beachten Sie dies bei der Verwendung des APS Moduls. Sollten Sie Fehler bei der Verwendung oder Probleme bei der Nutzung haben, so leiten Sie diese bitte an die Entwickler weiter, damit diese Probleme in der n&auml;chsten Version behoben werden k&ouml;nnen.';
-
 $lng['error']['customerdoesntexist'] = 'Der ausgew&auml;hlte Kunde existiert nicht.';
 $lng['error']['admindoesntexist'] = 'Der ausgew&auml;hlte Admin existiert nicht.';
 
@@ -1364,7 +1364,6 @@ $lng['serversettings']['panel_allow_domain_change_customer']['title'] = 'Erlaube
 $lng['serversettings']['panel_allow_domain_change_customer']['description'] = 'Wenn diese Option aktiviert ist, kann unter Domaineinstellungen die Domain einem anderen Kunden zugewiesen werden.<br /><b>Achtung:</b> Es werden keine Pfade bei dieser Aktion angepasst. Das kann dazu f&uuml;hren, dass die Domain nach dem Verschieben nicht mehr richtig funktioniert!';
 $lng['domains']['associated_with_domain'] = 'Verbunden mit';
 $lng['domains']['aliasdomains'] = 'Aliasdomains';
-
 $lng['error']['ipportdoesntexist'] = 'Die gew&auml;hlte IP/Port-Kombination existiert nicht.';
 
 // ADDED IN 1.2.19-svn38

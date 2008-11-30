@@ -55,7 +55,7 @@ class ApsUpdater extends ApsParser
 
 		if(ini_get('allow_url_fopen') == '0')
 		{
-			echo("The APS updater cronjob requires that allow_url_fopen is enabled for the PHP CLI binary!\n");
+			echo ("The APS updater cronjob requires that allow_url_fopen is enabled for the PHP CLI binary!\n");
 			return;
 		}
 
@@ -198,8 +198,8 @@ class ApsUpdater extends ApsParser
 				fclose($FileHandle);
 
 				//set right permissions
-				chmod($this->RootDir . 'temp/' . $Application . '-' . $Version . '.app.zip', 0664);
 
+				chmod($this->RootDir . 'temp/' . $Application . '-' . $Version . '.app.zip', 0664);
 				return true;
 			}
 			else

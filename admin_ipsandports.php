@@ -105,18 +105,11 @@ if($page == 'ipsandports'
 								$log->logAction(ADM_ACTION, LOG_WARNING, "deleted IP/port '" . $result['ip'] . ":" . $result['port'] . "'");
 								inserttask('1');
 								inserttask('4');
-								redirectTo($filename, Array(
-									'page' => $page,
-									's' => $s
-								));
+								redirectTo($filename, Array('page' => $page, 's' => $s));
 							}
 							else
 							{
-								ask_yesno('admin_ip_reallydelete', $filename, array(
-									'id' => $id,
-									'page' => $page,
-									'action' => $action
-								), $result['ip'] . ':' . $result['port']);
+								ask_yesno('admin_ip_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $result['ip'] . ':' . $result['port']);
 							}
 						}
 					}
@@ -142,10 +135,7 @@ if($page == 'ipsandports'
 		   && $_POST['send'] == 'send')
 		{
 			$ip = validate_ip($_POST['ip']);
-			$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array(
-				'stringisempty',
-				'myport'
-			));
+			$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
 			$listen_statement = intval($_POST['listen_statement']);
 			$namevirtualhost_statement = intval($_POST['namevirtualhost_statement']);
 			$vhostcontainer = intval($_POST['vhostcontainer']);
@@ -190,10 +180,7 @@ if($page == 'ipsandports'
 				$log->logAction(ADM_ACTION, LOG_WARNING, "added IP/port '" . $ip . ":" . $port . "'");
 				inserttask('1');
 				inserttask('4');
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 		}
 		else
@@ -227,10 +214,7 @@ if($page == 'ipsandports'
 			   && $_POST['send'] == 'send')
 			{
 				$ip = validate_ip($_POST['ip']);
-				$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array(
-					'stringisempty',
-					'myport'
-				));
+				$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
 				$result_checkfordouble = $db->query_first("SELECT `id` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($ip) . "' AND `port`='" . (int)$port . "'");
 				$result_sameipotherport = $db->query_first("SELECT `id` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ip`='" . $db->escape($result['ip']) . "' AND `id`!='" . (int)$id . "'");
 				$listen_statement = intval($_POST['listen_statement']);
@@ -276,10 +260,7 @@ if($page == 'ipsandports'
 					$log->logAction(ADM_ACTION, LOG_WARNING, "changed IP/port from '" . $result['ip'] . ":" . $result['port'] . "' to '" . $ip . ":" . $port . "'");
 					inserttask('1');
 					inserttask('4');
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else

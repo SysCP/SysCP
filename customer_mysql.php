@@ -113,18 +113,11 @@ elseif($page == 'mysqls')
 				}
 
 				$result = $db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`-1 ' . $resetaccnumber . 'WHERE `customerid`="' . (int)$userinfo['customerid'] . '"');
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
 			{
-				ask_yesno('mysql_reallydelete', $filename, array(
-					'id' => $id,
-					'page' => $page,
-					'action' => $action
-				), $result['databasename']);
+				ask_yesno('mysql_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $result['databasename']);
 			}
 		}
 	}
@@ -140,10 +133,7 @@ elseif($page == 'mysqls')
 
 				if($password == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'mypassword'
-					));
+					standard_error(array('stringisempty', 'mypassword'));
 				}
 				else
 				{
@@ -171,10 +161,7 @@ elseif($page == 'mysqls')
 					$databasedescription = validate($_POST['description'], 'description');
 					$result = $db->query('INSERT INTO `' . TABLE_PANEL_DATABASES . '` (`customerid`, `databasename`, `description`) VALUES ("' . (int)$userinfo['customerid'] . '", "' . $db->escape($username) . '", "' . $db->escape($databasedescription) . '")');
 					$result = $db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `mysqls_used`=`mysqls_used`+1, `mysql_lastaccountnumber`=`mysql_lastaccountnumber`+1 WHERE `customerid`="' . (int)$userinfo['customerid'] . '"');
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else
@@ -220,10 +207,7 @@ elseif($page == 'mysqls')
 				$log->logAction(USR_ACTION, LOG_INFO, "edited database '" . $result['databasename'] . "'");
 				$databasedescription = validate($_POST['description'], 'description');
 				$result = $db->query('UPDATE `' . TABLE_PANEL_DATABASES . '` SET `description`="' . $db->escape($databasedescription) . '" WHERE `customerid`="' . (int)$userinfo['customerid'] . '" AND `id`="' . (int)$id . '"');
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
 			{

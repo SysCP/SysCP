@@ -533,9 +533,10 @@ class ApsInstaller extends ApsParser
 		else
 		{
 			$ReturnLines = array();
-			$ReturnVal = -1;
+			$ReturnVal = - 1;
 
 			//on 64 bit systems the zip functions can fail -> use exec to extract the files
+
 			$ReturnLines = safe_exec('unzip -o -qq ' . escapeshellarg(realpath($Filename)) . ' ' . escapeshellarg($Directory . '/*') . ' -d ' . escapeshellarg(sys_get_temp_dir()), $ReturnVal);
 
 			if($ReturnVal == 0)
@@ -543,10 +544,8 @@ class ApsInstaller extends ApsParser
 				//fix absolute structure of extracted data
 
 				if(!file_exists($Destination))mkdir($Destination, 0777, true);
-
-				safe_exec('cp -Rf '. sys_get_temp_dir() . '/' . $Directory . '/*' . ' ' . escapeshellarg($Destination));
+				safe_exec('cp -Rf ' . sys_get_temp_dir() . '/' . $Directory . '/*' . ' ' . escapeshellarg($Destination));
 				self::UnlinkRecursive(sys_get_temp_dir() . '/' . $Directory . '/');
-
 				return true;
 			}
 			else

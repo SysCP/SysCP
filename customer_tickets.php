@@ -152,9 +152,7 @@ elseif($page == 'tickets')
 		if($settings['ticket']['concurrently_open'] != - 1
 		   && $settings['ticket']['concurrently_open'] != '')
 		{
-			$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
-				'%s' => $settings['ticket']['concurrently_open']
-			));
+			$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array('%s' => $settings['ticket']['concurrently_open']));
 		}
 		else
 		{
@@ -182,17 +180,11 @@ elseif($page == 'tickets')
 
 				if($newticket->Get('subject') == null)
 				{
-					standard_error(array(
-						'stringisempty',
-						'mysubject'
-					));
+					standard_error(array('stringisempty', 'mysubject'));
 				}
 				elseif($newticket->Get('message') == null)
 				{
-					standard_error(array(
-						'stringisempty',
-						'mymessage'
-					));
+					standard_error(array('stringisempty', 'mymessage'));
 				}
 				else
 				{
@@ -215,10 +207,7 @@ elseif($page == 'tickets')
 					// Admin mail
 
 					$newticket->sendMail(-1, 'new_ticket_by_customer_subject', $lng['mails']['new_ticket_by_customer']['subject'], 'new_ticket_by_customer_mailbody', $lng['mails']['new_ticket_by_customer']['mailbody']);
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else
@@ -253,9 +242,7 @@ elseif($page == 'tickets')
 				if($settings['ticket']['concurrently_open'] != - 1
 				   && $settings['ticket']['concurrently_open'] != '')
 				{
-					$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array(
-						'%s' => $settings['ticket']['concurrently_open']
-					));
+					$notmorethanxopentickets = strtr($lng['ticket']['notmorethanxopentickets'], array('%s' => $settings['ticket']['concurrently_open']));
 				}
 				else
 				{
@@ -284,10 +271,7 @@ elseif($page == 'tickets')
 
 			if($replyticket->Get('message') == null)
 			{
-				standard_error(array(
-					'stringisempty',
-					'mymessage'
-				));
+				standard_error(array('stringisempty', 'mymessage'));
 			}
 			else
 			{
@@ -315,10 +299,7 @@ elseif($page == 'tickets')
 				$mainticket->Update();
 				$log->logAction(USR_ACTION, LOG_NOTICE, "answered support-ticket '" . $mainticket->Get('subject') . "'");
 				$mainticket->sendMail(-1, 'new_reply_ticket_by_customer_subject', $lng['mails']['new_reply_ticket_by_customer']['subject'], 'new_reply_ticket_by_customer_mailbody', $lng['mails']['new_reply_ticket_by_customer']['mailbody']);
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 		}
 		else
@@ -398,19 +379,12 @@ elseif($page == 'tickets')
 			$mainticket->Set('status', '3', true, true);
 			$mainticket->Update();
 			$log->logAction(USR_ACTION, LOG_NOTICE, "closed support-ticket '" . $mainticket->Get('subject') . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
-			ask_yesno('ticket_reallyclose', $filename, array(
-				'id' => $id,
-				'page' => $page,
-				'action' => $action
-			), $mainticket->Get('subject'));
+			ask_yesno('ticket_reallyclose', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $mainticket->Get('subject'));
 		}
 	}
 	elseif($action == 'reopen'
@@ -437,10 +411,7 @@ elseif($page == 'tickets')
 		$mainticket->Set('status', '0', true, true);
 		$mainticket->Update();
 		$log->logAction(USR_ACTION, LOG_NOTICE, "reopened support-ticket '" . $mainticket->Get('subject') . "'");
-		redirectTo($filename, Array(
-			'page' => $page,
-			's' => $s
-		));
+		redirectTo($filename, Array('page' => $page, 's' => $s));
 	}
 }
 

@@ -362,34 +362,34 @@ class invoice
 				{
 					switch($invoice_row['service_occurence'])
 					{
-					case 'once':
-						$rowcaption_field = 'category_rowcaption_setup';
-						$invoice_row['key'].= $invoice_row['service_date'] . '-';
+						case 'once':
+							$rowcaption_field = 'category_rowcaption_setup';
+							$invoice_row['key'].= $invoice_row['service_date'] . '-';
 
-						if(!isset($invoice_row['interval']))
-						{
-							$invoice_row['interval'] = makeNicePresentableDate($invoice_row['service_date'], $lng['panel']['dateformat_function']);
-						}
-
-						break;
-					case 'period':
-						$rowcaption_field = 'category_rowcaption_interval';
-						$invoice_row['service_date_end'] = manipulateDate($invoice_row['service_date_end'], '-', 1, 'd');
-						$invoice_row['key'].= $invoice_row['service_date_begin'] . '-' . $invoice_row['service_date_end'] . '-';
-
-						if(!isset($invoice_row['interval']))
-						{
-							if(calculateDayDifference($invoice_row['service_date_begin'], $invoice_row['service_date_end']) != 0)
+							if(!isset($invoice_row['interval']))
 							{
-								$invoice_row['interval'] = makeNicePresentableDate($invoice_row['service_date_begin'], $lng['panel']['dateformat_function']) . ' - ' . makeNicePresentableDate($invoice_row['service_date_end'], $lng['panel']['dateformat_function']);
+								$invoice_row['interval'] = makeNicePresentableDate($invoice_row['service_date'], $lng['panel']['dateformat_function']);
 							}
-							else
-							{
-								$invoice_row['interval'] = makeNicePresentableDate($invoice_row['service_date_begin'], $lng['panel']['dateformat_function']);
-							}
-						}
 
-						break;
+							break;
+						case 'period':
+							$rowcaption_field = 'category_rowcaption_interval';
+							$invoice_row['service_date_end'] = manipulateDate($invoice_row['service_date_end'], '-', 1, 'd');
+							$invoice_row['key'].= $invoice_row['service_date_begin'] . '-' . $invoice_row['service_date_end'] . '-';
+
+							if(!isset($invoice_row['interval']))
+							{
+								if(calculateDayDifference($invoice_row['service_date_begin'], $invoice_row['service_date_end']) != 0)
+								{
+									$invoice_row['interval'] = makeNicePresentableDate($invoice_row['service_date_begin'], $lng['panel']['dateformat_function']) . ' - ' . makeNicePresentableDate($invoice_row['service_date_end'], $lng['panel']['dateformat_function']);
+								}
+								else
+								{
+									$invoice_row['interval'] = makeNicePresentableDate($invoice_row['service_date_begin'], $lng['panel']['dateformat_function']);
+								}
+							}
+
+							break;
 					}
 				}
 
@@ -451,45 +451,45 @@ class invoice
 					{
 						switch($invoice_changes_row['action'])
 						{
-						case '1':
+							case '1':
 
-							// Don't show this row
+								// Don't show this row
 
-							$invoice_row['deleted'] = true;
-							$show_row = $attachHistory;
-							break;
-						case '2':
+								$invoice_row['deleted'] = true;
+								$show_row = $attachHistory;
+								break;
+							case '2':
 
-							// Change caption, interval, taxrate and total_fee
+								// Change caption, interval, taxrate and total_fee
 
-							$invoice_row['deleted'] = false;
+								$invoice_row['deleted'] = false;
 
-							if(isset($invoice_changes_row['caption']))
-							{
-								$invoice_row['description']['caption'] = $invoice_changes_row['caption'];
-							}
+								if(isset($invoice_changes_row['caption']))
+								{
+									$invoice_row['description']['caption'] = $invoice_changes_row['caption'];
+								}
 
-							if(isset($invoice_changes_row['interval']))
-							{
-								$invoice_row['interval'] = $invoice_changes_row['interval'];
-							}
+								if(isset($invoice_changes_row['interval']))
+								{
+									$invoice_row['interval'] = $invoice_changes_row['interval'];
+								}
 
-							if(isset($invoice_changes_row['taxrate']))
-							{
-								$invoice_row['taxrate'] = $invoice_changes_row['taxrate'];
-							}
+								if(isset($invoice_changes_row['taxrate']))
+								{
+									$invoice_row['taxrate'] = $invoice_changes_row['taxrate'];
+								}
 
-							if(isset($invoice_changes_row['quantity']))
-							{
-								$invoice_row['quantity'] = $invoice_changes_row['quantity'];
-							}
+								if(isset($invoice_changes_row['quantity']))
+								{
+									$invoice_row['quantity'] = $invoice_changes_row['quantity'];
+								}
 
-							if(isset($invoice_changes_row['total_fee']))
-							{
-								$invoice_row['total_fee'] = $invoice_changes_row['total_fee'];
-							}
+								if(isset($invoice_changes_row['total_fee']))
+								{
+									$invoice_row['total_fee'] = $invoice_changes_row['total_fee'];
+								}
 
-							break;
+								break;
 						}
 					}
 				}
@@ -527,36 +527,36 @@ class invoice
 					{
 						switch($invoice_row['service_occurence'])
 						{
-						case 'once':
+							case 'once':
 
-							if(calculateDayDifference($invoice_row['service_date'], $returnval[$invoice_row['service_type']]['service_date_begin']) > 0
-							   || $returnval[$invoice_row['service_type']]['service_date_begin'] == 0)
-							{
-								$returnval[$invoice_row['service_type']]['service_date_begin'] = $invoice_row['service_date'];
-							}
+								if(calculateDayDifference($invoice_row['service_date'], $returnval[$invoice_row['service_type']]['service_date_begin']) > 0
+								   || $returnval[$invoice_row['service_type']]['service_date_begin'] == 0)
+								{
+									$returnval[$invoice_row['service_type']]['service_date_begin'] = $invoice_row['service_date'];
+								}
 
-							if(calculateDayDifference($returnval[$invoice_row['service_type']]['service_date_end'], $invoice_row['service_date']) > 0
-							   || $returnval[$invoice_row['service_type']]['service_date_end'] == 0)
-							{
-								$returnval[$invoice_row['service_type']]['service_date_end'] = $invoice_row['service_date'];
-							}
+								if(calculateDayDifference($returnval[$invoice_row['service_type']]['service_date_end'], $invoice_row['service_date']) > 0
+								   || $returnval[$invoice_row['service_type']]['service_date_end'] == 0)
+								{
+									$returnval[$invoice_row['service_type']]['service_date_end'] = $invoice_row['service_date'];
+								}
 
-							break;
-						case 'period':
+								break;
+							case 'period':
 
-							if(calculateDayDifference($invoice_row['service_date_begin'], $returnval[$invoice_row['service_type']]['service_date_begin']) > 0
-							   || $returnval[$invoice_row['service_type']]['service_date_begin'] == 0)
-							{
-								$returnval[$invoice_row['service_type']]['service_date_begin'] = $invoice_row['service_date_begin'];
-							}
+								if(calculateDayDifference($invoice_row['service_date_begin'], $returnval[$invoice_row['service_type']]['service_date_begin']) > 0
+								   || $returnval[$invoice_row['service_type']]['service_date_begin'] == 0)
+								{
+									$returnval[$invoice_row['service_type']]['service_date_begin'] = $invoice_row['service_date_begin'];
+								}
 
-							if(calculateDayDifference($returnval[$invoice_row['service_type']]['service_date_end'], $invoice_row['service_date_end']) > 0
-							   || $returnval[$invoice_row['service_type']]['service_date_end'] == 0)
-							{
-								$returnval[$invoice_row['service_type']]['service_date_end'] = $invoice_row['service_date_end'];
-							}
+								if(calculateDayDifference($returnval[$invoice_row['service_type']]['service_date_end'], $invoice_row['service_date_end']) > 0
+								   || $returnval[$invoice_row['service_type']]['service_date_end'] == 0)
+								{
+									$returnval[$invoice_row['service_type']]['service_date_end'] = $invoice_row['service_date_end'];
+								}
 
-							break;
+								break;
 						}
 
 						if(calculateDayDifference($returnval[$invoice_row['service_type']]['service_date_begin'], $returnval[$invoice_row['service_type']]['service_date_end']) != 0)
@@ -726,15 +726,15 @@ class invoice
 
 				switch($invoice_row['service_occurence'])
 				{
-				case 'once':
-					$invoice_row->addAttribute('date', utf8_encode(htmlspecialchars(makeNicePresentableDate($row['service_date'], 'Ymd'))));
-					$invoice_row->addChild('service_date', utf8_encode(htmlspecialchars($row['service_date'])));
-					break;
-				case 'period':
-					$invoice_row->addAttribute('date', utf8_encode(htmlspecialchars(makeNicePresentableDate($row['service_date_begin'], 'Ymd'))));
-					$invoice_row->addChild('service_date_begin', utf8_encode(htmlspecialchars($row['service_date_begin'])));
-					$invoice_row->addChild('service_date_end', utf8_encode(htmlspecialchars($row['service_date_end'])));
-					break;
+					case 'once':
+						$invoice_row->addAttribute('date', utf8_encode(htmlspecialchars(makeNicePresentableDate($row['service_date'], 'Ymd'))));
+						$invoice_row->addChild('service_date', utf8_encode(htmlspecialchars($row['service_date'])));
+						break;
+					case 'period':
+						$invoice_row->addAttribute('date', utf8_encode(htmlspecialchars(makeNicePresentableDate($row['service_date_begin'], 'Ymd'))));
+						$invoice_row->addChild('service_date_begin', utf8_encode(htmlspecialchars($row['service_date_begin'])));
+						$invoice_row->addChild('service_date_end', utf8_encode(htmlspecialchars($row['service_date_end'])));
+						break;
 				}
 
 				$invoice_row->addChild('caption', utf8_encode(htmlspecialchars(html_entity_decode($row['description']['caption']))));

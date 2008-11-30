@@ -411,7 +411,6 @@ else
  */
 
 $navigation = getNavigation($s, $userinfo);
-
 eval("\$header = \"" . getTemplate('header', '1') . "\";");
 eval("\$footer = \"" . getTemplate('footer', '1') . "\";");
 

@@ -86,48 +86,48 @@ class FileLogger extends AbstractLogger
 
 			switch($action)
 			{
-			case USR_ACTION:
-				$_action = 'customer';
-				break;
-			case RES_ACTION:
-				$_action = 'reseller';
-				break;
-			case ADM_ACTION:
-				$_action = 'administrator';
-				break;
-			case CRON_ACTION:
-				$_action = 'cronjob';
-				break;
-			case LOG_ERROR:
-				$_action = 'internal';
-				break;
-			default:
-				$_action = 'unknown';
-				break;
+				case USR_ACTION:
+					$_action = 'customer';
+					break;
+				case RES_ACTION:
+					$_action = 'reseller';
+					break;
+				case ADM_ACTION:
+					$_action = 'administrator';
+					break;
+				case CRON_ACTION:
+					$_action = 'cronjob';
+					break;
+				case LOG_ERROR:
+					$_action = 'internal';
+					break;
+				default:
+					$_action = 'unknown';
+					break;
 			}
 
 			$_type = 'unknown';
 
 			switch($type)
 			{
-			case LOG_INFO:
-				$_type = 'information';
-				break;
-			case LOG_NOTICE:
-				$_type = 'notice';
-				break;
-			case LOG_WARNING:
-				$_type = 'warning';
-				break;
-			case LOG_ERR:
-				$_type = 'error';
-				break;
-			case LOG_CRIT:
-				$_type = 'critical';
-				break;
-			default:
-				$_type = 'unknown';
-				break;
+				case LOG_INFO:
+					$_type = 'information';
+					break;
+				case LOG_NOTICE:
+					$_type = 'notice';
+					break;
+				case LOG_WARNING:
+					$_type = 'warning';
+					break;
+				case LOG_ERR:
+					$_type = 'error';
+					break;
+				case LOG_CRIT:
+					$_type = 'critical';
+					break;
+				default:
+					$_type = 'unknown';
+					break;
 			}
 
 			if(!isset($this->userinfo['loginname'])

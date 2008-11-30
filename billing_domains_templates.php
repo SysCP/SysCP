@@ -112,9 +112,7 @@ if($userinfo['customers_see_all'] == '1')
 			}
 
 			$db->query('INSERT INTO `' . TABLE_BILLING_SERVICE_DOMAINS_TEMPLATES . '` (`tld`, `valid_from`, `valid_to`, `interval_fee` , `interval_length` , `interval_type` , `interval_payment` , `setup_fee`, `taxclass`) VALUES( \'' . $db->escape($tld) . '\', \'' . $db->escape($valid_from) . '\', \'' . $db->escape($valid_to) . '\', \'' . $db->escape($interval_fee) . '\', \'' . $db->escape($interval_length) . '\', \'' . $db->escape($interval_type) . '\', \'' . $db->escape($interval_payment) . '\', \'' . $db->escape($setup_fee) . '\', \'' . $db->escape($taxclass) . '\' ) ');
-			redirectTo($filename, Array(
-				's' => $s
-			));
+			redirectTo($filename, Array('s' => $s));
 		}
 		else
 		{
@@ -137,16 +135,11 @@ if($userinfo['customers_see_all'] == '1')
 			   && $_POST['send'] == 'send')
 			{
 				$db->query('DELETE FROM `' . TABLE_BILLING_SERVICE_DOMAINS_TEMPLATES . '` WHERE `id` = \'' . $id . '\' ');
-				redirectTo($filename, Array(
-					's' => $s
-				));
+				redirectTo($filename, Array('s' => $s));
 			}
 			else
 			{
-				ask_yesno('billing_domains_template_reallydelete', $filename, array(
-					'id' => $id,
-					'action' => $action
-				), $result['tld'] . ' (' . $result['valid_from'] . ' - ' . $result['valid_to'] . ')');
+				ask_yesno('billing_domains_template_reallydelete', $filename, array('id' => $id, 'action' => $action), $result['tld'] . ' (' . $result['valid_from'] . ' - ' . $result['valid_to'] . ')');
 			}
 		}
 	}
@@ -187,9 +180,7 @@ if($userinfo['customers_see_all'] == '1')
 				}
 
 				$db->query('UPDATE `' . TABLE_BILLING_SERVICE_DOMAINS_TEMPLATES . '` SET `valid_from` = \'' . $db->escape($valid_from) . '\', `valid_to` = \'' . $db->escape($valid_to) . '\', `interval_fee` = \'' . $db->escape($interval_fee) . '\', `interval_length` = \'' . $db->escape($interval_length) . '\', `interval_type` = \'' . $db->escape($interval_type) . '\', `interval_payment` = \'' . $db->escape($interval_payment) . '\', `setup_fee` = \'' . $db->escape($setup_fee) . '\', `taxclass` = \'' . $db->escape($taxclass) . '\' WHERE `id` = \'' . $id . '\' ');
-				redirectTo($filename, Array(
-					's' => $s
-				));
+				redirectTo($filename, Array('s' => $s));
 			}
 			else
 			{

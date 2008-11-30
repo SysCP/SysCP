@@ -125,9 +125,7 @@ function standard_error($errors = '', $replacer = '')
 		if(isset($lng['error'][$single_error]))
 		{
 			$single_error = $lng['error'][$single_error];
-			$single_error = strtr($single_error, array(
-				'%s' => $replacer
-			));
+			$single_error = strtr($single_error, array('%s' => $replacer));
 		}
 		else
 		{
@@ -210,9 +208,7 @@ function ask_yesno($text, $yesfile, $params = array(), $targetname = '')
 		$text = $lng['question'][$text];
 	}
 
-	$text = strtr($text, array(
-		'%s' => $targetname
-	));
+	$text = strtr($text, array('%s' => $targetname));
 	eval("echo \"" . getTemplate('misc/question_yesno', '1') . "\";");
 }
 
@@ -727,7 +723,9 @@ function validate($str, $fieldname, $pattern = '', $lng = '', $emptydefault = ar
 
 	if(!is_array($emptydefault))
 	{
-		$emptydefault_array = array($emptydefault);
+		$emptydefault_array = array(
+			$emptydefault
+		);
 		unset($emptydefault);
 		$emptydefault = $emptydefault_array;
 		unset($emptydefault_array);
@@ -735,7 +733,10 @@ function validate($str, $fieldname, $pattern = '', $lng = '', $emptydefault = ar
 
 	// Check if the $str is one of the values which represent the default for an 'empty' value
 
-	if(is_array($emptydefault) && !empty($emptydefault) && in_array($str, $emptydefault) && isset($emptydefault[0]))
+	if(is_array($emptydefault)
+	   && !empty($emptydefault)
+	   && in_array($str, $emptydefault)
+	   && isset($emptydefault[0]))
 	{
 		return $emptydefault[0];
 	}
@@ -808,26 +809,34 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 
 	// Taken from https://wiki.syscp.org/contrib/realtime
 
-	if($doupdate === true && (int)$settings['system']['realtime_port'] !== 0)
+	if($doupdate === true
+	   && (int)$settings['system']['realtime_port'] !== 0)
 	{
 		$timeout = 15;
-		$socket = @socket_create (AF_INET, SOCK_STREAM, SOL_UDP);
-		if($socket !== false) {
+		$socket = @socket_create(AF_INET, SOCK_STREAM, SOL_UDP);
+
+		if($socket !== false)
+		{
 			$time = time();
-			while (!@socket_connect($socket, '127.0.0.1', (int)$settings['system']['realtime_port']))
+
+			while(!@socket_connect($socket, '127.0.0.1', (int)$settings['system']['realtime_port']))
 			{
 				$err = socket_last_error($socket);
-				if ($err == 115 || $err == 114)
+
+				if($err == 115
+				   || $err == 114)
 				{
-					if ((time() - $time) >= $timeout)
+					if((time() - $time) >= $timeout)
 					{
 						break;
 					}
+
 					sleep(1);
 					continue;
 				}
 			}
-			@socket_close ($socket);
+
+			@socket_close($socket);
 		}
 	}
 }
@@ -1323,21 +1332,15 @@ function getNavigation($s, $userinfo)
 		$_required_res = 0;
 
 		if($row['required_resources'] != ''
-		   && strpos($row['required_resources'], '.') !== false) 
+		   && strpos($row['required_resources'], '.') !== false)
 		{
 			$_tmp = explode('.', $row['required_resources']);
 			$_required_res = isset($settings[$_tmp[0]][$_tmp[1]]) ? (int)$settings[$_tmp[0]][$_tmp[1]] : 0;
 		}
 
 		if($_required_res == 1
-		   || ($row['required_resources'] == ''
-		       || (isset($userinfo[$row['required_resources']]) 
-                           && ((int)$userinfo[$row['required_resources']] > 0 
-				|| $userinfo[$row['required_resources']] == '-1')
-			  )
-                      )
-		  )
-		{	
+		   || ($row['required_resources'] == '' || (isset($userinfo[$row['required_resources']]) && ((int)$userinfo[$row['required_resources']] > 0 || $userinfo[$row['required_resources']] == '-1'))))
+		{
 			$row['parent_url'] = $row['url'];
 			$row['isparent'] = 1;
 			$nav[$row['parent_url']][] = _createNavigationEntry($s, $row);
@@ -1347,22 +1350,17 @@ function getNavigation($s, $userinfo)
 			while($subRow = $db->fetch_array($subResult))
 			{
 				if($subRow['required_resources'] != ''
-				&& strpos($subRow['required_resources'], '.') !== false) 
+				   && strpos($subRow['required_resources'], '.') !== false)
 				{
 					$_tmp = explode('.', $subRow['required_resources']);
 					$_required_res = isset($settings[$_tmp[0]][$_tmp[1]]) ? (int)$settings[$_tmp[0]][$_tmp[1]] : 0;
 				}
-		
+
 				if($_required_res == 1
-				   || ($subRow['required_resources'] == ''
-					|| (isset($userinfo[$subRow['required_resources']]) 
-					   && ((int)$userinfo[$subRow['required_resources']] > 0 
-						|| $userinfo[$subRow['required_resources']] == '-1')
-					   )
-				      )
-				  )
+				   || ($subRow['required_resources'] == '' || (isset($userinfo[$subRow['required_resources']]) && ((int)$userinfo[$subRow['required_resources']] > 0 || $userinfo[$subRow['required_resources']] == '-1'))))
 				{
 					// respect three special cases: phpmyadmin_uri, webmail_uri and webftp_uri
+
 					if($subRow['url'] != '')
 					{
 						$subRow['isparent'] = 0;
@@ -1885,13 +1883,7 @@ function mkDirWithCorrectOwnership($homeDir, $dirToCreate, $uid, $gid)
 
 function buildValidMailFrom($name, $mailaddress)
 {
-	$mailfrom = str_replace(array(
-		"\r",
-		"\n"
-	), '', $name) . ' <' . str_replace(array(
-		"\r",
-		"\n"
-	), '', $mailaddress) . '>';
+	$mailfrom = str_replace(array("\r", "\n"), '', $name) . ' <' . str_replace(array("\r", "\n"), '', $mailaddress) . '>';
 	return $mailfrom;
 }
 
@@ -2131,6 +2123,7 @@ function createAWStatsVhost($siteDomain, $settings = null)
 		$vhosts_file.= '    RewriteRule awstats$	http://' . $settings['system']['hostname'] . '/cgi-bin/awstats.pl?config=' . $siteDomain . ' [R,P]' . "\n";
 		$vhosts_file.= '  </IfModule>' . "\n";
 	}
+
 	return $vhosts_file;
 }
 
@@ -2160,18 +2153,18 @@ function getIntervalTypes($what = 'array', $selected = '')
 
 	switch($what)
 	{
-	case 'option':
-		$returnval = '';
-		foreach($intervalTypes as $intervalFeeType)
-		{
-			$returnval.= makeoption($lng['panel']['intervalfee_type'][$intervalFeeType], $intervalFeeType, $selected);
-		}
+		case 'option':
+			$returnval = '';
+			foreach($intervalTypes as $intervalFeeType)
+			{
+				$returnval.= makeoption($lng['panel']['intervalfee_type'][$intervalFeeType], $intervalFeeType, $selected);
+			}
 
-		break;
-	case 'array':
-	default:
-		$returnval = $intervalTypes;
-		break;
+			break;
+		case 'array':
+		default:
+			$returnval = $intervalTypes;
+			break;
 	}
 
 	return $returnval;
@@ -2191,17 +2184,17 @@ function getFullIntervalName($intervalType, $pluralS = false)
 {
 	switch(strtolower($intervalType))
 	{
-	case 'y':
-		$payment_every_type_fullname = 'year';
-		break;
-	case 'm':
-		$payment_every_type_fullname = 'month';
-		break;
-	case 'd':
-		$payment_every_type_fullname = 'day';
-		break;
-	default:
-		$payment_every_type_fullname = false;
+		case 'y':
+			$payment_every_type_fullname = 'year';
+			break;
+		case 'm':
+			$payment_every_type_fullname = 'month';
+			break;
+		case 'd':
+			$payment_every_type_fullname = 'day';
+			break;
+		default:
+			$payment_every_type_fullname = false;
 	}
 
 	if($pluralS === true
@@ -2398,16 +2391,16 @@ function manipulateDate($date, $operation, $count, $type, $original_date = null)
 	{
 		switch($operation)
 		{
-		case '+':
-		case 'add':
-		case 'sum':
-			$date[$type]+= (int)$count;
-			break;
-		case '-':
-		case 'subtract':
-		case 'subduct':
-			$date[$type]-= (int)$count;
-			break;
+			case '+':
+			case 'add':
+			case 'sum':
+				$date[$type]+= (int)$count;
+				break;
+			case '-':
+			case 'subtract':
+			case 'subduct':
+				$date[$type]-= (int)$count;
+				break;
 		}
 
 		if($original_date !== null
@@ -2695,33 +2688,37 @@ function cacheInvoiceFees($mode = 0, $begin = null, $count = null, $userid = nul
  * @author	Sven Skrabal <info@nexpa.de>
  */
 
-if(!function_exists('sys_get_temp_dir') )
+if(!function_exists('sys_get_temp_dir'))
 {
+
 	function sys_get_temp_dir()
 	{
 		// Try to get from environment variable
-		if ( !empty($_ENV['TMP']) )
+
+		if(!empty($_ENV['TMP']))
 		{
-			return realpath( $_ENV['TMP'] );
+			return realpath($_ENV['TMP']);
 		}
-		elseif ( !empty($_ENV['TMPDIR']) )
+		elseif(!empty($_ENV['TMPDIR']))
 		{
-			return realpath( $_ENV['TMPDIR'] );
+			return realpath($_ENV['TMPDIR']);
 		}
-		elseif ( !empty($_ENV['TEMP']) )
+		elseif(!empty($_ENV['TEMP']))
 		{
-			return realpath( $_ENV['TEMP'] );
+			return realpath($_ENV['TEMP']);
 		}
 		else
 		{
 			// Detect by creating a temporary file
 			// Try to use system's temporary directory
 			// as random name shouldn't exist
-			$temp_file = tempnam( md5(uniqid(rand(), true)), '' );
-			if ( $temp_file )
+
+			$temp_file = tempnam(md5(uniqid(rand(), true)), '');
+
+			if($temp_file)
 			{
-				$temp_dir = realpath( dirname($temp_file) );
-				unlink( $temp_file );
+				$temp_dir = realpath(dirname($temp_file));
+				unlink($temp_file);
 				return $temp_dir;
 			}
 			else

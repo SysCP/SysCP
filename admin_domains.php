@@ -182,18 +182,11 @@ if($page == 'domains'
 				updateCounters();
 				inserttask('1');
 				inserttask('4');
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
 			{
-				ask_yesno('admin_domain_reallydelete', $filename, array(
-					'id' => $id,
-					'page' => $page,
-					'action' => $action
-				), $idna_convert->decode($result['domain']));
+				ask_yesno('admin_domain_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $idna_convert->decode($result['domain']));
 			}
 		}
 	}
@@ -211,10 +204,7 @@ if($page == 'domains'
 					exit;
 				}
 
-				$domain = $idna_convert->encode(preg_replace(Array(
-					'/\:(\d)+$/',
-					'/^https?\:\/\//'
-				), '', validate($_POST['domain'], 'domain')));
+				$domain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', validate($_POST['domain'], 'domain')));
 				$subcanemaildomain = intval($_POST['subcanemaildomain']);
 				$isemaildomain = intval($_POST['isemaildomain']);
 				$email_only = intval($_POST['email_only']);
@@ -223,7 +213,9 @@ if($page == 'domains'
 				$aliasdomain = intval($_POST['alias']);
 				$customerid = intval($_POST['customerid']);
 				$customer = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "' " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ");
-				if(empty($customer) || $customer['customerid'] != $customerid)
+
+				if(empty($customer)
+				   || $customer['customerid'] != $customerid)
 				{
 					standard_error('customerdoesntexist');
 				}
@@ -232,7 +224,9 @@ if($page == 'domains'
 				{
 					$adminid = intval($_POST['adminid']);
 					$admin = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$adminid . "' AND ( `domains_used` < `domains` OR `domains` = '-1' )");
-					if(empty($admin) || $admin['adminid'] != $adminid)
+
+					if(empty($admin)
+					   || $admin['adminid'] != $adminid)
 					{
 						standard_error('admindoesntexist');
 					}
@@ -299,7 +293,6 @@ if($page == 'domains'
 					}
 
 					$specialsettings = validate(str_replace("\r\n", "\n", $_POST['specialsettings']), 'specialsettings', '/^[^\0]*$/');
-
 					validate($_POST['documentroot'], 'documentroot');
 
 					if(isset($_POST['documentroot'])
@@ -325,7 +318,8 @@ if($page == 'domains'
 					$specialsettings = '';
 				}
 
-				if($userinfo['caneditphpsettings'] == '1' || $userinfo['change_serversettings'] == '1')
+				if($userinfo['caneditphpsettings'] == '1'
+				   || $userinfo['change_serversettings'] == '1')
 				{
 					$openbasedir = intval($_POST['openbasedir']);
 					$safemode = intval($_POST['safemode']);
@@ -334,12 +328,14 @@ if($page == 'domains'
 					{
 						$phpsettingid = (int)$_POST['phpsettingid'];
 						$phpsettingid_check = $db->query_first("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$phpsettingid);
+
 						if(!isset($phpsettingid_check['id'])
 						   || $phpsettingid_check['id'] == '0'
 						   || $phpsettingid_check['id'] != $phpsettingid)
 						{
 							standard_error('phpsettingidwrong');
 						}
+
 						$mod_fcgid_starter = validate($_POST['mod_fcgid_starter'], 'mod_fcgid_starter', '/^[0-9]*$/', '', array('-1', ''));
 						$mod_fcgid_maxrequests = validate($_POST['mod_fcgid_maxrequests'], 'mod_fcgid_maxrequests', '/^[0-9]*$/', '', array('-1', ''));
 					}
@@ -389,6 +385,7 @@ if($page == 'domains'
 					$ssl_redirect = (int)$_POST['ssl_redirect'];
 					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
 					$ssl_ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ssl_ipandport) . "' AND `ssl` = '1'" . $additional_ip_condition);
+
 					if(!isset($ssl_ipandport_check['id'])
 					   || $ssl_ipandport_check['id'] == '0'
 					   || $ssl_ipandport_check['id'] != $ssl_ipandport)
@@ -497,24 +494,15 @@ if($page == 'domains'
 
 				if($domain == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'mydomain'
-					));
+					standard_error(array('stringisempty', 'mydomain'));
 				}
 				elseif(!validateDomain($domain))
 				{
-					standard_error(array(
-						'stringiswrong',
-						'mydomain'
-					));
+					standard_error(array('stringiswrong', 'mydomain'));
 				}
 				elseif($documentroot == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'mydocumentroot'
-					));
+					standard_error(array('stringisempty', 'mydocumentroot'));
 				}
 				elseif($customerid == 0)
 				{
@@ -591,10 +579,7 @@ if($page == 'domains'
 					$log->logAction(ADM_ACTION, LOG_INFO, "added domain '" . $domain . "'");
 					inserttask('1');
 					inserttask('4');
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else
@@ -781,10 +766,15 @@ if($page == 'domains'
 			   && $_POST['send'] == 'send')
 			{
 				$customer = $customer_old = $db->query_first("SELECT * FROM " . TABLE_PANEL_CUSTOMERS . " WHERE `customerid`='" . (int)$result['customerid'] . "'");
-				if(isset($_POST['customerid']) && ($customerid = intval($_POST['customerid'])) != $result['customerid'] && $settings['panel']['allow_domain_change_customer'] == '1')
+
+				if(isset($_POST['customerid'])
+				   && ($customerid = intval($_POST['customerid'])) != $result['customerid']
+				   && $settings['panel']['allow_domain_change_customer'] == '1')
 				{
 					$customer = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "' AND (`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' ) AND (`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' ) AND (`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders` OR `email_forwarders` = '-1' ) AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts` OR `email_accounts` = '-1' ) " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ");
-					if(empty($customer) || $customer['customerid'] != $customerid)
+
+					if(empty($customer)
+					   || $customer['customerid'] != $customerid)
 					{
 						standard_error('customerdoesntexist');
 					}
@@ -795,12 +785,17 @@ if($page == 'domains'
 				}
 
 				$admin = $admin_old = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$result['adminid'] . "' ");
+
 				if($userinfo['customers_see_all'] == '1')
 				{
-					if(isset($_POST['adminid']) && ($adminid = intval($_POST['adminid'])) != $result['adminid'] && $settings['panel']['allow_domain_change_admin'] == '1')
+					if(isset($_POST['adminid'])
+					   && ($adminid = intval($_POST['adminid'])) != $result['adminid']
+					   && $settings['panel']['allow_domain_change_admin'] == '1')
 					{
 						$admin = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$adminid . "' AND ( `domains_used` < `domains` OR `domains` = '-1' )");
-						if(empty($admin) || $admin['adminid'] != $adminid)
+
+						if(empty($admin)
+						   || $admin['adminid'] != $adminid)
 						{
 							standard_error('admindoesntexist');
 						}
@@ -909,7 +904,8 @@ if($page == 'domains'
 					$documentroot = $result['documentroot'];
 				}
 
-				if($userinfo['caneditphpsettings'] == '1' || $userinfo['change_serversettings'] == '1')
+				if($userinfo['caneditphpsettings'] == '1'
+				   || $userinfo['change_serversettings'] == '1')
 				{
 					$openbasedir = intval($_POST['openbasedir']);
 					$safemode = intval($_POST['safemode']);
@@ -918,12 +914,14 @@ if($page == 'domains'
 					{
 						$phpsettingid = (int)$_POST['phpsettingid'];
 						$phpsettingid_check = $db->query_first("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$phpsettingid);
+
 						if(!isset($phpsettingid_check['id'])
 						   || $phpsettingid_check['id'] == '0'
 						   || $phpsettingid_check['id'] != $phpsettingid)
 						{
 							standard_error('phpsettingidwrong');
 						}
+
 						$mod_fcgid_starter = validate($_POST['mod_fcgid_starter'], 'mod_fcgid_starter', '/^[0-9]*$/', '', array('-1', ''));
 						$mod_fcgid_maxrequests = validate($_POST['mod_fcgid_maxrequests'], 'mod_fcgid_maxrequests', '/^[0-9]*$/', '', array('-1', ''));
 					}
@@ -973,6 +971,7 @@ if($page == 'domains'
 					$ssl_redirect = (int)$_POST['ssl_redirect'];
 					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
 					$ssl_ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ssl_ipandport) . "' AND `ssl` = '1'" . $additional_ip_condition);
+
 					if(!isset($ssl_ipandport_check['id'])
 					   || $ssl_ipandport_check['id'] == '0'
 					   || $ssl_ipandport_check['id'] != $ssl_ipandport)
@@ -1203,15 +1202,17 @@ if($page == 'domains'
 					$updatechildren = ', `isemaildomain`=\'1\' ';
 				}
 
-				if($customerid != $result['customerid'] && $settings['panel']['allow_domain_change_customer'] == '1')
+				if($customerid != $result['customerid']
+				   && $settings['panel']['allow_domain_change_customer'] == '1')
 				{
-					$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id']. "' ");
-					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id']. "' ");
+					$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id'] . "' ");
+					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id'] . "' ");
 					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` + '" . (int)$subdomains . "', `emails_used` = `emails_used` + '" . (int)$emails . "', `email_forwarders_used` = `email_forwarders_used` + '" . (int)$email_forwarders . "', `email_accounts_used` = `email_accounts_used` + '" . (int)$email_accounts . "' WHERE `customerid` = '" . (int)$customerid . "' ");
 					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` - '" . (int)$subdomains . "', `emails_used` = `emails_used` - '" . (int)$emails . "', `email_forwarders_used` = `email_forwarders_used` - '" . (int)$email_forwarders . "', `email_accounts_used` = `email_accounts_used` - '" . (int)$email_accounts . "' WHERE `customerid` = '" . (int)$result['customerid'] . "' ");
 				}
 
-				if($adminid != $result['adminid'] && $settings['panel']['allow_domain_change_admin'] == '1')
+				if($adminid != $result['adminid']
+				   && $settings['panel']['allow_domain_change_admin'] == '1')
 				{
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$adminid . "' ");
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '" . (int)$result['adminid'] . "' ");
@@ -1219,7 +1220,6 @@ if($page == 'domains'
 
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `customerid` = '" . (int)$customerid . "', `adminid` = '" . (int)$adminid . "', `documentroot`='" . $db->escape($documentroot) . "', `ipandport`='" . $db->escape($ipandport) . "', `ssl`='" . (int)$ssl . "', `ssl_redirect`='" . (int)$ssl_redirect . "', `ssl_ipandport`='" . (int)$ssl_ipandport . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", `isbinddomain`='" . $db->escape($isbinddomain) . "', `isemaildomain`='" . $db->escape($isemaildomain) . "', `email_only`='" . $db->escape($email_only) . "', `subcanemaildomain`='" . $db->escape($subcanemaildomain) . "', `dkim`='" . $db->escape($dkim) . "', `caneditdomain`='" . $db->escape($caneditdomain) . "', `zonefile`='" . $db->escape($zonefile) . "', `wwwserveralias`='" . $db->escape($wwwserveralias) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `phpsettingid`='" . $db->escape($phpsettingid) . "', `mod_fcgid_starter`='" . $db->escape($mod_fcgid_starter) . "', `mod_fcgid_maxrequests`='" . $db->escape($mod_fcgid_maxrequests) . "', `specialsettings`='" . $db->escape($specialsettings) . "', `registration_date`='" . $db->escape($registration_date) . "', `interval_fee`='" . $db->escape($interval_fee) . "', `interval_length`='" . $db->escape($interval_length) . "', `interval_type`='" . $db->escape($interval_type) . "', `interval_payment`='" . $db->escape($interval_payment) . "', `setup_fee`='" . $db->escape($setup_fee) . "', `taxclass`='" . $db->escape($taxclass) . "', `service_active`='" . $db->escape($service_active) . "', `servicestart_date`='" . $db->escape($servicestart_date) . "', `serviceend_date`='" . $db->escape($serviceend_date) . "' WHERE `id`='" . (int)$id . "'");
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `customerid` = '" . (int)$customerid . "', `adminid` = '" . (int)$adminid . "', `ipandport`='" . $db->escape($ipandport) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `phpsettingid`='" . $db->escape($phpsettingid) . "', `mod_fcgid_starter`='" . $db->escape($mod_fcgid_starter) . "', `mod_fcgid_maxrequests`='" . $db->escape($mod_fcgid_maxrequests) . "', `specialsettings`='" . $db->escape($specialsettings) . "'" . $updatechildren . " WHERE `parentdomainid`='" . (int)$id . "'");
-
 				$log->logAction(ADM_ACTION, LOG_INFO, "edited domain #" . $id);
 				$redirect_props = Array(
 					'page' => $page,
@@ -1265,6 +1265,7 @@ if($page == 'domains'
 				else
 				{
 					$customer = $db->query_first("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid` = '" . (int)$result['customerid'] . "'");
+
 					if($customer['company'] == '')
 					{
 						$result['customername'] = $customer['name'] . ', ' . $customer['firstname'] . ' (' . $customer['loginname'] . ')';
@@ -1313,6 +1314,7 @@ if($page == 'domains'
 					else
 					{
 						$admin = $db->query_first("SELECT `adminid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid` = '" . (int)$result['adminid'] . "'");
+
 						if($admin['company'] == '')
 						{
 							$result['adminname'] = $admin['name'] . ', ' . $admin['firstname'] . ' (' . $admin['loginname'] . ')';

@@ -303,9 +303,7 @@ class domains extends serviceCategory
 			// I'm abusing selectAppropriateTemplateKey here to get valid tld of domain ;-)
 
 			
-			   && one_in_array($this->selectAppropriateTemplateKey(array(
-				'domain' => $domain
-			)), $included_domains_tld))
+			   && one_in_array($this->selectAppropriateTemplateKey(array('domain' => $domain)), $included_domains_tld))
 			{
 				if(!in_array($domain, $this->included_domains_used[$customerid]))
 				{
