@@ -1,4 +1,0 @@
-- Remember to add return false after any showError in a consistent manner
-- Sync language selection and theme selection functionality to behave in the
-  same, consistent manner
-- Split up lng files and improve language management, see ticket #179
