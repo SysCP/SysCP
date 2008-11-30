@@ -180,10 +180,8 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 					'dovecot' => Array(
 						'label' => 'Dovecot',
 						'commands_1' => Array(
-							'apt-get install dovecot-common dovecot-imapd dovecot-pop3d',
-							'/etc/init.d/dovecot stop',
-							'mv dovecot.conf dovecot.conf.ubuntu',
-							'mv dovecot-sql.conf dovecot-sql.conf.ubuntu',
+							'mv dovecot.conf dovecot.conf.gentoo',
+							'mv dovecot-sql.conf dovecot-sql.conf.gentoo',
 							'touch dovecot.conf',
 							'touch dovecot-sql.conf',
 						),
