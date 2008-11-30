@@ -416,13 +416,7 @@ class serviceCategory
 
 	function buildInvoiceRowSetupFee($service_detail, $service_description)
 	{
-		return $this->getInvoiceRow('once', array(
-			'quantity' => $service_detail['quantity'],
-			'setup_fee' => $service_detail['setup_fee'],
-			'taxclass' => $service_detail['taxclass']
-		), array(
-			'service_date' => $service_detail['servicestart_date']
-		), $service_description);
+		return $this->getInvoiceRow('once', array('quantity' => $service_detail['quantity'], 'setup_fee' => $service_detail['setup_fee'], 'taxclass' => $service_detail['taxclass']), array('service_date' => $service_detail['servicestart_date']), $service_description);
 	}
 
 	/**
@@ -437,16 +431,7 @@ class serviceCategory
 
 	function buildInvoiceRowIntervalFee($service_detail, $service_description)
 	{
-		return $this->getInvoiceRow('period', array(
-			'quantity' => $service_detail['quantity'],
-			'interval_fee' => $service_detail['interval_fee'],
-			'interval_length' => $service_detail['interval_length'],
-			'interval_type' => $service_detail['interval_type'],
-			'taxclass' => $service_detail['taxclass']
-		), array(
-			'service_date_begin' => $service_detail['service_date_begin'],
-			'service_date_end' => $service_detail['service_date_end']
-		), $service_description);
+		return $this->getInvoiceRow('period', array('quantity' => $service_detail['quantity'], 'interval_fee' => $service_detail['interval_fee'], 'interval_length' => $service_detail['interval_length'], 'interval_type' => $service_detail['interval_type'], 'taxclass' => $service_detail['taxclass']), array('service_date_begin' => $service_detail['service_date_begin'], 'service_date_end' => $service_detail['service_date_end']), $service_description);
 	}
 
 	/**

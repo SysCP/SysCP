@@ -160,7 +160,6 @@ if(($page == 'settings' || $page == 'overview')
 
 				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;mysql;phpmyadmin"');
 				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_phpmyadmin_url in navigation to '" . $value . "'");
-
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='phpmyadmin_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_phpmyadmin_url from '" . $settings['panel']['phpmyadmin_url'] . "' to '" . $value . "'");
 			}
@@ -178,10 +177,9 @@ if(($page == 'settings' || $page == 'overview')
 				}
 
 				// update menu
-				
+
 				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;email;webmail"');
 				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webmail_url in navigation to '" . $value . "'");
-
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webmail_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webmail_url from '" . $settings['panel']['webmail_url'] . "' to '" . $value . "'");
 			}
@@ -199,10 +197,9 @@ if(($page == 'settings' || $page == 'overview')
 				}
 
 				// update menu
-				
+
 				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;ftp;webftp"');
 				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webftp_url in navigation to '" . $value . "'");
-
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webftp_url from '" . $settings['panel']['webftp_url'] . "' to '" . $value . "'");
 			}
@@ -648,11 +645,7 @@ if(($page == 'settings' || $page == 'overview')
 				if($_POST['system_webalizer_quiet'] != $settings['system']['webalizer_quiet']
 				   && isset($_POST['system_webalizer_quiet']))
 				{
-					$value = in_array($_POST['system_webalizer_quiet'], array(
-						'0',
-						'1',
-						'2'
-					)) ? $_POST['system_webalizer_quiet'] : '2';
+					$value = in_array($_POST['system_webalizer_quiet'], array('0', '1', '2')) ? $_POST['system_webalizer_quiet'] : '2';
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='system' AND `varname`='webalizer_quiet'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webalizer_quiet from '" . $settings['system']['webalizer_quiet'] . "' to '" . $value . "'");
 				}
@@ -766,7 +759,7 @@ if(($page == 'settings' || $page == 'overview')
 
 				if((int)$value == 1)
 				{
-					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'emails' WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");					
+					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'emails' WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");
 				}
 				else
 				{
@@ -943,7 +936,6 @@ if(($page == 'settings' || $page == 'overview')
 			   && isset($_POST['ticketsystemenabled']))
 			{
 				$value = (int)$_POST['ticketsystemenabled'] == 1 ? 1 : 0;
-
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='ticket' AND `varname`='enabled'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed ticket_enabled from '" . $settings['ticket']['enabled'] . "' to '" . $value . "'");
 				$settings['ticket']['enabled'] = $value;
@@ -979,12 +971,7 @@ if(($page == 'settings' || $page == 'overview')
 				{
 					$value = $_POST['ticket_reset_cycle'];
 
-					if(!in_array($value, array(
-						0,
-						1,
-						2,
-						3
-					)))
+					if(!in_array($value, array(0, 1, 2, 3)))
 					{
 						standard_error('ticketresetcycleiswrong');
 					}
@@ -1364,17 +1351,12 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = ($_POST['system_modfcgid'] == '1' ? '1' : '0');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mod_fcgid'");
-
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mod_fcgid from '" . $settings['system']['mod_fcgid'] . "' to '" . $value . "'");
 				inserttask('1');
 			}
 		}
 
-		redirectTo($filename, Array(
-			'page' => $page,
-			's' => $s,
-			'part' => $_part
-		));
+		redirectTo($filename, Array('page' => $page, 's' => $s, 'part' => $_part));
 	}
 	else
 	{
@@ -1435,10 +1417,7 @@ if(($page == 'settings' || $page == 'overview')
 		// build the pathedit list
 
 		$pathedit = '';
-		foreach(array(
-			'Manual',
-			'Dropdown'
-		) as $method)
+		foreach(array('Manual', 'Dropdown') as $method)
 		{
 			$pathedit.= makeoption($method, $method, $settings['panel']['pathedit'], true, true);
 		}
@@ -1477,10 +1456,7 @@ if(($page == 'settings' || $page == 'overview')
 		$settings = htmlentities_array($settings);
 		$settings_page = '';
 		$webserver_selected = '';
-		foreach(array(
-			'apache2',
-			'lighttpd'
-		) as $method)
+		foreach(array('apache2', 'lighttpd') as $method)
 		{
 			$webserver_selected.= makeoption($method, $method, $settings['system']['webserver']);
 		}
@@ -1602,15 +1578,11 @@ elseif($page == 'rebuildconfigs'
 		inserttask('1');
 		inserttask('4');
 		inserttask('5');
-		redirectTo('admin_index.php', array(
-			's' => $s
-		));
+		redirectTo('admin_index.php', array('s' => $s));
 	}
 	else
 	{
-		ask_yesno('admin_configs_reallyrebuild', $filename, array(
-			'page' => $page
-		));
+		ask_yesno('admin_configs_reallyrebuild', $filename, array('page' => $page));
 	}
 }
 elseif($page == 'updatecounters'
@@ -1637,9 +1609,7 @@ elseif($page == 'updatecounters'
 	}
 	else
 	{
-		ask_yesno('admin_counters_reallyupdate', $filename, array(
-			'page' => $page
-		));
+		ask_yesno('admin_counters_reallyupdate', $filename, array('page' => $page));
 	}
 }
 elseif($page == 'wipecleartextmailpws'
@@ -1651,15 +1621,11 @@ elseif($page == 'wipecleartextmailpws'
 		$log->logAction(ADM_ACTION, LOG_WARNING, "wiped all cleartext mail passwords");
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `password`='' ");
 		$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='0' WHERE `settinggroup`='system' AND `varname`='mailpwcleartext'");
-		redirectTo('admin_settings.php', array(
-			's' => $s
-		));
+		redirectTo('admin_settings.php', array('s' => $s));
 	}
 	else
 	{
-		ask_yesno('admin_cleartextmailpws_reallywipe', $filename, array(
-			'page' => $page
-		));
+		ask_yesno('admin_cleartextmailpws_reallywipe', $filename, array('page' => $page));
 	}
 }
 elseif($page == 'wipequotas'
@@ -1669,18 +1635,16 @@ elseif($page == 'wipequotas'
 	   && $_POST['send'] == 'send')
 	{
 		$log->logAction(ADM_ACTION, LOG_WARNING, "wiped all mailquotas");
+
 		// Set the quota to 0 which means unlimited
+
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='0' ");
-		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS ." SET `email_quota_used` = 0");
-		redirectTo('admin_settings.php', array(
-			's' => $s
-		));
+		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS . " SET `email_quota_used` = 0");
+		redirectTo('admin_settings.php', array('s' => $s));
 	}
 	else
 	{
-		ask_yesno('admin_quotas_reallywipe', $filename, array(
-			'page' => $page
-		));
+		ask_yesno('admin_quotas_reallywipe', $filename, array('page' => $page));
 	}
 }
 elseif($page == 'enforcequotas'
@@ -1690,26 +1654,28 @@ elseif($page == 'enforcequotas'
 	   && $_POST['send'] == 'send')
 	{
 		// Fetch all accounts
+
 		$result = $db->query("SELECT `quota`, `customerid` FROM " . TABLE_MAIL_USERS);
-		while ($array = $db->fetch_array($result)) {
+
+		while($array = $db->fetch_array($result))
+		{
 			$difference = $settings['system']['mail_quota'] - $array['quota'];
-			$db->query("UPDATE " .TABLE_PANEL_CUSTOMERS . " SET `email_quota_used` = `email_quota_used` + " . (int)$difference . " WHERE `customerid` = '" . $array['customerid'] ."'");
+			$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS . " SET `email_quota_used` = `email_quota_used` + " . (int)$difference . " WHERE `customerid` = '" . $array['customerid'] . "'");
 		}
+
 		// Set the new quota
-		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='". $settings['system']['mail_quota'] ."'");
+
+		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='" . $settings['system']['mail_quota'] . "'");
+
 		// Update the Customer, if the used quota is bigger than the allowed quota
-		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS ." SET `email_quota` = `email_quota_used` WHERE `email_quota` < `email_quota_used`");
-		
-		$log->logAction(ADM_ACTION, LOG_WARNING, 'enforcing mailquota to all customers: '.$settings['system']['mail_quota']. ' MB');
-		redirectTo('admin_settings.php', array(
-			's' => $s
-		));
+
+		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS . " SET `email_quota` = `email_quota_used` WHERE `email_quota` < `email_quota_used`");
+		$log->logAction(ADM_ACTION, LOG_WARNING, 'enforcing mailquota to all customers: ' . $settings['system']['mail_quota'] . ' MB');
+		redirectTo('admin_settings.php', array('s' => $s));
 	}
 	else
 	{
-		ask_yesno('admin_quotas_reallyenforce', $filename, array(
-			'page' => $page
-		));
+		ask_yesno('admin_quotas_reallyenforce', $filename, array('page' => $page));
 	}
 }
 

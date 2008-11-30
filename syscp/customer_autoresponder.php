@@ -65,9 +65,7 @@ if($action == "add")
 			`subject` = '" . $db->escape($subject) . "',
 			`customerid` = '" . $db->escape((int)$userinfo['customerid']) . "'
 			");
-		redirectTo($filename, Array(
-			's' => $s
-		));
+		redirectTo($filename, Array('s' => $s));
 	}
 
 	// Get accounts
@@ -142,9 +140,7 @@ if($action == "edit")
 			WHERE `email` = '" . $db->escape($account) . "'
 			AND `customerid` = '" . $db->escape((int)$userinfo['customerid']) . "'
 			");
-		redirectTo($filename, Array(
-			's' => $s
-		));
+		redirectTo($filename, Array('s' => $s));
 	}
 
 	$email = trim(htmlspecialchars($_GET['email']));
@@ -195,16 +191,11 @@ if($action == "delete")
 			WHERE `email` = '" . $db->escape($account) . "'
 			AND `customerid` = '" . $db->escape((int)$userinfo['customerid']) . "'
 			");
-		redirectTo($filename, Array(
-			's' => $s
-		));
+		redirectTo($filename, Array('s' => $s));
 	}
 
 	$email = trim(htmlspecialchars($_GET['email']));
-	ask_yesno('autoresponderdelete', $filename, array(
-		'action' => $action,
-		'account' => $email
-	));
+	ask_yesno('autoresponderdelete', $filename, array('action' => $action, 'account' => $email));
 }
 
 // List existing autoresponders

@@ -166,17 +166,11 @@ if($page == 'tickets'
 
 				if($newticket->Get('subject') == null)
 				{
-					standard_error(array(
-						'stringisempty',
-						'mysubject'
-					));
+					standard_error(array('stringisempty', 'mysubject'));
 				}
 				elseif($newticket->Get('message') == null)
 				{
-					standard_error(array(
-						'stringisempty',
-						'mymessage'
-					));
+					standard_error(array('stringisempty', 'mymessage'));
 				}
 				else
 				{
@@ -191,10 +185,7 @@ if($page == 'tickets'
 					$newticket->Insert();
 					$newticket->sendMail((int)$newticket->Get('customer'), 'new_ticket_by_staff_subject', $lng['mails']['new_ticket_by_staff']['subject'], 'new_ticket_by_staff_mailbody', $lng['mails']['new_ticket_by_staff']['mailbody']);
 					$log->logAction(ADM_ACTION, LOG_NOTICE, "opened a new ticket for customer #" . $newticket->Get('customer') . " - '" . $newticket->Get('subject') . "'");
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else
@@ -264,10 +255,7 @@ if($page == 'tickets'
 
 			if($replyticket->Get('message') == null)
 			{
-				standard_error(array(
-					'stringisempty',
-					'mymessage'
-				));
+				standard_error(array('stringisempty', 'mymessage'));
 			}
 			else
 			{
@@ -294,10 +282,7 @@ if($page == 'tickets'
 				$mainticket->Update();
 				$mainticket->sendMail((int)$mainticket->Get('customer'), 'new_reply_ticket_by_staff_subject', $lng['mails']['new_reply_ticket_by_staff']['subject'], 'new_reply_ticket_by_staff_mailbody', $lng['mails']['new_reply_ticket_by_staff']['mailbody']);
 				$log->logAction(ADM_ACTION, LOG_NOTICE, "answered ticket '" . $mainticket->Get('subject') . "'");
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 		}
 		else
@@ -377,19 +362,12 @@ if($page == 'tickets'
 			$mainticket->Set('status', '3', true, true);
 			$mainticket->Update();
 			$log->logAction(ADM_ACTION, LOG_NOTICE, "closed ticket '" . $mainticket->Get('subject') . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
-			ask_yesno('ticket_reallyclose', $filename, array(
-				'id' => $id,
-				'page' => $page,
-				'action' => $action
-			), $mainticket->Get('subject'));
+			ask_yesno('ticket_reallyclose', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $mainticket->Get('subject'));
 		}
 	}
 	elseif($action == 'reopen'
@@ -402,10 +380,7 @@ if($page == 'tickets'
 		$mainticket->Set('status', '0', true, true);
 		$mainticket->Update();
 		$log->logAction(ADM_ACTION, LOG_NOTICE, "reopened ticket '" . $mainticket->Get('subject') . "'");
-		redirectTo($filename, Array(
-			'page' => $page,
-			's' => $s
-		));
+		redirectTo($filename, Array('page' => $page, 's' => $s));
 	}
 	elseif($action == 'archive'
 	       && $id != 0)
@@ -421,19 +396,12 @@ if($page == 'tickets'
 			$mainticket->Update();
 			$mainticket->Archive();
 			$log->logAction(ADM_ACTION, LOG_NOTICE, "archived ticket '" . $mainticket->Get('subject') . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
-			ask_yesno('ticket_reallyarchive', $filename, array(
-				'id' => $id,
-				'page' => $page,
-				'action' => $action
-			), $mainticket->Get('subject'));
+			ask_yesno('ticket_reallyarchive', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $mainticket->Get('subject'));
 		}
 	}
 	elseif($action == 'delete'
@@ -445,19 +413,12 @@ if($page == 'tickets'
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 			$log->logAction(ADM_ACTION, LOG_INFO, "deleted ticket '" . $mainticket->Get('subject') . "'");
 			$mainticket->Delete();
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
-			ask_yesno('ticket_reallydelete', $filename, array(
-				'id' => $id,
-				'page' => $page,
-				'action' => $action
-			), $mainticket->Get('subject'));
+			ask_yesno('ticket_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $mainticket->Get('subject'));
 		}
 	}
 }
@@ -518,19 +479,13 @@ elseif($page == 'categories'
 
 			if($category == '')
 			{
-				standard_error(array(
-					'stringisempty',
-					'mycategory'
-				));
+				standard_error(array('stringisempty', 'mycategory'));
 			}
 			else
 			{
 				ticket::addCategory($db, $category, $userinfo['adminid']);
 				$log->logAction(ADM_ACTION, LOG_INFO, "added ticket-category '" . $category . "'");
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 		}
 		else
@@ -548,19 +503,13 @@ elseif($page == 'categories'
 
 			if($category == '')
 			{
-				standard_error(array(
-					'stringisempty',
-					'mycategory'
-				));
+				standard_error(array('stringisempty', 'mycategory'));
 			}
 			else
 			{
 				ticket::editCategory($db, $category, $id);
 				$log->logAction(ADM_ACTION, LOG_INFO, "edited ticket-category '" . $category . "'");
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 		}
 		else
@@ -581,19 +530,12 @@ elseif($page == 'categories'
 			}
 
 			$log->logAction(ADM_ACTION, LOG_INFO, "deleted ticket-category #" . $id);
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
 			$name = ticket::getCategoryName($db, $id);
-			ask_yesno('ticket_reallydeletecat', $filename, array(
-				'id' => $id,
-				'page' => $page,
-				'action' => $action
-			), $name);
+			ask_yesno('ticket_reallydeletecat', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $name);
 		}
 	}
 }
@@ -848,19 +790,12 @@ elseif($page == 'archive'
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
 			$log->logAction(ADM_ACTION, LOG_INFO, "deleted archived ticket '" . $mainticket->Get('subject') . "'");
 			$mainticket->Delete();
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
 			$mainticket = ticket::getInstanceOf($userinfo, $db, $settings, (int)$id);
-			ask_yesno('ticket_reallydelete', $filename, array(
-				'id' => $id,
-				'page' => $page,
-				'action' => $action
-			), $mainticket->Get('subject'));
+			ask_yesno('ticket_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $mainticket->Get('subject'));
 		}
 	}
 }

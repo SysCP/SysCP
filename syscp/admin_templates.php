@@ -139,19 +139,11 @@ elseif($action == 'delete'
 		{
 			$db->query("DELETE FROM `" . TABLE_PANEL_TEMPLATES . "` WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND (`id`='" . (int)$subjectid . "' OR `id`='" . (int)$mailbodyid . "')");
 			$log->logAction(ADM_ACTION, LOG_INFO, "deleted template '" . $result['language'] . ' - ' . $lng['admin']['templates'][str_replace('_subject', '', $result['varname'])] . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
-			ask_yesno('admin_template_reallydelete', $filename, array(
-				'subjectid' => $subjectid,
-				'mailbodyid' => $mailbodyid,
-				'page' => $page,
-				'action' => $action
-			), $result['language'] . ' - ' . $lng['admin']['templates'][str_replace('_subject', '', $result['varname'])]);
+			ask_yesno('admin_template_reallydelete', $filename, array('subjectid' => $subjectid, 'mailbodyid' => $mailbodyid, 'page' => $page, 'action' => $action), $result['language'] . ' - ' . $lng['admin']['templates'][str_replace('_subject', '', $result['varname'])]);
 		}
 	}
 }
@@ -171,18 +163,11 @@ elseif($action == 'delete'
 		{
 			$db->query("DELETE FROM `" . TABLE_PANEL_TEMPLATES . "` WHERE `adminid`=" . (int)$userinfo['adminid'] . " AND `id`=" . (int)$id . "");
 			$log->logAction(ADM_ACTION, LOG_INFO, "deleted template '" . $lng['admin']['templates'][$row['varname']] . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
-			ask_yesno('admin_template_reallydelete', $filename, array(
-				'id' => $id,
-				'page' => $page,
-				'action' => $action
-			), $lng['admin']['templates'][$row['varname']]);
+			ask_yesno('admin_template_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $lng['admin']['templates'][$row['varname']]);
 		}
 	}
 	else
@@ -251,10 +236,7 @@ elseif($action == 'add')
 			$result = $db->query("INSERT INTO `" . TABLE_PANEL_TEMPLATES . "` (`adminid`, `language`, `templategroup`, `varname`, `value`)
 									VALUES ('" . (int)$userinfo['adminid'] . "', '" . $db->escape($language) . "', 'mails', '" . $db->escape($template) . "_mailbody','" . $db->escape($mailbody) . "')");
 			$log->logAction(ADM_ACTION, LOG_INFO, "added template '" . $language . ' - ' . $template . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 	}
 	elseif(isset($_POST['filesend'])
@@ -267,10 +249,7 @@ elseif($action == 'add')
 		$db->query("INSERT INTO `" . TABLE_PANEL_TEMPLATES . "` (`adminid`, `language`, `templategroup`, `varname`, `value`)
 					VALUES ('" . (int)$userinfo['adminid'] . "', '', 'files', '" . $db->escape($template) . "','" . $db->escape($filecontent) . "')");
 		$log->logAction(ADM_ACTION, LOG_INFO, "added template '" . $template . "'");
-		redirectTo($filename, Array(
-			'page' => $page,
-			's' => $s
-		));
+		redirectTo($filename, Array('page' => $page, 's' => $s));
 	}
 	elseif(!isset($_GET['files']))
 	{
@@ -350,10 +329,7 @@ elseif($action == 'edit'
 			$db->query("UPDATE `" . TABLE_PANEL_TEMPLATES . "` SET `value`='" . $db->escape($subject) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `id`='" . (int)$subjectid . "'");
 			$db->query("UPDATE `" . TABLE_PANEL_TEMPLATES . "` SET `value`='" . $db->escape($mailbody) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `id`='" . (int)$mailbodyid . "'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "edited template '" . $result['varname'] . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{
@@ -386,10 +362,7 @@ elseif($action == 'edit'
 			$filecontent = validate($_POST['filecontent'], 'filecontent', '/^[^\0]+$/', 'filecontentnotset');
 			$db->query("UPDATE `" . TABLE_PANEL_TEMPLATES . "` SET `value`='" . $db->escape($filecontent) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `id`='" . (int)$id . "'");
 			$log->logAction(ADM_ACTION, LOG_INFO, "edited template '" . $row['varname'] . "'");
-			redirectTo($filename, Array(
-				'page' => $page,
-				's' => $s
-			));
+			redirectTo($filename, Array('page' => $page, 's' => $s));
 		}
 		else
 		{

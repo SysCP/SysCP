@@ -149,9 +149,7 @@ class traffic extends serviceCategory
 
 	function findValidTemplate($timestamp, $templatekeys)
 	{
-		return array_merge(array(
-			'taxclass' => '1'
-		), parent::findValidTemplate($timestamp, $templatekeys));
+		return array_merge(array('taxclass' => '1'), parent::findValidTemplate($timestamp, $templatekeys));
 	}
 
 	/**

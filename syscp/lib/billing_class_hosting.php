@@ -56,9 +56,7 @@ class hosting extends serviceCategory
 
 	function getServiceDescription($service_detail, $service_occurence)
 	{
-		return array_merge(parent::getServiceDescription($service_detail, $service_occurence), array(
-			'loginname' => $service_detail['loginname']
-		));
+		return array_merge(parent::getServiceDescription($service_detail, $service_occurence), array('loginname' => $service_detail['loginname']));
 	}
 }
 

@@ -131,19 +131,15 @@ if($page == 'customers'
 
 		if($destination_user != '')
 		{
-			$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid`='" . (int)$userinfo['userid'] . "' AND `hash`='" . $db->escape($s). "'");
+			$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid`='" . (int)$userinfo['userid'] . "' AND `hash`='" . $db->escape($s) . "'");
 			$s = md5(uniqid(microtime(), 1));
 			$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . $db->escape($s) . "', '" . (int)$id . "', '" . $db->escape($result['ipaddress']) . "', '" . $db->escape($result['useragent']) . "', '" . time() . "', '" . $db->escape($result['language']) . "', '0')");
 			$log->logAction(ADM_ACTION, LOG_INFO, "switched user and is now '" . $destination_user . "'");
-			redirectTo('customer_index.php', Array(
-				's' => $s
-			));
+			redirectTo('customer_index.php', Array('s' => $s));
 		}
 		else
 		{
-			redirectTo('index.php', Array(
-				'action' => 'login'
-			));
+			redirectTo('index.php', Array('action' => 'login'));
 		}
 	}
 	elseif($action == 'delete'
@@ -248,18 +244,11 @@ if($page == 'customers'
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted user '" . $result['loginname'] . "'");
 				inserttask('1');
 				inserttask('4');
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
 			{
-				ask_yesno('admin_customer_reallydelete', $filename, array(
-					'id' => $id,
-					'page' => $page,
-					'action' => $action
-				), $result['loginname']);
+				ask_yesno('admin_customer_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $result['loginname']);
 			}
 		}
 	}
@@ -284,20 +273,19 @@ if($page == 'customers'
 				$email = $idna_convert->encode(validate($_POST['email'], 'email'));
 				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
 				$taxid = validate($_POST['taxid'], html_entity_decode($lng['customer']['taxid']), '/^[A-Z]{2,3}[\s ]*[a-zA-Z0-9\-]+$/i', 'stringformaterror', '');
-
 				$def_language = validate($_POST['def_language'], 'default language');
 				$diskspace = intval_ressource($_POST['diskspace']);
 
 				if(isset($_POST['diskspace_ul']))
 				{
-					$diskspace = -1;
+					$diskspace = - 1;
 				}
 
 				$traffic = doubleval_ressource($_POST['traffic']);
 
 				if(isset($_POST['traffic_ul']))
 				{
-					$traffic = -1;
+					$traffic = - 1;
 				}
 
 				$subdomains = intval_ressource($_POST['subdomains']);
@@ -311,21 +299,21 @@ if($page == 'customers'
 
 				if(isset($_POST['emails_ul']))
 				{
-					$emails = -1;
+					$emails = - 1;
 				}
 
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_accounts = -1;
+					$email_accounts = - 1;
 				}
 
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 				if(isset($_POST['email_forwarders_ul']))
 				{
-					$email_forwarders = -1;
+					$email_forwarders = - 1;
 				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
@@ -334,12 +322,12 @@ if($page == 'customers'
 
 					if(isset($_POST['email_quota_ul']))
 					{
-						$email_quota = -1;
+						$email_quota = - 1;
 					}
 				}
 				else
 				{
-					$email_quota = -1;
+					$email_quota = - 1;
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);
@@ -348,7 +336,7 @@ if($page == 'customers'
 
 				if(isset($_POST['ftps_ul']))
 				{
-					$ftps = -1;
+					$ftps = - 1;
 				}
 
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
@@ -363,7 +351,7 @@ if($page == 'customers'
 
 				if(isset($_POST['mysqls_ul']))
 				{
-					$mysqls = -1;
+					$mysqls = - 1;
 				}
 
 				if($settings['aps']['aps_active'] == '1')
@@ -372,7 +360,7 @@ if($page == 'customers'
 
 					if(isset($_POST['number_of_aps_packages_ul']))
 					{
-						$number_of_aps_packages = -1;
+						$number_of_aps_packages = - 1;
 					}
 				}
 				else
@@ -490,25 +478,16 @@ if($page == 'customers'
 				if($name == ''
 				   && $company == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'myname'
-					));
+					standard_error(array('stringisempty', 'myname'));
 				}
 				elseif($firstname == ''
 				       && $company == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'myfirstname'
-					));
+					standard_error(array('stringisempty', 'myfirstname'));
 				}
 				elseif($email == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'emailadd'
-					));
+					standard_error(array('stringisempty', 'emailadd'));
 				}
 				elseif(!validateEmail($email))
 				{
@@ -747,10 +726,7 @@ if($page == 'customers'
 						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically sent password to user '" . $loginname . "'");
 					}
 
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else
@@ -819,7 +795,6 @@ if($page == 'customers'
 				$email = $idna_convert->encode(validate($_POST['email'], 'email'));
 				$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
 				$taxid = validate($_POST['taxid'], html_entity_decode($lng['customer']['taxid']), '/^[A-Z]{2,3}[\s ]*[a-zA-Z0-9\-]+$/i', 'stringformaterror', '');
-
 				$def_language = validate($_POST['def_language'], 'default language');
 				$password = validate($_POST['customer_password'], 'new password');
 				$diskspace = intval_ressource($_POST['diskspace']);
@@ -827,42 +802,42 @@ if($page == 'customers'
 
 				if(isset($_POST['diskspace_ul']))
 				{
-					$diskspace = -1;
+					$diskspace = - 1;
 				}
 
 				$traffic = doubleval_ressource($_POST['traffic']);
 
 				if(isset($_POST['traffic_ul']))
 				{
-					$traffic = -1;
+					$traffic = - 1;
 				}
 
 				$subdomains = intval_ressource($_POST['subdomains']);
 
 				if(isset($_POST['subdomains_ul']))
 				{
-					$subdomains = -1;
+					$subdomains = - 1;
 				}
 
 				$emails = intval_ressource($_POST['emails']);
 
 				if(isset($_POST['emails_ul']))
 				{
-					$emails = -1;
+					$emails = - 1;
 				}
 
 				$email_accounts = intval_ressource($_POST['email_accounts']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_accounts = -1;
+					$email_accounts = - 1;
 				}
 
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
 				if(isset($_POST['email_accounts_ul']))
 				{
-					$email_forwarders = -1;
+					$email_forwarders = - 1;
 				}
 
 				if($settings['system']['mail_quota_enabled'] == '1')
@@ -871,12 +846,12 @@ if($page == 'customers'
 
 					if(isset($_POST['email_quota_ul']))
 					{
-						$email_quota = -1;
+						$email_quota = - 1;
 					}
 				}
 				else
 				{
-					$email_quota = -1;
+					$email_quota = - 1;
 				}
 
 				$email_imap = intval_ressource($_POST['email_imap']);
@@ -885,7 +860,7 @@ if($page == 'customers'
 
 				if(isset($_POST['ftps_ul']))
 				{
-					$ftps = -1;
+					$ftps = - 1;
 				}
 
 				$tickets = ($settings['ticket']['enabled'] == 1 ? intval_ressource($_POST['tickets']) : 0);
@@ -893,21 +868,21 @@ if($page == 'customers'
 				if(isset($_POST['tickets_ul'])
 				   && $settings['ticket']['enabled'] == '1')
 				{
-					$tickets = -1;
+					$tickets = - 1;
 				}
 
 				$mysqls = intval_ressource($_POST['mysqls']);
 
 				if(isset($_POST['mysqls_ul']))
 				{
-					$mysqls = -1;
+					$mysqls = - 1;
 				}
 
 				$number_of_aps_packages = intval_ressource($_POST['number_of_aps_packages']);
 
 				if(isset($_POST['number_of_aps_packages_ul']))
 				{
-					$number_of_aps_packages = -1;
+					$number_of_aps_packages = - 1;
 				}
 
 				$createstdsubdomain = intval($_POST['createstdsubdomain']);
@@ -1035,25 +1010,16 @@ if($page == 'customers'
 				if($name == ''
 				   && $company == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'myname'
-					));
+					standard_error(array('stringisempty', 'myname'));
 				}
 				elseif($firstname == ''
 				       && $company == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'myfirstname'
-					));
+					standard_error(array('stringisempty', 'myfirstname'));
 				}
 				elseif($email == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'emailadd'
-					));
+					standard_error(array('stringisempty', 'emailadd'));
 				}
 				elseif(!validateEmail($email))
 				{

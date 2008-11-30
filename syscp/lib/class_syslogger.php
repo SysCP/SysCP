@@ -78,24 +78,24 @@ class SysLogger extends AbstractLogger
 
 			switch($action)
 			{
-			case USR_ACTION:
-				$_action = 'customer';
-				break;
-			case RES_ACTION:
-				$_action = 'reseller';
-				break;
-			case ADM_ACTION:
-				$_action = 'administrator';
-				break;
-			case CRON_ACTION:
-				$_action = 'cronjob';
-				break;
-			case LOG_ERROR:
-				$_action = 'internal';
-				break;
-			default:
-				$_action = 'unknown';
-				break;
+				case USR_ACTION:
+					$_action = 'customer';
+					break;
+				case RES_ACTION:
+					$_action = 'reseller';
+					break;
+				case ADM_ACTION:
+					$_action = 'administrator';
+					break;
+				case CRON_ACTION:
+					$_action = 'cronjob';
+					break;
+				case LOG_ERROR:
+					$_action = 'internal';
+					break;
+				default:
+					$_action = 'unknown';
+					break;
 			}
 
 			if(!isset($this->userinfo['loginname'])

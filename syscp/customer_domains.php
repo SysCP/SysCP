@@ -181,18 +181,11 @@ elseif($page == 'domains')
 				$result = $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used`=`subdomains_used`-1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
 				inserttask('1');
 				inserttask('4');
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
 			{
-				ask_yesno('domains_reallydelete', $filename, array(
-					'id' => $id,
-					'page' => $page,
-					'action' => $action
-				), $idna_convert->decode($result['domain']));
+				ask_yesno('domains_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $idna_convert->decode($result['domain']));
 			}
 		}
 		else
@@ -215,10 +208,7 @@ elseif($page == 'domains')
 					 * - Case-insensitiv
 					 */
 
-				$subdomain = $idna_convert->encode(preg_replace(Array(
-					'/\:(\d)+$/',
-					'/^https?\:\/\//'
-				), '', validate($_POST['subdomain'], 'subdomain', '/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i', 'subdomainiswrong')));
+				$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', validate($_POST['subdomain'], 'subdomain', '/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i', 'subdomainiswrong')));
 				$domain = $idna_convert->encode($_POST['domain']);
 				$domain_check = $db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `subcanemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='$domain' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `email_only`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 				$completedomain = $subdomain . '.' . $domain;
@@ -244,7 +234,8 @@ elseif($page == 'domains')
 					$path = validate($_POST['path'], 'path');
 				}
 
-				if(!preg_match('/^https?\:\/\//', $path) || !validateUrl($idna_convert->encode($_POST['url'])))
+				if(!preg_match('/^https?\:\/\//', $path)
+				   || !validateUrl($idna_convert->encode($_POST['url'])))
 				{
 					$path = $userinfo['documentroot'] . $path;
 					$path = makeCorrectDir($path);
@@ -266,10 +257,7 @@ elseif($page == 'domains')
 				}
 				elseif($subdomain == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'domainname'
-					));
+					standard_error(array('stringisempty', 'domainname'));
 				}
 				elseif($subdomain == 'www')
 				{
@@ -298,10 +286,7 @@ elseif($page == 'domains')
 					$log->logAction(USR_ACTION, LOG_INFO, "added subdomain '" . $completedomain . "'");
 					inserttask('1');
 					inserttask('4');
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else
@@ -353,7 +338,8 @@ elseif($page == 'domains')
 					$path = validate($_POST['path'], 'path');
 				}
 
-				if(!preg_match('/^https?\:\/\//', $path) || !validateUrl($idna_convert->encode($_POST['url'])))
+				if(!preg_match('/^https?\:\/\//', $path)
+				   || !validateUrl($idna_convert->encode($_POST['url'])))
 				{
 					$path = $userinfo['documentroot'] . $path;
 					$path = makeCorrectDir($path);
@@ -442,10 +428,7 @@ elseif($page == 'domains')
 						$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($path) . "',`ssl_redirect`='" . $_POST['ssl_redirect'] . "', `isemaildomain`='" . (int)$isemaildomain . "', `iswildcarddomain`='" . (int)$iswildcarddomain . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ",`openbasedir_path`='" . $db->escape($openbasedir_path) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 					}
 
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else

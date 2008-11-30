@@ -120,9 +120,7 @@ if($userinfo['customers_see_all'] == '1')
 			}
 
 			$db->query('INSERT INTO `' . TABLE_BILLING_SERVICE_OTHER_TEMPLATES . '` (`caption_setup`, `caption_interval`, `valid_from`, `valid_to`, `interval_fee` , `interval_length` , `interval_type` , `interval_payment` , `setup_fee`, `taxclass`) VALUES( \'' . $db->escape($caption_setup) . '\', \'' . $db->escape($caption_interval) . '\', \'' . $db->escape($valid_from) . '\', \'' . $db->escape($valid_to) . '\', \'' . $db->escape($interval_fee) . '\', \'' . $db->escape($interval_length) . '\', \'' . $db->escape($interval_type) . '\', \'' . $db->escape($interval_payment) . '\', \'' . $db->escape($setup_fee) . '\', \'' . $db->escape($taxclass) . '\' ) ');
-			redirectTo($filename, Array(
-				's' => $s
-			));
+			redirectTo($filename, Array('s' => $s));
 		}
 		else
 		{
@@ -145,16 +143,11 @@ if($userinfo['customers_see_all'] == '1')
 			   && $_POST['send'] == 'send')
 			{
 				$db->query('DELETE FROM `' . TABLE_BILLING_SERVICE_OTHER_TEMPLATES . '` WHERE `templateid` = \'' . $id . '\' ');
-				redirectTo($filename, Array(
-					's' => $s
-				));
+				redirectTo($filename, Array('s' => $s));
 			}
 			else
 			{
-				ask_yesno('billing_other_template_reallydelete', $filename, array(
-					'id' => $id,
-					'action' => $action
-				), $result['caption_setup'] . ' / ' . $result['caption_interval'] . ' (' . $result['valid_from'] . ' - ' . $result['valid_to'] . ')');
+				ask_yesno('billing_other_template_reallydelete', $filename, array('id' => $id, 'action' => $action), $result['caption_setup'] . ' / ' . $result['caption_interval'] . ' (' . $result['valid_from'] . ' - ' . $result['valid_to'] . ')');
 			}
 		}
 	}
@@ -195,9 +188,7 @@ if($userinfo['customers_see_all'] == '1')
 				}
 
 				$db->query('UPDATE `' . TABLE_BILLING_SERVICE_OTHER_TEMPLATES . '` SET `valid_from` = \'' . $db->escape($valid_from) . '\', `valid_to` = \'' . $db->escape($valid_to) . '\', `interval_fee` = \'' . $db->escape($interval_fee) . '\', `interval_length` = \'' . $db->escape($interval_length) . '\', `interval_type` = \'' . $db->escape($interval_type) . '\', `interval_payment` = \'' . $db->escape($interval_payment) . '\', `setup_fee` = \'' . $db->escape($setup_fee) . '\', `taxclass` = \'' . $db->escape($taxclass) . '\' WHERE `templateid` = \'' . $id . '\' ');
-				redirectTo($filename, Array(
-					's' => $s
-				));
+				redirectTo($filename, Array('s' => $s));
 			}
 			else
 			{

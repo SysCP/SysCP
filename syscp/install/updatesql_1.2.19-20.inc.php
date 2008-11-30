@@ -972,7 +972,7 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn36';
 	}
-	
+
 	if($settings['panel']['version'] == '1.2.19-svn36')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn36 to 1.2.19-svn37");
@@ -988,7 +988,7 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn37';
 	}
-	
+
 	if($settings['panel']['version'] == '1.2.19-svn37')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn37 to 1.2.19-svn38");
@@ -1009,7 +1009,6 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn38')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn38 to 1.2.19-svn39");
-
 		$Result = $db->query("SELECT * FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `lang` = 'customer;aps' AND `url` = 'customer_aps.nourl'");
 		$Row = $db->fetch_array($Result);
 
@@ -1056,20 +1055,22 @@ else
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn40 to 1.2.19-svn41");
 
 		// we need a fresh $settings array because previous settings updates might not be in there at this point!!!
+
 		unset($settings);
 		$result = $db->query("SELECT `settinggroup`, `varname`, `value` FROM `" . TABLE_PANEL_SETTINGS . "`");
-		
+
 		while($row = $db->fetch_array($result))
 		{
 			$settings[$row['settinggroup']][$row['varname']] = $row['value'];
 		}
-		
+
 		unset($row);
 		unset($result);
 
 		/*
 		 * APS
 		 */
+
 		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'aps.aps_active' WHERE `area` = 'admin' 
 			   AND `lang` = 'admin;aps' AND `url` = 'admin_aps.nourl'");
 
@@ -1087,10 +1088,12 @@ else
 		/*
 		 * BILLING
 		 */
+
 		if($settings['billing']['activate_billing'] == '0')
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', '', 'billing;billing', 'billing.nourl', 100, 'billing.activate_billing', 0)");
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', 110, 'edit_billingdata', 0)");
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', 115, 'edit_billingdata', 0)");
@@ -1105,6 +1108,7 @@ else
 		/*
 		 * LOGGER
 		 */
+
 		if($settings['logger']['enabled'] == '1')
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `area` = 'admin' AND `lang` = 'menue;logger;logger' AND `url` = 'admin_logger.php?page=log'");
@@ -1113,12 +1117,14 @@ else
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_misc.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', 10, 'logger.enabled', 0)");
 		}
 
 		/*
 		 * TICKET
 		 */
+
 		if($settings['ticket']['enabled'] == '1')
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'ticket.enabled' WHERE `area` = 'customer' AND `lang` = 'menue;ticket;ticket' AND `url` = 'customer_tickets.php'");
@@ -1128,6 +1134,7 @@ else
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES
 			('customer', '', 'menue;ticket;ticket', 'customer_tickets.php', '20', 'ticket.enabled', 0),
 			('customer', 'customer_tickets.php', 'menue;ticket;ticket', 'customer_tickets.php?page=tickets', 10, '', 0),
@@ -1140,20 +1147,23 @@ else
 		/*
 		 * PHP-Config
 		 */
+
 		if($settings['system']['mod_fcgid'] == '1')
-		{	
+		{
 			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'system.mod_fcgid' WHERE `area` = 'admin' AND `lang` = 'menue;phpsettings;maintitle' AND `url` = 'admin_phpsettings.php?page=overview'");
 		}
 		else
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, 'system.mod_fcgid', 0)");
 		}
 
 		/*
 		 * AUTORESPONDER
 		 */
+
 		if($settings['autoresponder']['autoresponder_active'] == '1')
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'emails' WHERE `area` = 'customer' AND `lang` = 'menue;email;autoresponder' AND `url` = 'customer_autoresponder.php'");
@@ -1162,40 +1172,49 @@ else
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` VALUES (NULL, 'customer', 'customer_email.php', 'menue;email;autoresponder', 'customer_autoresponder.php', 40, 'autoresponder.autoresponder_active', 0)");
 		}
 
 		/*
 		 * Special cases: phpmyadmin, webftp, webmail
 		 */
-
 		// phpmyadmin
+
 		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin"');
 		$nums = mysql_num_rows($result);
+
 		if($nums <= 0)
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;mysql;phpmyadmin', `url`='', `area`='customer', `new_window`='1', `required_resources` = 'mysqls_used', `order` = '99', `parent_url` = 'customer_mysql.php'");
 		}
 
 		// webftp
+
 		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ftp;webftp"');
 		$nums = mysql_num_rows($result);
+
 		if($nums <= 0)
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;ftp;webftp', `url`='', `area`='customer', `new_window`='1', `order` = '99', `parent_url` = 'customer_ftp.php'");
 		}
 
 		// webmail
+
 		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;email;webmail"');
 		$nums = mysql_num_rows($result);
+
 		if($nums <= 0)
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
+
 			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;email;webmail', `url`='', `area`='customer', `new_window`='1', `required_resources` = 'emails_used', `order` = '99', `parent_url` = 'customer_email.php'");
 		}
 
@@ -1206,7 +1225,7 @@ else
 		$db->query($query);
 		$settings['panel']['version'] = '1.2.19-svn41';
 	}
-	
+
 	if($settings['panel']['version'] == '1.2.19-svn41')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn41 to 1.2.19-svn42");
@@ -1227,6 +1246,7 @@ else
 		// Going to fix double slashes in the database
 
 		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `path` LIKE '%//%';");
+
 		while($row = $db->fetch_array($result))
 		{
 			$row['path'] = makeSecurePath($row['path']);
@@ -1234,6 +1254,7 @@ else
 		}
 
 		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `path` LIKE '%//%';");
+
 		while($row = $db->fetch_array($result))
 		{
 			$row['path'] = makeSecurePath($row['path']);
@@ -1241,6 +1262,7 @@ else
 		}
 
 		$result = $db->query("SELECT * FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `documentroot` LIKE '%//%';");
+
 		while($row = $db->fetch_array($result))
 		{
 			$row['documentroot'] = makeSecurePath($row['documentroot']);
@@ -1257,5 +1279,7 @@ else
 }
 
 // php filter-extension check
+
+
 
 ?>

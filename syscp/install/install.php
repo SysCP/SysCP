@@ -480,6 +480,7 @@ else
 	else
 	{
 		// we don't need to bail out, since unknown does not affect any critical installation routines
+
 		$webserver = 'unknown';
 	}
 }

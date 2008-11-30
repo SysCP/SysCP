@@ -122,7 +122,8 @@ class SysCPLogger
 			return;
 		}
 
-		if($this->settings['logger']['log_cron'] == '0' && $action == CRON_ACTION)
+		if($this->settings['logger']['log_cron'] == '0'
+		   && $action == CRON_ACTION)
 		{
 			return;
 		}
@@ -131,34 +132,34 @@ class SysCPLogger
 		{
 			switch($logger)
 			{
-			case 'syslog':
-				$_log = SysLogger::getInstanceOf($this->userinfo, $this->settings);
-				break;
-			case 'file':
-				try
-				{
-					$_log = FileLogger::getInstanceOf($this->userinfo, $this->settings);
-				}
-
-				catch(Exception $e)
-				{
-					if($action != CRON_ACTION)
+				case 'syslog':
+					$_log = SysLogger::getInstanceOf($this->userinfo, $this->settings);
+					break;
+				case 'file':
+					try
 					{
-						standard_error('logerror', $e->getMessage());
+						$_log = FileLogger::getInstanceOf($this->userinfo, $this->settings);
 					}
-					else
-					{
-						echo "Log-Error: " . $e->getMessage();
-					}
-				}
 
-				break;
-			case 'mysql':
-				$_log = MysqlLogger::getInstanceOf($this->userinfo, $this->settings, $this->db);
-				break;
-			default:
-				$_log = null;
-				break;
+					catch(Exception $e)
+					{
+						if($action != CRON_ACTION)
+						{
+							standard_error('logerror', $e->getMessage());
+						}
+						else
+						{
+							echo "Log-Error: " . $e->getMessage();
+						}
+					}
+
+					break;
+				case 'mysql':
+					$_log = MysqlLogger::getInstanceOf($this->userinfo, $this->settings, $this->db);
+					break;
+				default:
+					$_log = null;
+					break;
 			}
 
 			if($_log != null)
@@ -187,7 +188,8 @@ class SysCPLogger
 	{
 		$_cronlog = (int)$_cronlog;
 
-		if($_cronlog != 0 && $_cronlog != 1)
+		if($_cronlog != 0
+		   && $_cronlog != 1)
 		{
 			$_cronlog = 0;
 		}

@@ -109,18 +109,11 @@ elseif($page == 'accounts')
 				}
 
 				$result = $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `ftps_used`=`ftps_used`-1 $resetaccnumber WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
-				redirectTo($filename, Array(
-					'page' => $page,
-					's' => $s
-				));
+				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
 			{
-				ask_yesno('ftp_reallydelete', $filename, array(
-					'id' => $id,
-					'page' => $page,
-					'action' => $action
-				), $result['username']);
+				ask_yesno('ftp_reallydelete', $filename, array('id' => $id, 'page' => $page, 'action' => $action), $result['username']);
 			}
 		}
 		else
@@ -156,10 +149,7 @@ elseif($page == 'accounts')
 
 				if($password == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'mypassword'
-					));
+					standard_error(array('stringisempty', 'mypassword'));
 				}
 				elseif($path == '')
 				{
@@ -168,10 +158,7 @@ elseif($page == 'accounts')
 				elseif($settings['customer']['ftpatdomain'] == '1'
 				       && $ftpusername == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'username'
-					));
+					standard_error(array('stringisempty', 'username'));
 				}
 				elseif($settings['customer']['ftpatdomain'] == '1'
 				       && $ftpdomain_check['domain'] != $ftpdomain)
@@ -200,10 +187,7 @@ elseif($page == 'accounts')
 
 					$log->logAction(USR_ACTION, LOG_INFO, "added ftp-account '" . $username . " (" . $path . ")'");
 					inserttask(5);
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else
@@ -239,20 +223,14 @@ elseif($page == 'accounts')
 
 				if($password == '')
 				{
-					standard_error(array(
-						'stringisempty',
-						'mypassword'
-					));
+					standard_error(array('stringisempty', 'mypassword'));
 					exit;
 				}
 				else
 				{
 					$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `password`=ENCRYPT('" . $db->escape($password) . "') WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 					$log->logAction(USR_ACTION, LOG_INFO, "edited ftp-account '" . $result['username'] . "'");
-					redirectTo($filename, Array(
-						'page' => $page,
-						's' => $s
-					));
+					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
 			else

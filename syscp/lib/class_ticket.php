@@ -295,10 +295,7 @@ class ticket
 
 			if(!$mail->Send())
 			{
-				standard_error(array(
-					'errorsendingmail',
-					$usr['email']
-				));
+				standard_error(array('errorsendingmail', $usr['email']));
 			}
 
 			$mail->ClearAddresses();
@@ -314,10 +311,7 @@ class ticket
 
 			if(!$mail->Send())
 			{
-				standard_error(array(
-					'errorsendingmail',
-					$admin['email']
-				));
+				standard_error(array('errorsendingmail', $admin['email']));
 			}
 
 			$mail->ClearAddresses();
@@ -576,18 +570,18 @@ class ticket
 	{
 		switch($_status)
 		{
-		case 0:
-			return $_lng['ticket']['open'];
-			break;
-		case 1:
-			return $_lng['ticket']['wait_reply'];
-			break;
-		case 2:
-			return $_lng['ticket']['replied'];
-			break;
-		default:
-			return $_lng['ticket']['closed'];
-			break;
+			case 0:
+				return $_lng['ticket']['open'];
+				break;
+			case 1:
+				return $_lng['ticket']['wait_reply'];
+				break;
+			case 2:
+				return $_lng['ticket']['replied'];
+				break;
+			default:
+				return $_lng['ticket']['closed'];
+				break;
 		}
 	}
 
@@ -599,15 +593,15 @@ class ticket
 	{
 		switch($_priority)
 		{
-		case 1:
-			return $_lng['ticket']['high'];
-			break;
-		case 2:
-			return $_lng['ticket']['normal'];
-			break;
-		default:
-			return $_lng['ticket']['low'];
-			break;
+			case 1:
+				return $_lng['ticket']['high'];
+				break;
+			case 2:
+				return $_lng['ticket']['normal'];
+				break;
+			default:
+				return $_lng['ticket']['low'];
+				break;
 		}
 	}
 

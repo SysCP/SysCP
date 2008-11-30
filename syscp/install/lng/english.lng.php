@@ -73,5 +73,7 @@ $lng['install']['openbasedirenabled'] = 'enabled. SysCP will not work properly w
 /**
  * Renamed in 1.2.19-svn40
  */
+
 $lng['install']['webserver'] = 'Webserver';
+
 ?>
