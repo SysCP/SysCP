@@ -84,3 +84,8 @@ alias_maps = $alias_database
 #smtpd_tls_received_header = yes
 #smtpd_tls_session_cache_timeout = 3600s
 #tls_random_source = dev:/dev/urandom
+
+debugger_command =
+         PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+         ddd $daemon_directory/$process_name $process_id & sleep 5
+
