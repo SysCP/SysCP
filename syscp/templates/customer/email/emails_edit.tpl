@@ -18,6 +18,12 @@ $header
 			</if>
 			</td>
 		</tr>
+		<if $result['popaccountid'] != 0 && $settings['system']['mail_quota_enabled']>
+		<tr>
+			<td class="field_display_border_left">{$lng['customer']['email_quota']}:</td>
+			<td class="field_name" nowrap="nowrap">{$result['quota']} {$lng['panel']['megabyte']} [<a href="$filename?page=accounts&amp;action=changequota&amp;id={$result['id']}&amp;s=$s">{$lng['emails']['quota_edit']}</a>]</td>
+		</tr>
+		</if>
 		<tr>
 			<td class="field_display_border_left">{$lng['emails']['catchall']}:</td>
 			<td class="field_name" nowrap="nowrap">
@@ -35,29 +41,6 @@ $header
 			<td class="field_name">$forwarders<a href="$filename?page=forwarders&amp;action=add&amp;id={$result['id']}&amp;s=$s">{$lng['emails']['forwarder_add']}</a></td>
 		</tr>
 	</table>
-	<br />
-	<if ($result['popaccountid'] != 0 && $settings['system']['mail_quota_enabled'])>
-		<form action="{$filename}" method="post">
-		<table cellpadding="5" cellspacing="0" border="0" align="center" class="maintable_60">
-		<tr>
-			<td class="maintitle" colspan="2"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['emails']['quota_edit']}</b></td>
-		</tr>
-		<tr>
-			<td class="field_display_border_left">{$lng['emails']['quota']} ({$lng['panel']['megabyte']}):</td>
-			<td class="field_name" nowrap="nowrap">
-				<input type="hidden" name="s" value="{$s}" />
-				<input type="hidden" name="id" value="{$result['id']}" />
-				<input type="hidden" name="page" value="{$page}" />
-				<input type="hidden" name="action" value="updatequota" />
-				<input type="text" class="text" name="email_quota_size" value="{$quota}" />
-			</td>
-		</tr>
-		<tr>
-			<td class="maintitle_apply_right" colspan="2"><input type="submit" value="{$lng['emails']['updatequota']}" name="send" class="bottom" /></td>
-		</tr>
-		</form>
-		</table>
-		</if>
 	<br />
 	<br />
 $footer
