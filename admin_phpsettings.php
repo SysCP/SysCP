@@ -75,13 +75,6 @@ if($page == 'overview')
 		eval("echo \"" . getTemplate("phpconfig/overview") . "\";");
 	}
 
-	if($action == 'view')
-	{
-		$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$id);
-		$log->logAction(ADM_ACTION, LOG_INFO, "php.ini setting with description '" . $result['description'] . "' has been viewed by '" . $userinfo['loginname'] . "'");
-		eval("echo \"" . getTemplate("phpconfig/overview_view") . "\";");
-	}
-
 	if($action == 'add')
 	{
 		if((int)$userinfo['change_serversettings'] == 1)

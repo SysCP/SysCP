@@ -12,11 +12,9 @@ $header
 			<td class="field_display">{$lng['admin']['phpsettings']['actions']}</td>
 		</tr>
 		$tablecontent
-		<if (int)$userinfo['caneditphpsettings'] == 1>
 		<tr>
 			<td class="field_display_border_left" colspan="5"><a href="$filename?s=$s&amp;page=$page&amp;action=add">{$lng['admin']['phpsettings']['addnew']}</a></td>
 		</tr>
-		</if>
 	</table>
 	<br />
 	<br />
