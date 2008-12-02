@@ -213,7 +213,7 @@ return Array(
 					'awstats' => Array(
 						'label' => 'Awstats',
 						'files' => Array(
-							($settings['system']['mod_log_sql'] == 1 ? 'etc_awstats_awstats.model_log_sql.conf.syscp' : 'etc_awstats.model.conf.syscp') => '/etc/awstats/awstats.model.conf.syscp',
+							($settings['system']['mod_log_sql'] == 1 ? 'etc_awstats_awstats.model_log_sql.conf.syscp' : 'etc_awstats_awstats.model.conf.syscp') => '/etc/awstats/awstats.model.conf.syscp',
 							($settings['system']['mod_log_sql'] == 1 ? 'etc_cron.d_awstats_log_sql' : 'etc_cron.d_awstats') => '/etc/cron.d/awstats',
 							($settings['system']['webserver'] == 'lighttpd' ? 'etc_lighttpd_syscp-awstats.conf' : 'etc_apache_vhosts_05_awstats.conf') => ($settings['system']['webserver'] == 'lighttpd' ? '/etc/lighttpd/syscp-awstats.conf' : '/etc/apache2/sites-enabled/05_awstats.conf')
 						),

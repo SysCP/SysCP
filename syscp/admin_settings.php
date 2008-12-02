@@ -517,7 +517,7 @@ if(($page == 'settings' || $page == 'overview')
 			   && isset($_POST['panel_webserver_selected']))
 			{
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($_POST['panel_webserver_selected']) . "' WHERE `settinggroup`='system' AND `varname`='webserver'");
-				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webserver from '" . $settings['system']['apacheconf_vhost'] . "' to '" . $_POST['panel_webserver_selected'] . "'");
+				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_webserver from '" . $settings['system']['webserver'] . "' to '" . $_POST['panel_webserver_selected'] . "'");
 				inserttask('1');
 			}
 
@@ -1088,6 +1088,15 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $value . "' WHERE `settinggroup`='billing' AND `varname`='activate_billing'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed billing_activate_billing from '" . $settings['billing']['activate_billing'] . "' to '" . $value . "'");
 				$settings['billing']['activate_billing'] = $value;
+
+				if((int)$value == 1)
+				{
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "edit_billingdata" WHERE `url` = "billing.nourl" AND `lang` = "billing;billing"');
+				}
+				else
+				{
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "billing.activate_billing" WHERE `url` = "billing.nourl" AND `lang` = "billing;billing"');
+				}
 			}
 
 			if(!$only_enabledisable)
@@ -1123,7 +1132,7 @@ if(($page == 'settings' || $page == 'overview')
 				if((int)$value == 1)
 				{
 					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "phpenabled" WHERE `url` = "customer_aps.nourl"');
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "phpenabled" WHERE `url` = "admin_aps.nourl"');
+					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "can_manage_aps_packages" WHERE `url` = "admin_aps.nourl"');
 				}
 				else
 				{
