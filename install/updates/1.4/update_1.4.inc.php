@@ -100,8 +100,7 @@ if($settings['panel']['version'] == '1.4.1')
 	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "`  (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, 'system.mod_fcgid', 0)");
 
 	// give at least ONE admin the permission to edit phpsettings, bug #1031
-	$result = $db->query("SELECT COUNT(`caneditphpsettings`) as `cnt` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `caneditphpsettings` = '1'");
-	$cntCanEditPHP = $db->query_first($result);
+	$cntCanEditPHP = $db->query_first("SELECT COUNT(`caneditphpsettings`) as `cnt` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `caneditphpsettings` = '1'");
 	if($cntCanEditPHP['cnt'] <= 0)
 	{
 		// none of the admins can edit php-settings, 
@@ -110,8 +109,10 @@ if($settings['panel']['version'] == '1.4.1')
 	}
 
 	// set new version
-	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'1.4.1-svn1\' 
-		    WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'');
+
+	$query = 'UPDATE `%s` SET `value` = \'1.4.1-svn1\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
 	$settings['panel']['version'] = '1.4.1-svn1';
 }
 
