@@ -119,7 +119,7 @@ class lighttpd
 						$htaccess_text.= '  auth.backend = "htpasswd"' . "\n";
 					}
 
-					$htaccess_text.= '  auth.backend.htpasswd.userfile = "' . makeCorrectDir($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
+					$htaccess_text.= '  auth.backend.htpasswd.userfile = "' . makeCorrectFile($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
 					$htaccess_text.= '  auth.require = ( ' . "\n";
 				}
 				else
@@ -290,7 +290,7 @@ class lighttpd
 		{
 			if(!empty($row['error404path']))
 			{
-				$error_string.= '  server.error-handler-404 = "' . makeCorrectDir($row['documentroot'] . '/' . $row['error404path']) . '"' . "\n";
+				$error_string.= '  server.error-handler-404 = "' . makeCorrectFile($row['documentroot'] . '/' . $row['error404path']) . '"' . "\n";
 			}
 
 			if($row['options_indexes'] != '0')
@@ -325,7 +325,7 @@ class lighttpd
 				{
 					$auth_backend_loaded[$domain['ipandport']] = 'yes';
 					$diroption_text.= 'auth.backend = "htpasswd"' . "\n";
-					$diroption_text.= 'auth.backend.htpasswd.userfile = "' . $this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename . '"' . "\n";
+					$diroption_text.= 'auth.backend.htpasswd.userfile = "' . makeCorrectFile($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
 					$this->needed_htpasswds[$filename] = $row_htpasswds['username'] . ':' . $row_htpasswds['password'] . "\n";
 					$diroption_text.= 'auth.require = ( ' . "\n";
 					$previous_domain_id = '1';
@@ -334,7 +334,7 @@ class lighttpd
 				{
 					$auth_backend_loaded[$domain['ssl_ipandport']] = 'yes';
 					$diroption_text.= 'auth.backend= "htpasswd"' . "\n";
-					$diroption_text.= 'auth.backend.htpasswd.userfile = "' . $this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename . '"' . "\n";
+					$diroption_text.= 'auth.backend.htpasswd.userfile = "' . makeCorrectFile($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
 					$this->needed_htpasswds[$filename] = $row_htpasswds['username'] . ':' . $row_htpasswds['password'] . "\n";
 					$diroption_text.= 'auth.require = ( ' . "\n";
 					$previous_domain_id = '1';
@@ -359,7 +359,7 @@ class lighttpd
 			}
 		}
 
-		return '  auth.backend.htpasswd.userfile = "' . $this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename . '"' . "\n";
+		return '  auth.backend.htpasswd.userfile = "' . makeCorrectFile($this->settings['system']['apacheconf_htpasswddir'] . '/' . $filename) . '"' . "\n";
 	}
 
 	protected function getServerNames($domain)
