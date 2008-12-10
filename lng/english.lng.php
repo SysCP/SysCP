@@ -408,7 +408,7 @@ $lng['admin']['ipsandports']['port'] = 'Port';
 // ADDED IN 1.2.13-rc3
 
 $lng['error']['cantchangesystemip'] = 'You cannot change the last system IP, either create another new IP/Port combination for the system IP or change the system IP.';
-$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure, you want the document root for this domain, not being within the customerroot of the customer?';
+$lng['question']['admin_domain_reallydocrootoutofcustomerroot'] = 'Are you sure, you want the document root for this domain, not being within the customer root of the customer?';
 
 // ADDED IN 1.2.14-rc1
 
@@ -466,7 +466,7 @@ $lng['serversettings']['phpappendopenbasedir']['description'] = 'These paths (se
 
 // CHANGED IN 1.2.15-rc1
 
-$lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to systemaccounts (as for example begin with &quot;%s&quot;). Please enter another accountname.';
+$lng['error']['loginnameissystemaccount'] = 'You cannot create accounts which are similar to system accounts (as for example begin with &quot;%s&quot;). Please enter another account name.';
 $lng['error']['youcantdeleteyourself'] = 'You cannot delete yourself for security reasons.';
 $lng['error']['youcanteditallfieldsofyourself'] = 'Note: You cannot edit all fields of your own account for security reasons.';
 
@@ -495,8 +495,8 @@ $lng['panel']['pathDescription'] = 'If the directory doesn\'t exist, it will be 
 
 // ADDED IN 1.2.16-svn6
 
-$lng['mails']['trafficninetypercent']['mailbody'] = 'Dear {NAME},\n\nYou used {TRAFFICUSED} MB of your available {TRAFFIC} MB of traffic.\nThis are more than 90%.\n\nYours sincerely, the SysCP-Team';
-$lng['mails']['trafficninetypercent']['subject'] = 'Reaching your trafficlimit';
+$lng['mails']['trafficninetypercent']['mailbody'] = 'Dear {NAME},\n\nYou used {TRAFFICUSED} MB of your available {TRAFFIC} MB of traffic.\nThis is more than 90%.\n\nYours sincerely, the SysCP-Team';
+$lng['mails']['trafficninetypercent']['subject'] = 'Reaching your traffic limit';
 $lng['admin']['templates']['trafficninetypercent'] = 'Notification mail for customers when ninety percent of traffic is exhausted';
 $lng['admin']['templates']['TRAFFIC'] = 'Replaced with the traffic, which was assigned to the customer.';
 $lng['admin']['templates']['TRAFFICUSED'] = 'Replaced with the traffic, which was exhausted by the customer.';
@@ -512,7 +512,7 @@ $lng['changepassword']['also_change_webalizer'] = ' also change password of the 
 // ADDED IN 1.2.16-svn8
 
 $lng['serversettings']['mailpwcleartext']['title'] = 'Also save passwords of mail accounts unencrypted in database';
-$lng['serversettings']['mailpwcleartext']['description'] = 'If this is set to yes, all passwords will also be saved unencrypted (clearext, plain readable for everyone with database access) in the mail_users-table. Only activate this if you really need it!';
+$lng['serversettings']['mailpwcleartext']['description'] = 'If this is set to yes, all passwords will also be saved unencrypted (clear text, plain readable for everyone with database access) in the mail_users-table. Only activate this if you really need it!';
 $lng['serversettings']['mailpwcleartext']['removelink'] = 'Click here to wipe all unencrypted passwords from the table.';
 $lng['question']['admin_cleartextmailpws_reallywipe'] = 'Do you really want to wipe all unencrypted mail account passwords from the table mail_users? This cannot be reverted!';
 $lng['admin']['configfiles']['overview'] = 'Overview';
@@ -566,7 +566,7 @@ $lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Where should 
 
 // ADDED IN 1.2.16-svn15
 
-$lng['error']['formtokencompromised'] = 'The request seems to be compromised. For securityreasons you were logged out.';
+$lng['error']['formtokencompromised'] = 'The request seems to be compromised. For security reasons you were logged out.';
 $lng['serversettings']['mysql_access_host']['title'] = 'MySQL-Access-Hosts';
 $lng['serversettings']['mysql_access_host']['description'] = 'A comma separated list of hosts from which users should be allowed to connect to the MySQL-Server.';
 
@@ -957,7 +957,7 @@ $lng['invoice']['dateheader'] = 'City, %s';
 $lng['invoice']['number'] = 'Invoice number';
 $lng['invoice']['contract_number'] = 'Contract number';
 $lng['invoice']['contract_details'] = 'Contract details';
-$lng['invoice']['contract_details_template'] = 'Hostingpaket gem. Hostingvertrag vom %s mit %s MB Webspace, %s ' . chr(128) . ' pro %s GB Zusatzwebspace, %s GB Traffic, %s ' . chr(128) . ' pro %s GB Zusatztraffic; %s Inklusivdomains; Abrechnungsintervall %s %s.';
+$lng['invoice']['contract_details_template'] = 'Hosting bundle as described in hosting contract from %s with %s MB webspace, %s' . chr(128) . ' foreach %s GB additional webspace, %s GB traffic, %s ' . chr(128) . ' for each %s GB additional traffic; %s inclusive domains; Payment interval %s %s.';
 $lng['invoice']['period'] = 'Invoice period';
 $lng['invoice']['header'][0] = 'Pos.';
 $lng['invoice']['header'][1] = 'Description';
@@ -970,10 +970,10 @@ $lng['invoice']['subtotal'] = 'Subtotal';
 $lng['invoice']['tax'] = 'Tax (%s%%)';
 $lng['invoice']['credit_note'] = 'Credit Note';
 $lng['invoice']['total'] = 'Total';
-$lng['invoice']['payment_methods'][0] = 'Rechnungsbetrag zahlbar innerhalb von %s Tagen.' . "\n" . 'Da uns noch keine Lastschrift-Einzugserm&auml;chtigung von Ihnen vorliegt, bitten wir Sie die Rechnung per &Uuml;berweisung auf unser Konto zu begleichen. Falls auch Sie am Lastschriftverfahren teilnehmen m&ouml;chten, f&uuml;llen Sie bitte das angef&uuml;gte Formular aus und senden Sie es per Post an uns zur&uuml;ck.';
-$lng['invoice']['payment_methods'][1] = 'Der Rechnungsbetrag wird in den n&auml;chsten %s Tagen von Ihrem Konto bei der %s, Kontonummer %s, BLZ %s per Lastschrift eingezogen.';
-$lng['invoice']['tax_text']['line'] = 'USt-IdNr. %s: %s' . "\n";
-$lng['invoice']['tax_text']['client'] = 'des Kunden';
+$lng['invoice']['payment_methods'][0] = 'invoice amount has to get payed within %s days.' . "\n" . 'Because we don\'t have direct debit authorisation yet, we ask you to use bank transfer to pay the bill. If you want to use direct debit authorisation, we ask you to fill in the attached form, and send it per mail back to us.';
+$lng['invoice']['payment_methods'][1] = 'The invoice amount will get withdrawn from your bank account held at %s, Account number %s, bank identification number %s in the next %s days.';
+$lng['invoice']['tax_text']['line'] = 'VAT no. / tax (account) no. %s: %s' . "\n";
+$lng['invoice']['tax_text']['client'] = 'of the customer';
 $lng['invoice']['state'] = 'state';
 $lng['invoice']['states'][CONST_BILLING_INVOICESTATE_INVOICED] = 'invoiced';
 $lng['invoice']['states'][CONST_BILLING_INVOICESTATE_SENT] = 'sent';
@@ -1049,9 +1049,9 @@ $lng['question']['billing_taxrate_reallydelete'] = 'Do you really want to delete
 
 // ADDED IN 1.2.19-svn22
 
-$lng['serversettings']['allow_preset_desc'] = 'Customers can reset their password and a new passwort will be sent to their e-mail address';
+$lng['serversettings']['allow_preset_desc'] = 'Customers can reset their password and a new password will be sent to their e-mail address';
 $lng['serversettings']['allow_preset_admin'] = 'Allow password reset by admins';
-$lng['serversettings']['allow_preset_admin_desc'] = 'Admins/reseller can reset their password and a new passwort will be sent to their e-mail address';
+$lng['serversettings']['allow_preset_admin_desc'] = 'Admins/reseller can reset their password and a new password will be sent to their e-mail address';
 
 // ADDED IN 1.2.19-svn23
 
@@ -1063,10 +1063,10 @@ $lng['error']['service_still_active'] = 'Service still active.';
 $lng['admin']['billingsettings'] = 'Billing settings';
 $lng['serversettings']['billing']['activate_billing']['title'] = 'Activate billing';
 $lng['serversettings']['billing']['activate_billing']['description'] = 'Here you can activate/deactivate the billing system globally.';
-$lng['serversettings']['billing']['highlight_inactive']['title'] = 'Highlight inaktive billing';
+$lng['serversettings']['billing']['highlight_inactive']['title'] = 'Highlight inactive billing';
 $lng['serversettings']['billing']['highlight_inactive']['description'] = 'Should rows, whose billing is not active, be highlighted?';
 $lng['serversettings']['billing']['invoicenumber_count']['title'] = 'Current invoice number';
-$lng['serversettings']['billing']['invoicenumber_count']['description'] = 'This is the number of fixed invoices. Changes could result in an argue with your accountant.';
+$lng['serversettings']['billing']['invoicenumber_count']['description'] = 'This is the number of fixed invoices. Changes could result in an argument with your accountant.';
 
 // ADDED IN 1.2.19-svn25
 
@@ -1081,7 +1081,7 @@ $lng['serversettings']['mail_quota_enabled']['removelink'] = 'Click here to wipe
 $lng['serversettings']['mail_quota_enabled']['enforcelink'] = 'Click here to enforce default quota to all User mail accounts.';
 $lng['question']['admin_quotas_reallywipe'] = 'Do you really want to wipe all quotas on table mail_users? This cannot be reverted!';
 $lng['question']['admin_quotas_reallyenforce'] = 'Do you really want to enforce the default quota to all Users? This cannot be reverted!';
-$lng['error']['vmailquotawrong'] = 'The quotasize must be positiv number.';
+$lng['error']['vmailquotawrong'] = 'The quotasize must be positive number.';
 $lng['customer']['email_quota'] = 'E-mail quota';
 $lng['customer']['email_imap'] = 'E-mail IMAP';
 $lng['customer']['email_pop3'] = 'E-mail POP3';
@@ -1089,7 +1089,7 @@ $lng['customer']['mail_quota'] = 'Mailquota';
 $lng['panel']['megabyte'] = 'MegaByte';
 $lng['panel']['not_supported'] = 'Not supported in: ';
 $lng['emails']['quota_edit'] = 'Change E-Mail Quota';
-$lng['error']['allocatetoomuchquota'] = 'You try to allocate %s MB ' . $lng['emails']['quota'] . ', but you have not enough left.';
+$lng['error']['allocatetoomuchquota'] = 'You tried to allocate %s MB ' . $lng['emails']['quota'] . ', but you do not have enough left.';
 
 // Autoresponder module
 
@@ -1104,8 +1104,8 @@ $lng['autoresponder']['account'] = 'Account';
 $lng['autoresponder']['sender'] = 'Sender';
 $lng['question']['autoresponderdelete'] = 'Do you really want to delete the autoresponder?';
 $lng['error']['noemailaccount'] = 'There can be two reasons why you cannot create a new autoresponder: You need at least one email account to create a new autoresponder. Secondly it can be possible that all accounts already have an autoresponder configured.';
-$lng['error']['missingfields'] = 'Not all needed fields were field out.';
-$lng['error']['accountnotexisting'] = 'The given email account doesn\'t exists.';
+$lng['error']['missingfields'] = 'Not all required fields were filled out.';
+$lng['error']['accountnotexisting'] = 'The given email account doesn\'t exist.';
 $lng['error']['autoresponderalreadyexists'] = 'There is already an autoresponder configured for this account.';
 $lng['error']['invalidautoresponder'] = 'The given account is invalid.';
 $lng['serversettings']['autoresponder_active']['title'] = 'Use autoresponder module';
@@ -1133,11 +1133,11 @@ $lng['admin']['phpsettings']['editsettings'] = 'Change PHP settings';
 $lng['admin']['phpsettings']['addsettings'] = 'Create new PHP settings';
 $lng['admin']['phpsettings']['viewsettings'] = 'View PHP settings';
 $lng['admin']['phpsettings']['phpinisettings'] = 'php.ini settings';
-$lng['error']['nopermissionsorinvalidid'] = 'You don\'t have enough permissions to change this settings or a invalid id was given.';
+$lng['error']['nopermissionsorinvalidid'] = 'You don\'t have enough permissions to change these settings or an invalid id was given.';
 $lng['panel']['view'] = 'view';
-$lng['question']['phpsetting_reallydelete'] = 'Do you really want to delete this settings? All domains which use this settings currently will be changed to the default config.';
+$lng['question']['phpsetting_reallydelete'] = 'Do you really want to delete these settings? All domains which use these settings currently will be changed to the default config.';
 $lng['admin']['phpsettings']['addnew'] = 'Create new settings';
-$lng['error']['phpsettingidwrong'] = 'A PHP Configuration with this id doesn\'t exists';
+$lng['error']['phpsettingidwrong'] = 'A PHP Configuration with this id doesn\'t exist';
 $lng['error']['descriptioninvalid'] = 'The description is too short, too long or contains illegal characters.';
 $lng['error']['info'] = 'Info';
 $lng['admin']['phpconfig']['template_replace_vars'] = 'Variables that will be replaced in the configs';
@@ -1153,7 +1153,7 @@ $lng['admin']['phpconfig']['customer'] = 'Will be replaced with the loginname of
 $lng['admin']['phpconfig']['admin'] = 'Will be replaced with the loginname of the admin who owns this domain.';
 $lng['login']['backtologin'] = 'Back to login';
 $lng['serversettings']['mod_fcgid']['starter'] = 'Processes per Domain';
-$lng['serversettings']['mod_fcgid']['starter_desc'] = 'How many processes should be started/allowed per domain? The value 0 is recommended cause PHP will then manage the amount of processes itself very efficient.';
+$lng['serversettings']['mod_fcgid']['starter_desc'] = 'How many processes should be started/allowed per domain? The value 0 is recommended cause PHP will then manage the amount of processes itself very efficiently.';
 $lng['serversettings']['mod_fcgid']['wrapper'] = 'Wrapper in Vhosts';
 $lng['serversettings']['mod_fcgid']['wrapper_desc'] = 'How should the wrapper be included in the Vhosts';
 $lng['serversettings']['mod_fcgid']['tmpdir_desc'] = 'Where should the temp directories be stored';
@@ -1162,18 +1162,18 @@ $lng['serversettings']['mod_fcgid']['peardir_desc'] = 'Which global PEAR directo
 
 //improved syscp 2
 
-$lng['admin']['templates']['index_html'] = 'index file for newly created customerdirectories';
+$lng['admin']['templates']['index_html'] = 'index file for newly created customer directories';
 $lng['admin']['templates']['SERVERNAME'] = 'Replaced with the servername.';
 $lng['admin']['templates']['CUSTOMER'] = 'Replaced with the loginname of the customer.';
 $lng['admin']['templates']['ADMIN'] = 'Replaced with the loginname of the admin.';
 $lng['admin']['templates']['CUSTOMER_EMAIL'] = 'Replaced with the e-mail address of the customer.';
 $lng['admin']['templates']['ADMIN_EMAIL'] = 'Replaced with the e-mail address of the admin.';
-$lng['admin']['templates']['filetemplates'] = 'Filetemplates';
-$lng['admin']['templates']['filecontent'] = 'Filecontent';
+$lng['admin']['templates']['filetemplates'] = 'File templates';
+$lng['admin']['templates']['filecontent'] = 'File content';
 $lng['error']['filecontentnotset'] = 'The file cannot be empty!';
-$lng['serversettings']['index_file_extension']['description'] = 'Which fileextension should be used for the index file in newly created customer directories? This fileextension will be used, if you or one of your admins has created its own index filetemplate.';
-$lng['serversettings']['index_file_extension']['title'] = 'Fileextension for index file in newly created customer directories';
-$lng['error']['index_file_extension'] = 'The fileextension for the index file must be between 1 and 6 characters long. The extension can only contain characters like a-z, A-Z and 0-9';
+$lng['serversettings']['index_file_extension']['description'] = 'Which file extension should be used for the index file in newly created customer directories? This file extension will be used, if you or one of your admins has created its own index file template.';
+$lng['serversettings']['index_file_extension']['title'] = 'File extension for index file in newly created customer directories';
+$lng['error']['index_file_extension'] = 'The file extension for the index file must be between 1 and 6 characters long. The extension can only contain characters like a-z, A-Z and 0-9';
 $lng['admin']['expert_settings'] = 'Expert settings!';
 $lng['admin']['mod_fcgid_starter']['title'] = 'PHP Processes for this domain (empty for default value)';
 
@@ -1199,13 +1199,13 @@ $lng['aps']['installed_size'] = 'Size after Installation';
 $lng['aps']['categories'] = 'Categories';
 $lng['aps']['languages'] = 'Languages';
 $lng['aps']['long_description'] = 'Long description';
-$lng['aps']['configscript'] = 'Configurationscript';
+$lng['aps']['configscript'] = 'Configuration script';
 $lng['aps']['changelog'] = 'Changelog';
 $lng['aps']['license'] = 'License';
 $lng['aps']['license_link'] = 'Link to License';
 $lng['aps']['screenshots'] = 'Screenshots';
 $lng['aps']['back'] = 'Back to overview';
-$lng['aps']['install_wizard'] = 'Installationwizard...';
+$lng['aps']['install_wizard'] = 'Installation wizard...';
 $lng['aps']['wizard_error'] = 'Your input contains invalid data. Please correct yourself to continue the installation.';
 $lng['aps']['basic_settings'] = 'Basic settings';
 $lng['aps']['application_location'] = 'Installation location';
@@ -1260,7 +1260,7 @@ $lng['aps']['db_mysql_version'] = 'Database - MySQL Server too old.';
 $lng['aps']['webserver_module'] = 'Webserver - Module "%s" missing.';
 $lng['aps']['webserver_fcgid'] = 'Webserver - This Package requires additional modules from the Webserver. In your FastCGI/mod_fcgid environment the function "apache_get_modules" doesn\'t exist. The Package cannot be installed because the APS Installer is unable to verify if this modules are installed.';
 $lng['aps']['webserver_htaccess'] = 'Webserver - This Package requires that .htaccess files are parsed by the Webserver. The Package cannot be installed because the APS Installer is unable to determine if this is enabled.';
-$lng['aps']['misc_configscript'] = 'Misc - Die Sprache des Konfigurationsskriptes wird nicht unterst&uuml;tzt.';
+$lng['aps']['misc_configscript'] = 'Misc - The language of the configuration script is not supported.';
 $lng['aps']['misc_charset'] = 'Misc - In the current Installer version its not possibel to validate formfields from the wizard against a specific charset. The Package cannot be installed.';
 $lng['aps']['misc_version_already_installed'] = 'Same version of Package already installed.';
 $lng['aps']['misc_only_newer_versions'] = 'For security reasons only newer Package versions can be installed on the system than them which are already installed.';
@@ -1270,24 +1270,24 @@ $lng['aps']['successpackageupdate'] = '<strong><em>%s</em> successfully installe
 $lng['aps']['successpackageinstall'] = '<strong><em>%s</em> successfully installed as a new Package</strong>';
 $lng['aps']['class_zip_missing'] = 'SimpleXML Class, exec function or ZIP Functions missing or not enabled! For further information about this problem look into the handbook for this module.';
 $lng['aps']['dir_permissions'] = 'The PHP/Webserver process must be able to write in the directory /var/www/syscp/temp/ and /var/www/syscp/packages/';
-$lng['aps']['initerror'] = '<strong>There are some problems with this module:</strong><ul>%s</ul>Fix this problems, otherwise the module cannot be used!';
+$lng['aps']['initerror'] = '<strong>There are some problems with this module:</strong><ul>%s</ul>Fix these problems, otherwise the module cannot be used!';
 $lng['aps']['iderror'] = 'Wrong id specified!';
 $lng['aps']['nopacketsforinstallation'] = 'There are no packages to install.';
 $lng['aps']['nopackagestoinstall'] = 'There are no packages to view or install.';
 $lng['aps']['nodomains'] = 'Select a domain from the list. If there is none, the Package cannot be installed!';
 $lng['aps']['wrongpath'] = 'Either this path contains invalid characters or there is another application installed already.';
-$lng['aps']['dbpassword'] = 'Specify a password with a minimum lenght of 8 characters.';
+$lng['aps']['dbpassword'] = 'Specify a password with a minimum length of 8 characters.';
 $lng['aps']['error_text'] = 'Specify a text without special characters.';
 $lng['aps']['error_email'] = 'Specify a valid e-mail address.';
 $lng['aps']['error_domain'] = 'Specify a valid URL like http://www.example.com/';
 $lng['aps']['error_integer'] = 'Specify a numeric value (Integer-Format) e.g. <em>5</em> or <em>7</em>.';
 $lng['aps']['error_float'] = 'Specify a numeric value (Float-Format) e.g. <em>5,2432</em> or <em>7,5346</em>.';
 $lng['aps']['error_password'] = 'Specify a password.';
-$lng['aps']['error_license'] = 'Yes, I have the license and will abide by its terms.';
+$lng['aps']['error_license'] = 'Yes, I have read the license and will abide by its terms.';
 $lng['aps']['error_licensenoaccept'] = 'You must accept the license to install this application.';
 $lng['aps']['stopinstall'] = 'Abort Installation';
-$lng['aps']['installstopped'] = 'The Installation of this Packages was aborted successfully.';
-$lng['aps']['installstoperror'] = 'The Installation cannot be aborted anymore cause installation has started already. If you like to uninstall the Package, wait until the Installation has finished and then go to "My Packages" to trigger a Uninstallation.';
+$lng['aps']['installstopped'] = 'The Installation of this Package was aborted successfully.';
+$lng['aps']['installstoperror'] = 'The Installation cannot be aborted anymore because installation has started already. If you\'d like to uninstall the Package, wait until the Installation has finished and then go to "My Packages" to trigger an Uninstallation.';
 $lng['aps']['waitfortask'] = 'There are no actions to select. Wait until all tasks have finished.';
 $lng['aps']['removetaskexisting'] = '<strong>There is already a task for Uninstallation.</strong><br/><br/>Please go back to "My Packages" and wait until the Uninstallation has finished.';
 $lng['aps']['packagewillberemoved'] = '<strong>The Package will be uninstalled now.</strong><br/><br/>Please go back to "My Packages" and wait until the Uninstallation has finished.';
@@ -1296,21 +1296,21 @@ $lng['aps']['searchoneresult'] = '%s Package found';
 $lng['aps']['searchmultiresult'] = '%s Packages found';
 $lng['question']['reallywanttostop'] = 'Do you really want to abort the Installation of this Package?<br/><br/>';
 $lng['aps']['packagenameandversion'] = 'Packagename &amp; Version';
-$lng['aps']['package_locked'] = 'Enabled';
-$lng['aps']['package_enabled'] = 'Locked';
+$lng['aps']['package_locked'] = 'Locked';
+$lng['aps']['package_enabled'] = 'Enabled';
 $lng['aps']['lock'] = 'Lock';
 $lng['aps']['unlock'] = 'Enable';
 $lng['aps']['remove'] = 'Remove';
 $lng['aps']['allpackages'] = 'All Packages';
-$lng['question']['reallyremovepackages'] = '<strong>Do you really want to delete this packages?</strong><br/><br/>Packages with dependencies can only be remove if the corresponding Instances have been removed!<br/><br/>';
+$lng['question']['reallyremovepackages'] = '<strong>Do you really want to delete these packages?</strong><br/><br/>Packages with dependencies can only be remove if the corresponding Instances have been removed!<br/><br/>';
 $lng['aps']['nopackagesinsystem'] = 'There were no packages installed in the system which could be managed.';
 $lng['aps']['packagenameandstatus'] = 'Packagename &amp; Status';
 $lng['aps']['activate_aps']['title'] = 'Enable APS Installer';
 $lng['aps']['activate_aps']['description'] = 'Here the APS Installer can be enabled and disabled globaly.';
 $lng['aps']['packages_per_page']['title'] = 'Packages per page';
 $lng['aps']['packages_per_page']['description'] = 'How many packages should be displayed per page for customers?';
-$lng['aps']['upload_fields']['title'] = 'Uploadfields per page';
-$lng['aps']['upload_fields']['description'] = 'How many uploadfields should be displayed on the page to install new packages in the system?';
+$lng['aps']['upload_fields']['title'] = 'Upload fields per page';
+$lng['aps']['upload_fields']['description'] = 'How many upload fields should be displayed on the page to install new packages in the system?';
 $lng['aps']['exceptions']['title'] = 'Exceptions for Package validation';
 $lng['aps']['exceptions']['description'] = 'Some packages need special configuration parameters or modules. The Installer cannot always determine if this options/extensions are available. For this reason you can now define exceptions that packages can be installed in the system. Do only select options which match your real configuration setup. For further information about this problem look into the handbook for this module.';
 $lng['aps']['settings_php_extensions'] = 'PHP-Extensions';
@@ -1333,9 +1333,9 @@ $lng['aps']['numerofinstances'] = '%s Installations at all<br/>';
 $lng['aps']['numerofinstancessuccess'] = '%s successful Installations<br/>';
 $lng['aps']['numerofinstanceserror'] = '%s failed Installations<br/>';
 $lng['aps']['numerofinstancesaction'] = '%s planed Installations/Uninstallations';
-$lng['aps']['downloadallpackages'] = 'Download all packages from distributionserver';
-$lng['aps']['updateallpackages'] = 'Update all packages by distributionserver';
-$lng['aps']['downloadtaskexists'] = 'There is already an task for the download of all packages. Please wait until this task has finished.';
+$lng['aps']['downloadallpackages'] = 'Download all packages from distribution server';
+$lng['aps']['updateallpackages'] = 'Update all packages by distribution server';
+$lng['aps']['downloadtaskexists'] = 'There is already a task for the download of all packages. Please wait until this task has finished.';
 $lng['aps']['downloadtaskinserted'] = 'A task for the download of all packages has been created. This can take up to several minutes.';
 $lng['aps']['updatetaskexists'] = 'There is already an task for the update of all packages. Please wait until this task has finished.';
 $lng['aps']['updatetaskinserted'] = 'A task for the update of all packages has been created. This can take up to several minutes.';
@@ -1359,7 +1359,7 @@ $lng['serversettings']['panel_allow_domain_change_admin']['description'] = 'If a
 $lng['serversettings']['panel_allow_domain_change_customer']['title'] = 'Allow moving domains between customers';
 $lng['serversettings']['panel_allow_domain_change_customer']['description'] = 'If activated you can change the customer of a domain at domainsettings.<br /><b>Attention:</b> SysCP won\'t change any paths. This could render a domain unusable!';
 $lng['domains']['associated_with_domain'] = 'Associated';
-$lng['domains']['aliasdomains'] = 'Aliasdomains';
+$lng['domains']['aliasdomains'] = 'Alias domains';
 $lng['error']['ipportdoesntexist'] = 'The ip/port combination you have chosen doesn\'t exist.';
 
 // ADDED IN 1.2.19-svn38
