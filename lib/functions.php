@@ -1350,8 +1350,9 @@ function getNavigation($s, $userinfo)
 			while($subRow = $db->fetch_array($subResult))
 			{
 				//defaulting to 0, refs #1088
+
 				$_required_res = 0;
-				
+
 				if($subRow['required_resources'] != ''
 				   && strpos($subRow['required_resources'], '.') !== false)
 				{
