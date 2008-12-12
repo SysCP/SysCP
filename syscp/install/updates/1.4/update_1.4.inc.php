@@ -116,4 +116,86 @@ if($settings['panel']['version'] == '1.4.1')
 	$settings['panel']['version'] = '1.4.1-svn1';
 }
 
+if($settings['panel']['version'] == '1.4.1-svn1')
+{
+	$updateto = '1.4.1-svn2';
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from " . $settings['panel']['version'] . " to " . $updateto);
+
+	/*
+	 * Special cases: phpmyadmin, webftp, webmail
+	 */
+	// phpmyadmin
+
+	if(!isset($settings['panel']['phpmyadmin_url']))
+	{
+		$settings['panel']['phpmyadmin_url'] = '';
+	}
+
+	$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin"');
+	$nums = $db->num_rows($result);
+
+	if($nums == 0)
+	{
+		// in previous versions, menu entries have been deleted from the database when setting the
+		// feature to enabled='off' so we need to add it again here!
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;mysql;phpmyadmin', `url`='" . $db->escape($settings['panel']['phpmyadmin_url']) . "', `area`='customer', `new_window`='1', `required_resources` = 'mysqls_used', `order` = '99', `parent_url` = 'customer_mysql.php'");
+	}
+	elseif($settings['panel']['phpmyadmin_url'] != '')
+	{
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `url`='" . $db->escape($settings['panel']['phpmyadmin_url']) . "' WHERE `lang` = 'menue;mysql;phpmyadmin' AND `area`='customer' AND `parent_url` = 'customer_mysql.php'");
+	}
+
+	// webftp
+
+	if(!isset($settings['panel']['webftp_url']))
+	{
+		$settings['panel']['webftp_url'] = '';
+	}
+
+	$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ftp;webftp"');
+	$nums = $db->num_rows($result);
+
+	if($nums == 0)
+	{
+		// in previous versions, menu entries have been deleted from the database when setting the
+		// feature to enabled='off' so we need to add it again here!
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;ftp;webftp', `url`='" . $db->escape($settings['panel']['webftp_url']) . "', `area`='customer', `new_window`='1', `order` = '99', `parent_url` = 'customer_ftp.php'");
+	}
+	elseif($settings['panel']['webftp_url'] != '')
+	{
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `url`='" . $db->escape($settings['panel']['webftp_url']) . "' WHERE `lang` = 'menue;ftp;webftp' AND `area`='customer' AND `parent_url` = 'customer_ftp.php'");
+	}
+
+	// webmail
+
+	if(!isset($settings['panel']['webmail_url']))
+	{
+		$settings['panel']['webmail_url'] = '';
+	}
+
+	$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;email;webmail"');
+	$nums = $db->num_rows($result);
+
+	if($nums == 0)
+	{
+		// in previous versions, menu entries have been deleted from the database when setting the
+		// feature to enabled='off' so we need to add it again here!
+
+		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;email;webmail', `url`='" . $db->escape($settings['panel']['webmail_url']) . "', `area`='customer', `new_window`='1', `required_resources` = 'emails_used', `order` = '99', `parent_url` = 'customer_email.php'");
+	}
+	elseif($settings['panel']['webmail_url'] != '')
+	{
+		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `url`='" . $db->escape($settings['panel']['webmail_url']) . "' WHERE `lang` = 'menue;email;webmail' AND `area`='customer' AND `parent_url` = 'customer_email.php'");
+	}
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'' . $updateto . '\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = $updateto;
+}
+
 ?>
