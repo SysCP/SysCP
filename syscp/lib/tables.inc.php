@@ -88,6 +88,6 @@ define('INSTANCE_ERROR', 4);
 define('INSTANCE_UNINSTALL', 5);
 define('PACKAGE_LOCKED', 1);
 define('PACKAGE_ENABLED', 2);
-$version = '1.4.1-svn3';
+$version = '1.4.2';
 
 ?>
