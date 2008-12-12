@@ -198,4 +198,20 @@ if($settings['panel']['version'] == '1.4.1-svn1')
 	$settings['panel']['version'] = $updateto;
 }
 
+if($settings['panel']['version'] == '1.4.1-svn2')
+{
+	$updateto = '1.4.1-svn3';
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from " . $settings['panel']['version'] . " to " . $updateto);
+	
+	//fixing menuentry for aps, refs #1088
+	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'aps.aps_active' WHERE `area` = 'admin' AND `lang` = 'admin;aps' AND `url` = 'admin_aps.nourl'");
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'' . $updateto . '\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = $updateto;
+}
+
 ?>
