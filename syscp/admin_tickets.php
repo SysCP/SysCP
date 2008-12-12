@@ -429,8 +429,7 @@ elseif($page == 'categories'
 	{
 		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_tickets::categories");
 		$fields = array(
-			'name' => $lng['ticket']['category'],
-			'ticketcount' => $lng['ticket']['ticketcount']
+			'name' => $lng['ticket']['category']
 		);
 		$paging = new paging($userinfo, $db, TABLE_PANEL_TICKET_CATS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
 		$result = $db->query("SELECT `main`.`id`, `main`.`name`, (
