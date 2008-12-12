@@ -27,7 +27,11 @@ $mail = new PHPMailer();
 
 //dont do anything when module is disabled
 
-if((int)$settings['autoresponder']['autoresponder_active'] == 0)return;
+if((int)$settings['autoresponder']['autoresponder_active'] == 0)
+{
+	include ($pathtophpfiles . '/lib/cron_shutdown.php');
+	return;
+}
 
 //only send autoresponder to mails which were delivered since last run
 
@@ -205,6 +209,13 @@ if($db->num_rows($result) > 0)
 	}
 }
 
+/**
+ * STARTING CRONSCRIPT FOOTER
+ */
+
 include ($pathtophpfiles . '/lib/cron_shutdown.php');
 
+/**
+ * END CRONSCRIPT FOOTER
+ */
 ?>
