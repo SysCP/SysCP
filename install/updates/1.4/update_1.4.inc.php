@@ -223,4 +223,17 @@ if($settings['panel']['version'] == '1.4.1-svn2')
 	$settings['panel']['version'] = $updateto;
 }
 
+if($settings['panel']['version'] == '1.4.1-svn3')
+{
+	$updateto = '1.4.2';
+	$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from " . $settings['panel']['version'] . " to " . $updateto);
+
+	// set new version
+
+	$query = 'UPDATE `%s` SET `value` = \'' . $updateto . '\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
+	$query = sprintf($query, TABLE_PANEL_SETTINGS);
+	$db->query($query);
+	$settings['panel']['version'] = $updateto;
+}
+
 ?>
