@@ -544,7 +544,7 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (18, 'system', 'vmail_homedir', '/var/kunden/mail/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (19, 'system', 'bindconf_directory', '/etc/bind/');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (20, 'system', 'bindreload_command', '/etc/init.d/bind9 reload');
-INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.4.1-svn1');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (22, 'panel', 'version', '1.4.1-svn2');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (23, 'system', 'hostname', 'SERVERNAME');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (24, 'login', 'maxloginattempts', '3');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (25, 'login', 'deactivatetime', '900');
@@ -876,7 +876,9 @@ INSERT INTO `panel_navigation` VALUES (63, 'customer', 'customer_aps.nourl', 'ap
 INSERT INTO `panel_navigation` VALUES (64, 'customer', 'customer_aps.nourl', 'aps;search', 'customer_aps.php?action=search', 30, '', 0);
 INSERT INTO `panel_navigation` VALUES (65, 'admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, 'system.mod_fcgid', 0);
 INSERT INTO `panel_navigation` VALUES (66, 'customer', 'customer_email.php', 'menue;email;autoresponder', 'customer_autoresponder.php', 40, 'autoresponder.autoresponder_active', 0);
-
+INSERT INTO `panel_navigation` VALUES (67, 'customer', 'customer_mysql.php', 'menue;mysql;phpmyadmin', '', 99, 'mysqls_used', 1);
+INSERT INTO `panel_navigation` VALUES (68, 'customer', 'customer_ftp.php', 'menue;ftp;webftp', '', 99, '', 1);
+INSERT INTO `panel_navigation` VALUES (69, 'customer', 'customer_email.php', 'menue;email;webmail', '', 99, 'emails_used', 1);
 # --------------------------------------------------------
 
 #

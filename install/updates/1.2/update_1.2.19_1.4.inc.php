@@ -1182,9 +1182,9 @@ else
 		// phpmyadmin
 
 		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin"');
-		$nums = mysql_num_rows($result);
+		$nums = $db->num_rows($result);
 
-		if($nums <= 0)
+		if($nums == 0)
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
@@ -1195,9 +1195,9 @@ else
 		// webftp
 
 		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ftp;webftp"');
-		$nums = mysql_num_rows($result);
+		$nums = $db->num_rows($result);
 
-		if($nums <= 0)
+		if($nums == 0)
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
@@ -1208,9 +1208,9 @@ else
 		// webmail
 
 		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;email;webmail"');
-		$nums = mysql_num_rows($result);
+		$nums = $db->num_rows($result);
 
-		if($nums <= 0)
+		if($nums == 0)
 		{
 			// in previous versions, menu entries have been deleted from the database when setting the
 			// feature to enabled='off' so we need to add it again here!
