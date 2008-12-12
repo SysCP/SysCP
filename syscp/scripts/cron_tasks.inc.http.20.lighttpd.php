@@ -147,6 +147,7 @@ class lighttpd
 		{
 			$htaccess_text.= '  )' . "\n";
 		}
+
 		return $htaccess_text;
 	}
 
