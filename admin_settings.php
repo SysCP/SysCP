@@ -1132,12 +1132,10 @@ if(($page == 'settings' || $page == 'overview')
 				if((int)$value == 1)
 				{
 					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "phpenabled" WHERE `url` = "customer_aps.nourl"');
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "can_manage_aps_packages" WHERE `url` = "admin_aps.nourl"');
 				}
 				else
 				{
 					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps.aps_active" WHERE `url` = "customer_aps.nourl"');
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps.aps_active" WHERE `url` = "admin_aps.nourl"');
 				}
 			}
 
