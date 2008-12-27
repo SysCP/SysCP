@@ -180,7 +180,7 @@ return Array(
 					'pure-ftpd' => Array(
 						'label' => 'Pure FTPd',
 						'commands' => Array(
-							'apt-get install proftpd proftpd-mysql'
+							'apt-get install pure-ftpd-common pure-ftpd-mysql'
 						),
 						'files' => Array(
 							'etc_pure-ftpd_conf_MinUID' => '/etc/pure-ftpd/conf/MinUID',
