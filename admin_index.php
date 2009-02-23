@@ -253,7 +253,7 @@ elseif($page == 'change_password')
 		else
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($new_password) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `password`='" . md5($old_password) . "'");
-			$log->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her password from '" . $old_password . "' to '" . $new_password . "'");
+			$log->logAction(ADM_ACTION, LOG_NOTICE, 'changed password');
 			redirectTo($filename, Array('s' => $s));
 		}
 	}

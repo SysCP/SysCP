@@ -117,13 +117,13 @@ elseif($page == 'change_password')
 		else
 		{
 			$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($new_password) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `password`='" . md5($old_password) . "'");
-			$log->logAction(USR_ACTION, LOG_NOTICE, "changed his password from '" . $old_password . "' to '" . $new_password . "'");
+			$log->logAction(USR_ACTION, LOG_NOTICE, 'changed password');
 
 			if(isset($_POST['change_main_ftp'])
 			   && $_POST['change_main_ftp'] == 'true')
 			{
 				$db->query("UPDATE `" . TABLE_FTP_USERS . "` SET `password`=ENCRYPT('" . $db->escape($new_password) . "') WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `username`='" . $db->escape($userinfo['loginname']) . "'");
-				$log->logAction(USR_ACTION, LOG_NOTICE, "changed main ftp password (" . $userinfo['loginname'] . ") to '" . $new_password . "'");
+				$log->logAction(USR_ACTION, LOG_NOTICE, 'changed main ftp password');
 			}
 
 			if(isset($_POST['change_webalizer'])
