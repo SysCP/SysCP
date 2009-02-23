@@ -1376,4 +1376,11 @@ $lng['admin']['mod_fcgid_maxrequests']['title'] = 'Maxmale PHP Requests f&uuml;r
 $lng['serversettings']['mod_fcgid']['maxrequests'] = 'Maximale Requests pro Domain';
 $lng['serversettings']['mod_fcgid']['maxrequests_desc'] = 'Wieviele PHP Requests pro Domain sollen erlaubt werden?';
 
+// fix bug #1124
+$lng['admin']['webserver'] = 'Webserver';
+$lng['error']['admin_domain_emailsystemhostname'] = 'Der Server-Hostname kann leider nicht als E-Mail-Domain verwendet werden.';
+$lng['invoice']['tax_text']['line'] = 'Steuernummer %s: %s' . "\n";
+$lng['invoice']['tax_text']['client'] = 'des Kunden';
+$lng['aps']['license_link'] = 'Link zur Lizenz';
+
 ?>

@@ -1372,4 +1372,8 @@ $lng['admin']['mod_fcgid_maxrequests']['title'] = 'Maximum php requests for this
 $lng['serversettings']['mod_fcgid']['maxrequests'] = 'Maximum Requests per Domain';
 $lng['serversettings']['mod_fcgid']['maxrequests_desc'] = 'How many requests should be allowed per domain?';
 
+// fix bug #1124
+$lng['billing']['categories']['domains_rowcaption_setup_included_domain'] = 'Included domain {domain} - Setup fee';
+$lng['billing']['categories']['domains_rowcaption_interval_included_domain'] = 'Included domain {domain}';
+
 ?>
