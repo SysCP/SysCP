@@ -835,7 +835,7 @@ if($page == 'customers'
 
 				$email_forwarders = intval_ressource($_POST['email_forwarders']);
 
-				if(isset($_POST['email_accounts_ul']))
+				if(isset($_POST['email_forwarders_ul']))
 				{
 					$email_forwarders = - 1;
 				}
