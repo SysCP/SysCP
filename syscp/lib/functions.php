@@ -24,44 +24,6 @@
  * @author Florian Lippert <flo@syscp.org>
  */
 
-function getProcessId($value = user)
-{
-	if($value == 'user')
-	{
-		$processUser = posix_getpwuid(posix_geteuid());
-
-		if(empty($process))
-		{
-			$process = array();
-			$sys = array();
-			@exec("whoami", $sys);
-
-			if(isset($sys[0]))
-			{
-				$process['name'] = $sys[0];
-			}
-		}
-	}
-	elseif($value == 'group')
-	{
-		$process = posix_getpwuid(posix_geteuid());
-
-		if(empty($process))
-		{
-			$process = array();
-			$sys = array();
-			@exec("whoami", $sys);
-
-			if(isset($sys[0]))
-			{
-				$process['name'] = $sys[0];
-			}
-		}
-	}
-
-	return $process[name];
-}
-
 function getTemplate($template, $noarea = 0)
 {
 	global $templatecache;
