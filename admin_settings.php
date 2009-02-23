@@ -1071,7 +1071,7 @@ if(($page == 'settings' || $page == 'overview')
 				   && isset($_POST['openssl_cnf']))
 				{
 					$value = $_POST['openssl_cnf'];
-					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='ssl' AND `varname`='openssl_cnf'");
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='openssl_cnf'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_openssl_cnf from '" . $settings['system']['openssl_cnf'] . "' to '" . $value . "'");
 				}
 			}
