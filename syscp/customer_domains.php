@@ -235,9 +235,9 @@ elseif($page == 'domains')
 				}
 
 				if(!preg_match('/^https?\:\/\//', $path)
-				   || !validateUrl($idna_convert->encode($_POST['url'])))
+				   || !validateUrl($idna_convert->encode($path)))
 				{
-					$path = $userinfo['documentroot'] . $path;
+					$path = $userinfo['documentroot'] . '/' . $path;
 					$path = makeCorrectDir($path);
 				}
 
@@ -339,9 +339,9 @@ elseif($page == 'domains')
 				}
 
 				if(!preg_match('/^https?\:\/\//', $path)
-				   || !validateUrl($idna_convert->encode($_POST['url'])))
+				   || !validateUrl($idna_convert->encode($path)))
 				{
-					$path = $userinfo['documentroot'] . $path;
+					$path = $userinfo['documentroot'] . '/' . $path;
 					$path = makeCorrectDir($path);
 				}
 
