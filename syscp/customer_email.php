@@ -383,7 +383,7 @@ elseif($page == 'accounts')
 					if($settings['system']['mail_quota_enabled'] == 1)
 					{
 						if($userinfo['email_quota'] != '-1'
-						   && ($quota + $userinfo['email_quota_used']) > $userinfo['email_quota'])
+						   && ($quota == 0 || ($quota + $userinfo['email_quota_used']) > $userinfo['email_quota']))
 						{
 							standard_error('allocatetoomuchquota', $quota);
 						}
@@ -544,7 +544,7 @@ elseif($page == 'accounts')
 				$quota = (int)validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong');
 
 				if($userinfo['email_quota'] != '-1'
-				   && ($quota + $userinfo['email_quota_used'] - $result['quota']) > $userinfo['email_quota'])
+				   && ($quota == 0 || ($quota + $userinfo['email_quota_used'] - $result['quota']) > $userinfo['email_quota']))
 				{
 					standard_error('allocatetoomuchquota', $quota);
 				}
