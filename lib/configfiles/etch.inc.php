@@ -186,7 +186,7 @@ return Array(
 						),
 						'files' => Array(
 							'etc_pure-ftpd_conf_MinUID' => '/etc/pure-ftpd/conf/MinUID',
-							'etc_pure-ftpd_conf_MySQLConfigFile' => '/etc/pure-ftpd/MySQLConfigFile',
+							'etc_pure-ftpd_conf_MySQLConfigFile' => '/etc/pure-ftpd/conf/MySQLConfigFile',
 							'etc_pure-ftpd_conf_NoAnonymous' => '/etc/pure-ftpd/conf/NoAnonymous',
 							'etc_pure-ftpd_conf_MaxIdleTime' => '/etc/pure-ftpd/conf/MaxIdleTime',
 							'etc_pure-ftpd_conf_ChrootEveryone' => '/etc/pure-ftpd/conf/ChrootEveryone',
