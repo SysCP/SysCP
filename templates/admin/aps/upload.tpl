@@ -7,7 +7,7 @@
 			<td class="maintitle"><b><img src="images/title.gif" alt="" />&nbsp;{$lng['aps']['upload']}</b></td>
 		</tr>
 		<tr>
-			<td class="main_field_name" nowrap="nowrap">{$lng['aps']['upload_description']}</td>
+			<td class="main_field_name" nowrap="nowrap">{$lng['aps']['upload_description']} <a href="http://www.apsstandard.org/" target="_blank">http://www.apsstandard.org/</a></td>
 		</tr>
 		<tr>
 			<td class="main_field_display" nowrap="nowrap"><br/>$Output</td>
