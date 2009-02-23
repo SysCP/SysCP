@@ -939,11 +939,11 @@ else
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['httpuser']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="httpuser" value="<?php echo getProcessId($value = user); ?>"/></td>
+				<td class="main_field_display"><input type="text" name="httpuser" value="<?php $posixusername = posix_getpwuid(posix_getuid()); echo $posixusername['name']; ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_name"<?php echo ((!empty($_POST['installstep']) && $serverip == '') ? ' style="color:red;"' : ''); ?>><?php echo $lng['install']['httpgroup']; ?>:</td>
-				<td class="main_field_display"><input type="text" name="httpgroup" value="<?php echo getProcessId($value = group); ?>"/></td>
+				<td class="main_field_display"><input type="text" name="httpgroup" value="<?php $posixgroup = posix_getgrgid(posix_getgid()); echo $posixgroup['name']; ?>"/></td>
 			</tr>
 			<tr>
 				<td class="main_field_confirm" colspan="2"><input type="hidden" name="language" value="<?php echo htmlspecialchars($language); ?>"/><input type="hidden" name="installstep" value="1"/><input class="bottom" type="submit" name="submitbutton" value="<?php echo $lng['install']['next']; ?>"/></td>
