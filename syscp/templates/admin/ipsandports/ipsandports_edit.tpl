@@ -22,25 +22,25 @@ $header
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ipsandports']['create_namevirtualhost_statement']}:
-				<if $settings[system][webserver] == lighttpd><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
+				<if $settings['system']['webserver'] == 'lighttpd'><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
 				</td>
 				<td class="main_field_display" nowrap="nowrap">$namevirtualhost_statement</td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ipsandports']['create_vhostcontainer']}:
-				<if $settings[system][webserver] == lighttpd><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
+				<if $settings['system']['webserver'] == 'lighttpd'><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
 				</td>
 				<td class="main_field_display" nowrap="nowrap">$vhostcontainer</td>
 			</tr>
 			<tr>
 				<td class="main_field_name" valign="top">{$lng['admin']['ownvhostsettings']}:
-				<if $settings[system][webserver] == lighttpd><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
+				<if $settings['system']['webserver'] == 'lighttpd'><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
 				</td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="60" name="specialsettings">{$result['specialsettings']}</textarea></td>
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['admin']['ipsandports']['create_vhostcontainer_servername_statement']}:
-				<if $settings[system][webserver] == lighttpd><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
+				<if $settings['system']['webserver'] == 'lighttpd'><div style="color:red">{$lng['panel']['not_supported']}lighttpd</div></if>
 				</td>
 				<td class="main_field_display" nowrap="nowrap">$vhostcontainer_servername_statement</td>
 			</tr>
