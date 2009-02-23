@@ -1678,6 +1678,8 @@ function makePathfield($path, $uid, $gid, $fieldType, $value = '')
 	elseif($fieldType == 'Dropdown')
 	{
 		$dirList = findDirs($path, $uid, $gid);
+		
+		natcasesort($dirList);
 
 		if(sizeof($dirList) > 0)
 		{
