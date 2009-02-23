@@ -110,7 +110,7 @@ elseif($page == 'htpasswds')
 		{
 			$path = makeCorrectDir(validate($_POST['path'], 'path'));
 			$userpath = $path;
-			$path = $userinfo['documentroot'] . $path;
+			$path = makeCorrectDir($userinfo['documentroot'] . '/' . $path);
 			$username = validate($_POST['username'], 'username', '/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/');
 			validate($_POST['directory_password'], 'password');
 			$username_path_check = $db->query_first("SELECT `id`, `username`, `path` FROM `" . TABLE_PANEL_HTPASSWDS . "` WHERE `username`='" . $db->escape($username) . "' AND `path`='" . $db->escape($path) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "'");
@@ -283,7 +283,7 @@ elseif($page == 'htaccess')
 		{
 			$path = makeCorrectDir(validate($_POST['path'], 'path'));
 			$userpath = $path;
-			$path = makeSecurePath($userinfo['documentroot'] . $path);
+			$path = makeCorrectDir($userinfo['documentroot'] . '/' . $path);
 			$path_dupe_check = $db->query_first("SELECT `id`, `path` FROM `" . TABLE_PANEL_HTACCESS . "` WHERE `path`='" . $db->escape($path) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "'");
 
 			if(!$_POST['path'])
