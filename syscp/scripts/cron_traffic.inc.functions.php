@@ -36,7 +36,7 @@ function callWebalizerGetTraffic($logfile, $outputdir, $caption, $usersdomainlis
 		$domainargs = '';
 		foreach($usersdomainlist as $domainid => $domain)
 		{
-			$domainargs.= ' -r "' . escapeshellarg($domain) . '"';
+			$domainargs.= ' -r ' . escapeshellarg($domain);
 		}
 
 		$outputdir = makeCorrectDir($outputdir);
