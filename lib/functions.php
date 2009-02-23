@@ -1180,7 +1180,10 @@ function updateCounters($returndebuginfo = false)
 			$admin_resources[$admin['adminid']]['email_quota_used_new'] = 0;
 		}
 
-		$admin['email_quota_used_new'] = $admin_resources[$admin['adminid']]['email_quota_used'];
+		if(isset($admin_resources[$admin['adminid']]['email_quota_used']))
+		{
+			$admin['email_quota_used_new'] = $admin_resources[$admin['adminid']]['email_quota_used'];
+		}
 
 		if(!isset($admin_resources[$admin['adminid']]['subdomains_used']))
 		{
