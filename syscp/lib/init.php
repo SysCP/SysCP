@@ -321,8 +321,8 @@ foreach($langs as $key => $value)
 	$languages[$key] = $key;
 }
 
-if(!isset($userinfo['language'])
-   || !isset($languages[$userinfo['language']]))
+if(!isset($userinfo['def_language'])
+   || !isset($languages[$userinfo['def_language']]))
 {
 	if(isset($_GET['language'])
 	   && isset($languages[$_GET['language']]))
@@ -336,7 +336,7 @@ if(!isset($userinfo['language'])
 }
 else
 {
-	$language = $userinfo['language'];
+	$language = $userinfo['def_language'];
 }
 
 // include every english language file we can get
