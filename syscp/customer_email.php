@@ -169,7 +169,7 @@ elseif($page == 'emails')
 						}
 
 						$db->query("DELETE FROM `" . TABLE_MAIL_USERS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$result['popaccountid'] . "'");
-						$update_users_query_addon = " , `email_accounts_used` = `email_accounts_used` - 1 ";
+						$update_users_query_addon .= " , `email_accounts_used` = `email_accounts_used` - 1 ";
 						$number_forwarders-= 1;
 						$log->logAction(USR_ACTION, LOG_NOTICE, "deleted forwarder for email address '" . $result['email'] . "'");
 					}
