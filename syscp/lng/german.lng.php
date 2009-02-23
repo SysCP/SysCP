@@ -48,17 +48,17 @@ $lng['login']['profile_lng'] = 'Profilsprache';
  * Customer
  */
 
-$lng['customer']['documentroot'] = 'Heimverzeichnis';
+$lng['customer']['documentroot'] = 'Heimatverzeichnis';
 $lng['customer']['name'] = 'Name';
 $lng['customer']['firstname'] = 'Vorname';
 $lng['customer']['company'] = 'Firma';
-$lng['customer']['street'] = 'Strasse';
+$lng['customer']['street'] = 'Stra&szlig;e';
 $lng['customer']['zipcode'] = 'PLZ';
 $lng['customer']['city'] = 'Ort';
-$lng['customer']['phone'] = 'Telephon';
+$lng['customer']['phone'] = 'Telefon';
 $lng['customer']['fax'] = 'Fax';
 $lng['customer']['email'] = 'E-Mail';
-$lng['customer']['customernumber'] = 'KundenNummer';
+$lng['customer']['customernumber'] = 'Kundennummer';
 $lng['customer']['diskspace'] = 'Webspace (MB)';
 $lng['customer']['traffic'] = 'Traffic (GB)';
 $lng['customer']['mysqls'] = 'MySQL-Datenbanken';
@@ -97,7 +97,7 @@ $lng['menue']['extras']['pathoptions'] = 'Pfadoptionen';
  */
 
 $lng['index']['customerdetails'] = 'Kundendaten';
-$lng['index']['accountdetails'] = 'Accountdaten';
+$lng['index']['accountdetails'] = 'Kontodaten';
 
 /**
  * Change Password
@@ -107,7 +107,7 @@ $lng['changepassword']['old_password'] = 'Altes Passwort';
 $lng['changepassword']['new_password'] = 'Neues Passwort';
 $lng['changepassword']['new_password_confirm'] = 'Neues Passwort (best&auml;tigen)';
 $lng['changepassword']['new_password_ifnotempty'] = 'Neues Passwort (leer = nicht &auml;ndern)';
-$lng['changepassword']['also_change_ftp'] = ' Auch Passwort vom Haupt-FTP-Zugang &auml;ndern';
+$lng['changepassword']['also_change_ftp'] = 'Auch Passwort vom Haupt-FTP-Zugang &auml;ndern';
 
 /**
  * Domains
@@ -126,7 +126,7 @@ $lng['domains']['noaliasdomain'] = 'Keine Aliasdomain';
  * eMails
  */
 
-$lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre E-Mail Adressen einrichten.<br />Ein Konto ist wie Ihr Briefkasten vor der Haust&uuml;re. Wenn jemand eine email an Sie schreibt, dann wird diese in dieses Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / E-Mail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
+$lng['emails']['description'] = 'Hier k&ouml;nnen Sie Ihre E-Mail Adressen einrichten.<br />Ein Konto ist wie Ihr Briefkasten vor der Haust&uuml;re. Wenn jemand eine E-Mail an Sie schreibt, dann wird diese in dieses Konto gelegt.<br><br>Die Zugangsdaten von Ihrem Mailprogramm sind wie folgt: (Die Angaben in <i>kursiver</i> Schrift sind durch die jeweiligen Eintr&auml;ge zu ersetzen!)<br>Hostname: <b><i>Domainname</i></b><br>Benutzername: <b><i>Kontoname / E-Mail-Adresse</i></b><br>Passwort: <b><i>das gew&auml;hlte Passwort</i></b>';
 $lng['emails']['emailaddress'] = 'E-Mail-Adresse';
 $lng['emails']['emails_add'] = 'E-Mail-Adresse anlegen';
 $lng['emails']['emails_edit'] = 'E-Mail-Adresse &auml;ndern';
@@ -182,9 +182,9 @@ $lng['error']['error'] = 'Fehlermeldung';
 $lng['error']['directorymustexist'] = 'Das Verzeichnis %s muss existieren. Legen Sie es bitte mit Ihrem FTP-Programm an.';
 $lng['error']['filemustexist'] = 'Die Datei %s muss existieren.';
 $lng['error']['allresourcesused'] = 'Sie haben bereits alle Ihnen zur Verf&uuml;gung stehenden Ressourcen verbraucht.';
-$lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als E-Mail-Domain verwendet wird l&ouml;schen. ';
+$lng['error']['domains_cantdeletemaindomain'] = 'Sie k&ouml;nnen keine Domain, die als E-Mail-Domain verwendet wird, l&ouml;schen. ';
 $lng['error']['domains_canteditdomain'] = 'Sie k&ouml;nnen diese Domain nicht bearbeiten. Dies wurde durch den Admin verweigert';
-$lng['error']['domains_cantdeletedomainwithemail'] = 'Sie k&ouml;nnen keine Domain l&ouml;schen die noch als E-Mail-Domain verwendet wird. L&ouml;schen Sie zuerst alle E-Mail-Adressen dieser Domain.';
+$lng['error']['domains_cantdeletedomainwithemail'] = 'Sie k&ouml;nnen keine Domain l&ouml;schen, die noch als E-Mail-Domain verwendet wird. L&ouml;schen Sie zuerst alle E-Mail-Adressen dieser Domain.';
 $lng['error']['firstdeleteallsubdomains'] = 'Sie m&uuml;ssen erst alle Subdomains l&ouml;schen, bevor Sie eine Wildcarddomain anlegen k&ouml;nnen.';
 $lng['error']['youhavealreadyacatchallforthisdomain'] = 'Sie haben bereits eine Adresse als Catchall f&uuml;r diese Domain definiert.';
 $lng['error']['ftp_cantdeletemainaccount'] = 'Sie k&ouml;nnen Ihren Hauptaccount nicht l&ouml;schen.';
@@ -212,15 +212,15 @@ $lng['error']['loginnameexists'] = 'Der Login-Name %s existiert bereits.';
 $lng['error']['emailiswrong'] = 'Die E-Mail-Adresse %s enth&auml;lt ung&uuml;ltige Zeichen oder ist nicht vollst&auml;ndig.';
 $lng['error']['loginnameiswrong'] = 'Der Login-Name %s enth&auml;lt ung&uuml;ltige Zeichen.';
 $lng['error']['userpathcombinationdupe'] = 'Kombination aus Benutzername und Pfad existiert bereits.';
-$lng['error']['patherror'] = 'allgemeiner Fehler! Pfad darf nicht leer sein.';
+$lng['error']['patherror'] = 'Allgemeiner Fehler! Pfad darf nicht leer sein.';
 $lng['error']['errordocpathdupe'] = 'Option f&uuml;r Pfad %s existiert bereits.';
 $lng['error']['adduserfirst'] = 'Sie m&uuml;ssen zuerst einen Kunden anlegen.';
 $lng['error']['domainalreadyexists'] = 'Die Domain %s wurde bereits einem Kunden zugeordnet.';
 $lng['error']['nolanguageselect'] = 'Keine Sprache ausgew&auml;hlt.';
 $lng['error']['nosubjectcreate'] = 'Sie m&uuml;ssen einen Betreff angeben.';
 $lng['error']['nomailbodycreate'] = 'Sie m&uuml;ssen einen E-Mail-Text eingeben.';
-$lng['error']['templatenotfound'] = 'Template wurde nicht gefunden.';
-$lng['error']['alltemplatesdefined'] = 'Sie k&ouml;nnen keine weiteren Templates anlegen, da bereits alle Sprachen mit Templates versorgt sind.';
+$lng['error']['templatenotfound'] = 'Vorlage wurde nicht gefunden.';
+$lng['error']['alltemplatesdefined'] = 'Sie k&ouml;nnen keine weiteren Vorlagen anlegen, da bereits alle Sprachen mit Vorlagen versorgt sind.';
 $lng['error']['wwwnotallowed'] = 'Ihre Subdomain darf nicht www heissen.';
 $lng['error']['subdomainiswrong'] = 'Die Subdomain %s enth&auml;lt ung&uuml;ltige Zeichen.';
 $lng['error']['domaincantbeempty'] = 'Der Domain-Name darf nicht leer sein.';
@@ -258,10 +258,10 @@ $lng['question']['admin_configs_reallyrebuild'] = 'Wollen Sie wirklich Ihre Apac
  * Mails
  */
 
-$lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nihr E-Mail-Konto {USERNAME}\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
+$lng['mails']['pop_success']['mailbody'] = 'Hallo,\n\nIhr E-Mail-Konto {USERNAME}\nwurde erfolgreich eingerichtet.\n\nDies ist eine automatisch generierte\nE-Mail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
 $lng['mails']['pop_success']['subject'] = 'E-Mail-Konto erfolgreich eingerichtet';
 $lng['mails']['createcustomer']['mailbody'] = 'Hallo {FIRSTNAME} {NAME},\n\nhier ihre Accountinformationen:\n\nBenutzername: {USERNAME}\nPassword: {PASSWORD}\n\nVielen Dank,\nIhr SysCP-Team';
-$lng['mails']['createcustomer']['subject'] = 'Accountinformationen';
+$lng['mails']['createcustomer']['subject'] = 'Kontoinformationen';
 
 /**
  * Admin
@@ -318,8 +318,8 @@ $lng['admin']['wwwserveralias'] = 'www. ServerAlias hinzuf&uuml;gen';
 $lng['admin']['templates']['template_replace_vars'] = 'Variablen, die in den Vorlagen ersetzt werden:';
 $lng['admin']['templates']['FIRSTNAME'] = 'Wird mit dem Vornamen des Kunden ersetzt.';
 $lng['admin']['templates']['NAME'] = 'Wird mit dem Namen des Kunden ersetzt.';
-$lng['admin']['templates']['USERNAME'] = 'Wird mit dem Benutzernamen des neuen Kundenaccounts ersetzt.';
-$lng['admin']['templates']['PASSWORD'] = 'Wird mit dem Passwort des neuen Kundenaccounts ersetzt.';
+$lng['admin']['templates']['USERNAME'] = 'Wird mit dem Benutzernamen des neuen Kundenkontos ersetzt.';
+$lng['admin']['templates']['PASSWORD'] = 'Wird mit dem Passwort des neuen Kundenkontos ersetzt.';
 $lng['admin']['templates']['EMAIL'] = 'Wird mit der Adresse des neuen POP3/IMAP Kontos ersetzt.';
 
 /**
@@ -349,11 +349,11 @@ $lng['serversettings']['bindconf_directory']['description'] = 'Wo liegen die Bin
 $lng['serversettings']['bindreload_command']['title'] = 'Bind-Reload-Command';
 $lng['serversettings']['bindreload_command']['description'] = 'Wie heisst das Skript zum Neuladen der Bind-Konfigurationsdateien?';
 $lng['serversettings']['binddefaultzone']['title'] = 'Bind-Default-Zone';
-$lng['serversettings']['binddefaultzone']['description'] = 'Wie heisst die Default-Zone f&uuml;r alle Domains?';
+$lng['serversettings']['binddefaultzone']['description'] = 'Wie hei&szlig;t die Default-Zone f&uuml;r alle Domains?';
 $lng['serversettings']['vmail_uid']['title'] = 'Mails-Uid';
-$lng['serversettings']['vmail_uid']['description'] = 'Welche UID sollen die Mails haben?';
+$lng['serversettings']['vmail_uid']['description'] = 'Welche UID sollen die E-Mails haben?';
 $lng['serversettings']['vmail_gid']['title'] = 'Mails-Gid';
-$lng['serversettings']['vmail_gid']['description'] = 'Welche GID sollen die Mails haben?';
+$lng['serversettings']['vmail_gid']['description'] = 'Welche GID sollen die E-Mails haben?';
 $lng['serversettings']['vmail_homedir']['title'] = 'Mails-Homedir';
 $lng['serversettings']['vmail_homedir']['description'] = 'Wo sollen die E-Mails liegen?';
 $lng['serversettings']['adminmail']['title'] = 'Absenderadresse';
@@ -364,8 +364,8 @@ $lng['serversettings']['webmail_url']['title'] = 'WebMail-URL';
 $lng['serversettings']['webmail_url']['description'] = 'Wo liegt das WebMail? (muss mit http(s):// beginnen)';
 $lng['serversettings']['webftp_url']['title'] = 'WebFTP-URL';
 $lng['serversettings']['webftp_url']['description'] = 'Wo liegt das WebFTP? (muss mit http(s):// beginnen)';
-$lng['serversettings']['language']['description'] = 'Welche Sprache ist ihre Standardsprache?';
-$lng['serversettings']['maxloginattempts']['title'] = 'Max Loginversuche';
+$lng['serversettings']['language']['description'] = 'Welche Sprache ist Ihre Standardsprache?';
+$lng['serversettings']['maxloginattempts']['title'] = 'Maximale Loginversuche';
 $lng['serversettings']['maxloginattempts']['description'] = 'Maximale Anzahl an Loginversuchen bis der Account deaktiviert wird.';
 $lng['serversettings']['deactivatetime']['title'] = 'L&auml;nge der Deaktivierung';
 $lng['serversettings']['deactivatetime']['description'] = 'Zeitraum (in sek.) f&uuml;r den der Account deaktiviert ist.';
@@ -543,7 +543,7 @@ $lng['serversettings']['mod_log_sql']['description'] = '<a href="http://www.outo
 $lng['serversettings']['mod_fcgid']['title'] = 'PHP &uuml;ber mod_fcgid/suexec einbinden';
 $lng['serversettings']['mod_fcgid']['description'] = 'mod_fcgid/suexec/libnss_mysql benutzen um PHP unter dem jeweiligen Useraccount laufen zu lassen<br /><b>Dies ben&ouml;tigt eine spezielle <a href="http://files.syscp.org/docs/mod_log_sql/" title="mod_log_sql - Dokumentation">Apache-Konfiguration</a></b>';
 $lng['serversettings']['sendalternativemail']['title'] = 'Alternative E-Mail-Adresse benutzen';
-$lng['serversettings']['sendalternativemail']['description'] = 'W&auml;hrend dem erstellen eines Accounts das Passwort an eine andere E-Mail-Adresse senden';
+$lng['serversettings']['sendalternativemail']['description'] = 'W&auml;hrend des Erstellens eines Accounts das Passwort an eine andere E-Mail-Adresse senden';
 $lng['emails']['alternative_emailaddress'] = 'Alternative E-Mail-Adresse';
 $lng['mails']['pop_success_alternative']['mailbody'] = 'Hallo,\n\nihr E-Mail-Konto {USERNAME}\nwurde erfolgreich eingerichtet.\nIhr Passwort lautet {PASSWORD}.\n\nDies ist eine automatisch generierte\neMail, bitte antworten Sie nicht auf\ndiese Mitteilung.\n\nIhr SysCP-Team';
 $lng['mails']['pop_success_alternative']['subject'] = 'E-Mail-Konto erfolgreich eingerichtet';
@@ -567,7 +567,7 @@ $lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Wo sollen die
 
 $lng['error']['formtokencompromised'] = 'Das Formular scheint manipuliert worden zu sein. Aus Sicherheitsgr&uuml;nden wurden Sie ausgelogged.';
 $lng['serversettings']['mysql_access_host']['title'] = 'MySQL-Access-Hosts';
-$lng['serversettings']['mysql_access_host']['description'] = 'Eine durch Komma getrennte Liste mit den Hostnamen aller Hostnames/IP-Adressen von denen sich die Benutzer einloggen d&uuml;rfen.';
+$lng['serversettings']['mysql_access_host']['description'] = 'Eine durch Komma getrennte Liste mit den Hostnamen aller Hostnames/IP-Adressen, von denen sich die Benutzer einloggen d&uuml;rfen.';
 
 // CHANGED IN 1.2.18
 
@@ -707,7 +707,7 @@ $lng['serversettings']['ticket']['noreply_name'] = 'Ticket E-Mail Absendername';
 
 $lng['serversettings']['mod_fcgid']['configdir'] = 'Konfigurations-Verzeichnis';
 $lng['serversettings']['mod_fcgid']['configdir_desc'] = 'Wo sollen alle Konfigurationsdateien von fcgid liegen? Wenn Sie keine selbst kompilierte suexec Binary benutzen, was in der Regel der Fall ist, muss dieser Pfad unter /var/www/ liegen.';
-$lng['serversettings']['mod_fcgid']['tmpdir'] = 'Temp Verzeichnis';
+$lng['serversettings']['mod_fcgid']['tmpdir'] = 'Tempor&auml;res Verzeichnis';
 
 // ADDED IN 1.2.19-svn3
 
@@ -745,7 +745,7 @@ $lng['traffic']['summail'] = 'Summe Mail-Traffic in';
 
 // ADDED IN 1.2.19-svn4.5
 
-$lng['serversettings']['no_robots']['title'] = 'Erlaube die Indizierung deines SysCP durch Suchmaschinen';
+$lng['serversettings']['no_robots']['title'] = 'Erlaube die Indizierung Ihres SysCP durch Suchmaschinen';
 
 // ADDED IN 1.2.19-svn6
 
@@ -869,7 +869,7 @@ $lng['login']['email'] = 'E-Mail Adresse';
 $lng['login']['remind'] = 'Passwort zur&uuml;cksetzen';
 $lng['login']['usernotfound'] = 'Fehler: Unbekannter Benutzer!';
 $lng['pwdreminder']['subject'] = 'SysCP - Passwort zur&uuml;ckgesetzt';
-$lng['pwdreminder']['body'] = 'Hallo %s,\n\ndein SysCP Passwort wurde zur&uuml;ckgesetzt!\nDas neue Passwort lautet: %p\n\nVielen Dank,\nIhr SysCP-Team';
+$lng['pwdreminder']['body'] = 'Hallo %s,\n\nIhr SysCP Passwort wurde zur&uuml;ckgesetzt!\nDas neue Passwort lautet: %p\n\nVielen Dank,\nIhr SysCP-Team';
 $lng['pwdreminder']['success'] = 'Passwort erfolgreich zur&uuml;ckgesetzt.<br />Sie sollten nun eine E-Mail mit dem neuen Passwort erhalten.';
 
 // ADDED IN 1.2.19-svn18
@@ -1217,7 +1217,7 @@ $lng['aps']['application_location'] = 'Installationsort';
 $lng['aps']['application_location_description'] = 'Ort an dem die Anwendung installiert werden soll.';
 $lng['aps']['no_domains'] = 'Keine Domains gefunden';
 $lng['aps']['database_password'] = 'Datenbankpasswort';
-$lng['aps']['database_password_description'] = 'Passwort, welches f&uuml;r die neu zu erstellende Datenbank verwendet werden soll.';
+$lng['aps']['database_password_description'] = 'Passwort welches f&uuml;r die neu zu erstellende Datenbank verwendet werden soll.';
 $lng['aps']['license_agreement'] = 'Zustimmung';
 $lng['aps']['cancel_install'] = 'Installation abbrechen';
 $lng['aps']['notazipfile'] = 'Die hochgeladene Datei ist keine g&uuml;ltige ZIP-Datei.';
