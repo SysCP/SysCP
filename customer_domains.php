@@ -210,7 +210,7 @@ elseif($page == 'domains')
 
 				$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', validate($_POST['subdomain'], 'subdomain', '/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i', 'subdomainiswrong')));
 				$domain = $idna_convert->encode($_POST['domain']);
-				$domain_check = $db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `subcanemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='$domain' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `email_only`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
+				$domain_check = $db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `subcanemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($domain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `email_only`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 				$completedomain = $subdomain . '.' . $domain;
 				$completedomain_check = $db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($completedomain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `email_only`='0' AND `caneditdomain` = '1'");
 				$aliasdomain = intval($_POST['alias']);
@@ -267,11 +267,11 @@ elseif($page == 'domains')
 				{
 					standard_error('domaincantbeempty');
 				}
-				elseif($completedomain_check['domain'] == $completedomain)
+				elseif(strtolower($completedomain_check['domain']) == strtolower($completedomain))
 				{
 					standard_error('domainexistalready', $completedomain);
 				}
-				elseif($domain_check['domain'] != $domain)
+				elseif(strtolower($domain_check['domain']) != strtolower($domain))
 				{
 					standard_error('maindomainnonexist', $domain);
 				}
