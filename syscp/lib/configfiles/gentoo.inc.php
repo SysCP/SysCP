@@ -15,7 +15,6 @@ return Array(
 							'touch ' . $settings['system']['apacheconf_diroptions'],
 							'chown root:0 ' . $settings['system']['apacheconf_diroptions'],
 							'chmod 0600 ' . $settings['system']['apacheconf_diroptions'],
-							'echo -e "\\nInclude ' . $settings['system']['apacheconf_vhost'] . '" >> ' . dirname($settings['system']['apacheconf_vhost']) . '/httpd.conf',
 							'mkdir -p ' . $settings['system']['documentroot_prefix'],
 							'mkdir -p ' . $settings['system']['logfiles_directory'],
 							'mkdir -p ' . $settings['system']['mod_fcgid_tmpdir'],
