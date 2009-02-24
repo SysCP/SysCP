@@ -2071,7 +2071,7 @@ function createAWStatsConf($logFile, $siteDomain, $hostAliases)
 
 /**
  * This function generates the VHost configuration for AWStats
- * This will enable the /stats or /awstats url and enable security on these folders
+ * This will enable the /awstats url and enable security on these folders
  * @param siteDomain Name of the domain we want stats for
  * @return String with configuration for use in vhost file
  * @author Berend Dekens
@@ -2083,8 +2083,8 @@ function createAWStatsVhost($siteDomain, $settings = null)
 	{
 		$vhosts_file = '  # AWStats statistics' . "\n";
 		$vhosts_file.= '  RewriteEngine On' . "\n";
-		$vhosts_file.= '  RewriteRule /stats(/.*)? /awstats/awstats.pl?config=' . $siteDomain . ' [L,PT]' . "\n";
-		$vhosts_file.= '  RewriteRule /awstats.pl(.*)* /awstats/awstats.pl$1 [QSA,L,PT]' . "\n";
+		$vhosts_file.= '  RewriteRule ^/awstats(/.*)? /awstats/awstats.pl?config=' . $siteDomain . ' [L,PT]' . "\n";
+		$vhosts_file.= '  RewriteRule ^/awstats.pl(.*)* /awstats/awstats.pl$1 [QSA,L,PT]' . "\n";
 	}
 	else
 	{
