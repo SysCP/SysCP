@@ -261,7 +261,8 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 							'etc_nsswitch.conf' => '/etc/nsswitch.conf',
 						),
 						'commands' => Array(
-							'emerge -av libnss-mysql'
+							'emerge -av libnss-mysql',
+							'chmod 600 /etc/libnss-mysql.cfg /etc/libnss-mysql-root.cfg'
 						),
 						'restart' => Array(
 							'rc-update add nscd default',

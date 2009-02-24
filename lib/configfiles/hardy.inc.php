@@ -227,7 +227,8 @@ return Array(
 					'libnss' => Array(
 						'label' => 'libnss (system login with mysql)',
 						'commands' => Array(
-							'apt-get install libnss-mysql nscd'
+							'apt-get install libnss-mysql nscd',
+							'chmod 600 /etc/nss-mysql.conf /etc/nss-mysql-root.conf'
 						),
 						'files' => Array(
 							'etc_nss-mysql.conf' => '/etc/nss-mysql.conf',
