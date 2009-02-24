@@ -92,7 +92,7 @@ return Array(
 							'chown root:postfix /etc/postfix/mysql-virtual_alias_maps.cf',
 							'chown root:postfix /etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'chown root:postfix /etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'chown root:root /etc/sasl2/smtpd.conf',
+							'chown root:root /etc/postfix/sasl/smtpd.conf',
 							'chmod 0644 /etc/postfix/main.cf',
 							'chmod 0644 /etc/postfix/master.cf',
 							'chmod 0640 /etc/postfix/mysql-virtual_alias_maps.cf',
