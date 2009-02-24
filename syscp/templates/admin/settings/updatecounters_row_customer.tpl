@@ -24,6 +24,12 @@
 						<td>{$lng['customer']['forwarders']}:</td>
 						<td><span <if $customer['email_forwarders_used'] == $customer['email_forwarders_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['email_forwarders_used']} -&gt; {$customer['email_forwarders_used_new']}</b></span></td>
 					</tr>
+					<if $settings['system']['mail_quota_enabled'] == 1>
+					<tr>
+						<td>{$lng['customer']['email_quota']}:</td>
+						<td><span <if $customer['email_quota_used'] == $customer['email_quota_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['email_quota_used']} -&gt; {$customer['email_quota_used_new']}</b></span></td>
+					</tr>
+					</if>
 					<tr>
 						<td>{$lng['customer']['ftps']}:</td>
 						<td><span <if $customer['ftps_used'] == $customer['ftps_used_new']>style="color:green"<else>style="color:red"</if>><b>{$customer['ftps_used']} -&gt; {$customer['ftps_used_new']}</b></span></td>
