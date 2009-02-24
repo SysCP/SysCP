@@ -255,7 +255,7 @@ class apache
 		{
 			if($domain['parentdomainid'] == '0')
 			{
-				$stats_text.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['domain'] . "\"\n";
+				$stats_text.= '  Alias /webalizer "' . makeCorrectFile($domain['customerroot'] . '/webalizer/' . $domain['domain']) . '"' . "\n";
 
 				if($this->settings['system']['awstats_enabled'] == '1')
 				{
@@ -264,7 +264,7 @@ class apache
 			}
 			else
 			{
-				$stats_text.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer/' . $domain['parentdomain'] . "\"\n";
+				$stats_text.= '  Alias /webalizer "' . makeCorrectFile($domain['customerroot'] . '/webalizer/' . $domain['parentdomain']) . '"' . "\n";
 
 				if($this->settings['system']['awstats_enabled'] == '1')
 				{
@@ -276,7 +276,7 @@ class apache
 		{
 			if($domain['customerroot'] != $domain['documentroot'])
 			{
-				$stats_text.= '  Alias /webalizer "' . $domain['customerroot'] . '/webalizer"' . "\n";
+				$stats_text.= '  Alias /webalizer "' . makeCorrectFile($domain['customerroot'] . '/webalizer') . '"' . "\n";
 			}
 
 			if($this->settings['system']['awstats_enabled'] == '1')
