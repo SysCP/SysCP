@@ -260,7 +260,7 @@ $lng['question']['admin_configs_reallyrebuild'] = 'Segur que vols regenerar les 
 
 $lng['mails']['pop_success']['mailbody'] = 'Hola,\n\nel teu compte d\'email $destination\ns\'ha creat satisfactoriament.\n\nAixò &eacute;s un missatge creat autom&agrave;ticament, si us plau uno responguis. Gr&agrave;cies.';
 $lng['mails']['pop_success']['subject'] = 'Compte de correu creat satisfactoriament';
-$lng['mails']['createcustomer']['mailbody'] = 'Hola $surname $name,\n\n aqu&iacute; te la seva informaci&oacute;:\n\nNom d\'usuari: $loginname\nClau: $password\n\n Gr&agrave;cies per tot, disfruta del teu compte';
+$lng['mails']['createcustomer']['mailbody'] = 'Hola {FIRSTNAME} {NAME},\n\n aqu&iacute; te la seva informaci&oacute;:\n\nNom d\'usuari: $loginname\nClau: $password\n\n Gr&agrave;cies per tot, disfruta del teu compte';
 $lng['mails']['createcustomer']['subject'] = 'Informaci&oacute; del compte';
 
 /**

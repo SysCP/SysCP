@@ -117,6 +117,7 @@ if($page == 'domains'
 			{
 				$enable_billing_data_edit = ($row['servicestart_date'] == '0000-00-00' || ($row['interval_payment'] == CONST_BILLING_INTERVALPAYMENT_PREPAID && calculateDayDifference(time(), $row['lastinvoiced_date']) >= 0));
 				$highlight_row = ($row['service_active'] != '1' && $settings['billing']['activate_billing'] == '1' && $settings['billing']['highlight_inactive'] == '1');
+				$row['customername'] = getCorrectFullUserDetails($row);
 				$row = htmlentities_array($row);
 				eval("\$domains.=\"" . getTemplate("domains/domains_domain") . "\";");
 				$count++;
@@ -589,22 +590,7 @@ if($page == 'domains'
 
 				while($row_customer = $db->fetch_array($result_customers))
 				{
-					if($row_customer['company'] == '')
-					{
-						$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid']);
-					}
-					else
-					{
-						if($row_customer['name'] != ''
-						   && $row_customer['firstname'] != '')
-						{
-							$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' | ' . $row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid']);
-						}
-						else
-						{
-							$customers.= makeoption($row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid']);
-						}
-					}
+					$customers.= makeoption(getCorrectFullUserDetails($row_customer) . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid']);
 				}
 
 				$admins = '';
@@ -615,22 +601,7 @@ if($page == 'domains'
 
 					while($row_admin = $db->fetch_array($result_admins))
 					{
-						if($row_admin['company'] == '')
-						{
-							$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $userinfo['adminid']);
-						}
-						else
-						{
-							if($row_admin['name'] != ''
-							   && $row_admin['firstname'] != '')
-							{
-								$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' | ' . $row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $userinfo['adminid']);
-							}
-							else
-							{
-								$admins.= makeoption($row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $userinfo['adminid']);
-							}
-						}
+						$admins.= makeoption(getCorrectFullUserDetails($row_admin) . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $userinfo['adminid']);
 					}
 				}
 
@@ -1244,44 +1215,13 @@ if($page == 'domains'
 
 					while($row_customer = $db->fetch_array($result_customers))
 					{
-						if($row_customer['company'] == '')
-						{
-							$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
-						}
-						else
-						{
-							if($row_customer['name'] != ''
-							   && $row_customer['firstname'] != '')
-							{
-								$customers.= makeoption($row_customer['name'] . ', ' . $row_customer['firstname'] . ' | ' . $row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
-							}
-							else
-							{
-								$customers.= makeoption($row_customer['company'] . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
-							}
-						}
+						$customers.= makeoption(getCorrectFullUserDetails($row_customer) . ' (' . $row_customer['loginname'] . ')', $row_customer['customerid'], $result['customerid']);
 					}
 				}
 				else
 				{
 					$customer = $db->query_first("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid` = '" . (int)$result['customerid'] . "'");
-
-					if($customer['company'] == '')
-					{
-						$result['customername'] = $customer['name'] . ', ' . $customer['firstname'] . ' (' . $customer['loginname'] . ')';
-					}
-					else
-					{
-						if($customer['name'] != ''
-						   && $customer['firstname'] != '')
-						{
-							$result['customername'] = $customer['name'] . ', ' . $customer['firstname'] . ' | ' . $customer['company'] . ' (' . $customer['loginname'] . ')';
-						}
-						else
-						{
-							$result['customername'] = $customer['company'] . ' (' . $customer['loginname'] . ')';
-						}
-					}
+					$result['customername'] = getCorrectFullUserDetails($customer) . ' (' . $customer['loginname'] . ')';
 				}
 
 				if($userinfo['customers_see_all'] == '1')
@@ -1293,44 +1233,13 @@ if($page == 'domains'
 
 						while($row_admin = $db->fetch_array($result_admins))
 						{
-							if($row_admin['company'] == '')
-							{
-								$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
-							}
-							else
-							{
-								if($row_admin['name'] != ''
-								   && $row_admin['firstname'] != '')
-								{
-									$admins.= makeoption($row_admin['name'] . ', ' . $row_admin['firstname'] . ' | ' . $row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
-								}
-								else
-								{
-									$admins.= makeoption($row_admin['company'] . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
-								}
-							}
+							$admins.= makeoption(getCorrectFullUserDetails($row_admin) . ' (' . $row_admin['loginname'] . ')', $row_admin['adminid'], $result['adminid']);
 						}
 					}
 					else
 					{
 						$admin = $db->query_first("SELECT `adminid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid` = '" . (int)$result['adminid'] . "'");
-
-						if($admin['company'] == '')
-						{
-							$result['adminname'] = $admin['name'] . ', ' . $admin['firstname'] . ' (' . $admin['loginname'] . ')';
-						}
-						else
-						{
-							if($admin['name'] != ''
-							   && $admin['firstname'] != '')
-							{
-								$result['adminname'] = $admin['name'] . ', ' . $admin['firstname'] . ' | ' . $admin['company'] . ' (' . $admin['loginname'] . ')';
-							}
-							else
-							{
-								$result['adminname'] = $admin['company'] . ' (' . $admin['loginname'] . ')';
-							}
-						}
+						$result['adminname'] = getCorrectFullUserDetails($admin) . ' (' . $admin['loginname'] . ')';
 					}
 				}
 

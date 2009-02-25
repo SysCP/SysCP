@@ -2703,4 +2703,70 @@ if(!function_exists('sys_get_temp_dir'))
 	}
 }
 
+/**
+ * Returns correct user salutation, either "Firstname Name" or "Company"
+ *
+ * @param  array  An array with keys firstname, name and company
+ * @return string The correct salutation
+ *
+ * @author Florian Lippert <flo@syscp.org>
+ */
+
+function getCorrectUserSalutation($userinfo)
+{
+	$returnval = '';
+	
+	if(isset($userinfo['firstname']) && isset($userinfo['name']) && isset($userinfo['company']))
+	{
+		// Always prefer firstname name
+
+		if($userinfo['company'] != '' && $userinfo['name'] == '' && $userinfo['firstname'] == '')
+		{
+			$returnval = $userinfo['company'];
+		}
+		else
+		{
+			$returnval = $userinfo['firstname'] . ' ' . $userinfo['name'];
+		}
+	}
+
+	return $returnval;
+}
+
+/**
+ * Returns full style user details "Name, Firstname | Company"
+ *
+ * @param  array  An array with keys firstname, name and company
+ * @return string The full details
+ *
+ * @author Florian Lippert <flo@syscp.org>
+ */
+
+function getCorrectFullUserDetails($userinfo)
+{
+	$returnval = '';
+	
+	if(isset($userinfo['firstname']) && isset($userinfo['name']) && isset($userinfo['company']))
+	{
+		if($userinfo['company'] == '')
+		{
+			$returnval = $userinfo['name'] . ', ' . $userinfo['firstname'];
+		}
+		else
+		{
+			if($userinfo['name'] != ''
+			   && $userinfo['firstname'] != '')
+			{
+				$returnval = $userinfo['name'] . ', ' . $userinfo['firstname'] . ' | ' . $userinfo['company'];
+			}
+			else
+			{
+				$returnval = $userinfo['company'];
+			}
+		}
+	}
+
+	return $returnval;
+}
+
 ?>

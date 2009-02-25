@@ -691,6 +691,8 @@ if($page == 'customers'
 							'FIRSTNAME' => $firstname,
 							'NAME' => $name,
 							'TITLE' => $title,
+							'COMPANY' => $company,
+							'SALUTATION' => getCorrectUserSalutation(array('firstname' => $firstname, 'name' => $name, 'company' => $company)),
 							'USERNAME' => $loginname,
 							'PASSWORD' => $password
 						);
@@ -701,11 +703,12 @@ if($page == 'customers'
 						$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['createcustomer']['subject']), $replace_arr));
 						$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$userinfo['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'createcustomer_mailbody\'');
 						$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['mails']['createcustomer']['mailbody']), $replace_arr));
+
 						$mail->From = $userinfo['email'];
 						$mail->FromName = $userinfo['name'];
 						$mail->Subject = $mail_subject;
 						$mail->Body = $mail_body;
-						$mail->AddAddress($email, $firstname . ' ' . $name);
+						$mail->AddAddress($email, getCorrectUserSalutation(array('firstname' => $firstname, 'name' => $name, 'company' => $company)));
 
 						if(!$mail->Send())
 						{
