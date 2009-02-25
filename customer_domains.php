@@ -201,14 +201,7 @@ elseif($page == 'domains')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				/* Rules for subdomains:
-					 * - At least two characters
-					 * - Valid characters: a-z, 0-9, ".", "-" and "_"
-					 * - First character must be a-z or 0-9
-					 * - Case-insensitiv
-					 */
-
-				$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', validate($_POST['subdomain'], 'subdomain', '/^[a-z0-9](?:[a-z0-9-_]+\.?)+$/i', 'subdomainiswrong')));
+				$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', validate($_POST['subdomain'], 'subdomain', '', 'subdomainiswrong')));
 				$domain = $idna_convert->encode($_POST['domain']);
 				$domain_check = $db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `subcanemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($domain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `email_only`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 				$completedomain = $subdomain . '.' . $domain;
