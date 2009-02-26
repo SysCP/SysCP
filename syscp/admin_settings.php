@@ -1400,7 +1400,7 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$system_ipaddress_array[$row['ip']] = $row['ip'];
 
-				if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+				if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 				{
 					$row['ip'] = '[' . $row['ip'] . ']';
 				}
