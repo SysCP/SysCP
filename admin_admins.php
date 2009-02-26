@@ -565,7 +565,7 @@ if($page == 'admins'
 
 			while($row = $db->fetch_array($ipsandports))
 			{
-				if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+				if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 				{
 					$row['ip'] = '[' . $row['ip'] . ']';
 				}
@@ -1153,7 +1153,7 @@ if($page == 'admins'
 
 				while($row = $db->fetch_array($ipsandports))
 				{
-					if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 					{
 						$row['ip'] = '[' . $row['ip'] . ']';
 					}

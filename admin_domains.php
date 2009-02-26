@@ -86,7 +86,7 @@ if($page == 'domains'
 			$row['aliasdomain'] = $idna_convert->decode($row['aliasdomain']);
 			$row['domainalias'] = $idna_convert->decode($row['domainalias']);
 
-			if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+			if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 			{
 				$row['ipandport'] = '[' . $row['ip'] . ']:' . $row['port'];
 			}
@@ -621,7 +621,7 @@ if($page == 'domains'
 
 				while($row_ipandport = $db->fetch_array($result_ipsandports))
 				{
-					if(filter_var($row_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					if(filter_var($row_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 					{
 						$row_ipandport['ip'] = '[' . $row_ipandport['ip'] . ']';
 					}
@@ -633,7 +633,7 @@ if($page == 'domains'
 
 				while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
 				{
-					if(filter_var($row_ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					if(filter_var($row_ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 					{
 						$row_ssl_ipandport['ip'] = '[' . $row_ssl_ipandport['ip'] . ']';
 					}
@@ -1268,7 +1268,7 @@ if($page == 'domains'
 
 				while($row_ipandport = $db->fetch_array($result_ipsandports))
 				{
-					if(filter_var($row_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					if(filter_var($row_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 					{
 						$row_ipandport['ip'] = '[' . $row_ipandport['ip'] . ']';
 					}
@@ -1280,7 +1280,7 @@ if($page == 'domains'
 
 				while($row_ssl_ipandport = $db->fetch_array($result_ssl_ipsandports))
 				{
-					if(filter_var($row_ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+					if(filter_var($row_ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 					{
 						$row_ssl_ipandport['ip'] = '[' . $row_ssl_ipandport['ip'] . ']';
 					}

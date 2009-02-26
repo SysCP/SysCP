@@ -61,13 +61,13 @@ class apache
 
 		while($row_ipsandports = $this->db->fetch_array($result_ipsandports))
 		{
-			if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+			if(filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 			{
-				$ipport = $row_ipsandports['ip'] . ':' . $row_ipsandports['port'];
+				$ipport = '[' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'];
 			}
 			else
 			{
-				$ipport = '[' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'];
+				$ipport = $row_ipsandports['ip'] . ':' . $row_ipsandports['port'];
 			}
 
 			fwrite($this->debugHandler, '  apache::createIpPort: creating ip/port settings for  ' . $ipport . "\n");
@@ -425,13 +425,13 @@ class apache
 		$domain['port'] = $ipandport['port'];
 		$domain['ssl_cert'] = $ipandport['ssl_cert'];
 
-		if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 		{
-			$ipport = $domain['ip'] . ':' . $domain['port'];
+			$ipport = '[' . $domain['ip'] . ']:' . $domain['port'];
 		}
 		else
 		{
-			$ipport = '[' . $domain['ip'] . ']:' . $domain['port'];
+			$ipport = $domain['ip'] . ':' . $domain['port'];
 		}
 
 		$vhost_content = '<VirtualHost ' . $ipport . '>' . "\n";
