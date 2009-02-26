@@ -238,6 +238,19 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 							'/etc/init.d/vixie-cron restart'
 						)
 					),
+					'xinetd' => Array(
+						'label' => 'xinet.d (syscp updates in realtime)',
+						'commands' => Array(
+							'emerge -av xinetd',
+							'echo -e "syscp ' . $settings['system']['realtime_port'] . '/tcp # SysCP Realtime" > /etc/services'
+						),
+						'files' => Array(
+							'etc_xinet.d_syscp' => '/etc/xinetd.d/syscp'
+						),
+						'restart' => Array(
+							'/etc/init.d/xinetd restart'
+						)
+					),
 					'awstats' => Array(
 						'label' => 'Awstats',
 						'files' => Array(

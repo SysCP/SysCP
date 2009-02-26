@@ -775,7 +775,7 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 	   && (int)$settings['system']['realtime_port'] !== 0)
 	{
 		$timeout = 15;
-		$socket = @socket_create(AF_INET, SOCK_STREAM, SOL_UDP);
+		$socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
 		if($socket !== false)
 		{
