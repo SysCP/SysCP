@@ -170,7 +170,7 @@ if($page == 'ipsandports'
 			}
 			else
 			{
-				$db->query("INSERT INTO `" . TABLE_PANEL_IPSANDPORTS . "` (`ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings`, `ssl`, `ssl_cert`) VALUES ('" . $db->escape($ip) . "', '" . (int)$port . "', '" . (int)$vhostcontainer . "', '" . (int)$namevirtualhost_statement . "', '" . (int)$vhostcontainer . "', '" . (int)$vhostcontainer_servername_statement . "', '" . $db->escape($specialsettings) . "', '" . $_POST['ssl'] . "', '" . $_POST['ssl_cert_file'] . "')");
+				$db->query("INSERT INTO `" . TABLE_PANEL_IPSANDPORTS . "` (`ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, `vhostcontainer_servername_statement`, `specialsettings`, `ssl`, `ssl_cert`) VALUES ('" . $db->escape($ip) . "', '" . (int)$port . "', '" . (int)$listen_statement . "', '" . (int)$namevirtualhost_statement . "', '" . (int)$vhostcontainer . "', '" . (int)$vhostcontainer_servername_statement . "', '" . $db->escape($specialsettings) . "', '" . $_POST['ssl'] . "', '" . $_POST['ssl_cert_file'] . "')");
 
 				if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 				{
