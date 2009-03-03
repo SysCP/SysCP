@@ -146,7 +146,7 @@ else
 		$db->query("ALTER TABLE `" . TABLE_MAIL_USERS . "` ADD `quota` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `customerid`, ADD `pop3` TINYINT( 1 ) NOT NULL DEFAULT '1' AFTER `quota` , ADD `imap` TINYINT( 1 ) NOT NULL DEFAULT '1' AFTER `pop3`");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'mail_quota_enabled', '0')");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'mail_quota', '104857600')");
-		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `email_quota` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_forwarders_used` , ADD `email_quota_used` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_quota`, ADD `imap` TINYINT( 1 ) NOT NULL DEFAULT '0', ADD `pop3` TINYINT( 1 ) NOT NULL DEFAULT '0'");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `email_quota` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_forwarders_used` , ADD `email_quota_used` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_quota`, ADD `imap` TINYINT( 1 ) NOT NULL DEFAULT '1', ADD `pop3` TINYINT( 1 ) NOT NULL DEFAULT '1'");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `email_quota` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_forwarders_used` , ADD `email_quota_used` BIGINT( 13 ) NOT NULL DEFAULT '0' AFTER `email_quota`");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('panel', 'decimal_places', '4')");
 
