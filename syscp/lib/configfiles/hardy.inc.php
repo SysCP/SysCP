@@ -98,7 +98,7 @@ return Array(
 							'chmod 0640 /etc/postfix/mysql-virtual_alias_maps.cf',
 							'chmod 0640 /etc/postfix/mysql-virtual_mailbox_domains.cf',
 							'chmod 0640 /etc/postfix/mysql-virtual_mailbox_maps.cf',
-							'chmod 0600 /etc/sasl2/smtpd.conf',
+							'chmod 0600 /etc/postfix/sasl/smtpd.conf',
 						),
 						'files' => Array(
 							'etc_postfix_main.cf' => '/etc/postfix/main.cf',
