@@ -74,6 +74,11 @@ class apache
 			$this->logger->logAction(CRON_ACTION, LOG_INFO, 'creating ip/port settings for  ' . $ipport);
 			$vhosts_filename = makeCorrectFile($this->settings['system']['apacheconf_vhost'] . '/10_syscp_ipandport_' . trim(str_replace(':', '.', $row_ipsandports['ip']), '.') . '.' . $row_ipsandports['port'] . '.conf');
 
+			if(!isset($this->virtualhosts_data[$vhosts_filename]))
+			{
+				$this->virtualhosts_data[$vhosts_filename] = '';
+			}
+
 			if($row_ipsandports['listen_statement'] == '1')
 			{
 				$this->virtualhosts_data[$vhosts_filename].= 'Listen ' . $ipport . "\n";
@@ -547,7 +552,7 @@ class apache
 			   && isset($row_htpasswds['customerroot'])
 			   && $row_htpasswds['customerroot'] != '')
 			{
-				if(!is_array($diroptions[$row_htpasswds['path']]))
+				if(!isset($diroptions[$row_htpasswds['path']]) || !is_array($diroptions[$row_htpasswds['path']]))
 				{
 					$diroptions[$row_htpasswds['path']] = array();
 				}
@@ -649,6 +654,8 @@ class apache
 			{
 				// Save one big file
 
+				$diroptions_file = '';
+
 				foreach($this->diroptions_data as $diroptions_filename => $diroptions_content)
 				{
 					$diroptions_file.= $diroptions_content . "\n\n";
@@ -735,6 +742,8 @@ class apache
 			if(!isConfigDir($this->settings['system']['apacheconf_vhost']))
 			{
 				// Save one big file
+
+				$vhosts_file = '';
 
 				foreach($this->virtualhosts_data as $vhosts_filename => $vhost_content)
 				{
