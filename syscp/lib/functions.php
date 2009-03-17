@@ -1120,21 +1120,21 @@ function updateCounters($returndebuginfo = false)
 			$admin_resources[$admin['adminid']]['emails_used'] = 0;
 		}
 
-		$admin['tickets_used_new'] = $admin_resources[$admin['adminid']]['tickets_used'];
+		$admin['emails_used_new'] = $admin_resources[$admin['adminid']]['emails_used'];
 
 		if(!isset($admin_resources[$admin['adminid']]['email_accounts_used']))
 		{
 			$admin_resources[$admin['adminid']]['email_accounts_used'] = 0;
 		}
 
-		$admin['emails_used_new'] = $admin_resources[$admin['adminid']]['emails_used'];
+		$admin['email_accounts_used_new'] = $admin_resources[$admin['adminid']]['email_accounts_used'];
 
 		if(!isset($admin_resources[$admin['adminid']]['tickets_used']))
 		{
 			$admin_resources[$admin['adminid']]['tickets_used'] = 0;
 		}
 
-		$admin['email_accounts_used_new'] = $admin_resources[$admin['adminid']]['email_accounts_used'];
+		$admin['tickets_used_new'] = $admin_resources[$admin['adminid']]['tickets_used'];
 
 		if(!isset($admin_resources[$admin['adminid']]['email_forwarders_used']))
 		{
