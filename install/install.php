@@ -2,7 +2,7 @@
 
 /**
  * This file is part of the SysCP project.
- * Copyright (c) 2003-2008 the SysCP Team (see authors).
+ * Copyright (c) 2003-2009 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
@@ -109,7 +109,7 @@ function page_header()
 			This not only gives respect to the large amount of time given freely by the developers
 			but also helps build interest, traffic and use of SysCP. If you refuse
 			to include even this then support on our forums may be affected.
-			The SysCP Team : 2003-2008
+			The SysCP Team : 2003-2009
 		// -->
 		<!--
 			Templates by Luca Piona (info@havanastudio.ch) and Luca Longinotti (chtekk@gentoo.org)
@@ -138,7 +138,7 @@ function page_footer()
 		<table cellspacing="0" cellpadding="0" border="0" width="100%">
 			<tr>
 				<td width="100%" class="footer">
-					<br />SysCP &copy; 2003-2008 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
+					<br />SysCP &copy; 2003-2009 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
 					<br /><br/>
 				</td>
 			</tr>

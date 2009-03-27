@@ -8,7 +8,7 @@
 					<if ($settings['admin']['show_version_login'] == '1' && $filename == 'index.php') || ($filename != 'index.php' && $settings['admin']['show_version_footer'] == '1')>
 						 {$version}{$patchlevel}
 					</if>
-					<a style="text-decoration:none;" href="index.php?page=easter&amp;action=egg">&copy;</a> 2003-2008 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
+					<a style="text-decoration:none;" href="index.php?page=easter&amp;action=egg">&copy;</a> 2003-2009 by <a href="http://www.syscp.org/" target="_blank">the SysCP Team</a>
 					<br />Theme: Luca Piona and Luca Longinotti
 					<if $lng['translator'] != ''>
 					<br />{$lng['panel']['translator']}: {$lng['translator']}
