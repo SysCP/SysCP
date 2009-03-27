@@ -1376,4 +1376,8 @@ $lng['serversettings']['mod_fcgid']['maxrequests_desc'] = 'How many requests sho
 $lng['billing']['categories']['domains_rowcaption_setup_included_domain'] = 'Included domain {domain} - Setup fee';
 $lng['billing']['categories']['domains_rowcaption_interval_included_domain'] = 'Included domain {domain}';
 
+// ADDED IN 1.4.2.1 
+$lng['admin']['thankyou'] = 'Thank you';
+$lng['admin']['contributors'] = 'All these people contributed to the SysCP Project (no particular order)';
+
 ?>

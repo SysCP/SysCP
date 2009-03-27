@@ -1383,4 +1383,8 @@ $lng['invoice']['tax_text']['line'] = 'Steuernummer %s: %s' . "\n";
 $lng['invoice']['tax_text']['client'] = 'des Kunden';
 $lng['aps']['license_link'] = 'Link zur Lizenz';
 
+// ADDED IN 1.4.2.1 
+$lng['admin']['thankyou'] = 'Vielen Dank';
+$lng['admin']['contributors'] = 'Diese Leute haben zum SysCP Projekt beigetragen (keine besondere Ordnung)';
+
 ?>
