@@ -268,12 +268,4 @@ if($action == 'forgotpwd')
 	eval("echo \"" . getTemplate("fpwd") . "\";");
 }
 
-if($page == 'easter')
-{
-	if($action == 'egg')
-	{
-		eval("echo \"" . getTemplate("dev") . "\";");
-	}
-}
-
 ?>
