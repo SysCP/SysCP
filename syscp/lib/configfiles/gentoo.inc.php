@@ -242,7 +242,7 @@ milter_default_action = accept\n" >> /etc/postfix/main.cf'
 						'label' => 'xinet.d (syscp updates in realtime)',
 						'commands' => Array(
 							'emerge -av xinetd',
-							'echo -e "syscp ' . $settings['system']['realtime_port'] . '/tcp # SysCP Realtime" > /etc/services'
+							'echo -e "syscp ' . $settings['system']['realtime_port'] . '/tcp # SysCP Realtime" >> /etc/services'
 						),
 						'files' => Array(
 							'etc_xinet.d_syscp' => '/etc/xinetd.d/syscp'
