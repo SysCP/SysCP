@@ -221,7 +221,7 @@ return Array(
 						'label' => 'xinet.d (syscp updates in realtime)',
 						'commands' => Array(
 							'apt-get install xinetd',
-							'echo -e "syscp ' . $settings['system']['realtime_port'] . '/tcp # SysCP Realtime" > /etc/services'
+							'echo -e "syscp ' . $settings['system']['realtime_port'] . '/tcp # SysCP Realtime" >> /etc/services'
 						),
 						'files' => Array(
 							'etc_xinet.d_syscp' => '/etc/xinetd.d/syscp'
