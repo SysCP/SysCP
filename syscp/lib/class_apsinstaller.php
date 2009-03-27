@@ -4,7 +4,7 @@
  * Implementation of the Application Packaging Standard from SwSoft/Parallels
  * http://apsstandard.com
  *
- * Copyright (c) 2003-2008 the SysCP Team (see authors).
+ * Copyright (c) 2003-2009 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
  * file that was distributed with this source code. You can also view the
