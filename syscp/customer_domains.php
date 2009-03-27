@@ -244,6 +244,16 @@ elseif($page == 'domains')
 					$openbasedir_path = '0';
 				}
 
+				if(isset($_POST['ssl_redirect'])
+				   && $_POST['ssl_redirect'] == '1')
+				{
+					$ssl_redirect = '1';
+				}
+				else
+				{
+					$ssl_redirect = '0';
+				}
+
 				if($path == '')
 				{
 					standard_error('patherror');
@@ -274,7 +284,7 @@ elseif($page == 'domains')
 				}
 				else
 				{
-					$result = $db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `openbasedir_path`, `safemode`, `speciallogfile`, `specialsettings`, `ssl_redirect`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($completedomain) . "', '" . $db->escape($path) . "', '" . $db->escape($domain_check['ipandport']) . "', " . (($aliasdomain != 0) ? "'" . $db->escape($aliasdomain) . "'" : "NULL") . ", '" . (int)$domain_check['id'] . "', '" . ($domain_check['subcanemaildomain'] == '3' ? '1' : '0') . "', '" . $db->escape($domain_check['openbasedir']) . "', '" . $db->escape($openbasedir_path) . "', '" . $db->escape($domain_check['safemode']) . "', '" . $db->escape($domain_check['speciallogfile']) . "', '" . $db->escape($domain_check['specialsettings']) . "', '" . $_POST['ssl_redirect'] . "')");
+					$result = $db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`customerid`, `domain`, `documentroot`, `ipandport`, `aliasdomain`, `parentdomainid`, `isemaildomain`, `openbasedir`, `openbasedir_path`, `safemode`, `speciallogfile`, `specialsettings`, `ssl_redirect`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($completedomain) . "', '" . $db->escape($path) . "', '" . $db->escape($domain_check['ipandport']) . "', " . (($aliasdomain != 0) ? "'" . $db->escape($aliasdomain) . "'" : "NULL") . ", '" . (int)$domain_check['id'] . "', '" . ($domain_check['subcanemaildomain'] == '3' ? '1' : '0') . "', '" . $db->escape($domain_check['openbasedir']) . "', '" . $db->escape($openbasedir_path) . "', '" . $db->escape($domain_check['safemode']) . "', '" . $db->escape($domain_check['speciallogfile']) . "', '" . $db->escape($domain_check['specialsettings']) . "', '" . $ssl_redirect . "')");
 					$result = $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used`=`subdomains_used`+1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
 					$log->logAction(USR_ACTION, LOG_INFO, "added subdomain '" . $completedomain . "'");
 					inserttask('1');
@@ -395,6 +405,16 @@ elseif($page == 'domains')
 					$openbasedir_path = '0';
 				}
 
+				if(isset($_POST['ssl_redirect'])
+				   && $_POST['ssl_redirect'] == '1')
+				{
+					$ssl_redirect = '1';
+				}
+				else
+				{
+					$ssl_redirect = '0';
+				}
+
 				if($path == '')
 				{
 					standard_error('patherror');
@@ -413,12 +433,13 @@ elseif($page == 'domains')
 					   || $isemaildomain != $result['isemaildomain']
 					   || $iswildcarddomain != $result['iswildcarddomain']
 					   || $aliasdomain != $result['aliasdomain']
-					   || $openbasedir_path != $result['openbasedir_path'])
+					   || $openbasedir_path != $result['openbasedir_path']
+					   || $ssl_redirect != $result['ssl_redirect'])
 					{
 						$log->logAction(USR_ACTION, LOG_INFO, "edited domain '" . $idna_convert->decode($result['domain']) . "'");
 						inserttask('1');
 						inserttask('4');
-						$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($path) . "',`ssl_redirect`='" . $_POST['ssl_redirect'] . "', `isemaildomain`='" . (int)$isemaildomain . "', `iswildcarddomain`='" . (int)$iswildcarddomain . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ",`openbasedir_path`='" . $db->escape($openbasedir_path) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
+						$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `documentroot`='" . $db->escape($path) . "', `isemaildomain`='" . (int)$isemaildomain . "', `iswildcarddomain`='" . (int)$iswildcarddomain . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ",`openbasedir_path`='" . $db->escape($openbasedir_path) . "', `ssl_redirect`='" . $ssl_redirect . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 					}
 
 					redirectTo($filename, Array('page' => $page, 's' => $s));
