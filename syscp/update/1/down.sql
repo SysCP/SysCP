@@ -1,0 +1,1 @@
+ALTER TABLE `panel_databases` DROP `dbserver`;

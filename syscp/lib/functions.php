@@ -1899,68 +1899,77 @@ function isConfigDir($dir)
 	return $returnval;
 }
 
-function correctMysqlUsers(&$db, &$db_root, $mysql_access_host_array)
+function correctMysqlUsers($mysql_access_host_array)
 {
-	global $settings, $sql;
-	$users = array();
-	$users_result = $db_root->query('SELECT * FROM `mysql`.`user`');
-
-	while($users_row = $db_root->fetch_array($users_result))
+	global $db, $settings, $sql, $sql_root;
+	
+	foreach($sql_root as $mysql_server => $mysql_server_details)
 	{
-		if(!isset($users[$users_row['User']])
-		   || !is_array($users[$users_row['User']]))
+		$db_root = new db($mysql_server_details['host'], $mysql_server_details['user'], $mysql_server_details['password'], '');
+		unset($db_root->password);
+
+		$users = array();
+		$users_result = $db_root->query('SELECT * FROM `mysql`.`user`');
+
+		while($users_row = $db_root->fetch_array($users_result))
 		{
-			$users[$users_row['User']] = array(
-				'password' => $users_row['Password'],
-				'hosts' => array()
-			);
-		}
-
-		$users[$users_row['User']]['hosts'][] = $users_row['Host'];
-	}
-
-	$databases = array(
-		$sql['db']
-	);
-	$databases_result = $db->query('SELECT * FROM `' . TABLE_PANEL_DATABASES . '`');
-
-	while($databases_row = $db->fetch_array($databases_result))
-	{
-		$databases[] = $databases_row['databasename'];
-	}
-
-	foreach($databases as $username)
-	{
-		if(isset($users[$username])
-		   && is_array($users[$username])
-		   && isset($users[$username]['hosts'])
-		   && is_array($users[$username]['hosts']))
-		{
-			$password = $users[$username]['password'];
-			foreach($mysql_access_host_array as $mysql_access_host)
+			if(!isset($users[$users_row['User']])
+			   || !is_array($users[$users_row['User']]))
 			{
-				$mysql_access_host = trim($mysql_access_host);
-
-				if(!in_array($mysql_access_host, $users[$username]['hosts']))
-				{
-					$db_root->query('GRANT ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '`.* TO `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` IDENTIFIED BY \'password\'');
-					$db_root->query('SET PASSWORD FOR `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` = \'' . $db_root->escape($password) . '\'');
-				}
+				$users[$users_row['User']] = array(
+					'password' => $users_row['Password'],
+					'hosts' => array()
+				);
 			}
 
-			foreach($users[$username]['hosts'] as $mysql_access_host)
+			$users[$users_row['User']]['hosts'][] = $users_row['Host'];
+		}
+
+		$databases = array(
+			$sql['db']
+		);
+		$databases_result = $db->query('SELECT * FROM `' . TABLE_PANEL_DATABASES . '` WHERE `dbserver` = \'' . $mysql_server . '\'');
+
+		while($databases_row = $db->fetch_array($databases_result))
+		{
+			$databases[] = $databases_row['databasename'];
+		}
+
+		foreach($databases as $username)
+		{
+			if(isset($users[$username])
+			   && is_array($users[$username])
+			   && isset($users[$username]['hosts'])
+			   && is_array($users[$username]['hosts']))
 			{
-				if(!in_array($mysql_access_host, $mysql_access_host_array))
+				$password = $users[$username]['password'];
+				foreach($mysql_access_host_array as $mysql_access_host)
 				{
-					$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
-					$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '` . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
-					$db_root->query('DELETE FROM `mysql`.`user` WHERE `User` = "' . $db_root->escape($username) . '" AND `Host` = "' . $db_root->escape($mysql_access_host) . '"');
+					$mysql_access_host = trim($mysql_access_host);
+
+					if(!in_array($mysql_access_host, $users[$username]['hosts']))
+					{
+						$db_root->query('GRANT ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '`.* TO `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` IDENTIFIED BY \'password\'');
+						$db_root->query('SET PASSWORD FOR `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '` = \'' . $db_root->escape($password) . '\'');
+					}
+				}
+
+				foreach($users[$username]['hosts'] as $mysql_access_host)
+				{
+					if(!in_array($mysql_access_host, $mysql_access_host_array))
+					{
+						$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
+						$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($username)) . '` . * FROM `' . $db_root->escape($username) . '`@`' . $db_root->escape($mysql_access_host) . '`');
+						$db_root->query('DELETE FROM `mysql`.`user` WHERE `User` = "' . $db_root->escape($username) . '" AND `Host` = "' . $db_root->escape($mysql_access_host) . '"');
+					}
 				}
 			}
 		}
-	}
 
-	$db_root->query('FLUSH PRIVILEGES');
+		$db_root->query('FLUSH PRIVILEGES');
+		$db_root->close();
+		unset($db_root);
+	}
 }
 
 /**
@@ -2767,6 +2776,165 @@ function getCorrectFullUserDetails($userinfo)
 	}
 
 	return $returnval;
+}
+
+//
+// remove_remarks will strip the sql comment lines out of an uploaded sql file
+// The whole function has been taken from the phpbb installer, copyright by the phpbb team, phpbbb in summer 2004.
+//
+
+function remove_remarks($sql)
+{
+	$lines = explode("\n", $sql);
+
+	// try to keep mem. use down
+
+	$sql = "";
+	$linecount = count($lines);
+	$output = "";
+	for ($i = 0;$i < $linecount;$i++)
+	{
+		if(($i != ($linecount - 1))
+		   || (strlen($lines[$i]) > 0))
+		{
+			if(substr($lines[$i], 0, 1) != "#")
+			{
+				$output.= $lines[$i] . "\n";
+			}
+			else
+			{
+				$output.= "\n";
+			}
+
+			// Trading a bit of speed for lower mem. use here.
+
+			$lines[$i] = "";
+		}
+	}
+
+	return $output;
+}
+
+//
+// split_sql_file will split an uploaded sql file into single sql statements.
+// Note: expects trim() to have already been run on $sql
+// The whole function has been taken from the phpbb installer, copyright by the phpbb team, phpbbb in summer 2004.
+//
+
+function split_sql_file($sql, $delimiter)
+{
+	// Split up our string into "possible" SQL statements.
+
+	$tokens = explode($delimiter, $sql);
+
+	// try to save mem.
+
+	$sql = "";
+	$output = array();
+
+	// we don't actually care about the matches preg gives us.
+
+	$matches = array();
+
+	// this is faster than calling count($oktens) every time thru the loop.
+
+	$token_count = count($tokens);
+	for ($i = 0;$i < $token_count;$i++)
+	{
+		// Don't wanna add an empty string as the last thing in the array.
+
+		if(($i != ($token_count - 1))
+		   || (strlen($tokens[$i] > 0)))
+		{
+			// This is the total number of single quotes in the token.
+
+			$total_quotes = preg_match_all("/'/", $tokens[$i], $matches);
+
+			// Counts single quotes that are preceded by an odd number of backslashes,
+			// which means they're escaped quotes.
+
+			$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$i], $matches);
+			$unescaped_quotes = $total_quotes - $escaped_quotes;
+
+			// If the number of unescaped quotes is even, then the delimiter did NOT occur inside a string literal.
+
+			if(($unescaped_quotes % 2) == 0)
+			{
+				// It's a complete sql statement.
+
+				$output[] = $tokens[$i];
+
+				// save memory.
+
+				$tokens[$i] = "";
+			}
+			else
+			{
+				// incomplete sql statement. keep adding tokens until we have a complete one.
+				// $temp will hold what we have so far.
+
+				$temp = $tokens[$i] . $delimiter;
+
+				// save memory..
+
+				$tokens[$i] = "";
+
+				// Do we have a complete statement yet?
+
+				$complete_stmt = false;
+				for ($j = $i + 1;(!$complete_stmt && ($j < $token_count));$j++)
+				{
+					// This is the total number of single quotes in the token.
+
+					$total_quotes = preg_match_all("/'/", $tokens[$j], $matches);
+
+					// Counts single quotes that are preceded by an odd number of backslashes,
+					// which means they're escaped quotes.
+
+					$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$j], $matches);
+					$unescaped_quotes = $total_quotes - $escaped_quotes;
+
+					if(($unescaped_quotes % 2) == 1)
+					{
+						// odd number of unescaped quotes. In combination with the previous incomplete
+						// statement(s), we now have a complete statement. (2 odds always make an even)
+
+						$output[] = $temp . $tokens[$j];
+
+						// save memory.
+
+						$tokens[$j] = "";
+						$temp = "";
+
+						// exit the loop.
+
+						$complete_stmt = true;
+
+						// make sure the outer loop continues at the right point.
+
+						$i = $j;
+					}
+					else
+					{
+						// even number of unescaped quotes. We still don't have a complete statement.
+						// (1 odd and 1 even always make an odd)
+
+						$temp.= $tokens[$j] . $delimiter;
+
+						// save memory.
+
+						$tokens[$j] = "";
+					}
+				}
+
+				// for..
+			}
+
+			// else
+		}
+	}
+
+	return $output;
 }
 
 ?>

@@ -68,6 +68,14 @@ if(!isset($sql)
 	die($config_hint);
 }
 
+// Legacy sql-root-information
+if(isset($sql['root_user']) && isset($sql['root_password']) && (!isset($sql_root) || !is_array($sql_root)))
+{
+	$sql_root = array(0 => array('caption' => 'Default', 'host' => $sql['host'], 'user' => $sql['root_user'], 'password' => $sql['root_password']));
+	unset($sql['root_user']);
+	unset($sql['root_password']);
+}
+
 /**
  * Includes the MySQL-Tabledefinitions etc.
  */
@@ -90,8 +98,8 @@ if($filename == 'admin_configfiles.php')
 {
 	// Configfiles needs host, user, db
 
-	unset($sql['root_user']);
-	unset($sql['root_password']);
+	unset($sql_root);
+	$sql_root = array();
 }
 elseif($filename == 'customer_mysql.php'
        || $filename == 'admin_customers.php')
@@ -110,11 +118,10 @@ else
 {
 	// Other scripts doesn't need anything at all
 
-	unset($sql['host']);
-	unset($sql['user']);
-	unset($sql['db']);
-	unset($sql['root_user']);
-	unset($sql['root_password']);
+	unset($sql);
+	$sql = array();
+	unset($sql_root);
+	$sql_root = array();
 }
 
 /**
@@ -218,10 +225,10 @@ while($row = $db->fetch_array($result))
 unset($row);
 unset($result);
 
-if(!isset($settings['panel']['version'])
-   || $settings['panel']['version'] != $version)
+if(!isset($settings['system']['dbversion'])
+   || $settings['system']['dbversion'] != $dbversion)
 {
-	redirectTo('install/updatesql.php');
+	redirectTo('update/update_database.php');
 	exit;
 }
 

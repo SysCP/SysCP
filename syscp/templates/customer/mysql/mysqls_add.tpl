@@ -11,6 +11,12 @@ $header
 				<td class="main_field_name">{$lng['mysql']['databasedescription']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="description" maxlength="100" /></td>
 			</tr>
+			<if 1 < count($sql_root)>
+			<tr>
+				<td class="main_field_name">{$lng['mysql']['mysql_server']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><select name="mysql_server">$mysql_servers</select></td>
+			</tr>
+			</if>
 			<tr>
 				<td class="main_field_name">{$lng['login']['password']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="password" name="mysql_password" maxlength="50" /></td>

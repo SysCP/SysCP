@@ -62,12 +62,57 @@ while($row_domainlist = $db->fetch_array($result_domainlist))
 	}
 }
 
-$databases_list_result = $db_root->query("show databases");
+$mysqlusage_all = array();
+$databases = $db->query("SELECT * FROM " . TABLE_PANEL_DATABASES . " ORDER BY `dbserver`");
+$db_root = new db($sql_root[0]['host'], $sql_root[0]['user'], $sql_root[0]['password'], '');
+unset($db_root->password);
+$last_dbserver = 0;
 
-while($database_row = $db->fetch_array($databases_list_result))
+$databases_list = array();
+$databases_list_result = $db_root->query("show databases");
+while($databases_list_row = $db->fetch_array($databases_list_result))
 {
-	$databases_list[] = strtolower($database_row['Database']);
+	$databases_list[] = strtolower($databases_list_row['Database']);
 }
+
+while($row_database = $db->fetch_array($databases))
+{
+	if($last_dbserver != $row_database['dbserver'])
+	{
+		$db_root->close();
+		$db_root = new db($sql_root[$row_database['dbserver']]['host'], $sql_root[$row_database['dbserver']]['user'], $sql_root[$row_database['dbserver']]['password'], '');
+		unset($db_root->password);
+		$last_dbserver = $row_database['dbserver'];
+
+		$database_list = array();
+		$databases_list_result = $db_root->query("show databases");
+		while($databases_list_row = $db->fetch_array($databases_list_result))
+		{
+			$databases_list[] = strtolower($databases_list_row['Database']);
+		}
+	}
+	
+	if(in_array(strtolower($row_database['databasename']), $databases_list))
+	{
+		$mysql_usage_result = $db_root->query("SHOW TABLE STATUS FROM `" . $db_root->escape($row_database['databasename']) . "`");
+
+		while($mysql_usage_row = $db_root->fetch_array($mysql_usage_result))
+		{
+			if(!isset($mysqlusage_all[$row_database['customerid']]))
+			{
+				$mysqlusage_all[$row_database['customerid']] = 0;
+			}
+			$mysqlusage_all[$row_database['customerid']] += floatval($mysql_usage_row['Data_length'] + $mysql_usage_row['Index_length']);
+		}
+	}
+	else
+	{
+		echo "Seems like the database " . $row_database['databasename'] . " had been removed manually.\n";
+	}
+}
+
+$db_root->close();
+
 
 $result = $db->query("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` ORDER BY `customerid` ASC");
 
@@ -266,27 +311,12 @@ while($row = $db->fetch_array($result))
 
 	fwrite($debugHandler, 'calculating mysqlspace usage for ' . $row['loginname'] . "\n");
 	$mysqlusage = 0;
-	unset($database_row);
-	$databases_result = $db->query("SELECT `databasename` FROM `" . TABLE_PANEL_DATABASES . "` WHERE `customerid`='" . (int)$row['customerid'] . "'");
 
-	while($database_row = $db->fetch_array($databases_result))
+	if(isset($mysqlusage_all[$row['customerid']]))
 	{
-		if(in_array(strtolower($database_row['databasename']), $databases_list))
-		{
-			$mysql_usage_result = $db_root->query("SHOW TABLE STATUS FROM `" . $db_root->escape($database_row['databasename']) . "`");
-
-			while($mysql_usage_row = $db_root->fetch_array($mysql_usage_result))
-			{
-				$mysqlusage+= floatval($mysql_usage_row['Data_length'] + $mysql_usage_row['Index_length']);
-			}
-		}
-		else
-		{
-			echo "Seems like the database " . $database_row['databasename'] . " had been removed manually.\n";
-		}
+		$mysqlusage = floatval($mysqlusage_all[$row['customerid']] / 1024);
 	}
-
-	$mysqlusage = floatval($mysqlusage / 1024);
+	
 	$current_diskspace = array();
 	$current_diskspace['webspace'] = floatval($webspaceusage);
 	$current_diskspace['mail'] = floatval($emailusage);

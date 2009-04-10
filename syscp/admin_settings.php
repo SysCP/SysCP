@@ -395,10 +395,7 @@ if(($page == 'settings' || $page == 'overview')
 				$mysql_access_host = implode(',', $mysql_access_host_array);
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($mysql_access_host) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mysql_access_host from '" . $settings['system']['mysql_access_host'] . "' to '" . $mysql_access_host . "'");
-				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
 				correctMysqlUsers($db, $db_root, $mysql_access_host_array);
-				$db_root->close();
-				unset($db_root);
 			}
 
 			if($_POST['system_defaultip'] != $settings['system']['defaultip']
@@ -486,10 +483,7 @@ if(($page == 'settings' || $page == 'overview')
 
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='mysql_access_host'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_mysql_access_host from '" . $settings['system']['mysql_access_host'] . "' to '" . $value . "'");
-				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password']);
-				correctMysqlUsers($db, $db_root, $mysql_access_host_array);
-				$db_root->close();
-				unset($db_root);
+				correctMysqlUsers($mysql_access_host_array);
 			}
 
 			if($_POST['system_realtime_port'] != $settings['system']['realtime_port']

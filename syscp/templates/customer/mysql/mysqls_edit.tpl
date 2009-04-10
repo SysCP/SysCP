@@ -16,6 +16,12 @@ $header
 				<td class="main_field_name">{$lng['mysql']['databasedescription']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="description" maxlength="100" value="{$result['description']}" /></td>
 			</tr>
+			<if 1 < count($sql_root)>
+			<tr>
+				<td class="main_field_name">{$lng['mysql']['mysql_server']}:</td>
+				<td class="main_field_display" nowrap="nowrap">{$sql_root[$result['dbserver']]['caption']}</td>
+			</tr>
+			</if>
 			<tr>
 				<td class="main_field_name">{$lng['changepassword']['new_password_ifnotempty']}:</td>
 				<td class="main_field_display" nowrap="nowrap"><input type="password" name="mysql_password" maxlength="50" /></td>

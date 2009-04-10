@@ -160,13 +160,23 @@ if($page == 'customers'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				$databases = $db->query("SELECT * FROM " . TABLE_PANEL_DATABASES . " WHERE customerid='" . (int)$id . "'");
-				$db_root = new db($sql['host'], $sql['root_user'], $sql['root_password'], '');
+				$databases = $db->query("SELECT * FROM " . TABLE_PANEL_DATABASES . " WHERE customerid='" . (int)$id . "' ORDER BY `dbserver`");
+				$db_root = new db($sql_root[0]['host'], $sql_root[0]['user'], $sql_root[0]['password'], '');
 				unset($db_root->password);
+				$last_dbserver = 0;
 
 				while($row_database = $db->fetch_array($databases))
 				{
-					foreach(explode(',', $settings['system']['mysql_access_host']) as $mysql_access_host)
+					if($last_dbserver != $row_database['dbserver'])
+					{
+						$db_root->query('FLUSH PRIVILEGES;');
+						$db_root->close();
+						$db_root = new db($sql_root[$row_database['dbserver']]['host'], $sql_root[$row_database['dbserver']]['user'], $sql_root[$row_database['dbserver']]['password'], '');
+						unset($db_root->password);
+						$last_dbserver = $row_database['dbserver'];
+					}
+
+					foreach(array_unique(explode(',', $settings['system']['mysql_access_host'])) as $mysql_access_host)
 					{
 						$mysql_access_host = trim($mysql_access_host);
 						$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');

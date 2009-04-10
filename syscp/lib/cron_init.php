@@ -124,7 +124,7 @@ fwrite($debugHandler, 'Database Class has been loaded' . "\n");
 $db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
 
 // If one cronscript needs root, it should say $needrootdb = true before the include
-
+/*
 if(isset($needrootdb)
    && $needrootdb === true)
 {
@@ -134,7 +134,7 @@ if(isset($needrootdb)
 	{
 		/**
 		 * Do not proceed further if no database connection could be established
-		 */
+		 *
 
 		fclose($debugHandler);
 		unlink($lockfile);
@@ -143,7 +143,7 @@ if(isset($needrootdb)
 
 	unset($db_root->password);
 	fwrite($debugHandler, 'Database-rootconnection established' . "\n");
-}
+}*/
 
 unset($sql['root_user'], $sql['root_password']);
 
@@ -172,8 +172,8 @@ unset($row);
 unset($result);
 fwrite($debugHandler, 'SysCP Settings has been loaded from the database' . "\n");
 
-if(!isset($settings['panel']['version'])
-   || $settings['panel']['version'] != $version)
+if(!isset($settings['system']['dbversion'])
+   || $settings['system']['dbversion'] != $dbversion)
 {
 	/**
 	 * Do not proceed further if the Database version is not the same as the script version
