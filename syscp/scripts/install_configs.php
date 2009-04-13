@@ -12,7 +12,7 @@
  * @author     Florian Lippert <flo@syscp.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    System
- * @version    $Id: cron_tasks.php 2332 2008-11-09 17:53:18Z flo $
+ * @version    $Id$
  */
 
 /**
