@@ -767,7 +767,7 @@ $lng['logger']['truncate'] = 'Empty log';
 // ADDED IN 1.2.19-svn7
 
 $lng['serversettings']['ssl']['use_ssl'] = 'Use SSL';
-$lng['serversettings']['ssl']['ssl_cert_file'] = 'Where is the Certificate located';
+$lng['serversettings']['ssl']['ssl_cert_file'] = 'Path to the SSL certificate';
 $lng['serversettings']['ssl']['openssl_cnf'] = 'Defaults for creating the Cert file';
 $lng['panel']['reseller'] = 'reseller';
 $lng['panel']['admin'] = 'admin';
@@ -793,7 +793,7 @@ $lng['admin']['sslsettings'] = 'SSL settings';
 $lng['cronjobs']['notyetrun'] = 'Not yet run';
 $lng['install']['servername_should_be_fqdn'] = 'The servername should be a FQDN and not an IP address';
 $lng['serversettings']['default_vhostconf']['title'] = 'Default vhost-settings';
-$lng['serversettings']['default_vhostconf']['description'] = 'The content of this field will be included into every domain vhost container directly. Attention: The code won\'t be checked for any errors. If it contains errors, apache might ot start again!';
+$lng['serversettings']['default_vhostconf']['description'] = 'The content of this field will be included into the domain vhost container directly. Attention: The code won\'t be checked for any errors. If it contains errors, apache might ot start again!';
 $lng['error']['invalidip'] = 'Invalid IP address: %s';
 $lng['serversettings']['decimal_places'] = 'Number of decimal places in traffic/webspace output';
 
@@ -1383,5 +1383,16 @@ $lng['admin']['contributors'] = 'All these people contributed to the SysCP Proje
 // ADDED IN 1.4.2.1-1
 
 $lng['mysql']['mysql_server'] = 'MySQL-Server';
+
+// ADDED IN 1.4.2.1-2
+
+$lng['admin']['ipsandports']['webserverdefaultconfig'] = 'Webserver Default Config';
+$lng['admin']['ipsandports']['webserverdomainconfig'] = 'Webserver Domain Config';
+$lng['admin']['ipsandports']['webserverssldomainconfig'] = 'Webserver SSL Config';
+$lng['admin']['ipsandports']['ssl_key_file'] = 'Path to the SSL Keyfile';
+$lng['admin']['ipsandports']['ssl_ca_file'] = 'Path to the SSL CA certificate';
+$lng['admin']['ipsandports']['default_vhostconf_domain'] = 'Default vhost-settings for every domain container';
+$lng['serversettings']['ssl']['ssl_key_file'] = 'Path to the SSL Keyfile';
+$lng['serversettings']['ssl']['ssl_ca_file'] = 'Path to the SSL CA certificate';
 
 ?>

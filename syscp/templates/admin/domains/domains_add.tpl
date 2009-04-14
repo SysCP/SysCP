@@ -94,7 +94,7 @@ $header
 			</tr>
 			<if $userinfo['change_serversettings'] == '1'>
 			<tr>
-				<td class="main_field_name" valign="top">{$lng['admin']['ownvhostsettings']}:</td>
+				<td class="main_field_name" valign="top">{$lng['admin']['ownvhostsettings']}:<br /><font size="1">{$lng['serversettings']['default_vhostconf']['description']}</font></td>
 				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_noborder" rows="12" cols="60" name="specialsettings"></textarea></td>
 			</tr>
 			</if>

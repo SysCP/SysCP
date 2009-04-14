@@ -76,9 +76,6 @@ if(isset($settings['panel']['version'])
 }
 // End legacy stuff
 
-echo $settings['system']['dbversion'];
-echo $dbversion;
-
 if(!isset($settings['system']['dbversion']))
 {
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` SET `settinggroup` = \'system\', `varname` = \'dbversion\', `value` = \'0\'');
@@ -88,9 +85,9 @@ if(!isset($settings['system']['dbversion']))
 if((int)$settings['system']['dbversion'] < (int)$dbversion)
 {
 	// Update
-	for($i = (int)$settings['system']['dbversion'] + 1; $i <= (int)$dbversion; $i++)
+	for($update_version = (int)$settings['system']['dbversion'] + 1; $update_version <= (int)$dbversion; $update_version++)
 	{
-		$upfile_sql = './' . $i . '/up.sql';
+		$upfile_sql = './' . $update_version . '/up.sql';
 		if(file_exists($upfile_sql) && is_readable($upfile_sql))
 		{
 			$sql_query = @file_get_contents($upfile_sql, 'r');
@@ -104,22 +101,22 @@ if((int)$settings['system']['dbversion'] < (int)$dbversion)
 				}
 			}
 		}
-		$upfile_php = './' . $i . '/up.php';
+		$upfile_php = './' . $update_version . '/up.php';
 		if(file_exists($upfile_php) && is_readable($upfile_php))
 		{
 			require_once($upfile_php);
 		}
-		$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'' . $i . '\' WHERE `settinggroup` = \'system\' AND `varname` = \'dbversion\'');
-		$settings['system']['dbversion'] = $i;
-		$updatelog->logAction(ADM_ACTION, LOG_WARNING, 'Updating database to version ' . $i);
+		$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'' . $update_version . '\' WHERE `settinggroup` = \'system\' AND `varname` = \'dbversion\'');
+		$settings['system']['dbversion'] = $update_version;
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, 'Updating database to version ' . $update_version);
 	}
 }
 elseif((int)$settings['system']['dbversion'] > (int)$dbversion)
 {
 	// downgrade
-	for($i = (int)$settings['system']['dbversion']; $i > (int)$dbversion; $i--)
+	for($update_version = (int)$settings['system']['dbversion']; $update_version > (int)$dbversion; $update_version--)
 	{
-		$downfile_sql = './' . $i . '/down.sql';
+		$downfile_sql = './' . $update_version . '/down.sql';
 		if(file_exists($downfile_sql) && is_readable($downfile_sql))
 		{
 			$sql_query = @file_get_contents($downfile_sql, 'r');
@@ -133,14 +130,14 @@ elseif((int)$settings['system']['dbversion'] > (int)$dbversion)
 				}
 			}
 		}
-		$downfile_php = './' . $i . '/down.php';
+		$downfile_php = './' . $update_version . '/down.php';
 		if(file_exists($downfile_php) && is_readable($downfile_php))
 		{
 			require_once($downfile_php);
 		}
-		$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'' . ( $i -1 ) . '\' WHERE `settinggroup` = \'system\' AND `varname` = \'dbversion\'');
-		$settings['system']['dbversion'] = ( $i -1 );
-		$updatelog->logAction(ADM_ACTION, LOG_WARNING, 'Downgrading database to version ' . ( $i -1 ));
+		$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'' . ( $update_version -1 ) . '\' WHERE `settinggroup` = \'system\' AND `varname` = \'dbversion\'');
+		$settings['system']['dbversion'] = ( $update_version -1 );
+		$updatelog->logAction(ADM_ACTION, LOG_WARNING, 'Downgrading database to version ' . ( $update_version -1 ));
 	}
 }
 

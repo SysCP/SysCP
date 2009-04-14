@@ -2,6 +2,7 @@
 
 /**
  * This file is part of the SysCP project.
+ * 
  * Copyright (c) 2003-2009 the SysCP Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
@@ -57,7 +58,7 @@ class apache
 
 	public function createIpPort()
 	{
-		$result_ipsandports = $this->db->query("SELECT `ip`, `port`, `listen_statement`, `namevirtualhost_statement`," . " `vhostcontainer`, `vhostcontainer_servername_statement`," . " `specialsettings`, `ssl`, `ssl_cert`" . " FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
+		$result_ipsandports = $this->db->query("SELECT * FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC");
 
 		while($row_ipsandports = $this->db->fetch_array($result_ipsandports))
 		{
@@ -105,10 +106,38 @@ class apache
 					$this->virtualhosts_data[$vhosts_filename].= $row_ipsandports['specialsettings'] . "\n";
 				}
 
-				if($row_ipsandports['ssl'] == '1')
+				if($row_ipsandports['ssl'] == '1' && $this->settings['system']['use_ssl'] == '1')
 				{
-					$this->virtualhosts_data[$vhosts_filename].= ' SSLEngine On' . "\n";
-					$this->virtualhosts_data[$vhosts_filename].= ' SSLCertificateFile ' . $row_ipsandports['ssl_cert'] . "\n";
+					if($row_ipsandports['ssl_cert_file'] == '')
+					{
+						$row_ipsandports['ssl_cert_file'] = $this->settings['system']['ssl_cert_file'];
+					}
+
+					if($row_ipsandports['ssl_key_file'] == '')
+					{
+						$row_ipsandports['ssl_key_file'] = $this->settings['system']['ssl_key_file'];
+					}
+
+					if($row_ipsandports['ssl_ca_file'] == '')
+					{
+						$row_ipsandports['ssl_ca_file'] = $this->settings['system']['ssl_ca_file'];
+					}
+
+					if($row_ipsandports['ssl_cert_file'] != '')
+					{
+						$this->virtualhosts_data[$vhosts_filename].= ' SSLEngine On' . "\n";
+						$this->virtualhosts_data[$vhosts_filename].= ' SSLCertificateFile ' . makeCorrectFile($row_ipsandports['ssl_cert_file']) . "\n";
+	
+						if($row_ipsandports['ssl_key_file'] != '')
+						{
+							$this->virtualhosts_data[$vhosts_filename].= ' SSLCertificateKeyFile ' . makeCorrectFile($row_ipsandports['ssl_key_file']) . "\n";
+						}
+	
+						if($row_ipsandports['ssl_ca_file'] != '')
+						{
+							$this->virtualhosts_data[$vhosts_filename].= ' SSLCACertificateFile ' . makeCorrectFile($row_ipsandports['ssl_ca_file']) . "\n";
+						}
+					}
 				}
 
 				$this->virtualhosts_data[$vhosts_filename].= '</VirtualHost>' . "\n";
@@ -428,7 +457,9 @@ class apache
 		$ipandport = $this->db->query_first($query);
 		$domain['ip'] = $ipandport['ip'];
 		$domain['port'] = $ipandport['port'];
-		$domain['ssl_cert'] = $ipandport['ssl_cert'];
+		$domain['ssl_cert_file'] = $ipandport['ssl_cert_file'];
+		$domain['ssl_key_file'] = $ipandport['ssl_key_file'];
+		$domain['ssl_ca_file'] = $ipandport['ssl_ca_file'];
 
 		if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 		{
@@ -458,10 +489,38 @@ class apache
 		{
 			if($ssl_vhost === true
 			   && $domain['ssl'] == '1'
-			   && $domain['ssl_cert'] != '')
+			   && $this->settings['system']['use_ssl'] == '1')
 			{
-				$vhost_content.= '  SSLEngine On' . "\n";
-				$vhost_content.= '  SSLCertificateFile ' . $domain['ssl_cert'] . "\n";
+				if($domain['ssl_cert_file'] == '')
+				{
+					$domain['ssl_cert_file'] = $this->settings['system']['ssl_cert_file'];
+				}
+
+				if($domain['ssl_key_file'] == '')
+				{
+					$domain['ssl_key_file'] = $this->settings['system']['ssl_key_file'];
+				}
+
+				if($domain['ssl_ca_file'] == '')
+				{
+					$domain['ssl_ca_file'] = $this->settings['system']['ssl_ca_file'];
+				}
+
+				if($domain['ssl_cert_file'] != '')
+				{
+					$vhost_content.= '  SSLEngine On' . "\n";
+					$vhost_content.= '  SSLCertificateFile ' . makeCorrectFile($domain['ssl_cert_file']) . "\n";
+
+					if($domain['ssl_key_file'] != '')
+					{
+						$vhost_content.= '  SSLCertificateKeyFile ' . makeCorrectFile($domain['ssl_key_file']) . "\n";
+					}
+
+					if($domain['ssl_ca_file'] != '')
+					{
+						$vhost_content.= '  SSLCACertificateFile ' . makeCorrectFile($domain['ssl_ca_file']) . "\n";
+					}
+				}
 			}
 
 			mkDirWithCorrectOwnership($domain['customerroot'], $domain['documentroot'], $domain['guid'], $domain['guid']);
@@ -474,6 +533,11 @@ class apache
 		if($domain['specialsettings'] != '')
 		{
 			$vhost_content.= $domain['specialsettings'] . "\n";
+		}
+
+		if($ipandport['default_vhostconf_domain'] != '')
+		{
+			$vhost_content.= $ipandport['default_vhostconf_domain'] . "\n";
 		}
 
 		if($this->settings['system']['default_vhostconf'] != '')

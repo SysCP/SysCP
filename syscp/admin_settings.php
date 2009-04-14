@@ -1042,10 +1042,10 @@ if(($page == 'settings' || $page == 'overview')
 		   || $settings_all
 		   || $only_enabledisable)
 		{
-			if($_POST['use_ssl'] != $settings['system']['use_ssl']
-			   && isset($_POST['use_ssl']))
+			if($_POST['system_use_ssl'] != $settings['system']['use_ssl']
+			   && isset($_POST['system_use_ssl']))
 			{
-				$value = ($_POST['use_ssl'] == '1' ? '1' : '0');
+				$value = ($_POST['system_use_ssl'] == '1' ? '1' : '0');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $value . "' WHERE `settinggroup`='system' AND `varname`='use_ssl'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed system_use_ssl from '" . $settings['system']['use_ssl'] . "' to '" . $value . "'");
 				$settings['system']['use_ssl'] = $value;
@@ -1053,18 +1053,46 @@ if(($page == 'settings' || $page == 'overview')
 
 			if(!$only_enabledisable)
 			{
-				if($_POST['ssl_cert_file'] != $settings['system']['ssl_cert_file']
-				   && isset($_POST['ssl_cert_file']))
+				if($_POST['system_ssl_cert_file'] != $settings['system']['ssl_cert_file']
+				   && isset($_POST['system_ssl_cert_file']))
 				{
-					$value = validate($_POST['ssl_cert_file'], 'ssl_cert_file');
+					$value = validate($_POST['system_ssl_cert_file'], 'ssl_cert_file');
+					if($value != '')
+					{
+						$value = makeCorrectFile($value);
+					}
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ssl_cert_file'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_ssl_cert_file from '" . $settings['system']['ssl_cert_file'] . "' to '" . $value . "'");
 				}
 
-				if($_POST['openssl_cnf'] != $settings['system']['openssl_cnf']
-				   && isset($_POST['openssl_cnf']))
+				if($_POST['system_ssl_key_file'] != $settings['system']['ssl_key_file']
+				   && isset($_POST['system_ssl_key_file']))
 				{
-					$value = $_POST['openssl_cnf'];
+					$value = validate($_POST['system_ssl_cert_file'], 'ssl_key_file');
+					if($value != '')
+					{
+						$value = makeCorrectFile($value);
+					}
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ssl_key_file'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_ssl_key_file from '" . $settings['system']['ssl_key_file'] . "' to '" . $value . "'");
+				}
+
+				if($_POST['system_ssl_ca_file'] != $settings['system']['ssl_ca_file']
+				   && isset($_POST['system_ssl_ca_file']))
+				{
+					$value = validate($_POST['system_ssl_cert_file'], 'ssl_ca_file');
+					if($value != '')
+					{
+						$value = makeCorrectFile($value);
+					}
+					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='ssl_ca_file'");
+					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_ssl_ca_file from '" . $settings['system']['ssl_ca_file'] . "' to '" . $value . "'");
+				}
+
+				if($_POST['system_openssl_cnf'] != $settings['system']['openssl_cnf']
+				   && isset($_POST['system_openssl_cnf']))
+				{
+					$default_vhostconf_domain = validate(str_replace("\r\n", "\n", $_POST['system_openssl_cnf']), 'system_openssl_cnf', '/^[^\0]*$/');
 					$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='system' AND `varname`='openssl_cnf'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "changed system_openssl_cnf from '" . $settings['system']['openssl_cnf'] . "' to '" . $value . "'");
 				}
@@ -1441,7 +1469,7 @@ if(($page == 'settings' || $page == 'overview')
 		$no_robots = makeyesno('panel_no_robots', '1', '0', $settings['panel']['no_robots']);
 		$loggingenabled = makeyesno('loggingenabled', '1', '0', $settings['logger']['enabled']);
 		$logginglogcron = makeyesno('logger_log_cron', '1', '0', $settings['logger']['log_cron']);
-		$ssl_enabled = makeyesno('use_ssl', '1', '0', $settings['system']['use_ssl']);
+		$ssl_enabled = makeyesno('system_use_ssl', '1', '0', $settings['system']['use_ssl']);
 		$webserver_selected = makeyesno('webserver', '1', '0', $settings['system']['webserver']);
 		$dkimenabled = makeyesno('use_dkim', '1', '0', $settings['dkim']['use_dkim']);
 		$system_awstats_enabled = makeyesno('system_awstats_enabled', '1', '0', $settings['system']['awstats_enabled']);

@@ -12,11 +12,19 @@
 			</tr>
 			<tr>
 				<td class="main_field_name">{$lng['serversettings']['ssl']['ssl_cert_file']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="ssl_cert_file" value="{$settings['system']['ssl_cert_file']}" /></td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_ssl_cert_file" value="{$settings['system']['ssl_cert_file']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['serversettings']['ssl']['ssl_key_file']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_ssl_key_file" value="{$settings['system']['ssl_key_file']}" /></td>
+			</tr>
+			<tr>
+				<td class="main_field_name">{$lng['serversettings']['ssl']['ssl_ca_file']}:</td>
+				<td class="main_field_display" nowrap="nowrap"><input type="text" class="text" name="system_ssl_ca_file" value="{$settings['system']['ssl_ca_file']}" /></td>
 			</tr>
 			<tr>
 				<td class="main_field_name" valign="top">{$lng['serversettings']['ssl']['openssl_cnf']}:</td>
-				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="40" name="openssl_cnf">{$settings['system']['openssl_cnf']}</textarea></td>
+				<td class="main_field_display" nowrap="nowrap"><textarea class="textarea_border" rows="12" cols="40" name="system_openssl_cnf">{$settings['system']['openssl_cnf']}</textarea></td>
 			</tr>
 			<tr>
 				<td class="maintitle_apply_right" nowrap="nowrap" colspan="2">

@@ -423,7 +423,10 @@ CREATE TABLE `panel_ipsandports` (
   `vhostcontainer_servername_statement` tinyint(1) NOT NULL default '0',
   `specialsettings` text NOT NULL,
   `ssl` tinyint(4) NOT NULL default '0',
-  `ssl_cert` tinytext,
+  `ssl_cert_file` varchar(255) NOT NULL,
+  `ssl_key_file` varchar(255) NOT NULL,
+  `ssl_ca_file` varchar(255) NOT NULL,
+  `default_vhostconf_domain` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM ;
 
@@ -641,6 +644,8 @@ INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) V
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (116, 'panel', 'allow_domain_change_admin', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (117, 'panel', 'allow_domain_change_customer', '0');
 INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (118, 'system', 'mod_fcgid_maxrequests', '250');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (119, 'system','ssl_key_file','/etc/apache2/apache2.key');
+INSERT INTO `panel_settings` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (120, 'system','ssl_ca_file','');
 
 # --------------------------------------------------------
 

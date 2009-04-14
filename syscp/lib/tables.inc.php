@@ -92,6 +92,6 @@ define('PACKAGE_ENABLED', 2);
 // VERSION INFO
 
 $version = '1.4.2.1';
-$dbversion = '1';
+$dbversion = '2';
 
 ?>
