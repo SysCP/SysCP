@@ -203,9 +203,9 @@ elseif($page == 'domains')
 			{
 				$subdomain = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', validate($_POST['subdomain'], 'subdomain', '', 'subdomainiswrong')));
 				$domain = $idna_convert->encode($_POST['domain']);
-				$domain_check = $db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `ipandport`, `isemaildomain`, `subcanemaildomain`, `openbasedir`, `safemode`, `speciallogfile`, `specialsettings` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($domain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `email_only`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
+				$domain_check = $db->query_first("SELECT * FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($domain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `parentdomainid`='0' AND `email_only`='0' AND `iswildcarddomain`='0' AND `caneditdomain`='1' ");
 				$completedomain = $subdomain . '.' . $domain;
-				$completedomain_check = $db->query_first("SELECT `id`, `customerid`, `domain`, `documentroot`, `isemaildomain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($completedomain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `email_only`='0' AND `caneditdomain` = '1'");
+				$completedomain_check = $db->query_first("SELECT * FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($completedomain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "' AND `email_only`='0' AND `caneditdomain` = '1'");
 				$aliasdomain = intval($_POST['alias']);
 				$aliasdomain_check = array(
 					'id' => 0
@@ -262,7 +262,7 @@ elseif($page == 'domains')
 				{
 					standard_error(array('stringisempty', 'domainname'));
 				}
-				elseif($subdomain == 'www')
+				elseif($subdomain == 'www' && $domain_check['wwwserveralias'] == '1')
 				{
 					standard_error('wwwnotallowed');
 				}
