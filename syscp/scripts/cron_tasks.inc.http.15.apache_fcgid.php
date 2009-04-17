@@ -179,7 +179,7 @@ class apache_fcgid extends apache
 					$openbasedir[$number] = makeCorrectDir($path);
 				}
 
-				$openbasedir = '"' . implode(':', $openbasedir) . '"';
+				$openbasedir = implode(':', $openbasedir);
 			}
 			else
 			{

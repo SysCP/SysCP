@@ -480,8 +480,7 @@ class apache
 			$domain['documentroot'] = 'https://' . $domain['domain'] . '/';
 		}
 
-		if(preg_match('/^https?\:\/\//', $domain['documentroot'])
-		   && $ssl_vhost == false)
+		if(preg_match('/^https?\:\/\//', $domain['documentroot']))
 		{
 			$vhost_content.= '  Redirect / ' . $domain['documentroot'] . "\n";
 		}
