@@ -1395,4 +1395,6 @@ $lng['admin']['ipsandports']['default_vhostconf_domain'] = 'Default vhost-settin
 $lng['serversettings']['ssl']['ssl_key_file'] = 'Path to the SSL Keyfile';
 $lng['serversettings']['ssl']['ssl_ca_file'] = 'Path to the SSL CA certificate';
 
+$lng['error']['usernamealreadyexists'] = 'The username %s already exists.';
+
 ?>

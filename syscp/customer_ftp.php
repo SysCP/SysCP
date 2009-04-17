@@ -70,6 +70,8 @@ elseif($page == 'accounts')
 					$row['documentroot'] = $row['homedir'];
 				}
 
+				$row['documentroot'] = makeCorrectDir($row['documentroot']);
+				
 				$row = htmlentities_array($row);
 				eval("\$accounts.=\"" . getTemplate("ftp/accounts_account") . "\";");
 				$count++;
@@ -129,25 +131,36 @@ elseif($page == 'accounts')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				$path = validate($_POST['path'], 'path');
+				$password = validate($_POST['ftp_password'], 'password');
+
 				if($settings['customer']['ftpatdomain'] == '1')
 				{
 					$ftpusername = validate($_POST['ftp_username'], 'username', '/^[a-zA-Z0-9][a-zA-Z0-9\-_]+\$?$/');
+					if($ftpusername == '')
+					{
+						standard_error(array('stringisempty', 'username'));
+					}
 					$ftpdomain = $idna_convert->encode(validate($_POST['ftp_domain'], 'domain'));
 					$ftpdomain_check = $db->query_first("SELECT `id`, `domain`, `customerid` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain`='" . $db->escape($ftpdomain) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "'");
+					if($ftpdomain_check['domain'] != $ftpdomain)
+					{
+						standard_error('maindomainnonexist', $domain);
+					}
+					$username = $ftpusername . "@" . $ftpdomain;
 				}
-
-				$path = makeCorrectDir(validate($_POST['path'], 'path'));
-				$userpath = $path;
-				$path = $userinfo['documentroot'] . $path;
-				$path_check = $db->query_first("SELECT `id`, `username`, `homedir` FROM `" . TABLE_FTP_USERS . "` WHERE `homedir`='" . $db->escape($path) . "' AND `customerid`='" . (int)$userinfo['customerid'] . "'");
-				$password = validate($_POST['ftp_password'], 'password');
-
-				if(!$_POST['path'])
+				else
 				{
-					standard_error('invalidpath');
+					$username = $userinfo['loginname'] . $settings['customer']['ftpprefix'] . (intval($userinfo['ftp_lastaccountnumber']) + 1);
 				}
-
-				if($password == '')
+				
+				$username_check = $db->query_first('SELECT * FROM `' . TABLE_FTP_USERS .'` WHERE `username` = \'' . $db->escape($username) . '\'');
+				
+				if(!empty($username_check) && $username_check['username'] = $username)
+				{
+					standard_error('usernamealreadyexists', $username);
+				}
+				elseif($password == '')
 				{
 					standard_error(array('stringisempty', 'mypassword'));
 				}
@@ -155,27 +168,11 @@ elseif($page == 'accounts')
 				{
 					standard_error('patherror');
 				}
-				elseif($settings['customer']['ftpatdomain'] == '1'
-				       && $ftpusername == '')
-				{
-					standard_error(array('stringisempty', 'username'));
-				}
-				elseif($settings['customer']['ftpatdomain'] == '1'
-				       && $ftpdomain_check['domain'] != $ftpdomain)
-				{
-					standard_error('maindomainnonexist', $domain);
-				}
 				else
 				{
-					if($settings['customer']['ftpatdomain'] == '1')
-					{
-						$username = $ftpusername . "@" . $ftpdomain;
-					}
-					else
-					{
-						$username = $userinfo['loginname'] . $settings['customer']['ftpprefix'] . (intval($userinfo['ftp_lastaccountnumber']) + 1);
-					}
-
+					$userpath = makeCorrectDir($path);
+					$path = makeCorrectDir($userinfo['documentroot'] . '/' . $path);
+					
 					$db->query("INSERT INTO `" . TABLE_FTP_USERS . "` (`customerid`, `username`, `password`, `homedir`, `login_enabled`, `uid`, `gid`) VALUES ('" . (int)$userinfo['customerid'] . "', '" . $db->escape($username) . "', ENCRYPT('" . $db->escape($password) . "'), '" . $db->escape($path) . "', 'y', '" . (int)$userinfo['guid'] . "', '" . (int)$userinfo['guid'] . "')");
 					$db->query("UPDATE `" . TABLE_FTP_GROUPS . "` SET `members`=CONCAT_WS(',',`members`,'" . $db->escape($username) . "') WHERE `customerid`='" . $userinfo['customerid'] . "' AND `gid`='" . (int)$userinfo['guid'] . "'");
 
@@ -196,6 +193,8 @@ elseif($page == 'accounts')
 
 				if($settings['customer']['ftpatdomain'] == '1')
 				{
+					$domains = '';
+
 					$result_domains = $db->query("SELECT `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
 
 					while($row_domain = $db->fetch_array($result_domains))
