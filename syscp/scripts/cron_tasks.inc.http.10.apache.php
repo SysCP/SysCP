@@ -477,7 +477,7 @@ class apache
 		   && $domain['ssl'] == '1'
 		   && $domain['ssl_redirect'] == '1')
 		{
-			$domain['documentroot'] = 'https://' . $domain['domain'];
+			$domain['documentroot'] = 'https://' . $domain['domain'] . '/';
 		}
 
 		if(preg_match('/^https?\:\/\//', $domain['documentroot'])
