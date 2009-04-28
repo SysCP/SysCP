@@ -108,6 +108,14 @@ while($fName = readdir($lockDirHandle))
 require ($pathtophpfiles . '/lib/userdata.inc.php');
 fwrite($debugHandler, 'Userdatas included' . "\n");
 
+// Legacy sql-root-information
+if(isset($sql['root_user']) && isset($sql['root_password']) && (!isset($sql_root) || !is_array($sql_root)))
+{
+	$sql_root = array(0 => array('caption' => 'Default', 'host' => $sql['host'], 'user' => $sql['root_user'], 'password' => $sql['root_password']));
+	unset($sql['root_user']);
+	unset($sql['root_password']);
+}
+
 /**
  * Includes the MySQL-Tabledefinitions etc.
  */
