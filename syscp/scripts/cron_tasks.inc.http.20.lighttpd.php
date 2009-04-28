@@ -59,7 +59,7 @@ class lighttpd
 
 	public function createIpPort()
 	{
-		$query = "SELECT `id`, `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, " . " `vhostcontainer_servername_statement`, `specialsettings`, `ssl`, `ssl_cert` " . " FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC";
+		$query = "SELECT `id`, `ip`, `port`, `listen_statement`, `namevirtualhost_statement`, `vhostcontainer`, " . " `vhostcontainer_servername_statement`, `specialsettings`, `ssl`, `ssl_cert_file` " . " FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC";
 		$result_ipsandports = $this->db->query($query);
 
 		while($row_ipsandports = $this->db->fetch_array($result_ipsandports))
@@ -89,7 +89,7 @@ class lighttpd
 			if($row_ipsandports['ssl'] == '1')
 			{
 				$this->lighttpd_data[$vhost_filename].= 'ssl.engine = "enable"' . "\n";
-				$this->lighttpd_data[$vhost_filename].= 'ssl.pemfile = "' . $row_ipsandports['ssl_cert'] . '"' . "\n";
+				$this->lighttpd_data[$vhost_filename].= 'ssl.pemfile = "' . $row_ipsandports['ssl_cert_file'] . '"' . "\n";
 			}
 
 			$this->createLighttpdHosts($row_ipsandports['ip'], $row_ipsandports['port'], $row_ipsandports['ssl'], $vhost_filename);
@@ -181,7 +181,7 @@ class lighttpd
 			$ipandport = $this->db->query_first($query);
 			$domain['ip'] = $ipandport['ip'];
 			$domain['port'] = $ipandport['port'];
-			$domain['ssl_cert'] = $ipandport['ssl_cert'];
+			$domain['ssl_cert_file'] = $ipandport['ssl_cert_file'];
 
 			if(!empty($this->lighttpd_data[$vhost_filename]))
 			{
@@ -220,7 +220,7 @@ class lighttpd
 		$ipandport = $this->db->query_first($query);
 		$domain['ip'] = $ipandport['ip'];
 		$domain['port'] = $ipandport['port'];
-		$domain['ssl_cert'] = $ipandport['ssl_cert'];
+		$domain['ssl_cert_file'] = $ipandport['ssl_cert_file'];
 
 		if(filter_var($domain['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 		{
