@@ -147,6 +147,13 @@ if($db->num_rows($result) > 0)
 					{
 						if($match[1] == 'Yes')$spam = true;
 					}
+					
+					//check for precedence header
+					if(preg_match("/^Precedence: (bulk|list|junk)(.*)$/", $line, $match))
+					{
+						// use the spam flag to skip reply
+						$spam = true;
+					}
 				}
 
 				//skip mail when marked as spam
@@ -188,6 +195,7 @@ if($db->num_rows($result) > 0)
 				$mail->Subject = $row['subject'];
 				$mail->Body = html_entity_decode($message);
 				$mail->AddAddress($from, $from);
+				$mail->AddCustomHeader('Precedence: bulk');
 
 				if(!$mail->Send())
 				{
