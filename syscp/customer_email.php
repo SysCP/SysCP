@@ -108,6 +108,7 @@ elseif($page == 'emails')
 					$row['email'] = $idna_convert->decode($row['email']);
 					$row['email_full'] = $idna_convert->decode($row['email_full']);
 					$row['destination'] = explode(' ', $row['destination']);
+					uasort($row['destination'], 'strcasecmp');
 
 					while(list($dest_id, $destination) = each($row['destination']))
 					{
@@ -285,13 +286,12 @@ elseif($page == 'emails')
 			$result['email'] = $idna_convert->decode($result['email']);
 			$result['email_full'] = $idna_convert->decode($result['email_full']);
 			$result['destination'] = explode(' ', $result['destination']);
+			uasort($result['destination'], 'strcasecmp');
 			$forwarders = '';
-			$forwarderid = 0;
 			$forwarders_count = 0;
 
 			while(list($dest_id, $destination) = each($result['destination']))
 			{
-				$forwarderid++;
 				$destination = $idna_convert->decode($destination);
 
 				if($destination != $result['email_full']
@@ -684,21 +684,17 @@ elseif($page == 'forwarders')
 				$forwarderid = 0;
 			}
 
-			$result['destination_array'] = explode(' ', $result['destination']);
+			$result['destination'] = explode(' ', $result['destination']);
 
-			if(isset($result['destination_array'][$forwarderid - 1]))
+			if(isset($result['destination'][$forwarderid]) && $result['email'] != $result['destination'][$forwarderid])
 			{
-				$forwarder = $result['destination_array'][$forwarderid - 1];
-
-				if($forwarder == $result['email'])
-				{
-					$forwarder = $result['destination_array'][$forwarderid];
-				}
+				$forwarder = $result['destination'][$forwarderid];
 
 				if(isset($_POST['send'])
 				   && $_POST['send'] == 'send')
 				{
-					$result['destination'] = str_replace($forwarder, '', $result['destination']);
+					unset($result['destination'][$forwarderid]);
+					$result['destination'] = implode(' ', $result['destination']);
 					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `destination` = '" . $db->escape(makeCorrectDestination($result['destination'])) . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$id . "'");
 					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `email_forwarders_used` = `email_forwarders_used` - 1 WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
 					$log->logAction(USR_ACTION, LOG_NOTICE, "deleted email forwarder for '" . $result['email_full'] . "'");
