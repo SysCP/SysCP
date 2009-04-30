@@ -33,14 +33,14 @@ acl_check_rcpt:
 
   deny
     message = sender envelope address $sender_address is locally blacklisted here. If you think this is wrong, get in touch with postmaster
-    !acl = acl_whitelist_local_deny
+    !acl = acl_local_deny_exceptions
     senders = ${if exists{CONFDIR/local_sender_blacklist}\
                    {CONFDIR/local_sender_blacklist}\
                    {}}
 
   deny
     message = sender IP address $sender_host_address is locally blacklisted here. If you think this is wrong, get in touch with postmaster
-    !acl = acl_whitelist_local_deny
+    !acl = acl_local_deny_exceptions
     hosts = ${if exists{CONFDIR/local_host_blacklist}\
                  {CONFDIR/local_host_blacklist}\
                  {}}
@@ -48,19 +48,19 @@ acl_check_rcpt:
   .ifdef CHECK_RCPT_VERIFY_SENDER
   deny
     message = Sender verification failed
-    !acl = acl_whitelist_local_deny
+    !acl = acl_local_deny_exceptions
     !verify = sender
   .endif
 
   deny
-    !acl = acl_whitelist_local_deny
+    !acl = acl_local_deny_exceptions
     senders = ${if exists{CONFDIR/local_sender_callout}\
                          {CONFDIR/local_sender_callout}\
                    {}}
     !verify = sender/callout
 
   deny
-    !acl = acl_whitelist_local_deny
+    !acl = acl_local_deny_exceptions
     recipients = ${if exists{CONFDIR/local_rcpt_callout}\
                             {CONFDIR/local_rcpt_callout}\
                       {}}
