@@ -410,7 +410,7 @@ if($page == 'customers'
 					$bankaccount_bank = validate($_POST['bankaccount_bank'], html_entity_decode($lng['customer']['bankaccount_bank']));
 					$service_active = intval($_POST['service_active']);
 					$interval_payment = intval($_POST['interval_payment']);
-					$additional_service_description = validate($_POST['additional_service_description'], $lng['customer']['additional_service_description']);
+					$additional_service_description = validate($_POST['additional_service_description'], html_entity_decode($lng['customer']['additional_service_description']));
 
 					if(isset($_POST['taxclass'])
 					   && intval($_POST['taxclass']) != 0
@@ -918,7 +918,7 @@ if($page == 'customers'
 					$bankaccount_bank = validate($_POST['bankaccount_bank'], html_entity_decode($lng['customer']['bankaccount_bank']));
 					$service_active = intval($_POST['service_active']);
 					$interval_payment = intval($_POST['interval_payment']);
-					$additional_service_description = validate($_POST['additional_service_description'], $lng['customer']['additional_service_description']);
+					$additional_service_description = validate($_POST['additional_service_description'], html_entity_decode($lng['customer']['additional_service_description']));
 				}
 				else
 				{

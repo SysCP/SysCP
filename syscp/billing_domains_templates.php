@@ -78,7 +78,7 @@ if($userinfo['customers_see_all'] == '1')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			$tld = validate($_POST['tld'], $lng['domains']['topleveldomain']);
+			$tld = validate($_POST['tld'], html_entity_decode($lng['domains']['topleveldomain']));
 
 			if($tld == '')
 			{
@@ -86,8 +86,8 @@ if($userinfo['customers_see_all'] == '1')
 				exit;
 			}
 
-			$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
-			$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+			$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+			$valid_to = validate($_POST['valid_to'], html_entity_decode($lng['service']['valid_to']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 			if(isset($taxclasses[$_POST['taxclass']]))
 			{
@@ -154,8 +154,8 @@ if($userinfo['customers_see_all'] == '1')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
-				$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+				$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+				$valid_to = validate($_POST['valid_to'], html_entity_decode($lng['service']['valid_to']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 				if(isset($taxclasses[$_POST['taxclass']]))
 				{

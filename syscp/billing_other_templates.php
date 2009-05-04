@@ -79,7 +79,7 @@ if($userinfo['customers_see_all'] == '1')
 		if(isset($_POST['send'])
 		   && $_POST['send'] == 'send')
 		{
-			$caption_setup = validate($_POST['caption_setup'], $lng['billing']['caption_setup']);
+			$caption_setup = validate($_POST['caption_setup'], html_entity_decode($lng['billing']['caption_setup']));
 
 			if($caption_setup == '')
 			{
@@ -87,15 +87,15 @@ if($userinfo['customers_see_all'] == '1')
 				exit;
 			}
 
-			$caption_interval = validate($_POST['caption_interval'], $lng['billing']['caption_interval']);
+			$caption_interval = validate($_POST['caption_interval'], html_entity_decode($lng['billing']['caption_interval']));
 
 			if($caption_interval == '')
 			{
 				$caption_interval = $caption_setup;
 			}
 
-			$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
-			$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+			$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+			$valid_to = validate($_POST['valid_to'], html_entity_decode($lng['service']['valid_to']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 			if(isset($_POST['taxclass'])
 			   && intval($_POST['taxclass']) != 0
@@ -162,8 +162,8 @@ if($userinfo['customers_see_all'] == '1')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				$valid_from = validate($_POST['valid_from'], $lng['service']['valid_from'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
-				$valid_to = validate($_POST['valid_to'], $lng['service']['valid_to'], '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+				$valid_from = validate($_POST['valid_from'], html_entity_decode($lng['service']['valid_from']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
+				$valid_to = validate($_POST['valid_to'], html_entity_decode($lng['service']['valid_to']), '/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', '', array('0000-00-00', '0', ''));
 
 				if(isset($_POST['taxclass'])
 				   && intval($_POST['taxclass']) != 0

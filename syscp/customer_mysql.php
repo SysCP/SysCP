@@ -146,7 +146,7 @@ elseif($page == 'mysqls')
 
 					if(count($sql_root) > 1)
 					{
-						$dbserver = validate($_POST['mysql_server'], $lng['mysql']['mysql_server'], '', '', 0);
+						$dbserver = validate($_POST['mysql_server'], html_entity_decode($lng['mysql']['mysql_server']), '', '', 0);
 
 						if(!isset($sql_root[$dbserver]) || !is_array($sql_root[$dbserver]))
 						{

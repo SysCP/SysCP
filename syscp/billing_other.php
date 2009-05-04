@@ -144,8 +144,8 @@ if($userinfo['customers_see_all'] == '1')
 				$taxclass = '0';
 			}
 
-			$caption_setup = validate($_POST['caption_setup'], $lng['billing']['caption_setup']);
-			$caption_interval = validate($_POST['caption_interval'], $lng['billing']['caption_interval']);
+			$caption_setup = validate($_POST['caption_setup'], html_entity_decode($lng['billing']['caption_setup']));
+			$caption_interval = validate($_POST['caption_interval'], html_entity_decode($lng['billing']['caption_interval']));
 			$quantity = doubleval(str_replace(',', '.', $_POST['quantity']));
 			$interval_fee = doubleval(str_replace(',', '.', $_POST['interval_fee']));
 			$interval_length = intval($_POST['interval_length']);
@@ -283,8 +283,8 @@ if($userinfo['customers_see_all'] == '1')
 					$serviceend_date = $result['serviceend_date'];
 				}
 
-				$caption_setup = validate($_POST['caption_setup'], $lng['billing']['caption_setup']);
-				$caption_interval = validate($_POST['caption_interval'], $lng['billing']['caption_interval']);
+				$caption_setup = validate($_POST['caption_setup'], html_entity_decode($lng['billing']['caption_setup']));
+				$caption_interval = validate($_POST['caption_interval'], html_entity_decode($lng['billing']['caption_interval']));
 				$service_active = intval($_POST['service_active']);
 				$interval_payment = intval($_POST['interval_payment']);
 

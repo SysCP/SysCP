@@ -304,8 +304,8 @@ if($userinfo['customers_see_all'] == '1')
 		   && $_POST['send'] == 'send')
 		{
 			$key = validate($_POST['key'], 'key', '/^[a-f0-9]{32}$/');
-			$caption = validate($_POST['caption'], $lng['billing']['caption']);
-			$interval = validate($_POST['interval'], $lng['billing']['interval']);
+			$caption = validate($_POST['caption'], html_entity_decode($lng['billing']['caption']));
+			$interval = validate($_POST['interval'], html_entity_decode($lng['billing']['interval']));
 			$quantity = doubleval($_POST['quantity']);
 
 			if(isset($_POST['taxrate']))
@@ -379,7 +379,7 @@ if($userinfo['customers_see_all'] == '1')
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				$invoice_number = validate($_POST['invoice_number'], $lng['billing']['number']);
+				$invoice_number = validate($_POST['invoice_number'], html_entity_decode($lng['billing']['number']));
 
 				if(isset($lng['invoice']['states'][$_POST['state']]))
 				{
