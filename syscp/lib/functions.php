@@ -1266,178 +1266,107 @@ function safe_exec($exec_string, &$return_value = false)
 }
 
 /**
- * Navigation generator
- *
- * @author Martin Burchert <eremit@adm1n.de>
- * @version 1.0
- * @param string s The session-id of the user
+ * Build Navigation Sidebar
+ * @param array navigation data
  * @param array userinfo the userinfo of the user
  * @return string the content of the navigation bar
  *
- * History:
- * 1.0 : Initial Version
- * 1.1 : Added new_window and required_resources (flo)
+ * @author Florian Lippert <flo@syscp.org>
  */
 
-function getNavigation($s, $userinfo)
+function buildNavigation($navigation, $userinfo)
 {
-	global $db, $lng, $settings;
-	$return = '';
-
-	//
-	// query database
-	//
-
-	$query = 'SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape(AREA) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ORDER BY `order`, `id` ASC';
-	$result = $db->query($query);
-
-	//
-	// presort in multidimensional array
-	//
-
-	while($row = $db->fetch_array($result))
+	$returnvalue = '';
+	
+	foreach($navigation as $box)
 	{
-		$_required_res = 0;
-
-		if($row['required_resources'] != ''
-		   && strpos($row['required_resources'], '.') !== false)
-		{
-			$_tmp = explode('.', $row['required_resources']);
-			$_required_res = isset($settings[$_tmp[0]][$_tmp[1]]) ? (int)$settings[$_tmp[0]][$_tmp[1]] : 0;
-		}
-
-		if($_required_res == 1
-		   || ($row['required_resources'] == '' || (isset($userinfo[$row['required_resources']]) && ((int)$userinfo[$row['required_resources']] > 0 || $userinfo[$row['required_resources']] == '-1'))))
-		{
-			$row['parent_url'] = $row['url'];
-			$row['isparent'] = 1;
-			$nav[$row['parent_url']][] = _createNavigationEntry($s, $row);
-			$subQuery = 'SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape(AREA) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ORDER BY `order`, `id` ASC';
-			$subResult = $db->query($subQuery);
-
-			while($subRow = $db->fetch_array($subResult))
-			{
-				//defaulting to 0, refs #1088
-
-				$_required_res = 0;
-
-				if($subRow['required_resources'] != ''
-				   && strpos($subRow['required_resources'], '.') !== false)
-				{
-					$_tmp = explode('.', $subRow['required_resources']);
-					$_required_res = isset($settings[$_tmp[0]][$_tmp[1]]) ? (int)$settings[$_tmp[0]][$_tmp[1]] : 0;
-				}
-
-				if($_required_res == 1
-				   || ($subRow['required_resources'] == '' || (isset($userinfo[$subRow['required_resources']]) && ((int)$userinfo[$subRow['required_resources']] > 0 || $userinfo[$subRow['required_resources']] == '-1'))))
-				{
-					// respect three special cases: phpmyadmin_uri, webmail_uri and webftp_uri
-
-					if($subRow['url'] != '')
-					{
-						$subRow['isparent'] = 0;
-						$nav[$row['parent_url']][] = _createNavigationEntry($s, $subRow);
-					}
-				}
-			}
-		}
-	}
-
-	//
-	// generate output
-	//
-
-	if((isset($nav))
-	   && (sizeof($nav) > 0))
-	{
-		foreach($nav as $parent_url => $row)
+		if((!isset($box['show_element']) || $box['show_element'] === true) &&
+			(!isset($box['required_resources']) || $box['required_resources'] == '' || (isset($userinfo[$box['required_resources']]) && ((int)$userinfo[$box['required_resources']] > 0 || $userinfo[$box['required_resources']] == '-1'))))
 		{
 			$navigation_links = '';
-			foreach($row as $id => $navElem)
+			foreach($box['elements'] as $element_id => $element)
 			{
-				if($navElem['isparent'] == 1)
+				if((!isset($element['show_element']) || $element['show_element'] === true) &&
+					(!isset($element['required_resources']) || $element['required_resources'] == '' || (isset($userinfo[$element['required_resources']]) && ((int)$userinfo[$element['required_resources']] > 0 || $userinfo[$element['required_resources']] == '-1'))))
 				{
-					$completeLink_ElementTitle = $navElem['completeLink'];
-				}
-				else
-				{
-					// assign url
-
-					$completeLink = $navElem['completeLink'];
-
-					// read template
-
+					if(isset($element['url']) && trim($element['url']) != '')
+					{
+						// append sid only to local
+				
+						if(!preg_match('/^https?\:\/\//', $element['url'])
+						   && (isset($userinfo['hash']) && $userinfo['hash'] != ''))
+						{
+							// generate sid with ? oder &
+				
+							if(strpos($element['url'], '?') !== false)
+							{
+								$element['url'].= '&s=' . $userinfo['hash'];
+							}
+							else
+							{
+								$element['url'].= '?s=' . $userinfo['hash'];
+							}
+						}
+				
+						$target = '';
+				
+						if(isset($element['new_window']) && $element['new_window'] == true)
+						{
+							$target = ' target="_blank"';
+						}
+				
+						$completeLink = '<a href="' . htmlspecialchars($element['url']) . '"' . $target . ' class="menu">' . $element['label'] . '</a>';
+					}
+					else
+					{
+						$completeLink = $element['label'];
+					}
+				
 					eval("\$navigation_links .= \"" . getTemplate("navigation_link", 1) . "\";");
 				}
 			}
-
+	
 			if($navigation_links != '')
 			{
-				eval("\$return .= \"" . getTemplate("navigation_element", 1) . "\";");
+				if(isset($box['url']) && trim($box['url']) != '')
+				{
+					// append sid only to local
+			
+					if(!preg_match('/^https?\:\/\//', $box['url'])
+					   && (isset($userinfo['hash']) && $userinfo['hash'] != ''))
+					{
+						// generate sid with ? oder &
+			
+						if(strpos($box['url'], '?') !== false)
+						{
+							$box['url'].= '&s=' . $userinfo['hash'];
+						}
+						else
+						{
+							$box['url'].= '?s=' . $userinfo['hash'];
+						}
+					}
+			
+					$target = '';
+			
+					if(isset($box['new_window']) && $box['new_window'] == true)
+					{
+						$target = ' target="_blank"';
+					}
+			
+					$completeLink = '<a href="' . htmlspecialchars($box['url']) . '"' . $target . ' class="menu">' . $box['label'] . '</a>';
+				}
+				else
+				{
+					$completeLink = $box['label'];
+				}
+			
+				eval("\$returnvalue .= \"" . getTemplate("navigation_element", 1) . "\";");
 			}
 		}
 	}
-
-	return $return;
-}
-
-/**
- * Processes a navigation entry in the database. It generates the correct
- * link and language.
- *
- * @param string The sessionid.
- * @param array The data recieved during the mysql query.
- * @return array The processed data.
- */
-
-function _createNavigationEntry($s, $data)
-{
-	global $db, $lng;
-
-	// get corect lang string
-
-	$lngArr = explode(';', $data['lang']);
-	$data['text'] = $lng;
-	foreach($lngArr as $lKey => $lValue)
-	{
-		$data['text'] = $data['text'][$lValue];
-	}
-
-	if(str_replace(' ', '', $data['url']) != ''
-	   && !stristr($data['url'], 'nourl'))
-	{
-		// append sid only to local
-
-		if(!preg_match('/^https?\:\/\//', $data['url'])
-		   && (isset($s) && $s != ''))
-		{
-			// generate sid with ? oder &
-
-			if(strpos($data['url'], '?') !== false)
-			{
-				$data['url'].= '&s=' . $s;
-			}
-			else
-			{
-				$data['url'].= '?s=' . $s;
-			}
-		}
-
-		$target = '';
-
-		if($data['new_window'] == '1')
-		{
-			$target = ' target="_blank"';
-		}
-
-		$data['completeLink'] = '<a href="' . htmlspecialchars($data['url']) . '"' . $target . ' class="menu">' . $data['text'] . '</a>';
-	}
-	else
-	{
-		$data['completeLink'] = $data['text'];
-	}
-
-	return $data;
+	
+	return $returnvalue;
 }
 
 /**
