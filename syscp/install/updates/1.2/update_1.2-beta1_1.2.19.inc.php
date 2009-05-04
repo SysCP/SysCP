@@ -37,40 +37,6 @@ if($settings['panel']['version'] == '1.2.1')
 
 if($settings['panel']['version'] == '1.2.2')
 {
-	$db->query("
-			CREATE TABLE `" . TABLE_PANEL_NAVIGATION . "` (
-  				`id`        int(11)     unsigned NOT NULL auto_increment,
-  				`area`      varchar(20)          NOT NULL default '',
-  				`parent_id` int(11)     unsigned NOT NULL default '0',
-  				`lang`      varchar(255)         NOT NULL default '',
-  				`url`       varchar(255)         NOT NULL default '',
-  			PRIMARY KEY  (`id`)
-			) TYPE=MyISAM
-		");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (1, 'login', 0, 'login;login', '');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (2, 'customer', 0, 'menue;main;main', 'customer_index.php');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (3, 'customer', 2, 'menue;main;changepassword', 'customer_index.php?page=change_password');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (4, 'customer', 2, 'login;logout', 'customer_index.php?action=logout');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (5, 'customer', 0, 'menue;email;email', 'customer_email.php');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (6, 'customer', 5, 'menue;email;pop', 'customer_email.php?page=pop');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (7, 'customer', 5, 'menue;email;forwarders', 'customer_email.php?page=forwarders');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (8, 'customer', 0, 'menue;mysql;mysql', 'customer_mysql.php');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (9, 'customer', 8, 'menue;mysql;databases', 'customer_mysql.php?page=mysqls');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (10, 'customer', 0, 'menue;domains;domains', 'customer_domains.php');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (11, 'customer', 10, 'menue;domains;settings', 'customer_domains.php?page=domains');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (12, 'customer', 0, 'menue;ftp;ftp', 'customer_ftp.php');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (13, 'customer', 12, 'menue;ftp;accounts', 'customer_ftp.php?page=accounts');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (14, 'customer', 0, 'menue;extras;extras', 'customer_extras.php');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (15, 'customer', 14, 'menue;extras;directoryprotection', 'customer_extras.php?page=htpasswds');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (16, 'customer', 14, 'menue;extras;pathoptions', 'customer_extras.php?page=htaccess');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (17, 'admin', 0, 'admin;overview', 'admin_index.php?page=overview');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (18, 'admin', 0, 'menue;main;changepassword', 'admin_index.php?page=change_password');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (19, 'admin', 0, 'admin;customers', 'admin_customers.php?page=customers');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (20, 'admin', 0, 'admin;domains', 'admin_domains.php?page=domains');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (21, 'admin', 0, 'admin;admins', 'admin_admins.php?page=admins');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (22, 'admin', 0, 'admin;configfiles;serverconfiguration', 'admin_configfiles.php?page=configfiles');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (23, 'admin', 0, 'admin;serversettings', 'admin_settings.php?page=settings');");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area`, `parent_id`, `lang`, `url`) VALUES (24, 'admin', 0, 'login;logout', 'admin_index.php?action=logout');");
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.2-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.2-cvs1';
 }
@@ -136,38 +102,6 @@ if($settings['panel']['version'] == '1.2.2-cvs4')
 
 if($settings['panel']['version'] == '1.2.3')
 {
-	$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin" OR `lang` = "menue;email;webmail" OR `lang` = "menue;ftp;webftp"');
-	$db->query('ALTER TABLE `' . TABLE_PANEL_NAVIGATION . '` ADD `parent_url` VARCHAR( 255 ) NOT NULL AFTER `parent_id`, ADD `required_resources` VARCHAR( 255 ) NOT NULL , ADD `new_window` TINYINT( 1 ) UNSIGNED NOT NULL ');
-	$updateNavigationResult = $db->query("SELECT `id`, `url` FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `parent_id` = '0'");
-
-	while($updateNavigationRow = $db->fetch_array($updateNavigationResult))
-	{
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `parent_url` = '" . $db->escape($updateNavigationRow['url']) . "' WHERE `parent_id` = '" . (int)$updateNavigationRow['id'] . "'");
-	}
-
-	$db->query('ALTER TABLE `' . TABLE_PANEL_NAVIGATION . '` DROP `parent_id`');
-	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'emails' WHERE `lang` = 'menue;email;pop'");
-	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'email_forwarders' WHERE `lang` = 'menue;email;forwarders'");
-	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'mysqls' WHERE `lang` = 'menue;mysql;databases'");
-	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'customers' WHERE `lang` = 'admin;customers'");
-	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'domains' WHERE `lang` = 'admin;domains'");
-	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `lang` = 'admin;admins' OR `lang` = 'admin;configfiles;serverconfiguration' OR `lang` = 'admin;serversettings'");
-
-	if($settings['panel']['phpmyadmin_url'] != '')
-	{
-		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;mysql;phpmyadmin",  `url`        = "' . $db->escape($settings['panel']['phpmyadmin_url']) . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "mysqls_used",  `parent_url` = "customer_mysql.php"');
-	}
-
-	if($settings['panel']['webmail_url'] != '')
-	{
-		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;email;webmail",  `url`        = "' . $db->escape($settings['panel']['webmail_url']) . '",  `area`       = "customer",  `new_window` = "1",  `required_resources` = "emails_used",  `parent_url` = "customer_email.php"');
-	}
-
-	if($settings['panel']['webftp_url'] != '')
-	{
-		$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "menue;ftp;webftp",  `url`        = "' . $db->escape($settings['panel']['webftp_url']) . '",  `area`       = "customer",  `new_window` = "1",  `parent_url` = "customer_ftp.php"');
-	}
-
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.3-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.3-cvs1';
 }
@@ -189,7 +123,6 @@ if($settings['panel']['version'] == '1.2.3-cvs2')
 
 if($settings['panel']['version'] == '1.2.3-cvs3')
 {
-	$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `url`='index.php' WHERE `id`='1'");
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.3-cvs4' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.3-cvs4';
 }
@@ -252,8 +185,6 @@ if($settings['panel']['version'] == '1.2.4-2cvs1')
 		');
 	$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `email_accounts` = `emails` ');
 	$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `email_accounts` = `emails` ');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url` = "customer_email.php?page=emails", `lang` = "menue;email;emails" WHERE `id` = "6" ');
-	$db->query('DELETE FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `id` = "7" ');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.4-2cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.4-2cvs2';
 }
@@ -273,13 +204,6 @@ if($settings['panel']['version'] == '1.2.5')
 
 if($settings['panel']['version'] == '1.2.5-cvs1')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "admin;resources",  `url`        = "admin_resources.nourl",  `area`       = "admin"');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "admin;server",  `url`        = "admin_server.nourl",  `required_resources` = "change_serversettings",  `area`       = "admin"');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `lang`       = "login;login",  `url`        = "login.nourl",  `area`       = "login"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "admin_index.php" WHERE `url`      = "admin_index.php?page=change_password" OR  `url`      = "admin_index.php?action=logout"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "admin_resources.nourl" WHERE `url`      = "admin_customers.php?page=customers" OR  `url`      = "admin_domains.php?page=domains" OR  `url`      = "admin_admins.php?page=admins"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "admin_server.nourl" WHERE `url`      = "admin_configfiles.php?page=configfiles" OR  `url`      = "admin_settings.php?page=settings"');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `parent_url` = "login.nourl" WHERE `url`      = "index.php"');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.5-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.5-cvs2';
 }
@@ -332,8 +256,6 @@ if($settings['panel']['version'] == '1.2.6')
 	$db->query('UPDATE `' . TABLE_PANEL_ADMINS . '` SET `def_language` = \'' . $db->escape($def_language) . '\'');
 	$db->query('ALTER TABLE `' . TABLE_PANEL_CUSTOMERS . '` ADD `def_language` VARCHAR( 255 ) NOT NULL AFTER `customernumber`');
 	$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `def_language` = \'' . $db->escape($def_language) . '\'');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`,`parent_url`,`lang`,`url`) VALUES (\'customer\',\'customer_index.php\',\'menue;main;changelanguage\',\'customer_index.php?page=change_language\')');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`,`parent_url`,`lang`,`url`) VALUES (\'admin\',\'admin_index.php\',\'menue;main;changelanguage\',\'admin_index.php?page=change_language\')');
 	$db->query('CREATE TABLE `' . TABLE_PANEL_TEMPLATES . '` (
   			`id` int(11) NOT NULL auto_increment,
   			`adminid` int(11) NOT NULL default \'0\',
@@ -345,41 +267,12 @@ if($settings['panel']['version'] == '1.2.6')
   			KEY `adminid` (`adminid`)
 			) TYPE=MyISAM
 		');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`,`lang`,`url`) VALUES (\'admin\',\'admin;templates;templates\',\'admin_templates.nourl\')');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`,`parent_url`,`lang`,`url`) VALUES (\'admin\',\'admin_templates.nourl\',\'admin;templates;email\',\'admin_templates.php?page=email\')');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.6-cvs1' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.6-cvs1';
 }
 
 if($settings['panel']['version'] == '1.2.6-cvs1')
 {
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`=\'admin_index.php\' WHERE `url`=\'admin_index.php?page=overview\'');
-	$db->query('ALTER TABLE `' . TABLE_PANEL_NAVIGATION . '` ADD `order` INT( 4 ) NOT NULL AFTER `url`');
-	$areas = array(
-		'login',
-		'admin',
-		'customer'
-	);
-	foreach($areas as $area)
-	{
-		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape($area) . '\' AND (`parent_url`=\'\' OR `parent_url`=\' \') ORDER BY `order`, `id` ASC');
-		$i = 0;
-
-		while($row = $db->fetch_array($result))
-		{
-			$i++;
-			$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($i * 10) . '\' WHERE `id`=\'' . (int)$row['id'] . '\'');
-			$subResult = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `area`=\'' . $db->escape($area) . '\' AND `parent_url`=\'' . $db->escape($row['url']) . '\' ORDER BY `order`, `id` ASC');
-			$j = 0;
-
-			while($subRow = $db->fetch_array($subResult))
-			{
-				$j++;
-				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order`=\'' . ($j * 10) . '\' WHERE `id`=\'' . (int)$subRow['id'] . '\'');
-			}
-		}
-	}
-
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.6-cvs2' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.6-cvs2';
 }
@@ -527,7 +420,6 @@ if($settings['panel']['version'] == '1.2.11-cvs1')
 
 if($settings['panel']['version'] == '1.2.11-cvs2')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area` = \'admin\',  `parent_url` = \'admin_server.nourl\',  `lang` = \'admin;rebuildconf\',  `url` = \'admin_settings.php?page=rebuildconfigs\',  `order` = \'30\',  `required_resources` = \'change_serversettings\',  `new_window` = \'0\'');
 	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='1.2.11-cvs3' WHERE `settinggroup`='panel' AND `varname`='version'");
 	$settings['panel']['version'] = '1.2.11-cvs3';
 }
@@ -566,7 +458,6 @@ if($settings['panel']['version'] == '1.2.12-svn1')
 			PRIMARY KEY  (`id`)
 			) TYPE=MyISAM');
 	$db->query('INSERT INTO `' . TABLE_PANEL_IPSANDPORTS . '` (`ip`, `port`, `default`) VALUES (\'' . $settings['system']['ipaddress'] . '\', \'80\', \'1\')');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (\'admin\', \'admin_server.nourl\', \'admin;ipsandports;ipsandports\', \'admin_ipsandports.php?page=ipsandports\', \'40\', \'change_serversettings\', 0)');
 	$db->query('UPDATE `' . TABLE_PANEL_SETTINGS . '` SET `value` = \'1.2.12-svn2\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'');
 	$settings['panel']['version'] = '1.2.12-svn2';
 }
@@ -664,11 +555,6 @@ if($settings['panel']['version'] == '1.2.13-svn1')
 
 if($settings['panel']['version'] == '1.2.13-svn2')
 {
-	// Show the logged-in username in "overview"
-
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (\'admin\', \'admin_index.php\', \'menue;main;username\', \'admin_index.nourl\', \'5\', \'\', 0)');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (\'customer\', \'customer_index.php\', \'menue;main;username\', \'customer_index.nourl\', \'5\', \'\', 0)');
-
 	// set new version
 
 	$query = 'UPDATE `%s` SET `value` = \'1.2.13-svn3\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
@@ -996,9 +882,6 @@ if($settings['panel']['version'] == '1.2.16-svn2')
 
 if($settings['panel']['version'] == '1.2.16-svn3')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area` = \'admin\',  `parent_url` = \'admin_server.nourl\',  `lang` = \'admin;updatecounters\',  `url` = \'admin_settings.php?page=updatecounters\',  `order` = \'35\',  `required_resources` = \'change_serversettings\',  `new_window` = \'0\'');
-	$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `order` = \'25\' WHERE `lang` = \'admin;ipsandports;ipsandports\'  AND `url` = \'admin_ipsandports.php?page=ipsandports\' ');
-
 	// set new version
 
 	$query = 'UPDATE `%s` SET `value` = \'1.2.16-svn4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
@@ -1231,14 +1114,6 @@ if($settings['panel']['version'] == '1.2.18-svn2')
 	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `tickets_used` INT( 15 ) NOT NULL DEFAULT '0' AFTER `tickets`");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `tickets` INT( 15 ) NOT NULL DEFAULT '-1' AFTER `ftps_used`");
 	$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `tickets_used` INT( 15 ) NOT NULL DEFAULT '0' AFTER `tickets`");
-	$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`)
-				VALUES
-				 ('customer', '', 'menue;ticket;ticket', 'customer_tickets.php', '20', '', 0),
-				 ('customer', 'customer_tickets.php', 'menue;ticket;ticket', 'customer_tickets.php?page=tickets', 10, '', 0),
-				 ('admin', '', 'admin;ticketsystem', 'admin_ticketsystem.nourl', '40', '', 0),
-				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0),
-				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0),
-				 ('admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);");
 	$db->query("CREATE TABLE `" . TABLE_PANEL_TICKETS . "` (
 					`id` int(11) unsigned NOT NULL auto_increment,
 					`customerid` int(11) NOT NULL,

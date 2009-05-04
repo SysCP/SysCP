@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * This file is part of the SysCP project.
+ * Copyright (c) 2003-2009 the SysCP Team (see authors).
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code. You can also view the
+ * COPYING file online at http://files.syscp.org/misc/COPYING.txt
+ *
+ * @copyright  (c) the authors
+ * @author     Florian Lippert <flo@syscp.org>
+ * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
+ * @package    Panel
+ * @version    $Id$
+ */
+
 return array (
 	'customer' => array (
 		array (
@@ -40,6 +56,7 @@ return array (
 					'url' => 'customer_autoresponder.php',
 					'label' => $lng['menue']['email']['autoresponder'],
 					'required_resources' => 'emails',
+					'show_element' => ( $settings['autoresponder']['autoresponder_active'] == true ),
 				),
 				array (
 					'url' => $settings['panel']['webmail_url'],
@@ -209,6 +226,7 @@ return array (
 					'url' => 'admin_logger.php?page=log',
 					'label' => $lng['menue']['logger']['logger'],
 					'required_resources' => 'change_serversettings',
+					'show_element' => ( $settings['logger']['enabled'] == true ),
 				),
 				array (
 					'url' => 'admin_message.php?page=message',

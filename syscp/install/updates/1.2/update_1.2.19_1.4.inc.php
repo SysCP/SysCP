@@ -54,9 +54,6 @@ if($settings['panel']['version'] == '1.2.19-svn2')
 
 if($settings['panel']['version'] == '1.2.19-svn3')
 {
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'\', `lang`=\'menue;traffic;traffic\', `url`=\'customer_traffic.php\', `order`=\'80\';');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'customer\', `parent_url`=\'customer_traffic.php\', `lang`=\'menue;traffic;current\', `url`=\'customer_traffic.php?page=current\', `order`=\'10\';');
-
 	// set new version
 
 	$query = 'UPDATE `%s` SET `value` = \'1.2.19-svn4\' WHERE `settinggroup` = \'panel\' AND `varname` = \'version\'';
@@ -84,8 +81,6 @@ if($settings['panel']['version'] == '1.2.19-svn4.5')
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'logfile\', \'\');');
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'logtypes\', \'syslog\');');
 	$db->query('INSERT INTO `' . TABLE_PANEL_SETTINGS . '` (`settinggroup`, `varname`, `value`) VALUES (\'logger\', \'severity\', \'2\');');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'admin\', `parent_url`=\'\', `lang`=\'admin;loggersystem\', `url`=\'admin_loggersystem.nourl\', `order`=\'60\';');
-	$db->query('INSERT INTO `' . TABLE_PANEL_NAVIGATION . '` SET `area`=\'admin\', `parent_url`=\'admin_loggersystem.nourl\', `lang`=\'menue;logger;logger\', `url`=\'admin_logger.php?page=log\', `order`=\'10\';');
 	$db->query('CREATE TABLE IF NOT EXISTS `panel_syslog` (
 	  `logid` bigint(20) NOT NULL auto_increment,
 	  `action` int(5) NOT NULL default \'10\',
@@ -132,8 +127,6 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn6')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn6 to 1.2.19-svn7");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `area`='admin', `parent_url`='', `lang`='menu;message', `url`='admin_message.nourl', `order`=50");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `area`='admin', `parent_url`='admin_message.nourl', `lang`='admin;message', `url`='admin_message.php?page=message', `order`=10");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl` tinyint(4) NOT NULL default '0'");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl_redirect` tinyint(4) NOT NULL default '0'");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `ssl_ipandport` tinyint(4) NOT NULL default '0'");
@@ -655,15 +648,6 @@ else
 		$db->query("INSERT INTO `" . TABLE_BILLING_TAXRATES . "` (`taxid`, `taxclass`, `taxrate`, `valid_from`) VALUES ( NULL, 1, 0.1600, '0' );");
 		$db->query("INSERT INTO `" . TABLE_BILLING_TAXRATES . "` (`taxid`, `taxclass`, `taxrate`, `valid_from`) VALUES ( NULL, 1, 0.1900, '2007-01-01' );");
 		$db->query("INSERT INTO `" . TABLE_BILLING_TAXRATES . "` (`taxid`, `taxclass`, `taxrate`, `valid_from`) VALUES ( NULL, 2, 0.0700, '0' );");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', '', 'billing;billing', 'billing.nourl', '100', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', '110', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', '115', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;invoices', 'billing_invoices.php', '120', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;invoices_admin', 'billing_invoices.php?mode=1', '125', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;other', 'billing_other.php', '130', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', '140', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', '150', 'customers_see_all', '0');");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`id`, `area` , `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES (NULL, 'admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', '160', 'customers_see_all', '0');");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settingid`, `settinggroup`, `varname`, `value`) VALUES (NULL, 'billing', 'invoicenumber_count', '0');");
 
 		// set new version
@@ -692,7 +676,6 @@ else
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn22 to 1.2.19-svn23");
 		$db->query("ALTER TABLE  `" . TABLE_PANEL_ADMINS . "` ADD  `edit_billingdata` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER  `change_serversettings`");
 		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `edit_billingdata` = '1' WHERE `customers_see_all` = '1'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'edit_billingdata' WHERE `required_resources` = 'customers_see_all' AND `url` LIKE 'billing%'");
 
 		// set new version
 
@@ -719,7 +702,6 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn24')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn24 to 1.2.19-svn25");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `area` = 'admin' AND `url` LIKE 'admin_logger%'");
 
 		// set new version
 
@@ -821,24 +803,9 @@ else
 					) ENGINE=MyISAM");
 		$db->query("INSERT INTO `" . TABLE_PANEL_PHPCONFIGS . "` (`id`, `phpsettings`, `description`) VALUES(1, 'short_open_tag = On\r\nasp_tags = Off\r\nprecision = 14\r\noutput_buffering = 4096\r\nallow_call_time_pass_reference = Off\r\nsafe_mode = {SAFE_MODE}\r\nsafe_mode_gid = Off\r\nsafe_mode_include_dir = \"{PEAR_DIR}\"\r\nsafe_mode_allowed_env_vars = PHP_\r\nsafe_mode_protected_env_vars = LD_LIBRARY_PATH\r\nopen_basedir = \"{OPEN_BASEDIR}\"\r\ndisable_functions = exec,passthru,shell_exec,system,proc_close,proc_get_status,proc_nice,proc_open,proc_terminate\r\ndisable_classes =\r\nexpose_php = Off\r\nmax_execution_time = 30\r\nmax_input_time = 60\r\nmemory_limit = 16M\r\npost_max_size = 16M\r\nerror_reporting = E_ALL & ~E_NOTICE\r\ndisplay_errors = On\r\ndisplay_startup_errors = Off\r\nlog_errors = On\r\nlog_errors_max_len = 1024\r\nignore_repeated_errors = Off\r\nignore_repeated_source = Off\r\nreport_memleaks = On\r\ntrack_errors = Off\r\nhtml_errors = Off\r\nvariables_order = \"GPCS\"\r\nregister_globals = Off\r\nregister_argc_argv = Off\r\ngpc_order = \"GPC\"\r\nmagic_quotes_gpc = Off\r\nmagic_quotes_runtime = Off\r\nmagic_quotes_sybase = Off\r\ninclude_path = \".:{PEAR_DIR}\"\r\nenable_dl = Off\r\nfile_uploads = On\r\nupload_tmp_dir = \"{TMP_DIR}\"\r\nupload_max_filesize = 32M\r\nallow_url_fopen = Off\r\nsendmail_path = \"/usr/sbin/sendmail -t -f {CUSTOMER_EMAIL}\"\r\nsession.save_handler = files\r\nsession.save_path = \"{TMP_DIR}\"\r\nsession.use_cookies = 1\r\nsession.name = PHPSESSID\r\nsession.auto_start = 0\r\nsession.cookie_lifetime = 0\r\nsession.cookie_path = /\r\nsession.cookie_domain =\r\nsession.serialize_handler = php\r\nsession.gc_probability = 1\r\nsession.gc_divisor = 1000\r\nsession.gc_maxlifetime = 1440\r\nsession.bug_compat_42 = 0\r\nsession.bug_compat_warn = 1\r\nsession.referer_check =\r\nsession.entropy_length = 16\r\nsession.entropy_file = /dev/urandom\r\nsession.cache_limiter = nocache\r\nsession.cache_expire = 180\r\nsession.use_trans_sid = 0\r\nsuhosin.simulation = Off\r\nsuhosin.mail.protect = 1\r\n', 'Default Config')");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `phpsettingid` INT( 11 ) UNSIGNED NOT NULL DEFAULT '1'");
-
-		if((int)$settings['system']['mod_fcgid'] == 1)
-		{
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, '', 0)");
-		}
-
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_wrapper', '0')");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_starter', '0')");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_peardir', '/usr/share/php/:/usr/share/php5/')");
-
-		//menu structure changes
-
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'admin;misc', `url` = 'admin_misc.nourl', `order` = '40' WHERE `lang`='admin;templates;templates' AND `url`='admin_templates.nourl'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `parent_url` = 'admin_misc.nourl' WHERE `parent_url`='admin_templates.nourl'");
-		$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `lang` = 'admin;loggersystem' AND `url` = 'admin_loggersystem.nourl'");
-		$db->query("DELETE FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `lang` = 'menu;message' AND `url` = 'admin_message.nourl'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `parent_url` = 'admin_misc.nourl' WHERE `parent_url`='admin_loggersystem.nourl'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `parent_url` = 'admin_misc.nourl' WHERE `parent_url`='admin_message.nourl'");
 
 		// set new version
 
@@ -893,15 +860,6 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn34')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn34 to 1.2.19-svn35");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', '', 'admin;aps', 'admin_aps.nourl', 45, 'aps_enabled', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;scan', 'admin_aps.php?action=scan', 20, '', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;upload', 'admin_aps.php?action=upload', 10, '', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;managepackages', 'admin_aps.php?action=managepackages', 30, '', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('admin', 'admin_aps.nourl', 'aps;manageinstances', 'admin_aps.php?action=manageinstances', 35, '', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', '', 'customer;aps', 'customer_aps.nourl', 50, 'aps_enabled', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', 'customer_aps.nourl', 'aps;overview', 'customer_aps.php?action=overview', 10, '', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', 'customer_aps.nourl', 'aps;status', 'customer_aps.php?action=customerstatus', 20, '', 0)");
-		$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES ('customer', 'customer_aps.nourl', 'aps;search', 'customer_aps.php?action=search', 30, '', 0)");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'items_per_page', '20')");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'upload_fields', '5')");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('aps', 'aps_active', '0')");
@@ -961,9 +919,6 @@ else
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn35 to 1.2.19-svn36");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `mod_fcgid_starter` INT( 4 ) NULL DEFAULT '-1'");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `can_manage_aps_packages` TINYINT( 1 ) NOT NULL DEFAULT '1'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'can_manage_aps_packages' WHERE `url` = 'admin_aps.php?action=scan'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'can_manage_aps_packages' WHERE `url` = 'admin_aps.php?action=upload'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'can_manage_aps_packages' WHERE `url` = 'admin_aps.php?action=managepackages'");
 
 		// set new version
 
@@ -995,7 +950,6 @@ else
 		$db->query("ALTER TABLE `" . TABLE_PANEL_PHPCONFIGS . "` ADD `binary` VARCHAR( 255 ) NOT NULL, ADD `file_extensions` VARCHAR( 255 ) NOT NULL, ADD `mod_fcgid_starter` int(4) NOT NULL DEFAULT '-1', ADD `mod_fcgid_maxrequests` int(4) NOT NULL DEFAULT '-1'");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_DOMAINS . "` ADD `mod_fcgid_maxrequests` INT( 4 ) NULL DEFAULT '-1'");
 		$db->query("UPDATE `" . TABLE_PANEL_PHPCONFIGS . "` SET `binary` = '/usr/bin/php-cgi', `file_extensions` = 'php'");
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `url` = 'admin_phpsettings.php?page=overview'");
 		$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES('system', 'mod_fcgid_maxrequests', '250')");
 
 		// set new version
@@ -1009,14 +963,6 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn38')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn38 to 1.2.19-svn39");
-		$Result = $db->query("SELECT * FROM `" . TABLE_PANEL_NAVIGATION . "` WHERE `lang` = 'customer;aps' AND `url` = 'customer_aps.nourl'");
-		$Row = $db->fetch_array($Result);
-
-		if($Row['required_resources'] != 'aps_enabled')
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'phpenabled' WHERE `lang` = 'customer;aps' AND `url` = 'customer_aps.nourl'");
-		}
-
 		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` ADD `aps_packages` INT( 5 ) NOT NULL DEFAULT '0', ADD `aps_packages_used` INT( 5 ) NOT NULL DEFAULT '0'");
 		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `aps_packages` INT( 5 ) NOT NULL DEFAULT '0', ADD `aps_packages_used` INT( 5 ) NOT NULL DEFAULT '0'");
 
@@ -1053,170 +999,6 @@ else
 	if($settings['panel']['version'] == '1.2.19-svn40')
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, "Updating from 1.2.19-svn40 to 1.2.19-svn41");
-
-		// we need a fresh $settings array because previous settings updates might not be in there at this point!!!
-
-		unset($settings);
-		$result = $db->query("SELECT `settinggroup`, `varname`, `value` FROM `" . TABLE_PANEL_SETTINGS . "`");
-
-		while($row = $db->fetch_array($result))
-		{
-			$settings[$row['settinggroup']][$row['varname']] = $row['value'];
-		}
-
-		unset($row);
-		unset($result);
-
-		/*
-		 * APS
-		 */
-
-		$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'aps.aps_active' WHERE `area` = 'admin' 
-			   AND `lang` = 'admin;aps' AND `url` = 'admin_aps.nourl'");
-
-		if($settings['aps']['aps_active'] == '1')
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'phpenabled' WHERE `area` = 'customer' 
-				    AND `lang` = 'customer;aps' AND `url` = 'customer_aps.nourl'");
-		}
-		else
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'aps.aps_active' WHERE `area` = 'customer' 
-				    AND `lang` = 'customer;aps' AND `url` = 'customer_aps.nourl'");
-		}
-
-		/*
-		 * BILLING
-		 */
-
-		if($settings['billing']['activate_billing'] == '0')
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', '', 'billing;billing', 'billing.nourl', 100, 'billing.activate_billing', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;openinvoices', 'billing_openinvoices.php', 110, 'edit_billingdata', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;openinvoices_admin', 'billing_openinvoices.php?mode=1', 115, 'edit_billingdata', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;invoices', 'billing_invoices.php', 120, 'edit_billingdata', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;invoices_admin', 'billing_invoices.php?mode=1', 125, 'edit_billingdata', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;other', 'billing_other.php', 130, 'edit_billingdata', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;taxclassesnrates', 'billing_taxrates.php', 140, 'edit_billingdata', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;domains_templates', 'billing_domains_templates.php', 150, 'edit_billingdata', 0)");
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'billing.nourl', 'billing;other_templates', 'billing_other_templates.php', 160, 'edit_billingdata', 0)");
-		}
-
-		/*
-		 * LOGGER
-		 */
-
-		if($settings['logger']['enabled'] == '1')
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `area` = 'admin' AND `lang` = 'menue;logger;logger' AND `url` = 'admin_logger.php?page=log'");
-		}
-		else
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_misc.nourl', 'menue;logger;logger', 'admin_logger.php?page=log', 10, 'logger.enabled', 0)");
-		}
-
-		/*
-		 * TICKET
-		 */
-
-		if($settings['ticket']['enabled'] == '1')
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'ticket.enabled' WHERE `area` = 'customer' AND `lang` = 'menue;ticket;ticket' AND `url` = 'customer_tickets.php'");
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'ticket.enabled' WHERE `area` = 'admin'  AND `lang` = 'admin;ticketsystem' AND `url` = 'admin_ticketsystem.nourl'");
-		}
-		else
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES
-			('customer', '', 'menue;ticket;ticket', 'customer_tickets.php', '20', 'ticket.enabled', 0),
-			('customer', 'customer_tickets.php', 'menue;ticket;ticket', 'customer_tickets.php?page=tickets', 10, '', 0),
-			('admin', '', 'admin;ticketsystem', 'admin_ticketsystem.nourl', '40', 'ticket.enabled', 0),
-			('admin', 'admin_ticketsystem.nourl', 'menue;ticket;ticket', 'admin_tickets.php?page=tickets', '10', '', 0),
-			('admin', 'admin_ticketsystem.nourl', 'menue;ticket;archive', 'admin_tickets.php?page=archive', '20', '', 0),
-			('admin', 'admin_ticketsystem.nourl', 'menue;ticket;categories', 'admin_tickets.php?page=categories', '30', '', 0);");
-		}
-
-		/*
-		 * PHP-Config
-		 */
-
-		if($settings['system']['mod_fcgid'] == '1')
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'system.mod_fcgid' WHERE `area` = 'admin' AND `lang` = 'menue;phpsettings;maintitle' AND `url` = 'admin_phpsettings.php?page=overview'");
-		}
-		else
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` (`area`, `parent_url`, `lang`, `url`, `order`, `required_resources`, `new_window`) VALUES('admin', 'admin_server.nourl', 'menue;phpsettings;maintitle', 'admin_phpsettings.php?page=overview', 80, 'system.mod_fcgid', 0)");
-		}
-
-		/*
-		 * AUTORESPONDER
-		 */
-
-		if($settings['autoresponder']['autoresponder_active'] == '1')
-		{
-			$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'emails' WHERE `area` = 'customer' AND `lang` = 'menue;email;autoresponder' AND `url` = 'customer_autoresponder.php'");
-		}
-		else
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` VALUES (NULL, 'customer', 'customer_email.php', 'menue;email;autoresponder', 'customer_autoresponder.php', 40, 'autoresponder.autoresponder_active', 0)");
-		}
-
-		/*
-		 * Special cases: phpmyadmin, webftp, webmail
-		 */
-		// phpmyadmin
-
-		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;mysql;phpmyadmin"');
-		$nums = $db->num_rows($result);
-
-		if($nums == 0)
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;mysql;phpmyadmin', `url`='', `area`='customer', `new_window`='1', `required_resources` = 'mysqls_used', `order` = '99', `parent_url` = 'customer_mysql.php'");
-		}
-
-		// webftp
-
-		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;ftp;webftp"');
-		$nums = $db->num_rows($result);
-
-		if($nums == 0)
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;ftp;webftp', `url`='', `area`='customer', `new_window`='1', `order` = '99', `parent_url` = 'customer_ftp.php'");
-		}
-
-		// webmail
-
-		$result = $db->query('SELECT * FROM `' . TABLE_PANEL_NAVIGATION . '` WHERE `lang` = "menue;email;webmail"');
-		$nums = $db->num_rows($result);
-
-		if($nums == 0)
-		{
-			// in previous versions, menu entries have been deleted from the database when setting the
-			// feature to enabled='off' so we need to add it again here!
-
-			$db->query("INSERT INTO `" . TABLE_PANEL_NAVIGATION . "` SET `lang` = 'menue;email;webmail', `url`='', `area`='customer', `new_window`='1', `required_resources` = 'emails_used', `order` = '99', `parent_url` = 'customer_email.php'");
-		}
 
 		// set new version
 

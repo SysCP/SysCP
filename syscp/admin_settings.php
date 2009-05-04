@@ -156,10 +156,6 @@ if(($page == 'settings' || $page == 'overview')
 					exit;
 				}
 
-				// update menu
-
-				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;mysql;phpmyadmin"');
-				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_phpmyadmin_url in navigation to '" . $value . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='phpmyadmin_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_phpmyadmin_url from '" . $settings['panel']['phpmyadmin_url'] . "' to '" . $value . "'");
 			}
@@ -176,10 +172,6 @@ if(($page == 'settings' || $page == 'overview')
 					exit;
 				}
 
-				// update menu
-
-				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;email;webmail"');
-				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webmail_url in navigation to '" . $value . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webmail_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webmail_url from '" . $settings['panel']['webmail_url'] . "' to '" . $value . "'");
 			}
@@ -196,10 +188,6 @@ if(($page == 'settings' || $page == 'overview')
 					exit;
 				}
 
-				// update menu
-
-				$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `url`="' . $db->escape($value) . '" WHERE `lang` = "menue;ftp;webftp"');
-				$log->logAction(ADM_ACTION, LOG_NOTICE, "set panel_webftp_url in navigation to '" . $value . "'");
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='panel' AND `varname`='webftp_url'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed panel_webftp_url from '" . $settings['panel']['webftp_url'] . "' to '" . $value . "'");
 			}
@@ -750,15 +738,6 @@ if(($page == 'settings' || $page == 'overview')
 				$value = ($_POST['autoresponder_active'] == '1' ? '1' : '0');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='autoresponder' AND `varname`='autoresponder_active'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed autoresponder_active from '" . $settings['autoresponder']['autoresponder_active'] . "' to '" . $value . "'");
-
-				if((int)$value == 1)
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'emails' WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");
-				}
-				else
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'autoresponder.autoresponder_active' WHERE `area` = 'customer' AND `parent_url` = 'customer_email.php' AND `url` = 'customer_autoresponder.php'");
-				}
 			}
 		}
 
@@ -808,16 +787,6 @@ if(($page == 'settings' || $page == 'overview')
 			{
 				$value = validate($_POST['loggingenabled'], 'loggingenabled');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $db->escape($value) . "' WHERE `settinggroup`='logger' AND `varname`='enabled'");
-
-				if((int)$value == 1)
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'change_serversettings' WHERE `area`='admin' AND `parent_url`='admin_misc.nourl' AND `lang`='menue;logger;logger' AND `url`='admin_logger.php?page=log'");
-				}
-				else
-				{
-					$db->query("UPDATE `" . TABLE_PANEL_NAVIGATION . "` SET `required_resources` = 'logger.enabled' WHERE `area`='admin' AND `parent_url`='admin_misc.nourl' AND `lang`='menue;logger;logger' AND `url`='admin_logger.php?page=log'");
-				}
-
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed logger_enabled from '" . $settings['logger']['enabled'] . "' to '" . $value . "'");
 				$settings['logger']['enabled'] = $value;
 			}
@@ -1110,15 +1079,6 @@ if(($page == 'settings' || $page == 'overview')
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . $value . "' WHERE `settinggroup`='billing' AND `varname`='activate_billing'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed billing_activate_billing from '" . $settings['billing']['activate_billing'] . "' to '" . $value . "'");
 				$settings['billing']['activate_billing'] = $value;
-
-				if((int)$value == 1)
-				{
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "edit_billingdata" WHERE `url` = "billing.nourl" AND `lang` = "billing;billing"');
-				}
-				else
-				{
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "billing.activate_billing" WHERE `url` = "billing.nourl" AND `lang` = "billing;billing"');
-				}
 			}
 
 			if(!$only_enabledisable)
@@ -1150,15 +1110,6 @@ if(($page == 'settings' || $page == 'overview')
 				$value = ($_POST['aps_activate_aps'] == '1' ? '1' : '0');
 				$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value`='" . (int)$value . "' WHERE `settinggroup`='aps' AND `varname`='aps_active'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "changed aps_active from '" . $settings['aps']['aps_active'] . "' to '" . $value . "'");
-
-				if((int)$value == 1)
-				{
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "phpenabled" WHERE `url` = "customer_aps.nourl"');
-				}
-				else
-				{
-					$db->query('UPDATE `' . TABLE_PANEL_NAVIGATION . '` SET `required_resources` = "aps.aps_active" WHERE `url` = "customer_aps.nourl"');
-				}
 			}
 
 			if(!$only_enabledisable)
