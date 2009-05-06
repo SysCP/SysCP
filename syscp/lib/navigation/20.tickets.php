@@ -17,7 +17,7 @@
 
 return array (
 	'customer' => array (
-		array (
+		'tickets' => array (
 			'url' => 'customer_tickets.php',
 			'label' => $lng['menue']['ticket']['ticket'],
 			'show_element' => ( $settings['ticket']['enabled'] == true ),
@@ -30,7 +30,7 @@ return array (
 		),
 	),
 	'admin' => array (
-		array (
+		'tickets' => array (
 			'label' => $lng['admin']['ticketsystem'],
 			'show_element' => ( $settings['ticket']['enabled'] == true ),
 			'elements' => array (

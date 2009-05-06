@@ -17,7 +17,7 @@
 
 return array (
 	'customer' => array (
-		array (
+		'index' => array (
 			'url' => 'customer_index.php',
 			'label' => $lng['menue']['main']['main'],
 			'elements' => array (
@@ -38,7 +38,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'email' => array (
 			'url' => 'customer_email.php',
 			'label' => $lng['menue']['email']['email'],
 			'elements' => array (
@@ -67,7 +67,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'mysql' => array (
 			'url' => 'customer_mysql.php',
 			'label' => $lng['menue']['mysql']['mysql'],
 			'elements' => array (
@@ -85,7 +85,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'domains' => array (
 			'url' => 'customer_domains.php',
 			'label' => $lng['menue']['domains']['domains'],
 			'elements' => array (
@@ -95,7 +95,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'ftp' => array (
 			'url' => 'customer_ftp.php',
 			'label' => $lng['menue']['ftp']['ftp'],
 			'elements' => array (
@@ -111,7 +111,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'extras' => array (
 			'url' => 'customer_extras.php',
 			'label' => $lng['menue']['extras']['extras'],
 			'elements' => array (
@@ -125,7 +125,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'traffic' => array (
 			'url' => 'customer_traffic.php',
 			'label' => $lng['menue']['traffic']['traffic'],
 			'elements' => array (
@@ -137,7 +137,7 @@ return array (
 		),
 	),
 	'admin' => array (
-		array (
+		'index' => array (
 			'url' => 'admin_index.php',
 			'label' => $lng['admin']['overview'],
 			'elements' => array (
@@ -158,7 +158,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'resources' => array (
 			'label' => $lng['admin']['resources'],
 			'required_resources' => 'customers',
 			'elements' => array (
@@ -179,7 +179,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'server' => array (
 			'label' => $lng['admin']['server'],
 			'required_resources' => 'change_serversettings',
 			'elements' => array (
@@ -215,7 +215,7 @@ return array (
 				),
 			),
 		),
-		array (
+		'misc' => array (
 			'label' => $lng['admin']['misc'],
 			'elements' => array (
 				array (

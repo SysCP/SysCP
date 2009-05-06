@@ -17,7 +17,7 @@
 
 return array (
 	'customer' => array (
-		array (
+		'aps' => array (
 			'label' => $lng['customer']['aps'],
 			'required_resources' => 'phpenabled',
 			'show_element' => ( $settings['aps']['aps_active'] == true ),
@@ -38,7 +38,7 @@ return array (
 		),
 	),
 	'admin' => array (
-		array (
+		'aps' => array (
 			'label' => $lng['admin']['aps'],
 			'required_resources' => 'can_manage_aps_packages',
 			'show_element' => ( $settings['aps']['aps_active'] == true ),
