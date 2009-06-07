@@ -1479,8 +1479,6 @@ if($page == 'customers'
 
 		if($result['loginname'] != '')
 		{
-			require_once ('./lib/billing_class_pdf.php');
-			require_once ('./lib/billing_class_pdfcontract.php');
 			$contract = new pdfContract();
 			$contract->processData($result, $lng);
 			$contract->outputBrowser();

@@ -677,16 +677,16 @@ $lng['error']['categoryhastickets'] = 'In dieser Kategorie befinden sich noch Ti
 $lng['error']['notmorethanxopentickets'] = $lng['ticket']['notmorethanxopentickets'];
 $lng['admin']['ticketsettings'] = 'Support-Ticket Einstellungen';
 $lng['admin']['archivelastrun'] = 'Letzte Ticket-Archivierung';
-$lng['serversettings']['ticket']['noreply_email'] = 'Keine-Antwort E-Mail Adresse';
-$lng['serversettings']['ticket']['noreply_email_desc'] = 'Die Absender-Adresse der Support-Tickets. Meist sowas wie KEINE-ANTWORT@domain.tld';
-$lng['serversettings']['ticket']['worktime_begin'] = 'Beginn Support-Zeit (hh:mm)';
-$lng['serversettings']['ticket']['worktime_begin_desc'] = 'Beginn der Zeit in der der Support besetzt ist.';
-$lng['serversettings']['ticket']['worktime_end'] = 'Ende Support-Zeit (hh:mm)';
-$lng['serversettings']['ticket']['worktime_end_desc'] = 'Ende der Zeit in der der Support besetzt ist.';
+$lng['serversettings']['ticket']['noreply_email']['title'] = 'Keine-Antwort E-Mail Adresse';
+$lng['serversettings']['ticket']['noreply_email']['description'] = 'Die Absender-Adresse der Support-Tickets. Meist sowas wie KEINE-ANTWORT@domain.tld';
+$lng['serversettings']['ticket']['worktime_begin']['title'] = 'Beginn Support-Zeit (hh:mm)';
+$lng['serversettings']['ticket']['worktime_begin']['description'] = 'Beginn der Zeit in der der Support besetzt ist.';
+$lng['serversettings']['ticket']['worktime_end']['title'] = 'Ende Support-Zeit (hh:mm)';
+$lng['serversettings']['ticket']['worktime_end']['description'] = 'Ende der Zeit in der der Support besetzt ist.';
 $lng['serversettings']['ticket']['worktime_sat'] = 'Support an Samstagen besetzt?';
 $lng['serversettings']['ticket']['worktime_sun'] = 'Support an Sonntagen besetzt?';
-$lng['serversettings']['ticket']['worktime_all'] = 'Kein zeitlich begrenzter Support';
-$lng['serversettings']['ticket']['worktime_all_desc'] = 'Wenn "Ja" &uuml;berschreibt diese Option Start- und Endzeit des Supports';
+$lng['serversettings']['ticket']['worktime_all']['title'] = 'Kein zeitlich begrenzter Support';
+$lng['serversettings']['ticket']['worktime_all']['description'] = 'Wenn "Ja" &uuml;berschreibt diese Option Start- und Endzeit des Supports';
 $lng['serversettings']['ticket']['archiving_days'] = 'Nach wievielen Tagen sollen abgeschlossene Tickets archiviert werden?';
 $lng['customer']['tickets'] = 'Support-Tickets';
 
@@ -705,14 +705,14 @@ $lng['serversettings']['ticket']['noreply_name'] = 'Ticket E-Mail Absendername';
 
 // ADDED IN 1.2.19-svn
 
-$lng['serversettings']['mod_fcgid']['configdir'] = 'Konfigurations-Verzeichnis';
-$lng['serversettings']['mod_fcgid']['configdir_desc'] = 'Wo sollen alle Konfigurationsdateien von fcgid liegen? Wenn Sie keine selbst kompilierte suexec Binary benutzen, was in der Regel der Fall ist, muss dieser Pfad unter /var/www/ liegen.';
-$lng['serversettings']['mod_fcgid']['tmpdir'] = 'Tempor&auml;res Verzeichnis';
+$lng['serversettings']['mod_fcgid']['configdir']['title'] = 'Konfigurations-Verzeichnis';
+$lng['serversettings']['mod_fcgid']['configdir']['description'] = 'Wo sollen alle Konfigurationsdateien von fcgid liegen? Wenn Sie keine selbst kompilierte suexec Binary benutzen, was in der Regel der Fall ist, muss dieser Pfad unter /var/www/ liegen.';
+$lng['serversettings']['mod_fcgid']['tmpdir']['title'] = 'Tempor&auml;res Verzeichnis';
 
 // ADDED IN 1.2.19-svn3
 
-$lng['serversettings']['ticket']['reset_cycle'] = 'Turnus verbrauchte Tickets zur&uuml;cksetzen';
-$lng['serversettings']['ticket']['reset_cycle_desc'] = 'Setzt die Anzahl der vom Kunden verbrauchten Tickets in dem angegebenen Turnus auf 0';
+$lng['serversettings']['ticket']['reset_cycle']['title'] = 'Turnus verbrauchte Tickets zur&uuml;cksetzen';
+$lng['serversettings']['ticket']['reset_cycle']['description'] = 'Setzt die Anzahl der vom Kunden verbrauchten Tickets in dem angegebenen Turnus auf 0';
 $lng['admin']['tickets']['daily'] = 'T&auml;glich';
 $lng['admin']['tickets']['weekly'] = 'W&ouml;chentlich';
 $lng['admin']['tickets']['monthly'] = 'Monatlich';
@@ -754,8 +754,8 @@ $lng['serversettings']['logger']['enable'] = 'Logging ja/nein';
 $lng['serversettings']['logger']['severity'] = 'Logging Level';
 $lng['admin']['logger']['normal'] = 'Normal';
 $lng['admin']['logger']['paranoid'] = 'Paranoid';
-$lng['serversettings']['logger']['types'] = 'Log-Art(en)';
-$lng['serversettings']['logger']['types_desc'] = 'Tragen Sie hier die gew&uuml;nschten Logtypen kommagetrennt ein.<br />M&ouml;gliche Logtypen sind: syslog, file, mysql';
+$lng['serversettings']['logger']['types']['title'] = 'Log-Art(en)';
+$lng['serversettings']['logger']['types']['description'] = 'Tragen Sie hier die gew&uuml;nschten Logtypen kommagetrennt ein.<br />M&ouml;gliche Logtypen sind: syslog, file, mysql';
 $lng['serversettings']['logger']['logfile'] = 'Log-Datei Pfad inklusive Dateinamen';
 $lng['error']['logerror'] = 'Log-Fehler: %s';
 $lng['serversettings']['logger']['logcron'] = 'Log Cronjobs (einen Durchgang)';
@@ -874,7 +874,7 @@ $lng['pwdreminder']['success'] = 'Passwort erfolgreich zur&uuml;ckgesetzt.<br />
 
 // ADDED IN 1.2.19-svn18
 
-$lng['serversettings']['allow_preset'] = 'Erlaube das Zur&uuml;cksetzen des Kundenpassworts';
+$lng['serversettings']['allow_password_reset']['title'] = 'Erlaube das Zur&uuml;cksetzen des Kundenpassworts';
 $lng['pwdreminder']['notallowed'] = 'Das Zur&uuml;cksetzen des Passworts ist deaktiviert';
 
 // ADDED IN 1.2.19-svn20
@@ -1053,9 +1053,9 @@ $lng['question']['billing_taxrate_reallydelete'] = 'Wollen Sie diesen Steuersart
 
 // ADDED IN 1.2.19-svn22
 
-$lng['serversettings']['allow_preset_desc'] = 'Kunden k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
-$lng['serversettings']['allow_preset_admin'] = 'Erlaube das Zur&uuml;cksetzen von Admin-/Reseller-Passw&ouml;rtern.';
-$lng['serversettings']['allow_preset_admin_desc'] = 'Admins/Reseller k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
+$lng['serversettings']['allow_password_reset']['description'] = 'Kunden k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
+$lng['serversettings']['allow_password_reset_admin']['title'] = 'Erlaube das Zur&uuml;cksetzen von Admin-/Reseller-Passw&ouml;rtern.';
+$lng['serversettings']['allow_password_reset_admin']['description'] = 'Admins/Reseller k&ouml;nnen ihr Passwort zur&uuml;cksetzen und bekommen ein Neues per E-Mail zugesandt';
 
 // ADDED IN 1.2.19-svn23
 
@@ -1079,7 +1079,7 @@ $lng['emails']['quota'] = 'Kontingent';
 $lng['emails']['noquota'] = 'Kein Kontingent';
 $lng['emails']['updatequota'] = 'Update Kontingent';
 $lng['serversettings']['mail_quota']['title'] = 'Mailbox-Kontingent';
-$lng['serversettings']['mail_quota']['description'] = 'Standard-Kontingent f&uuml;r neuerstellte E-Mail Benutzerkonten';
+$lng['serversettings']['mail_quota']['description'] = 'Standard-Kontingent f&uuml;r neuerstellte E-Mail Benutzerkonten (MegaByte)';
 $lng['serversettings']['mail_quota_enabled']['title'] = 'Nutze E-Mail Kontingent f&uuml;r Kunden';
 $lng['serversettings']['mail_quota_enabled']['description'] = 'Aktiviere Kontingent f&uuml;r E-Mailkonten. Standard ist <b>Nein</b> da dies eine spezielle Konfiguration voraussetzt.';
 $lng['serversettings']['mail_quota_enabled']['removelink'] = 'Hier klicken, um alle E-Mail Kontingente zu entfernen';
@@ -1155,14 +1155,14 @@ $lng['admin']['phpconfig']['domain'] = 'Wird mit der Domain ersetzt.';
 $lng['admin']['phpconfig']['customer'] = 'Wird mit dem Loginnamen des Kunden ersetzt, dem die Domain geh&ouml;rt.';
 $lng['admin']['phpconfig']['admin'] = 'Wird mit dem Loginnamen des Admins ersetzt, dem die Domain geh&ouml;rt.';
 $lng['login']['backtologin'] = 'Zur&uuml;ck zum Login';
-$lng['serversettings']['mod_fcgid']['starter'] = 'Prozesse je Domain';
-$lng['serversettings']['mod_fcgid']['starter_desc'] = 'Wieviele PHP Prozesse pro Domain sollen gestartet/erlaubt werden. Der Wert 0 wird empfohlen, da PHP dann selbst die Anzahl effizient verwaltet.';
-$lng['serversettings']['mod_fcgid']['wrapper'] = 'Wrappereinbindung in Vhosts';
-$lng['serversettings']['mod_fcgid']['wrapper_desc'] = 'Wie sollen die Wrapper in den Vhosts eingebunden werden';
-$lng['serversettings']['mod_fcgid']['tmpdir_desc'] = 'Wo sollen die tempor&auml;ren Verzeichnisse erstellt werden';
+$lng['serversettings']['mod_fcgid']['starter']['title'] = 'Prozesse je Domain';
+$lng['serversettings']['mod_fcgid']['starter']['description'] = 'Wieviele PHP Prozesse pro Domain sollen gestartet/erlaubt werden. Der Wert 0 wird empfohlen, da PHP dann selbst die Anzahl effizient verwaltet.';
+$lng['serversettings']['mod_fcgid']['wrapper']['title'] = 'Wrappereinbindung in Vhosts';
+$lng['serversettings']['mod_fcgid']['wrapper']['description'] = 'Wie sollen die Wrapper in den Vhosts eingebunden werden';
+$lng['serversettings']['mod_fcgid']['tmpdir']['description'] = 'Wo sollen die tempor&auml;ren Verzeichnisse erstellt werden';
 $lng['admin']['know_what_youre_doing'] = '&Auml;ndern Sie diese Einstellungen nur, wenn Sie wissen was Sie tun!';
-$lng['serversettings']['mod_fcgid']['peardir'] = 'Globale PEAR Verzeichnisse';
-$lng['serversettings']['mod_fcgid']['peardir_desc'] = 'Welche globalen PEAR Verzeichnisse sollen in den php.ini Einstellungen ersetzt werden? Einzelne Verzeichnisse sind mit einem Doppelpunkt zu trennen.';
+$lng['serversettings']['mod_fcgid']['peardir']['title'] = 'Globale PEAR Verzeichnisse';
+$lng['serversettings']['mod_fcgid']['peardir']['description'] = 'Welche globalen PEAR Verzeichnisse sollen in den php.ini Einstellungen ersetzt werden? Einzelne Verzeichnisse sind mit einem Doppelpunkt zu trennen.';
 
 //improved syscp 2
 
@@ -1373,8 +1373,8 @@ $lng['admin']['phpsettings']['binary'] = 'PHP Binary';
 $lng['admin']['phpsettings']['file_extensions'] = 'Dateiendungen';
 $lng['admin']['phpsettings']['file_extensions_note'] = '(ohne Punkt, durch Leerzeichen getrennt)';
 $lng['admin']['mod_fcgid_maxrequests']['title'] = 'Maxmale PHP Requests f&uuml;r diese Domain (leer f&uuml;r Standardwert)';
-$lng['serversettings']['mod_fcgid']['maxrequests'] = 'Maximale Requests pro Domain';
-$lng['serversettings']['mod_fcgid']['maxrequests_desc'] = 'Wieviele PHP Requests pro Domain sollen erlaubt werden?';
+$lng['serversettings']['mod_fcgid']['maxrequests']['title'] = 'Maximale Requests pro Domain';
+$lng['serversettings']['mod_fcgid']['maxrequests']['description'] = 'Wieviele PHP Requests pro Domain sollen erlaubt werden?';
 
 // fix bug #1124
 $lng['admin']['webserver'] = 'Webserver';

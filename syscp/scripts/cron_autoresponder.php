@@ -22,7 +22,6 @@
 
 $needrootdb = false;
 require (dirname(__FILE__) . '/../lib/cron_init.php');
-require (dirname(__FILE__) . '/../lib/class.phpmailer.php');
 $mail = new PHPMailer();
 
 //dont do anything when module is disabled

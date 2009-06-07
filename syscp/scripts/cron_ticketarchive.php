@@ -37,12 +37,6 @@ include (dirname(__FILE__) . '/../lib/cron_init.php');
  */
 
 /**
- * Includes the Ticket class
- */
-
-require (dirname(__FILE__) . '/../lib/class_ticket.php');
-
-/**
  * ARCHIVING CLOSED TICKETS
  */
 

@@ -117,6 +117,12 @@ if(isset($sql['root_user']) && isset($sql['root_password']) && (!isset($sql_root
 }
 
 /**
+ * Includes the Functions
+ */
+
+require ($pathtophpfiles . '/lib/functions.php');
+
+/**
  * Includes the MySQL-Tabledefinitions etc.
  */
 
@@ -127,7 +133,6 @@ fwrite($debugHandler, 'Table definitions included' . "\n");
  * Includes the MySQL-Connection-Class
  */
 
-require ($pathtophpfiles . '/lib/class_mysqldb.php');
 fwrite($debugHandler, 'Database Class has been loaded' . "\n");
 $db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
 
@@ -194,11 +199,6 @@ if(!isset($settings['system']['dbversion'])
 
 fwrite($debugHandler, 'SysCP Version and Database Version are correct' . "\n");
 
-/**
- * Includes the Functions
- */
-
-require ($pathtophpfiles . '/lib/functions.php');
 $cronbasedir = makeCorrectDir($pathtophpfiles . '/scripts/');
 $crondir = new DirectoryIterator($cronbasedir);
 $cronfilename = basename($_SERVER['PHP_SELF'], '.php');
@@ -237,21 +237,6 @@ if(isset($inc_crons[0]))
 
 unset($file, $crondir, $cronname, $cronscriptFullName, $cronfilename, $cronbasedir);
 fwrite($debugHandler, 'Functions have been included' . "\n");
-
-/**
- * Includes Logger-Classes
- */
-
-require ($pathtophpfiles . '/lib/abstract/abstract_class_logger.php');
-require ($pathtophpfiles . '/lib/class_syslogger.php');
-require ($pathtophpfiles . '/lib/class_filelogger.php');
-require ($pathtophpfiles . '/lib/class_mysqllogger.php');
-
-/**
- * Includes the SyscpLogger class
- */
-
-require ($pathtophpfiles . '/lib/class_syscplogger.php');
 
 /**
  * Initialize logging

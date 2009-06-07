@@ -688,16 +688,16 @@ $lng['error']['categoryhastickets'] = 'La catégorie possède des billets.<br />Ve
 $lng['error']['notmorethanxopentickets'] = $lng['ticket']['notmorethanxopentickets'];
 $lng['admin']['ticketsettings'] = 'Paramètres des billets de support';
 $lng['admin']['archivelastrun'] = 'Derniers billets archivés';
-$lng['serversettings']['ticket']['noreply_email'] = 'Adresse e-mail de non réponse';
-$lng['serversettings']['ticket']['noreply_email_desc'] = 'L\'adresse e-mail de l\'expéditeur de notification pour les billets de support, quelque chose du type no-reply@domaine.com';
-$lng['serversettings']['ticket']['worktime_begin'] = 'Début du support (hh:mm)';
-$lng['serversettings']['ticket']['worktime_begin_desc'] = 'Horaire de début du support';
-$lng['serversettings']['ticket']['worktime_end'] = 'Fin du support (hh:mm)';
-$lng['serversettings']['ticket']['worktime_end_desc'] = 'Horaire de fin du support';
+$lng['serversettings']['ticket']['noreply_email']['title'] = 'Adresse e-mail de non réponse';
+$lng['serversettings']['ticket']['noreply_email']['description'] = 'L\'adresse e-mail de l\'expéditeur de notification pour les billets de support, quelque chose du type no-reply@domaine.com';
+$lng['serversettings']['ticket']['worktime_begin']['title'] = 'Début du support (hh:mm)';
+$lng['serversettings']['ticket']['worktime_begin']['description'] = 'Horaire de début du support';
+$lng['serversettings']['ticket']['worktime_end']['title'] = 'Fin du support (hh:mm)';
+$lng['serversettings']['ticket']['worktime_end']['description'] = 'Horaire de fin du support';
 $lng['serversettings']['ticket']['worktime_sat'] = 'Support disponible le samedi ?';
 $lng['serversettings']['ticket']['worktime_sun'] = 'Support disponible le dimanche ?';
-$lng['serversettings']['ticket']['worktime_all'] = 'Aucune limite horaire pour le support';
-$lng['serversettings']['ticket']['worktime_all_desc'] = 'Si "Oui", les options pour le début et la fin du support seront écrasés.';
+$lng['serversettings']['ticket']['worktime_all']['title'] = 'Aucune limite horaire pour le support';
+$lng['serversettings']['ticket']['worktime_all']['description'] = 'Si "Oui", les options pour le début et la fin du support seront écrasés.';
 $lng['serversettings']['ticket']['archiving_days'] = 'Après combien de jours un billet fermé sera automatiquement archivé ?';
 $lng['customer']['tickets'] = 'Billet de support';
 
@@ -716,14 +716,14 @@ $lng['serversettings']['ticket']['noreply_name'] = 'Nom de l\'expéditeur e-mail 
 
 // ADDED IN 1.2.19-svn1
 
-$lng['serversettings']['mod_fcgid']['configdir'] = 'Dossier de configuration FCGI';
-$lng['serversettings']['mod_fcgid']['configdir_desc'] = 'Où doivent être stockés les fichiers de configuration pour FCGI ?';
-$lng['serversettings']['mod_fcgid']['tmpdir'] = 'Dossier temporaire pour FCGI';
+$lng['serversettings']['mod_fcgid']['configdir']['title'] = 'Dossier de configuration FCGI';
+$lng['serversettings']['mod_fcgid']['configdir']['description'] = 'Où doivent être stockés les fichiers de configuration pour FCGI ?';
+$lng['serversettings']['mod_fcgid']['tmpdir']['title'] = 'Dossier temporaire pour FCGI';
 
 // ADDED IN 1.2.19-svn3
 
-$lng['serversettings']['ticket']['reset_cycle'] = 'Intervalle de réinitialisation des billets utilisés';
-$lng['serversettings']['ticket']['reset_cycle_desc'] = 'Remettre le compteur de billets à 0 dans le temps imparti';
+$lng['serversettings']['ticket']['reset_cycle']['title'] = 'Intervalle de réinitialisation des billets utilisés';
+$lng['serversettings']['ticket']['reset_cycle']['description'] = 'Remettre le compteur de billets à 0 dans le temps imparti';
 $lng['admin']['tickets']['daily'] = 'Journalière';
 $lng['admin']['tickets']['weekly'] = 'Hebdomadaire';
 $lng['admin']['tickets']['monthly'] = 'Mensuelle';
@@ -765,8 +765,8 @@ $lng['serversettings']['logger']['enable'] = 'Activer / Désactiver les logs';
 $lng['serversettings']['logger']['severity'] = 'Niveau de log';
 $lng['admin']['logger']['normal'] = 'normal';
 $lng['admin']['logger']['paranoid'] = 'paranoïaque';
-$lng['serversettings']['logger']['types'] = 'Type(s) de log';
-$lng['serversettings']['logger']['types_desc'] = 'Spécifiez les types de log séparés par des virgules.<br />Les types de log disponible sont : syslog, file, mysql';
+$lng['serversettings']['logger']['types']['title'] = 'Type(s) de log';
+$lng['serversettings']['logger']['types']['description'] = 'Spécifiez les types de log séparés par des virgules.<br />Les types de log disponible sont : syslog, file, mysql';
 $lng['serversettings']['logger']['logfile'] = 'Nom du fichier de log, dossier + nom du fichier';
 $lng['error']['logerror'] = 'Erreur log : %s';
 $lng['serversettings']['logger']['logcron'] = 'Loguer les travaux de cron (lancer une fois)';
@@ -902,7 +902,7 @@ $lng['pwdreminder']['success'] = 'Mot de passe correctement réinitialiser.<br />
 
 // ADDED IN 1.2.19-svn18
 
-$lng['serversettings']['allow_preset'] = 'Permettre aux clients de réinitialiser leurs mots de passe';
+$lng['serversettings']['allow_password_reset']['title'] = 'Permettre aux clients de réinitialiser leurs mots de passe';
 $lng['pwdreminder']['notallowed'] = 'La réinitialisation des mots de passe est désactivée.';
 
 // ADDED IN 1.2.19-svn20
@@ -1081,9 +1081,9 @@ $lng['question']['billing_taxrate_reallydelete'] = 'Etes-vous sûr de vouloir sup
 
 // ADDED IN 1.2.19-svn22
 
-$lng['serversettings']['allow_preset_desc'] = 'Les clients peuvent réinitialiser leurs mots de passe et il sera envoyé à leurs propres adresses e-mails';
-$lng['serversettings']['allow_preset_admin'] = 'Permettre la réinitialisation des mots de passe par les administrateurs';
-$lng['serversettings']['allow_preset_admin_desc'] = 'Les administrateurs / revendeurs peuvent réinitialiser leurs mots de passe et il sera envoyé à leurs propres adresses e-mails';
+$lng['serversettings']['allow_password_reset']['description'] = 'Les clients peuvent réinitialiser leurs mots de passe et il sera envoyé à leurs propres adresses e-mails';
+$lng['serversettings']['allow_password_reset_admin']['title'] = 'Permettre la réinitialisation des mots de passe par les administrateurs';
+$lng['serversettings']['allow_password_reset_admin']['description'] = 'Les administrateurs / revendeurs peuvent réinitialiser leurs mots de passe et il sera envoyé à leurs propres adresses e-mails';
 
 // ADDED IN 1.2.19-svn23
 

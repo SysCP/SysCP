@@ -673,16 +673,16 @@ $lng['error']['categoryhastickets'] = 'The category still has tickets in it.<br 
 $lng['error']['notmorethanxopentickets'] = $lng['ticket']['notmorethanxopentickets'];
 $lng['admin']['ticketsettings'] = 'Support-Ticket settings';
 $lng['admin']['archivelastrun'] = 'Last ticket archiving';
-$lng['serversettings']['ticket']['noreply_email'] = 'No-reply e-mail address';
-$lng['serversettings']['ticket']['noreply_email_desc'] = 'The sender-address for support-ticket, mostly something like no-reply@domain.tld';
-$lng['serversettings']['ticket']['worktime_begin'] = 'Begin support-time (hh:mm)';
-$lng['serversettings']['ticket']['worktime_begin_desc'] = 'Start-time when support is available';
-$lng['serversettings']['ticket']['worktime_end'] = 'End support-time (hh:mm)';
-$lng['serversettings']['ticket']['worktime_end_desc'] = 'End-time when support is available';
+$lng['serversettings']['ticket']['noreply_email']['title'] = 'No-reply e-mail address';
+$lng['serversettings']['ticket']['noreply_email']['description'] = 'The sender-address for support-ticket, mostly something like no-reply@domain.tld';
+$lng['serversettings']['ticket']['worktime_begin']['title'] = 'Begin support-time (hh:mm)';
+$lng['serversettings']['ticket']['worktime_begin']['description'] = 'Start-time when support is available';
+$lng['serversettings']['ticket']['worktime_end']['title'] = 'End support-time (hh:mm)';
+$lng['serversettings']['ticket']['worktime_end']['description'] = 'End-time when support is available';
 $lng['serversettings']['ticket']['worktime_sat'] = 'Support available on saturdays?';
 $lng['serversettings']['ticket']['worktime_sun'] = 'Support available on sundays?';
-$lng['serversettings']['ticket']['worktime_all'] = 'No time limit for support';
-$lng['serversettings']['ticket']['worktime_all_desc'] = 'If "Yes" the options for start- and endtime will be overwritten';
+$lng['serversettings']['ticket']['worktime_all']['title'] = 'No time limit for support';
+$lng['serversettings']['ticket']['worktime_all']['description'] = 'If "Yes" the options for start- and endtime will be overwritten';
 $lng['serversettings']['ticket']['archiving_days'] = 'After how many days should closed tickets be archived?';
 $lng['customer']['tickets'] = 'Support-tickets';
 
@@ -701,14 +701,14 @@ $lng['serversettings']['ticket']['noreply_name'] = 'Ticket e-mail sendername';
 
 // ADDED IN 1.2.19-svn1
 
-$lng['serversettings']['mod_fcgid']['configdir'] = 'Configuration directory';
-$lng['serversettings']['mod_fcgid']['configdir_desc'] = 'Where should all fcgid-configuration files be stored? If you don\'t use a self compiled suexec binary, which is the normal situation, this path must be under /var/www/';
-$lng['serversettings']['mod_fcgid']['tmpdir'] = 'Temp directory';
+$lng['serversettings']['mod_fcgid']['configdir']['title'] = 'Configuration directory';
+$lng['serversettings']['mod_fcgid']['configdir']['description'] = 'Where should all fcgid-configuration files be stored? If you don\'t use a self compiled suexec binary, which is the normal situation, this path must be under /var/www/';
+$lng['serversettings']['mod_fcgid']['tmpdir']['title'] = 'Temp directory';
 
 // ADDED IN 1.2.19-svn3
 
-$lng['serversettings']['ticket']['reset_cycle'] = 'Reset used tickets cycle';
-$lng['serversettings']['ticket']['reset_cycle_desc'] = 'Reset the customers used ticket counter to 0 in the chosen cycle';
+$lng['serversettings']['ticket']['reset_cycle']['title'] = 'Reset used tickets cycle';
+$lng['serversettings']['ticket']['reset_cycle']['description'] = 'Reset the customers used ticket counter to 0 in the chosen cycle';
 $lng['admin']['tickets']['daily'] = 'Daily';
 $lng['admin']['tickets']['weekly'] = 'Weekly';
 $lng['admin']['tickets']['monthly'] = 'Monthly';
@@ -750,8 +750,8 @@ $lng['serversettings']['logger']['enable'] = 'Logging enabled/disabled';
 $lng['serversettings']['logger']['severity'] = 'Logging level';
 $lng['admin']['logger']['normal'] = 'normal';
 $lng['admin']['logger']['paranoid'] = 'paranoid';
-$lng['serversettings']['logger']['types'] = 'Log-type(s)';
-$lng['serversettings']['logger']['types_desc'] = 'Specify logtypes seperated by comma.<br />Available logtypes are: syslog, file, mysql';
+$lng['serversettings']['logger']['types']['title'] = 'Log-type(s)';
+$lng['serversettings']['logger']['types']['description'] = 'Specify logtypes seperated by comma.<br />Available logtypes are: syslog, file, mysql';
 $lng['serversettings']['logger']['logfile'] = 'Logfile path including filename';
 $lng['error']['logerror'] = 'Log-Error: %s';
 $lng['serversettings']['logger']['logcron'] = 'Log cronjobs (one run)';
@@ -870,7 +870,7 @@ $lng['pwdreminder']['success'] = 'Password reset successfully.<br />You now shou
 
 // ADDED IN 1.2.19-svn18
 
-$lng['serversettings']['allow_preset'] = 'Allow password reset by customers';
+$lng['serversettings']['allow_password_reset']['title'] = 'Allow password reset by customers';
 $lng['pwdreminder']['notallowed'] = 'Password reset is deactivated';
 
 // ADDED IN 1.2.19-svn20
@@ -1049,9 +1049,9 @@ $lng['question']['billing_taxrate_reallydelete'] = 'Do you really want to delete
 
 // ADDED IN 1.2.19-svn22
 
-$lng['serversettings']['allow_preset_desc'] = 'Customers can reset their password and a new password will be sent to their e-mail address';
-$lng['serversettings']['allow_preset_admin'] = 'Allow password reset by admins';
-$lng['serversettings']['allow_preset_admin_desc'] = 'Admins/reseller can reset their password and a new password will be sent to their e-mail address';
+$lng['serversettings']['allow_password_reset']['description'] = 'Customers can reset their password and a new password will be sent to their e-mail address';
+$lng['serversettings']['allow_password_reset_admin']['title'] = 'Allow password reset by admins';
+$lng['serversettings']['allow_password_reset_admin']['description'] = 'Admins/reseller can reset their password and a new password will be sent to their e-mail address';
 
 // ADDED IN 1.2.19-svn23
 
@@ -1074,7 +1074,7 @@ $lng['emails']['quota'] = 'Quota';
 $lng['emails']['noquota'] = 'No quota';
 $lng['emails']['updatequota'] = 'Update Quota';
 $lng['serversettings']['mail_quota']['title'] = 'Mailbox-quota';
-$lng['serversettings']['mail_quota']['description'] = 'The default quota for a new created mailboxes.';
+$lng['serversettings']['mail_quota']['description'] = 'The default quota for a new created mailboxes (MegaByte).';
 $lng['serversettings']['mail_quota_enabled']['title'] = 'Use mailbox-quota for customers';
 $lng['serversettings']['mail_quota_enabled']['description'] = 'Activate to use quotas on mailboxes. Default is <b>No</b> since this requires a special setup.';
 $lng['serversettings']['mail_quota_enabled']['removelink'] = 'Click here to wipe all quotas for mail accounts.';
@@ -1152,13 +1152,13 @@ $lng['admin']['phpconfig']['domain'] = 'Will be replaced with the domain.';
 $lng['admin']['phpconfig']['customer'] = 'Will be replaced with the loginname of the customer who owns this domain.';
 $lng['admin']['phpconfig']['admin'] = 'Will be replaced with the loginname of the admin who owns this domain.';
 $lng['login']['backtologin'] = 'Back to login';
-$lng['serversettings']['mod_fcgid']['starter'] = 'Processes per Domain';
-$lng['serversettings']['mod_fcgid']['starter_desc'] = 'How many processes should be started/allowed per domain? The value 0 is recommended cause PHP will then manage the amount of processes itself very efficiently.';
-$lng['serversettings']['mod_fcgid']['wrapper'] = 'Wrapper in Vhosts';
-$lng['serversettings']['mod_fcgid']['wrapper_desc'] = 'How should the wrapper be included in the Vhosts';
-$lng['serversettings']['mod_fcgid']['tmpdir_desc'] = 'Where should the temp directories be stored';
-$lng['serversettings']['mod_fcgid']['peardir'] = 'Global PEAR directories';
-$lng['serversettings']['mod_fcgid']['peardir_desc'] = 'Which global PEAR directories should be replaced in every php.ini config? Different directories must be separated by a colon.';
+$lng['serversettings']['mod_fcgid']['starter']['title'] = 'Processes per Domain';
+$lng['serversettings']['mod_fcgid']['starter']['description'] = 'How many processes should be started/allowed per domain? The value 0 is recommended cause PHP will then manage the amount of processes itself very efficiently.';
+$lng['serversettings']['mod_fcgid']['wrapper']['title'] = 'Wrapper in Vhosts';
+$lng['serversettings']['mod_fcgid']['wrapper']['description'] = 'How should the wrapper be included in the Vhosts';
+$lng['serversettings']['mod_fcgid']['tmpdir']['description'] = 'Where should the temp directories be stored';
+$lng['serversettings']['mod_fcgid']['peardir']['title'] = 'Global PEAR directories';
+$lng['serversettings']['mod_fcgid']['peardir']['description'] = 'Which global PEAR directories should be replaced in every php.ini config? Different directories must be separated by a colon.';
 
 //improved syscp 2
 
@@ -1369,8 +1369,8 @@ $lng['admin']['phpsettings']['binary'] = 'PHP Binary';
 $lng['admin']['phpsettings']['file_extensions'] = 'File extensions';
 $lng['admin']['phpsettings']['file_extensions_note'] = '(without dot, separated by spaces)';
 $lng['admin']['mod_fcgid_maxrequests']['title'] = 'Maximum php requests for this domain (empty for default value)';
-$lng['serversettings']['mod_fcgid']['maxrequests'] = 'Maximum Requests per Domain';
-$lng['serversettings']['mod_fcgid']['maxrequests_desc'] = 'How many requests should be allowed per domain?';
+$lng['serversettings']['mod_fcgid']['maxrequests']['title'] = 'Maximum Requests per Domain';
+$lng['serversettings']['mod_fcgid']['maxrequests']['description'] = 'How many requests should be allowed per domain?';
 
 // fix bug #1124
 $lng['billing']['categories']['domains_rowcaption_setup_included_domain'] = 'Included domain {domain} - Setup fee';
@@ -1397,4 +1397,10 @@ $lng['serversettings']['ssl']['ssl_ca_file'] = 'Path to the SSL CA certificate';
 
 $lng['error']['usernamealreadyexists'] = 'The username %s already exists.';
 
+$lng['error']['plausibilitychecknotunderstood'] = 'Answer of plausibility check not understood.';
+$lng['error']['errorwhensaving'] = 'An error occured when saving the field %s';
+
+$lng['success']['success'] = 'Information';
+$lng['success']['clickheretocontinue'] = 'Click here to continue';
+$lng['success']['settingssaved'] = 'The settings have been successfully saved.';
 ?>

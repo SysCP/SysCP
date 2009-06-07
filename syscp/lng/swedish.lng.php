@@ -671,16 +671,16 @@ $lng['error']['categoryhastickets'] = 'Denna kategori har fortfarande supportäre
 $lng['error']['notmorethanxopentickets'] = $lng['ticket']['notmorethanxopentickets'];
 $lng['admin']['ticketsettings'] = 'Supportärende inställningar';
 $lng['admin']['archivelastrun'] = 'Sista supportärende som arkiverats';
-$lng['serversettings']['ticket']['noreply_email'] = 'Svara-Inte E-post adress';
-$lng['serversettings']['ticket']['noreply_email_desc'] = 'Avsändaradressen för support-ticket, exempel: inget-svar@syscp.se';
-$lng['serversettings']['ticket']['worktime_begin'] = 'Start av support-tid (hh:mm)';
-$lng['serversettings']['ticket']['worktime_begin_desc'] = 'Start-tid, när supporten är tillgänglig';
-$lng['serversettings']['ticket']['worktime_end'] = 'Slut på support-tid (hh:mm)';
-$lng['serversettings']['ticket']['worktime_end_desc'] = 'Slut-tid, när supporten inte längre är tillgänglig';
+$lng['serversettings']['ticket']['noreply_email']['title'] = 'Svara-Inte E-post adress';
+$lng['serversettings']['ticket']['noreply_email']['description'] = 'Avsändaradressen för support-ticket, exempel: inget-svar@syscp.se';
+$lng['serversettings']['ticket']['worktime_begin']['title'] = 'Start av support-tid (hh:mm)';
+$lng['serversettings']['ticket']['worktime_begin']['description'] = 'Start-tid, när supporten är tillgänglig';
+$lng['serversettings']['ticket']['worktime_end']['title'] = 'Slut på support-tid (hh:mm)';
+$lng['serversettings']['ticket']['worktime_end']['description'] = 'Slut-tid, när supporten inte längre är tillgänglig';
 $lng['serversettings']['ticket']['worktime_sat'] = 'Supporten har öppet på lördagar?';
 $lng['serversettings']['ticket']['worktime_sun'] = 'Supporten har öppet på söndagar?';
-$lng['serversettings']['ticket']['worktime_all'] = 'Supporten är tillgänglig dygnet runt';
-$lng['serversettings']['ticket']['worktime_all_desc'] = 'Om du väljer "Ja" så kommer start och stopp tiderna att skrivas över';
+$lng['serversettings']['ticket']['worktime_all']['title'] = 'Supporten är tillgänglig dygnet runt';
+$lng['serversettings']['ticket']['worktime_all']['description'] = 'Om du väljer "Ja" så kommer start och stopp tiderna att skrivas över';
 $lng['serversettings']['ticket']['archiving_days'] = 'Efter hur många dagar skall stängda tickets arkiveras?';
 $lng['customer']['tickets'] = 'Support ärenden';
 
@@ -699,14 +699,14 @@ $lng['serversettings']['ticket']['noreply_name'] = 'Supportärendes namn på E-pos
 
 // ADDED IN 1.2.19-svn1
 
-$lng['serversettings']['mod_fcgid']['configdir'] = 'FCGI konfigurationskatalog';
-$lng['serversettings']['mod_fcgid']['configdir_desc'] = 'I vilken katalog skall alla fcgi-konfigurationfiler lagras?';
-$lng['serversettings']['mod_fcgid']['tmpdir'] = 'FCGI temporärkatalog';
+$lng['serversettings']['mod_fcgid']['configdir']['title'] = 'FCGI konfigurationskatalog';
+$lng['serversettings']['mod_fcgid']['configdir']['description'] = 'I vilken katalog skall alla fcgi-konfigurationfiler lagras?';
+$lng['serversettings']['mod_fcgid']['tmpdir']['title'] = 'FCGI temporärkatalog';
 
 // ADDED IN 1.2.19-svn3
 
-$lng['serversettings']['ticket']['reset_cycle'] = 'Återställ cykeln för använda supportärenden';
-$lng['serversettings']['ticket']['reset_cycle_desc'] = 'Återställ kundens räknare för använda supportärenden. Vald cykel = 0';
+$lng['serversettings']['ticket']['reset_cycle']['title'] = 'Återställ cykeln för använda supportärenden';
+$lng['serversettings']['ticket']['reset_cycle']['description'] = 'Återställ kundens räknare för använda supportärenden. Vald cykel = 0';
 $lng['admin']['tickets']['daily'] = 'Dagligen';
 $lng['admin']['tickets']['weekly'] = 'Varje vecka';
 $lng['admin']['tickets']['monthly'] = 'Varje månad';

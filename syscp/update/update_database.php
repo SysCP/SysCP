@@ -31,7 +31,7 @@ require ('../lib/tables.inc.php');
  * Inlcudes the MySQL-Connection-Class
  */
 
-require ('../lib/class_mysqldb.php');
+require ('../lib/classes/database/class.db.php');
 $db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
 unset($sql['password']);
 unset($db->password);
@@ -51,20 +51,6 @@ unset($result);
 
 require ('../lib/functions.php');
 
-/**
- * Includes Logger-Classes
- */
-
-require ('../lib/abstract/abstract_class_logger.php');
-require ('../lib/class_syslogger.php');
-require ('../lib/class_filelogger.php');
-require ('../lib/class_mysqllogger.php');
-
-/**
- * Includes the SyscpLogger class
- */
-
-require ('../lib/class_syscplogger.php');
 $updatelog = SysCPLogger::getInstanceOf(array('loginname' => 'updater'), $db, $settings);
 
 // Call old legacy updater, so people who haven't used 1.4.2 yet will also get caught by the new updater

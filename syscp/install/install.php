@@ -42,12 +42,6 @@ if(file_exists('../lib/userdata.inc.php'))
 require ('../lib/functions.php');
 
 /**
- * Include the MySQL-Connection-Class
- */
-
-require ('../lib/class_mysqldb.php');
-
-/**
  * Include the MySQL-Table-Definitions
  */
 

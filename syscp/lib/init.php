@@ -77,6 +77,12 @@ if(isset($sql['root_user']) && isset($sql['root_password']) && (!isset($sql_root
 }
 
 /**
+ * Includes the Functions
+ */
+
+require ('./lib/functions.php');
+
+/**
  * Includes the MySQL-Tabledefinitions etc.
  */
 
@@ -86,7 +92,6 @@ require ('./lib/tables.inc.php');
  * Includes the MySQL-Connection-Class
  */
 
-require ('./lib/class_mysqldb.php');
 $db = new db($sql['host'], $sql['user'], $sql['password'], $sql['db']);
 unset($sql['password']);
 unset($db->password);
@@ -125,56 +130,10 @@ else
 }
 
 /**
- * Include our class_idna_convert_wrapper.php, which offers methods for de-
- * and encoding IDN domains.
- */
-
-require ('./lib/class_idna_convert_wrapper.php');
-
-/**
  * Create a new idna converter
  */
 
 $idna_convert = new idna_convert_wrapper();
-
-/**
- * Includes the Functions
- */
-
-require ('./lib/functions.php');
-
-/**
- * Includes the Paging class
- */
-
-require ('./lib/class_paging.php');
-
-/**
- * Includes the Ticket class
- */
-
-require ('./lib/class_ticket.php');
-
-/**
- * Includes Logger-Classes
- */
-
-require ('./lib/abstract/abstract_class_logger.php');
-require ('./lib/class_syslogger.php');
-require ('./lib/class_filelogger.php');
-require ('./lib/class_mysqllogger.php');
-
-/**
- * Includes the SyscpLogger class
- */
-
-require ('./lib/class_syscplogger.php');
-
-/**
- * Includes the mailing facility
- */
-
-require ('./lib/class.phpmailer.php');
 
 /**
  * Reverse magic_quotes_gpc=on to have clean GPC data again
@@ -182,8 +141,7 @@ require ('./lib/class.phpmailer.php');
 
 if(get_magic_quotes_gpc())
 {
-	$in = array(&$_GET, &$_POST, &$_COOKIE
-	);
+	$in = array(&$_GET, &$_POST, &$_COOKIE);
 
 	while(list($k, $v) = each($in))
 	{
@@ -206,24 +164,8 @@ if(get_magic_quotes_gpc())
  * Selects settings from MySQL-Table
  */
 
-$settings = Array();
-$result = $db->query('SELECT `settinggroup`, `varname`, `value` FROM `' . TABLE_PANEL_SETTINGS . '`');
-
-while($row = $db->fetch_array($result))
-{
-	if(($row['settinggroup'] == 'system' && $row['varname'] == 'hostname')
-	   || ($row['settinggroup'] == 'panel' && $row['varname'] == 'adminmail'))
-	{
-		$settings[$row['settinggroup']][$row['varname']] = $idna_convert->decode($row['value']);
-	}
-	else
-	{
-		$settings[$row['settinggroup']][$row['varname']] = $row['value'];
-	}
-}
-
-unset($row);
-unset($result);
+$settings_data = loadSettingsData();
+$settings = loadSettings(&$settings_data, &$db);
 
 if(!isset($settings['system']['dbversion'])
    || $settings['system']['dbversion'] != $dbversion)
@@ -395,28 +337,6 @@ if(isset($userinfo['loginname'])
 	 */
 
 	$log = SysCPLogger::getInstanceOf($userinfo, $db, $settings);
-}
-
-if($settings['billing']['activate_billing'] == '1')
-{
-	/**
-	 * Include Billing classes
-	 */
-
-	require ('./lib/billing_class_invoice.php');
-	require ('./lib/billing_class_taxcontroller.php');
-	require ('./lib/billing_class_servicecategory.php');
-	require ('./lib/billing_class_pdf.php');
-	require ('./lib/billing_class_pdfinvoice.php');
-	require ('./lib/billing_class_pdfreminder.php');
-}
-else
-{
-	/**
-	 * Deactivate Billing for all users
-	 */
-
-	$userinfo['edit_billingdata'] = '0';
 }
 
 /**
