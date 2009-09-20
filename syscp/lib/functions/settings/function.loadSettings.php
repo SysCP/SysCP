@@ -38,6 +38,8 @@ function loadSettings($settings_data, $db)
 						{
 							$varvalue = $field_details['default'];
 						}
+
+						$settings[$field_details['settinggroup']][$field_details['varname']] = $varvalue;
 					}
 					else
 					{
@@ -45,7 +47,6 @@ function loadSettings($settings_data, $db)
 					}
 
 					$settings_data['groups'][$settings_part]['fields'][$field_name]['value'] = $varvalue;
-					$settings[$row['settinggroup']][$row['varname']] = $varvalue;
 				}
 			}
 		}

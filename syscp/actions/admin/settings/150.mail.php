@@ -81,6 +81,12 @@ return array(
 					'default' => false,
 					'save_method' => 'storeSettingField',
 					),
+				'systen_last_autoresponder_run' => array(
+					'settinggroup' => 'autoresponder',
+					'varname' => 'last_autoresponder_run',
+					'type' => 'hidden',
+					'default' => 0,
+					),
 				),
 			),
 		),
