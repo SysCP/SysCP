@@ -21,13 +21,12 @@ function transferDateToArray($date)
 				'd' => (int)date('d', $date)
 			);
 		}
-		else
+		elseif(count($date_array = explode('-', $date)) === 3)
 		{
-			$date = explode('-', $date);
 			$date = array(
-				'y' => (int)$date[0],
-				'm' => (int)$date[1],
-				'd' => (int)$date[2]
+				'y' => (int)$date_array[0],
+				'm' => (int)$date_array[1],
+				'd' => (int)$date_array[2]
 			);
 		}
 	}

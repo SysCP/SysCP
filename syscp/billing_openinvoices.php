@@ -287,7 +287,7 @@ if($userinfo['customers_see_all'] == '1')
 			   && $_POST['send'] == 'send')
 			{
 				$db->query('INSERT INTO `' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'table') . '` (`' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'key') . '`, `userid`, `timestamp`, `key`, `action`) VALUES(\'' . $db->escape($id) . '\', \'' . $db->escape($userinfo['userid']) . '\', \'' . $db->escape(time()) . '\', \'' . $db->escape($key) . '\', \'1\')');
-				cacheInvoiceFees($mode, $id);
+				cacheInvoiceFees($mode, null, null, $id);
 				redirectTo($filename, Array('s' => $s, 'id' => $id, 'mode' => $mode, 'page' => $page));
 			}
 			else
@@ -323,7 +323,7 @@ if($userinfo['customers_see_all'] == '1')
 
 			$total_fee = doubleval(str_replace(',', '.', $_POST['total_fee']));
 			$db->query('INSERT INTO `' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'table') . '` (`' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'key') . '`, `userid`, `timestamp`, `key`, `action`, `caption`, `interval`, `taxrate`, `quantity`, `total_fee`) VALUES(\'' . $db->escape($id) . '\', \'' . $db->escape($userinfo['userid']) . '\', \'' . $db->escape(time()) . '\', \'' . $db->escape($key) . '\', \'2\', \'' . $db->escape($caption) . '\', \'' . $db->escape($interval) . '\', \'' . $db->escape($taxrate) . '\', \'' . $db->escape($quantity) . '\', \'' . $db->escape($total_fee) . '\')');
-			cacheInvoiceFees($mode, $id);
+			cacheInvoiceFees($mode, null, null, $id);
 			redirectTo($filename, Array('s' => $s, 'id' => $id, 'mode' => $mode, 'page' => $page));
 		}
 
@@ -355,7 +355,7 @@ if($userinfo['customers_see_all'] == '1')
 					$db->query('DELETE FROM `' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'table') . '` WHERE `' . getModeDetails($mode, 'TABLE_BILLING_INVOICE_CHANGES', 'key') . '` = \'' . $db->escape($id) . '\'');
 				}
 
-				cacheInvoiceFees($mode, $id);
+				cacheInvoiceFees($mode, null, null, $id);
 				redirectTo($filename, Array('s' => $s, 'id' => $id, 'mode' => $mode, 'page' => $page));
 			}
 			else
@@ -400,7 +400,7 @@ if($userinfo['customers_see_all'] == '1')
 					}
 				}
 
-				cacheInvoiceFees($mode, $id);
+				cacheInvoiceFees($mode, null, null, $id);
 				redirectTo($filename, Array('s' => $s, 'mode' => $mode, 'page' => 'overview'));
 			}
 			else

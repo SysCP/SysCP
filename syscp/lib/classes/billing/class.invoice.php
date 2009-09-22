@@ -194,7 +194,7 @@ class invoice
 		if($fixInvoice === true
 		   && !empty($this->cancelledInvoices))
 		{
-			$this->db->query('UPDATE `' . getModeDetails($this->mode, 'TABLE_BILLING_INVOICES', 'table') . '` SET `state` = \'' . CONST_BILLING_INVOICESTATE_CANCELLED_REINVOICED . '\', `state_change` = \'' . time() . '\' WHERE `' . getModeDetails($this->mode, 'TABLE_BILLING_INVOICES', 'key') . '` = \'' . $this->userId . '\' AND ( `state` = \'' . CONST_BILLING_INVOICESTATE_CANCELLED_REINVOICE_WITHOUT_CREDIT_NOTE . '\' OR `state` = \'' . CONST_BILLING_INVOICESTATE_CANCELLED_REINVOICE_WITH_CREDIT_NOTE . '\' ) `id` IN ( ' . implode(', ', array_keys($this->cancelledInvoices)) . ' ) ');
+			$this->db->query('UPDATE `' . getModeDetails($this->mode, 'TABLE_BILLING_INVOICES', 'table') . '` SET `state` = \'' . CONST_BILLING_INVOICESTATE_CANCELLED_REINVOICED . '\', `state_change` = \'' . time() . '\' WHERE `' . getModeDetails($this->mode, 'TABLE_BILLING_INVOICES', 'key') . '` = \'' . $this->userId . '\' AND ( `state` = \'' . CONST_BILLING_INVOICESTATE_CANCELLED_REINVOICE_WITHOUT_CREDIT_NOTE . '\' OR `state` = \'' . CONST_BILLING_INVOICESTATE_CANCELLED_REINVOICE_WITH_CREDIT_NOTE . '\' ) AND `id` IN ( ' . implode(', ', array_keys($this->cancelledInvoices)) . ' ) ');
 		}
 
 		foreach($this->service_categories as $service_category => $service_category_details)
@@ -341,10 +341,6 @@ class invoice
 		{
 			if(!empty($invoice_row))
 			{
-				// Begin Key generation to detect changes in invoice
-
-				$invoice_row['key'] = $invoice_row['service_type'] . '-' . $invoice_row['service_occurence'] . '-';
-
 				if(!isset($invoice_row['service_occurence']))
 				{
 					if(isset($invoice_row['service_date_begin'])
@@ -358,13 +354,43 @@ class invoice
 					}
 				}
 
+				if(!isset($invoice_row['key']))
+				{
+					// Begin Key generation to detect changes in invoice
+
+					$invoice_row['key'] = $invoice_row['service_type'] . '-' . $invoice_row['service_occurence'] . '-';
+
+					if(isset($invoice_row['service_occurence']))
+					{
+						switch($invoice_row['service_occurence'])
+						{
+							case 'once':
+								$invoice_row['key'].= $invoice_row['service_date'] . '-';
+								break;
+							case 'period':
+								$invoice_row['service_date_end'] = manipulateDate($invoice_row['service_date_end'], '-', 1, 'd');
+								$invoice_row['key'].= $invoice_row['service_date_begin'] . '-' . $invoice_row['service_date_end'] . '-';
+								break;
+						}
+					}
+
+					reset($invoice_row['description']);
+					foreach($invoice_row['description'] as $description_key => $description_value)
+					{
+						$invoice_row['key'].= $description_key . '.' . $description_value . '-';
+					}
+
+					$invoice_row['key'] = md5($invoice_row['key']);
+
+					// End key generation
+				}
+
 				if(isset($invoice_row['service_occurence']))
 				{
 					switch($invoice_row['service_occurence'])
 					{
 						case 'once':
 							$rowcaption_field = 'category_rowcaption_setup';
-							$invoice_row['key'].= $invoice_row['service_date'] . '-';
 
 							if(!isset($invoice_row['interval']))
 							{
@@ -374,11 +400,11 @@ class invoice
 							break;
 						case 'period':
 							$rowcaption_field = 'category_rowcaption_interval';
-							$invoice_row['service_date_end'] = manipulateDate($invoice_row['service_date_end'], '-', 1, 'd');
-							$invoice_row['key'].= $invoice_row['service_date_begin'] . '-' . $invoice_row['service_date_end'] . '-';
 
 							if(!isset($invoice_row['interval']))
 							{
+								$invoice_row['service_date_end'] = manipulateDate($invoice_row['service_date_end'], '-', 1, 'd');
+
 								if(calculateDayDifference($invoice_row['service_date_begin'], $invoice_row['service_date_end']) != 0)
 								{
 									$invoice_row['interval'] = makeNicePresentableDate($invoice_row['service_date_begin'], $lng['panel']['dateformat_function']) . ' - ' . makeNicePresentableDate($invoice_row['service_date_end'], $lng['panel']['dateformat_function']);
@@ -392,16 +418,6 @@ class invoice
 							break;
 					}
 				}
-
-				reset($invoice_row['description']);
-				foreach($invoice_row['description'] as $description_key => $description_value)
-				{
-					$invoice_row['key'].= $description_key . '.' . $description_value . '-';
-				}
-
-				$invoice_row['key'] = md5($invoice_row['key']);
-
-				// End key generation
 
 				if(!isset($invoice_row['description']['caption'])
 				   || $invoice_row['description']['caption'] == '')
@@ -724,7 +740,7 @@ class invoice
 				$invoice_row->addAttribute('key', utf8_encode(htmlspecialchars($row['key'])));
 				$invoice_row->addChild('service_occurence', utf8_encode(htmlspecialchars($row['service_occurence'])));
 
-				switch($invoice_row['service_occurence'])
+				switch($row['service_occurence'])
 				{
 					case 'once':
 						$invoice_row->addAttribute('date', utf8_encode(htmlspecialchars(makeNicePresentableDate($row['service_date'], 'Ymd'))));
