@@ -368,7 +368,6 @@ class invoice
 								$invoice_row['key'].= $invoice_row['service_date'] . '-';
 								break;
 							case 'period':
-								$invoice_row['service_date_end'] = manipulateDate($invoice_row['service_date_end'], '-', 1, 'd');
 								$invoice_row['key'].= $invoice_row['service_date_begin'] . '-' . $invoice_row['service_date_end'] . '-';
 								break;
 						}
