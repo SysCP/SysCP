@@ -21,6 +21,7 @@ define('AREA', 'admin');
  * Include our init.php, which manages Sessions, Language etc.
  */
 
+$need_root_db_sql_data = true;
 require ("./lib/init.php");
 
 if(isset($_POST['id']))

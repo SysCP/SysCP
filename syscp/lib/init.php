@@ -97,34 +97,16 @@ unset($sql['password']);
 unset($db->password);
 
 // we will try to unset most of the $sql information if they are not needed
-// by the calling script
+// by the calling script.
 
-if($filename == 'admin_configfiles.php')
+if(!isset($need_db_sql_data) || $need_db_sql_data !== true)
 {
-	// Configfiles needs host, user, db
-
-	unset($sql_root);
-	$sql_root = array();
-}
-elseif($filename == 'customer_mysql.php'
-       || $filename == 'admin_customers.php')
-{
-	// customer mysql needs root pw, root user, host for database creation
-	// admin customers needs it for database deletion
-
-	unset($sql['user']);
-	unset($sql['db']);
-}
-elseif($filename == 'admin_settings.php')
-{
-	// admin settings needs the  host, user, db, root user, root pw
-}
-else
-{
-	// Other scripts doesn't need anything at all
-
 	unset($sql);
 	$sql = array();
+}
+
+if(!isset($need_root_db_sql_data) || $need_root_db_sql_data !== true)
+{
 	unset($sql_root);
 	$sql_root = array();
 }
