@@ -281,29 +281,46 @@ while($row = $db->fetch_array($result))
 
 	fwrite($debugHandler, 'calculating webspace usage for ' . $row['loginname'] . "\n");
 	$webspaceusage = 0;
-	$back = safe_exec('du -s ' . escapeshellarg($row['documentroot']) . '');
-	foreach($back as $backrow)
+	
+	if(file_exists($row['documentroot']) && is_dir($row['documentroot']))
 	{
-		$webspaceusage = explode(' ', $backrow);
+		$back = safe_exec('du -s ' . escapeshellarg($row['documentroot']) . '');
+		foreach($back as $backrow)
+		{
+			$webspaceusage = explode(' ', $backrow);
+		}
+	
+		$webspaceusage = floatval($webspaceusage['0']);
+		unset($back);
 	}
-
-	$webspaceusage = floatval($webspaceusage['0']);
-	unset($back);
-
+	else
+	{
+		fwrite($debugHandler, 'documentroot ' . $row['documentroot'] . ' does not exist' . "\n");
+	}
+	
 	/**
 	 * MailSpace-Usage
 	 */
 
 	fwrite($debugHandler, 'calculating mailspace usage for ' . $row['loginname'] . "\n");
 	$emailusage = 0;
-	$back = safe_exec('du -s ' . escapeshellarg($settings['system']['vmail_homedir'] . $row['loginname']) . '');
-	foreach($back as $backrow)
-	{
-		$emailusage = explode(' ', $backrow);
-	}
 
-	$emailusage = floatval($emailusage['0']);
-	unset($back);
+	$maildir = makeCorrectDir($settings['system']['vmail_homedir'] . $row['loginname']);
+	if(file_exists($maildir) && is_dir($maildir))
+	{
+		$back = safe_exec('du -s ' . escapeshellarg($maildir) . '');
+		foreach($back as $backrow)
+		{
+			$emailusage = explode(' ', $backrow);
+		}
+	
+		$emailusage = floatval($emailusage['0']);
+		unset($back);
+	}
+	else
+	{
+		fwrite($debugHandler, 'maildir ' . $maildir . ' does not exist' . "\n");
+	}
 
 	/**
 	 * MySQLSpace-Usage
