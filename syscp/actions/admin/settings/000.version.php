@@ -30,6 +30,7 @@ return array(
 					'varname' => 'last_tasks_run',
 					'type' => 'hidden',
 					'default' => '',
+					'save_method' => 'storeSettingField',
 					),
 				'system_last_traffic_run' => array(
 					'settinggroup' => 'system',

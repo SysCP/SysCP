@@ -17,5 +17,13 @@
 
 function validateFormFieldHidden($fieldname, $fielddata, $newfieldvalue)
 {
-	return true;
+	if($newfieldvalue === $fielddata['value'])
+	{
+		return true;
+	}
+	else
+	{
+		// TODO: Throw some error that actually makes sense - false would just throw unknown error
+		return false;
+	}
 }

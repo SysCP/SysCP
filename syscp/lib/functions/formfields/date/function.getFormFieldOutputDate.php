@@ -12,13 +12,15 @@
  * @author     Florian Lippert <flo@syscp.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Functions
- * @version    $Id$
+ * @version    $Id: function.getFormFieldDataInt.php 2724 2009-06-07 14:18:02Z flo $
  */
 
-function validateFormFieldLabel($fieldname, $fielddata, $newfieldvalue)
+function getFormFieldOutputDate($fieldname, $fielddata)
 {
-	// Return false, in case we happen to have that field in our $input array, so someone doesn't get the chance to save crap to our database
-	// TODO: Throw some error that actually makes sense - false would just throw unknown error
+	if(isset($fielddata['date_timestamp']) && $fielddata['date_timestamp'] === true)
+	{
+		$fielddata['value'] = date('Y-m-d', $fielddata['value']);
+	}
 
-	return false;
+	return getFormFieldOutputString($fieldname, $fielddata);
 }

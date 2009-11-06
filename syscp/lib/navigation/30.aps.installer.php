@@ -20,7 +20,7 @@ return array (
 		'aps' => array (
 			'label' => $lng['customer']['aps'],
 			'required_resources' => 'phpenabled',
-			'show_element' => ( $settings['aps']['aps_active'] == true ),
+			'show_element' => ( getSetting('aps', 'aps_active') == true ),
 			'elements' => array (
 				array (
 					'url' => 'customer_aps.php?action=overview',
@@ -41,7 +41,7 @@ return array (
 		'aps' => array (
 			'label' => $lng['admin']['aps'],
 			'required_resources' => 'can_manage_aps_packages',
-			'show_element' => ( $settings['aps']['aps_active'] == true ),
+			'show_element' => ( getSetting('aps', 'aps_active') == true ),
 			'elements' => array (
 				array (
 					'url' => 'admin_aps.php?action=upload',

@@ -146,7 +146,7 @@ if(get_magic_quotes_gpc())
  * Selects settings from MySQL-Table
  */
 
-$settings_data = loadSettingsData();
+$settings_data = loadConfigArrayDir('./actions/admin/settings/');
 $settings = loadSettings(&$settings_data, &$db);
 
 if(!isset($settings['system']['dbversion'])
@@ -327,29 +327,9 @@ if(isset($userinfo['loginname'])
 
 if(AREA == 'admin' || AREA == 'customer')
 {
-	$navigation_data_files = array();
-	$navigation_data_dirname = './lib/navigation/';
-	$navigation_data_dirhandle = opendir($navigation_data_dirname);
-	while(false !== ($navigation_data_filename = readdir($navigation_data_dirhandle)))
-	{
-		if($navigation_data_filename != '.' && $navigation_data_filename != '..' && $navigation_data_filename != '' && substr($navigation_data_filename, -4 ) == '.php')
-		{
-			$navigation_data_files[] = $navigation_data_dirname . $navigation_data_filename;
-		}
-	}
-	
-	sort($navigation_data_files);
-	
-	$navigation_data = array();
-	
-	foreach($navigation_data_files as $navigation_data_filename)
-	{
-		$navigation_data = array_merge_recursive($navigation_data, include($navigation_data_filename));
-	}
-	
-	$navigation_data = $navigation_data[AREA];
-	
-	$navigation = buildNavigation($navigation_data, $userinfo);
+	$navigation_data = loadConfigArrayDir('./lib/navigation/');
+	$navigation = buildNavigation($navigation_data[AREA], $userinfo);
+	unset($navigation_data);
 }
 
 eval("\$header = \"" . getTemplate('header', '1') . "\";");

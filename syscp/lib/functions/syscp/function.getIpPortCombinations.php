@@ -15,11 +15,28 @@
  * @version    $Id$
  */
 
-function getIpPortCombinations()
+function getIpPortCombinations($ssl = null)
 {
 	global $db;
 	
-	$query = 'SELECT `id`, `ip`, `port` FROM `' . TABLE_PANEL_IPSANDPORTS . '` ORDER BY `ip` ASC, `port` ASC';
+	$additional_conditions = '';
+	$additional_conditions_array = array();
+	if(getSessionUserDetail('ip') != '-1')
+	{
+		$admin_ip = $db->query_first('SELECT `id`, `ip`, `port` FROM `' . TABLE_PANEL_IPSANDPORTS . '` WHERE `id` = \'' . (int)getSessionUserDetail('ip') . '\' ORDER BY `ip`, `port` ASC');
+		$additional_conditions_array[] = '`ip` = \'' . $admin_ip['ip'] . '\'';
+		unset($admin_ip);
+	}
+	if($ssl !== null)
+	{
+		$additional_conditions_array[] = '`ssl` = \'' . ( $ssl === true ? '1' : '0' ) . '\'';
+	}
+	if(!empty($additional_conditions_array))
+	{
+		$additional_conditions = ' WHERE ' . implode(' AND ', $additional_conditions_array) . ' ';
+	}
+
+	$query = 'SELECT `id`, `ip`, `port` FROM `' . TABLE_PANEL_IPSANDPORTS . '` ' . $additional_conditions . ' ORDER BY `ip` ASC, `port` ASC';
 	$result = $db->query($query);
 	$system_ipaddress_array = array();
 

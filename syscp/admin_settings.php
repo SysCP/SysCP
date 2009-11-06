@@ -28,7 +28,7 @@ require ("./lib/init.php");
 if(($page == 'settings' || $page == 'overview')
    && $userinfo['change_serversettings'] == '1')
 {
-	$settings_data = loadSettingsData();
+	$settings_data = loadConfigArrayDir('./actions/admin/settings/');
 	$settings = loadSettings(&$settings_data, &$db);
 	
 	if(isset($_POST['send'])

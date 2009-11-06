@@ -20,7 +20,7 @@ return array (
 		'billing' => array (
 			'label' => $lng['billing']['billing'],
 			'required_resources' => 'edit_billingdata',
-			'show_element' => ( $settings['billing']['activate_billing'] == true ),
+			'show_element' => ( getSetting('billing', 'activate_billing') == true ),
 			'elements' => array (
 				array (
 					'url' => 'billing_openinvoices.php',

@@ -124,7 +124,7 @@ function processForm($form, $input, $url_params = array())
 				{
 					if(isset($changed_fields[$fieldname]))
 					{
-						if(($saved_field = saveFormField($fieldname, $fielddetails, $changed_fields[$fieldname])) !== false)
+						if(($saved_field = saveFormField($fieldname, $fielddetails, manipulateFormFieldData($fieldname, $fielddetails, $changed_fields[$fieldname]))) !== false)
 						{
 							$saved_fields = array_merge($saved_fields, $saved_field);
 						}

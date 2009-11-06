@@ -12,13 +12,19 @@
  * @author     Florian Lippert <flo@syscp.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Functions
- * @version    $Id$
+ * @version    $Id: function.validateFormFieldInt.php 2724 2009-06-07 14:18:02Z flo $
  */
 
-function validateFormFieldLabel($fieldname, $fielddata, $newfieldvalue)
+function validateFormFieldDate($fieldname, $fielddata, $newfieldvalue)
 {
-	// Return false, in case we happen to have that field in our $input array, so someone doesn't get the chance to save crap to our database
-	// TODO: Throw some error that actually makes sense - false would just throw unknown error
-
-	return false;
+	if($newfieldvalue == '0000-00-00' || preg_match('/^(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$/', $newfieldvalue))
+	{
+		$returnvalue = true;
+	}
+	else
+	{
+		$returnvalue = false;
+	}
+	
+	return $returnvalue;
 }

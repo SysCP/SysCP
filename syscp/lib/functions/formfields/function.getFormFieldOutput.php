@@ -31,6 +31,17 @@ function getFormFieldOutput($fieldname, $fielddata)
 				$fielddata['label'] = implode(' ', $fielddata['label']);
 			}
 		}
+		if(!isset($fielddata['value']))
+		{
+			if(isset($fielddata['default']))
+			{
+				$fielddata['value'] = $fielddata['default'];
+			}
+			else
+			{
+				$fielddata['value'] = null;
+			}
+		}
 		$returnvalue = call_user_func('getFormFieldOutput' . ucfirst($fielddata['type']), $fieldname, $fielddata);
 	}
 	return $returnvalue;

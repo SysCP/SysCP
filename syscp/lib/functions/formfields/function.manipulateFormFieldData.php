@@ -12,13 +12,15 @@
  * @author     Florian Lippert <flo@syscp.org>
  * @license    GPLv2 http://files.syscp.org/misc/COPYING.txt
  * @package    Functions
- * @version    $Id$
+ * @version    $Id: function.getFormFieldData.php 2724 2009-06-07 14:18:02Z flo $
  */
 
-function validateFormFieldLabel($fieldname, $fielddata, $newfieldvalue)
+function manipulateFormFieldData($fieldname, $fielddata, $newfieldvalue)
 {
-	// Return false, in case we happen to have that field in our $input array, so someone doesn't get the chance to save crap to our database
-	// TODO: Throw some error that actually makes sense - false would just throw unknown error
+	if(is_array($fielddata) && isset($fielddata['type']) && $fielddata['type'] != '' && function_exists('manipulateFormFieldData' . ucfirst($fielddata['type'])))
+	{
+		$newfieldvalue = call_user_func('manipulateFormFieldData' . ucfirst($fielddata['type']), $fieldname, $fielddata, $newfieldvalue);
+	}
 
-	return false;
+	return $newfieldvalue;
 }
