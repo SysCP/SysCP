@@ -166,11 +166,11 @@ class apache_fcgid extends apache
 			{
 				if($domain['openbasedir_path'] == '0')
 				{
-					$openbasedir = $domain['documentroot'] . ':' . $tmpdir . ':' . $this->settings['system']['mod_fcgid_peardir'] . ':' . $this->settings['system']['phpappendopenbasedir'];
+					$openbasedir = makeCorrectDir($domain['documentroot']) . ':' . $tmpdir . ':' . $this->settings['system']['mod_fcgid_peardir'] . ':' . $this->settings['system']['phpappendopenbasedir'];
 				}
 				else
 				{
-					$openbasedir = $domain['customerroot'] . ':' . $tmpdir . ':' . $this->settings['system']['mod_fcgid_peardir'] . ':' . $this->settings['system']['phpappendopenbasedir'];
+					$openbasedir = makeCorrectDir($domain['customerroot']) . ':' . $tmpdir . ':' . $this->settings['system']['mod_fcgid_peardir'] . ':' . $this->settings['system']['phpappendopenbasedir'];
 				}
 
 				$openbasedir = explode(':', $openbasedir);

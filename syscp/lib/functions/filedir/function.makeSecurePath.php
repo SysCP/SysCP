@@ -26,11 +26,13 @@
 function makeSecurePath($path)
 {
 	$search = Array(
+		'#\:+#',
 		'#/+#',
 		'#\.+#',
 		'#\0+#'
 	);
 	$replace = Array(
+		'',
 		'/',
 		'.',
 		''
