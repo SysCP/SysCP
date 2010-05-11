@@ -144,11 +144,11 @@ class apache
 
 				if($domain['openbasedir_path'] == '1')
 				{
-					$php_options_text.= '  php_admin_value open_basedir "' . $domain['customerroot'] . $_phpappendopenbasedir . "\"\n";
+					$php_options_text.= '  php_admin_value open_basedir "' . makeCorrectDir($domain['customerroot']) . $_phpappendopenbasedir . "\"\n";
 				}
 				else
 				{
-					$php_options_text.= '  php_admin_value open_basedir "' . $domain['documentroot'] . $_phpappendopenbasedir . "\"\n";
+					$php_options_text.= '  php_admin_value open_basedir "' . makeCorrectDir($domain['documentroot']) . $_phpappendopenbasedir . "\"\n";
 				}
 			}
 

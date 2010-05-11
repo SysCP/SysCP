@@ -814,11 +814,13 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '')
 function makeSecurePath($path)
 {
 	$search = Array(
+		'#\:+#',
 		'#/+#',
 		'#\.+#',
 		'#\0+#'
 	);
 	$replace = Array(
+		'',
 		'/',
 		'.',
 		''
@@ -1231,7 +1233,7 @@ function safe_exec($exec_string, &$return_value = false)
 	$ok = false;
 	foreach($allowed_commands as $allowed_command)
 	{
-		if(strpos($exec_string, $allowed_command) == 0
+		if(strpos($exec_string, $allowed_command) === 0
 		   && (strlen($exec_string) === ($allowed_command_pos = strlen($allowed_command)) || substr($exec_string, $allowed_command_pos, 1) === ' '))
 		{
 			$ok = true;
